@@ -45,6 +45,23 @@ La structure reste indépendante des années et semestres, mais chaque programme
 5. Lui demander de commencer par `TICKET-001` uniquement.
 6. Valider chaque ticket avant de poursuivre.
 
+## Base de données
+
+Créer un fichier `.env` à partir de `.env.example`, puis renseigner une URL
+PostgreSQL Neon dans `DATABASE_URL`. `DIRECT_URL` est recommandée pour les
+migrations lorsque Neon fournit une URL de connexion directe distincte.
+
+```bash
+pnpm prisma:generate
+pnpm prisma:migrate -- --name <nom-de-migration>
+pnpm prisma:seed
+pnpm prisma:check
+```
+
+`prisma:check` exécute une requête de santé et requiert une `DATABASE_URL`
+valide. Le seed du ticket d’initialisation est volontairement vide ; le
+programme exemple est importé dans TICKET-008.
+
 ## Documents
 
 - `PRODUCT_REQUIREMENTS.md`
