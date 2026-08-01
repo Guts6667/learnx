@@ -1,0 +1,550 @@
+{
+  "program": {
+    "title": "Fondamentaux de la psychologie",
+    "slug": "fondamentaux-psychologie",
+    "description": "Parcours autonome pour comprendre les bases scientifiques de la psychologie.",
+    "status": "active",
+    "position": 1,
+    "stages": [
+      {
+        "title": "Découvrir la discipline",
+        "slug": "decouvrir-discipline",
+        "position": 1,
+        "modules": [
+          {
+            "title": "Qu’est-ce que la psychologie ?",
+            "slug": "definition-psychologie",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Définir la psychologie",
+                "slug": "definir-la-psychologie",
+                "position": 1,
+                "estimatedMinutes": 90,
+                "concepts": [
+                  {
+                    "title": "Définir la psychologie",
+                    "slug": "definir-la-psychologie",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Définir la psychologie",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Les grands domaines",
+                "slug": "grands-domaines",
+                "position": 2,
+                "estimatedMinutes": 90,
+                "concepts": [
+                  {
+                    "title": "Les grands domaines",
+                    "slug": "grands-domaines",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Les grands domaines",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Les métiers et l’éthique",
+                "slug": "metiers-et-ethique",
+                "position": 3,
+                "estimatedMinutes": 90,
+                "concepts": [
+                  {
+                    "title": "Les métiers et l’éthique",
+                    "slug": "metiers-et-ethique",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Les métiers et l’éthique",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "decouvrir-discipline"
+          }
+        ],
+        "estimatedDurationDays": 14,
+        "assessment": {
+          "title": "Évaluation finale — Découvrir la discipline",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70
+        }
+      },
+      {
+        "title": "Comprendre les grands courants",
+        "slug": "grands-courants",
+        "position": 2,
+        "modules": [
+          {
+            "title": "Histoire et courants",
+            "slug": "histoire-et-courants",
+            "position": 2,
+            "lessons": [
+              {
+                "title": "Naissance de la psychologie expérimentale",
+                "slug": "naissance-psychologie-experimentale",
+                "position": 1,
+                "estimatedMinutes": 90,
+                "concepts": [
+                  {
+                    "title": "Naissance de la psychologie expérimentale",
+                    "slug": "naissance-psychologie-experimentale",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Naissance de la psychologie expérimentale",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Behaviorisme et apprentissage",
+                "slug": "behaviorisme-apprentissage",
+                "position": 2,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Behaviorisme et apprentissage",
+                    "slug": "behaviorisme-apprentissage",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Behaviorisme et apprentissage",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Cognitivisme, humanisme et psychanalyse",
+                "slug": "courants-modernes",
+                "position": 3,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Cognitivisme, humanisme et psychanalyse",
+                    "slug": "courants-modernes",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Cognitivisme, humanisme et psychanalyse",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "grands-courants"
+          }
+        ],
+        "estimatedDurationDays": 21,
+        "assessment": {
+          "title": "Évaluation finale — Comprendre les grands courants",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70
+        }
+      },
+      {
+        "title": "Raisonner scientifiquement",
+        "slug": "raisonner-scientifiquement",
+        "position": 3,
+        "modules": [
+          {
+            "title": "Méthode scientifique",
+            "slug": "methode-scientifique",
+            "position": 3,
+            "lessons": [
+              {
+                "title": "Question, hypothèse et opérationnalisation",
+                "slug": "question-hypothese-operationnalisation",
+                "position": 1,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Question, hypothèse et opérationnalisation",
+                    "slug": "question-hypothese-operationnalisation",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Question, hypothèse et opérationnalisation",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Corrélation et causalité",
+                "slug": "correlation-causalite",
+                "position": 2,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Corrélation et causalité",
+                    "slug": "correlation-causalite",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Corrélation et causalité",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Plans de recherche",
+                "slug": "plans-recherche",
+                "position": 3,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Plans de recherche",
+                    "slug": "plans-recherche",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Plans de recherche",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Échantillonnage et validité",
+                "slug": "echantillonnage-validite",
+                "position": 4,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Échantillonnage et validité",
+                    "slug": "echantillonnage-validite",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Échantillonnage et validité",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Éthique de la recherche",
+                "slug": "ethique-recherche",
+                "position": 5,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Éthique de la recherche",
+                    "slug": "ethique-recherche",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Éthique de la recherche",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "raisonner-scientifiquement"
+          },
+          {
+            "title": "Lire un article scientifique",
+            "slug": "lire-article-scientifique",
+            "position": 4,
+            "lessons": [
+              {
+                "title": "Anatomie d’un article",
+                "slug": "anatomie-article",
+                "position": 1,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Anatomie d’un article",
+                    "slug": "anatomie-article",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Anatomie d’un article",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Lire sans tout comprendre",
+                "slug": "lecture-strategique",
+                "position": 2,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Lire sans tout comprendre",
+                    "slug": "lecture-strategique",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Lire sans tout comprendre",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Hiérarchie des preuves",
+                "slug": "hierarchie-preuves",
+                "position": 3,
+                "estimatedMinutes": 120,
+                "concepts": [
+                  {
+                    "title": "Hiérarchie des preuves",
+                    "slug": "hierarchie-preuves",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Hiérarchie des preuves",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "raisonner-scientifiquement"
+          }
+        ],
+        "estimatedDurationDays": 35,
+        "assessment": {
+          "title": "Évaluation finale — Raisonner scientifiquement",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70
+        }
+      },
+      {
+        "title": "Acquérir les outils quantitatifs",
+        "slug": "outils-quantitatifs",
+        "position": 4,
+        "modules": [
+          {
+            "title": "Statistiques fondamentales",
+            "slug": "statistiques-fondamentales",
+            "position": 5,
+            "lessons": [
+              {
+                "title": "Décrire des données",
+                "slug": "decrire-donnees",
+                "position": 1,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Décrire des données",
+                    "slug": "decrire-donnees",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Décrire des données",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Distributions et incertitude",
+                "slug": "distributions-incertitude",
+                "position": 2,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Distributions et incertitude",
+                    "slug": "distributions-incertitude",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Distributions et incertitude",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Tests et interprétation",
+                "slug": "tests-interpretation",
+                "position": 3,
+                "estimatedMinutes": 180,
+                "concepts": [
+                  {
+                    "title": "Tests et interprétation",
+                    "slug": "tests-interpretation",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Tests et interprétation",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "outils-quantitatifs"
+          }
+        ],
+        "estimatedDurationDays": 21,
+        "assessment": {
+          "title": "Évaluation finale — Acquérir les outils quantitatifs",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70
+        }
+      },
+      {
+        "title": "Comprendre la cognition",
+        "slug": "comprendre-cognition",
+        "position": 5,
+        "modules": [
+          {
+            "title": "Cognition et apprentissage",
+            "slug": "cognition-apprentissage",
+            "position": 6,
+            "lessons": [
+              {
+                "title": "Apprentissage",
+                "slug": "apprentissage",
+                "position": 1,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Apprentissage",
+                    "slug": "apprentissage",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Apprentissage",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Mémoire",
+                "slug": "memoire",
+                "position": 2,
+                "estimatedMinutes": 180,
+                "concepts": [
+                  {
+                    "title": "Mémoire",
+                    "slug": "memoire",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Mémoire",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Attention et perception",
+                "slug": "attention-perception",
+                "position": 3,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Attention et perception",
+                    "slug": "attention-perception",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Attention et perception",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "title": "Métacognition",
+                "slug": "metacognition",
+                "position": 4,
+                "estimatedMinutes": 150,
+                "concepts": [
+                  {
+                    "title": "Métacognition",
+                    "slug": "metacognition",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-quiz — Métacognition",
+                      "questionCount": 5
+                    }
+                  }
+                ]
+              }
+            ],
+            "stageSlug": "comprendre-cognition"
+          }
+        ],
+        "estimatedDurationDays": 29,
+        "assessment": {
+          "title": "Évaluation finale — Comprendre la cognition",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70
+        }
+      }
+    ],
+    "estimatedDurationDays": 120
+  }
+}
