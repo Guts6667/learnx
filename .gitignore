@@ -3,6 +3,8 @@ dist/
 coverage/
 playwright-report/
 test-results/
+.env
+.env.*
+!.env.example
 *.local
 .DS_Store
-
