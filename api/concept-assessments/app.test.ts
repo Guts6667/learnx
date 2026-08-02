@@ -174,10 +174,12 @@ function createRepository(ownerId = userId) {
   const records: Parameters<ConceptAssessmentRepository['recordAttempt']>[0][] =
     [];
   const repository: ConceptAssessmentRepository = {
-    async findPublishedAssessmentForUser(
+    async findAssessmentForUser(
       requestedAssessmentId,
       requestedUserId,
+      preview,
     ) {
+      expect(preview).toBe(false);
       return requestedAssessmentId === assessmentId &&
         requestedUserId === ownerId
         ? createAssessment()
@@ -236,6 +238,60 @@ describe('concept assessment API', () => {
     expect(serialized).not.toContain('isCorrect');
     expect(serialized).not.toContain('acceptedAnswers');
     expect(serialized).not.toContain('explanation');
+  });
+
+  it('autorise explicitement la prévisualisation au propriétaire', async () => {
+    const repository = createRepository().repository;
+    const findAssessment = vi
+      .spyOn(repository, 'findAssessmentForUser')
+      .mockImplementation(async (requestedId, requestedUserId, preview) =>
+        requestedId === assessmentId && requestedUserId === userId && preview
+          ? createAssessment()
+          : null,
+      );
+    const app = createConceptAssessmentsApp({ authentication, repository });
+    const response = await app.request(
+      `http://localhost/api/concept-assessments/${assessmentId}?preview=true`,
+    );
+
+    expect(response.status).toBe(200);
+    expect(findAssessment).toHaveBeenCalledWith(assessmentId, userId, true);
+  });
+
+  it('refuse la prévisualisation brouillon à un non-propriétaire', async () => {
+    const repository = createRepository(otherUserId).repository;
+    const findAssessment = vi
+      .spyOn(repository, 'findAssessmentForUser')
+      .mockImplementation(async () => null);
+    const app = createConceptAssessmentsApp({ authentication, repository });
+    const response = await app.request(
+      `http://localhost/api/concept-assessments/${assessmentId}?preview=true`,
+    );
+
+    expect(response.status).toBe(404);
+    expect(findAssessment).toHaveBeenCalledWith(assessmentId, userId, true);
+  });
+
+  it('autorise le propriétaire à soumettre une tentative en prévisualisation', async () => {
+    const { repository } = createRepository();
+    const findAssessment = vi
+      .spyOn(repository, 'findAssessmentForUser')
+      .mockImplementation(async (requestedId, requestedUserId, preview) =>
+        requestedId === assessmentId && requestedUserId === userId && preview
+          ? createAssessment()
+          : null,
+      );
+    const app = createConceptAssessmentsApp({ authentication, repository });
+    const response = await app.request(
+      `http://localhost/api/concept-assessments/${assessmentId}/attempts?preview=true`,
+      jsonRequest({ answers: passingAnswers() }),
+    );
+
+    expect(response.status).toBe(201);
+    expect(await response.json()).toMatchObject({
+      attempt: { passed: true, score: 100 },
+    });
+    expect(findAssessment).toHaveBeenCalledWith(assessmentId, userId, true);
   });
 
   it('corrige côté serveur, valide la notion et conserve la tentative', async () => {
@@ -342,6 +398,48 @@ describe('concept assessment API', () => {
 });
 
 describe('concept assessment persistence', () => {
+  it('filtre la prévisualisation par propriétaire sans exiger la publication', async () => {
+    const findFirst = vi.fn(async () => null);
+    const client = {
+      conceptAssessment: { findFirst },
+    } as unknown as PrismaClient;
+    const repository = createPrismaRepository(client);
+
+    await repository.findAssessmentForUser(assessmentId, userId, true);
+    expect(findFirst).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          concept: {
+            lesson: {
+              module: {
+                stage: {
+                  program: {
+                    ownerId: userId,
+                    status: { in: ['ACTIVE', 'DRAFT'] },
+                  },
+                },
+              },
+            },
+          },
+        }),
+      }),
+    );
+
+    await repository.findAssessmentForUser(assessmentId, userId, false);
+    expect(findFirst).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          concept: {
+            lesson: {
+              isPublished: true,
+              module: expect.objectContaining({ isPublished: true }),
+            },
+          },
+        }),
+      }),
+    );
+  });
+
   function createTransactionClient() {
     const reviewUpsert = vi.fn(async () => ({ id: 'review-1' }));
     const reviewUpdateMany = vi.fn(async () => ({ count: 1 }));

@@ -109,7 +109,10 @@ const conceptSchema = z
 const contentBlockSchema = z.object({
   type: contentBlockTypeSchema,
   position: z.number().int().positive(),
-  content: z.object({ text: z.string().trim().min(1) }),
+  content: z.object({
+    text: z.string().trim().min(1),
+    sourceKeys: z.array(z.string().trim().min(1)).default([]),
+  }),
 });
 
 const resourceSchema = z.object({
@@ -543,6 +546,21 @@ export async function seedSampleProgram(
       });
 
       for (const lessonData of moduleData.lessons) {
+        const lessonResourceKeys = new Set(
+          lessonData.resources.map((resource) => resource.key),
+        );
+        const missingSourceKeys = lessonData.contentBlocks.flatMap((block) =>
+          block.content.sourceKeys.filter(
+            (sourceKey) => !lessonResourceKeys.has(sourceKey),
+          ),
+        );
+
+        if (missingSourceKeys.length > 0) {
+          throw new Error(
+            `Content blocks for "${lessonData.slug}" reference unknown resources: ${[...new Set(missingSourceKeys)].join(', ')}.`,
+          );
+        }
+
         const lesson = await repository.upsertLesson({
           moduleId: module.id,
           title: lessonData.title,

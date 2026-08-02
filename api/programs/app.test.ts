@@ -35,6 +35,25 @@ interface LessonWhere {
 
 function createClient(resourceOwnerId = ownerId) {
   const lesson = {
+    concepts: [
+      {
+        assessments: [
+          {
+            id: 'assessment-1',
+            isRequired: true,
+            position: 1,
+            questionCount: 5,
+            title: 'Mini-évaluation',
+          },
+        ],
+        id: 'concept-1',
+        isRequired: true,
+        masteryThreshold: 70,
+        position: 1,
+        slug: 'notion-test',
+        title: 'Notion test',
+      },
+    ],
     contentBlocks: [],
     exercises: [
       {
@@ -170,6 +189,11 @@ describe('curriculum draft preview authorization', () => {
       expect(await response.json()).toMatchObject({
         lesson: {
           isPublished: false,
+          concepts: [
+            {
+              assessments: [{ questionCount: 5, title: 'Mini-évaluation' }],
+            },
+          ],
           exercises: [{ title: 'Analyse appliquée' }],
           quizzes: [{ questionCount: 4, title: 'Quiz de la leçon' }],
           title: 'Draft lesson',

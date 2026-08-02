@@ -160,6 +160,13 @@ export interface LessonQuizSummary {
 }
 
 export interface LessonConceptSummary {
+  assessments: Array<{
+    id: string;
+    isRequired: boolean;
+    position: number;
+    questionCount: number | null;
+    title: string | null;
+  }>;
   id: string;
   isRequired: boolean;
   masteryThreshold: number;

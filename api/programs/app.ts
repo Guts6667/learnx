@@ -277,6 +277,16 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         concepts: {
           orderBy: { position: 'asc' },
           select: {
+            assessments: {
+              orderBy: { position: 'asc' },
+              select: {
+                id: true,
+                isRequired: true,
+                position: true,
+                questionCount: true,
+                title: true,
+              },
+            },
             id: true,
             isRequired: true,
             masteryThreshold: true,

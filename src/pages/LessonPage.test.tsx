@@ -36,10 +36,32 @@ describe('LessonPage', () => {
           lesson: {
             contentBlocks: [
               {
-                content: { text: 'Le contenu pédagogique.' },
+                content: {
+                  sourceKeys: ['article-reference', 'unsafe-reference'],
+                  text: 'Le contenu pédagogique.',
+                },
                 id: 'block-1',
                 position: 1,
                 type: 'RICH_TEXT',
+              },
+            ],
+            concepts: [
+              {
+                assessments: [
+                  {
+                    id: 'assessment-1',
+                    isRequired: true,
+                    position: 1,
+                    questionCount: 5,
+                    title: 'Mini-évaluation — Comprendre',
+                  },
+                ],
+                id: 'concept-1',
+                isRequired: true,
+                masteryThreshold: 70,
+                position: 1,
+                slug: 'comprendre',
+                title: 'Comprendre',
               },
             ],
             estimatedMinutes: 15,
@@ -58,10 +80,24 @@ describe('LessonPage', () => {
                 estimatedMinutes: 5,
                 id: 'resource-1',
                 isRequired: true,
+                key: 'article-reference',
                 position: 1,
                 title: 'Article de référence',
                 type: 'ARTICLE',
                 url: 'https://example.com/article',
+              },
+              {
+                author: 'Source inconnue',
+                citation: 'Citation non navigable',
+                description: null,
+                estimatedMinutes: null,
+                id: 'resource-2',
+                isRequired: false,
+                key: 'unsafe-reference',
+                position: 2,
+                title: 'Source non sûre',
+                type: 'WEBSITE',
+                url: 'javascript:alert(1)',
               },
             ],
             slug: 'demarrer',
@@ -95,6 +131,13 @@ describe('LessonPage', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Comprendre la notion')).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
+    expect(screen.getByText('Sources de ce bloc')).toBeInTheDocument();
+    expect(screen.getAllByText('Article de référence')).toHaveLength(2);
+    expect(screen.getAllByText(/Ada Lovelace/)).toHaveLength(2);
+    expect(screen.getAllByText('Source non sûre')).toHaveLength(2);
+    expect(
+      screen.getByRole('link', { name: 'Voir la source' }),
+    ).toHaveAttribute('href', 'https://example.com/article');
     expect(
       await screen.findByRole('link', { name: 'Consulter la ressource' }),
     ).toHaveAttribute('href', 'https://example.com/article');
@@ -116,6 +159,14 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('button', { name: 'Exercice indisponible' }),
     ).toBeDisabled();
+    expect(
+      screen.getByRole('link', {
+        name: 'Prévisualiser et passer la mini-évaluation',
+      }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer/assessment?assessmentId=assessment-1',
+    );
   });
 
   it('met à jour une tâche avec la mutation de progression', async () => {
@@ -124,6 +175,7 @@ describe('LessonPage', () => {
         return Promise.resolve(
           jsonResponse({
             lesson: {
+              concepts: [],
               contentBlocks: [],
               estimatedMinutes: null,
               exercises: [],

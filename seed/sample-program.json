@@ -204,35 +204,46 @@
                     "type": "rich_text",
                     "position": 1,
                     "content": {
-                      "text": "La psychologie n’est pas un bloc unique. Ses domaines se forment autour de questions, de populations, de niveaux d’analyse et de contextes différents. La psychologie cognitive étudie notamment l’attention, la mémoire, le langage et le raisonnement ; la psychologie du développement examine les changements au cours de la vie ; la psychologie sociale étudie l’influence d’autrui et des groupes ; la biopsychologie relie fonctionnement biologique et comportement. Cette carte est utile, mais elle n’est ni exhaustive ni composée de frontières étanches."
+                      "text": "La psychologie n’est pas un bloc unique. Ses domaines se forment autour de questions, de populations, de niveaux d’analyse et de contextes différents. La psychologie cognitive étudie notamment l’attention, la mémoire, le langage et le raisonnement ; la psychologie du développement examine les changements au cours de la vie ; la psychologie sociale étudie l’influence d’autrui et des groupes ; la biopsychologie relie fonctionnement biologique et comportement. Cette carte est utile, mais elle n’est ni exhaustive ni composée de frontières étanches.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
                     }
                   },
                   {
                     "type": "definition",
                     "position": 2,
                     "content": {
-                      "text": "Un domaine désigne un ensemble de questions et de méthodes, tandis qu’un niveau d’explication indique sous quel angle un phénomène est étudié. Pour expliquer une difficulté de concentration, une recherche peut examiner le sommeil et le fonctionnement biologique, les mécanismes attentionnels, l’évolution avec l’âge ou l’influence de l’environnement social. Ces explications peuvent être complémentaires lorsqu’elles portent sur des mécanismes distincts."
+                      "text": "Un domaine désigne un ensemble de questions et de méthodes, tandis qu’un niveau d’explication indique sous quel angle un phénomène est étudié. Pour expliquer une difficulté de concentration, une recherche peut examiner le sommeil et le fonctionnement biologique, les mécanismes attentionnels, l’évolution avec l’âge ou l’influence de l’environnement social. Ces explications peuvent être complémentaires lorsqu’elles portent sur des mécanismes distincts.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3",
+                        "yale-psyc110-lecture-1-domains"
+                      ]
                     }
                   },
                   {
                     "type": "example",
                     "position": 3,
                     "content": {
-                      "text": "Exemple inventé : une étudiante repousse régulièrement son travail. Une approche cognitive peut étudier la mémoire de travail et le contrôle attentionnel ; une approche développementale, l’évolution de l’autorégulation ; une approche sociale, les normes du groupe et la comparaison avec les pairs ; une approche de la santé, le sommeil et le stress. Nommer plusieurs domaines ne dispense pas de formuler ensuite des hypothèses testables et de recueillir des données."
+                      "text": "Exemple inventé : une étudiante repousse régulièrement son travail. Une approche cognitive peut étudier la mémoire de travail et le contrôle attentionnel ; une approche développementale, l’évolution de l’autorégulation ; une approche sociale, les normes du groupe et la comparaison avec les pairs ; une approche de la santé, le sommeil et le stress. Nommer plusieurs domaines ne dispense pas de formuler ensuite des hypothèses testables et de recueillir des données.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
                     }
                   },
                   {
                     "type": "rich_text",
                     "position": 4,
                     "content": {
-                      "text": "La distinction entre recherche fondamentale et application porte sur le but immédiat du travail, pas sur une hiérarchie de valeur. Une étude fondamentale cherche d’abord à comprendre un mécanisme ; une activité appliquée mobilise ou évalue des connaissances dans la santé, l’éducation, le travail, la justice ou d’autres contextes. Un même domaine peut associer recherche et pratique : la psychologie clinique, du travail ou de la santé produit aussi des connaissances, tandis que des résultats cognitifs ou sociaux peuvent guider des interventions."
+                      "text": "La distinction entre recherche fondamentale et application porte sur le but immédiat du travail, pas sur une hiérarchie de valeur. Une étude fondamentale cherche d’abord à comprendre un mécanisme ; une activité appliquée mobilise ou évalue des connaissances dans la santé, l’éducation, le travail, la justice ou d’autres contextes. Un même domaine peut associer recherche et pratique : la psychologie clinique, du travail ou de la santé produit aussi des connaissances, tandis que des résultats cognitifs ou sociaux peuvent guider des interventions.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3",
+                        "apa-subfields-careers-guide"
+                      ]
                     }
                   },
                   {
                     "type": "callout",
                     "position": 5,
                     "content": {
-                      "text": "Erreur fréquente : confondre psychologie et psychothérapie. La clinique est un domaine important, mais la discipline étudie aussi le cerveau et le comportement, la perception, l’apprentissage, le développement, la personnalité, les relations sociales, la santé, l’éducation, le travail et de nombreux autres objets. Pour orienter une question, demandez d’abord quel phénomène est étudié, à quel niveau et dans quel but."
+                      "text": "Erreur fréquente : confondre psychologie et psychothérapie. La clinique est un domaine important, mais la discipline étudie aussi le cerveau et le comportement, la perception, l’apprentissage, le développement, la personnalité, les relations sociales, la santé, l’éducation, le travail et de nombreux autres objets. Pour orienter une question, demandez d’abord quel phénomène est étudié, à quel niveau et dans quel but.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
                     }
                   }
                 ],
@@ -375,35 +386,46 @@
                     "type": "rich_text",
                     "position": 1,
                     "content": {
-                      "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste."
+                      "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste.",
+                      "sourceKeys": [
+                        "service-public-psychologue-psychiatre",
+                        "legifrance-titre-psychologue-article-44"
+                      ]
                     }
                   },
                   {
                     "type": "definition",
                     "position": 2,
                     "content": {
-                      "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence."
+                      "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence.",
+                      "sourceKeys": ["service-public-psychologue-psychiatre"]
                     }
                   },
                   {
                     "type": "example",
                     "position": 3,
                     "content": {
-                      "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente."
+                      "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente.",
+                      "sourceKeys": ["cncdp-code-deontologie-2021"]
                     }
                   },
                   {
                     "type": "rich_text",
                     "position": 4,
                     "content": {
-                      "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation."
+                      "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation.",
+                      "sourceKeys": ["cncdp-code-deontologie-2021"]
                     }
                   },
                   {
                     "type": "callout",
                     "position": 5,
                     "content": {
-                      "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte."
+                      "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte.",
+                      "sourceKeys": [
+                        "legifrance-titre-psychologue-article-44",
+                        "cncdp-code-deontologie-2021"
+                      ]
                     }
                   }
                 ],

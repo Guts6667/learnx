@@ -8,6 +8,7 @@ import {
   ProgramsPage,
   StagePage,
 } from '@/pages/CurriculumPages';
+import { ConceptAssessmentPage } from '@/pages/ConceptAssessmentPage';
 import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
@@ -16,12 +17,36 @@ import { QuizPage } from '@/pages/QuizPage';
 import { TodayPage } from '@/pages/TodayPage';
 
 interface RouteParams {
+  assessmentId?: string;
   lessonSlug?: string;
   moduleSlug?: string;
   path?: string;
   programSlug?: string;
   quizId?: string;
   stageSlug?: string;
+}
+
+function ConceptAssessmentRoute({
+  assessmentId,
+  lessonSlug,
+  path,
+  programSlug,
+}: RouteParams) {
+  void path;
+
+  if (!lessonSlug || !programSlug) {
+    return null;
+  }
+
+  return (
+    <ProtectedRoute>
+      <ConceptAssessmentPage
+        assessmentId={assessmentId}
+        lessonSlug={lessonSlug}
+        programSlug={programSlug}
+      />
+    </ProtectedRoute>
+  );
 }
 
 function LessonRoute({ lessonSlug, path, programSlug }: RouteParams) {
@@ -123,6 +148,7 @@ export function AppRoutes() {
         <ProgramRoute path="/program/:programSlug" />
         <StageRoute path="/program/:programSlug/stage/:stageSlug" />
         <ModuleRoute path="/program/:programSlug/module/:moduleSlug" />
+        <ConceptAssessmentRoute path="/program/:programSlug/lesson/:lessonSlug/assessment" />
         <QuizRoute path="/program/:programSlug/lesson/:lessonSlug/quiz" />
         <LessonRoute path="/program/:programSlug/lesson/:lessonSlug" />
         <ProtectedRoute path="/reviews">

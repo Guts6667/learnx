@@ -249,6 +249,40 @@ describe('sample program seed', () => {
         .flatMap((group) => group.assessmentBanks)
         .flatMap((bank) => bank.questions),
     ).toHaveLength(45);
+    const sourceLinks = lessons.flatMap((item) =>
+      item.contentBlocks.flatMap((block) => block.content.sourceKeys),
+    );
+
+    expect(sourceLinks).toHaveLength(14);
+    for (const item of lessons) {
+      const resourceKeys = new Set(
+        item.resources.map((resource) => resource.key),
+      );
+
+      expect(
+        item.contentBlocks.every((block) =>
+          block.content.sourceKeys.every((key) => resourceKeys.has(key)),
+        ),
+      ).toBe(true);
+    }
+  });
+
+  it('refuse une source de bloc absente des ressources de la leçon', async () => {
+    const sampleSeed = await readSampleSeed();
+    const lesson = sampleSeed.program.stages[0].modules[0].lessons[1];
+
+    lesson.contentBlocks[0].content.sourceKeys.push('source-inconnue');
+
+    await expect(
+      seedSampleProgram(
+        createRepository().repository,
+        'user-1',
+        sampleSeed.program,
+        sampleSeed.conceptAssessmentBanks,
+      ),
+    ).rejects.toThrow(
+      'Content blocks for "grands-domaines" reference unknown resources: source-inconnue.',
+    );
   });
 
   it('upserts the example program without duplicating its hierarchy', async () => {

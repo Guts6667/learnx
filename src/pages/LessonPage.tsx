@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import {
   type ContentBlockType,
   type LessonContentBlock,
+  type LessonConceptSummary,
   type LessonExerciseSummary,
   type LessonResource,
   type LessonQuizSummary,
@@ -85,12 +86,73 @@ function getSafeExternalUrl(url: string | null): string | null {
   }
 }
 
-function ContentBlock({ block }: { block: LessonContentBlock }) {
+function getSourceKeys(value: unknown): string[] {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return [];
+  }
+
+  const sourceKeys = (value as Record<string, unknown>).sourceKeys;
+
+  return Array.isArray(sourceKeys)
+    ? sourceKeys.filter((key): key is string => typeof key === 'string')
+    : [];
+}
+
+function BlockSources({ resources }: { resources: LessonResource[] }) {
+  if (resources.length === 0) {
+    return null;
+  }
+
+  return (
+    <footer class="border-t border-slate-700 pt-3">
+      <h4 class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
+        Sources de ce bloc
+      </h4>
+      <ul class="mt-2 space-y-2">
+        {resources.map((resource) => {
+          const url = getSafeExternalUrl(resource.url);
+
+          return (
+            <li class="text-sm leading-5 text-slate-400" key={resource.id}>
+              <span class="font-medium text-slate-300">{resource.title}</span>
+              {resource.author ? ` — ${resource.author}` : ''}
+              {resource.citation ? ` · ${resource.citation}` : ''}
+              {url ? (
+                <>
+                  {' · '}
+                  <a
+                    class="text-cyan-300 underline"
+                    href={url}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Voir la source
+                  </a>
+                </>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
+    </footer>
+  );
+}
+
+function ContentBlock({
+  block,
+  resourcesByKey,
+}: {
+  block: LessonContentBlock;
+  resourcesByKey: Map<string, LessonResource>;
+}) {
   if (block.type === 'DIVIDER') {
     return <hr aria-label="Séparation de contenu" class="border-slate-700" />;
   }
 
   const text = getText(block.content);
+  const sourceResources = getSourceKeys(block.content)
+    .map((key) => resourcesByKey.get(key))
+    .filter((resource): resource is LessonResource => Boolean(resource));
 
   if (!text) {
     return null;
@@ -102,6 +164,7 @@ function ContentBlock({ block }: { block: LessonContentBlock }) {
         {contentBlockLabels[block.type]}
       </h3>
       <p class="whitespace-pre-line leading-7 text-slate-200">{text}</p>
+      <BlockSources resources={sourceResources} />
     </Card>
   );
 }
@@ -474,6 +537,74 @@ function QuizCard({
   );
 }
 
+function ConceptAssessmentsSection({
+  concepts,
+  isPublished,
+  lessonSlug,
+  programSlug,
+}: {
+  concepts: LessonConceptSummary[];
+  isPublished: boolean;
+  lessonSlug: string;
+  programSlug: string;
+}) {
+  return (
+    <section aria-labelledby="concepts-title" class="space-y-3">
+      <h2 class="text-xl font-semibold" id="concepts-title">
+        Notions à maîtriser
+      </h2>
+      {concepts.length === 0 ? (
+        <EmptyState
+          description="Les notions évaluées apparaîtront ici."
+          title="Aucune notion disponible"
+        />
+      ) : (
+        concepts.map((concept) => (
+          <Card class="space-y-3" key={concept.id}>
+            <div class="flex items-start justify-between gap-3">
+              <h3 class="font-semibold">{concept.title}</h3>
+              <Badge tone={concept.isRequired ? 'warning' : 'neutral'}>
+                {concept.isRequired ? 'Obligatoire' : 'Optionnelle'}
+              </Badge>
+            </div>
+            <p class="text-sm text-slate-400">
+              Seuil de maîtrise : {Math.round(concept.masteryThreshold)} %
+            </p>
+            {concept.assessments.length === 0 ? (
+              <p class="text-sm text-slate-400">
+                Aucune mini-évaluation disponible.
+              </p>
+            ) : (
+              <ul class="space-y-3">
+                {concept.assessments.map((assessment) => {
+                  const href = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}`;
+
+                  return (
+                    <li class="space-y-2" key={assessment.id}>
+                      <p class="text-sm text-slate-300">
+                        {assessment.title ?? `Évaluation — ${concept.title}`} ·{' '}
+                        {assessment.questionCount ?? 0} questions
+                      </p>
+                      <a
+                        class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950"
+                        href={href}
+                      >
+                        {isPublished
+                          ? 'Commencer la mini-évaluation'
+                          : 'Prévisualiser et passer la mini-évaluation'}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </Card>
+        ))
+      )}
+    </section>
+  );
+}
+
 function AssessmentsSection({
   exercises,
   isPublished,
@@ -569,6 +700,11 @@ export function LessonPage({
   }
 
   const objectives = getObjectives(lesson.objectives);
+  const resourcesByKey = new Map(
+    lesson.resources.flatMap((resource) =>
+      resource.key ? [[resource.key, resource] as const] : [],
+    ),
+  );
 
   return (
     <article aria-labelledby="lesson-title" class="space-y-8">
@@ -621,7 +757,11 @@ export function LessonPage({
           />
         ) : (
           lesson.contentBlocks.map((block) => (
-            <ContentBlock block={block} key={block.id} />
+            <ContentBlock
+              block={block}
+              key={block.id}
+              resourcesByKey={resourcesByKey}
+            />
           ))
         )}
       </section>
@@ -638,6 +778,13 @@ export function LessonPage({
           tasks={lesson.tasks}
         />
       )}
+
+      <ConceptAssessmentsSection
+        concepts={lesson.concepts}
+        isPublished={lesson.isPublished}
+        lessonSlug={lesson.slug}
+        programSlug={programSlug}
+      />
 
       <AssessmentsSection
         exercises={lesson.exercises}

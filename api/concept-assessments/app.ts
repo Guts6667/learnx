@@ -82,9 +82,10 @@ interface RecordAttemptInput {
 }
 
 export interface ConceptAssessmentRepository {
-  findPublishedAssessmentForUser(
+  findAssessmentForUser(
     assessmentId: string,
     userId: string,
+    preview: boolean,
   ): Promise<AssessmentReadModel | null>;
   listAttempts(
     assessmentId: string,
@@ -113,6 +114,10 @@ const submittedAnswerSchema = z.object({
 const attemptSchema = z.object({
   answers: z.array(submittedAnswerSchema).min(1).max(50),
 });
+
+function isPreviewRequest(url: string): boolean {
+  return new URL(url).searchParams.get('preview') === 'true';
+}
 
 function invalidRequest(): ApiError {
   return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
@@ -207,20 +212,22 @@ export function createPrismaRepository(
   client: PrismaClient,
 ): ConceptAssessmentRepository {
   return {
-    async findPublishedAssessmentForUser(assessmentId, userId) {
+    async findAssessmentForUser(assessmentId, userId, preview) {
       const assessment = await client.conceptAssessment.findFirst({
         where: {
           id: assessmentId,
           concept: {
             lesson: {
-              isPublished: true,
+              ...(preview ? {} : { isPublished: true }),
               module: {
-                isPublished: true,
+                ...(preview ? {} : { isPublished: true }),
                 stage: {
-                  isPublished: true,
+                  ...(preview ? {} : { isPublished: true }),
                   program: {
                     ownerId: userId,
-                    status: ProgramStatus.ACTIVE,
+                    status: preview
+                      ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
+                      : ProgramStatus.ACTIVE,
                   },
                 },
               },
@@ -411,13 +418,14 @@ export function createConceptAssessmentsApp(
 
   async function getAssessment(context: {
     get(key: 'user'): { id: string };
-    req: { param(name: string): string };
+    req: { param(name: string): string; url: string };
   }) {
     const assessmentId = assertIdentifier(context.req.param('assessmentId'));
     const repository = options.repository ?? (await getPrismaRepository());
-    const assessment = await repository.findPublishedAssessmentForUser(
+    const assessment = await repository.findAssessmentForUser(
       assessmentId,
       context.get('user').id,
+      isPreviewRequest(context.req.url),
     );
 
     if (!assessment) {
