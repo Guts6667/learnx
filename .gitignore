@@ -10,3 +10,4 @@ generated/
 .neon
 *.local
 .DS_Store
+.vercel
