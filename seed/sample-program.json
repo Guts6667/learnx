@@ -34,35 +34,53 @@
                     "type": "rich_text",
                     "position": 1,
                     "content": {
-                      "text": "La psychologie ne se limite ni à la psychothérapie ni à l’étude des troubles mentaux. Elle cherche à comprendre comment les êtres humains et, selon les questions étudiées, les autres animaux perçoivent, apprennent, mémorisent, ressentent, décident et agissent. Certaines recherches visent d’abord à produire des connaissances fondamentales ; d’autres utilisent ces connaissances dans la santé, l’éducation, le travail ou l’ergonomie."
+                      "text": "La psychologie ne se limite ni à la psychothérapie ni à l’étude des troubles mentaux. Elle cherche à comprendre comment les êtres humains et, selon les questions étudiées, les autres animaux perçoivent, apprennent, mémorisent, ressentent, décident et agissent. Certaines recherches visent d’abord à produire des connaissances fondamentales ; d’autres utilisent ces connaissances dans la santé, l’éducation, le travail ou l’ergonomie.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "apa-definition-psychology"
+                      ]
                     }
                   },
                   {
                     "type": "definition",
                     "position": 2,
                     "content": {
-                      "text": "La psychologie est l’étude scientifique des comportements et des processus mentaux. Un comportement est une activité qu’il est possible d’observer ou de mesurer. Un processus mental désigne notamment une perception, une pensée, une émotion, un souvenir ou une décision ; il n’est pas toujours directement observable, mais il peut être étudié à partir d’indicateurs définis à l’avance."
+                      "text": "La psychologie est l’étude scientifique des comportements et des processus mentaux. Un comportement est une activité qu’il est possible d’observer ou de mesurer. Un processus mental désigne notamment une perception, une pensée, une émotion, un souvenir ou une décision ; il n’est pas toujours directement observable, mais il peut être étudié à partir d’indicateurs définis à l’avance.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "openstax-psychology-2e-2-1",
+                        "apa-definition-psychology"
+                      ]
                     }
                   },
                   {
                     "type": "example",
                     "position": 3,
                     "content": {
-                      "text": "Dire qu’une personne « manque de motivation » reste trop vague pour constituer une observation scientifique. Une étude pourrait plutôt mesurer le temps qu’elle consacre à une tâche, le nombre d’essais qu’elle réalise après un échec et ses réponses à une échelle de motivation validée. La notion abstraite devient alors liée à des observations explicites, sans être réduite à une seule mesure."
+                      "text": "Dire qu’une personne « manque de motivation » reste trop vague pour constituer une observation scientifique. Une étude pourrait plutôt mesurer le temps qu’elle consacre à une tâche, le nombre d’essais qu’elle réalise après un échec et ses réponses à une échelle de motivation validée. La notion abstraite devient alors liée à des observations explicites, sans être réduite à une seule mesure.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-2-1",
+                        "openstax-psychology-2e-2-2"
+                      ]
                     }
                   },
                   {
                     "type": "rich_text",
                     "position": 4,
                     "content": {
-                      "text": "Le mot scientifique indique une méthode de travail : formuler une question précise, proposer une explication testable, recueillir des données de manière systématique et accepter que les conclusions soient corrigées par de nouvelles observations. Une étude isolée ne produit pas une vérité définitive. Les résultats gagnent en solidité lorsqu’ils sont examinés par d’autres chercheurs, reproduits et mis en relation avec l’ensemble des connaissances disponibles."
+                      "text": "Le mot scientifique indique une méthode de travail : formuler une question précise, proposer une explication testable, recueillir des données de manière systématique et accepter que les conclusions soient corrigées par de nouvelles observations. Une étude isolée ne produit pas une vérité définitive. Les résultats gagnent en solidité lorsqu’ils sont examinés par d’autres chercheurs, reproduits et mis en relation avec l’ensemble des connaissances disponibles.",
+                      "sourceKeys": ["openstax-psychology-2e-2-1"]
                     }
                   },
                   {
                     "type": "callout",
                     "position": 5,
                     "content": {
-                      "text": "À retenir : la psychologie étudie les comportements et les processus mentaux ; elle utilise des observations et des mesures ; elle ne consiste pas à lire dans les pensées ; une affirmation psychologique doit pouvoir être discutée à partir de données plutôt que de la seule intuition."
+                      "text": "À retenir : la psychologie étudie les comportements et les processus mentaux ; elle utilise des observations et des mesures ; elle ne consiste pas à lire dans les pensées ; une affirmation psychologique doit pouvoir être discutée à partir de données plutôt que de la seule intuition.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "openstax-psychology-2e-2-1"
+                      ]
                     }
                   }
                 ],
@@ -102,6 +120,26 @@
                     "isRequired": false,
                     "estimatedMinutes": 15,
                     "position": 3
+                  },
+                  {
+                    "key": "openstax-psychology-2e-2-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 2.1 Why Is Research Important?",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.1. OpenStax.",
+                    "isRequired": false,
+                    "position": 4
+                  },
+                  {
+                    "key": "openstax-psychology-2e-2-2",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 2.2 Approaches to Research",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax.",
+                    "isRequired": false,
+                    "position": 5
                   }
                 ],
                 "concepts": [

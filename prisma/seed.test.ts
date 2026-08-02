@@ -228,17 +228,26 @@ describe('sample program seed', () => {
       'Les métiers et l’éthique',
     ]);
     expect(lessons.every((item) => item.contentBlocks.length === 5)).toBe(true);
-    expect(lessons.every((item) => item.resources.length === 3)).toBe(true);
+    expect(lessons.map((item) => item.resources.length)).toEqual([5, 3, 3]);
     expect(lessons.every((item) => item.concepts.length === 3)).toBe(true);
     expect(lessons.every((item) => item.tasks.length === 3)).toBe(true);
     expect(lesson.resources.map((resource) => resource.key)).toEqual([
       'openstax-psychology-2e-1-1',
       'apa-definition-psychology',
       'yale-psyc110-lecture-1',
+      'openstax-psychology-2e-2-1',
+      'openstax-psychology-2e-2-2',
     ]);
     expect(
       lesson.resources.filter((resource) => resource.isRequired),
     ).toHaveLength(2);
+    expect(
+      lesson.resources
+        .filter((resource) =>
+          resource.key.startsWith('openstax-psychology-2e-2-'),
+        )
+        .every((resource) => !resource.isRequired),
+    ).toBe(true);
     expect(
       sampleSeed.conceptAssessmentBanks.flatMap(
         (group) => group.assessmentBanks,
@@ -253,15 +262,17 @@ describe('sample program seed', () => {
       item.contentBlocks.flatMap((block) => block.content.sourceKeys),
     );
 
-    expect(sourceLinks).toHaveLength(14);
+    expect(sourceLinks).toHaveLength(24);
     for (const item of lessons) {
       const resourceKeys = new Set(
         item.resources.map((resource) => resource.key),
       );
 
       expect(
-        item.contentBlocks.every((block) =>
-          block.content.sourceKeys.every((key) => resourceKeys.has(key)),
+        item.contentBlocks.every(
+          (block) =>
+            block.content.sourceKeys.length > 0 &&
+            block.content.sourceKeys.every((key) => resourceKeys.has(key)),
         ),
       ).toBe(true);
     }
@@ -333,7 +344,7 @@ describe('sample program seed', () => {
       ),
     ).toBe(45);
     expect(contentBlocks).toHaveLength(15);
-    expect(resources).toHaveLength(9);
+    expect(resources).toHaveLength(11);
     expect(tasks).toHaveLength(9);
     expect(exercises).toHaveLength(9);
     expect(
