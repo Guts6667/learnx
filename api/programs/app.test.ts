@@ -39,6 +39,17 @@ function createClient(resourceOwnerId = ownerId) {
     id: 'lesson-1',
     isPublished: false,
     position: 1,
+    quizzes: [
+      {
+        _count: { questions: 4 },
+        description: 'Vérifier les acquis.',
+        id: 'quiz-1',
+        isRequired: true,
+        passingScore: 70,
+        position: 1,
+        title: 'Quiz de la leçon',
+      },
+    ],
     resources: [],
     slug: 'draft-lesson',
     summary: 'Draft summary',
@@ -147,7 +158,11 @@ describe('curriculum draft preview authorization', () => {
 
       expect(response.status).toBe(200);
       expect(await response.json()).toMatchObject({
-        lesson: { isPublished: false, title: 'Draft lesson' },
+        lesson: {
+          isPublished: false,
+          quizzes: [{ questionCount: 4, title: 'Quiz de la leçon' }],
+          title: 'Draft lesson',
+        },
       });
       expect(findMany).toHaveBeenCalledWith(
         expect.objectContaining({

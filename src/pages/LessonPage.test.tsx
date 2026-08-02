@@ -48,6 +48,7 @@ describe('LessonPage', () => {
             objectives: ['Comprendre la notion'],
             position: 1,
             prerequisites: [],
+            quizzes: [],
             resources: [
               {
                 author: 'Ada Lovelace',
@@ -84,7 +85,7 @@ describe('LessonPage', () => {
 
     render(
       <AppProviders>
-        <LessonPage lessonSlug="demarrer" />
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
       </AppProviders>,
     );
 
@@ -129,6 +130,17 @@ describe('LessonPage', () => {
               objectives: [],
               position: 1,
               prerequisites: [],
+              quizzes: [
+                {
+                  description: 'Vérifier les acquis.',
+                  id: 'quiz-1',
+                  isRequired: true,
+                  passingScore: 70,
+                  position: 1,
+                  questionCount: 4,
+                  title: 'Quiz de la leçon',
+                },
+              ],
               resources: [],
               slug: 'demarrer',
               summary: 'Les notions essentielles.',
@@ -185,7 +197,7 @@ describe('LessonPage', () => {
 
     render(
       <AppProviders>
-        <LessonPage lessonSlug="demarrer" />
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
       </AppProviders>,
     );
 
@@ -199,6 +211,12 @@ describe('LessonPage', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/tasks/task-1',
       expect.objectContaining({ method: 'PATCH' }),
+    );
+    expect(
+      screen.getByRole('link', { name: 'Commencer le quiz' }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer/quiz?quizId=quiz-1',
     );
   });
 });

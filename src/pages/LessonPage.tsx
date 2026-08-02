@@ -8,6 +8,7 @@ import {
   type ContentBlockType,
   type LessonContentBlock,
   type LessonResource,
+  type LessonQuizSummary,
   type LessonTask,
   type ResourceProgressStatus,
   type TaskCompletionStatus,
@@ -423,23 +424,93 @@ function DraftLessonActivities({
   );
 }
 
-function AssessmentPlaceholders() {
+function QuizCard({
+  isPublished,
+  lessonSlug,
+  programSlug,
+  quiz,
+}: {
+  isPublished: boolean;
+  lessonSlug: string;
+  programSlug: string;
+  quiz: LessonQuizSummary;
+}) {
+  const href = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}/quiz?quizId=${encodeURIComponent(quiz.id)}`;
+
   return (
-    <section aria-labelledby="assessments-title" class="space-y-3">
-      <h2 class="text-xl font-semibold" id="assessments-title">
-        Évaluations
-      </h2>
-      <Card class="space-y-3">
-        <h3 class="font-semibold">Quiz</h3>
-        <p class="text-sm text-slate-300">Le quiz sera bientôt disponible.</p>
+    <Card class="space-y-3">
+      <div class="flex items-start justify-between gap-3">
+        <h3 class="font-semibold">{quiz.title}</h3>
+        <Badge tone={quiz.isRequired ? 'warning' : 'neutral'}>
+          {quiz.isRequired ? 'Obligatoire' : 'Optionnel'}
+        </Badge>
+      </div>
+      {quiz.description ? (
+        <p class="text-sm leading-6 text-slate-300">{quiz.description}</p>
+      ) : null}
+      <p class="text-sm text-slate-400">
+        {quiz.questionCount} questions · seuil : {Math.round(quiz.passingScore)}{' '}
+        %
+      </p>
+      {isPublished ? (
+        <a
+          class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950"
+          href={href}
+        >
+          Commencer le quiz
+        </a>
+      ) : (
         <button
           class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
           disabled
           type="button"
         >
-          Quiz indisponible
+          Quiz disponible après publication
         </button>
-      </Card>
+      )}
+    </Card>
+  );
+}
+
+function AssessmentsSection({
+  isPublished,
+  lessonSlug,
+  programSlug,
+  quizzes,
+}: {
+  isPublished: boolean;
+  lessonSlug: string;
+  programSlug: string;
+  quizzes: LessonQuizSummary[];
+}) {
+  return (
+    <section aria-labelledby="assessments-title" class="space-y-3">
+      <h2 class="text-xl font-semibold" id="assessments-title">
+        Évaluations
+      </h2>
+      {quizzes.length === 0 ? (
+        <Card class="space-y-3">
+          <h3 class="font-semibold">Quiz</h3>
+          <p class="text-sm text-slate-300">Aucun quiz n’est disponible.</p>
+          <button
+            class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
+            disabled
+            type="button"
+          >
+            Quiz indisponible
+          </button>
+        </Card>
+      ) : (
+        quizzes.map((quiz) => (
+          <QuizCard
+            isPublished={isPublished}
+            key={quiz.id}
+            lessonSlug={lessonSlug}
+            programSlug={programSlug}
+            quiz={quiz}
+          />
+        ))
+      )}
       <Card class="space-y-3">
         <h3 class="font-semibold">Exercice</h3>
         <p class="text-sm text-slate-300">
@@ -457,7 +528,13 @@ function AssessmentPlaceholders() {
   );
 }
 
-export function LessonPage({ lessonSlug }: { lessonSlug: string }) {
+export function LessonPage({
+  lessonSlug,
+  programSlug,
+}: {
+  lessonSlug: string;
+  programSlug: string;
+}) {
   const query = useLessonQuery(lessonSlug);
 
   if (query.isPending) {
@@ -550,7 +627,12 @@ export function LessonPage({ lessonSlug }: { lessonSlug: string }) {
         />
       )}
 
-      <AssessmentPlaceholders />
+      <AssessmentsSection
+        isPublished={lesson.isPublished}
+        lessonSlug={lesson.slug}
+        programSlug={programSlug}
+        quizzes={lesson.quizzes}
+      />
     </article>
   );
 }

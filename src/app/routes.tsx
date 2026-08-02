@@ -12,6 +12,7 @@ import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { QuizPage } from '@/pages/QuizPage';
 import { TodayPage } from '@/pages/TodayPage';
 
 interface RouteParams {
@@ -19,19 +20,38 @@ interface RouteParams {
   moduleSlug?: string;
   path?: string;
   programSlug?: string;
+  quizId?: string;
   stageSlug?: string;
 }
 
-function LessonRoute({ lessonSlug, path }: RouteParams) {
+function LessonRoute({ lessonSlug, path, programSlug }: RouteParams) {
   void path;
 
-  if (!lessonSlug) {
+  if (!lessonSlug || !programSlug) {
     return null;
   }
 
   return (
     <ProtectedRoute>
-      <LessonPage lessonSlug={lessonSlug} />
+      <LessonPage lessonSlug={lessonSlug} programSlug={programSlug} />
+    </ProtectedRoute>
+  );
+}
+
+function QuizRoute({ lessonSlug, path, programSlug, quizId }: RouteParams) {
+  void path;
+
+  if (!lessonSlug || !programSlug) {
+    return null;
+  }
+
+  return (
+    <ProtectedRoute>
+      <QuizPage
+        lessonSlug={lessonSlug}
+        programSlug={programSlug}
+        quizId={quizId}
+      />
     </ProtectedRoute>
   );
 }
@@ -103,9 +123,7 @@ export function AppRoutes() {
         <ProgramRoute path="/program/:programSlug" />
         <StageRoute path="/program/:programSlug/stage/:stageSlug" />
         <ModuleRoute path="/program/:programSlug/module/:moduleSlug" />
-        <ProtectedRoute path="/program/:programSlug/lesson/:lessonSlug/quiz">
-          <PlaceholderPage title="Quiz" />
-        </ProtectedRoute>
+        <QuizRoute path="/program/:programSlug/lesson/:lessonSlug/quiz" />
         <LessonRoute path="/program/:programSlug/lesson/:lessonSlug" />
         <ProtectedRoute path="/reviews">
           <PlaceholderPage title="Révisions" />

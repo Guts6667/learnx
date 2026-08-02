@@ -286,6 +286,18 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           },
         },
         contentBlocks: { orderBy: { position: 'asc' } },
+        quizzes: {
+          orderBy: { position: 'asc' },
+          select: {
+            _count: { select: { questions: true } },
+            description: true,
+            id: true,
+            isRequired: true,
+            passingScore: true,
+            position: true,
+            title: true,
+          },
+        },
         resources: { orderBy: { position: 'asc' } },
         tasks: { orderBy: { position: 'asc' } },
       },
@@ -299,7 +311,17 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       throw ambiguousResource();
     }
 
-    return context.json({ lesson: lessons[0] });
+    const lesson = lessons[0];
+
+    return context.json({
+      lesson: {
+        ...lesson,
+        quizzes: lesson.quizzes.map(({ _count, ...quiz }) => ({
+          ...quiz,
+          questionCount: _count.questions,
+        })),
+      },
+    });
   });
 
   return app;
