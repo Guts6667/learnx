@@ -36,6 +36,7 @@ describe('CurriculumPages', () => {
                 id: 'program-1',
                 slug: 'bases',
                 stages: [],
+                status: 'ACTIVE',
                 title: 'Les bases',
               },
             ],
@@ -61,7 +62,7 @@ describe('CurriculumPages', () => {
 
   it('relie le programme, l’étape et le module à leurs contenus', async () => {
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/programs/bases') {
+      if (path === '/api/programs/bases?preview=true') {
         return Promise.resolve(
           jsonResponse({
             program: {
@@ -71,27 +72,31 @@ describe('CurriculumPages', () => {
               stages: [
                 {
                   id: 'stage-1',
+                  isPublished: false,
                   modules: [],
                   position: 1,
                   slug: 'introduction',
                   title: 'Introduction',
                 },
               ],
+              status: 'ACTIVE',
               title: 'Les bases',
             },
           }),
         );
       }
 
-      if (path === '/api/programs/bases/stages/introduction') {
+      if (path === '/api/programs/bases/stages/introduction?preview=true') {
         return Promise.resolve(
           jsonResponse({
             stage: {
               estimatedDurationDays: null,
               id: 'stage-1',
+              isPublished: false,
               modules: [
                 {
                   id: 'module-1',
+                  isPublished: false,
                   lessons: [],
                   position: 1,
                   slug: 'premiers-pas',
@@ -112,10 +117,12 @@ describe('CurriculumPages', () => {
             description: 'La première leçon.',
             estimatedMinutes: 20,
             id: 'module-1',
+            isPublished: false,
             lessons: [
               {
                 estimatedMinutes: 10,
                 id: 'lesson-1',
+                isPublished: false,
                 position: 1,
                 slug: 'demarrer',
                 summary: 'Les notions essentielles.',
@@ -135,6 +142,7 @@ describe('CurriculumPages', () => {
     expect(
       await screen.findByRole('link', { name: 'Ouvrir l’étape' }),
     ).toHaveAttribute('href', '/program/bases/stage/introduction');
+    expect(screen.getByText('Brouillon')).toBeInTheDocument();
 
     programView.unmount();
     const stageView = renderPage(
@@ -143,11 +151,13 @@ describe('CurriculumPages', () => {
     expect(
       await screen.findByRole('link', { name: 'Ouvrir le module' }),
     ).toHaveAttribute('href', '/program/bases/module/premiers-pas');
+    expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
 
     stageView.unmount();
     renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);
     expect(
       await screen.findByRole('heading', { level: 2, name: 'Démarrer' }),
     ).toBeInTheDocument();
+    expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
   });
 });

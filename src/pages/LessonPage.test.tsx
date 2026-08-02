@@ -15,73 +15,72 @@ describe('LessonPage', () => {
   });
 
   it('affiche le contenu, les ressources, les tâches et les évaluations', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn((path: string) => {
-        if (path === '/api/lessons/lesson-1/progress') {
-          return Promise.resolve(
-            jsonResponse({
-              lessonProgress: {
-                completedAt: null,
-                percent: 0,
-                startedAt: null,
-                status: 'AVAILABLE',
-              },
-              resourceProgress: {},
-              taskCompletions: {},
-            }),
-          );
-        }
-
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/lessons/lesson-1/progress') {
         return Promise.resolve(
           jsonResponse({
-            lesson: {
-              contentBlocks: [
-                {
-                  content: { text: 'Le contenu pédagogique.' },
-                  id: 'block-1',
-                  position: 1,
-                  type: 'RICH_TEXT',
-                },
-              ],
-              estimatedMinutes: 15,
-              id: 'lesson-1',
-              objectives: ['Comprendre la notion'],
-              position: 1,
-              prerequisites: [],
-              resources: [
-                {
-                  author: 'Ada Lovelace',
-                  citation: null,
-                  description: 'Une lecture complémentaire.',
-                  estimatedMinutes: 5,
-                  id: 'resource-1',
-                  isRequired: true,
-                  position: 1,
-                  title: 'Article de référence',
-                  type: 'ARTICLE',
-                  url: 'https://example.com/article',
-                },
-              ],
-              slug: 'demarrer',
-              summary: 'Les notions essentielles.',
-              tasks: [
-                {
-                  description: 'Écrire une synthèse courte.',
-                  id: 'task-1',
-                  isRequired: true,
-                  position: 1,
-                  title: 'Synthétiser',
-                  type: 'WRITING',
-                  weight: 1,
-                },
-              ],
-              title: 'Démarrer',
+            lessonProgress: {
+              completedAt: null,
+              percent: 0,
+              startedAt: null,
+              status: 'AVAILABLE',
             },
+            resourceProgress: {},
+            taskCompletions: {},
           }),
         );
-      }),
-    );
+      }
+
+      return Promise.resolve(
+        jsonResponse({
+          lesson: {
+            contentBlocks: [
+              {
+                content: { text: 'Le contenu pédagogique.' },
+                id: 'block-1',
+                position: 1,
+                type: 'RICH_TEXT',
+              },
+            ],
+            estimatedMinutes: 15,
+            id: 'lesson-1',
+            isPublished: false,
+            objectives: ['Comprendre la notion'],
+            position: 1,
+            prerequisites: [],
+            resources: [
+              {
+                author: 'Ada Lovelace',
+                citation: null,
+                description: 'Une lecture complémentaire.',
+                estimatedMinutes: 5,
+                id: 'resource-1',
+                isRequired: true,
+                position: 1,
+                title: 'Article de référence',
+                type: 'ARTICLE',
+                url: 'https://example.com/article',
+              },
+            ],
+            slug: 'demarrer',
+            summary: 'Les notions essentielles.',
+            tasks: [
+              {
+                description: 'Écrire une synthèse courte.',
+                id: 'task-1',
+                isRequired: true,
+                position: 1,
+                title: 'Synthétiser',
+                type: 'WRITING',
+                weight: 1,
+              },
+            ],
+            title: 'Démarrer',
+          },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
 
     render(
       <AppProviders>
@@ -98,6 +97,17 @@ describe('LessonPage', () => {
       await screen.findByRole('link', { name: 'Consulter la ressource' }),
     ).toHaveAttribute('href', 'https://example.com/article');
     expect(screen.getByText('Synthétiser')).toBeInTheDocument();
+    expect(screen.getByText('Brouillon')).toBeInTheDocument();
+    expect(
+      screen.getByText('Prévisualisation en lecture seule'),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Marquer comme terminée' }),
+    ).not.toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      '/api/lessons/lesson-1/progress',
+      expect.anything(),
+    );
     expect(
       screen.getByRole('button', { name: 'Quiz indisponible' }),
     ).toBeDisabled();
@@ -108,13 +118,14 @@ describe('LessonPage', () => {
 
   it('met à jour une tâche avec la mutation de progression', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/lessons/demarrer') {
+      if (path === '/api/lessons/demarrer?preview=true') {
         return Promise.resolve(
           jsonResponse({
             lesson: {
               contentBlocks: [],
               estimatedMinutes: null,
               id: 'lesson-1',
+              isPublished: true,
               objectives: [],
               position: 1,
               prerequisites: [],

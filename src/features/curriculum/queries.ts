@@ -9,7 +9,14 @@ export interface ProgramSummary {
   estimatedDurationDays: number | null;
   id: string;
   slug: string;
-  stages: Array<{ id: string; position: number; slug: string; title: string }>;
+  stages: Array<{
+    id: string;
+    isPublished: boolean;
+    position: number;
+    slug: string;
+    title: string;
+  }>;
+  status: 'ACTIVE' | 'DRAFT';
   timeline: TimelineSnapshot;
   title: string;
 }
@@ -36,6 +43,7 @@ export interface TimelineSnapshot {
 export interface LessonSummary {
   estimatedMinutes: number | null;
   id: string;
+  isPublished: boolean;
   position: number;
   slug: string;
   summary: string;
@@ -44,6 +52,7 @@ export interface LessonSummary {
 
 export interface ModuleSummary {
   id: string;
+  isPublished: boolean;
   lessons: LessonSummary[];
   position: number;
   slug: string;
@@ -52,6 +61,7 @@ export interface ModuleSummary {
 
 export interface StageSummary {
   id: string;
+  isPublished: boolean;
   modules: ModuleSummary[];
   position: number;
   slug: string;
@@ -181,36 +191,36 @@ function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
 
 export function useProgramsQuery() {
   return useCurriculumQuery<{ programs: ProgramSummary[] }>(
-    ['programs'],
-    '/api/programs',
+    ['programs', 'preview'],
+    '/api/programs?preview=true',
   );
 }
 
 export function useProgramQuery(programSlug: string) {
   return useCurriculumQuery<{ program: ProgramDetail }>(
-    ['program', programSlug],
-    `/api/programs/${encodeURIComponent(programSlug)}`,
+    ['program', programSlug, 'preview'],
+    `/api/programs/${encodeURIComponent(programSlug)}?preview=true`,
   );
 }
 
 export function useStageQuery(programSlug: string, stageSlug: string) {
   return useCurriculumQuery<{ stage: StageDetail }>(
-    ['stage', programSlug, stageSlug],
-    `/api/programs/${encodeURIComponent(programSlug)}/stages/${encodeURIComponent(stageSlug)}`,
+    ['stage', programSlug, stageSlug, 'preview'],
+    `/api/programs/${encodeURIComponent(programSlug)}/stages/${encodeURIComponent(stageSlug)}?preview=true`,
   );
 }
 
 export function useModuleQuery(moduleSlug: string) {
   return useCurriculumQuery<{ module: ModuleDetail }>(
-    ['module', moduleSlug],
-    `/api/modules/${encodeURIComponent(moduleSlug)}`,
+    ['module', moduleSlug, 'preview'],
+    `/api/modules/${encodeURIComponent(moduleSlug)}?preview=true`,
   );
 }
 
 export function useLessonQuery(lessonSlug: string) {
   return useCurriculumQuery<{ lesson: LessonDetail }>(
-    ['lesson', lessonSlug],
-    `/api/lessons/${encodeURIComponent(lessonSlug)}`,
+    ['lesson', lessonSlug, 'preview'],
+    `/api/lessons/${encodeURIComponent(lessonSlug)}?preview=true`,
   );
 }
 

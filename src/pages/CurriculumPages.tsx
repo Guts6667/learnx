@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -24,6 +25,10 @@ function getQueryState(error: unknown, isPending: boolean) {
 
 function ProgressPlaceholder() {
   return <ProgressBar label="Progression — bientôt disponible" value={0} />;
+}
+
+function DraftBadge() {
+  return <Badge tone="warning">Brouillon</Badge>;
 }
 
 export function ProgramsPage() {
@@ -58,7 +63,10 @@ export function ProgramsPage() {
       {programs.map((program) => (
         <Card key={program.id} class="space-y-4">
           <div>
-            <h2 class="text-xl font-semibold">{program.title}</h2>
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 class="text-xl font-semibold">{program.title}</h2>
+              {program.status === 'DRAFT' ? <DraftBadge /> : null}
+            </div>
             <p class="mt-2 text-sm leading-6 text-slate-300">
               {program.description}
             </p>
@@ -101,9 +109,12 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Programme
         </p>
-        <h1 id="program-title" class="mt-3 text-3xl font-bold tracking-tight">
-          {program.title}
-        </h1>
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <h1 id="program-title" class="text-3xl font-bold tracking-tight">
+            {program.title}
+          </h1>
+          {program.status === 'DRAFT' ? <DraftBadge /> : null}
+        </div>
         <p class="mt-3 text-slate-300">{program.description}</p>
       </div>
       <ProgressPlaceholder />
@@ -116,7 +127,10 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         <div class="space-y-3">
           {program.stages.map((stage) => (
             <Card key={stage.id}>
-              <h2 class="text-lg font-semibold">{stage.title}</h2>
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="text-lg font-semibold">{stage.title}</h2>
+                {stage.isPublished ? null : <DraftBadge />}
+              </div>
               <a
                 class="mt-3 inline-flex min-h-11 items-center text-cyan-300 underline"
                 href={`/program/${program.slug}/stage/${stage.slug}`}
@@ -162,9 +176,12 @@ export function StagePage({
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Étape
         </p>
-        <h1 id="stage-title" class="mt-3 text-3xl font-bold tracking-tight">
-          {stage.title}
-        </h1>
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <h1 id="stage-title" class="text-3xl font-bold tracking-tight">
+            {stage.title}
+          </h1>
+          {stage.isPublished ? null : <DraftBadge />}
+        </div>
       </div>
       <ProgressPlaceholder />
       {stage.modules.length === 0 ? (
@@ -175,7 +192,10 @@ export function StagePage({
       ) : (
         stage.modules.map((module) => (
           <Card key={module.id}>
-            <h2 class="text-lg font-semibold">{module.title}</h2>
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 class="text-lg font-semibold">{module.title}</h2>
+              {module.isPublished ? null : <DraftBadge />}
+            </div>
             <a
               class="mt-3 inline-flex min-h-11 items-center text-cyan-300 underline"
               href={`/program/${programSlug}/module/${module.slug}`}
@@ -220,9 +240,12 @@ export function ModulePage({
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Module
         </p>
-        <h1 id="module-title" class="mt-3 text-3xl font-bold tracking-tight">
-          {module.title}
-        </h1>
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <h1 id="module-title" class="text-3xl font-bold tracking-tight">
+            {module.title}
+          </h1>
+          {module.isPublished ? null : <DraftBadge />}
+        </div>
         <p class="mt-3 text-slate-300">{module.description}</p>
       </div>
       <ProgressPlaceholder />
@@ -235,7 +258,10 @@ export function ModulePage({
         <div class="space-y-3">
           {module.lessons.map((lesson) => (
             <Card key={lesson.id}>
-              <h2 class="text-lg font-semibold">{lesson.title}</h2>
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="text-lg font-semibold">{lesson.title}</h2>
+                {lesson.isPublished ? null : <DraftBadge />}
+              </div>
               <p class="mt-2 text-sm text-slate-300">{lesson.summary}</p>
               <a
                 class="mt-3 inline-flex min-h-11 items-center text-cyan-300 underline"
