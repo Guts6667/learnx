@@ -1,17 +1,27 @@
 import {
   readSampleProgram,
+  readSampleSeed,
   seedSampleProgram,
   type SeedProgramRepository,
 } from './seed';
 
 function createRepository() {
-  const assessments = new Map<string, number>();
+  const assessments = new Map<string, string>();
+  const assessmentQuestions = new Map<
+    string,
+    Parameters<SeedProgramRepository['replaceConceptAssessmentQuestions']>[1]
+  >();
   const conceptResources = new Map<string, string[]>();
   const concepts = new Map<string, string>();
   const contentBlocks = new Map<string, string>();
+  const exercises = new Map<string, string>();
   const programs = new Map<string, string>();
   const stages = new Map<string, string>();
   const stageAssessments = new Map<string, string>();
+  const stageAssessmentInputs = new Map<
+    string,
+    Parameters<SeedProgramRepository['upsertStageAssessment']>[0]
+  >();
   const modules = new Map<string, string>();
   const lessons = new Map<string, string>();
   const resources = new Map<string, string>();
@@ -25,6 +35,20 @@ function createRepository() {
           !slugs.includes(key.split(':')[1])
         ) {
           concepts.delete(key);
+        }
+      }
+    },
+    async deleteConceptAssessmentsNotIn(conceptId, positions) {
+      for (const key of assessments.keys()) {
+        const [storedConceptId, position] = key.split(':');
+
+        if (
+          storedConceptId === conceptId &&
+          !positions.includes(Number(position))
+        ) {
+          const assessmentId = assessments.get(key);
+          assessments.delete(key);
+          if (assessmentId) assessmentQuestions.delete(assessmentId);
         }
       }
     },
@@ -62,8 +86,20 @@ function createRepository() {
         }
       }
     },
-    async replaceConceptAssessments(conceptId, inputs) {
-      assessments.set(conceptId, inputs.length);
+    async pruneExercises(lessonId, positions) {
+      for (const key of exercises.keys()) {
+        const [storedLessonId, position] = key.split(':');
+
+        if (
+          storedLessonId === lessonId &&
+          !positions.includes(Number(position))
+        ) {
+          exercises.delete(key);
+        }
+      }
+    },
+    async replaceConceptAssessmentQuestions(assessmentId, questions) {
+      assessmentQuestions.set(assessmentId, questions);
     },
     async replaceConceptResources(conceptId, resourceIds) {
       conceptResources.set(conceptId, resourceIds);
@@ -82,11 +118,25 @@ function createRepository() {
       concepts.set(key, id);
       return { id };
     },
+    async upsertConceptAssessment(input) {
+      const key = `${input.conceptId}:${input.position}`;
+      const id = assessments.get(key) ?? `assessment-${assessments.size + 1}`;
+
+      assessments.set(key, id);
+      return { id };
+    },
     async upsertLesson(input) {
       const key = `${input.moduleId}:${input.slug}`;
       const id = lessons.get(key) ?? `lesson-${lessons.size + 1}`;
 
       lessons.set(key, id);
+      return { id };
+    },
+    async upsertExercise(input) {
+      const key = `${input.lessonId}:${input.position}`;
+      const id = exercises.get(key) ?? `exercise-${exercises.size + 1}`;
+
+      exercises.set(key, id);
       return { id };
     },
     async upsertModule(input) {
@@ -124,6 +174,7 @@ function createRepository() {
         `stage-assessment-${stageAssessments.size + 1}`;
 
       stageAssessments.set(key, id);
+      stageAssessmentInputs.set(key, input);
       return { id };
     },
     async upsertTask(input) {
@@ -137,9 +188,11 @@ function createRepository() {
 
   return {
     assessments,
+    assessmentQuestions,
     conceptResources,
     concepts,
     contentBlocks,
+    exercises,
     lessons,
     modules,
     programs,
@@ -147,6 +200,7 @@ function createRepository() {
     resources,
     stages,
     stageAssessments,
+    stageAssessmentInputs,
     tasks,
   };
 }
@@ -162,31 +216,50 @@ describe('sample program seed', () => {
     );
   });
 
-  it('lit exactement le premier contenu pédagogique réel', async () => {
-    const sampleProgram = await readSampleProgram();
-    const lesson = sampleProgram.stages[0].modules[0].lessons[0];
+  it('lit les trois leçons et les neuf banques de la première étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const lessons = sampleSeed.program.stages[0].modules[0].lessons.slice(0, 3);
+    const lesson = lessons[0];
 
     expect(lesson.title).toBe('Définir la psychologie');
-    expect(lesson.contentBlocks).toHaveLength(5);
+    expect(lessons.map((item) => item.title)).toEqual([
+      'Définir la psychologie',
+      'Les grands domaines',
+      'Les métiers et l’éthique',
+    ]);
+    expect(lessons.every((item) => item.contentBlocks.length === 5)).toBe(true);
+    expect(lessons.every((item) => item.resources.length === 3)).toBe(true);
+    expect(lessons.every((item) => item.concepts.length === 3)).toBe(true);
+    expect(lessons.every((item) => item.tasks.length === 3)).toBe(true);
     expect(lesson.resources.map((resource) => resource.key)).toEqual([
       'openstax-psychology-2e-1-1',
       'apa-definition-psychology',
       'yale-psyc110-lecture-1',
     ]);
-    expect(lesson.tasks).toHaveLength(3);
-    expect(lesson.concepts).toHaveLength(3);
     expect(
       lesson.resources.filter((resource) => resource.isRequired),
     ).toHaveLength(2);
+    expect(
+      sampleSeed.conceptAssessmentBanks.flatMap(
+        (group) => group.assessmentBanks,
+      ),
+    ).toHaveLength(9);
+    expect(
+      sampleSeed.conceptAssessmentBanks
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(45);
   });
 
   it('upserts the example program without duplicating its hierarchy', async () => {
-    const sampleProgram = await readSampleProgram();
+    const sampleSeed = await readSampleSeed();
     const {
       assessments,
+      assessmentQuestions,
       conceptResources,
       concepts,
       contentBlocks,
+      exercises,
       lessons,
       modules,
       programs,
@@ -194,29 +267,52 @@ describe('sample program seed', () => {
       resources,
       stages,
       stageAssessments,
+      stageAssessmentInputs,
       tasks,
     } = createRepository();
 
-    await seedSampleProgram(repository, 'user-1', sampleProgram);
-    await seedSampleProgram(repository, 'user-1', sampleProgram);
+    await seedSampleProgram(
+      repository,
+      'user-1',
+      sampleSeed.program,
+      sampleSeed.conceptAssessmentBanks,
+    );
+    await seedSampleProgram(
+      repository,
+      'user-1',
+      sampleSeed.program,
+      sampleSeed.conceptAssessmentBanks,
+    );
 
     expect(programs).toHaveLength(1);
     expect(stages).toHaveLength(5);
     expect(stageAssessments).toHaveLength(5);
     expect(modules).toHaveLength(6);
     expect(lessons).toHaveLength(21);
-    expect(concepts).toHaveLength(23);
-    expect(assessments).toHaveLength(23);
-    expect([...assessments.values()].every((count) => count === 1)).toBe(true);
-    expect(contentBlocks).toHaveLength(5);
-    expect(resources).toHaveLength(3);
-    expect(tasks).toHaveLength(3);
+    expect(concepts).toHaveLength(27);
+    expect(assessments).toHaveLength(27);
+    expect(assessmentQuestions).toHaveLength(9);
+    expect(
+      [...assessmentQuestions.values()].reduce(
+        (total, questions) => total + questions.length,
+        0,
+      ),
+    ).toBe(45);
+    expect(contentBlocks).toHaveLength(15);
+    expect(resources).toHaveLength(9);
+    expect(tasks).toHaveLength(9);
+    expect(exercises).toHaveLength(9);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,
         0,
       ),
-    ).toBe(5);
+    ).toBe(
+      sampleSeed.program.stages[0].modules[0].lessons
+        .slice(0, 3)
+        .flatMap((item) => item.concepts)
+        .reduce((total, concept) => total + concept.resourceKeys.length, 0),
+    );
     const firstLessonId = lessons.get('module-1:definir-la-psychologie');
     const objectConceptId = concepts.get(`${firstLessonId}:objet-psychologie`);
     const behaviorConceptId = concepts.get(
@@ -242,6 +338,26 @@ describe('sample program seed', () => {
     expect(conceptResources.get(empiricalConceptId ?? '')).toEqual([
       openStaxId,
     ]);
+    const objectAssessmentId = assessments.get(`${objectConceptId}:1`);
+    const objectQuestions = assessmentQuestions.get(objectAssessmentId ?? '');
+
+    expect(objectQuestions).toHaveLength(5);
+    expect(objectQuestions?.[0]).toMatchObject({
+      explanation: expect.any(String),
+      options: expect.arrayContaining([
+        expect.objectContaining({ isCorrect: true }),
+      ]),
+    });
+    expect(exercises.has(`${firstLessonId}:1`)).toBe(true);
+    expect(exercises.has(`${firstLessonId}:2`)).toBe(true);
+    expect(exercises.has(`${firstLessonId}:3`)).toBe(true);
+    expect(stageAssessmentInputs.get('stage-1:1')).toMatchObject({
+      description: expect.stringContaining('projet d’intervention'),
+      instructions: expect.stringContaining('## Cas NovaWork'),
+      rubric: expect.arrayContaining([
+        expect.objectContaining({ criterion: 'Cadrage scientifique' }),
+      ]),
+    });
   });
 
   it('refuse une notion obligatoire sans activité de validation', async () => {

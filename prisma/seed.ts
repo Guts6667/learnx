@@ -10,6 +10,7 @@ import { assertRequiredConceptHasValidationActivity } from '../src/lib/concepts'
 
 import {
   ConceptAssessmentType,
+  ConceptQuestionType,
   ContentBlockType,
   ProgramStatus,
   ResourceType,
@@ -77,6 +78,17 @@ const stageAssessmentSchema = z.object({
   type: stageAssessmentTypeSchema,
   isRequired: z.boolean(),
   passingScore: z.number().min(0).max(100),
+  description: z.string().trim().min(1).optional(),
+  instructions: z.string().trim().min(1).optional(),
+  rubric: z
+    .array(
+      z.object({
+        criterion: z.string().trim().min(1),
+        weight: z.number().positive(),
+        requirements: z.array(z.string().trim().min(1)).min(1),
+      }),
+    )
+    .optional(),
 });
 const conceptSchema = z
   .object({
@@ -122,6 +134,38 @@ const taskSchema = z.object({
   position: z.number().int().positive(),
 });
 
+const conceptQuestionTypeSchema = z.enum([
+  'true_false',
+  'single_choice',
+  'multiple_choice',
+  'short_answer',
+]);
+const conceptAssessmentOptionSchema = z.object({
+  label: z.string().trim().min(1),
+  isCorrect: z.boolean(),
+  position: z.number().int().positive(),
+});
+const conceptAssessmentQuestionSchema = z.object({
+  type: conceptQuestionTypeSchema,
+  prompt: z.string().trim().min(1),
+  explanation: z.string().trim().min(1),
+  acceptedAnswers: z.array(z.string().trim().min(1)),
+  position: z.number().int().positive(),
+  options: z.array(conceptAssessmentOptionSchema),
+});
+const conceptAssessmentBankSchema = z.object({
+  conceptSlug: z.string().trim().min(1),
+  assessmentTitle: z.string().trim().min(1),
+  questions: z.array(conceptAssessmentQuestionSchema).min(1),
+});
+const conceptAssessmentBankGroupSchema = z.object({
+  programSlug: z.string().trim().min(1),
+  stageSlug: z.string().trim().min(1),
+  moduleSlug: z.string().trim().min(1),
+  lessonSlug: z.string().trim().min(1),
+  assessmentBanks: z.array(conceptAssessmentBankSchema).min(1),
+});
+
 const lessonSchema = z.object({
   title: z.string().trim().min(1),
   slug: z.string().trim().min(1),
@@ -162,26 +206,38 @@ const sampleProgramSchema = z.object({
     estimatedDurationDays: z.number().int().positive().optional(),
     stages: z.array(stageSchema),
   }),
+  conceptAssessmentBanks: z.array(conceptAssessmentBankGroupSchema).default([]),
 });
 
 export type SampleProgram = z.infer<typeof sampleProgramSchema>['program'];
+export type SampleSeed = z.infer<typeof sampleProgramSchema>;
 
 export interface SeedProgramRepository {
   deleteConceptsNotIn(lessonId: string, slugs: string[]): Promise<void>;
+  deleteConceptAssessmentsNotIn(
+    conceptId: string,
+    positions: number[],
+  ): Promise<void>;
   pruneEditorialContent(input: {
     contentBlockPositions: number[];
     lessonId: string;
     resourceKeys: string[];
     taskPositions: number[];
   }): Promise<void>;
-  replaceConceptAssessments(
-    conceptId: string,
-    assessments: Array<{
-      assessmentType: ConceptAssessmentType;
-      isRequired: boolean;
+  pruneExercises(lessonId: string, positions: number[]): Promise<void>;
+  replaceConceptAssessmentQuestions(
+    assessmentId: string,
+    questions: Array<{
+      acceptedAnswers: string[];
+      explanation: string;
+      options: Array<{
+        isCorrect: boolean;
+        label: string;
+        position: number;
+      }>;
       position: number;
-      questionCount: number;
-      title: string;
+      prompt: string;
+      type: ConceptQuestionType;
     }>,
   ): Promise<void>;
   replaceConceptResources(
@@ -203,6 +259,14 @@ export interface SeedProgramRepository {
     isRequired: boolean;
     masteryThreshold: number;
   }): Promise<{ id: string }>;
+  upsertConceptAssessment(input: {
+    assessmentType: ConceptAssessmentType;
+    conceptId: string;
+    isRequired: boolean;
+    position: number;
+    questionCount: number;
+    title: string;
+  }): Promise<{ id: string }>;
   upsertLesson(input: {
     moduleId: string;
     title: string;
@@ -212,6 +276,13 @@ export interface SeedProgramRepository {
     prerequisites: Prisma.InputJsonValue;
     estimatedMinutes?: number;
     position: number;
+  }): Promise<{ id: string }>;
+  upsertExercise(input: {
+    instructions: string;
+    isRequired: boolean;
+    lessonId: string;
+    position: number;
+    title: string;
   }): Promise<{ id: string }>;
   upsertModule(input: {
     stageId: string;
@@ -254,6 +325,9 @@ export interface SeedProgramRepository {
     stageId: string;
     title: string;
     type: StageAssessmentType;
+    description?: string;
+    instructions?: string;
+    rubric?: Prisma.InputJsonValue;
     isRequired: boolean;
     passingScore: number;
     position: number;
@@ -278,6 +352,17 @@ function toConceptAssessmentType(
     practice: ConceptAssessmentType.PRACTICE,
     quiz: ConceptAssessmentType.QUIZ,
     short_answer: ConceptAssessmentType.SHORT_ANSWER,
+  }[type];
+}
+
+function toConceptQuestionType(
+  type: z.infer<typeof conceptQuestionTypeSchema>,
+): ConceptQuestionType {
+  return {
+    multiple_choice: ConceptQuestionType.MULTIPLE_CHOICE,
+    short_answer: ConceptQuestionType.SHORT_ANSWER,
+    single_choice: ConceptQuestionType.SINGLE_CHOICE,
+    true_false: ConceptQuestionType.TRUE_FALSE,
   }[type];
 }
 
@@ -375,18 +460,47 @@ function getModuleDescription(module: z.infer<typeof moduleSchema>): string {
   return `Module consacré à ${module.title}.`;
 }
 
-export async function readSampleProgram(): Promise<SampleProgram> {
+export async function readSampleSeed(): Promise<SampleSeed> {
   const sourcePath = resolve(process.cwd(), 'seed/sample-program.json');
   const source = await readFile(sourcePath, 'utf8');
 
-  return sampleProgramSchema.parse(JSON.parse(source) as unknown).program;
+  return sampleProgramSchema.parse(JSON.parse(source) as unknown);
+}
+
+export async function readSampleProgram(): Promise<SampleProgram> {
+  return (await readSampleSeed()).program;
 }
 
 export async function seedSampleProgram(
   repository: SeedProgramRepository,
   ownerId: string,
   sampleProgram: SampleProgram,
+  conceptAssessmentBankGroups: SampleSeed['conceptAssessmentBanks'] = [],
 ): Promise<void> {
+  const assessmentBanks = new Map<
+    string,
+    z.infer<typeof conceptAssessmentBankSchema>
+  >();
+
+  for (const group of conceptAssessmentBankGroups) {
+    for (const bank of group.assessmentBanks) {
+      const key = [
+        group.programSlug,
+        group.stageSlug,
+        group.moduleSlug,
+        group.lessonSlug,
+        bank.conceptSlug,
+      ].join(':');
+
+      if (assessmentBanks.has(key)) {
+        throw new Error(`Duplicate assessment bank for "${key}".`);
+      }
+
+      assessmentBanks.set(key, bank);
+    }
+  }
+
+  const importedAssessmentBanks = new Set<string>();
   const program = await repository.upsertProgram({
     ownerId,
     title: sampleProgram.title,
@@ -411,6 +525,9 @@ export async function seedSampleProgram(
       stageId: stage.id,
       title: stageData.assessment.title,
       type: toStageAssessmentType(stageData.assessment.type),
+      description: stageData.assessment.description,
+      instructions: stageData.assessment.instructions,
+      rubric: stageData.assessment.rubric,
       isRequired: stageData.assessment.isRequired,
       passingScore: stageData.assessment.passingScore,
       position: 1,
@@ -494,6 +611,23 @@ export async function seedSampleProgram(
           });
         }
 
+        if (lessonData.tasks.length > 0) {
+          await repository.pruneExercises(
+            lesson.id,
+            lessonData.tasks.map((task) => task.position),
+          );
+
+          for (const taskData of lessonData.tasks) {
+            await repository.upsertExercise({
+              instructions: taskData.description ?? taskData.title,
+              isRequired: taskData.isRequired,
+              lessonId: lesson.id,
+              position: taskData.position,
+              title: taskData.title,
+            });
+          }
+        }
+
         await repository.deleteConceptsNotIn(
           lesson.id,
           lessonData.concepts.map((concept) => concept.slug),
@@ -513,21 +647,57 @@ export async function seedSampleProgram(
             isRequired: conceptData.isRequired,
             masteryThreshold: conceptData.masteryThreshold,
           });
-          const assessments = conceptData.assessment
-            ? [
-                {
-                  assessmentType: toConceptAssessmentType(
-                    conceptData.assessment.type,
-                  ),
-                  isRequired: conceptData.isRequired,
-                  position: 1,
-                  questionCount: conceptData.assessment.questionCount,
-                  title: conceptData.assessment.title,
-                },
-              ]
-            : [];
+          await repository.deleteConceptAssessmentsNotIn(
+            concept.id,
+            conceptData.assessment ? [1] : [],
+          );
 
-          await repository.replaceConceptAssessments(concept.id, assessments);
+          if (conceptData.assessment) {
+            const assessment = await repository.upsertConceptAssessment({
+              assessmentType: toConceptAssessmentType(
+                conceptData.assessment.type,
+              ),
+              conceptId: concept.id,
+              isRequired: conceptData.isRequired,
+              position: 1,
+              questionCount: conceptData.assessment.questionCount,
+              title: conceptData.assessment.title,
+            });
+            const assessmentBankKey = [
+              sampleProgram.slug,
+              stageData.slug,
+              moduleData.slug,
+              lessonData.slug,
+              conceptData.slug,
+            ].join(':');
+            const assessmentBank = assessmentBanks.get(assessmentBankKey);
+
+            if (assessmentBank) {
+              if (
+                assessmentBank.assessmentTitle !==
+                  conceptData.assessment.title ||
+                assessmentBank.questions.length !==
+                  conceptData.assessment.questionCount
+              ) {
+                throw new Error(
+                  `Assessment bank does not match concept "${assessmentBankKey}".`,
+                );
+              }
+
+              await repository.replaceConceptAssessmentQuestions(
+                assessment.id,
+                assessmentBank.questions.map((question) => ({
+                  acceptedAnswers: question.acceptedAnswers,
+                  explanation: question.explanation,
+                  options: question.options,
+                  position: question.position,
+                  prompt: question.prompt,
+                  type: toConceptQuestionType(question.type),
+                })),
+              );
+              importedAssessmentBanks.add(assessmentBankKey);
+            }
+          }
           const resourceIds = conceptData.resourceKeys.map((resourceKey) => {
             const resourceId = resourceIdsByKey.get(resourceKey);
 
@@ -545,6 +715,16 @@ export async function seedSampleProgram(
       }
     }
   }
+
+  const unknownAssessmentBanks = [...assessmentBanks.keys()].filter(
+    (key) => !importedAssessmentBanks.has(key),
+  );
+
+  if (unknownAssessmentBanks.length > 0) {
+    throw new Error(
+      `Assessment banks target unknown concepts: ${unknownAssessmentBanks.join(', ')}.`,
+    );
+  }
 }
 
 function createSeedProgramRepository(
@@ -554,6 +734,14 @@ function createSeedProgramRepository(
     async deleteConceptsNotIn(lessonId, slugs) {
       await client.concept.deleteMany({
         where: { lessonId, slug: { notIn: slugs } },
+      });
+    },
+    async deleteConceptAssessmentsNotIn(conceptId, positions) {
+      await client.conceptAssessment.deleteMany({
+        where: {
+          conceptId,
+          ...(positions.length > 0 ? { position: { notIn: positions } } : {}),
+        },
       });
     },
     async pruneEditorialContent(input) {
@@ -578,21 +766,59 @@ function createSeedProgramRepository(
         }),
       ]);
     },
-    async replaceConceptAssessments(conceptId, assessments) {
-      if (assessments.length === 0) {
-        await client.conceptAssessment.deleteMany({ where: { conceptId } });
-        return;
-      }
+    async pruneExercises(lessonId, positions) {
+      await client.exercise.deleteMany({
+        where: {
+          lessonId,
+          ...(positions.length > 0 ? { position: { notIn: positions } } : {}),
+        },
+      });
+    },
+    async replaceConceptAssessmentQuestions(assessmentId, questions) {
+      await client.$transaction(async (transaction) => {
+        await transaction.conceptAssessmentQuestion.deleteMany({
+          where: {
+            assessmentId,
+            position: { notIn: questions.map((question) => question.position) },
+          },
+        });
 
-      await client.$transaction([
-        client.conceptAssessment.deleteMany({ where: { conceptId } }),
-        client.conceptAssessment.createMany({
-          data: assessments.map((assessment) => ({
-            conceptId,
-            ...assessment,
-          })),
-        }),
-      ]);
+        for (const question of questions) {
+          const { options, ...questionData } = question;
+          const storedQuestion =
+            await transaction.conceptAssessmentQuestion.upsert({
+              where: {
+                assessmentId_position: {
+                  assessmentId,
+                  position: question.position,
+                },
+              },
+              create: { ...questionData, assessmentId },
+              update: questionData,
+              select: { id: true },
+            });
+
+          await transaction.conceptAssessmentOption.deleteMany({
+            where: {
+              questionId: storedQuestion.id,
+              position: { notIn: options.map((option) => option.position) },
+            },
+          });
+
+          for (const option of options) {
+            await transaction.conceptAssessmentOption.upsert({
+              where: {
+                questionId_position: {
+                  position: option.position,
+                  questionId: storedQuestion.id,
+                },
+              },
+              create: { ...option, questionId: storedQuestion.id },
+              update: option,
+            });
+          }
+        }
+      });
     },
     async replaceConceptResources(conceptId, resourceIds) {
       if (resourceIds.length === 0) {
@@ -625,12 +851,52 @@ function createSeedProgramRepository(
         update: data,
       });
     },
+    async upsertConceptAssessment(input) {
+      const existing = await client.conceptAssessment.findFirst({
+        where: { conceptId: input.conceptId, position: input.position },
+        orderBy: { id: 'asc' },
+        select: { id: true },
+      });
+
+      if (!existing) {
+        return client.conceptAssessment.create({
+          data: input,
+          select: { id: true },
+        });
+      }
+
+      const [, assessment] = await client.$transaction([
+        client.conceptAssessment.deleteMany({
+          where: {
+            conceptId: input.conceptId,
+            id: { not: existing.id },
+            position: input.position,
+          },
+        }),
+        client.conceptAssessment.update({
+          where: { id: existing.id },
+          data: input,
+          select: { id: true },
+        }),
+      ]);
+
+      return assessment;
+    },
     async upsertLesson(input) {
       const { moduleId, slug, ...data } = input;
 
       return client.lesson.upsert({
         where: { moduleId_slug: { moduleId, slug } },
         create: { moduleId, slug, ...data },
+        update: data,
+      });
+    },
+    async upsertExercise(input) {
+      const { lessonId, position, ...data } = input;
+
+      return client.exercise.upsert({
+        where: { lessonId_position: { lessonId, position } },
+        create: { lessonId, position, ...data },
         update: data,
       });
     },
@@ -716,10 +982,13 @@ async function main() {
       );
     }
 
+    const sampleSeed = await readSampleSeed();
+
     await seedSampleProgram(
       createSeedProgramRepository(prisma),
       owner.id,
-      await readSampleProgram(),
+      sampleSeed.program,
+      sampleSeed.conceptAssessmentBanks,
     );
 
     console.info('Sample program seeded successfully.');
