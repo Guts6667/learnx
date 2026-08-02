@@ -1,21 +1,20 @@
 import { createMiddleware } from 'hono/factory';
 import { deleteCookie, setCookie } from 'hono/cookie';
 
-import { ApiError, toApiErrorBody } from './errors';
-import { verifyPassword, hashPassword } from './password';
-import { prismaAuthRepository } from './auth-repository';
+import { ApiError, toApiErrorBody } from './errors.js';
+import { prismaAuthRepository } from './auth-repository.js';
 import {
   createSessionToken,
   getSessionExpiry,
   hashSessionToken,
   SESSION_COOKIE_NAME,
   SESSION_DURATION_MS,
-} from './session';
+} from './session.js';
 import type {
   AuthRepository,
   AuthenticatedUser,
   StoredUser,
-} from './auth-types';
+} from './auth-types.js';
 
 export interface AuthEnvironment {
   Variables: {
@@ -41,11 +40,19 @@ export interface AuthResult {
 const defaultDependencies: AuthDependencies = {
   createSessionToken,
   getSessionExpiry,
-  hashPassword,
+  hashPassword: async (password) => {
+    const { hashPassword } = await import('./password.js');
+
+    return hashPassword(password);
+  },
   hashSessionToken,
   now: () => new Date(),
   repository: prismaAuthRepository,
-  verifyPassword,
+  verifyPassword: async (passwordHash, password) => {
+    const { verifyPassword } = await import('./password.js');
+
+    return verifyPassword(passwordHash, password);
+  },
 };
 
 function toAuthenticatedUser(user: StoredUser): AuthenticatedUser {

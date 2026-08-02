@@ -1,4 +1,4 @@
-import { ApiError } from './errors';
+import { ApiError } from './errors.js';
 
 interface AttemptWindow {
   firstAttemptAt: number;

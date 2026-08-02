@@ -1,7 +1,7 @@
 import { PrismaNeon } from '@prisma/adapter-neon';
 
-import { PrismaClient } from '../../generated/prisma/client';
-import { getDatabaseUrl } from './database-url';
+import { PrismaClient } from '../../generated/prisma/client.js';
+import { getDatabaseUrl } from './database-url.js';
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;

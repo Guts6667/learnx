@@ -1,7 +1,7 @@
-import type { AuthRepository, StoredUser } from './auth-types';
+import type { AuthRepository, StoredUser } from './auth-types.js';
 
 async function getPrismaClient() {
-  const { prisma } = await import('../../src/server/prisma');
+  const { prisma } = await import('../../src/server/prisma.js');
 
   return prisma;
 }

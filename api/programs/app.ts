@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
 
-import { ProgramStatus } from '../../generated/prisma/client';
-import { requireUser, type AuthEnvironment } from '../_lib/auth';
-import { ApiError, toApiErrorBody } from '../_lib/errors';
+import { ProgramStatus } from '../../generated/prisma/client.js';
+import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 
 async function getPrismaClient() {
-  const { prisma } = await import('../../src/server/prisma');
+  const { prisma } = await import('../../src/server/prisma.js');
 
   return prisma;
 }

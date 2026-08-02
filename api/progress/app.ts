@@ -5,13 +5,13 @@ import {
   LessonProgressStatus,
   ResourceProgressStatus,
   TaskCompletionStatus,
-} from '../../generated/prisma/client';
-import { calculateProgress } from '../../src/lib/progress';
-import { requireUser, type AuthEnvironment } from '../_lib/auth';
-import { ApiError, toApiErrorBody } from '../_lib/errors';
+} from '../../generated/prisma/client.js';
+import { calculateProgress } from '../../src/lib/progress.js';
+import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 
 async function getPrismaClient() {
-  const { prisma } = await import('../../src/server/prisma');
+  const { prisma } = await import('../../src/server/prisma.js');
 
   return prisma;
 }

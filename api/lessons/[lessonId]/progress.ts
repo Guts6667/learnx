@@ -1,4 +1,4 @@
-import { progressApp } from '../../progress/app';
+import { progressApp } from '../../progress/app.js';
 
 export default async function lessonProgress(
   request: Request,

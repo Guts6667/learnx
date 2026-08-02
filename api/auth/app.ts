@@ -9,13 +9,13 @@ import {
   setSessionCookie,
   type AuthDependencies,
   type AuthEnvironment,
-} from '../_lib/auth';
-import { loginInputSchema, registerInputSchema } from '../_lib/auth-validation';
-import { ApiError, toApiErrorBody } from '../_lib/errors';
+} from '../_lib/auth.js';
+import { loginInputSchema, registerInputSchema } from '../_lib/auth-validation.js';
+import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   InMemoryLoginRateLimiter,
   type LoginRateLimiter,
-} from '../_lib/login-rate-limit';
+} from '../_lib/login-rate-limit.js';
 
 interface AuthAppOptions {
   dependencies?: AuthDependencies;
