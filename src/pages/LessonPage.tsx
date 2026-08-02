@@ -1,13 +1,18 @@
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Spinner } from '@/components/ui/Spinner';
 import {
   type ContentBlockType,
   type LessonContentBlock,
   type LessonResource,
   type LessonTask,
+  type ResourceProgressStatus,
+  type TaskCompletionStatus,
   useLessonQuery,
+  useLessonProgressMutation,
+  useLessonProgressQuery,
 } from '@/features/curriculum/queries';
 
 const contentBlockLabels: Record<ContentBlockType, string> = {
@@ -97,7 +102,17 @@ function ContentBlock({ block }: { block: LessonContentBlock }) {
   );
 }
 
-function ResourceCard({ resource }: { resource: LessonResource }) {
+function ResourceCard({
+  isPending,
+  onProgressChange,
+  progressStatus,
+  resource,
+}: {
+  isPending: boolean;
+  onProgressChange: (status: ResourceProgressStatus) => Promise<void>;
+  progressStatus: ResourceProgressStatus;
+  resource: LessonResource;
+}) {
   const url = getSafeExternalUrl(resource.url);
   const duration = formatDuration(resource.estimatedMinutes);
 
@@ -130,11 +145,31 @@ function ResourceCard({ resource }: { resource: LessonResource }) {
           Consulter la ressource
         </a>
       ) : null}
+      <button
+        class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+        disabled={isPending || progressStatus === 'COMPLETED'}
+        onClick={() => void onProgressChange('COMPLETED')}
+        type="button"
+      >
+        {progressStatus === 'COMPLETED'
+          ? 'Ressource consultée'
+          : 'Marquer comme consultée'}
+      </button>
     </Card>
   );
 }
 
-function TaskCard({ task }: { task: LessonTask }) {
+function TaskCard({
+  isPending,
+  onStatusChange,
+  status,
+  task,
+}: {
+  isPending: boolean;
+  onStatusChange: (status: TaskCompletionStatus) => Promise<void>;
+  status: TaskCompletionStatus;
+  task: LessonTask;
+}) {
   return (
     <Card class="space-y-2">
       <div class="flex items-start justify-between gap-3">
@@ -147,7 +182,171 @@ function TaskCard({ task }: { task: LessonTask }) {
       {task.description ? (
         <p class="text-sm leading-6 text-slate-300">{task.description}</p>
       ) : null}
+      <button
+        class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+        disabled={isPending}
+        onClick={() => void onStatusChange(status === 'DONE' ? 'TODO' : 'DONE')}
+        type="button"
+      >
+        {status === 'DONE' ? 'Marquer comme à faire' : 'Marquer comme terminée'}
+      </button>
     </Card>
+  );
+}
+
+function LessonActivityProgress({
+  lessonId,
+  resources,
+  tasks,
+}: {
+  lessonId: string;
+  resources: LessonResource[];
+  tasks: LessonTask[];
+}) {
+  const query = useLessonProgressQuery(lessonId);
+  const mutation = useLessonProgressMutation(lessonId);
+  const progress = query.data;
+  const percent = progress?.lessonProgress.percent ?? 0;
+  const canComplete = progress?.canComplete ?? false;
+  const lessonStatus = progress?.lessonProgress.status ?? 'AVAILABLE';
+
+  async function updateTask(taskId: string, status: TaskCompletionStatus) {
+    await mutation.mutateAsync(
+      `/api/tasks/${encodeURIComponent(taskId)}`,
+      'PATCH',
+      {
+        status,
+      },
+    );
+  }
+
+  async function updateResource(
+    resourceId: string,
+    status: ResourceProgressStatus,
+  ) {
+    await mutation.mutateAsync(
+      `/api/resources/${encodeURIComponent(resourceId)}/progress`,
+      'PATCH',
+      { status },
+    );
+  }
+
+  async function startLesson() {
+    await mutation.mutateAsync(
+      `/api/lessons/${encodeURIComponent(lessonId)}/start`,
+      'POST',
+    );
+  }
+
+  async function completeLesson() {
+    await mutation.mutateAsync(
+      `/api/lessons/${encodeURIComponent(lessonId)}/complete`,
+      'POST',
+    );
+  }
+
+  if (query.isPending) {
+    return <Spinner label="Chargement de la progression" size="sm" />;
+  }
+
+  if (query.error || mutation.error) {
+    return (
+      <ErrorState description="La progression n’a pas pu être mise à jour." />
+    );
+  }
+
+  return (
+    <>
+      <section aria-labelledby="lesson-progress-title" class="space-y-3">
+        <h2 class="text-xl font-semibold" id="lesson-progress-title">
+          Progression
+        </h2>
+        <Card class="space-y-4">
+          <ProgressBar label="Progression de la leçon" value={percent} />
+          <p class="text-sm text-slate-300">
+            Statut :{' '}
+            {lessonStatus === 'COMPLETED'
+              ? 'Terminée'
+              : lessonStatus === 'IN_PROGRESS'
+                ? 'En cours'
+                : 'À commencer'}
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <button
+              class="min-h-11 rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={mutation.isPending || lessonStatus !== 'AVAILABLE'}
+              onClick={() => void startLesson()}
+              type="button"
+            >
+              Commencer la leçon
+            </button>
+            <button
+              class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={
+                mutation.isPending ||
+                lessonStatus === 'COMPLETED' ||
+                !canComplete
+              }
+              onClick={() => void completeLesson()}
+              type="button"
+            >
+              Terminer la leçon
+            </button>
+          </div>
+          {!canComplete ? (
+            <p class="text-sm text-slate-400">
+              Terminez les activités suivies pour pouvoir terminer la leçon.
+            </p>
+          ) : null}
+        </Card>
+      </section>
+
+      <section aria-labelledby="resources-title" class="space-y-3">
+        <h2 class="text-xl font-semibold" id="resources-title">
+          Ressources
+        </h2>
+        {resources.length === 0 ? (
+          <EmptyState
+            description="Les ressources associées apparaîtront ici."
+            title="Aucune ressource disponible"
+          />
+        ) : (
+          resources.map((resource) => (
+            <ResourceCard
+              isPending={mutation.isPending}
+              key={resource.id}
+              onProgressChange={(status) => updateResource(resource.id, status)}
+              progressStatus={
+                progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'
+              }
+              resource={resource}
+            />
+          ))
+        )}
+      </section>
+
+      <section aria-labelledby="tasks-title" class="space-y-3">
+        <h2 class="text-xl font-semibold" id="tasks-title">
+          Tâches
+        </h2>
+        {tasks.length === 0 ? (
+          <EmptyState
+            description="Les tâches associées apparaîtront ici."
+            title="Aucune tâche disponible"
+          />
+        ) : (
+          tasks.map((task) => (
+            <TaskCard
+              isPending={mutation.isPending}
+              key={task.id}
+              onStatusChange={(status) => updateTask(task.id, status)}
+              status={progress?.taskCompletions[task.id] ?? 'TODO'}
+              task={task}
+            />
+          ))
+        )}
+      </section>
+    </>
   );
 }
 
@@ -262,37 +461,13 @@ export function LessonPage({ lessonSlug }: { lessonSlug: string }) {
         )}
       </section>
 
-      <section aria-labelledby="resources-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="resources-title">
-          Ressources
-        </h2>
-        {lesson.resources.length === 0 ? (
-          <EmptyState
-            description="Les ressources associées apparaîtront ici."
-            title="Aucune ressource disponible"
-          />
-        ) : (
-          lesson.resources.map((resource) => (
-            <ResourceCard key={resource.id} resource={resource} />
-          ))
-        )}
-      </section>
+      <LessonActivityProgress
+        lessonId={lesson.id}
+        resources={lesson.resources}
+        tasks={lesson.tasks}
+      />
 
       <AssessmentPlaceholders />
-
-      <section aria-labelledby="tasks-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="tasks-title">
-          Tâches
-        </h2>
-        {lesson.tasks.length === 0 ? (
-          <EmptyState
-            description="Les tâches associées apparaîtront ici."
-            title="Aucune tâche disponible"
-          />
-        ) : (
-          lesson.tasks.map((task) => <TaskCard key={task.id} task={task} />)
-        )}
-      </section>
     </article>
   );
 }

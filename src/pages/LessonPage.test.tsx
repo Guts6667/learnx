@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/preact';
 
 import { AppProviders } from '@/app/providers';
 import { LessonPage } from '@/pages/LessonPage';
@@ -17,8 +17,23 @@ describe('LessonPage', () => {
   it('affiche le contenu, les ressources, les tâches et les évaluations', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() =>
-        Promise.resolve(
+      vi.fn((path: string) => {
+        if (path === '/api/lessons/lesson-1/progress') {
+          return Promise.resolve(
+            jsonResponse({
+              lessonProgress: {
+                completedAt: null,
+                percent: 0,
+                startedAt: null,
+                status: 'AVAILABLE',
+              },
+              resourceProgress: {},
+              taskCompletions: {},
+            }),
+          );
+        }
+
+        return Promise.resolve(
           jsonResponse({
             lesson: {
               contentBlocks: [
@@ -64,8 +79,8 @@ describe('LessonPage', () => {
               title: 'Démarrer',
             },
           }),
-        ),
-      ),
+        );
+      }),
     );
 
     render(
@@ -80,7 +95,7 @@ describe('LessonPage', () => {
     expect(screen.getByText('Comprendre la notion')).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Consulter la ressource' }),
+      await screen.findByRole('link', { name: 'Consulter la ressource' }),
     ).toHaveAttribute('href', 'https://example.com/article');
     expect(screen.getByText('Synthétiser')).toBeInTheDocument();
     expect(
@@ -89,5 +104,90 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('button', { name: 'Exercice indisponible' }),
     ).toBeDisabled();
+  });
+
+  it('met à jour une tâche avec la mutation de progression', async () => {
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/lessons/demarrer') {
+        return Promise.resolve(
+          jsonResponse({
+            lesson: {
+              contentBlocks: [],
+              estimatedMinutes: null,
+              id: 'lesson-1',
+              objectives: [],
+              position: 1,
+              prerequisites: [],
+              resources: [],
+              slug: 'demarrer',
+              summary: 'Les notions essentielles.',
+              tasks: [
+                {
+                  description: null,
+                  id: 'task-1',
+                  isRequired: true,
+                  position: 1,
+                  title: 'Synthétiser',
+                  type: 'WRITING',
+                  weight: 1,
+                },
+              ],
+              title: 'Démarrer',
+            },
+          }),
+        );
+      }
+
+      if (path === '/api/lessons/lesson-1/progress') {
+        return Promise.resolve(
+          jsonResponse({
+            lessonProgress: {
+              completedAt: null,
+              percent: 0,
+              startedAt: null,
+              status: 'AVAILABLE',
+            },
+            resourceProgress: {},
+            taskCompletions: {},
+          }),
+        );
+      }
+
+      expect(init).toMatchObject({
+        body: JSON.stringify({ status: 'DONE' }),
+        method: 'PATCH',
+      });
+      return Promise.resolve(
+        jsonResponse({
+          lessonProgress: {
+            completedAt: null,
+            percent: 100,
+            startedAt: '2026-08-02T00:00:00.000Z',
+            status: 'IN_PROGRESS',
+          },
+          resourceProgress: {},
+          taskCompletions: { 'task-1': 'DONE' },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Marquer comme terminée' }),
+    );
+
+    expect(
+      await screen.findByRole('button', { name: 'Marquer comme à faire' }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/tasks/task-1',
+      expect.objectContaining({ method: 'PATCH' }),
+    );
   });
 });

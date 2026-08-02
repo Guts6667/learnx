@@ -1,5 +1,5 @@
 import { QueryObserver } from '@tanstack/query-core';
-import { useEffect, useMemo, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
@@ -99,6 +99,23 @@ export interface LessonDetail extends LessonSummary {
   tasks: LessonTask[];
 }
 
+export type LessonProgressStatus =
+  'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'NEEDS_REVIEW';
+export type ResourceProgressStatus = 'COMPLETED' | 'NOT_STARTED' | 'STARTED';
+export type TaskCompletionStatus = 'DONE' | 'SKIPPED' | 'TODO';
+
+export interface LessonProgressResponse {
+  canComplete: boolean;
+  lessonProgress: {
+    completedAt: string | null;
+    percent: number;
+    startedAt: string | null;
+    status: LessonProgressStatus;
+  };
+  resourceProgress: Record<string, ResourceProgressStatus>;
+  taskCompletions: Record<string, TaskCompletionStatus>;
+}
+
 function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
   const queryClient = useAppQueryClient();
   const queryKeyHash = queryKey.join(':');
@@ -162,4 +179,47 @@ export function useLessonQuery(lessonSlug: string) {
     ['lesson', lessonSlug],
     `/api/lessons/${encodeURIComponent(lessonSlug)}`,
   );
+}
+
+export function useLessonProgressQuery(lessonId: string) {
+  return useCurriculumQuery<LessonProgressResponse>(
+    ['lesson-progress', lessonId],
+    `/api/lessons/${encodeURIComponent(lessonId)}/progress`,
+  );
+}
+
+export function useLessonProgressMutation(lessonId: string) {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+
+  const mutateAsync = useCallback(
+    async (
+      path: string,
+      method: 'PATCH' | 'POST',
+      body?: Record<string, string>,
+    ) => {
+      setError(undefined);
+      setIsPending(true);
+
+      try {
+        const response = await apiRequest<LessonProgressResponse>(path, {
+          body: body ? JSON.stringify(body) : undefined,
+          headers: body ? { 'content-type': 'application/json' } : undefined,
+          method,
+        });
+
+        queryClient.setQueryData(['lesson-progress', lessonId], response);
+        return response;
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [lessonId, queryClient],
+  );
+
+  return { error, isPending, mutateAsync };
 }

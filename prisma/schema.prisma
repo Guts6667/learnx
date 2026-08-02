@@ -62,28 +62,56 @@ enum TaskType {
   @@map("task_type")
 }
 
+enum LessonProgressStatus {
+  AVAILABLE    @map("available")
+  IN_PROGRESS  @map("in_progress")
+  COMPLETED    @map("completed")
+  NEEDS_REVIEW @map("needs_review")
+
+  @@map("lesson_progress_status")
+}
+
+enum TaskCompletionStatus {
+  TODO    @map("todo")
+  DONE    @map("done")
+  SKIPPED @map("skipped")
+
+  @@map("task_completion_status")
+}
+
+enum ResourceProgressStatus {
+  NOT_STARTED @map("not_started")
+  STARTED     @map("started")
+  COMPLETED   @map("completed")
+
+  @@map("resource_progress_status")
+}
+
 model User {
-  id           String    @id @default(uuid()) @db.Uuid
-  email        String    @unique
-  passwordHash String    @map("password_hash")
-  displayName  String    @map("display_name")
-  role         Role      @default(USER)
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  sessions     Session[]
-  programs     Program[]
+  id                 String             @id @default(uuid()) @db.Uuid
+  email              String             @unique
+  passwordHash       String             @map("password_hash")
+  displayName        String             @map("display_name")
+  role               Role               @default(USER)
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  sessions           Session[]
+  programs           Program[]
+  lessonProgresses   LessonProgress[]
+  taskCompletions    TaskCompletion[]
+  resourceProgresses ResourceProgress[]
 
   @@map("users")
 }
 
 model Session {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  tokenHash String   @unique @map("token_hash")
-  expiresAt DateTime @map("expires_at")
-  createdAt DateTime @default(now()) @map("created_at")
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  tokenHash  String   @unique @map("token_hash")
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
   lastUsedAt DateTime @default(now()) @map("last_used_at")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, expiresAt])
   @@map("sessions")
@@ -110,18 +138,18 @@ model Program {
 }
 
 model Stage {
-  id                    String    @id @default(uuid()) @db.Uuid
-  programId             String    @map("program_id") @db.Uuid
+  id                    String   @id @default(uuid()) @db.Uuid
+  programId             String   @map("program_id") @db.Uuid
   title                 String
   slug                  String
   description           String
-  position              Int       @default(0)
-  estimatedMinutes      Int?      @map("estimated_minutes")
-  estimatedDurationDays Int?      @map("estimated_duration_days")
-  isPublished           Boolean   @default(false) @map("is_published")
-  createdAt             DateTime  @default(now()) @map("created_at")
-  updatedAt             DateTime  @updatedAt @map("updated_at")
-  program               Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  position              Int      @default(0)
+  estimatedMinutes      Int?     @map("estimated_minutes")
+  estimatedDurationDays Int?     @map("estimated_duration_days")
+  isPublished           Boolean  @default(false) @map("is_published")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  program               Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
   modules               Module[]
 
   @@unique([programId, slug])
@@ -149,22 +177,23 @@ model Module {
 }
 
 model Lesson {
-  id               String         @id @default(uuid()) @db.Uuid
-  moduleId         String         @map("module_id") @db.Uuid
+  id               String           @id @default(uuid()) @db.Uuid
+  moduleId         String           @map("module_id") @db.Uuid
   title            String
   slug             String
   summary          String
-  objectives       Json           @map("objectives_json")
-  prerequisites    Json           @map("prerequisites_json")
-  estimatedMinutes Int?           @map("estimated_minutes")
-  position         Int            @default(0)
-  isPublished      Boolean        @default(false) @map("is_published")
-  createdAt        DateTime       @default(now()) @map("created_at")
-  updatedAt        DateTime       @updatedAt @map("updated_at")
-  module           Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  objectives       Json             @map("objectives_json")
+  prerequisites    Json             @map("prerequisites_json")
+  estimatedMinutes Int?             @map("estimated_minutes")
+  position         Int              @default(0)
+  isPublished      Boolean          @default(false) @map("is_published")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  module           Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   contentBlocks    ContentBlock[]
   resources        Resource[]
   tasks            Task[]
+  progress         LessonProgress[]
 
   @@unique([moduleId, slug])
   @@index([moduleId, position])
@@ -172,46 +201,93 @@ model Lesson {
 }
 
 model ContentBlock {
-  id        String           @id @default(uuid()) @db.Uuid
-  lessonId  String           @map("lesson_id") @db.Uuid
-  type      ContentBlockType
-  content   Json             @map("content_json")
-  position  Int              @default(0)
-  lesson    Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id       String           @id @default(uuid()) @db.Uuid
+  lessonId String           @map("lesson_id") @db.Uuid
+  type     ContentBlockType
+  content  Json             @map("content_json")
+  position Int              @default(0)
+  lesson   Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@index([lessonId, position])
   @@map("content_blocks")
 }
 
 model Resource {
-  id               String       @id @default(uuid()) @db.Uuid
-  lessonId         String       @map("lesson_id") @db.Uuid
+  id               String             @id @default(uuid()) @db.Uuid
+  lessonId         String             @map("lesson_id") @db.Uuid
   type             ResourceType
   title            String
   author           String?
   url              String?
   citation         String?
   description      String?
-  isRequired       Boolean      @default(false) @map("is_required")
-  estimatedMinutes Int?         @map("estimated_minutes")
-  position         Int          @default(0)
-  lesson           Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  isRequired       Boolean            @default(false) @map("is_required")
+  estimatedMinutes Int?               @map("estimated_minutes")
+  position         Int                @default(0)
+  lesson           Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  progress         ResourceProgress[]
 
   @@index([lessonId, position])
   @@map("resources")
 }
 
 model Task {
-  id          String   @id @default(uuid()) @db.Uuid
-  lessonId    String   @map("lesson_id") @db.Uuid
+  id          String           @id @default(uuid()) @db.Uuid
+  lessonId    String           @map("lesson_id") @db.Uuid
   title       String
   description String?
   type        TaskType
-  isRequired  Boolean  @default(true) @map("is_required")
-  weight      Float    @default(1)
-  position    Int      @default(0)
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  isRequired  Boolean          @default(true) @map("is_required")
+  weight      Float            @default(1)
+  position    Int              @default(0)
+  lesson      Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completions TaskCompletion[]
 
   @@index([lessonId, position])
   @@map("tasks")
+}
+
+model LessonProgress {
+  id           String               @id @default(uuid()) @db.Uuid
+  userId       String               @map("user_id") @db.Uuid
+  lessonId     String               @map("lesson_id") @db.Uuid
+  status       LessonProgressStatus @default(AVAILABLE)
+  percent      Float                @default(0)
+  startedAt    DateTime?            @map("started_at")
+  completedAt  DateTime?            @map("completed_at")
+  lastViewedAt DateTime?            @map("last_viewed_at")
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId, status])
+  @@map("lesson_progress")
+}
+
+model TaskCompletion {
+  id          String               @id @default(uuid()) @db.Uuid
+  userId      String               @map("user_id") @db.Uuid
+  taskId      String               @map("task_id") @db.Uuid
+  status      TaskCompletionStatus @default(TODO)
+  completedAt DateTime?            @map("completed_at")
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task        Task                 @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, taskId])
+  @@index([userId, status])
+  @@map("task_completions")
+}
+
+model ResourceProgress {
+  id          String                 @id @default(uuid()) @db.Uuid
+  userId      String                 @map("user_id") @db.Uuid
+  resourceId  String                 @map("resource_id") @db.Uuid
+  status      ResourceProgressStatus @default(NOT_STARTED)
+  completedAt DateTime?              @map("completed_at")
+  user        User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource    Resource               @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId, status])
+  @@map("resource_progress")
 }

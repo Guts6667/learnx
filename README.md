@@ -87,6 +87,22 @@ que les programmes actifs et les contenus publiés :
 - `GET /api/modules/:moduleSlug`
 - `GET /api/lessons/:lessonSlug`
 
+## API de progression
+
+Les mutations de progression nécessitent également une session active. Elles
+vérifient l’appartenance de la leçon, tâche ou ressource au programme de
+l’utilisateur avant toute écriture :
+
+- `GET /api/lessons/:lessonId/progress`
+- `POST /api/lessons/:lessonId/start`
+- `POST /api/lessons/:lessonId/complete`
+- `PATCH /api/tasks/:taskId`
+- `PATCH /api/resources/:resourceId/progress`
+
+La progression de leçon est calculée côté serveur à partir des tâches et des
+ressources obligatoires. Les catégories absentes voient leur poids redistribué.
+La consultation d’une ressource ne valide jamais une notion.
+
 ## Documents
 
 - `PRODUCT_REQUIREMENTS.md`
