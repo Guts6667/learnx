@@ -6,16 +6,40 @@ import { fileURLToPath } from 'node:url';
 
 import { z } from 'zod';
 
+import { assertRequiredConceptHasValidationActivity } from '../src/lib/concepts';
+
 import {
+  ConceptAssessmentType,
   ProgramStatus,
   type Prisma,
   type PrismaClient,
 } from '../generated/prisma/client';
 
 const programStatusSchema = z.enum(['draft', 'active', 'archived']);
-const conceptSchema = z
-  .object({ title: z.string().trim().min(1) })
+const conceptAssessmentTypeSchema = z.enum([
+  'quiz',
+  'short_answer',
+  'practice',
+  'flashcard',
+  'case_question',
+]);
+const conceptAssessmentSchema = z
+  .object({ type: conceptAssessmentTypeSchema })
   .passthrough();
+const conceptSchema = z
+  .object({
+    title: z.string().trim().min(1),
+    slug: z.string().trim().min(1),
+    description: z.string().trim().min(1).optional(),
+    position: z.number().int().nonnegative(),
+    isRequired: z.boolean().default(true),
+    masteryThreshold: z.number().min(0).max(100).default(70),
+    assessment: conceptAssessmentSchema.optional(),
+  })
+  .refine((concept) => !concept.isRequired || concept.assessment, {
+    message: 'A required concept must define a validation activity.',
+    path: ['assessment'],
+  });
 
 const lessonSchema = z.object({
   title: z.string().trim().min(1),
@@ -55,6 +79,23 @@ const sampleProgramSchema = z.object({
 export type SampleProgram = z.infer<typeof sampleProgramSchema>['program'];
 
 export interface SeedProgramRepository {
+  replaceConceptAssessments(
+    conceptId: string,
+    assessments: Array<{
+      assessmentType: ConceptAssessmentType;
+      isRequired: boolean;
+      position: number;
+    }>,
+  ): Promise<void>;
+  upsertConcept(input: {
+    lessonId: string;
+    title: string;
+    slug: string;
+    description?: string;
+    position: number;
+    isRequired: boolean;
+    masteryThreshold: number;
+  }): Promise<{ id: string }>;
   upsertLesson(input: {
     moduleId: string;
     title: string;
@@ -89,6 +130,18 @@ export interface SeedProgramRepository {
     position: number;
     estimatedDurationDays?: number;
   }): Promise<{ id: string }>;
+}
+
+function toConceptAssessmentType(
+  type: z.infer<typeof conceptAssessmentTypeSchema>,
+): ConceptAssessmentType {
+  return {
+    case_question: ConceptAssessmentType.CASE_QUESTION,
+    flashcard: ConceptAssessmentType.FLASHCARD,
+    practice: ConceptAssessmentType.PRACTICE,
+    quiz: ConceptAssessmentType.QUIZ,
+    short_answer: ConceptAssessmentType.SHORT_ANSWER,
+  }[type];
 }
 
 function toProgramStatus(
@@ -165,7 +218,7 @@ export async function seedSampleProgram(
       });
 
       for (const lessonData of moduleData.lessons) {
-        await repository.upsertLesson({
+        const lesson = await repository.upsertLesson({
           moduleId: module.id,
           title: lessonData.title,
           slug: lessonData.slug,
@@ -175,6 +228,35 @@ export async function seedSampleProgram(
           estimatedMinutes: lessonData.estimatedMinutes,
           position: lessonData.position,
         });
+
+        for (const conceptData of lessonData.concepts) {
+          assertRequiredConceptHasValidationActivity({
+            assessmentCount: conceptData.assessment ? 1 : 0,
+            isRequired: conceptData.isRequired,
+          });
+          const concept = await repository.upsertConcept({
+            lessonId: lesson.id,
+            title: conceptData.title,
+            slug: conceptData.slug,
+            description: conceptData.description,
+            position: conceptData.position,
+            isRequired: conceptData.isRequired,
+            masteryThreshold: conceptData.masteryThreshold,
+          });
+          const assessments = conceptData.assessment
+            ? [
+                {
+                  assessmentType: toConceptAssessmentType(
+                    conceptData.assessment.type,
+                  ),
+                  isRequired: conceptData.isRequired,
+                  position: 1,
+                },
+              ]
+            : [];
+
+          await repository.replaceConceptAssessments(concept.id, assessments);
+        }
       }
     }
   }
@@ -184,6 +266,26 @@ function createSeedProgramRepository(
   client: PrismaClient,
 ): SeedProgramRepository {
   return {
+    async replaceConceptAssessments(conceptId, assessments) {
+      await client.$transaction([
+        client.conceptAssessment.deleteMany({ where: { conceptId } }),
+        client.conceptAssessment.createMany({
+          data: assessments.map((assessment) => ({
+            conceptId,
+            ...assessment,
+          })),
+        }),
+      ]);
+    },
+    async upsertConcept(input) {
+      const { lessonId, slug, ...data } = input;
+
+      return client.concept.upsert({
+        where: { lessonId_slug: { lessonId, slug } },
+        create: { lessonId, slug, ...data },
+        update: data,
+      });
+    },
     async upsertLesson(input) {
       const { moduleId, slug, ...data } = input;
 

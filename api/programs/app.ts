@@ -201,6 +201,17 @@ curriculumApp.get('/api/lessons/:lessonSlug', async (context) => {
     },
     take: 2,
     include: {
+      concepts: {
+        orderBy: { position: 'asc' },
+        select: {
+          id: true,
+          isRequired: true,
+          masteryThreshold: true,
+          position: true,
+          slug: true,
+          title: true,
+        },
+      },
       contentBlocks: { orderBy: { position: 'asc' } },
       resources: { orderBy: { position: 'asc' } },
       tasks: { orderBy: { position: 'asc' } },

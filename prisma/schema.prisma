@@ -96,6 +96,25 @@ enum StageProgressStatus {
   @@map("stage_progress_status")
 }
 
+enum ConceptAssessmentType {
+  QUIZ          @map("quiz")
+  SHORT_ANSWER  @map("short_answer")
+  PRACTICE      @map("practice")
+  FLASHCARD     @map("flashcard")
+  CASE_QUESTION @map("case_question")
+
+  @@map("concept_assessment_type")
+}
+
+enum ConceptProgressStatus {
+  NOT_STARTED  @map("not_started")
+  LEARNING     @map("learning")
+  VALIDATED    @map("validated")
+  NEEDS_REVIEW @map("needs_review")
+
+  @@map("concept_progress_status")
+}
+
 model User {
   id                 String             @id @default(uuid()) @db.Uuid
   email              String             @unique
@@ -111,6 +130,7 @@ model User {
   lessonProgresses   LessonProgress[]
   taskCompletions    TaskCompletion[]
   resourceProgresses ResourceProgress[]
+  conceptProgresses  ConceptProgress[]
 
   @@map("users")
 }
@@ -207,6 +227,7 @@ model Lesson {
   resources        Resource[]
   tasks            Task[]
   progress         LessonProgress[]
+  concepts         Concept[]
 
   @@unique([moduleId, slug])
   @@index([moduleId, position])
@@ -239,6 +260,7 @@ model Resource {
   position         Int                @default(0)
   lesson           Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   progress         ResourceProgress[]
+  conceptLinks     ConceptResource[]
 
   @@index([lessonId, position])
   @@map("resources")
@@ -338,4 +360,65 @@ model ResourceProgress {
   @@unique([userId, resourceId])
   @@index([userId, status])
   @@map("resource_progress")
+}
+
+model Concept {
+  id               String              @id @default(uuid()) @db.Uuid
+  lessonId         String              @map("lesson_id") @db.Uuid
+  title            String
+  slug             String
+  description      String?
+  position         Int                 @default(0)
+  isRequired       Boolean             @default(true) @map("is_required")
+  masteryThreshold Float               @default(70) @map("mastery_threshold")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  lesson           Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  resources        ConceptResource[]
+  assessments      ConceptAssessment[]
+  progress         ConceptProgress[]
+
+  @@unique([lessonId, slug])
+  @@index([lessonId, position])
+  @@map("concepts")
+}
+
+model ConceptResource {
+  id         String   @id @default(uuid()) @db.Uuid
+  conceptId  String   @map("concept_id") @db.Uuid
+  resourceId String   @map("resource_id") @db.Uuid
+  concept    Concept  @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([conceptId, resourceId])
+  @@index([resourceId])
+  @@map("concept_resources")
+}
+
+model ConceptAssessment {
+  id             String                @id @default(uuid()) @db.Uuid
+  conceptId      String                @map("concept_id") @db.Uuid
+  assessmentType ConceptAssessmentType @map("assessment_type")
+  isRequired     Boolean               @default(true) @map("is_required")
+  position       Int                   @default(0)
+  concept        Concept               @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([conceptId, position])
+  @@map("concept_assessments")
+}
+
+model ConceptProgress {
+  id            String                @id @default(uuid()) @db.Uuid
+  userId        String                @map("user_id") @db.Uuid
+  conceptId     String                @map("concept_id") @db.Uuid
+  status        ConceptProgressStatus @default(NOT_STARTED)
+  bestScore     Float?                @map("best_score")
+  validatedAt   DateTime?             @map("validated_at")
+  lastAttemptAt DateTime?             @map("last_attempt_at")
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concept       Concept               @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conceptId])
+  @@index([userId, status])
+  @@map("concept_progress")
 }

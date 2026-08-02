@@ -113,7 +113,17 @@ export interface LessonTask {
   weight: number;
 }
 
+export interface LessonConceptSummary {
+  id: string;
+  isRequired: boolean;
+  masteryThreshold: number;
+  position: number;
+  slug: string;
+  title: string;
+}
+
 export interface LessonDetail extends LessonSummary {
+  concepts: LessonConceptSummary[];
   contentBlocks: LessonContentBlock[];
   objectives: unknown;
   prerequisites: unknown;
