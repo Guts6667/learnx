@@ -112,6 +112,10 @@ La consultation d’une ressource ne valide jamais une notion.
 - `UX_SPEC.md`
 - `TIMELINE_SPEC.md`
 - `ASSESSMENT_SPEC.md`
+- `EDITORIAL_GUIDELINES.md`
+- `PEDAGOGY_AUTHORING_GUIDE.md`
+- `CURRICULUM_BLUEPRINT.md`
+- `PEDAGOGY_CHANGE_POLICY.md`
 - `SAMPLE_PROGRAM_PSYCHOLOGY.md`
 - `BACKLOG_CODEX.md`
 - `CODEX_MASTER_PROMPT.md`

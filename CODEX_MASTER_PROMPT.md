@@ -12,6 +12,10 @@ Lis intégralement avant toute modification :
 - `UX_SPEC.md`
 - `TIMELINE_SPEC.md`
 - `ASSESSMENT_SPEC.md`
+- `EDITORIAL_GUIDELINES.md`
+- `PEDAGOGY_AUTHORING_GUIDE.md`
+- `CURRICULUM_BLUEPRINT.md`
+- `PEDAGOGY_CHANGE_POLICY.md`
 - `SAMPLE_PROGRAM_PSYCHOLOGY.md`
 - `BACKLOG_CODEX.md`
 
@@ -45,6 +49,16 @@ Lis intégralement avant toute modification :
 - N’expose jamais les bonnes réponses d’un quiz avant soumission.
 - Toute entrée serveur est validée avec Zod.
 - Toute logique métier importante est testée.
+- Toute nouvelle `PEDAGOGY_SPEC_XXX` respecte intégralement
+  `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`,
+  `CURRICULUM_BLUEPRINT.md` et `PEDAGOGY_CHANGE_POLICY.md`.
+- Une spécification pédagogique ne peut être déclarée complète ou publiable si
+  les critères de publication applicables ne sont pas satisfaits.
+- Le champ `lesson` d’une `PEDAGOGY_SPEC_XXX.json` doit être directement
+  compatible avec `prisma/seed.ts`. Le sidecar `editorial` n’est pas importé.
+- La gouvernance éditoriale ne modifie pas implicitement l’architecture
+  technique, le modèle de données ou le backlog : toute évolution de ce type
+  nécessite un ticket séparé explicitement demandé.
 
 ## Méthode
 

@@ -76,9 +76,26 @@ Un ticket est terminé lorsque :
 
 ## Validation pédagogique
 
+- Avant de créer ou modifier une `PEDAGOGY_SPEC_XXX`, lire intégralement
+  `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`,
+  `CURRICULUM_BLUEPRINT.md` et `PEDAGOGY_CHANGE_POLICY.md`.
+- Toute `PEDAGOGY_SPEC_XXX` doit respecter ces quatre documents ; les contrôles
+  de publication applicables sont bloquants.
+- Distinguer systématiquement `editorial.references` (sources utilisées pour
+  établir le contenu) et `lesson.resources` (ressources recommandées à
+  l’apprenant).
+- Tout bloc de connaissance doit être traçable vers au moins une référence
+  vérifiée et tout indice de confiance doit être justifié.
+- Le payload `lesson` d’une `PEDAGOGY_SPEC_XXX.json` doit rester strictement
+  compatible avec le schéma Zod de `prisma/seed.ts` ; les métadonnées de preuve
+  restent dans le sidecar `editorial` non importé.
+- Aucun nombre fixe d’étapes, modules, leçons ou notions ne doit être imposé au
+  détriment de la cohérence pédagogique.
 - Toute notion obligatoire doit avoir une évaluation.
 - Toute étape publiée doit avoir une évaluation finale.
 - Une ressource ouverte ne valide pas une notion.
 - Les calculs de maîtrise et de validation sont côté serveur.
 - Les tentatives sont conservées.
 - Les règles de publication doivent bloquer les contenus pédagogiquement incomplets.
+- Une évolution éditoriale ne doit pas modifier implicitement l’architecture
+  technique, le schéma de données ou `BACKLOG_CODEX.md`.
