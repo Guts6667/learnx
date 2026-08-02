@@ -76,6 +76,17 @@ hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
 `HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
 n’est stocké dans `localStorage`.
 
+## API de parcours
+
+Les endpoints de lecture nécessitent une session LearnX active et ne renvoient
+que les programmes actifs et les contenus publiés :
+
+- `GET /api/programs`
+- `GET /api/programs/:programSlug`
+- `GET /api/programs/:programSlug/stages/:stageSlug`
+- `GET /api/modules/:moduleSlug`
+- `GET /api/lessons/:lessonSlug`
+
 ## Documents
 
 - `PRODUCT_REQUIREMENTS.md`
