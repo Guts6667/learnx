@@ -1,0 +1,3 @@
+-- RenameIndex
+ALTER INDEX "concept_assessment_attempts_user_id_assessment_id_submitted_at_"
+RENAME TO "concept_assessment_attempts_user_assessment_submitted_idx";
