@@ -51,6 +51,54 @@ export interface ModuleDetail extends ModuleSummary {
   estimatedMinutes: number | null;
 }
 
+export type ContentBlockType =
+  | 'CALLOUT'
+  | 'DEFINITION'
+  | 'DIVIDER'
+  | 'EMBED'
+  | 'EXAMPLE'
+  | 'OBJECTIVE'
+  | 'QUOTE'
+  | 'RICH_TEXT';
+
+export interface LessonContentBlock {
+  content: unknown;
+  id: string;
+  position: number;
+  type: ContentBlockType;
+}
+
+export interface LessonResource {
+  author: string | null;
+  citation: string | null;
+  description: string | null;
+  estimatedMinutes: number | null;
+  id: string;
+  isRequired: boolean;
+  position: number;
+  title: string;
+  type: string;
+  url: string | null;
+}
+
+export interface LessonTask {
+  description: string | null;
+  id: string;
+  isRequired: boolean;
+  position: number;
+  title: string;
+  type: string;
+  weight: number;
+}
+
+export interface LessonDetail extends LessonSummary {
+  contentBlocks: LessonContentBlock[];
+  objectives: unknown;
+  prerequisites: unknown;
+  resources: LessonResource[];
+  tasks: LessonTask[];
+}
+
 function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
   const queryClient = useAppQueryClient();
   const queryKeyHash = queryKey.join(':');
@@ -106,5 +154,12 @@ export function useModuleQuery(moduleSlug: string) {
   return useCurriculumQuery<{ module: ModuleDetail }>(
     ['module', moduleSlug],
     `/api/modules/${encodeURIComponent(moduleSlug)}`,
+  );
+}
+
+export function useLessonQuery(lessonSlug: string) {
+  return useCurriculumQuery<{ lesson: LessonDetail }>(
+    ['lesson', lessonSlug],
+    `/api/lessons/${encodeURIComponent(lessonSlug)}`,
   );
 }

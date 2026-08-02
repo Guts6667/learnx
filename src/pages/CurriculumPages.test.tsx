@@ -145,7 +145,7 @@ describe('CurriculumPages', () => {
     ).toHaveAttribute('href', '/program/bases/module/premiers-pas');
 
     stageView.unmount();
-    renderPage(<ModulePage moduleSlug="premiers-pas" />);
+    renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);
     expect(
       await screen.findByRole('heading', { level: 2, name: 'Démarrer' }),
     ).toBeInTheDocument();

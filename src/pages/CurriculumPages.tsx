@@ -189,7 +189,13 @@ export function StagePage({
   );
 }
 
-export function ModulePage({ moduleSlug }: { moduleSlug: string }) {
+export function ModulePage({
+  moduleSlug,
+  programSlug,
+}: {
+  moduleSlug: string;
+  programSlug: string;
+}) {
   const query = useModuleQuery(moduleSlug);
   const state = getQueryState(query.error, query.isPending);
 
@@ -231,6 +237,12 @@ export function ModulePage({ moduleSlug }: { moduleSlug: string }) {
             <Card key={lesson.id}>
               <h2 class="text-lg font-semibold">{lesson.title}</h2>
               <p class="mt-2 text-sm text-slate-300">{lesson.summary}</p>
+              <a
+                class="mt-3 inline-flex min-h-11 items-center text-cyan-300 underline"
+                href={`/program/${programSlug}/lesson/${lesson.slug}`}
+              >
+                Ouvrir la leçon
+              </a>
             </Card>
           ))}
         </div>

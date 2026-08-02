@@ -8,15 +8,31 @@ import {
   ProgramsPage,
   StagePage,
 } from '@/pages/CurriculumPages';
+import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 
 interface RouteParams {
+  lessonSlug?: string;
   moduleSlug?: string;
   path?: string;
   programSlug?: string;
   stageSlug?: string;
+}
+
+function LessonRoute({ lessonSlug, path }: RouteParams) {
+  void path;
+
+  if (!lessonSlug) {
+    return null;
+  }
+
+  return (
+    <ProtectedRoute>
+      <LessonPage lessonSlug={lessonSlug} />
+    </ProtectedRoute>
+  );
 }
 
 function ProgramsRoute({ path }: RouteParams) {
@@ -57,16 +73,16 @@ function StageRoute({ path, programSlug, stageSlug }: RouteParams) {
   );
 }
 
-function ModuleRoute({ moduleSlug, path }: RouteParams) {
+function ModuleRoute({ moduleSlug, path, programSlug }: RouteParams) {
   void path;
 
-  if (!moduleSlug) {
+  if (!moduleSlug || !programSlug) {
     return null;
   }
 
   return (
     <ProtectedRoute>
-      <ModulePage moduleSlug={moduleSlug} />
+      <ModulePage moduleSlug={moduleSlug} programSlug={programSlug} />
     </ProtectedRoute>
   );
 }
@@ -89,9 +105,7 @@ export function AppRoutes() {
         <ProtectedRoute path="/program/:programSlug/lesson/:lessonSlug/quiz">
           <PlaceholderPage title="Quiz" />
         </ProtectedRoute>
-        <ProtectedRoute path="/program/:programSlug/lesson/:lessonSlug">
-          <PlaceholderPage title="Leçon" />
-        </ProtectedRoute>
+        <LessonRoute path="/program/:programSlug/lesson/:lessonSlug" />
         <ProtectedRoute path="/reviews">
           <PlaceholderPage title="Révisions" />
         </ProtectedRoute>
