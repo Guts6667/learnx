@@ -12,6 +12,7 @@ import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { TodayPage } from '@/pages/TodayPage';
 
 interface RouteParams {
   lessonSlug?: string;
@@ -92,10 +93,10 @@ export function AppRoutes() {
     <MobileLayout>
       <Router>
         <ProtectedRoute path="/">
-          <PlaceholderPage title="Aujourd’hui" />
+          <TodayPage />
         </ProtectedRoute>
         <ProtectedRoute path="/today">
-          <PlaceholderPage title="Aujourd’hui" />
+          <TodayPage />
         </ProtectedRoute>
         <LoginPage path="/login" />
         <ProgramsRoute path="/program" />
