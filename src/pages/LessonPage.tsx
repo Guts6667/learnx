@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import {
   type ContentBlockType,
   type LessonContentBlock,
+  type LessonExerciseSummary,
   type LessonResource,
   type LessonQuizSummary,
   type LessonTask,
@@ -16,6 +17,7 @@ import {
   useLessonProgressMutation,
   useLessonProgressQuery,
 } from '@/features/curriculum/queries';
+import { ExerciseCard } from '@/features/exercises/ExerciseCard';
 
 const contentBlockLabels: Record<ContentBlockType, string> = {
   CALLOUT: 'À retenir',
@@ -473,11 +475,13 @@ function QuizCard({
 }
 
 function AssessmentsSection({
+  exercises,
   isPublished,
   lessonSlug,
   programSlug,
   quizzes,
 }: {
+  exercises: LessonExerciseSummary[];
   isPublished: boolean;
   lessonSlug: string;
   programSlug: string;
@@ -511,19 +515,27 @@ function AssessmentsSection({
           />
         ))
       )}
-      <Card class="space-y-3">
-        <h3 class="font-semibold">Exercice</h3>
-        <p class="text-sm text-slate-300">
-          L’exercice sera bientôt disponible.
-        </p>
-        <button
-          class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
-          disabled
-          type="button"
-        >
-          Exercice indisponible
-        </button>
-      </Card>
+      {exercises.length === 0 ? (
+        <Card class="space-y-3">
+          <h3 class="font-semibold">Exercice</h3>
+          <p class="text-sm text-slate-300">Aucun exercice n’est disponible.</p>
+          <button
+            class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
+            disabled
+            type="button"
+          >
+            Exercice indisponible
+          </button>
+        </Card>
+      ) : (
+        exercises.map((exercise) => (
+          <ExerciseCard
+            exercise={exercise}
+            isLessonPublished={isPublished}
+            key={exercise.id}
+          />
+        ))
+      )}
     </section>
   );
 }
@@ -628,6 +640,7 @@ export function LessonPage({
       )}
 
       <AssessmentsSection
+        exercises={lesson.exercises}
         isPublished={lesson.isPublished}
         lessonSlug={lesson.slug}
         programSlug={programSlug}

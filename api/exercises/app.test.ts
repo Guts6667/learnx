@@ -1,0 +1,293 @@
+import type { MiddlewareHandler } from 'hono';
+
+import type { PrismaClient } from '../../generated/prisma/client';
+import type { AuthEnvironment } from '../_lib/auth';
+import {
+  createExercisesApp,
+  createPrismaExerciseRepository,
+  type ExerciseRepository,
+} from './app';
+
+const exerciseId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
+const lessonId = '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8';
+const submissionId = '97476e0e-2103-40c0-8185-f7601a8d2fd2';
+const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
+const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
+const createdAt = new Date('2026-08-03T08:00:00.000Z');
+const submittedAt = new Date('2026-08-03T09:00:00.000Z');
+
+const authentication: MiddlewareHandler<AuthEnvironment> = async (
+  context,
+  next,
+) => {
+  context.set('user', {
+    displayName: 'Learner',
+    email: 'learner@example.com',
+    id: userId,
+    role: 'USER',
+  });
+  await next();
+};
+
+function createRepository(ownerId = userId) {
+  let submission:
+    | {
+        contentMarkdown: string;
+        createdAt: Date;
+        exerciseId: string;
+        id: string;
+        status: 'DRAFT' | 'SUBMITTED';
+        submittedAt: Date | null;
+        updatedAt: Date;
+        userId: string;
+      }
+    | undefined;
+  let createCalls = 0;
+  const repository: ExerciseRepository = {
+    async createOrGetSubmission() {
+      if (!submission) {
+        createCalls += 1;
+        submission = {
+          contentMarkdown: '',
+          createdAt,
+          exerciseId,
+          id: submissionId,
+          status: 'DRAFT',
+          submittedAt: null,
+          updatedAt: createdAt,
+          userId,
+        };
+      }
+
+      return submission;
+    },
+    async findExerciseForUser(requestedExerciseId, requestedUserId) {
+      if (requestedExerciseId !== exerciseId || requestedUserId !== ownerId) {
+        return null;
+      }
+
+      return {
+        id: exerciseId,
+        instructions: 'Rédigez une analyse structurée.',
+        isRequired: true,
+        lessonId,
+        position: 1,
+        rubric: { clarity: true },
+        submission: submission ?? null,
+        title: 'Analyse appliquée',
+      };
+    },
+    async findOwnedSubmission(requestedSubmissionId, requestedUserId) {
+      return requestedSubmissionId === submissionId &&
+        requestedUserId === ownerId
+        ? (submission ?? null)
+        : null;
+    },
+    async saveSubmission(_requestedSubmissionId, contentMarkdown) {
+      if (!submission) throw new Error('Missing submission.');
+      submission = { ...submission, contentMarkdown, updatedAt: submittedAt };
+      return submission;
+    },
+    async submitSubmission(_requestedSubmissionId, date) {
+      if (!submission) throw new Error('Missing submission.');
+      submission = {
+        ...submission,
+        status: 'SUBMITTED',
+        submittedAt: date,
+        updatedAt: date,
+      };
+      return submission;
+    },
+  };
+
+  return {
+    get createCalls() {
+      return createCalls;
+    },
+    get submission() {
+      return submission;
+    },
+    repository,
+  };
+}
+
+function jsonRequest(body: unknown, method = 'PATCH') {
+  return {
+    body: JSON.stringify(body),
+    headers: { 'content-type': 'application/json' },
+    method,
+  };
+}
+
+describe('exercise API', () => {
+  it('retourne l’exercice publié et le brouillon personnel', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+    await app.request(
+      `http://localhost/api/exercises/${exerciseId}/submissions`,
+      { method: 'POST' },
+    );
+    const response = await app.request(
+      `http://localhost/api/exercises/${exerciseId}`,
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      exercise: {
+        submission: { id: submissionId, status: 'DRAFT' },
+        title: 'Analyse appliquée',
+      },
+    });
+  });
+
+  it('crée le brouillon de manière idempotente', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+    const url = `http://localhost/api/exercises/${exerciseId}/submissions`;
+    const first = await app.request(url, { method: 'POST' });
+    const second = await app.request(url, { method: 'POST' });
+
+    expect(first.status).toBe(201);
+    expect(second.status).toBe(201);
+    expect(state.createCalls).toBe(1);
+    expect(await second.json()).toMatchObject({
+      submission: { id: submissionId },
+    });
+  });
+
+  it('sauvegarde un brouillon Markdown, y compris vide', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+    await app.request(
+      `http://localhost/api/exercises/${exerciseId}/submissions`,
+      { method: 'POST' },
+    );
+    const url = `http://localhost/api/exercise-submissions/${submissionId}`;
+    const empty = await app.request(url, jsonRequest({ contentMarkdown: '' }));
+    const saved = await app.request(
+      url,
+      jsonRequest({ contentMarkdown: '## Analyse\n\nRéponse.' }),
+    );
+
+    expect(empty.status).toBe(200);
+    expect(saved.status).toBe(200);
+    expect(state.submission?.contentMarkdown).toBe('## Analyse\n\nRéponse.');
+  });
+
+  it('exige un contenu puis soumet avec une date UTC', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      now: () => submittedAt,
+      repository: state.repository,
+    });
+    await app.request(
+      `http://localhost/api/exercises/${exerciseId}/submissions`,
+      { method: 'POST' },
+    );
+    const submitUrl = `http://localhost/api/exercise-submissions/${submissionId}/submit`;
+
+    expect((await app.request(submitUrl, { method: 'POST' })).status).toBe(409);
+    await app.request(
+      `http://localhost/api/exercise-submissions/${submissionId}`,
+      jsonRequest({ contentMarkdown: 'Réponse argumentée.' }),
+    );
+    const response = await app.request(submitUrl, { method: 'POST' });
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      submission: {
+        status: 'SUBMITTED',
+        submittedAt: submittedAt.toISOString(),
+      },
+    });
+  });
+
+  it('refuse toute modification après soumission', async () => {
+    const state = createRepository();
+    const app = createExercisesApp({
+      authentication,
+      repository: state.repository,
+    });
+    await app.request(
+      `http://localhost/api/exercises/${exerciseId}/submissions`,
+      { method: 'POST' },
+    );
+    await app.request(
+      `http://localhost/api/exercise-submissions/${submissionId}`,
+      jsonRequest({ contentMarkdown: 'Réponse.' }),
+    );
+    await app.request(
+      `http://localhost/api/exercise-submissions/${submissionId}/submit`,
+      { method: 'POST' },
+    );
+
+    expect(
+      (
+        await app.request(
+          `http://localhost/api/exercise-submissions/${submissionId}`,
+          jsonRequest({ contentMarkdown: 'Modification.' }),
+        )
+      ).status,
+    ).toBe(409);
+  });
+
+  it('refuse les accès anonymes, hors propriété et invalides', async () => {
+    const anonymousApp = createExercisesApp({
+      repository: createRepository().repository,
+    });
+    const forbiddenApp = createExercisesApp({
+      authentication,
+      repository: createRepository(otherUserId).repository,
+    });
+    const validApp = createExercisesApp({
+      authentication,
+      repository: createRepository().repository,
+    });
+    const url = `http://localhost/api/exercises/${exerciseId}`;
+
+    expect((await anonymousApp.request(url)).status).toBe(401);
+    expect((await forbiddenApp.request(url)).status).toBe(404);
+    expect((await validApp.request('/api/exercises/not-a-uuid')).status).toBe(
+      400,
+    );
+  });
+});
+
+describe('exercise persistence filters', () => {
+  it('filtre la hiérarchie publiée, le programme actif et le propriétaire', async () => {
+    const findFirst = vi.fn(async () => null);
+    const repository = createPrismaExerciseRepository({
+      exercise: { findFirst },
+    } as unknown as PrismaClient);
+
+    await repository.findExerciseForUser(exerciseId, userId);
+
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          id: exerciseId,
+          lesson: {
+            isPublished: true,
+            module: {
+              isPublished: true,
+              stage: {
+                isPublished: true,
+                program: { ownerId: userId, status: 'ACTIVE' },
+              },
+            },
+          },
+        },
+      }),
+    );
+  });
+});

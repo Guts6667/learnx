@@ -43,6 +43,7 @@ describe('LessonPage', () => {
               },
             ],
             estimatedMinutes: 15,
+            exercises: [],
             id: 'lesson-1',
             isPublished: false,
             objectives: ['Comprendre la notion'],
@@ -125,6 +126,7 @@ describe('LessonPage', () => {
             lesson: {
               contentBlocks: [],
               estimatedMinutes: null,
+              exercises: [],
               id: 'lesson-1',
               isPublished: true,
               objectives: [],

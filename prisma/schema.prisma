@@ -154,6 +154,13 @@ enum QuizQuestionType {
   @@map("quiz_question_type")
 }
 
+enum ExerciseSubmissionStatus {
+  DRAFT     @map("draft")
+  SUBMITTED @map("submitted")
+
+  @@map("exercise_submission_status")
+}
+
 enum ReviewSourceType {
   CONCEPT_ASSESSMENT @map("concept_assessment")
 
@@ -185,6 +192,7 @@ model User {
   conceptProgresses          ConceptProgress[]
   conceptAttempts            ConceptAssessmentAttempt[]
   quizAttempts               QuizAttempt[]
+  exerciseSubmissions        ExerciseSubmission[]
   stageAssessmentSubmissions StageAssessmentSubmission[]
   reviewItems                ReviewItem[]
 
@@ -329,6 +337,7 @@ model Lesson {
   progress         LessonProgress[]
   concepts         Concept[]
   quizzes          Quiz[]
+  exercises        Exercise[]
   reviewItems      ReviewItem[]
 
   @@unique([moduleId, slug])
@@ -525,6 +534,39 @@ model QuizAttempt {
 
   @@index([userId, quizId, submittedAt], map: "quiz_attempts_user_quiz_submitted_idx")
   @@map("quiz_attempts")
+}
+
+model Exercise {
+  id           String               @id @default(uuid()) @db.Uuid
+  lessonId     String               @map("lesson_id") @db.Uuid
+  title        String
+  instructions String
+  rubric       Json?                @map("rubric_json")
+  isRequired   Boolean              @default(true) @map("is_required")
+  position     Int                  @default(0)
+  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  submissions  ExerciseSubmission[]
+
+  @@unique([lessonId, position])
+  @@index([lessonId, position])
+  @@map("exercises")
+}
+
+model ExerciseSubmission {
+  id              String                   @id @default(uuid()) @db.Uuid
+  userId          String                   @map("user_id") @db.Uuid
+  exerciseId      String                   @map("exercise_id") @db.Uuid
+  contentMarkdown String                   @default("") @map("content_markdown")
+  status          ExerciseSubmissionStatus @default(DRAFT)
+  submittedAt     DateTime?                @map("submitted_at")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  updatedAt       DateTime                 @updatedAt @map("updated_at")
+  user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercise        Exercise                 @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, exerciseId])
+  @@index([exerciseId, status])
+  @@map("exercise_submissions")
 }
 
 model Concept {

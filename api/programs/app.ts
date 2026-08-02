@@ -286,6 +286,17 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           },
         },
         contentBlocks: { orderBy: { position: 'asc' } },
+        exercises: {
+          orderBy: { position: 'asc' },
+          select: {
+            id: true,
+            instructions: true,
+            isRequired: true,
+            position: true,
+            rubric: true,
+            title: true,
+          },
+        },
         quizzes: {
           orderBy: { position: 'asc' },
           select: {

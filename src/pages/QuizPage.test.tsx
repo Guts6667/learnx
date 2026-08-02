@@ -33,6 +33,7 @@ function lessonResponse(isPublished = true) {
       concepts: [],
       contentBlocks: [],
       estimatedMinutes: 15,
+      exercises: [],
       id: 'lesson-1',
       isPublished,
       objectives: [],

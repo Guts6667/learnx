@@ -140,6 +140,15 @@ export interface LessonTask {
   weight: number;
 }
 
+export interface LessonExerciseSummary {
+  id: string;
+  instructions: string;
+  isRequired: boolean;
+  position: number;
+  rubric: unknown;
+  title: string;
+}
+
 export interface LessonQuizSummary {
   description: string | null;
   id: string;
@@ -162,6 +171,7 @@ export interface LessonConceptSummary {
 export interface LessonDetail extends LessonSummary {
   concepts: LessonConceptSummary[];
   contentBlocks: LessonContentBlock[];
+  exercises: LessonExerciseSummary[];
   objectives: unknown;
   prerequisites: unknown;
   quizzes: LessonQuizSummary[];

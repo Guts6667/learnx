@@ -36,6 +36,16 @@ interface LessonWhere {
 function createClient(resourceOwnerId = ownerId) {
   const lesson = {
     contentBlocks: [],
+    exercises: [
+      {
+        id: 'exercise-1',
+        instructions: 'Rédiger une analyse.',
+        isRequired: true,
+        position: 1,
+        rubric: null,
+        title: 'Analyse appliquée',
+      },
+    ],
     id: 'lesson-1',
     isPublished: false,
     position: 1,
@@ -160,6 +170,7 @@ describe('curriculum draft preview authorization', () => {
       expect(await response.json()).toMatchObject({
         lesson: {
           isPublished: false,
+          exercises: [{ title: 'Analyse appliquée' }],
           quizzes: [{ questionCount: 4, title: 'Quiz de la leçon' }],
           title: 'Draft lesson',
         },
