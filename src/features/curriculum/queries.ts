@@ -97,6 +97,7 @@ export interface LessonResource {
   estimatedMinutes: number | null;
   id: string;
   isRequired: boolean;
+  key: string | null;
   position: number;
   title: string;
   type: string;

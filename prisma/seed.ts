@@ -10,12 +10,46 @@ import { assertRequiredConceptHasValidationActivity } from '../src/lib/concepts'
 
 import {
   ConceptAssessmentType,
+  ContentBlockType,
   ProgramStatus,
+  ResourceType,
+  TaskType,
   type Prisma,
   type PrismaClient,
 } from '../generated/prisma/client';
 
 const programStatusSchema = z.enum(['draft', 'active', 'archived']);
+const contentBlockTypeSchema = z.enum([
+  'rich_text',
+  'objective',
+  'definition',
+  'example',
+  'callout',
+  'quote',
+  'embed',
+  'divider',
+]);
+const resourceTypeSchema = z.enum([
+  'book',
+  'book_chapter',
+  'article',
+  'video',
+  'course',
+  'podcast',
+  'website',
+  'document',
+  'tool',
+]);
+const taskTypeSchema = z.enum([
+  'reading',
+  'watching',
+  'listening',
+  'reflection',
+  'checklist',
+  'writing',
+  'practice',
+  'project',
+]);
 const conceptAssessmentTypeSchema = z.enum([
   'quiz',
   'short_answer',
@@ -23,9 +57,11 @@ const conceptAssessmentTypeSchema = z.enum([
   'flashcard',
   'case_question',
 ]);
-const conceptAssessmentSchema = z
-  .object({ type: conceptAssessmentTypeSchema })
-  .passthrough();
+const conceptAssessmentSchema = z.object({
+  type: conceptAssessmentTypeSchema,
+  title: z.string().trim().min(1),
+  questionCount: z.number().int().positive(),
+});
 const conceptSchema = z
   .object({
     title: z.string().trim().min(1),
@@ -34,6 +70,7 @@ const conceptSchema = z
     position: z.number().int().nonnegative(),
     isRequired: z.boolean().default(true),
     masteryThreshold: z.number().min(0).max(100).default(70),
+    resourceKeys: z.array(z.string().trim().min(1)).default([]),
     assessment: conceptAssessmentSchema.optional(),
   })
   .refine((concept) => !concept.isRequired || concept.assessment, {
@@ -41,12 +78,46 @@ const conceptSchema = z
     path: ['assessment'],
   });
 
+const contentBlockSchema = z.object({
+  type: contentBlockTypeSchema,
+  position: z.number().int().positive(),
+  content: z.object({ text: z.string().trim().min(1) }),
+});
+
+const resourceSchema = z.object({
+  key: z.string().trim().min(1),
+  type: resourceTypeSchema,
+  title: z.string().trim().min(1),
+  author: z.string().trim().min(1).optional(),
+  url: z.url(),
+  citation: z.string().trim().min(1).optional(),
+  description: z.string().trim().min(1).optional(),
+  isRequired: z.boolean(),
+  estimatedMinutes: z.number().int().positive().optional(),
+  position: z.number().int().positive(),
+});
+
+const taskSchema = z.object({
+  title: z.string().trim().min(1),
+  description: z.string().trim().min(1).optional(),
+  type: taskTypeSchema,
+  isRequired: z.boolean(),
+  weight: z.number().positive(),
+  position: z.number().int().positive(),
+});
+
 const lessonSchema = z.object({
   title: z.string().trim().min(1),
   slug: z.string().trim().min(1),
+  summary: z.string().trim().min(1).optional(),
+  objectives: z.array(z.string().trim().min(1)).optional(),
+  prerequisites: z.array(z.string().trim().min(1)).default([]),
   position: z.number().int().nonnegative(),
   estimatedMinutes: z.number().int().positive().optional(),
+  contentBlocks: z.array(contentBlockSchema).default([]),
+  resources: z.array(resourceSchema).default([]),
   concepts: z.array(conceptSchema).default([]),
+  tasks: z.array(taskSchema).default([]),
 });
 
 const moduleSchema = z.object({
@@ -79,14 +150,33 @@ const sampleProgramSchema = z.object({
 export type SampleProgram = z.infer<typeof sampleProgramSchema>['program'];
 
 export interface SeedProgramRepository {
+  deleteConceptsNotIn(lessonId: string, slugs: string[]): Promise<void>;
+  pruneEditorialContent(input: {
+    contentBlockPositions: number[];
+    lessonId: string;
+    resourceKeys: string[];
+    taskPositions: number[];
+  }): Promise<void>;
   replaceConceptAssessments(
     conceptId: string,
     assessments: Array<{
       assessmentType: ConceptAssessmentType;
       isRequired: boolean;
       position: number;
+      questionCount: number;
+      title: string;
     }>,
   ): Promise<void>;
+  replaceConceptResources(
+    conceptId: string,
+    resourceIds: string[],
+  ): Promise<void>;
+  upsertContentBlock(input: {
+    content: Prisma.InputJsonValue;
+    lessonId: string;
+    position: number;
+    type: ContentBlockType;
+  }): Promise<{ id: string }>;
   upsertConcept(input: {
     lessonId: string;
     title: string;
@@ -113,6 +203,19 @@ export interface SeedProgramRepository {
     description: string;
     position: number;
   }): Promise<{ id: string }>;
+  upsertResource(input: {
+    author?: string;
+    citation?: string;
+    description?: string;
+    estimatedMinutes?: number;
+    isRequired: boolean;
+    key: string;
+    lessonId: string;
+    position: number;
+    title: string;
+    type: ResourceType;
+    url: string;
+  }): Promise<{ id: string }>;
   upsertProgram(input: {
     ownerId: string;
     title: string;
@@ -130,6 +233,15 @@ export interface SeedProgramRepository {
     position: number;
     estimatedDurationDays?: number;
   }): Promise<{ id: string }>;
+  upsertTask(input: {
+    description?: string;
+    isRequired: boolean;
+    lessonId: string;
+    position: number;
+    title: string;
+    type: TaskType;
+    weight: number;
+  }): Promise<{ id: string }>;
 }
 
 function toConceptAssessmentType(
@@ -141,6 +253,50 @@ function toConceptAssessmentType(
     practice: ConceptAssessmentType.PRACTICE,
     quiz: ConceptAssessmentType.QUIZ,
     short_answer: ConceptAssessmentType.SHORT_ANSWER,
+  }[type];
+}
+
+function toContentBlockType(
+  type: z.infer<typeof contentBlockTypeSchema>,
+): ContentBlockType {
+  return {
+    callout: ContentBlockType.CALLOUT,
+    definition: ContentBlockType.DEFINITION,
+    divider: ContentBlockType.DIVIDER,
+    embed: ContentBlockType.EMBED,
+    example: ContentBlockType.EXAMPLE,
+    objective: ContentBlockType.OBJECTIVE,
+    quote: ContentBlockType.QUOTE,
+    rich_text: ContentBlockType.RICH_TEXT,
+  }[type];
+}
+
+function toResourceType(
+  type: z.infer<typeof resourceTypeSchema>,
+): ResourceType {
+  return {
+    article: ResourceType.ARTICLE,
+    book: ResourceType.BOOK,
+    book_chapter: ResourceType.BOOK_CHAPTER,
+    course: ResourceType.COURSE,
+    document: ResourceType.DOCUMENT,
+    podcast: ResourceType.PODCAST,
+    tool: ResourceType.TOOL,
+    video: ResourceType.VIDEO,
+    website: ResourceType.WEBSITE,
+  }[type];
+}
+
+function toTaskType(type: z.infer<typeof taskTypeSchema>): TaskType {
+  return {
+    checklist: TaskType.CHECKLIST,
+    listening: TaskType.LISTENING,
+    practice: TaskType.PRACTICE,
+    project: TaskType.PROJECT,
+    reading: TaskType.READING,
+    reflection: TaskType.REFLECTION,
+    watching: TaskType.WATCHING,
+    writing: TaskType.WRITING,
   }[type];
 }
 
@@ -157,10 +313,14 @@ function toProgramStatus(
 function getLessonObjectives(
   lesson: z.infer<typeof lessonSchema>,
 ): Prisma.InputJsonValue {
-  return lesson.concepts.map((concept) => concept.title);
+  return lesson.objectives ?? lesson.concepts.map((concept) => concept.title);
 }
 
 function getLessonSummary(lesson: z.infer<typeof lessonSchema>): string {
+  if (lesson.summary) {
+    return lesson.summary;
+  }
+
   const objectives = getLessonObjectives(lesson);
 
   return Array.isArray(objectives) && objectives.length > 0
@@ -224,10 +384,72 @@ export async function seedSampleProgram(
           slug: lessonData.slug,
           summary: getLessonSummary(lessonData),
           objectives: getLessonObjectives(lessonData),
-          prerequisites: [],
+          prerequisites: lessonData.prerequisites,
           estimatedMinutes: lessonData.estimatedMinutes,
           position: lessonData.position,
         });
+
+        const hasEditorialContent =
+          lessonData.contentBlocks.length > 0 ||
+          lessonData.resources.length > 0 ||
+          lessonData.tasks.length > 0;
+
+        if (hasEditorialContent) {
+          await repository.pruneEditorialContent({
+            contentBlockPositions: lessonData.contentBlocks.map(
+              (block) => block.position,
+            ),
+            lessonId: lesson.id,
+            resourceKeys: lessonData.resources.map((resource) => resource.key),
+            taskPositions: lessonData.tasks.map((task) => task.position),
+          });
+        }
+
+        for (const blockData of lessonData.contentBlocks) {
+          await repository.upsertContentBlock({
+            content: blockData.content,
+            lessonId: lesson.id,
+            position: blockData.position,
+            type: toContentBlockType(blockData.type),
+          });
+        }
+
+        const resourceIdsByKey = new Map<string, string>();
+
+        for (const resourceData of lessonData.resources) {
+          const resource = await repository.upsertResource({
+            author: resourceData.author,
+            citation: resourceData.citation,
+            description: resourceData.description,
+            estimatedMinutes: resourceData.estimatedMinutes,
+            isRequired: resourceData.isRequired,
+            key: resourceData.key,
+            lessonId: lesson.id,
+            position: resourceData.position,
+            title: resourceData.title,
+            type: toResourceType(resourceData.type),
+            url: resourceData.url,
+          });
+
+          resourceIdsByKey.set(resourceData.key, resource.id);
+        }
+
+        for (const taskData of lessonData.tasks) {
+          await repository.upsertTask({
+            description: taskData.description,
+            isRequired: taskData.isRequired,
+            lessonId: lesson.id,
+            position: taskData.position,
+            title: taskData.title,
+            type: toTaskType(taskData.type),
+            weight: taskData.weight,
+          });
+        }
+
+        await repository.deleteConceptsNotIn(
+          lesson.id,
+          lessonData.concepts.map((concept) => concept.slug),
+        );
 
         for (const conceptData of lessonData.concepts) {
           assertRequiredConceptHasValidationActivity({
@@ -251,11 +473,26 @@ export async function seedSampleProgram(
                   ),
                   isRequired: conceptData.isRequired,
                   position: 1,
+                  questionCount: conceptData.assessment.questionCount,
+                  title: conceptData.assessment.title,
                 },
               ]
             : [];
 
           await repository.replaceConceptAssessments(concept.id, assessments);
+          const resourceIds = conceptData.resourceKeys.map((resourceKey) => {
+            const resourceId = resourceIdsByKey.get(resourceKey);
+
+            if (!resourceId) {
+              throw new Error(
+                `Unknown resource key "${resourceKey}" for concept "${conceptData.slug}".`,
+              );
+            }
+
+            return resourceId;
+          });
+
+          await repository.replaceConceptResources(concept.id, resourceIds);
         }
       }
     }
@@ -266,7 +503,39 @@ function createSeedProgramRepository(
   client: PrismaClient,
 ): SeedProgramRepository {
   return {
+    async deleteConceptsNotIn(lessonId, slugs) {
+      await client.concept.deleteMany({
+        where: { lessonId, slug: { notIn: slugs } },
+      });
+    },
+    async pruneEditorialContent(input) {
+      await client.$transaction([
+        client.contentBlock.deleteMany({
+          where: {
+            lessonId: input.lessonId,
+            position: { notIn: input.contentBlockPositions },
+          },
+        }),
+        client.resource.deleteMany({
+          where: {
+            lessonId: input.lessonId,
+            OR: [{ key: null }, { key: { notIn: input.resourceKeys } }],
+          },
+        }),
+        client.task.deleteMany({
+          where: {
+            lessonId: input.lessonId,
+            position: { notIn: input.taskPositions },
+          },
+        }),
+      ]);
+    },
     async replaceConceptAssessments(conceptId, assessments) {
+      if (assessments.length === 0) {
+        await client.conceptAssessment.deleteMany({ where: { conceptId } });
+        return;
+      }
+
       await client.$transaction([
         client.conceptAssessment.deleteMany({ where: { conceptId } }),
         client.conceptAssessment.createMany({
@@ -276,6 +545,28 @@ function createSeedProgramRepository(
           })),
         }),
       ]);
+    },
+    async replaceConceptResources(conceptId, resourceIds) {
+      if (resourceIds.length === 0) {
+        await client.conceptResource.deleteMany({ where: { conceptId } });
+        return;
+      }
+
+      await client.$transaction([
+        client.conceptResource.deleteMany({ where: { conceptId } }),
+        client.conceptResource.createMany({
+          data: resourceIds.map((resourceId) => ({ conceptId, resourceId })),
+        }),
+      ]);
+    },
+    async upsertContentBlock(input) {
+      const { lessonId, position, ...data } = input;
+
+      return client.contentBlock.upsert({
+        where: { lessonId_position: { lessonId, position } },
+        create: { lessonId, position, ...data },
+        update: data,
+      });
     },
     async upsertConcept(input) {
       const { lessonId, slug, ...data } = input;
@@ -313,12 +604,30 @@ function createSeedProgramRepository(
         update: data,
       });
     },
+    async upsertResource(input) {
+      const { key, lessonId, ...data } = input;
+
+      return client.resource.upsert({
+        where: { lessonId_key: { key, lessonId } },
+        create: { key, lessonId, ...data },
+        update: data,
+      });
+    },
     async upsertStage(input) {
       const { programId, slug, ...data } = input;
 
       return client.stage.upsert({
         where: { programId_slug: { programId, slug } },
         create: { programId, slug, ...data },
+        update: data,
+      });
+    },
+    async upsertTask(input) {
+      const { lessonId, position, ...data } = input;
+
+      return client.task.upsert({
+        where: { lessonId_position: { lessonId, position } },
+        create: { lessonId, position, ...data },
         update: data,
       });
     },

@@ -19,20 +19,167 @@
               {
                 "title": "Définir la psychologie",
                 "slug": "definir-la-psychologie",
+                "summary": "La psychologie étudie scientifiquement les comportements et les processus mentaux. Cette leçon établit une définition rigoureuse de la discipline, distingue ce qui est directement observable de ce qui doit être inféré et montre pourquoi une affirmation psychologique doit être confrontée à des données.",
+                "objectives": [
+                  "Définir la psychologie comme une discipline scientifique.",
+                  "Distinguer un comportement observable d’un processus mental.",
+                  "Transformer une question générale sur l’être humain en question susceptible d’être étudiée empiriquement.",
+                  "Expliquer pourquoi l’intuition et l’expérience personnelle ne suffisent pas à établir une connaissance psychologique."
+                ],
+                "prerequisites": [],
                 "position": 1,
                 "estimatedMinutes": 90,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "La psychologie ne se limite ni à la psychothérapie ni à l’étude des troubles mentaux. Elle cherche à comprendre comment les êtres humains et, selon les questions étudiées, les autres animaux perçoivent, apprennent, mémorisent, ressentent, décident et agissent. Certaines recherches visent d’abord à produire des connaissances fondamentales ; d’autres utilisent ces connaissances dans la santé, l’éducation, le travail ou l’ergonomie."
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "La psychologie est l’étude scientifique des comportements et des processus mentaux. Un comportement est une activité qu’il est possible d’observer ou de mesurer. Un processus mental désigne notamment une perception, une pensée, une émotion, un souvenir ou une décision ; il n’est pas toujours directement observable, mais il peut être étudié à partir d’indicateurs définis à l’avance."
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Dire qu’une personne « manque de motivation » reste trop vague pour constituer une observation scientifique. Une étude pourrait plutôt mesurer le temps qu’elle consacre à une tâche, le nombre d’essais qu’elle réalise après un échec et ses réponses à une échelle de motivation validée. La notion abstraite devient alors liée à des observations explicites, sans être réduite à une seule mesure."
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Le mot scientifique indique une méthode de travail : formuler une question précise, proposer une explication testable, recueillir des données de manière systématique et accepter que les conclusions soient corrigées par de nouvelles observations. Une étude isolée ne produit pas une vérité définitive. Les résultats gagnent en solidité lorsqu’ils sont examinés par d’autres chercheurs, reproduits et mis en relation avec l’ensemble des connaissances disponibles."
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "À retenir : la psychologie étudie les comportements et les processus mentaux ; elle utilise des observations et des mesures ; elle ne consiste pas à lire dans les pensées ; une affirmation psychologique doit pouvoir être discutée à partir de données plutôt que de la seule intuition."
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.1 What Is Psychology?",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-1-what-is-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.1. OpenStax.",
+                    "description": "Accès libre, en anglais. Lire toute la section 1.1 en relevant la définition de la psychologie, la place de la méthode scientifique et la distinction entre observation et autorité. Cette référence est obligatoire et sa numérotation est stable dans Psychology 2e.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 1
+                  },
+                  {
+                    "key": "apa-definition-psychology",
+                    "type": "website",
+                    "title": "How does the APA define psychology?",
+                    "author": "American Psychological Association",
+                    "url": "https://www.apa.org/support/about-apa.html",
+                    "citation": "American Psychological Association. Frequently Asked Questions About APA, section “How does the APA define psychology?”.",
+                    "description": "Accès libre, en anglais. Consulter la définition institutionnelle courte afin de vérifier l’étendue de la discipline, du fonctionnement cérébral aux comportements collectifs. Ressource obligatoire et volontairement brève.",
+                    "isRequired": true,
+                    "estimatedMinutes": 5,
+                    "position": 2
+                  },
+                  {
+                    "key": "yale-psyc110-lecture-1",
+                    "type": "course",
+                    "title": "Introduction to Psychology — Lecture 1: Introduction",
+                    "author": "Paul Bloom, Yale University",
+                    "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+                    "citation": "Bloom, P. PSYC 110: Introduction to Psychology, Lecture 1. Open Yale Courses.",
+                    "description": "Accès libre, en anglais, avec transcription. Pour cette leçon, regarder ou lire prioritairement le segment « General Goals for the Course » à partir de 10:03. La conférence complète peut être conservée comme approfondissement.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 3
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Définir la psychologie",
-                    "slug": "definir-la-psychologie",
+                    "title": "Objet de la psychologie",
+                    "slug": "objet-psychologie",
+                    "description": "La psychologie étudie les comportements et les processus mentaux dans leurs dimensions biologiques, individuelles et sociales.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-1",
+                      "apa-definition-psychology"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Définir la psychologie",
+                      "title": "Mini-évaluation — Objet de la psychologie",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Comportements et processus mentaux",
+                    "slug": "comportements-processus-mentaux",
+                    "description": "Un comportement peut être observé ou mesuré directement, tandis qu’un processus mental est étudié à l’aide d’indicateurs explicites et d’inférences prudentes.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-1",
+                      "yale-psyc110-lecture-1"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Comportements et processus mentaux",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Démarche empirique",
+                    "slug": "demarche-empirique",
+                    "description": "Une connaissance psychologique scientifique repose sur des questions testables, des observations systématiques et des conclusions révisables.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-1"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Démarche empirique",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Lire la définition universitaire de la psychologie",
+                    "description": "Lire la section 1.1 de Psychology 2e et noter séparément : l’objet de la psychologie, ce qui rend sa démarche scientifique et un exemple de question étudiable.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Formuler sa propre définition",
+                    "description": "Rédiger en 80 à 120 mots une définition de la psychologie comprenant les expressions « comportements », « processus mentaux », « scientifique » et « données », sans recopier les ressources.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Rendre une question observable",
+                    "description": "Choisir une affirmation courante, par exemple « le stress fait perdre la mémoire », puis proposer une question de recherche et deux indicateurs mesurables. L’objectif n’est pas encore de construire un protocole complet.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3
                   }
                 ]
               },

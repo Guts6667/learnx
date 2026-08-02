@@ -19,6 +19,8 @@ interface ConceptReadModel {
     id: string;
     isRequired: boolean;
     position: number;
+    questionCount: number | null;
+    title: string | null;
   }>;
   description: string | null;
   id: string;
@@ -37,6 +39,7 @@ interface ConceptReadModel {
     description: string | null;
     id: string;
     isRequired: boolean;
+    key: string | null;
     progressStatus: ResourceProgressStatus;
     title: string;
     type: string;
@@ -132,6 +135,7 @@ function createPrismaConceptRepository(): ConceptRepository {
           description: resource.description,
           id: resource.id,
           isRequired: resource.isRequired,
+          key: resource.key,
           progressStatus:
             resource.progress[0]?.status ?? ResourceProgressStatus.NOT_STARTED,
           title: resource.title,
@@ -170,6 +174,7 @@ function serializeConcept(concept: ConceptReadModel) {
       description: resource.description,
       id: resource.id,
       isRequired: resource.isRequired,
+      key: resource.key,
       title: resource.title,
       type: resource.type,
       url: resource.url,
