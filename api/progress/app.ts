@@ -18,6 +18,7 @@ import {
   getStageTimeline,
   refreshTimelineForLessonActivity,
 } from '../_lib/timeline-progress.js';
+import { refreshStageValidation } from '../_lib/stage-validation.js';
 
 async function getPrismaClient() {
   const { prisma } = await import('../../src/server/prisma.js');
@@ -573,12 +574,15 @@ progressApp.patch('/api/tasks/:taskId', async (context) => {
   });
 
   const snapshot = await refreshLessonProgress(task.lessonId, userId, now);
-  await refreshTimelineForLessonActivity(
+  const stageId = await refreshTimelineForLessonActivity(
     snapshot.prisma,
     task.lessonId,
     userId,
     now,
   );
+  if (stageId) {
+    await refreshStageValidation(snapshot.prisma, stageId, userId, now);
+  }
 
   return context.json(serializeSnapshot(snapshot));
 });

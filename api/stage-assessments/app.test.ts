@@ -94,7 +94,7 @@ function createRepository() {
     },
     async findSubmissionForReview(requestedSubmissionId) {
       return requestedSubmissionId === submissionId
-        ? { passingScore: 70, submission }
+        ? { passingScore: 70, stageId, submission }
         : null;
     },
     async reviewSubmission(input) {
@@ -268,9 +268,11 @@ describe('stage assessment API', () => {
       ).status,
     ).toBe(403);
 
+    const refreshValidation = vi.fn(async () => undefined);
     const adminApp = createStageAssessmentsApp({
       authentication: authentication(userId, 'ADMIN'),
       now: () => now,
+      refreshValidation,
       repository: state.repository,
     });
     const revisionResponse = await adminApp.request(
@@ -288,6 +290,7 @@ describe('stage assessment API', () => {
       score: 55,
       status: 'NEEDS_REVISION',
     });
+    expect(refreshValidation).toHaveBeenCalledWith(stageId, userId, now);
   });
 
   it('does not review work that is not submitted', async () => {

@@ -6,6 +6,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Spinner } from '@/components/ui/Spinner';
 import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
 import {
+  type StageValidation,
   useModuleQuery,
   useProgramQuery,
   useProgramsQuery,
@@ -30,6 +31,62 @@ function ProgressPlaceholder() {
 
 function DraftBadge() {
   return <Badge tone="warning">Brouillon</Badge>;
+}
+
+const stageStatusLabels: Record<StageValidation['status'], string> = {
+  AVAILABLE: 'Disponible',
+  COMPLETED: 'Terminée',
+  IN_PROGRESS: 'En cours',
+  LOCKED: 'Verrouillée',
+};
+
+function StageValidationCard({
+  validation,
+}: {
+  validation: StageValidation | null;
+}) {
+  if (!validation) return null;
+
+  return (
+    <Card class="space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h2 class="text-xl font-semibold">Validation de l’étape</h2>
+        <Badge tone={validation.isValidated ? 'success' : 'info'}>
+          {stageStatusLabels[validation.status]}
+        </Badge>
+      </div>
+      <ul class="space-y-1 text-sm text-slate-300">
+        <li>
+          Notions obligatoires : {validation.requiredConcepts.validated}/
+          {validation.requiredConcepts.total}
+        </li>
+        <li>
+          Tâches obligatoires : {validation.requiredTasks.validated}/
+          {validation.requiredTasks.total}
+        </li>
+        <li>
+          Évaluations finales : {validation.finalAssessments.validated}/
+          {validation.finalAssessments.total}
+        </li>
+      </ul>
+      {validation.missingRequirements.length === 0 ? (
+        <p class="text-sm text-emerald-300">
+          Toutes les exigences obligatoires sont validées.
+        </p>
+      ) : (
+        <div>
+          <h3 class="font-semibold">Prérequis manquants</h3>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-200">
+            {validation.missingRequirements.map((requirement) => (
+              <li key={`${requirement.type}:${requirement.id ?? 'missing'}`}>
+                {requirement.title}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Card>
+  );
 }
 
 export function ProgramsPage() {
@@ -185,6 +242,7 @@ export function StagePage({
         </div>
       </div>
       <ProgressPlaceholder />
+      <StageValidationCard validation={stage.validation} />
       {stage.modules.length === 0 ? (
         <EmptyState
           description="Les modules publiés apparaîtront ici."

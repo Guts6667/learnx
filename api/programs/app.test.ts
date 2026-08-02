@@ -170,6 +170,20 @@ describe('curriculum draft preview authorization', () => {
       getClient: async () => client,
       readProgramTimeline: async () => null,
       readStageTimeline: async () => null,
+      readStageValidation: async () => ({
+        finalAssessments: { total: 1, validated: 0 },
+        isValidated: false,
+        missingRequirements: [
+          {
+            id: 'assessment-1',
+            title: 'Évaluation finale',
+            type: 'FINAL_ASSESSMENT',
+          },
+        ],
+        requiredConcepts: { total: 0, validated: 0 },
+        requiredTasks: { total: 0, validated: 0 },
+        status: 'AVAILABLE',
+      }),
     });
     const paths = [
       '/api/programs?preview=true',

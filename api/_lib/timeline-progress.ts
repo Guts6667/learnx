@@ -129,7 +129,7 @@ export async function refreshTimelineForLessonActivity(
   lessonId: string,
   userId: string,
   now: Date,
-): Promise<void> {
+): Promise<string | null> {
   const lesson = await prisma.lesson.findFirst({
     where: {
       id: lessonId,
@@ -152,7 +152,7 @@ export async function refreshTimelineForLessonActivity(
   });
 
   if (!lesson) {
-    return;
+    return null;
   }
 
   const stage = lesson.module.stage;
@@ -162,7 +162,7 @@ export async function refreshTimelineForLessonActivity(
   ]);
 
   if (!stageTimeline || !programTimeline) {
-    return;
+    return null;
   }
 
   const currentStageProgress = stage.progress[0];
@@ -208,4 +208,6 @@ export async function refreshTimelineForLessonActivity(
       },
     }),
   ]);
+
+  return stage.id;
 }

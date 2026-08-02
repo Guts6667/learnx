@@ -11,6 +11,7 @@ import {
   getProgramTimeline,
   getStageTimeline,
 } from '../_lib/timeline-progress.js';
+import { getStageValidation } from '../_lib/stage-validation.js';
 
 async function getPrismaClient(): Promise<PrismaClient> {
   const { prisma } = await import('../../src/server/prisma.js');
@@ -23,6 +24,7 @@ interface CurriculumAppOptions {
   getClient?: () => Promise<PrismaClient>;
   readProgramTimeline?: typeof getProgramTimeline;
   readStageTimeline?: typeof getStageTimeline;
+  readStageValidation?: typeof getStageValidation;
 }
 
 const previewQuerySchema = z.object({
@@ -104,6 +106,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
   const getClient = options.getClient ?? getPrismaClient;
   const readProgramTimeline = options.readProgramTimeline ?? getProgramTimeline;
   const readStageTimeline = options.readStageTimeline ?? getStageTimeline;
+  const readStageValidation = options.readStageValidation ?? getStageValidation;
 
   app.use('*', options.authentication ?? requireUser);
 
@@ -211,9 +214,12 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       throw notFound();
     }
 
-    const timeline = await readStageTimeline(prisma, stage.id, user.id);
+    const [timeline, validation] = await Promise.all([
+      readStageTimeline(prisma, stage.id, user.id),
+      readStageValidation(prisma, stage.id, user.id, { preview }),
+    ]);
 
-    return context.json({ stage: { ...stage, timeline } });
+    return context.json({ stage: { ...stage, timeline, validation } });
   });
 
   app.get('/api/modules/:moduleSlug', async (context) => {

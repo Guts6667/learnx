@@ -106,6 +106,20 @@ describe('CurriculumPages', () => {
               position: 1,
               slug: 'introduction',
               title: 'Introduction',
+              validation: {
+                finalAssessments: { total: 1, validated: 0 },
+                isValidated: false,
+                missingRequirements: [
+                  {
+                    id: 'assessment-1',
+                    title: 'Analyser une situation',
+                    type: 'FINAL_ASSESSMENT',
+                  },
+                ],
+                requiredConcepts: { total: 2, validated: 1 },
+                requiredTasks: { total: 1, validated: 0 },
+                status: 'AVAILABLE',
+              },
             },
           }),
         );
@@ -182,6 +196,8 @@ describe('CurriculumPages', () => {
     expect(
       screen.getByText(/Prévisualisation en lecture seule/),
     ).toBeInTheDocument();
+    expect(screen.getByText('Prérequis manquants')).toBeInTheDocument();
+    expect(screen.getByText('Notions obligatoires : 1/2')).toBeInTheDocument();
 
     stageView.unmount();
     renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);

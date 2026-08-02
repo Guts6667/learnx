@@ -14,6 +14,7 @@ import {
 } from '../../src/lib/stage-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { refreshStageValidation } from '../_lib/stage-validation.js';
 
 const identifierSchema = z.uuid();
 const previewSchema = z.object({ preview: z.enum(['true']).optional() });
@@ -71,6 +72,7 @@ interface AssessmentRecord {
 
 interface ReviewRecord {
   passingScore: number | null;
+  stageId: string;
   submission: SubmissionRecord;
 }
 
@@ -112,6 +114,11 @@ interface AppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   repository?: StageAssessmentRepository;
+  refreshValidation?: (
+    stageId: string,
+    userId: string,
+    now: Date,
+  ) => Promise<void>;
 }
 
 async function getPrismaClient(): Promise<PrismaClient> {
@@ -205,14 +212,18 @@ export function createPrismaStageAssessmentRepository(
         where: { id: submissionId },
         select: {
           ...submissionSelect,
-          stageAssessment: { select: { passingScore: true } },
+          stageAssessment: { select: { passingScore: true, stageId: true } },
         },
       });
 
       if (!record) return null;
 
       const { stageAssessment, ...submission } = record;
-      return { passingScore: stageAssessment.passingScore, submission };
+      return {
+        passingScore: stageAssessment.passingScore,
+        stageId: stageAssessment.stageId,
+        submission,
+      };
     },
     async reviewSubmission(input) {
       return client.stageAssessmentSubmission.update({
@@ -301,6 +312,14 @@ function serializeSubmission(submission: SubmissionRecord) {
 export function createStageAssessmentsApp(options: AppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const now = options.now ?? (() => new Date());
+  const refreshValidation =
+    options.refreshValidation ??
+    (options.repository
+      ? async () => undefined
+      : async (stageId: string, userId: string, refreshedAt: Date) => {
+          const prisma = await getPrismaClient();
+          await refreshStageValidation(prisma, stageId, userId, refreshedAt);
+        });
   let defaultRepository: StageAssessmentRepository | undefined;
   const getRepository = async () => {
     if (options.repository) return options.repository;
@@ -426,14 +445,20 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
         );
       }
 
+      const reviewedAt = now();
       const updated = await repository.reviewSubmission({
         id: submissionId,
         reviewFeedback: parsed.data.reviewFeedback ?? null,
-        reviewedAt: now(),
+        reviewedAt,
         score: parsed.data.score ?? null,
         status:
           parsed.data.action === 'validate' ? 'VALIDATED' : 'NEEDS_REVISION',
       });
+      await refreshValidation(
+        reviewRecord.stageId,
+        reviewRecord.submission.userId,
+        reviewedAt,
+      );
       return context.json({ submission: serializeSubmission(updated) });
     },
   );

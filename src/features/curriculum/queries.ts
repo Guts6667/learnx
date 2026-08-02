@@ -76,6 +76,22 @@ export interface ProgramDetail extends ProgramSummary {
 export interface StageDetail extends StageSummary {
   estimatedDurationDays: number | null;
   title: string;
+  validation: StageValidation | null;
+}
+
+export interface StageValidationRequirement {
+  id: string | null;
+  title: string;
+  type: 'FINAL_ASSESSMENT' | 'REQUIRED_CONCEPT' | 'REQUIRED_TASK';
+}
+
+export interface StageValidation {
+  finalAssessments: { total: number; validated: number };
+  isValidated: boolean;
+  missingRequirements: StageValidationRequirement[];
+  requiredConcepts: { total: number; validated: number };
+  requiredTasks: { total: number; validated: number };
+  status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
 }
 
 export interface ModuleDetail extends ModuleSummary {

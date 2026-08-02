@@ -54,6 +54,7 @@ function createAssessment() {
       lessonId,
       masteryThreshold: 70,
       programId,
+      stageId: '58aa6ed5-4984-47c1-902e-020ab72d5824',
       title: 'Démarche empirique',
     },
     id: assessmentId,
@@ -239,9 +240,11 @@ describe('concept assessment API', () => {
 
   it('corrige côté serveur, valide la notion et conserve la tentative', async () => {
     const { attempts, repository } = createRepository();
+    const refreshValidation = vi.fn(async () => undefined);
     const app = createConceptAssessmentsApp({
       authentication,
       now: () => submittedAt,
+      refreshValidation,
       repository,
     });
     const response = await app.request(
@@ -259,6 +262,11 @@ describe('concept assessment API', () => {
     });
     expect(body.corrections[0]).toHaveProperty('correctOptionIds');
     expect(attempts).toHaveLength(1);
+    expect(refreshValidation).toHaveBeenCalledWith(
+      '58aa6ed5-4984-47c1-902e-020ab72d5824',
+      userId,
+      submittedAt,
+    );
   });
 
   it('passe la notion en révision après échec et programme l’échéance en UTC', async () => {

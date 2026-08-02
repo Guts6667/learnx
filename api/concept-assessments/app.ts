@@ -17,6 +17,7 @@ import {
 } from '../../src/lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { refreshStageValidation } from '../_lib/stage-validation.js';
 
 interface AssessmentQuestionReadModel {
   acceptedAnswers: string[];
@@ -39,6 +40,7 @@ interface AssessmentReadModel {
     lessonId: string;
     masteryThreshold: number;
     programId: string;
+    stageId: string;
     title: string;
   };
   id: string;
@@ -95,6 +97,11 @@ interface ConceptAssessmentsAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   now?: () => Date;
   repository?: ConceptAssessmentRepository;
+  refreshValidation?: (
+    stageId: string,
+    userId: string,
+    now: Date,
+  ) => Promise<void>;
 }
 
 const identifierSchema = z.string().uuid();
@@ -228,7 +235,7 @@ export function createPrismaRepository(
                   id: true,
                   module: {
                     select: {
-                      stage: { select: { programId: true } },
+                      stage: { select: { id: true, programId: true } },
                     },
                   },
                 },
@@ -252,6 +259,7 @@ export function createPrismaRepository(
           lessonId: assessment.concept.lesson.id,
           masteryThreshold: assessment.concept.masteryThreshold,
           programId: assessment.concept.lesson.module.stage.programId,
+          stageId: assessment.concept.lesson.module.stage.id,
           title: assessment.concept.title,
         },
         id: assessment.id,
@@ -377,6 +385,14 @@ export function createConceptAssessmentsApp(
 ) {
   const app = new Hono<AuthEnvironment>();
   const now = options.now ?? (() => new Date());
+  const refreshValidation =
+    options.refreshValidation ??
+    (options.repository
+      ? async () => undefined
+      : async (stageId: string, userId: string, refreshedAt: Date) => {
+          const { prisma } = await import('../../src/server/prisma.js');
+          await refreshStageValidation(prisma, stageId, userId, refreshedAt);
+        });
 
   app.use('*', options.authentication ?? requireUser);
 
@@ -471,6 +487,11 @@ export function createConceptAssessmentsApp(
         submittedAt,
         userId: context.get('user').id,
       });
+      await refreshValidation(
+        assessment.concept.stageId,
+        context.get('user').id,
+        submittedAt,
+      );
 
       return context.json(
         {
