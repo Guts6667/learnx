@@ -13,6 +13,7 @@ import {
   ContentBlockType,
   ProgramStatus,
   ResourceType,
+  StageAssessmentType,
   TaskType,
   type Prisma,
   type PrismaClient,
@@ -61,6 +62,21 @@ const conceptAssessmentSchema = z.object({
   type: conceptAssessmentTypeSchema,
   title: z.string().trim().min(1),
   questionCount: z.number().int().positive(),
+});
+const stageAssessmentTypeSchema = z.enum([
+  'project',
+  'case_study',
+  'written_assignment',
+  'practical_exercise',
+  'oral',
+  'simulation',
+  'cumulative_exam',
+]);
+const stageAssessmentSchema = z.object({
+  title: z.string().trim().min(1),
+  type: stageAssessmentTypeSchema,
+  isRequired: z.boolean(),
+  passingScore: z.number().min(0).max(100),
 });
 const conceptSchema = z
   .object({
@@ -132,6 +148,7 @@ const stageSchema = z.object({
   slug: z.string().trim().min(1),
   position: z.number().int().nonnegative(),
   estimatedDurationDays: z.number().int().positive().optional(),
+  assessment: stageAssessmentSchema,
   modules: z.array(moduleSchema),
 });
 
@@ -233,6 +250,14 @@ export interface SeedProgramRepository {
     position: number;
     estimatedDurationDays?: number;
   }): Promise<{ id: string }>;
+  upsertStageAssessment(input: {
+    stageId: string;
+    title: string;
+    type: StageAssessmentType;
+    isRequired: boolean;
+    passingScore: number;
+    position: number;
+  }): Promise<{ id: string }>;
   upsertTask(input: {
     description?: string;
     isRequired: boolean;
@@ -253,6 +278,20 @@ function toConceptAssessmentType(
     practice: ConceptAssessmentType.PRACTICE,
     quiz: ConceptAssessmentType.QUIZ,
     short_answer: ConceptAssessmentType.SHORT_ANSWER,
+  }[type];
+}
+
+function toStageAssessmentType(
+  type: z.infer<typeof stageAssessmentTypeSchema>,
+): StageAssessmentType {
+  return {
+    case_study: StageAssessmentType.CASE_STUDY,
+    cumulative_exam: StageAssessmentType.CUMULATIVE_EXAM,
+    oral: StageAssessmentType.ORAL,
+    practical_exercise: StageAssessmentType.PRACTICAL_EXERCISE,
+    project: StageAssessmentType.PROJECT,
+    simulation: StageAssessmentType.SIMULATION,
+    written_assignment: StageAssessmentType.WRITTEN_ASSIGNMENT,
   }[type];
 }
 
@@ -366,6 +405,15 @@ export async function seedSampleProgram(
       description: getStageDescription(stageData),
       position: stageData.position,
       estimatedDurationDays: stageData.estimatedDurationDays,
+    });
+
+    await repository.upsertStageAssessment({
+      stageId: stage.id,
+      title: stageData.assessment.title,
+      type: toStageAssessmentType(stageData.assessment.type),
+      isRequired: stageData.assessment.isRequired,
+      passingScore: stageData.assessment.passingScore,
+      position: 1,
     });
 
     for (const moduleData of stageData.modules) {
@@ -619,6 +667,15 @@ function createSeedProgramRepository(
       return client.stage.upsert({
         where: { programId_slug: { programId, slug } },
         create: { programId, slug, ...data },
+        update: data,
+      });
+    },
+    async upsertStageAssessment(input) {
+      const { stageId, position, ...data } = input;
+
+      return client.stageAssessment.upsert({
+        where: { stageId_position: { stageId, position } },
+        create: { stageId, position, ...data },
         update: data,
       });
     },

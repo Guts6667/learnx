@@ -4,6 +4,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Spinner } from '@/components/ui/Spinner';
+import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
 import {
   useModuleQuery,
   useProgramQuery,
@@ -205,6 +206,10 @@ export function StagePage({
           </Card>
         ))
       )}
+      <StageAssessmentCard
+        isStagePublished={stage.isPublished}
+        stageId={stage.id}
+      />
     </section>
   );
 }

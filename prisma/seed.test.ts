@@ -11,6 +11,7 @@ function createRepository() {
   const contentBlocks = new Map<string, string>();
   const programs = new Map<string, string>();
   const stages = new Map<string, string>();
+  const stageAssessments = new Map<string, string>();
   const modules = new Map<string, string>();
   const lessons = new Map<string, string>();
   const resources = new Map<string, string>();
@@ -116,6 +117,15 @@ function createRepository() {
       stages.set(key, id);
       return { id };
     },
+    async upsertStageAssessment(input) {
+      const key = `${input.stageId}:${input.position}`;
+      const id =
+        stageAssessments.get(key) ??
+        `stage-assessment-${stageAssessments.size + 1}`;
+
+      stageAssessments.set(key, id);
+      return { id };
+    },
     async upsertTask(input) {
       const key = `${input.lessonId}:${input.position}`;
       const id = tasks.get(key) ?? `task-${tasks.size + 1}`;
@@ -136,6 +146,7 @@ function createRepository() {
     repository,
     resources,
     stages,
+    stageAssessments,
     tasks,
   };
 }
@@ -182,6 +193,7 @@ describe('sample program seed', () => {
       repository,
       resources,
       stages,
+      stageAssessments,
       tasks,
     } = createRepository();
 
@@ -190,6 +202,7 @@ describe('sample program seed', () => {
 
     expect(programs).toHaveLength(1);
     expect(stages).toHaveLength(5);
+    expect(stageAssessments).toHaveLength(5);
     expect(modules).toHaveLength(6);
     expect(lessons).toHaveLength(21);
     expect(concepts).toHaveLength(23);

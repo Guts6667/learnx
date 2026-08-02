@@ -96,6 +96,27 @@ enum StageProgressStatus {
   @@map("stage_progress_status")
 }
 
+enum StageAssessmentType {
+  PROJECT            @map("project")
+  CASE_STUDY         @map("case_study")
+  WRITTEN_ASSIGNMENT @map("written_assignment")
+  PRACTICAL_EXERCISE @map("practical_exercise")
+  ORAL               @map("oral")
+  SIMULATION         @map("simulation")
+  CUMULATIVE_EXAM    @map("cumulative_exam")
+
+  @@map("stage_assessment_type")
+}
+
+enum StageAssessmentSubmissionStatus {
+  DRAFT          @map("draft")
+  SUBMITTED      @map("submitted")
+  VALIDATED      @map("validated")
+  NEEDS_REVISION @map("needs_revision")
+
+  @@map("stage_assessment_submission_status")
+}
+
 enum ConceptAssessmentType {
   QUIZ          @map("quiz")
   SHORT_ANSWER  @map("short_answer")
@@ -138,23 +159,24 @@ enum ReviewStatus {
 }
 
 model User {
-  id                 String                     @id @default(uuid()) @db.Uuid
-  email              String                     @unique
-  passwordHash       String                     @map("password_hash")
-  displayName        String                     @map("display_name")
-  role               Role                       @default(USER)
-  createdAt          DateTime                   @default(now()) @map("created_at")
-  updatedAt          DateTime                   @updatedAt @map("updated_at")
-  sessions           Session[]
-  programs           Program[]
-  programProgresses  ProgramProgress[]
-  stageProgresses    StageProgress[]
-  lessonProgresses   LessonProgress[]
-  taskCompletions    TaskCompletion[]
-  resourceProgresses ResourceProgress[]
-  conceptProgresses  ConceptProgress[]
-  conceptAttempts    ConceptAssessmentAttempt[]
-  reviewItems        ReviewItem[]
+  id                         String                      @id @default(uuid()) @db.Uuid
+  email                      String                      @unique
+  passwordHash               String                      @map("password_hash")
+  displayName                String                      @map("display_name")
+  role                       Role                        @default(USER)
+  createdAt                  DateTime                    @default(now()) @map("created_at")
+  updatedAt                  DateTime                    @updatedAt @map("updated_at")
+  sessions                   Session[]
+  programs                   Program[]
+  programProgresses          ProgramProgress[]
+  stageProgresses            StageProgress[]
+  lessonProgresses           LessonProgress[]
+  taskCompletions            TaskCompletion[]
+  resourceProgresses         ResourceProgress[]
+  conceptProgresses          ConceptProgress[]
+  conceptAttempts            ConceptAssessmentAttempt[]
+  stageAssessmentSubmissions StageAssessmentSubmission[]
+  reviewItems                ReviewItem[]
 
   @@map("users")
 }
@@ -195,24 +217,67 @@ model Program {
 }
 
 model Stage {
-  id                    String          @id @default(uuid()) @db.Uuid
-  programId             String          @map("program_id") @db.Uuid
+  id                    String            @id @default(uuid()) @db.Uuid
+  programId             String            @map("program_id") @db.Uuid
   title                 String
   slug                  String
   description           String
-  position              Int             @default(0)
-  estimatedMinutes      Int?            @map("estimated_minutes")
-  estimatedDurationDays Int?            @map("estimated_duration_days")
-  isPublished           Boolean         @default(false) @map("is_published")
-  createdAt             DateTime        @default(now()) @map("created_at")
-  updatedAt             DateTime        @updatedAt @map("updated_at")
-  program               Program         @relation(fields: [programId], references: [id], onDelete: Cascade)
+  position              Int               @default(0)
+  estimatedMinutes      Int?              @map("estimated_minutes")
+  estimatedDurationDays Int?              @map("estimated_duration_days")
+  isPublished           Boolean           @default(false) @map("is_published")
+  createdAt             DateTime          @default(now()) @map("created_at")
+  updatedAt             DateTime          @updatedAt @map("updated_at")
+  program               Program           @relation(fields: [programId], references: [id], onDelete: Cascade)
   modules               Module[]
   progress              StageProgress[]
+  assessments           StageAssessment[]
 
   @@unique([programId, slug])
   @@index([programId, position])
   @@map("stages")
+}
+
+model StageAssessment {
+  id           String                      @id @default(uuid()) @db.Uuid
+  stageId      String                      @map("stage_id") @db.Uuid
+  title        String
+  description  String?
+  type         StageAssessmentType
+  instructions String?
+  rubric       Json?                       @map("rubric_json")
+  passingScore Float?                      @map("passing_score")
+  isRequired   Boolean                     @default(true) @map("is_required")
+  position     Int                         @default(0)
+  createdAt    DateTime                    @default(now()) @map("created_at")
+  updatedAt    DateTime                    @updatedAt @map("updated_at")
+  stage        Stage                       @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  submissions  StageAssessmentSubmission[]
+
+  @@unique([stageId, position])
+  @@index([stageId, position])
+  @@map("stage_assessments")
+}
+
+model StageAssessmentSubmission {
+  id                String                          @id @default(uuid()) @db.Uuid
+  userId            String                          @map("user_id") @db.Uuid
+  stageAssessmentId String                          @map("stage_assessment_id") @db.Uuid
+  contentMarkdown   String?                         @map("content_markdown")
+  attachmentUrl     String?                         @map("attachment_url")
+  score             Float?
+  reviewFeedback    String?                         @map("review_feedback")
+  status            StageAssessmentSubmissionStatus @default(DRAFT)
+  submittedAt       DateTime?                       @map("submitted_at")
+  reviewedAt        DateTime?                       @map("reviewed_at")
+  createdAt         DateTime                        @default(now()) @map("created_at")
+  updatedAt         DateTime                        @updatedAt @map("updated_at")
+  user              User                            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stageAssessment   StageAssessment                 @relation(fields: [stageAssessmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stageAssessmentId])
+  @@index([stageAssessmentId, status])
+  @@map("stage_assessment_submissions")
 }
 
 model Module {

@@ -111,6 +111,26 @@ describe('CurriculumPages', () => {
         );
       }
 
+      if (path === '/api/stages/stage-1/assessment?preview=true') {
+        return Promise.resolve(
+          jsonResponse({
+            assessment: {
+              description: null,
+              id: 'assessment-1',
+              instructions: null,
+              isRequired: true,
+              passingScore: 70,
+              position: 1,
+              rubric: null,
+              stageId: 'stage-1',
+              submission: null,
+              title: 'Analyser une situation',
+              type: 'CASE_STUDY',
+            },
+          }),
+        );
+      }
+
       return Promise.resolve(
         jsonResponse({
           module: {
@@ -152,6 +172,16 @@ describe('CurriculumPages', () => {
       await screen.findByRole('link', { name: 'Ouvrir le module' }),
     ).toHaveAttribute('href', '/program/bases/module/premiers-pas');
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
+    expect(
+      await screen.findByRole('heading', {
+        level: 2,
+        name: 'Évaluation finale',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Type : Étude de cas')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Prévisualisation en lecture seule/),
+    ).toBeInTheDocument();
 
     stageView.unmount();
     renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);
