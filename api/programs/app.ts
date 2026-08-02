@@ -3,6 +3,10 @@ import { Hono } from 'hono';
 import { ProgramStatus } from '../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  getProgramTimeline,
+  getStageTimeline,
+} from '../_lib/timeline-progress.js';
 
 async function getPrismaClient() {
   const { prisma } = await import('../../src/server/prisma.js');
@@ -80,8 +84,14 @@ curriculumApp.get('/api/programs', async (context) => {
       },
     },
   });
+  const programsWithTimeline = await Promise.all(
+    programs.map(async (program) => ({
+      ...program,
+      timeline: await getProgramTimeline(prisma, program.id, user.id),
+    })),
+  );
 
-  return context.json({ programs });
+  return context.json({ programs: programsWithTimeline });
 });
 
 curriculumApp.get('/api/programs/:programSlug', async (context) => {
@@ -106,7 +116,17 @@ curriculumApp.get('/api/programs/:programSlug', async (context) => {
     throw notFound();
   }
 
-  return context.json({ program });
+  const [timeline, stages] = await Promise.all([
+    getProgramTimeline(prisma, program.id, user.id),
+    Promise.all(
+      program.stages.map(async (stage) => ({
+        ...stage,
+        timeline: await getStageTimeline(prisma, stage.id, user.id),
+      })),
+    ),
+  ]);
+
+  return context.json({ program: { ...program, stages, timeline } });
 });
 
 curriculumApp.get(
@@ -131,7 +151,9 @@ curriculumApp.get(
       throw notFound();
     }
 
-    return context.json({ stage });
+    const timeline = await getStageTimeline(prisma, stage.id, user.id);
+
+    return context.json({ stage: { ...stage, timeline } });
   },
 );
 

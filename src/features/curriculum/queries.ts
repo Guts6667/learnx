@@ -6,10 +6,31 @@ import { apiRequest } from '@/lib/api-client';
 
 export interface ProgramSummary {
   description: string;
+  estimatedDurationDays: number | null;
   id: string;
   slug: string;
   stages: Array<{ id: string; position: number; slug: string; title: string }>;
+  timeline: TimelineSnapshot;
   title: string;
+}
+
+export type TemporalStatus =
+  | 'ahead'
+  | 'behind'
+  | 'completed_early'
+  | 'completed_late'
+  | 'completed_on_time'
+  | 'on_track'
+  | 'overdue';
+
+export interface TimelineSnapshot {
+  actualPercent: number;
+  completedAt: string | null;
+  expectedPercent: number;
+  progressDelta: number;
+  startedAt: string | null;
+  targetEndAt: string | null;
+  temporalStatus: TemporalStatus | null;
 }
 
 export interface LessonSummary {
@@ -34,6 +55,7 @@ export interface StageSummary {
   modules: ModuleSummary[];
   position: number;
   slug: string;
+  timeline: TimelineSnapshot;
   title: string;
 }
 

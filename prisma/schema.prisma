@@ -87,6 +87,15 @@ enum ResourceProgressStatus {
   @@map("resource_progress_status")
 }
 
+enum StageProgressStatus {
+  LOCKED      @map("locked")
+  AVAILABLE   @map("available")
+  IN_PROGRESS @map("in_progress")
+  COMPLETED   @map("completed")
+
+  @@map("stage_progress_status")
+}
+
 model User {
   id                 String             @id @default(uuid()) @db.Uuid
   email              String             @unique
@@ -97,6 +106,8 @@ model User {
   updatedAt          DateTime           @updatedAt @map("updated_at")
   sessions           Session[]
   programs           Program[]
+  programProgresses  ProgramProgress[]
+  stageProgresses    StageProgress[]
   lessonProgresses   LessonProgress[]
   taskCompletions    TaskCompletion[]
   resourceProgresses ResourceProgress[]
@@ -118,19 +129,20 @@ model Session {
 }
 
 model Program {
-  id                    String        @id @default(uuid()) @db.Uuid
-  ownerId               String        @map("owner_id") @db.Uuid
+  id                    String            @id @default(uuid()) @db.Uuid
+  ownerId               String            @map("owner_id") @db.Uuid
   title                 String
   slug                  String
   description           String
-  status                ProgramStatus @default(DRAFT)
+  status                ProgramStatus     @default(DRAFT)
   icon                  String?
-  position              Int           @default(0)
-  estimatedDurationDays Int?          @map("estimated_duration_days")
-  createdAt             DateTime      @default(now()) @map("created_at")
-  updatedAt             DateTime      @updatedAt @map("updated_at")
-  owner                 User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  position              Int               @default(0)
+  estimatedDurationDays Int?              @map("estimated_duration_days")
+  createdAt             DateTime          @default(now()) @map("created_at")
+  updatedAt             DateTime          @updatedAt @map("updated_at")
+  owner                 User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   stages                Stage[]
+  progress              ProgramProgress[]
 
   @@unique([ownerId, slug])
   @@index([ownerId, position])
@@ -138,19 +150,20 @@ model Program {
 }
 
 model Stage {
-  id                    String   @id @default(uuid()) @db.Uuid
-  programId             String   @map("program_id") @db.Uuid
+  id                    String          @id @default(uuid()) @db.Uuid
+  programId             String          @map("program_id") @db.Uuid
   title                 String
   slug                  String
   description           String
-  position              Int      @default(0)
-  estimatedMinutes      Int?     @map("estimated_minutes")
-  estimatedDurationDays Int?     @map("estimated_duration_days")
-  isPublished           Boolean  @default(false) @map("is_published")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
-  program               Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  position              Int             @default(0)
+  estimatedMinutes      Int?            @map("estimated_minutes")
+  estimatedDurationDays Int?            @map("estimated_duration_days")
+  isPublished           Boolean         @default(false) @map("is_published")
+  createdAt             DateTime        @default(now()) @map("created_at")
+  updatedAt             DateTime        @updatedAt @map("updated_at")
+  program               Program         @relation(fields: [programId], references: [id], onDelete: Cascade)
   modules               Module[]
+  progress              StageProgress[]
 
   @@unique([programId, slug])
   @@index([programId, position])
@@ -262,6 +275,41 @@ model LessonProgress {
   @@unique([userId, lessonId])
   @@index([userId, status])
   @@map("lesson_progress")
+}
+
+model ProgramProgress {
+  id           String    @id @default(uuid()) @db.Uuid
+  userId       String    @map("user_id") @db.Uuid
+  programId    String    @map("program_id") @db.Uuid
+  percent      Float     @default(0)
+  startedAt    DateTime? @map("started_at")
+  targetEndAt  DateTime? @map("target_end_at")
+  completedAt  DateTime? @map("completed_at")
+  lastViewedAt DateTime  @default(now()) @map("last_viewed_at")
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program      Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([userId, lastViewedAt])
+  @@map("program_progress")
+}
+
+model StageProgress {
+  id           String              @id @default(uuid()) @db.Uuid
+  userId       String              @map("user_id") @db.Uuid
+  stageId      String              @map("stage_id") @db.Uuid
+  status       StageProgressStatus @default(AVAILABLE)
+  percent      Float               @default(0)
+  startedAt    DateTime?           @map("started_at")
+  targetEndAt  DateTime?           @map("target_end_at")
+  completedAt  DateTime?           @map("completed_at")
+  lastViewedAt DateTime?           @map("last_viewed_at")
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stage        Stage               @relation(fields: [stageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stageId])
+  @@index([userId, status])
+  @@map("stage_progress")
 }
 
 model TaskCompletion {

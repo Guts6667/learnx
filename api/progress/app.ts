@@ -7,8 +7,17 @@ import {
   TaskCompletionStatus,
 } from '../../generated/prisma/client.js';
 import { calculateProgress } from '../../src/lib/progress.js';
+import {
+  calculateTargetEndDate,
+  calculateTimelineSnapshot,
+} from '../../src/lib/timeline.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  getProgramTimeline,
+  getStageTimeline,
+  refreshTimelineForLessonActivity,
+} from '../_lib/timeline-progress.js';
 
 async function getPrismaClient() {
   const { prisma } = await import('../../src/server/prisma.js');
@@ -22,6 +31,9 @@ const taskStatusSchema = z.object({
 });
 const resourceStatusSchema = z.object({
   status: z.enum(['NOT_STARTED', 'STARTED', 'COMPLETED']),
+});
+const scheduleSchema = z.object({
+  targetEndAt: z.iso.datetime({ offset: true }),
 });
 
 function notFound(): ApiError {
@@ -48,6 +60,30 @@ async function parseBody(request: Request): Promise<unknown> {
   } catch {
     throw invalidRequest();
   }
+}
+
+function assertTargetAfterStart(startedAt: Date, targetEndAt: Date): void {
+  if (targetEndAt.getTime() <= startedAt.getTime()) {
+    throw invalidRequest();
+  }
+}
+
+function createTimelineResponse(
+  actualProgress: number,
+  progress: {
+    completedAt: Date | null;
+    startedAt: Date | null;
+    targetEndAt: Date | null;
+  },
+  now: Date,
+) {
+  return calculateTimelineSnapshot({
+    actualProgress,
+    completedAt: progress.completedAt,
+    now,
+    startedAt: progress.startedAt,
+    targetEndAt: progress.targetEndAt,
+  });
 }
 
 async function getPublishedLessonForUser(lessonId: string, userId: string) {
@@ -205,6 +241,201 @@ progressApp.onError((error, context) => {
   );
 });
 
+progressApp.post('/api/programs/:programId/start', async (context) => {
+  const programId = assertIdentifier(context.req.param('programId'));
+  const userId = context.get('user').id;
+  const prisma = await getPrismaClient();
+  const program = await prisma.program.findFirst({
+    where: { id: programId, ownerId: userId, status: 'ACTIVE' },
+    select: { estimatedDurationDays: true, id: true },
+  });
+
+  if (!program) {
+    throw notFound();
+  }
+
+  const now = new Date();
+  const [currentProgress, timeline] = await Promise.all([
+    prisma.programProgress.findUnique({
+      where: { userId_programId: { programId, userId } },
+    }),
+    getProgramTimeline(prisma, programId, userId, now),
+  ]);
+  const startedAt = currentProgress?.startedAt ?? now;
+  const targetEndAt =
+    currentProgress?.targetEndAt ??
+    calculateTargetEndDate(startedAt, program.estimatedDurationDays);
+  const progress = await prisma.programProgress.upsert({
+    where: { userId_programId: { programId, userId } },
+    create: {
+      lastViewedAt: now,
+      percent: timeline?.actualPercent ?? 0,
+      programId,
+      startedAt,
+      targetEndAt,
+      userId,
+    },
+    update: {
+      lastViewedAt: now,
+      percent: timeline?.actualPercent ?? 0,
+      startedAt,
+      targetEndAt,
+    },
+  });
+
+  return context.json({
+    timeline: createTimelineResponse(progress.percent, progress, now),
+  });
+});
+
+progressApp.patch('/api/programs/:programId/schedule', async (context) => {
+  const programId = assertIdentifier(context.req.param('programId'));
+  const parsedInput = scheduleSchema.safeParse(
+    await parseBody(context.req.raw),
+  );
+
+  if (!parsedInput.success) {
+    throw invalidRequest();
+  }
+
+  const userId = context.get('user').id;
+  const prisma = await getPrismaClient();
+  const currentProgress = await prisma.programProgress.findFirst({
+    where: { programId, userId, program: { ownerId: userId } },
+  });
+
+  if (!currentProgress) {
+    throw notFound();
+  }
+
+  if (!currentProgress.startedAt) {
+    throw new ApiError(
+      'TIMELINE_NOT_STARTED',
+      'Start this program before changing its target date.',
+      409,
+    );
+  }
+
+  const targetEndAt = new Date(parsedInput.data.targetEndAt);
+  assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
+  const now = new Date();
+  const timeline = await getProgramTimeline(prisma, programId, userId, now);
+  const progress = await prisma.programProgress.update({
+    where: { userId_programId: { programId, userId } },
+    data: { lastViewedAt: now, targetEndAt },
+  });
+
+  return context.json({
+    timeline: createTimelineResponse(
+      timeline?.actualPercent ?? progress.percent,
+      progress,
+      now,
+    ),
+  });
+});
+
+progressApp.post('/api/stages/:stageId/start', async (context) => {
+  const stageId = assertIdentifier(context.req.param('stageId'));
+  const userId = context.get('user').id;
+  const prisma = await getPrismaClient();
+  const stage = await prisma.stage.findFirst({
+    where: {
+      id: stageId,
+      isPublished: true,
+      program: { ownerId: userId, status: 'ACTIVE' },
+    },
+    select: { estimatedDurationDays: true, id: true },
+  });
+
+  if (!stage) {
+    throw notFound();
+  }
+
+  const now = new Date();
+  const [currentProgress, timeline] = await Promise.all([
+    prisma.stageProgress.findUnique({
+      where: { userId_stageId: { stageId, userId } },
+    }),
+    getStageTimeline(prisma, stageId, userId, now),
+  ]);
+  const startedAt = currentProgress?.startedAt ?? now;
+  const targetEndAt =
+    currentProgress?.targetEndAt ??
+    calculateTargetEndDate(startedAt, stage.estimatedDurationDays);
+  const progress = await prisma.stageProgress.upsert({
+    where: { userId_stageId: { stageId, userId } },
+    create: {
+      lastViewedAt: now,
+      percent: timeline?.actualPercent ?? 0,
+      stageId,
+      startedAt,
+      status: 'IN_PROGRESS',
+      targetEndAt,
+      userId,
+    },
+    update: {
+      lastViewedAt: now,
+      percent: timeline?.actualPercent ?? 0,
+      startedAt,
+      status:
+        currentProgress?.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS',
+      targetEndAt,
+    },
+  });
+
+  return context.json({
+    status: progress.status,
+    timeline: createTimelineResponse(progress.percent, progress, now),
+  });
+});
+
+progressApp.patch('/api/stages/:stageId/schedule', async (context) => {
+  const stageId = assertIdentifier(context.req.param('stageId'));
+  const parsedInput = scheduleSchema.safeParse(
+    await parseBody(context.req.raw),
+  );
+
+  if (!parsedInput.success) {
+    throw invalidRequest();
+  }
+
+  const userId = context.get('user').id;
+  const prisma = await getPrismaClient();
+  const currentProgress = await prisma.stageProgress.findFirst({
+    where: { stageId, userId, stage: { program: { ownerId: userId } } },
+  });
+
+  if (!currentProgress) {
+    throw notFound();
+  }
+
+  if (!currentProgress.startedAt) {
+    throw new ApiError(
+      'TIMELINE_NOT_STARTED',
+      'Start this stage before changing its target date.',
+      409,
+    );
+  }
+
+  const targetEndAt = new Date(parsedInput.data.targetEndAt);
+  assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
+  const now = new Date();
+  const timeline = await getStageTimeline(prisma, stageId, userId, now);
+  const progress = await prisma.stageProgress.update({
+    where: { userId_stageId: { stageId, userId } },
+    data: { lastViewedAt: now, targetEndAt },
+  });
+
+  return context.json({
+    status: progress.status,
+    timeline: createTimelineResponse(
+      timeline?.actualPercent ?? progress.percent,
+      progress,
+      now,
+    ),
+  });
+});
+
 progressApp.get('/api/lessons/:lessonId/progress', async (context) => {
   const lessonId = assertIdentifier(context.req.param('lessonId'));
   const snapshot = await getProgressSnapshot(lessonId, context.get('user').id);
@@ -238,6 +469,13 @@ progressApp.post('/api/lessons/:lessonId/start', async (context) => {
           : LessonProgressStatus.IN_PROGRESS,
     },
   });
+
+  await refreshTimelineForLessonActivity(
+    snapshot.prisma,
+    lessonId,
+    userId,
+    now,
+  );
 
   return context.json({
     ...serializeSnapshot({ ...snapshot, lessonProgress }),
@@ -277,6 +515,13 @@ progressApp.post('/api/lessons/:lessonId/complete', async (context) => {
       status: LessonProgressStatus.COMPLETED,
     },
   });
+
+  await refreshTimelineForLessonActivity(
+    snapshot.prisma,
+    lessonId,
+    userId,
+    now,
+  );
 
   return context.json({
     ...serializeSnapshot({ ...snapshot, lessonProgress, percent: 100 }),
@@ -328,6 +573,12 @@ progressApp.patch('/api/tasks/:taskId', async (context) => {
   });
 
   const snapshot = await refreshLessonProgress(task.lessonId, userId, now);
+  await refreshTimelineForLessonActivity(
+    snapshot.prisma,
+    task.lessonId,
+    userId,
+    now,
+  );
 
   return context.json(serializeSnapshot(snapshot));
 });
@@ -377,6 +628,12 @@ progressApp.patch('/api/resources/:resourceId/progress', async (context) => {
   });
 
   const snapshot = await refreshLessonProgress(resource.lessonId, userId, now);
+  await refreshTimelineForLessonActivity(
+    snapshot.prisma,
+    resource.lessonId,
+    userId,
+    now,
+  );
 
   return context.json(serializeSnapshot(snapshot));
 });

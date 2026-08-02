@@ -7,6 +7,7 @@ export type ApiErrorCode =
   | 'INTERNAL_ERROR'
   | 'LESSON_NOT_READY'
   | 'RESOURCE_NOT_FOUND'
+  | 'TIMELINE_NOT_STARTED'
   | 'TOO_MANY_LOGIN_ATTEMPTS';
 
 export interface ApiErrorBody {
