@@ -1,0 +1,115 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_001",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "decouvrir-discipline",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Découvrir la discipline",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser un projet d’intervention en entreprise afin de distinguer affirmation psychologique, question scientifique, domaines pertinents, titres professionnels et exigences éthiques.",
+    "instructions": [
+      "Lire le cas NovaWork et séparer les faits observés, les interprétations et les affirmations qui demandent des données.",
+      "Formuler deux questions psychologiques testables et proposer pour chacune au moins un indicateur observable.",
+      "Mobiliser au moins trois domaines ou niveaux d’explication différents et justifier leur complémentarité.",
+      "Distinguer les rôles possibles d’un psychologue du travail, d’un psychologue clinicien, d’un psychiatre et d’un psychothérapeute sans attribuer de compétence automatique.",
+      "Identifier au moins cinq enjeux éthiques ou professionnels, notamment finalité, information, consentement, confidentialité, compétence et orientation.",
+      "Proposer un plan d’action prudent qui indique les informations manquantes, les vérifications nécessaires et les limites de la conclusion."
+    ],
+    "case": "NovaWork emploie 120 personnes. Après une hausse des absences, la direction achète une application présentée comme « validée par les neurosciences ». Un questionnaire de dix items classe chaque salarié comme motivé, fragile ou résistant. Le prestataire promet d’identifier les futurs arrêts de travail avec 95 % de précision, sans fournir d’étude ni préciser la population sur laquelle l’outil a été évalué. La participation est annoncée comme volontaire, mais les responsables d’équipe relancent publiquement les personnes qui ne répondent pas. La notice parle de résultats anonymes ; la direction demande pourtant les scores individuels pour décider des affectations. Le prestataire se présente comme « psycho-expert et analyste » sans indiquer de titre protégé ni de formation vérifiable. Une salariée signale des attaques de panique et demande si l’intervenant peut lui prescrire un traitement. La direction souhaite lancer le dispositif la semaine suivante et vous demande un avis argumenté.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Dossier structuré de 900 à 1 200 mots avec les six rubriques demandées et citation des ressources de l’étape.",
+    "conceptSlugs": [
+      "objet-psychologie",
+      "comportements-processus-mentaux",
+      "demarche-empirique",
+      "diversite-domaines-psychologiques",
+      "niveaux-explication-complementaires",
+      "recherche-et-applications",
+      "titres-et-roles-france",
+      "competence-limites-orientation",
+      "droits-consentement-confidentialite"
+    ],
+    "rubric": [
+      {
+        "criterion": "Cadrage scientifique",
+        "weight": 25,
+        "requirements": [
+          "Les faits, interprétations et affirmations sont distingués.",
+          "Deux questions testables et leurs indicateurs sont formulés.",
+          "La promesse de précision est traitée comme une affirmation à vérifier."
+        ]
+      },
+      {
+        "criterion": "Mobilisation des domaines",
+        "weight": 20,
+        "requirements": [
+          "Au moins trois domaines ou niveaux sont correctement mobilisés.",
+          "Leur pertinence et leur complémentarité sont justifiées.",
+          "Aucun domaine n’est présenté comme explication totale par défaut."
+        ]
+      },
+      {
+        "criterion": "Titres, compétences et orientation",
+        "weight": 20,
+        "requirements": [
+          "Les titres et rôles sont distingués sans extrapolation.",
+          "Les qualifications du prestataire sont identifiées comme à vérifier.",
+          "La demande de prescription et la situation de panique conduisent à une orientation adaptée et prudente."
+        ]
+      },
+      {
+        "criterion": "Analyse éthique et protection des personnes",
+        "weight": 25,
+        "requirements": [
+          "Finalité, information, consentement, confidentialité, compétence et rapport de pouvoir sont analysés.",
+          "La contradiction entre anonymat et scores individuels est explicitée.",
+          "Les propositions réduisent concrètement les risques pour les salariés."
+        ]
+      },
+      {
+        "criterion": "Argumentation et limites",
+        "weight": 10,
+        "requirements": [
+          "La réponse est structurée, sourcée et compréhensible.",
+          "Les informations manquantes et les limites de l’avis sont indiquées.",
+          "Le plan d’action ne promet pas de résultat non démontré."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions correspondantes, corriger la partie concernée en indiquant les changements et soumettre une version révisée. Une nouvelle soumission doit conserver les sources et expliciter les limites restantes."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "seed/sample-program.json#definir-la-psychologie",
+      "PEDAGOGY_ASSESSMENT_BANK_001",
+      "PEDAGOGY_SPEC_002",
+      "PEDAGOGY_SPEC_003"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas est fictif et ne doit pas être présenté comme un cas réel.",
+        "Revue humaine de domaine et relecture du cadre français requises avant publication.",
+        "Le seed importe les quatre champs de assessment.seed ; les consignes et la grille exigent encore une intégration de données séparée."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de l’étude de cas finale et de sa grille à cinq critères.",
+        "reviewRequired": "editorial_subject_and_legal"
+      }
+    ]
+  }
+}

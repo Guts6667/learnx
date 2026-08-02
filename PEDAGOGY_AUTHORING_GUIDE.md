@@ -236,6 +236,7 @@ Le sidecar n’est jamais copié dans `seed/sample-program.json`.
   "references": [],
   "contentBlockSources": [],
   "resourceChecks": [],
+  "assessmentBanks": [],
   "review": {
     "editorialReviewer": null,
     "subjectReviewer": null,
@@ -341,7 +342,53 @@ audio, `mediaSegment` utilise `HH:MM:SS-HH:MM:SS` et
 `transcriptAvailable` est un booléen. Une ressource obligatoire `restricted` ou
 `broken` exige `alternativeResourceKey`.
 
-### 5.4 Historique
+### 5.4 Banques de questions
+
+Le seed MVP ne lit pas encore les questions. Elles sont néanmoins livrées dans
+`editorial.assessmentBanks`, avec une forme directement alignée sur
+`ConceptAssessmentQuestion` et `ConceptAssessmentOption` :
+
+```json
+{
+  "conceptSlug": "demarche-empirique",
+  "assessmentTitle": "Mini-évaluation — Démarche empirique",
+  "questions": [
+    {
+      "type": "single_choice",
+      "prompt": "Quelle proposition est testable ?",
+      "explanation": "Une proposition testable relie des variables observables.",
+      "acceptedAnswers": [],
+      "position": 1,
+      "options": [
+        {
+          "label": "Le sommeil mesuré est associé au nombre d’erreurs.",
+          "isCorrect": true,
+          "position": 1
+        },
+        {
+          "label": "Le sommeil possède une énergie invisible.",
+          "isCorrect": false,
+          "position": 2
+        }
+      ]
+    }
+  ]
+}
+```
+
+Types autorisés : `true_false`, `single_choice`, `multiple_choice` et
+`short_answer`. Pour `short_answer`, `options` est vide et `acceptedAnswers`
+contient toutes les réponses exactes acceptées après normalisation de la casse et
+des espaces. Pour les autres types, `acceptedAnswers` est vide et les options
+correctes portent `isCorrect: true`.
+
+Chaque banque correspond à une notion de `lesson.concepts`. Son titre et son
+nombre de questions correspondent exactement à `concept.assessment`. Les
+questions ne sont jamais copiées dans `lesson` tant que `prisma/seed.ts` ne les
+accepte pas. Leur import relève d’une intégration technique séparée et ne doit
+pas retarder la rédaction.
+
+### 5.5 Historique
 
 Chaque changement est résumé :
 
@@ -400,6 +447,8 @@ manquante de sa propre initiative. La spec retourne en révision.
 - [ ] `lesson` ne contient que les champs acceptés par `prisma/seed.ts`.
 - [ ] Types, positions, poids, seuils et nombres de questions sont valides.
 - [ ] Toutes les notions obligatoires ont une évaluation.
+- [ ] Chaque évaluation possède une banque dont le titre et le nombre de
+      questions correspondent aux métadonnées de la notion.
 - [ ] Tous les `resourceKeys` existent dans la même leçon.
 - [ ] Tous les blocs de connaissance ont des références avec localisateur.
 - [ ] Chaque ressource a été contrôlée et possède une consigne.
@@ -411,3 +460,90 @@ manquante de sa propre initiative. La spec retourne en révision.
 
 Une case non satisfaite conserve `status: "draft"` ou
 `status: "editorial_review"` et `readyForPublication: false`.
+
+## 9. Artefact d’évaluation finale d’étape
+
+Les consignes et la grille qui dépassent les quatre champs du seed sont livrées
+dans `PEDAGOGY_STAGE_ASSESSMENT_XXX.json`. L’objet racine contient exactement :
+
+```json
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_001",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "decouvrir-discipline",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Découvrir la discipline",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "But et contexte de l’évaluation.",
+    "instructions": ["Consigne observable."],
+    "case": "Cas fictif complet à analyser.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Réponse structurée de 900 à 1 200 mots.",
+    "conceptSlugs": ["objet-psychologie"],
+    "rubric": [
+      {
+        "criterion": "Exactitude conceptuelle",
+        "weight": 40,
+        "requirements": ["Les concepts sont employés correctement."]
+      }
+    ],
+    "remediation": "Revoir les notions non maîtrisées puis soumettre une révision."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-03",
+    "referenceIds": [],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": []
+    },
+    "changeLog": []
+  }
+}
+```
+
+Les poids de `rubric` totalisent 100. `assessment.seed` reste identique à
+`program.stages[].assessment`. Les autres champs correspondent aux colonnes déjà
+présentes sur `StageAssessment` ou à une preuve éditoriale ; leur import doit être
+validé séparément si le seed ne les prend pas encore en charge.
+
+## 10. Banque autonome pour une leçon déjà intégrée
+
+Lorsqu’une leçon existe déjà dans le seed sans ses questions, ne pas dupliquer
+tout son contenu. Livrer `PEDAGOGY_ASSESSMENT_BANK_XXX.json` avec :
+
+```json
+{
+  "specId": "PEDAGOGY_ASSESSMENT_BANK_001",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "decouvrir-discipline",
+  "moduleSlug": "definition-psychologie",
+  "lessonSlug": "definir-la-psychologie",
+  "assessmentBanks": [],
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-03",
+    "sourceResourceKeys": [],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": []
+    },
+    "changeLog": []
+  }
+}
+```
+
+`assessmentBanks` suit exactement la section 5.4. Chaque `conceptSlug`, titre
+et nombre de questions doit correspondre à la leçon déjà intégrée.

@@ -1,0 +1,631 @@
+{
+  "specId": "PEDAGOGY_SPEC_003",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "decouvrir-discipline",
+  "moduleSlug": "definition-psychologie",
+  "lesson": {
+    "title": "Les métiers et l’éthique",
+    "slug": "metiers-et-ethique",
+    "summary": "Les mots psychologue, psychiatre, psychothérapeute et psychanalyste ne désignent ni la même formation ni les mêmes prérogatives. Cette leçon présente le cadre français, apprend à vérifier un titre et montre comment compétence, consentement, confidentialité, respect des droits et orientation structurent une pratique responsable.",
+    "objectives": [
+      "Distinguer en France les titres de psychologue, psychiatre, psychothérapeute et la qualité de psychanalyste.",
+      "Identifier les limites de compétence d’un intervenant et les situations nécessitant une orientation.",
+      "Analyser une situation à partir du consentement, de la confidentialité, du respect de la personne et de l’absence d’abus de pouvoir.",
+      "Distinguer obligation juridique, règle professionnelle et décision éthique contextualisée."
+    ],
+    "prerequisites": [
+      "Définir la psychologie comme discipline scientifique.",
+      "Distinguer domaine de recherche, niveau d’explication et contexte d’application."
+    ],
+    "estimatedMinutes": 135,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste."
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence."
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente."
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation."
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte."
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "service-public-psychologue-psychiatre",
+        "type": "website",
+        "title": "Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ?",
+        "author": "Direction de l’information légale et administrative — Service-Public.fr",
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917?lang=fr",
+        "citation": "Direction de l’information légale et administrative. (2026). Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ? Service-Public.fr.",
+        "description": "Lire uniquement la rubrique « Psychologue, psychiatre, psychanalyste : quelles différences ? » et relever formation, statut médical et capacité de prescription. Les informations tarifaires ne sont pas au programme de cette leçon.",
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "legifrance-titre-psychologue-article-44",
+        "type": "document",
+        "title": "Loi n° 85-772 du 25 juillet 1985 — Article 44",
+        "author": "République française",
+        "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000033678864",
+        "citation": "République française. (1985, version en vigueur depuis le 24 décembre 2016). Loi n° 85-772 du 25 juillet 1985, article 44.",
+        "description": "Lire le paragraphe I sur les conditions d’usage professionnel du titre et le paragraphe IV sur l’usurpation. Résumer en deux phrases ce que protège la loi sans dresser la liste de tous les diplômes.",
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "cncdp-code-deontologie-2021",
+        "type": "document",
+        "title": "Code de déontologie des psychologues — version consolidée 2021",
+        "author": "CNCDP et organisations signataires du CERéDéPsy",
+        "url": "https://cncdp.fr/index.php/code-de-deontologie/code-de-deontologie-2021",
+        "citation": "Commission Nationale Consultative de Déontologie des Psychologues. (2021). Code de déontologie des psychologues, version consolidée au 9 septembre 2021.",
+        "description": "Lire le préambule et les principes 1 à 3. Relever une exigence liée aux droits, une liée à la confidentialité et une liée à la compétence. Ne pas assimiler ce code professionnel à l’ensemble des lois applicables.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Titres et rôles en France",
+        "slug": "titres-et-roles-france",
+        "description": "Psychologue, psychiatre et psychothérapeute relèvent de cadres distincts ; une appellation ne permet pas de déduire toutes les compétences d’une personne.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "legifrance-titre-psychologue-article-44"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Titres et rôles",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Compétence, limites et orientation",
+        "slug": "competence-limites-orientation",
+        "description": "Une pratique responsable reste dans le champ de formation et de fonction de l’intervenant, explicite ses limites et organise une orientation lorsque nécessaire.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "cncdp-code-deontologie-2021"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Compétence et orientation",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Droits, consentement et confidentialité",
+        "slug": "droits-consentement-confidentialite",
+        "description": "Le respect des personnes exige information, autonomie, consentement adapté, protection des informations et réflexion contextualisée sur les obligations applicables.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cncdp-code-deontologie-2021",
+          "legifrance-titre-psychologue-article-44"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Droits et confidentialité",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Comparer quatre appellations",
+        "description": "Construire un tableau psychologue, psychiatre, psychothérapeute et psychanalyste. Pour chaque ligne, indiquer ce que l’appellation permet d’affirmer, ce qu’elle ne permet pas de déduire et la source utilisée.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Décider d’une orientation",
+        "description": "Analyser trois situations fictives : difficulté scolaire, souffrance psychique avec besoin médical possible et conflit d’équipe. Proposer l’intervenant ou le dispositif à consulter, justifier le choix et préciser les informations encore nécessaires.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Repérer les enjeux déontologiques",
+        "description": "Dans un cas où une organisation demande les résultats individuels d’un questionnaire, identifier les enjeux de finalité, information, consentement, confidentialité, compétence et rapport de pouvoir. Proposer un cadre plus protecteur en 250 à 350 mots.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-02-03",
+    "references": [
+      {
+        "id": "REF-003-LOI-PSYCHOLOGUE",
+        "type": "law",
+        "authors": [],
+        "organization": "République française",
+        "title": "Loi n° 85-772 du 25 juillet 1985 — Article 44",
+        "year": 1985,
+        "edition": "Version en vigueur depuis le 24 décembre 2016",
+        "publication": "Légifrance",
+        "doi": null,
+        "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000033678864",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Texte juridique encadrant l’usage professionnel du titre de psychologue."
+      },
+      {
+        "id": "REF-003-DECRET-PSYCHOTHERAPEUTE",
+        "type": "regulation",
+        "authors": [],
+        "organization": "République française",
+        "title": "Décret n° 2010-534 du 20 mai 2010 relatif à l’usage du titre de psychothérapeute",
+        "year": 2010,
+        "edition": "Version consultée le 3 août 2026",
+        "publication": "Légifrance",
+        "doi": null,
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFSCTA000022244497",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre réglementaire de la formation et de l’enregistrement liés au titre de psychothérapeute."
+      },
+      {
+        "id": "REF-003-SERVICE-PUBLIC",
+        "type": "government_guidance",
+        "authors": [],
+        "organization": "Direction de l’information légale et administrative",
+        "title": "Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ?",
+        "year": 2026,
+        "edition": null,
+        "publication": "Service-Public.fr",
+        "doi": null,
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917?lang=fr",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Synthèse administrative des différences de statut et de prescription."
+      },
+      {
+        "id": "REF-003-CODE-2021",
+        "type": "professional_code",
+        "authors": [],
+        "organization": "CNCDP et organisations signataires du CERéDéPsy",
+        "title": "Code de déontologie des psychologues — version consolidée au 9 septembre 2021",
+        "year": 2021,
+        "edition": "Version consolidée 2021",
+        "publication": "Commission Nationale Consultative de Déontologie des Psychologues",
+        "doi": null,
+        "url": "https://cncdp.fr/index.php/code-de-deontologie/code-de-deontologie-2021",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Code professionnel signé par 21 organisations ; ne résume pas à lui seul toutes les obligations légales."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-LOI-PSYCHOLOGUE",
+            "locator": "article 44, paragraphes I et IV",
+            "supports": "Protection et conditions d’usage professionnel du titre de psychologue."
+          },
+          {
+            "referenceId": "REF-003-SERVICE-PUBLIC",
+            "locator": "rubrique « Psychologue, psychiatre, psychanalyste : quelles différences ? »",
+            "supports": "Statut médical du psychiatre et absence de prescription par le psychologue à ce titre."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Texte légal et synthèse administrative actuelle convergents.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-DECRET-PSYCHOTHERAPEUTE",
+            "locator": "articles 1, 6 et 7",
+            "supports": "Formation, catégories d’accès et enregistrement liés au titre de psychothérapeute."
+          },
+          {
+            "referenceId": "REF-003-SERVICE-PUBLIC",
+            "locator": "lignes consacrées au psychothérapeute et au psychanalyste",
+            "supports": "Ces appellations ne permettent pas de déduire automatiquement le titre de psychologue ou de psychiatre."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Texte réglementaire et information administrative directe.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "principes généraux relatifs à la compétence et à la responsabilité",
+            "supports": "Reconnaissance des limites et nécessité d’une pratique adaptée à la compétence."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Exemple inventé appliquant un principe professionnel explicite.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "principes 1 à 3",
+            "supports": "Droits, autonomie, information, vie privée, secret et confidentialité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse directe des principes du Code 2021, avec réserve explicite sur le droit applicable.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "préambule et principes généraux",
+            "supports": "Information du public, discernement, protection et limites professionnelles."
+          },
+          {
+            "referenceId": "REF-003-LOI-PSYCHOLOGUE",
+            "locator": "article 44",
+            "supports": "Importance de vérifier le titre professionnel exact."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Recommandations prudentes dérivées des exigences juridiques et professionnelles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "service-public-psychologue-psychiatre",
+        "referenceIds": [
+          "REF-003-SERVICE-PUBLIC"
+        ],
+        "pedagogicalRationale": "Synthèse officielle courte et compréhensible des différences de statut.",
+        "learnerInstructions": "Lire uniquement la rubrique de comparaison des appellations.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Les tarifs et remboursements peuvent évoluer et ne sont pas enseignés ici."
+      },
+      {
+        "resourceKey": "legifrance-titre-psychologue-article-44",
+        "referenceIds": [
+          "REF-003-LOI-PSYCHOLOGUE"
+        ],
+        "pedagogicalRationale": "Permet de distinguer une affirmation juridique de sa reformulation pédagogique.",
+        "learnerInstructions": "Lire les paragraphes I et IV seulement.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Texte HTML officiel ; formulation juridique dense.",
+        "alternativeResourceKey": "service-public-psychologue-psychiatre",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "cncdp-code-deontologie-2021",
+        "referenceIds": [
+          "REF-003-CODE-2021"
+        ],
+        "pedagogicalRationale": "Texte professionnel de référence pour analyser les droits, la confidentialité et la compétence.",
+        "learnerInstructions": "Lire le préambule et les principes 1 à 3, puis produire trois exemples.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML disponible ; document long mais lecture ciblée.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "titres-et-roles-france",
+        "assessmentTitle": "Mini-évaluation — Titres et rôles",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "En France, qui est nécessairement médecin du fait de son titre ?",
+            "explanation": "Le psychiatre est un médecin spécialisé. Le titre de psychologue n’est pas un titre médical.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              { "label": "Le psychiatre", "isCorrect": true, "position": 1 },
+              { "label": "Le psychologue", "isCorrect": false, "position": 2 },
+              { "label": "Le psychanalyste", "isCorrect": false, "position": 3 },
+              { "label": "Le coach", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un psychologue peut prescrire des médicaments du seul fait de son titre de psychologue.",
+            "explanation": "Le psychologue n’est pas médecin du seul fait de ce titre et ne prescrit pas de médicaments à ce titre.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles appellations font l’objet d’un cadre légal d’usage du titre présenté dans cette leçon ?",
+            "explanation": "Le titre de psychologue et le titre de psychothérapeute sont encadrés par des textes distincts ; psychiatre est une spécialité médicale.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Psychologue", "isCorrect": true, "position": 1 },
+              { "label": "Psychothérapeute", "isCorrect": true, "position": 2 },
+              { "label": "Coach de vie", "isCorrect": false, "position": 3 },
+              { "label": "Conseiller intuitif", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Se présenter comme psychanalyste prouve automatiquement que la personne est aussi psychologue ou psychiatre.",
+            "explanation": "Une personne se présentant comme psychanalyste peut avoir l’un de ces titres, mais ce n’est pas automatique ; il faut les vérifier séparément.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle démarche est la plus fiable face à une appellation professionnelle ?",
+            "explanation": "Il faut vérifier le titre exact, la formation, l’enregistrement applicable et le champ de compétence au lieu de déduire les qualifications d’un mot général.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              { "label": "Vérifier séparément titre, formation, enregistrement et compétence", "isCorrect": true, "position": 1 },
+              { "label": "Se fier uniquement à la popularité sur les réseaux sociaux", "isCorrect": false, "position": 2 },
+              { "label": "Considérer que tous les mots commençant par « psy » sont équivalents", "isCorrect": false, "position": 3 },
+              { "label": "Déduire la formation à partir du tarif", "isCorrect": false, "position": 4 }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "competence-limites-orientation",
+        "assessmentTitle": "Mini-évaluation — Compétence et orientation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une professionnelle rencontre une situation hors de son champ de formation. Quelle réponse est la plus responsable ?",
+            "explanation": "Elle doit expliciter ses limites et organiser une orientation appropriée plutôt que prétendre à une compétence universelle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              { "label": "Reconnaître la limite et proposer une orientation adaptée", "isCorrect": true, "position": 1 },
+              { "label": "Improviser une prise en charge sans le signaler", "isCorrect": false, "position": 2 },
+              { "label": "Promettre un résultat rapide", "isCorrect": false, "position": 3 },
+              { "label": "Éviter toute explication à la personne", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Détenir un titre de psychologue signifie être compétent dans toutes les spécialités de la psychologie.",
+            "explanation": "Le titre ne remplace pas la formation et l’expérience nécessaires pour une intervention précise.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations aident à juger si une intervention entre dans le champ de compétence ?",
+            "explanation": "La formation pertinente, l’expérience, la fonction exercée et la nature du besoin sont plus informatives qu’une appellation générale.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "La formation pertinente de l’intervenant", "isCorrect": true, "position": 1 },
+              { "label": "La nature et l’urgence du besoin", "isCorrect": true, "position": 2 },
+              { "label": "Le nombre d’abonnés en ligne", "isCorrect": false, "position": 3 },
+              { "label": "Une promesse de succès garanti", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi une orientation vers un autre professionnel peut-elle être un signe de compétence ?",
+            "explanation": "Elle montre que l’intervenant reconnaît les limites de sa fonction et cherche une réponse adaptée au besoin.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              { "label": "Parce qu’elle protège la personne et respecte les limites professionnelles", "isCorrect": true, "position": 1 },
+              { "label": "Parce qu’elle prouve que le premier professionnel ne sait rien", "isCorrect": false, "position": 2 },
+              { "label": "Parce qu’elle supprime le besoin de consentement", "isCorrect": false, "position": 3 },
+              { "label": "Parce qu’elle autorise le partage de toutes les informations", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Face à un risque immédiat pour la sécurité d’une personne, quelle priorité s’impose ?",
+            "explanation": "La situation doit être évaluée et orientée vers les services adaptés selon le cadre professionnel et les obligations applicables.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              { "label": "Évaluer l’urgence et mobiliser les services adaptés", "isCorrect": true, "position": 1 },
+              { "label": "Attendre la séance suivante sans rien faire", "isCorrect": false, "position": 2 },
+              { "label": "Publier la situation pour demander conseil", "isCorrect": false, "position": 3 },
+              { "label": "Promettre le secret absolu sans examiner le cadre", "isCorrect": false, "position": 4 }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "droits-consentement-confidentialite",
+        "assessmentTitle": "Mini-évaluation — Droits et confidentialité",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations doivent être clarifiées avant une intervention psychologique ?",
+            "explanation": "La personne doit comprendre la finalité, le cadre, l’usage des informations et les limites pertinentes pour décider librement.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              { "label": "La finalité de l’intervention", "isCorrect": true, "position": 1 },
+              { "label": "L’usage prévu des informations", "isCorrect": true, "position": 2 },
+              { "label": "Une garantie de résultat", "isCorrect": false, "position": 3 },
+              { "label": "L’obligation d’accepter sans question", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une entreprise demande les scores individuels d’un questionnaire présenté comme anonyme. Quel est le premier problème ?",
+            "explanation": "La promesse d’anonymat contredit un partage individuel ; finalité, information, consentement et accès aux données doivent être clarifiés.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "La contradiction entre anonymat annoncé et transmission individuelle", "isCorrect": true, "position": 1 },
+              { "label": "Le questionnaire est nécessairement trop court", "isCorrect": false, "position": 2 },
+              { "label": "Les résultats devraient être publiés sur internet", "isCorrect": false, "position": 3 },
+              { "label": "Le consentement devient inutile en entreprise", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le consentement est valable même si la personne ignore la finalité et l’usage de ses données.",
+            "explanation": "Un consentement éclairé suppose une information compréhensible sur le cadre, la finalité et les conséquences pertinentes.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles pratiques soutiennent la confidentialité ?",
+            "explanation": "Limiter la collecte et l’accès, expliquer les règles et partager seulement ce qui est justifié réduit les risques d’atteinte à la vie privée.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              { "label": "Limiter les accès aux personnes autorisées", "isCorrect": true, "position": 1 },
+              { "label": "Ne collecter que les informations nécessaires", "isCorrect": true, "position": 2 },
+              { "label": "Transmettre l’ensemble du dossier par défaut", "isCorrect": false, "position": 3 },
+              { "label": "Garder secrète la finalité de l’intervention", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle affirmation décrit le mieux le rapport entre déontologie et droit ?",
+            "explanation": "La réflexion déontologique guide la pratique, tandis que les obligations juridiques applicables doivent également être identifiées et respectées.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              { "label": "La déontologie guide la pratique sans remplacer les obligations juridiques.", "isCorrect": true, "position": 1 },
+              { "label": "Le Code professionnel annule toutes les lois.", "isCorrect": false, "position": 2 },
+              { "label": "Le droit suffit toujours à résoudre automatiquement toute situation.", "isCorrect": false, "position": 3 },
+              { "label": "Déontologie et droit sont sans rapport avec la pratique.", "isCorrect": false, "position": 4 }
+            ]
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": true,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine par une personne connaissant le droit et la déontologie des psychologues en France requise avant publication.",
+        "Revérifier les textes juridiques et les informations administratives lors de chaque révision.",
+        "Les banques de questions sont prêtes mais non importées par le seed actuel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création du cours, des tâches, des sources et de 15 questions corrigées.",
+        "reviewRequired": "editorial_subject_and_legal"
+      }
+    ]
+  }
+}

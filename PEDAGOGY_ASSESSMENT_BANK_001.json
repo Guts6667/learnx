@@ -1,0 +1,242 @@
+{
+  "specId": "PEDAGOGY_ASSESSMENT_BANK_001",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "decouvrir-discipline",
+  "moduleSlug": "definition-psychologie",
+  "lessonSlug": "definir-la-psychologie",
+  "assessmentBanks": [
+    {
+      "conceptSlug": "objet-psychologie",
+      "assessmentTitle": "Mini-évaluation — Objet de la psychologie",
+      "questions": [
+        {
+          "type": "single_choice",
+          "prompt": "Quelle définition décrit le mieux la psychologie scientifique ?",
+          "explanation": "La psychologie étudie scientifiquement les comportements et les processus mentaux à partir de questions et de données explicites.",
+          "acceptedAnswers": [],
+          "position": 1,
+          "options": [
+            { "label": "L’étude scientifique des comportements et des processus mentaux", "isCorrect": true, "position": 1 },
+            { "label": "L’interprétation intuitive de la personnalité", "isCorrect": false, "position": 2 },
+            { "label": "La psychothérapie uniquement", "isCorrect": false, "position": 3 },
+            { "label": "L’étude exclusive du cerveau", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "Quels objets peuvent être étudiés par la psychologie ?",
+          "explanation": "La discipline étudie aussi bien des comportements observables que des processus comme la perception, la mémoire ou l’émotion.",
+          "acceptedAnswers": [],
+          "position": 2,
+          "options": [
+            { "label": "La mémorisation", "isCorrect": true, "position": 1 },
+            { "label": "La coopération", "isCorrect": true, "position": 2 },
+            { "label": "Uniquement les troubles mentaux", "isCorrect": false, "position": 3 },
+            { "label": "Uniquement les opinions personnelles", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "true_false",
+          "prompt": "La psychologie se limite à l’accompagnement thérapeutique.",
+          "explanation": "Elle comprend recherche fondamentale et applications dans de nombreux domaines, dont la clinique n’est qu’une partie.",
+          "acceptedAnswers": [],
+          "position": 3,
+          "options": [
+            { "label": "Vrai", "isCorrect": false, "position": 1 },
+            { "label": "Faux", "isCorrect": true, "position": 2 }
+          ]
+        },
+        {
+          "type": "single_choice",
+          "prompt": "Quel exemple relève clairement d’une question psychologique ?",
+          "explanation": "Étudier l’effet du contexte social sur une décision porte sur un comportement et un processus mental mesurables.",
+          "acceptedAnswers": [],
+          "position": 4,
+          "options": [
+            { "label": "Comment la présence d’autrui modifie-t-elle une décision ?", "isCorrect": true, "position": 1 },
+            { "label": "Quelle est la masse atomique du carbone ?", "isCorrect": false, "position": 2 },
+            { "label": "Quelle règle grammaticale accorde ce participe ?", "isCorrect": false, "position": 3 },
+            { "label": "Quelle planète est la plus proche du Soleil ?", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "true_false",
+          "prompt": "La psychologie peut produire des connaissances fondamentales et des applications pratiques.",
+          "explanation": "La discipline articule compréhension des mécanismes et usages dans la santé, l’éducation, le travail et d’autres contextes.",
+          "acceptedAnswers": [],
+          "position": 5,
+          "options": [
+            { "label": "Vrai", "isCorrect": true, "position": 1 },
+            { "label": "Faux", "isCorrect": false, "position": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "conceptSlug": "comportements-processus-mentaux",
+      "assessmentTitle": "Mini-évaluation — Comportements et processus mentaux",
+      "questions": [
+        {
+          "type": "single_choice",
+          "prompt": "Lequel est un comportement directement observable ?",
+          "explanation": "Lever la main est une action observable ; se souvenir ou ressentir sont des processus mentaux étudiés à partir d’indicateurs.",
+          "acceptedAnswers": [],
+          "position": 1,
+          "options": [
+            { "label": "Lever la main", "isCorrect": true, "position": 1 },
+            { "label": "Se souvenir d’un visage", "isCorrect": false, "position": 2 },
+            { "label": "Ressentir de l’inquiétude", "isCorrect": false, "position": 3 },
+            { "label": "Former une intention", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "single_choice",
+          "prompt": "Pourquoi utilise-t-on des indicateurs pour étudier un processus mental ?",
+          "explanation": "Le processus n’est pas toujours directement observable ; des mesures définies permettent une inférence prudente.",
+          "acceptedAnswers": [],
+          "position": 2,
+          "options": [
+            { "label": "Parce que le processus n’est pas toujours directement observable", "isCorrect": true, "position": 1 },
+            { "label": "Parce qu’un indicateur prouve toujours une cause", "isCorrect": false, "position": 2 },
+            { "label": "Parce que toute mesure remplace la théorie", "isCorrect": false, "position": 3 },
+            { "label": "Parce que les comportements sont sans intérêt", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "true_false",
+          "prompt": "Un temps de réaction est le processus mental lui-même.",
+          "explanation": "Le temps de réaction est un indicateur observable qui contribue à l’inférence ; il ne se confond pas avec le processus étudié.",
+          "acceptedAnswers": [],
+          "position": 3,
+          "options": [
+            { "label": "Vrai", "isCorrect": false, "position": 1 },
+            { "label": "Faux", "isCorrect": true, "position": 2 }
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "Quels éléments peuvent servir d’indicateurs d’attention ?",
+          "explanation": "Le temps de réponse et le nombre d’erreurs sont des mesures observables ; une impression vague ou une étiquette non définie ne suffisent pas.",
+          "acceptedAnswers": [],
+          "position": 4,
+          "options": [
+            { "label": "Le temps de réponse", "isCorrect": true, "position": 1 },
+            { "label": "Le nombre d’erreurs", "isCorrect": true, "position": 2 },
+            { "label": "L’affirmation « il n’est pas attentif » sans critère", "isCorrect": false, "position": 3 },
+            { "label": "Une intuition non décrite", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "single_choice",
+          "prompt": "Quelle formulation est la plus prudente ?",
+          "explanation": "Une mesure soutient une interprétation délimitée ; elle n’autorise pas à lire directement l’état mental d’une personne.",
+          "acceptedAnswers": [],
+          "position": 5,
+          "options": [
+            { "label": "Ces résultats sont compatibles avec une baisse d’attention dans cette tâche.", "isCorrect": true, "position": 1 },
+            { "label": "Nous savons exactement ce que la personne pense.", "isCorrect": false, "position": 2 },
+            { "label": "Une erreur révèle toute la personnalité.", "isCorrect": false, "position": 3 },
+            { "label": "L’indicateur élimine toutes les explications alternatives.", "isCorrect": false, "position": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "conceptSlug": "demarche-empirique",
+      "assessmentTitle": "Mini-évaluation — Démarche empirique",
+      "questions": [
+        {
+          "type": "single_choice",
+          "prompt": "Quelle question est la plus directement testable ?",
+          "explanation": "Elle précise une variable manipulable ou mesurable et un résultat observable.",
+          "acceptedAnswers": [],
+          "position": 1,
+          "options": [
+            { "label": "Une nuit de sommeil plus courte augmente-t-elle le nombre d’erreurs à cette tâche ?", "isCorrect": true, "position": 1 },
+            { "label": "Le sommeil possède-t-il une essence bénéfique ?", "isCorrect": false, "position": 2 },
+            { "label": "Pourquoi certaines personnes sont-elles simplement meilleures ?", "isCorrect": false, "position": 3 },
+            { "label": "Mon intuition est-elle toujours juste ?", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "Quelles caractéristiques appartiennent à une démarche empirique ?",
+          "explanation": "Elle repose sur des observations systématiques, des mesures explicites et des conclusions ouvertes à la révision.",
+          "acceptedAnswers": [],
+          "position": 2,
+          "options": [
+            { "label": "Recueillir des données systématiquement", "isCorrect": true, "position": 1 },
+            { "label": "Définir les mesures à l’avance", "isCorrect": true, "position": 2 },
+            { "label": "Protéger une conclusion de toute critique", "isCorrect": false, "position": 3 },
+            { "label": "Remplacer les observations par l’autorité", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "true_false",
+          "prompt": "Une expérience personnelle suffit à établir une régularité générale.",
+          "explanation": "Elle peut suggérer une question, mais une conclusion générale demande des données recueillies de manière systématique.",
+          "acceptedAnswers": [],
+          "position": 3,
+          "options": [
+            { "label": "Vrai", "isCorrect": false, "position": 1 },
+            { "label": "Faux", "isCorrect": true, "position": 2 }
+          ]
+        },
+        {
+          "type": "single_choice",
+          "prompt": "Que faire si des résultats solides contredisent l’hypothèse initiale ?",
+          "explanation": "Une démarche scientifique accepte de réviser ou rejeter une explication lorsque les données ne la soutiennent pas.",
+          "acceptedAnswers": [],
+          "position": 4,
+          "options": [
+            { "label": "Réviser l’explication et examiner la méthode", "isCorrect": true, "position": 1 },
+            { "label": "Supprimer les résultats contradictoires", "isCorrect": false, "position": 2 },
+            { "label": "Conserver l’hypothèse comme vérité", "isCorrect": false, "position": 3 },
+            { "label": "Remplacer les données par une anecdote", "isCorrect": false, "position": 4 }
+          ]
+        },
+        {
+          "type": "true_false",
+          "prompt": "La réplication et l’examen par d’autres chercheurs peuvent renforcer ou corriger une conclusion.",
+          "explanation": "La confrontation à de nouvelles observations et à la critique contribue au caractère cumulatif et révisable de la science.",
+          "acceptedAnswers": [],
+          "position": 5,
+          "options": [
+            { "label": "Vrai", "isCorrect": true, "position": 1 },
+            { "label": "Faux", "isCorrect": false, "position": 2 }
+          ]
+        }
+      ]
+    }
+  ],
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "sourceResourceKeys": [
+      "openstax-psychology-2e-1-1",
+      "apa-definition-psychology",
+      "yale-psyc110-lecture-1"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Les trois titres et les nombres de questions correspondent aux évaluations déjà intégrées dans le seed.",
+        "Revue humaine de domaine requise avant publication.",
+        "Les questions sont prêtes mais non importées par le seed actuel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de 15 questions corrigées pour la leçon déjà intégrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
