@@ -14,6 +14,54 @@ enum Role {
   @@map("user_role")
 }
 
+enum ProgramStatus {
+  DRAFT    @map("draft")
+  ACTIVE   @map("active")
+  ARCHIVED @map("archived")
+
+  @@map("program_status")
+}
+
+enum ContentBlockType {
+  RICH_TEXT  @map("rich_text")
+  OBJECTIVE  @map("objective")
+  DEFINITION @map("definition")
+  EXAMPLE    @map("example")
+  CALLOUT    @map("callout")
+  QUOTE      @map("quote")
+  EMBED      @map("embed")
+  DIVIDER    @map("divider")
+
+  @@map("content_block_type")
+}
+
+enum ResourceType {
+  BOOK         @map("book")
+  BOOK_CHAPTER @map("book_chapter")
+  ARTICLE      @map("article")
+  VIDEO        @map("video")
+  COURSE       @map("course")
+  PODCAST      @map("podcast")
+  WEBSITE      @map("website")
+  DOCUMENT     @map("document")
+  TOOL         @map("tool")
+
+  @@map("resource_type")
+}
+
+enum TaskType {
+  READING    @map("reading")
+  WATCHING   @map("watching")
+  LISTENING  @map("listening")
+  REFLECTION @map("reflection")
+  CHECKLIST  @map("checklist")
+  WRITING    @map("writing")
+  PRACTICE   @map("practice")
+  PROJECT    @map("project")
+
+  @@map("task_type")
+}
+
 model User {
   id           String    @id @default(uuid()) @db.Uuid
   email        String    @unique
@@ -23,6 +71,7 @@ model User {
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
   sessions     Session[]
+  programs     Program[]
 
   @@map("users")
 }
@@ -38,4 +87,131 @@ model Session {
 
   @@index([userId, expiresAt])
   @@map("sessions")
+}
+
+model Program {
+  id                    String        @id @default(uuid()) @db.Uuid
+  ownerId               String        @map("owner_id") @db.Uuid
+  title                 String
+  slug                  String
+  description           String
+  status                ProgramStatus @default(DRAFT)
+  icon                  String?
+  position              Int           @default(0)
+  estimatedDurationDays Int?          @map("estimated_duration_days")
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+  owner                 User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  stages                Stage[]
+
+  @@unique([ownerId, slug])
+  @@index([ownerId, position])
+  @@map("programs")
+}
+
+model Stage {
+  id                    String    @id @default(uuid()) @db.Uuid
+  programId             String    @map("program_id") @db.Uuid
+  title                 String
+  slug                  String
+  description           String
+  position              Int       @default(0)
+  estimatedMinutes      Int?      @map("estimated_minutes")
+  estimatedDurationDays Int?      @map("estimated_duration_days")
+  isPublished           Boolean   @default(false) @map("is_published")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+  program               Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  modules               Module[]
+
+  @@unique([programId, slug])
+  @@index([programId, position])
+  @@map("stages")
+}
+
+model Module {
+  id               String   @id @default(uuid()) @db.Uuid
+  stageId          String   @map("stage_id") @db.Uuid
+  title            String
+  slug             String
+  description      String
+  position         Int      @default(0)
+  estimatedMinutes Int?     @map("estimated_minutes")
+  isPublished      Boolean  @default(false) @map("is_published")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  stage            Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  lessons          Lesson[]
+
+  @@unique([stageId, slug])
+  @@index([stageId, position])
+  @@map("modules")
+}
+
+model Lesson {
+  id               String         @id @default(uuid()) @db.Uuid
+  moduleId         String         @map("module_id") @db.Uuid
+  title            String
+  slug             String
+  summary          String
+  objectives       Json           @map("objectives_json")
+  prerequisites    Json           @map("prerequisites_json")
+  estimatedMinutes Int?           @map("estimated_minutes")
+  position         Int            @default(0)
+  isPublished      Boolean        @default(false) @map("is_published")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  module           Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contentBlocks    ContentBlock[]
+  resources        Resource[]
+  tasks            Task[]
+
+  @@unique([moduleId, slug])
+  @@index([moduleId, position])
+  @@map("lessons")
+}
+
+model ContentBlock {
+  id        String           @id @default(uuid()) @db.Uuid
+  lessonId  String           @map("lesson_id") @db.Uuid
+  type      ContentBlockType
+  content   Json             @map("content_json")
+  position  Int              @default(0)
+  lesson    Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId, position])
+  @@map("content_blocks")
+}
+
+model Resource {
+  id               String       @id @default(uuid()) @db.Uuid
+  lessonId         String       @map("lesson_id") @db.Uuid
+  type             ResourceType
+  title            String
+  author           String?
+  url              String?
+  citation         String?
+  description      String?
+  isRequired       Boolean      @default(false) @map("is_required")
+  estimatedMinutes Int?         @map("estimated_minutes")
+  position         Int          @default(0)
+  lesson           Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId, position])
+  @@map("resources")
+}
+
+model Task {
+  id          String   @id @default(uuid()) @db.Uuid
+  lessonId    String   @map("lesson_id") @db.Uuid
+  title       String
+  description String?
+  type        TaskType
+  isRequired  Boolean  @default(true) @map("is_required")
+  weight      Float    @default(1)
+  position    Int      @default(0)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId, position])
+  @@map("tasks")
 }
