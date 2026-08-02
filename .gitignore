@@ -7,5 +7,6 @@ generated/
 .env
 .env.*
 !.env.example
+.neon
 *.local
 .DS_Store

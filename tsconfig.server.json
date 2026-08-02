@@ -20,5 +20,5 @@
     },
     "types": ["node", "vitest/globals"]
   },
-  "include": ["prisma/seed.ts", "scripts", "src/server"]
+  "include": ["api", "prisma/seed.ts", "scripts", "src/server"]
 }

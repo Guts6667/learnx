@@ -62,6 +62,20 @@ pnpm prisma:check
 valide. Le seed du ticket d’initialisation est volontairement vide ; le
 programme exemple est importé dans TICKET-008.
 
+## Authentification serveur
+
+Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/session`
+
+Les mots de passe sont hachés avec argon2id. Les sessions sont opaques, leur
+hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
+`HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
+n’est stocké dans `localStorage`.
+
 ## Documents
 
 - `PRODUCT_REQUIREMENTS.md`
