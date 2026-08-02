@@ -1,5 +1,7 @@
 import { authApp } from './app.js';
 
-export default async function login(request: Request): Promise<Response> {
-  return authApp.fetch(request);
-}
+export default {
+  async fetch(request: Request): Promise<Response> {
+    return await authApp.fetch(request);
+  },
+};
