@@ -145,6 +145,15 @@ enum ConceptQuestionType {
   @@map("concept_question_type")
 }
 
+enum QuizQuestionType {
+  TRUE_FALSE      @map("true_false")
+  SINGLE_CHOICE   @map("single_choice")
+  MULTIPLE_CHOICE @map("multiple_choice")
+  SHORT_ANSWER    @map("short_answer")
+
+  @@map("quiz_question_type")
+}
+
 enum ReviewSourceType {
   CONCEPT_ASSESSMENT @map("concept_assessment")
 
@@ -175,6 +184,7 @@ model User {
   resourceProgresses         ResourceProgress[]
   conceptProgresses          ConceptProgress[]
   conceptAttempts            ConceptAssessmentAttempt[]
+  quizAttempts               QuizAttempt[]
   stageAssessmentSubmissions StageAssessmentSubmission[]
   reviewItems                ReviewItem[]
 
@@ -318,6 +328,7 @@ model Lesson {
   tasks            Task[]
   progress         LessonProgress[]
   concepts         Concept[]
+  quizzes          Quiz[]
   reviewItems      ReviewItem[]
 
   @@unique([moduleId, slug])
@@ -455,6 +466,65 @@ model ResourceProgress {
   @@unique([userId, resourceId])
   @@index([userId, status])
   @@map("resource_progress")
+}
+
+model Quiz {
+  id           String        @id @default(uuid()) @db.Uuid
+  lessonId     String        @map("lesson_id") @db.Uuid
+  title        String
+  description  String?
+  passingScore Float         @default(70) @map("passing_score")
+  isRequired   Boolean       @default(true) @map("is_required")
+  position     Int           @default(0)
+  lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions    Question[]
+  attempts     QuizAttempt[]
+
+  @@unique([lessonId, position])
+  @@index([lessonId, position])
+  @@map("quizzes")
+}
+
+model Question {
+  id              String           @id @default(uuid()) @db.Uuid
+  quizId          String           @map("quiz_id") @db.Uuid
+  type            QuizQuestionType
+  prompt          String
+  explanation     String
+  acceptedAnswers String[]         @default([]) @map("accepted_answers")
+  position        Int              @default(0)
+  quiz            Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options         QuestionOption[]
+
+  @@unique([quizId, position])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid()) @db.Uuid
+  questionId String   @map("question_id") @db.Uuid
+  label      String
+  isCorrect  Boolean  @default(false) @map("is_correct")
+  position   Int      @default(0)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, position])
+  @@map("question_options")
+}
+
+model QuizAttempt {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  quizId      String   @map("quiz_id") @db.Uuid
+  score       Float
+  passed      Boolean
+  answers     Json     @map("answers_json")
+  submittedAt DateTime @default(now()) @map("submitted_at")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([userId, quizId, submittedAt], map: "quiz_attempts_user_quiz_submitted_idx")
+  @@map("quiz_attempts")
 }
 
 model Concept {
