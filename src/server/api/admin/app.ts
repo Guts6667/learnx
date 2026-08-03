@@ -8,6 +8,10 @@ import {
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
+  createPrismaAdminNavigationService,
+  type AdminNavigationService,
+} from './navigation-service.js';
+import {
   createPrismaPublicationService,
   PublicationPlanBlockedError,
   PublicationPlanStaleError,
@@ -30,23 +34,6 @@ interface AdminModule {
   lessons: AdminLesson[];
   position: number;
   slug: string;
-  title: string;
-}
-
-interface AdminStage {
-  id: string;
-  isPublished: boolean;
-  modules: AdminModule[];
-  position: number;
-  slug: string;
-  title: string;
-}
-
-interface AdminProgram {
-  id: string;
-  slug: string;
-  stages: AdminStage[];
-  status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
   title: string;
 }
 
@@ -82,13 +69,13 @@ export interface AdminRepository {
     moduleId: string,
     ownerId: string,
   ): Promise<ModulePublicationState | null>;
-  listCurriculum(ownerId: string): Promise<AdminProgram[]>;
   updateLesson(lessonId: string, input: LessonUpdate): Promise<AdminLesson>;
   updateModule(moduleId: string, input: ModuleUpdate): Promise<AdminModule>;
 }
 
 interface AdminAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
+  navigationService?: AdminNavigationService;
   publicationService?: PublicationService;
   repository?: AdminRepository;
 }
@@ -191,32 +178,6 @@ export function createPrismaAdminRepository(
         },
       });
     },
-    async listCurriculum(ownerId) {
-      return client.program.findMany({
-        where: { ownerId },
-        orderBy: { position: 'asc' },
-        select: {
-          id: true,
-          slug: true,
-          status: true,
-          stages: {
-            orderBy: { position: 'asc' },
-            select: {
-              id: true,
-              isPublished: true,
-              modules: {
-                orderBy: { position: 'asc' },
-                select: moduleSelect,
-              },
-              position: true,
-              slug: true,
-              title: true,
-            },
-          },
-          title: true,
-        },
-      });
-    },
     async updateLesson(lessonId, input) {
       return client.lesson.update({
         where: { id: lessonId },
@@ -288,6 +249,15 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     defaultRepository ??= await getPrismaRepository();
     return defaultRepository;
   };
+  let defaultNavigationService: AdminNavigationService | undefined;
+  const getNavigationService = async () => {
+    if (options.navigationService) return options.navigationService;
+    if (!defaultNavigationService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultNavigationService = createPrismaAdminNavigationService(prisma);
+    }
+    return defaultNavigationService;
+  };
   let defaultPublicationService: PublicationService | undefined;
   const getPublicationService = async () => {
     if (options.publicationService) return options.publicationService;
@@ -317,12 +287,55 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     );
   });
 
-  app.get('/api/admin/curriculum', async (context) => {
+  app.get('/api/admin/programs', async (context) => {
     const programs = await (
-      await getRepository()
-    ).listCurriculum(context.get('user').id);
+      await getNavigationService()
+    ).listPrograms(context.get('user').id);
+    return context.json({ kind: 'PROGRAMS', programs });
+  });
 
-    return context.json({ programs });
+  app.get('/api/admin/programs/:programId', async (context) => {
+    const program = await (
+      await getNavigationService()
+    ).findProgram(
+      parseIdentifier(context.req.param('programId')),
+      context.get('user').id,
+    );
+    if (!program) throw notFound();
+    return context.json({ kind: 'PROGRAM', program });
+  });
+
+  app.get('/api/admin/stages/:stageId', async (context) => {
+    const stage = await (
+      await getNavigationService()
+    ).findStage(
+      parseIdentifier(context.req.param('stageId')),
+      context.get('user').id,
+    );
+    if (!stage) throw notFound();
+    return context.json({ kind: 'STAGE', stage });
+  });
+
+  app.get('/api/admin/modules/:moduleId', async (context) => {
+    const module = await (
+      await getNavigationService()
+    ).findModule(
+      parseIdentifier(context.req.param('moduleId')),
+      context.get('user').id,
+    );
+    if (!module) throw notFound();
+    return context.json({ kind: 'MODULE', module });
+  });
+
+  app.get('/api/admin/lessons/:lessonId', async (context) => {
+    const lesson = await (
+      await getNavigationService()
+    ).findLesson(
+      parseIdentifier(context.req.param('lessonId')),
+      context.get('user').id,
+    );
+    if (!lesson) throw notFound();
+    return context.json({ kind: 'LESSON', lesson });
   });
 
   app.post('/api/admin/publication/preview', async (context) => {

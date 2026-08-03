@@ -5,6 +5,7 @@ import {
   createAdminApp,
   type AdminRepository,
 } from '../../src/server/api/admin/app';
+import type { AdminNavigationService } from '../../src/server/api/admin/navigation-service';
 import {
   PublicationPlanBlockedError,
   PublicationPlanStaleError,
@@ -13,6 +14,7 @@ import {
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
+const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
@@ -92,28 +94,6 @@ function createRepository() {
           }
         : null;
     },
-    async listCurriculum(requestedOwnerId) {
-      if (requestedOwnerId !== ownerId) return [];
-
-      return [
-        {
-          id: 'program-1',
-          slug: 'programme-test',
-          stages: [
-            {
-              id: stageId,
-              isPublished: false,
-              modules: [module],
-              position: 1,
-              slug: 'etape-test',
-              title: 'Étape test',
-            },
-          ],
-          status: 'DRAFT' as const,
-          title: 'Programme test',
-        },
-      ];
-    },
     async updateLesson(id, input) {
       if (id !== lessonId) throw new Error('Unexpected lesson.');
       lesson = { ...lesson, ...input };
@@ -135,26 +115,83 @@ function createRepository() {
   };
 }
 
+function createNavigationService(): AdminNavigationService {
+  const program = {
+    id: programId,
+    position: 0,
+    slug: 'programme-test',
+    status: 'DRAFT' as const,
+    title: 'Programme test',
+  };
+  const stage = {
+    id: stageId,
+    isPublished: false,
+    position: 0,
+    slug: 'etape-test',
+    title: 'Étape test',
+  };
+  const module = {
+    description: 'Description initiale',
+    id: moduleId,
+    isPublished: false,
+    position: 0,
+    slug: 'module-test',
+    title: 'Module test',
+  };
+  const lesson = {
+    id: lessonId,
+    isPublished: false,
+    position: 0,
+    slug: 'lecon-test',
+    summary: 'Résumé initial',
+    title: 'Leçon test',
+  };
+
+  return {
+    async findLesson(id, requestedOwnerId) {
+      if (id !== lessonId || requestedOwnerId !== ownerId) return null;
+      return { ...lesson, module: { ...module, stage: { ...stage, program } } };
+    },
+    async findModule(id, requestedOwnerId) {
+      if (id !== moduleId || requestedOwnerId !== ownerId) return null;
+      return { ...module, lessons: [lesson], stage: { ...stage, program } };
+    },
+    async findProgram(id, requestedOwnerId) {
+      if (id !== programId || requestedOwnerId !== ownerId) return null;
+      return { ...program, stages: [stage] };
+    },
+    async findStage(id, requestedOwnerId) {
+      if (id !== stageId || requestedOwnerId !== ownerId) return null;
+      return { ...stage, modules: [module], program };
+    },
+    async listPrograms(requestedOwnerId) {
+      return requestedOwnerId === ownerId ? [program] : [];
+    },
+  };
+}
+
 describe('administration minimale', () => {
   it('refuse une requête anonyme avant de consulter les données', async () => {
     const repository = createRepository().repository;
-    const listCurriculum = vi.spyOn(repository, 'listCurriculum');
-    const app = createAdminApp({ repository });
+    const navigationService = createNavigationService();
+    const listPrograms = vi.spyOn(navigationService, 'listPrograms');
+    const app = createAdminApp({ navigationService, repository });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(401);
-    expect(listCurriculum).not.toHaveBeenCalled();
+    expect(listPrograms).not.toHaveBeenCalled();
   });
 
   it('refuse un utilisateur authentifié sans rôle admin', async () => {
     const repository = createRepository().repository;
     const app = createAdminApp({
       authentication: authentication(ownerId, 'USER'),
+      navigationService: createNavigationService(),
       repository,
     });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({
@@ -164,24 +201,60 @@ describe('administration minimale', () => {
 
   it('liste uniquement le parcours appartenant à l’admin', async () => {
     const repository = createRepository().repository;
-    const listCurriculum = vi.spyOn(repository, 'listCurriculum');
+    const navigationService = createNavigationService();
+    const listPrograms = vi.spyOn(navigationService, 'listPrograms');
     const app = createAdminApp({
       authentication: authentication(),
+      navigationService,
       repository,
     });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({
-      programs: [
-        {
-          stages: [{ modules: [{ lessons: [{ title: 'Leçon test' }] }] }],
-          title: 'Programme test',
-        },
-      ],
+      kind: 'PROGRAMS',
+      programs: [{ position: 0, title: 'Programme test' }],
     });
-    expect(listCurriculum).toHaveBeenCalledWith(ownerId);
+    expect(listPrograms).toHaveBeenCalledWith(ownerId);
+  });
+
+  it.each([
+    ['programs', programId, 'PROGRAM', 'program', 'Étape test'],
+    ['stages', stageId, 'STAGE', 'stage', 'Module test'],
+    ['modules', moduleId, 'MODULE', 'module', 'Leçon test'],
+    ['lessons', lessonId, 'LESSON', 'lesson', 'Leçon test'],
+  ])(
+    'charge à la demande le niveau %s et son contexte immédiat',
+    async (segment, id, kind, key, expectedTitle) => {
+      const app = createAdminApp({
+        authentication: authentication(),
+        navigationService: createNavigationService(),
+        repository: createRepository().repository,
+      });
+
+      const response = await app.request(`/api/admin/${segment}/${id}`);
+      const body = (await response.json()) as Record<string, unknown>;
+
+      expect(response.status).toBe(200);
+      expect(body.kind).toBe(kind);
+      expect(JSON.stringify(body[key])).toContain(expectedTitle);
+    },
+  );
+
+  it('ne révèle pas un niveau appartenant à un autre propriétaire', async () => {
+    const app = createAdminApp({
+      authentication: authentication(otherUserId),
+      navigationService: createNavigationService(),
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request(`/api/admin/lessons/${lessonId}`);
+
+    expect(response.status).toBe(404);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'RESOURCE_NOT_FOUND' },
+    });
   });
 
   it('modifie les champs administrables d’un module appartenant à l’admin', async () => {
@@ -196,7 +269,7 @@ describe('administration minimale', () => {
       {
         body: JSON.stringify({
           description: 'Résumé modifié',
-          position: 2,
+          position: 0,
           title: 'Module modifié',
         }),
         headers: { 'content-type': 'application/json' },
@@ -208,7 +281,7 @@ describe('administration minimale', () => {
     expect(await response.json()).toMatchObject({
       module: {
         description: 'Résumé modifié',
-        position: 2,
+        position: 0,
         title: 'Module modifié',
       },
     });

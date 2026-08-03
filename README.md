@@ -207,6 +207,19 @@ programmes.
 
 ## Publication administrateur
 
+La zone `/admin` charge la hiérarchie progressivement et conserve le niveau
+actif dans l’URL. Les lectures propriétaires sont séparées par niveau :
+
+- `GET /api/admin/programs` liste uniquement les programmes du compte admin ;
+- `GET /api/admin/programs/:programId` charge ses étapes immédiates ;
+- `GET /api/admin/stages/:stageId` charge ses modules immédiats ;
+- `GET /api/admin/modules/:moduleId` charge ses leçons immédiates ;
+- `GET /api/admin/lessons/:lessonId` charge la leçon et son fil d’Ariane.
+
+Chaque lecture vérifie le rôle administrateur et la propriété côté serveur. Les
+détails et actions du niveau actif s’ouvrent dans un tiroir accessible sans
+charger le reste de l’arbre.
+
 Les cascades programme, étape et module utilisent toujours deux requêtes :
 
 - `POST /api/admin/publication/preview` calcule les changements, avertissements,

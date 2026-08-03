@@ -23,13 +23,40 @@ import { AdminPage } from '@/pages/AdminPage';
 
 interface RouteParams {
   assessmentId?: string;
+  lessonId?: string;
   lessonSlug?: string;
+  moduleId?: string;
   moduleSlug?: string;
   noteId?: string;
   path?: string;
+  programId?: string;
   programSlug?: string;
   quizId?: string;
+  stageId?: string;
   stageSlug?: string;
+}
+
+function AdminManagementRoute({
+  lessonId,
+  moduleId,
+  path,
+  programId,
+  stageId,
+}: RouteParams) {
+  void path;
+
+  return (
+    <ProtectedRoute>
+      <AdminRoute>
+        <AdminPage
+          lessonId={lessonId}
+          moduleId={moduleId}
+          programId={programId}
+          stageId={stageId}
+        />
+      </AdminRoute>
+    </ProtectedRoute>
+  );
 }
 
 function NoteRoute({ noteId, path }: RouteParams) {
@@ -199,11 +226,11 @@ export function AppRoutes() {
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
-        <ProtectedRoute path="/admin">
-          <AdminRoute>
-            <AdminPage />
-          </AdminRoute>
-        </ProtectedRoute>
+        <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId" />
+        <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId" />
+        <AdminManagementRoute path="/admin/program/:programId/stage/:stageId" />
+        <AdminManagementRoute path="/admin/program/:programId" />
+        <AdminManagementRoute path="/admin" />
         <NotFoundPage default />
       </Router>
     </MobileLayout>

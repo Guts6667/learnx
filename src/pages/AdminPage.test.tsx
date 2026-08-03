@@ -4,6 +4,8 @@ import { AppProviders } from '@/app/providers';
 import { AdminRoute } from '@/features/auth/AdminRoute';
 import { AdminPage } from '@/pages/AdminPage';
 
+const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
+const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 
@@ -21,45 +23,55 @@ const adminUser = {
   role: 'ADMIN',
 };
 
-function curriculumResponse() {
+const program = {
+  id: programId,
+  position: 0,
+  slug: 'programme-test',
+  status: 'DRAFT',
+  title: 'Programme test',
+} as const;
+const stage = {
+  id: stageId,
+  isPublished: false,
+  position: 0,
+  slug: 'etape-test',
+  title: 'Étape test',
+};
+const module = {
+  description: 'Résumé du module',
+  id: moduleId,
+  isPublished: false,
+  position: 0,
+  slug: 'module-test',
+  title: 'Module test',
+};
+const lesson = {
+  id: lessonId,
+  isPublished: false,
+  position: 0,
+  slug: 'lecon-test',
+  summary: 'Résumé de la leçon',
+  title: 'Leçon test',
+};
+
+function moduleResponse() {
   return {
-    programs: [
-      {
-        id: 'program-1',
-        slug: 'programme-test',
-        stages: [
-          {
-            id: 'stage-1',
-            isPublished: false,
-            modules: [
-              {
-                description: 'Résumé du module',
-                id: moduleId,
-                isPublished: false,
-                lessons: [
-                  {
-                    id: lessonId,
-                    isPublished: false,
-                    position: 1,
-                    slug: 'lecon-test',
-                    summary: 'Résumé de la leçon',
-                    title: 'Leçon test',
-                  },
-                ],
-                position: 1,
-                slug: 'module-test',
-                title: 'Module test',
-              },
-            ],
-            position: 1,
-            slug: 'etape-test',
-            title: 'Étape test',
-          },
-        ],
-        status: 'DRAFT',
-        title: 'Programme test',
-      },
-    ],
+    kind: 'MODULE',
+    module: {
+      ...module,
+      lessons: [lesson],
+      stage: { ...stage, program },
+    },
+  };
+}
+
+function lessonResponse() {
+  return {
+    kind: 'LESSON',
+    lesson: {
+      ...lesson,
+      module: { ...module, stage: { ...stage, program } },
+    },
   };
 }
 
@@ -90,25 +102,10 @@ describe('AdminRoute', () => {
 describe('AdminPage', () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it('affiche modules, leçons et statuts puis modifie un module', async () => {
-    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/auth/session') {
-        return Promise.resolve(jsonResponse({ user: adminUser }));
-      }
-      if (path === `/api/admin/modules/${moduleId}`) {
-        return Promise.resolve(
-          jsonResponse({
-            module: {
-              ...curriculumResponse().programs[0].stages[0].modules[0],
-              title: 'Module renommé',
-            },
-          }),
-        );
-      }
-
-      expect(init?.method).toBeUndefined();
-      return Promise.resolve(jsonResponse(curriculumResponse()));
-    });
+  it('ne charge que les programmes à la racine', async () => {
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(jsonResponse({ kind: 'PROGRAMS', programs: [program] })),
+    );
     vi.stubGlobal('fetch', fetchMock);
 
     render(
@@ -118,69 +115,92 @@ describe('AdminPage', () => {
     );
 
     expect(await screen.findByText('Programme test')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('Module test')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('Leçon test')).toBeInTheDocument();
-    expect(screen.getAllByText('Brouillon')).toHaveLength(4);
+    expect(screen.queryByText('Étape test')).not.toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/admin/programs',
+      expect.any(Object),
+    );
+  });
 
-    fireEvent.input(screen.getByLabelText('Titre du module'), {
-      target: { value: 'Module renommé' },
+  it('n’affiche que les enfants immédiats et enregistre la position zéro', async () => {
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (
+        path === `/api/admin/modules/${moduleId}` &&
+        init?.method === 'PATCH'
+      ) {
+        return Promise.resolve(jsonResponse({ module }));
+      }
+      return Promise.resolve(jsonResponse(moduleResponse()));
     });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminPage moduleId={moduleId} />
+      </AppProviders>,
+    );
+
+    expect(await screen.findByText('Leçon test')).toBeInTheDocument();
+    expect(screen.queryByText('Résumé de la leçon')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Étape test' })).toHaveAttribute(
+      'href',
+      `/admin/program/${programId}/stage/${stageId}`,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Gérer ce contenu' }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('0')).toBeInTheDocument();
     fireEvent.click(
       screen.getByRole('button', { name: 'Enregistrer le module' }),
     );
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      `/api/admin/modules/${moduleId}`,
-      expect.objectContaining({
-        body: JSON.stringify({
-          description: 'Résumé du module',
-          position: 1,
-          title: 'Module renommé',
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/admin/modules/${moduleId}`,
+        expect.objectContaining({
+          body: JSON.stringify({
+            description: 'Résumé du module',
+            position: 0,
+            title: 'Module test',
+          }),
+          method: 'PATCH',
         }),
-        method: 'PATCH',
-      }),
-    );
+      );
+    });
   });
 
-  it('explique pourquoi une leçon incomplète ne peut pas être publiée', async () => {
+  it('confirme une publication de leçon et annonce un blocage pédagogique', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/auth/session') {
-        return Promise.resolve(jsonResponse({ user: adminUser }));
-      }
       if (
         path === `/api/admin/lessons/${lessonId}` &&
         init?.method === 'PATCH'
       ) {
         return Promise.resolve(
           jsonResponse(
-            {
-              error: {
-                code: 'LESSON_NOT_READY',
-                message: 'Lesson not ready.',
-              },
-            },
+            { error: { code: 'LESSON_NOT_READY', message: 'Not ready.' } },
             409,
           ),
         );
       }
-
-      return Promise.resolve(jsonResponse(curriculumResponse()));
+      return Promise.resolve(jsonResponse(lessonResponse()));
     });
     vi.stubGlobal('fetch', fetchMock);
 
     render(
       <AppProviders>
-        <AdminPage />
+        <AdminPage lessonId={lessonId} />
       </AppProviders>,
     );
 
+    await screen.findByText('Résumé de la leçon');
+    fireEvent.click(screen.getByRole('button', { name: 'Gérer ce contenu' }));
     fireEvent.click(
-      await screen.findByRole('button', { name: 'Publier la leçon' }),
+      screen.getByRole('button', { name: 'Prévisualiser — publier la leçon' }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmer' }));
 
     expect(
       await screen.findByText(
-        'Publication impossible : publiez au moins une leçon prête et vérifiez les évaluations des notions obligatoires.',
+        'Publication impossible : vérifiez les évaluations des notions obligatoires.',
       ),
     ).toBeInTheDocument();
   });
@@ -211,11 +231,7 @@ describe('AdminPage', () => {
       warnings: [],
     };
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/auth/session') {
-        return Promise.resolve(jsonResponse({ user: adminUser }));
-      }
       if (path === '/api/admin/publication/preview') {
-        expect(init?.method).toBe('POST');
         return Promise.resolve(jsonResponse({ plan }));
       }
       if (path === '/api/admin/publication/apply') {
@@ -230,21 +246,20 @@ describe('AdminPage', () => {
         );
         return Promise.resolve(jsonResponse({ plan }));
       }
-
-      return Promise.resolve(jsonResponse(curriculumResponse()));
+      return Promise.resolve(jsonResponse(moduleResponse()));
     });
     vi.stubGlobal('fetch', fetchMock);
 
     render(
       <AppProviders>
-        <AdminPage />
+        <AdminPage moduleId={moduleId} />
       </AppProviders>,
     );
 
+    await screen.findByText('Leçon test');
+    fireEvent.click(screen.getByRole('button', { name: 'Gérer ce contenu' }));
     fireEvent.click(
-      await screen.findByRole('button', {
-        name: 'Prévisualiser — publier Module test',
-      }),
+      screen.getByRole('button', { name: 'Prévisualiser — publier' }),
     );
     expect(
       await screen.findByText('Aperçu avant confirmation'),

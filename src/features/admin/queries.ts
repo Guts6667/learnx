@@ -4,7 +4,32 @@ import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 
-export interface AdminLesson {
+export interface AdminProgramSummary {
+  id: string;
+  position: number;
+  slug: string;
+  status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
+  title: string;
+}
+
+export interface AdminStageSummary {
+  id: string;
+  isPublished: boolean;
+  position: number;
+  slug: string;
+  title: string;
+}
+
+export interface AdminModuleSummary {
+  description: string;
+  id: string;
+  isPublished: boolean;
+  position: number;
+  slug: string;
+  title: string;
+}
+
+export interface AdminLessonSummary {
   id: string;
   isPublished: boolean;
   position: number;
@@ -13,43 +38,46 @@ export interface AdminLesson {
   title: string;
 }
 
-export interface AdminModule {
-  description: string;
-  id: string;
-  isPublished: boolean;
-  lessons: AdminLesson[];
-  position: number;
-  slug: string;
-  title: string;
+export interface AdminProgram extends AdminProgramSummary {
+  stages: AdminStageSummary[];
 }
 
-export interface AdminStage {
-  id: string;
-  isPublished: boolean;
-  modules: AdminModule[];
-  position: number;
-  slug: string;
-  title: string;
+export interface AdminStage extends AdminStageSummary {
+  modules: AdminModuleSummary[];
+  program: AdminProgramSummary;
 }
 
-export interface AdminProgram {
-  id: string;
-  slug: string;
-  stages: AdminStage[];
-  status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
-  title: string;
+export interface AdminModule extends AdminModuleSummary {
+  lessons: AdminLessonSummary[];
+  stage: AdminStageSummary & { program: AdminProgramSummary };
 }
 
-interface AdminCurriculumResponse {
-  programs: AdminProgram[];
+export interface AdminLesson extends AdminLessonSummary {
+  module: AdminModuleSummary & {
+    stage: AdminStageSummary & { program: AdminProgramSummary };
+  };
 }
+
+export type AdminNavigationResponse =
+  | { kind: 'LESSON'; lesson: AdminLesson }
+  | { kind: 'MODULE'; module: AdminModule }
+  | { kind: 'PROGRAM'; program: AdminProgram }
+  | { kind: 'PROGRAMS'; programs: AdminProgramSummary[] }
+  | { kind: 'STAGE'; stage: AdminStage };
+
+export type AdminNavigationTarget =
+  | { id: string; kind: 'LESSON' }
+  | { id: string; kind: 'MODULE' }
+  | { id: string; kind: 'PROGRAM' }
+  | { kind: 'PROGRAMS' }
+  | { id: string; kind: 'STAGE' };
 
 interface AdminModuleResponse {
-  module: AdminModule;
+  module: AdminModuleSummary & { lessons: AdminLessonSummary[] };
 }
 
 interface AdminLessonResponse {
-  lesson: AdminLesson;
+  lesson: AdminLessonSummary;
 }
 
 export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
@@ -89,36 +117,55 @@ interface PublicationRequest {
   targetType: PublicationTargetType;
 }
 
-const adminCurriculumKey = ['admin', 'curriculum'] as const;
+const adminNavigationKey = ['admin', 'navigation'] as const;
 
-export function useAdminCurriculumQuery(enabled: boolean) {
+function navigationRequest(target: AdminNavigationTarget) {
+  if (target.kind === 'PROGRAMS') {
+    return {
+      path: '/api/admin/programs',
+      queryKey: [...adminNavigationKey, 'programs'] as const,
+    };
+  }
+
+  const segment = {
+    LESSON: 'lessons',
+    MODULE: 'modules',
+    PROGRAM: 'programs',
+    STAGE: 'stages',
+  }[target.kind];
+
+  return {
+    path: `/api/admin/${segment}/${encodeURIComponent(target.id)}`,
+    queryKey: [...adminNavigationKey, target.kind, target.id] as const,
+  };
+}
+
+export function useAdminNavigationQuery(target: AdminNavigationTarget) {
   const queryClient = useAppQueryClient();
+  const request = navigationRequest(target);
+  const targetId = 'id' in target ? target.id : '';
   const observer = useMemo(
     () =>
-      new QueryObserver<AdminCurriculumResponse>(queryClient, {
-        enabled,
-        queryFn: () =>
-          apiRequest<AdminCurriculumResponse>('/api/admin/curriculum'),
-        queryKey: adminCurriculumKey,
-        staleTime: 0,
+      new QueryObserver<AdminNavigationResponse>(queryClient, {
+        queryFn: () => apiRequest<AdminNavigationResponse>(request.path),
+        queryKey: request.queryKey,
+        staleTime: 30_000,
       }),
-    [enabled, queryClient],
+    [queryClient, request.path, target.kind, targetId],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
 
   useEffect(() => {
     setResult(observer.getCurrentResult());
     const unsubscribe = observer.subscribe(setResult);
-
-    if (enabled) void observer.refetch();
-
+    void observer.refetch();
     return unsubscribe;
-  }, [enabled, observer]);
+  }, [observer]);
 
   return {
     data: result.data,
     error: result.error,
-    isPending: enabled && result.isPending,
+    isPending: result.isPending,
   };
 }
 
@@ -134,7 +181,7 @@ export function useAdminCurriculumMutation() {
       try {
         const response = await request();
         if (invalidate) {
-          await queryClient.invalidateQueries({ queryKey: adminCurriculumKey });
+          await queryClient.invalidateQueries({ queryKey: adminNavigationKey });
         }
         return response;
       } catch (requestError) {
@@ -149,7 +196,9 @@ export function useAdminCurriculumMutation() {
   const updateModule = useCallback(
     (
       moduleId: string,
-      input: Partial<Pick<AdminModule, 'description' | 'position' | 'title'>>,
+      input: Partial<
+        Pick<AdminModuleSummary, 'description' | 'position' | 'title'>
+      >,
     ) =>
       execute(() =>
         apiRequest<AdminModuleResponse>(
@@ -167,7 +216,10 @@ export function useAdminCurriculumMutation() {
     (
       lessonId: string,
       input: Partial<
-        Pick<AdminLesson, 'isPublished' | 'position' | 'summary' | 'title'>
+        Pick<
+          AdminLessonSummary,
+          'isPublished' | 'position' | 'summary' | 'title'
+        >
       >,
     ) =>
       execute(() =>
