@@ -158,9 +158,26 @@ l’utilisateur avant toute écriture :
 - `PATCH /api/tasks/:taskId`
 - `PATCH /api/resources/:resourceId/progress`
 
-La progression de leçon est calculée côté serveur à partir des tâches et des
-ressources obligatoires. Les catégories absentes voient leur poids redistribué.
-La consultation d’une ressource ne valide jamais une notion.
+La progression de leçon est calculée côté serveur à partir des tâches
+obligatoires (40 %), quiz obligatoires réussis (30 %), exercices obligatoires
+soumis (20 %) et ressources obligatoires terminées (10 %). Les catégories
+absentes voient leur poids redistribué. Les mini-évaluations ne sont pas
+comptées une seconde fois : toute notion obligatoire doit néanmoins être
+maîtrisée pour terminer la leçon. La consultation d’une ressource ne valide
+jamais une notion.
+
+Les mutations et leurs agrégats leçon, étape et programme sont persistés dans
+une transaction sérialisable. Pour contrôler puis réparer les progressions
+existantes sans mutation implicite :
+
+```bash
+pnpm progress:recalculate -- --user-id <uuid>
+pnpm progress:recalculate -- --user-id <uuid> --apply
+```
+
+Sans `--apply`, la commande reste en simulation. Un `--program-id` peut réduire
+le périmètre ; `--all` doit être fourni explicitement pour couvrir tous les
+programmes.
 
 ## Documents
 

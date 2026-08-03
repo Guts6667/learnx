@@ -328,4 +328,40 @@ describe('quiz persistence filters', () => {
       }),
     );
   });
+
+  it('recalcule la progression dans la transaction de tentative', async () => {
+    const create = vi.fn(async () => ({
+      answers: [],
+      id: 'attempt-1',
+      passed: true,
+      score: 100,
+      submittedAt,
+    }));
+    const transaction = { quizAttempt: { create } };
+    const client = {
+      $transaction: vi.fn(
+        async (callback: (value: typeof transaction) => unknown) =>
+          callback(transaction),
+      ),
+    } as unknown as PrismaClient;
+    const recalculate = vi.fn(async () => ({}) as never);
+
+    await createPrismaRepository(client, recalculate).recordAttempt({
+      answers: [],
+      lessonId,
+      passed: true,
+      quizId,
+      score: 100,
+      submittedAt,
+      userId,
+    });
+
+    expect(recalculate).toHaveBeenCalledWith(
+      transaction,
+      lessonId,
+      userId,
+      submittedAt,
+      { requirePublished: true },
+    );
+  });
 });

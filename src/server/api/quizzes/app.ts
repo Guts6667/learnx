@@ -14,6 +14,10 @@ import {
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
 
 interface QuizQuestionReadModel {
   acceptedAnswers: string[];
@@ -51,6 +55,7 @@ interface QuizAttemptReadModel {
 
 interface RecordQuizAttemptInput {
   answers: Prisma.InputJsonValue;
+  lessonId: string;
   passed: boolean;
   quizId: string;
   score: number;
@@ -168,7 +173,10 @@ function serializeAttempt(attempt: QuizAttemptReadModel) {
   };
 }
 
-export function createPrismaRepository(client: PrismaClient): QuizRepository {
+export function createPrismaRepository(
+  client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
+): QuizRepository {
   return {
     async findPublishedQuizForUser(quizId, userId) {
       const quiz = await client.quiz.findFirst({
@@ -218,15 +226,29 @@ export function createPrismaRepository(client: PrismaClient): QuizRepository {
       });
     },
     async recordAttempt(input) {
-      return client.quizAttempt.create({
-        data: {
-          answers: input.answers,
-          passed: input.passed,
-          quizId: input.quizId,
-          score: input.score,
-          submittedAt: input.submittedAt,
-          userId: input.userId,
-        },
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const attempt = await transaction.quizAttempt.create({
+          data: {
+            answers: input.answers,
+            passed: input.passed,
+            quizId: input.quizId,
+            score: input.score,
+            submittedAt: input.submittedAt,
+            userId: input.userId,
+          },
+        });
+
+        const progress = await recalculateProgress(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+          { requirePublished: true },
+        );
+
+        if (!progress) throw notFound();
+
+        return attempt;
       });
     },
   };
@@ -318,6 +340,7 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
 
     const attempt = await repository.recordAttempt({
       answers: toJsonValue(parsedAttempt.data.answers),
+      lessonId: quiz.lessonId,
       passed: result.passed,
       quizId,
       score: result.score,

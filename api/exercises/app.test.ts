@@ -290,4 +290,45 @@ describe('exercise persistence filters', () => {
       }),
     );
   });
+
+  it('recalcule la progression à la soumission dans la même transaction', async () => {
+    const transaction = {
+      exercise: {
+        findUnique: vi.fn(async () => ({ lessonId })),
+      },
+      exerciseSubmission: {
+        update: vi.fn(async () => ({
+          contentMarkdown: 'Réponse.',
+          createdAt,
+          exerciseId,
+          id: submissionId,
+          status: 'SUBMITTED' as const,
+          submittedAt,
+          updatedAt: submittedAt,
+          userId,
+        })),
+      },
+    };
+    const client = {
+      $transaction: vi.fn(
+        async (callback: (value: typeof transaction) => unknown) =>
+          callback(transaction),
+      ),
+    } as unknown as PrismaClient;
+    const recalculate = vi.fn(async () => ({}) as never);
+
+    await createPrismaExerciseRepository(client, recalculate).submitSubmission(
+      submissionId,
+      submittedAt,
+      userId,
+    );
+
+    expect(recalculate).toHaveBeenCalledWith(
+      transaction,
+      lessonId,
+      userId,
+      submittedAt,
+      { requirePublished: true },
+    );
+  });
 });

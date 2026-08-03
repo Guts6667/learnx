@@ -18,6 +18,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db seed",
     "prisma:check": "tsx scripts/check-database.ts",
+    "progress:recalculate": "tsx scripts/recalculate-progress.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

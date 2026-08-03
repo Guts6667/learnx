@@ -3,6 +3,26 @@ export interface ProgressCategory {
   weight: number;
 }
 
+export const LESSON_PROGRESS_WEIGHTS = {
+  exercises: 20,
+  quizzes: 30,
+  resources: 10,
+  tasks: 40,
+} as const;
+
+export interface LessonProgressInput {
+  requiredConcepts: boolean[];
+  requiredExercises: boolean[];
+  requiredQuizzes: boolean[];
+  requiredResources: boolean[];
+  requiredTasks: boolean[];
+}
+
+export interface LessonProgressResult {
+  canComplete: boolean;
+  percent: number;
+}
+
 function clampPercent(value: number): number {
   return Math.min(Math.max(value, 0), 100);
 }
@@ -39,4 +59,44 @@ export function calculateProgress(categories: ProgressCategory[]): number {
   );
 
   return clampPercent(progress);
+}
+
+function toItemProgress(items: boolean[]): number[] {
+  return items.map((isComplete) => (isComplete ? 100 : 0));
+}
+
+export function calculateLessonProgress(
+  input: LessonProgressInput,
+): LessonProgressResult {
+  const percent = calculateProgress([
+    {
+      itemProgress: toItemProgress(input.requiredTasks),
+      weight: LESSON_PROGRESS_WEIGHTS.tasks,
+    },
+    {
+      itemProgress: toItemProgress(input.requiredQuizzes),
+      weight: LESSON_PROGRESS_WEIGHTS.quizzes,
+    },
+    {
+      itemProgress: toItemProgress(input.requiredExercises),
+      weight: LESSON_PROGRESS_WEIGHTS.exercises,
+    },
+    {
+      itemProgress: toItemProgress(input.requiredResources),
+      weight: LESSON_PROGRESS_WEIGHTS.resources,
+    },
+  ]);
+  const trackedRequirements = [
+    ...input.requiredTasks,
+    ...input.requiredQuizzes,
+    ...input.requiredExercises,
+    ...input.requiredResources,
+  ];
+
+  return {
+    canComplete:
+      trackedRequirements.every(Boolean) &&
+      input.requiredConcepts.every(Boolean),
+    percent,
+  };
 }

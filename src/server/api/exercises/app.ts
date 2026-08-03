@@ -13,6 +13,10 @@ import {
 } from '../../../lib/exercises.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
 
 type SubmissionStatus = keyof typeof ExerciseSubmissionStatus;
 
@@ -58,6 +62,7 @@ export interface ExerciseRepository {
   submitSubmission(
     submissionId: string,
     submittedAt: Date,
+    userId: string,
   ): Promise<ExerciseSubmissionRecord>;
 }
 
@@ -131,6 +136,7 @@ function exerciseWhere(exerciseId: string, userId: string) {
 
 export function createPrismaExerciseRepository(
   client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
 ): ExerciseRepository {
   const submissionSelect = {
     contentMarkdown: true,
@@ -186,11 +192,31 @@ export function createPrismaExerciseRepository(
         select: submissionSelect,
       });
     },
-    async submitSubmission(submissionId, submittedAt) {
-      return client.exerciseSubmission.update({
-        where: { id: submissionId },
-        data: { status: ExerciseSubmissionStatus.SUBMITTED, submittedAt },
-        select: submissionSelect,
+    async submitSubmission(submissionId, submittedAt, userId) {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const submission = await transaction.exerciseSubmission.update({
+          where: { id: submissionId },
+          data: { status: ExerciseSubmissionStatus.SUBMITTED, submittedAt },
+          select: submissionSelect,
+        });
+        const exercise = await transaction.exercise.findUnique({
+          where: { id: submission.exerciseId },
+          select: { lessonId: true },
+        });
+
+        if (!exercise) throw notFound();
+
+        const progress = await recalculateProgress(
+          transaction,
+          exercise.lessonId,
+          userId,
+          submittedAt,
+          { requirePublished: true },
+        );
+
+        if (!progress) throw notFound();
+
+        return submission;
       });
     },
   };
@@ -310,7 +336,11 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
         throw conflict(error instanceof Error ? error.message : 'Conflict.');
       }
 
-      const updated = await repository.submitSubmission(submissionId, now());
+      const updated = await repository.submitSubmission(
+        submissionId,
+        now(),
+        context.get('user').id,
+      );
       return context.json({ submission: serializeSubmission(updated) });
     },
   );

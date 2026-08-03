@@ -17,7 +17,10 @@ import {
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
-import { refreshStageValidation } from '../_lib/stage-validation.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
 
 interface AssessmentQuestionReadModel {
   acceptedAnswers: string[];
@@ -210,6 +213,7 @@ function serializeAttempt(attempt: AttemptReadModel) {
 
 export function createPrismaRepository(
   client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
 ): ConceptAssessmentRepository {
   return {
     async findAssessmentForUser(assessmentId, userId, preview) {
@@ -283,7 +287,7 @@ export function createPrismaRepository(
       });
     },
     async recordAttempt(input) {
-      return client.$transaction(async (transaction) => {
+      return runSerializableProgressTransaction(client, async (transaction) => {
         const currentProgress = await transaction.conceptProgress.findUnique({
           where: {
             userId_conceptId: {
@@ -296,9 +300,12 @@ export function createPrismaRepository(
           currentProgress?.bestScore ?? 0,
           input.score,
         );
-        const status = input.passed
-          ? ConceptProgressStatus.VALIDATED
-          : ConceptProgressStatus.NEEDS_REVIEW;
+        const wasValidated =
+          currentProgress?.status === ConceptProgressStatus.VALIDATED;
+        const status =
+          input.passed || wasValidated
+            ? ConceptProgressStatus.VALIDATED
+            : ConceptProgressStatus.NEEDS_REVIEW;
         const validatedAt = input.passed
           ? input.submittedAt
           : (currentProgress?.validatedAt ?? null);
@@ -375,6 +382,16 @@ export function createPrismaRepository(
           });
         }
 
+        const lessonProgress = await recalculateProgress(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+          { requirePublished: false },
+        );
+
+        if (!lessonProgress) throw notFound();
+
         return { attempt, progress };
       });
     },
@@ -393,13 +410,7 @@ export function createConceptAssessmentsApp(
   const app = new Hono<AuthEnvironment>();
   const now = options.now ?? (() => new Date());
   const refreshValidation =
-    options.refreshValidation ??
-    (options.repository
-      ? async () => undefined
-      : async (stageId: string, userId: string, refreshedAt: Date) => {
-          const { prisma } = await import('../../prisma.js');
-          await refreshStageValidation(prisma, stageId, userId, refreshedAt);
-        });
+    options.refreshValidation ?? (async () => undefined);
 
   app.use('*', options.authentication ?? requireUser);
 
