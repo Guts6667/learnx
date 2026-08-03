@@ -50,7 +50,7 @@ function NoteCard({ note }: { note: NoteDetail }) {
         ) : (
           <p class="text-sm text-slate-400">Note personnelle</p>
         )}
-        <p class="text-xs text-slate-500">
+        <p class="text-xs text-slate-400">
           Modifiée le {formatUpdatedAt(note.updatedAt)}
         </p>
         <a

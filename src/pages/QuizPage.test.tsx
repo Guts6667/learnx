@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 
 import { AppProviders } from '@/app/providers';
 import { QuizPage } from '@/pages/QuizPage';
@@ -202,7 +202,9 @@ describe('QuizPage', () => {
 
     fireEvent.click(screen.getByLabelText('Vrai'));
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));
-    fireEvent.click(await screen.findByLabelText('Données'));
+    const secondQuestion = await screen.findByText('Choisissez une réponse.');
+    await waitFor(() => expect(secondQuestion).toHaveFocus());
+    fireEvent.click(screen.getByLabelText('Données'));
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));
     fireEvent.click(await screen.findByLabelText('Temps'));
     fireEvent.click(screen.getByLabelText('Essais'));
@@ -215,6 +217,9 @@ describe('QuizPage', () => {
     );
 
     expect(await screen.findByText('Quiz réussi')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByLabelText('Résultat de l’évaluation')).toHaveFocus(),
+    );
     expect(screen.getByText('100 %')).toBeInTheDocument();
     expect(screen.getByText('La proposition est vraie.')).toBeInTheDocument();
     expect(

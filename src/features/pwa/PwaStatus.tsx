@@ -88,6 +88,7 @@ export function PwaStatus() {
   return (
     <aside
       aria-label="État de l’application"
+      aria-live="polite"
       class="mx-auto max-w-xl space-y-3 px-5 pt-4"
     >
       <OfflineBanner isOffline={!isOnline} />

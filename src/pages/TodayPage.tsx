@@ -48,7 +48,10 @@ export function TodayPage() {
       ) : (
         <EmptyState
           action={
-            <a class="text-cyan-300 underline" href="/program">
+            <a
+              class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+              href="/program"
+            >
               Voir les programmes
             </a>
           }
@@ -124,7 +127,7 @@ function TodayContent({
           <p class="text-sm text-slate-400">Dernière activité</p>
           {data.lastActivity ? (
             <a
-              class="mt-2 block text-sm text-cyan-300 underline"
+              class="mt-2 inline-flex min-h-11 items-center text-sm text-cyan-300 underline"
               href={data.lastActivity.href}
             >
               {data.lastActivity.title} ·{' '}

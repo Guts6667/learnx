@@ -56,7 +56,10 @@ export function ConceptAssessmentPage({
     return (
       <EmptyState
         action={
-          <a class="text-cyan-300 underline" href={lessonHref}>
+          <a
+            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            href={lessonHref}
+          >
             Retour à la leçon
           </a>
         }
@@ -86,12 +89,6 @@ export function ConceptAssessmentPage({
   return (
     <article aria-labelledby="assessment-title" class="space-y-6">
       <header class="space-y-3">
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href={lessonHref}
-        >
-          Retour à la leçon
-        </a>
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Notion · {assessment.concept.title}
         </p>

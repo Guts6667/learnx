@@ -72,7 +72,7 @@ function LessonEditor({ lesson }: { lesson: AdminLesson }) {
     <li>
       <Card class="space-y-4 border-slate-700 bg-slate-950/50">
         <div class="flex items-center justify-between gap-3">
-          <h4 class="font-semibold">Leçon</h4>
+          <h4 class="font-semibold">Leçon — {lesson.title}</h4>
           <StatusBadge isPublished={lesson.isPublished} />
         </div>
         <TextField
@@ -151,7 +151,7 @@ function ModuleEditor({ module }: { module: AdminModule }) {
   return (
     <Card class="space-y-5">
       <div class="flex items-center justify-between gap-3">
-        <h3 class="text-xl font-semibold">Module</h3>
+        <h3 class="text-xl font-semibold">Module — {module.title}</h3>
         <StatusBadge isPublished={module.isPublished} />
       </div>
       <TextField

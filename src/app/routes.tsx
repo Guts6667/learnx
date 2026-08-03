@@ -1,4 +1,5 @@
-import Router from 'preact-router';
+import Router, { type RouterOnChangeArgs } from 'preact-router';
+import { useCallback, useState } from 'preact/hooks';
 
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { AdminRoute } from '@/features/auth/AdminRoute';
@@ -151,9 +152,29 @@ function ModuleRoute({ moduleSlug, path, programSlug }: RouteParams) {
 }
 
 export function AppRoutes() {
+  const [navigation, setNavigation] = useState(() => ({
+    canGoBack: false,
+    currentPath: window.location.pathname,
+  }));
+  const handleRouteChange = useCallback(
+    ({ previous, url }: RouterOnChangeArgs) => {
+      setNavigation({
+        canGoBack: Boolean(previous),
+        currentPath: new URL(url, window.location.origin).pathname,
+      });
+
+      if (previous) {
+        window.requestAnimationFrame(() => {
+          document.getElementById('main-content')?.focus();
+        });
+      }
+    },
+    [],
+  );
+
   return (
-    <MobileLayout>
-      <Router>
+    <MobileLayout {...navigation}>
+      <Router onChange={handleRouteChange}>
         <ProtectedRoute path="/">
           <TodayPage />
         </ProtectedRoute>

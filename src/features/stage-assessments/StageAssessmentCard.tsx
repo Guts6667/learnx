@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Spinner } from '@/components/ui/Spinner';
+import { Textarea } from '@/components/ui/Textarea';
+import { TextField } from '@/components/ui/TextField';
 import {
   type StageAssessmentDetail,
   type StageAssessmentStatus,
@@ -76,31 +78,20 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
       ) : null}
       {editable ? (
         <>
-          <label
-            class="block space-y-2 text-sm font-medium"
-            for="assessment-content"
-          >
-            Votre réponse
-            <textarea
-              class="min-h-40 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-slate-100"
-              id="assessment-content"
-              onInput={(event) => setContentMarkdown(event.currentTarget.value)}
-              value={contentMarkdown}
-            />
-          </label>
-          <label
-            class="block space-y-2 text-sm font-medium"
-            for="assessment-attachment"
-          >
-            Lien vers une pièce jointe
-            <input
-              class="min-h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-slate-100"
-              id="assessment-attachment"
-              onInput={(event) => setAttachmentUrl(event.currentTarget.value)}
-              type="url"
-              value={attachmentUrl}
-            />
-          </label>
+          <Textarea
+            class="[&_textarea]:min-h-40"
+            id="assessment-content"
+            label="Votre réponse"
+            onInput={(event) => setContentMarkdown(event.currentTarget.value)}
+            value={contentMarkdown}
+          />
+          <TextField
+            id="assessment-attachment"
+            label="Lien vers une pièce jointe"
+            onInput={(event) => setAttachmentUrl(event.currentTarget.value)}
+            type="url"
+            value={attachmentUrl}
+          />
           <div class="flex flex-wrap gap-3">
             <Button
               isLoading={mutation.isPending}

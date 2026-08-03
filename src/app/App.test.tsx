@@ -63,6 +63,31 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
+  it('déplace le focus principal et affiche le retour après navigation', async () => {
+    window.history.pushState({}, '', '/today');
+    mockSession({
+      id: 'user-1',
+      email: 'learner@example.com',
+      displayName: 'Learner',
+      role: 'USER',
+    });
+
+    render(<App />);
+
+    await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' });
+    fireEvent.click(screen.getByRole('link', { name: 'Profil' }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Learner' }),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(document.getElementById('main-content')).toHaveFocus(),
+    );
+    expect(
+      screen.getByRole('button', { name: 'Revenir à la page précédente' }),
+    ).toBeInTheDocument();
+  });
+
   it('connecte un utilisateur puis met à jour la session locale', async () => {
     window.history.pushState({}, '', '/login');
     const fetchMock = vi.fn((path: string) => {

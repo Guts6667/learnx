@@ -125,7 +125,7 @@ function BlockSources({ resources }: { resources: LessonResource[] }) {
                 <>
                   {' · '}
                   <a
-                    class="text-cyan-300 underline"
+                    class="inline-flex min-h-11 items-center text-cyan-300 underline"
                     href={url}
                     rel="noreferrer"
                     target="_blank"
@@ -217,16 +217,16 @@ function ResourceCard({
         </a>
       ) : null}
       {onProgressChange ? (
-        <button
-          class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+        <Button
           disabled={isPending || progressStatus === 'COMPLETED'}
+          isLoading={isPending}
           onClick={() => void onProgressChange('COMPLETED')}
-          type="button"
+          variant="secondary"
         >
           {progressStatus === 'COMPLETED'
             ? 'Ressource consultée'
             : 'Marquer comme consultée'}
-        </button>
+        </Button>
       ) : null}
     </Card>
   );
@@ -256,18 +256,18 @@ function TaskCard({
         <p class="text-sm leading-6 text-slate-300">{task.description}</p>
       ) : null}
       {onStatusChange ? (
-        <button
-          class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+        <Button
           disabled={isPending}
+          isLoading={isPending}
           onClick={() =>
             void onStatusChange(status === 'DONE' ? 'TODO' : 'DONE')
           }
-          type="button"
+          variant="secondary"
         >
           {status === 'DONE'
             ? 'Marquer comme à faire'
             : 'Marquer comme terminée'}
-        </button>
+        </Button>
       ) : null}
     </Card>
   );
@@ -351,26 +351,25 @@ function LessonActivityProgress({
                 : 'À commencer'}
           </p>
           <div class="flex flex-wrap gap-3">
-            <button
-              class="min-h-11 rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-60"
+            <Button
               disabled={mutation.isPending || lessonStatus !== 'AVAILABLE'}
+              isLoading={mutation.isPending}
               onClick={() => void startLesson()}
-              type="button"
             >
               Commencer la leçon
-            </button>
-            <button
-              class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+            </Button>
+            <Button
               disabled={
                 mutation.isPending ||
                 lessonStatus === 'COMPLETED' ||
                 !canComplete
               }
+              isLoading={mutation.isPending}
               onClick={() => void completeLesson()}
-              type="button"
+              variant="secondary"
             >
               Terminer la leçon
-            </button>
+            </Button>
           </div>
           {!canComplete ? (
             <p class="text-sm text-slate-400">

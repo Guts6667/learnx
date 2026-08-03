@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -282,13 +282,27 @@ export function QuestionAssessmentExperience({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [message, setMessage] = useState<string>();
   const [result, setResult] = useState<AssessmentAttemptResponse>();
+  const questionTitleRef = useRef<HTMLLegendElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
   const question = assessment.questions[currentIndex];
+
+  useEffect(() => {
+    if (result) {
+      resultRef.current?.focus();
+      return;
+    }
+
+    if (currentIndex > 0) questionTitleRef.current?.focus();
+  }, [currentIndex, result]);
 
   if (!question) {
     return (
       <EmptyState
         action={
-          <a class="text-cyan-300 underline" href={backHref}>
+          <a
+            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            href={backHref}
+          >
             Retour à la leçon
           </a>
         }
@@ -333,7 +347,12 @@ export function QuestionAssessmentExperience({
       : [result.attempt, ...attempts];
 
     return (
-      <div class="space-y-6">
+      <div
+        aria-label="Résultat de l’évaluation"
+        class="space-y-6 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+        ref={resultRef}
+        tabindex={-1}
+      >
         <AssessmentResult
           assessment={assessment}
           labels={labels}
@@ -365,7 +384,11 @@ export function QuestionAssessmentExperience({
       >
         <Card class="space-y-5">
           <fieldset class="space-y-5">
-            <legend class="text-xl font-semibold leading-7">
+            <legend
+              class="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+              ref={questionTitleRef}
+              tabindex={-1}
+            >
               {question.prompt}
             </legend>
             <QuestionOptions

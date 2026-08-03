@@ -44,7 +44,10 @@ export function QuizPage({
     return (
       <EmptyState
         action={
-          <a class="text-cyan-300 underline" href={lessonHref}>
+          <a
+            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            href={lessonHref}
+          >
             Retour à la leçon
           </a>
         }
@@ -58,7 +61,10 @@ export function QuizPage({
     return (
       <EmptyState
         action={
-          <a class="text-cyan-300 underline" href={lessonHref}>
+          <a
+            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            href={lessonHref}
+          >
             Retour à la leçon
           </a>
         }
@@ -81,12 +87,6 @@ export function QuizPage({
   return (
     <article aria-labelledby="quiz-title" class="space-y-6">
       <header class="space-y-3">
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href={lessonHref}
-        >
-          Retour à la leçon
-        </a>
         <div class="flex flex-wrap items-center gap-3">
           <h1 class="text-3xl font-bold tracking-tight" id="quiz-title">
             {quiz.title}
