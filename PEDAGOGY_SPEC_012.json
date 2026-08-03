@@ -1,0 +1,193 @@
+{
+  "specId": "PEDAGOGY_SPEC_012",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "raisonner-scientifiquement",
+  "moduleSlug": "lire-article-scientifique",
+  "lesson": {
+    "title": "Anatomie d’un article",
+    "slug": "anatomie-article",
+    "summary": "Un article scientifique organise une argumentation vérifiable : il situe une question, décrit comment les données ont été obtenues, présente les résultats puis en discute la portée. Cette leçon apprend à repérer ces fonctions sans supposer que tous les articles suivent exactement le même plan.",
+    "objectives": [
+      "Repérer la fonction de l'abstract, de l'introduction, de la méthode, des résultats et de la discussion.",
+      "Extraire de la méthode les informations nécessaires pour comprendre qui ou quoi a été étudié et comment.",
+      "Distinguer un résultat rapporté de l'interprétation proposée par les auteurs.",
+      "Utiliser les références, tableaux, figures et suppléments comme éléments de vérification plutôt que comme décor éditorial."
+    ],
+    "prerequisites": [
+      "Distinguer question de recherche, hypothèse et variable opérationnalisée.",
+      "Reconnaître une association et une affirmation causale."
+    ],
+    "estimatedMinutes": 135,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Un article de recherche est à la fois un compte rendu et un argument. Son titre et son abstract permettent une première orientation, mais ils condensent nécessairement l'étude. Dans un article quantitatif courant, l'introduction délimite le problème et les hypothèses, la méthode décrit l'échantillon, les mesures, le plan et la procédure, les résultats rapportent les analyses, puis la discussion interprète ces résultats et en examine les limites. Cette organisation, souvent résumée par IMRaD, varie selon la méthode, la revue et le type d'article : il faut reconnaître la fonction d'une section plutôt que mémoriser un ordre rigide.",
+          "sourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La méthode répond à la question « comment cette affirmation a-t-elle été mise à l'épreuve ? ». Pour une étude quantitative, le lecteur recherche au minimum la population et le recrutement, la taille de l'échantillon, les critères d'inclusion, les variables et instruments, les conditions comparées, la procédure, les exclusions et le plan d'analyse. Une description transparente permet d'évaluer la validité de l'étude et facilite une réplication ; elle ne garantit pas, à elle seule, que les choix étaient appropriés.",
+          "sourceKeys": ["apa-jars-quant-2018"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Un article annonce dans son abstract qu'une courte pause « améliore la mémoire ». La méthode montre que 48 étudiants volontaires ont été répartis entre une pause de cinq minutes et une tâche distractive ; la mémoire est mesurée par le nombre de mots rappelés immédiatement. Ces précisions limitent déjà la portée : l'étude porte sur ce protocole, cette mesure immédiate et cet échantillon, non sur toute forme de mémoire ni sur toute population.",
+          "sourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La section Résultats expose ce qui a été observé et les analyses réalisées ; la Discussion propose ce que ces observations signifient au regard de la question et des travaux antérieurs. Une phrase comme « le groupe pause rappelle en moyenne davantage de mots » décrit un résultat. « La pause restaure les ressources attentionnelles » est une interprétation qui exige un lien argumenté et reste compatible avec des explications alternatives. Les tableaux et figures permettent de contrôler les ordres de grandeur, la variabilité et parfois des résultats que le résumé verbal simplifie.",
+          "sourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Avant de retenir une conclusion, reconstruire une chaîne courte : question → participants ou données → comparaison → mesure → résultat → interprétation → limite. Consulter aussi les références pour situer l'étude et les annexes ou suppléments lorsqu'ils contiennent le matériel, des analyses ou des informations de transparence. Un article bien structuré peut néanmoins décrire une étude faible ; la qualité du compte rendu et la qualité de la preuve sont liées mais distinctes.",
+          "sourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-biology-2e-1-1-imrad",
+        "type": "book_chapter",
+        "title": "Biology 2e — 1.1 The Science of Biology, Reporting Scientific Work",
+        "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+        "url": "https://openstax.org/books/biology-2e/pages/1-1-the-science-of-biology",
+        "citation": "Clark, M. A., Douglas, M., & Choi, J. (2018). Biology 2e, section 1.1, Reporting Scientific Work. OpenStax.",
+        "description": "Lire le passage sur la publication scientifique et associer chaque partie IMRaD à la question à laquelle elle répond.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "apa-jars-quant-2018",
+        "type": "article",
+        "title": "Journal article reporting standards for quantitative research in psychology",
+        "author": "Mark Appelbaum, Harris Cooper, Rex B. Kline, Evan Mayo-Wilson, Arthur M. Nezu et Stephen M. Rao",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29345484/",
+        "citation": "Appelbaum, M., Cooper, H., Kline, R. B., Mayo-Wilson, E., Nezu, A. M., & Rao, S. M. (2018). Journal article reporting standards for quantitative research in psychology: The APA Publications and Communications Board task force report. American Psychologist, 73(1), 3–25. https://doi.org/10.1037/amp0000191",
+        "description": "Consulter le résumé et la référence, puis utiliser les standards JARS-Quant pour dresser la liste des informations à retrouver dans une étude quantitative.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "openstax-psychology-2e-2-3",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 2.3 Analyzing Findings",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.3. OpenStax.",
+        "description": "Lire les passages sur variables, biais et publication scientifique ; relever ce qui limite une interprétation causale.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Architecture fonctionnelle d’un article",
+        "slug": "architecture-fonctionnelle-article",
+        "description": "Les sections d'un article remplissent des fonctions distinctes : situer la question, documenter la méthode, présenter les résultats et discuter leur portée.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Architecture d’un article", "questionCount": 5}
+      },
+      {
+        "title": "Méthode et transparence",
+        "slug": "methode-transparence",
+        "description": "La méthode documente l'échantillon, les mesures, la procédure et les analyses afin que le lecteur puisse évaluer comment le résultat a été produit.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Méthode et transparence", "questionCount": 5}
+      },
+      {
+        "title": "Résultat, interprétation et portée",
+        "slug": "resultat-interpretation-portee",
+        "description": "Un résultat décrit une observation ou une analyse ; son interprétation relie cette observation à une explication dont la portée doit rester compatible avec le plan et les données.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-biology-2e-1-1-imrad", "openstax-psychology-2e-2-3"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Résultat et interprétation", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {"title": "Cartographier un article", "description": "Sur un article fourni, produire une carte en sept cases : question, hypothèse, échantillon, procédure, mesure principale, résultat principal et limite principale ; indiquer la section et la page de chaque information.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
+      {"title": "Auditer une méthode", "description": "Compléter une grille indiquant population, recrutement, taille d'échantillon, variables, instruments, conditions, exclusions et analyse ; marquer explicitement toute information introuvable.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2},
+      {"title": "Séparer observation et interprétation", "description": "Classer dix phrases fictives en résultat, interprétation ou limite, puis réécrire deux conclusions trop larges afin qu'elles correspondent au protocole décrit.", "type": "practice", "isRequired": true, "weight": 1, "position": 3}
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-012-OPENSTAX-BIOLOGY", "type": "textbook", "authors": ["Clark, M. A.", "Douglas, M.", "Choi, J."], "organization": "OpenStax", "title": "Biology 2e — 1.1 The Science of Biology", "year": 2018, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/biology-2e/pages/1-1-the-science-of-biology", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Manuel ouvert utilisé pour la fonction des sections IMRaD ; la variabilité des formats est explicitement conservée."},
+      {"id": "REF-012-APA-JARS", "type": "reporting_standard", "authors": ["Appelbaum, M.", "Cooper, H.", "Kline, R. B.", "Mayo-Wilson, E.", "Nezu, A. M.", "Rao, S. M."], "organization": "American Psychological Association", "title": "Journal article reporting standards for quantitative research in psychology", "year": 2018, "edition": null, "publication": "American Psychologist, 73(1), 3–25", "doi": "https://doi.org/10.1037/amp0000191", "url": "https://pubmed.ncbi.nlm.nih.gov/29345484/", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": true, "language": "en", "license": "Résumé bibliographique en accès ouvert ; article sous droits APA", "status": "corrected", "notes": "La notice PubMed signale une correction publiée en 2018 ; le contenu ne reproduit pas les tableaux protégés."},
+      {"id": "REF-012-OPENSTAX-PSYCHOLOGY", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.3 Analyzing Findings", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel introductif pour relier plan, biais, variables et interprétation."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-012-OPENSTAX-BIOLOGY", "locator": "section Reporting Scientific Work", "supports": "Fonctions générales de l'introduction, des méthodes, des résultats et de la discussion."}, {"referenceId": "REF-012-APA-JARS", "locator": "résumé et standards généraux JARS-Quant", "supports": "Nécessité d'informations transparentes adaptées au type d'étude."}], "confidence": "high", "confidenceRationale": "Un manuel ouvert et des standards de psychologie convergent ; la variabilité des formats est signalée.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-012-APA-JARS", "locator": "JARS-Quant, standards généraux pour la méthode et les analyses", "supports": "Informations nécessaires sur participants, mesures, plan, procédure et analyses."}], "confidence": "high", "confidenceRationale": "Standard de compte rendu directement applicable à la recherche quantitative en psychologie.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-012-APA-JARS", "locator": "standards sur participants, mesures et plan", "supports": "Informations qui bornent la portée d'une étude quantitative."}, {"referenceId": "REF-012-OPENSTAX-PSYCHOLOGY", "locator": "section 2.3, variables et biais", "supports": "Lien entre protocole, mesure et interprétation."}], "confidence": "high", "confidenceRationale": "Cas fictif original construit avec les critères standard de lecture d'une méthode.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-012-OPENSTAX-BIOLOGY", "locator": "section Reporting Scientific Work", "supports": "Distinction fonctionnelle entre résultats et discussion."}, {"referenceId": "REF-012-APA-JARS", "locator": "standards pour résultats et discussion", "supports": "Séparation entre analyses rapportées et interprétation."}], "confidence": "high", "confidenceRationale": "Sources convergentes ; l'exemple distingue explicitement donnée et mécanisme proposé.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-012-APA-JARS", "locator": "objectif général et modules de compte rendu", "supports": "Transparence nécessaire pour comprendre et évaluer une étude."}, {"referenceId": "REF-012-OPENSTAX-PSYCHOLOGY", "locator": "section 2.3, publication et examen par les pairs", "supports": "Rôle critique du lecteur et limites possibles d'une étude publiée."}], "confidence": "high", "confidenceRationale": "Synthèse pédagogique proportionnée aux objectifs des standards et du manuel.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-biology-2e-1-1-imrad", "referenceIds": ["REF-012-OPENSTAX-BIOLOGY"], "pedagogicalRationale": "Présentation brève et ouverte des fonctions d'un article scientifique.", "learnerInstructions": "Associer chaque partie IMRaD à une question de lecture.", "language": "en", "accessType": "open", "accessibilityNotes": "Version HTML accessible.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "apa-jars-quant-2018", "referenceIds": ["REF-012-APA-JARS"], "pedagogicalRationale": "Standard spécifique à la transparence des articles quantitatifs en psychologie.", "learnerInstructions": "Utiliser les catégories du standard comme grille de repérage, sans copier ses tableaux.", "language": "en", "accessType": "open", "accessibilityNotes": "Notice PubMed HTML ouverte ; le texte intégral peut dépendre du lien éditeur.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "La correction associée à l'article doit être consultée lors de la revue de domaine."},
+      {"resourceKey": "openstax-psychology-2e-2-3", "referenceIds": ["REF-012-OPENSTAX-PSYCHOLOGY"], "pedagogicalRationale": "Relie la structure de l'article aux concepts méthodologiques déjà enseignés.", "learnerInstructions": "Identifier les passages qui empêchent une conclusion causale trop large.", "language": "en", "accessType": "open", "accessibilityNotes": "Version HTML accessible.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."}
+    ],
+    "assessmentBanks": [
+      {"conceptSlug": "architecture-fonctionnelle-article", "assessmentTitle": "Mini-évaluation — Architecture d’un article", "questions": [
+        {"type": "single_choice", "prompt": "Dans quelle section cherche-t-on en priorité la procédure de recrutement ?", "explanation": "Le recrutement des participants relève normalement de la méthode.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Méthode", "isCorrect": true, "position": 1}, {"label": "Discussion", "isCorrect": false, "position": 2}, {"label": "Références", "isCorrect": false, "position": 3}, {"label": "Titre", "isCorrect": false, "position": 4}]},
+        {"type": "single_choice", "prompt": "Quelle fonction remplit principalement l'introduction ?", "explanation": "Elle situe le problème, les travaux antérieurs et la question ou les hypothèses.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Délimiter la question et sa justification", "isCorrect": true, "position": 1}, {"label": "Présenter tous les résultats numériques", "isCorrect": false, "position": 2}, {"label": "Décrire les exclusions après analyse uniquement", "isCorrect": false, "position": 3}, {"label": "Remplacer la méthode", "isCorrect": false, "position": 4}]},
+        {"type": "true_false", "prompt": "Tous les articles scientifiques suivent exactement le même ordre et les mêmes titres de sections.", "explanation": "Le plan varie selon le type d'étude et la revue ; ce sont les fonctions qu'il faut repérer.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+        {"type": "multiple_choice", "prompt": "Quels éléments servent à s'orienter avant une lecture détaillée ?", "explanation": "Le titre, l'abstract, les intertitres et les figures fournissent une première carte de l'article.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Le titre", "isCorrect": true, "position": 1}, {"label": "L'abstract", "isCorrect": true, "position": 2}, {"label": "Les intertitres et figures", "isCorrect": true, "position": 3}, {"label": "La réputation supposée d'un auteur seule", "isCorrect": false, "position": 4}]},
+        {"type": "short_answer", "prompt": "Quel acronyme désigne couramment Introduction, Méthodes, Résultats et Discussion ?", "explanation": "L'acronyme est IMRaD.", "acceptedAnswers": ["IMRaD", "IMRAD", "imrad"], "position": 5, "options": []}
+      ]},
+      {"conceptSlug": "methode-transparence", "assessmentTitle": "Mini-évaluation — Méthode et transparence", "questions": [
+        {"type": "multiple_choice", "prompt": "Quelles informations appartiennent à une lecture minimale de la méthode ?", "explanation": "Échantillon, mesures, procédure et analyses permettent de comprendre comment les données ont été produites.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Le recrutement et l'échantillon", "isCorrect": true, "position": 1}, {"label": "Les mesures et la procédure", "isCorrect": true, "position": 2}, {"label": "Le plan d'analyse", "isCorrect": true, "position": 3}, {"label": "La conclusion médiatique d'un tiers", "isCorrect": false, "position": 4}]},
+        {"type": "true_false", "prompt": "Une méthode très détaillée garantit que les choix méthodologiques sont valides.", "explanation": "La transparence permet l'évaluation, mais un choix clairement décrit peut rester inadéquat.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+        {"type": "single_choice", "prompt": "Pourquoi la taille et le recrutement de l'échantillon importent-ils ?", "explanation": "Ils influencent l'incertitude et la population à laquelle les résultats peuvent raisonnablement s'appliquer.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Ils bornent la précision et la généralisation", "isCorrect": true, "position": 1}, {"label": "Ils prouvent automatiquement la causalité", "isCorrect": false, "position": 2}, {"label": "Ils remplacent la mesure des variables", "isCorrect": false, "position": 3}, {"label": "Ils rendent les exclusions inutiles", "isCorrect": false, "position": 4}]},
+        {"type": "single_choice", "prompt": "Une information nécessaire est introuvable dans la méthode. Quelle réaction est la plus rigoureuse ?", "explanation": "L'absence doit être notée comme limite de l'évaluation, sans inventer le détail manquant.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Signaler explicitement qu'elle n'est pas rapportée", "isCorrect": true, "position": 1}, {"label": "Supposer la procédure la plus probable", "isCorrect": false, "position": 2}, {"label": "Déduire le détail du titre", "isCorrect": false, "position": 3}, {"label": "Ignorer toute la méthode", "isCorrect": false, "position": 4}]},
+        {"type": "short_answer", "prompt": "Quel terme désigne la possibilité pour d'autres chercheurs de refaire une étude à partir d'un protocole documenté ?", "explanation": "Il s'agit de la réplication.", "acceptedAnswers": ["réplication", "replication", "la réplication", "la replication"], "position": 5, "options": []}
+      ]},
+      {"conceptSlug": "resultat-interpretation-portee", "assessmentTitle": "Mini-évaluation — Résultat et interprétation", "questions": [
+        {"type": "single_choice", "prompt": "Quelle phrase rapporte d'abord un résultat ?", "explanation": "Elle décrit une différence observée sans proposer de mécanisme.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Le groupe pause rappelle en moyenne deux mots de plus", "isCorrect": true, "position": 1}, {"label": "La pause restaure nécessairement l'attention", "isCorrect": false, "position": 2}, {"label": "Toute personne devrait faire une pause", "isCorrect": false, "position": 3}, {"label": "La mémoire humaine fonctionne uniquement ainsi", "isCorrect": false, "position": 4}]},
+        {"type": "true_false", "prompt": "Une interprétation plausible est automatiquement démontrée par le résultat qu'elle explique.", "explanation": "Plusieurs mécanismes peuvent produire la même observation ; des tests supplémentaires peuvent être nécessaires.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+        {"type": "multiple_choice", "prompt": "Que peut-on vérifier dans un tableau ou une figure ?", "explanation": "Ils donnent accès aux ordres de grandeur, à la variabilité et au motif des données.", "acceptedAnswers": [], "position": 3, "options": [{"label": "L'ordre de grandeur", "isCorrect": true, "position": 1}, {"label": "La variabilité", "isCorrect": true, "position": 2}, {"label": "Le motif général des données", "isCorrect": true, "position": 3}, {"label": "Les intentions privées des participants", "isCorrect": false, "position": 4}]},
+        {"type": "single_choice", "prompt": "Quelle conclusion respecte le mieux une étude menée auprès de 48 étudiants avec un rappel immédiat ?", "explanation": "La conclusion reste liée à l'échantillon, à la mesure et au protocole observés.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Dans ce protocole, le groupe pause a mieux réussi le rappel immédiat", "isCorrect": true, "position": 1}, {"label": "Les pauses améliorent toute mémoire chez tout le monde", "isCorrect": false, "position": 2}, {"label": "La pause est le seul mécanisme possible", "isCorrect": false, "position": 3}, {"label": "L'étude prouve un effet permanent", "isCorrect": false, "position": 4}]},
+        {"type": "short_answer", "prompt": "Dans quelle section les auteurs interprètent-ils généralement leurs résultats et discutent-ils leurs limites ?", "explanation": "Cette fonction appartient généralement à la Discussion.", "acceptedAnswers": ["discussion", "la discussion", "section discussion"], "position": 5, "options": []}
+      ]}
+    ],
+    "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine de méthodologie en psychologie requise avant publication.", "Le statut corrected de JARS-Quant impose de contrôler la correction associée lors de la revue de domaine."]},
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+  }
+}

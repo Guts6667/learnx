@@ -341,6 +341,78 @@ describe('sample program seed', () => {
     ).toBe(100);
   });
 
+  it('lit les huit leçons et les vingt-quatre banques de la troisième étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stage = sampleSeed.program.stages.find(
+      (item) => item.slug === 'raisonner-scientifiquement',
+    );
+    const lessons = stage?.modules.flatMap((module) => module.lessons) ?? [];
+    const assessmentGroups = sampleSeed.conceptAssessmentBanks.filter(
+      (group) => group.stageSlug === 'raisonner-scientifiquement',
+    );
+
+    expect(lessons.map((lesson) => lesson.slug)).toEqual([
+      'question-hypothese-operationnalisation',
+      'correlation-causalite',
+      'plans-recherche',
+      'echantillonnage-validite',
+      'ethique-recherche',
+      'anatomie-article',
+      'lecture-strategique',
+      'hierarchie-preuves',
+    ]);
+    expect(lessons.every((lesson) => lesson.contentBlocks.length === 5)).toBe(
+      true,
+    );
+    expect(lessons.map((lesson) => lesson.resources.length)).toEqual([
+      3, 3, 4, 4, 3, 3, 2, 3,
+    ]);
+    expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
+    expect(
+      new Set(
+        lessons.flatMap((lesson) =>
+          lesson.concepts.map(({ slug }) => slug),
+        ),
+      ).size,
+    ).toBe(24);
+    expect(assessmentGroups).toHaveLength(8);
+    expect(
+      assessmentGroups.flatMap((group) => group.assessmentBanks),
+    ).toHaveLength(24);
+    expect(
+      assessmentGroups
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(120);
+
+    for (const lesson of lessons) {
+      const resourceKeys = new Set(
+        lesson.resources.map((resource) => resource.key),
+      );
+
+      expect(
+        lesson.contentBlocks.every(
+          (block) =>
+            block.content.sourceKeys.length > 0 &&
+            block.content.sourceKeys.every((key) => resourceKeys.has(key)),
+        ),
+      ).toBe(true);
+    }
+
+    expect(stage?.assessment).toMatchObject({
+      description: expect.stringContaining('fiche critique'),
+      instructions: expect.stringContaining('## Cas RespireCampus'),
+      rubric: expect.any(Array),
+    });
+    expect(
+      stage?.assessment.rubric?.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+  });
+
   it('refuse une source de bloc absente des ressources de la leçon', async () => {
     const sampleSeed = await readSampleSeed();
     const lesson = sampleSeed.program.stages[0].modules[0].lessons[1];
@@ -397,19 +469,19 @@ describe('sample program seed', () => {
     expect(stageAssessments).toHaveLength(5);
     expect(modules).toHaveLength(6);
     expect(lessons).toHaveLength(21);
-    expect(concepts).toHaveLength(33);
-    expect(assessments).toHaveLength(33);
-    expect(assessmentQuestions).toHaveLength(18);
+    expect(concepts).toHaveLength(49);
+    expect(assessments).toHaveLength(49);
+    expect(assessmentQuestions).toHaveLength(42);
     expect(
       [...assessmentQuestions.values()].reduce(
         (total, questions) => total + questions.length,
         0,
       ),
-    ).toBe(90);
-    expect(contentBlocks).toHaveLength(30);
-    expect(resources).toHaveLength(22);
-    expect(tasks).toHaveLength(18);
-    expect(exercises).toHaveLength(18);
+    ).toBe(210);
+    expect(contentBlocks).toHaveLength(70);
+    expect(resources).toHaveLength(47);
+    expect(tasks).toHaveLength(42);
+    expect(exercises).toHaveLength(42);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,
@@ -475,6 +547,11 @@ describe('sample program seed', () => {
           criterion: 'Exactitude historique et conceptuelle',
         }),
       ]),
+    });
+    expect(stageAssessmentInputs.get('stage-3:1')).toMatchObject({
+      description: expect.stringContaining('fiche critique'),
+      instructions: expect.stringContaining('## Cas RespireCampus'),
+      rubric: expect.any(Array),
     });
   });
 

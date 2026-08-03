@@ -1,0 +1,165 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_003",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "raisonner-scientifiquement",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Raisonner scientifiquement",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Produire la fiche critique d'une étude simple en distinguant strictement la question de recherche, la méthode, les résultats observés, les inférences proposées, les limites et les enjeux éthiques, puis formuler une conclusion proportionnée aux données.",
+    "instructions": [
+      "Lire le dossier RespireCampus et relever séparément les informations rapportées par l'équipe et les interprétations qu'elle en tire.",
+      "Reformuler la question de recherche en termes testables, expliciter une hypothèse réfutable et identifier les variables avec leur opérationnalisation.",
+      "Décrire le plan de recherche, la population visée, l'échantillon effectivement étudié, le mode de constitution des groupes, les mesures, la temporalité et les exclusions, sans ajouter d'information absente du cas.",
+      "Présenter les résultats descriptifs dans un tableau lisible, sans transformer une différence observée en effet démontré et sans inventer de test, d'intervalle ou de taille d'effet.",
+      "Évaluer séparément chaque inférence de l'équipe : indiquer ce que les données permettent de soutenir, ce qu'elles ne permettent pas de conclure et quelles explications alternatives restent plausibles.",
+      "Identifier au moins quatre limites couvrant l'échantillonnage, la mesure, le plan ou l'analyse, puis expliquer leur effet possible sur la validité interne, la validité externe et l'applicabilité des résultats.",
+      "Repérer les enjeux de consentement, de relation d'autorité, de confidentialité, de minimisation des risques et de débriefing ; proposer pour chacun une mesure de protection concrète.",
+      "Situer cette étude dans une appréciation contextuelle des preuves : préciser quelle question son plan peut traiter, puis proposer une réplication ou un plan amélioré sans prétendre qu'un type d'étude garantit à lui seul une preuve de qualité.",
+      "Remettre une fiche structurée sous les six rubriques Question, Méthode, Résultats, Inférences, Limites et Éthique, suivie d'une conclusion de cinq phrases maximum et d'au moins quatre citations précises de ressources de l'étape."
+    ],
+    "case": "Dossier fictif — RespireCampus. Une équipe universitaire veut savoir si dix jours d'utilisation d'une application de respiration réduisent l'anxiété avant un examen. Elle recrute 96 étudiants de première année qui déclarent être stressés et répondent à l'annonce diffusée par leur enseignant. Les participants choisissent soit l'application, soit une fiche de conseils généraux : 54 choisissent l'application et 42 la fiche. Avant le programme, ils évaluent leur anxiété sur une échelle non validée allant de 0 à 10 ; la moyenne est de 7,4 dans le groupe application et de 5,8 dans le groupe fiche. Dix jours plus tard, 44 utilisateurs de l'application et 38 lecteurs de la fiche répondent de nouveau. Les moyennes sont alors de 5,2 et 5,1. Les baisses moyennes calculées par l'équipe sont respectivement de 2,2 et 0,7 point. À un quiz de cours sur 20, les moyennes sont de 13,1 et 13,4. Aucune dispersion, estimation d'incertitude ni caractéristique des personnes ayant abandonné n'est fournie. L'équipe exclut les quatorze non-répondants de tous les calculs et ne signale pas que les groupes différaient avant le programme. Son rapport affirme : « L'expérience prouve que RespireCampus réduit durablement l'anxiété et améliore la réussite de tous les étudiants. » Le recrutement ouvre droit à un point de participation ; l'alternative sans participation n'est mentionnée qu'après l'inscription. L'enseignant reçoit la liste nominative des inscrits. Les réponses sont conservées par le fournisseur de l'application sous l'adresse électronique universitaire, sans durée de conservation annoncée. La notice de consentement décrit l'activité comme sans risque, ne précise pas la possibilité de se retirer après le début et ne prévoit ni contact en cas d'inconfort ni débriefing. Le dossier ne mentionne pas d'évaluation indépendante de ces dispositions.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Fiche critique structurée de 1 500 à 1 800 mots, avec un tableau des résultats, les six rubriques imposées, une conclusion brève et les références utilisées.",
+    "conceptSlugs": [
+      "question-recherche-delimitee",
+      "hypothese-testable-refutable",
+      "operationnalisation-variables",
+      "direction-force-correlation",
+      "association-vs-causalite",
+      "causalite-inverse-variable-tierce",
+      "plans-descriptifs-correlationnels",
+      "plan-experimental",
+      "plan-quasi-experimental",
+      "population-echantillonnage",
+      "biais-selection-generalisation",
+      "validites-construit-interne-externe",
+      "principes-ethiques-recherche",
+      "consentement-protection-donnees",
+      "revue-tromperie-debriefing",
+      "architecture-fonctionnelle-article",
+      "methode-transparence",
+      "resultat-interpretation-portee",
+      "objectif-passages-lecture",
+      "gestion-inconnues",
+      "fiche-critique-tracable",
+      "adequation-question-plan",
+      "etude-primaire-synthese",
+      "qualite-biais-convergence"
+    ],
+    "rubric": [
+      {
+        "criterion": "Question, hypothèse et opérationnalisation",
+        "weight": 15,
+        "requirements": [
+          "La question est testable, délimitée et distincte de la conclusion annoncée.",
+          "L'hypothèse est réfutable et relie explicitement les variables pertinentes.",
+          "Les construits, indicateurs et opérations de mesure sont distingués, avec les insuffisances de l'échelle signalées."
+        ]
+      },
+      {
+        "criterion": "Méthode, plans et échantillonnage",
+        "weight": 20,
+        "requirements": [
+          "Le plan réellement utilisé est identifié sans le confondre avec une expérience contrôlée.",
+          "Population, échantillon de volontaires, auto-sélection des groupes, temporalité, attrition et exclusions sont décrits exactement.",
+          "Les rôles respectifs des plans descriptif, corrélationnel et expérimental sont mobilisés pour qualifier l'étude ou proposer un plan amélioré."
+        ]
+      },
+      {
+        "criterion": "Résultats et séparation des inférences",
+        "weight": 20,
+        "requirements": [
+          "Les valeurs disponibles sont restituées correctement et les informations statistiques manquantes ne sont pas inventées.",
+          "Résultats, interprétations et affirmations causales ou généralisantes sont présentés dans des parties distinctes.",
+          "La différence initiale entre groupes, l'absence d'amélioration du quiz et la portée inconnue à long terme sont intégrées au raisonnement."
+        ]
+      },
+      {
+        "criterion": "Causalité, validité et qualité des preuves",
+        "weight": 20,
+        "requirements": [
+          "Temporalité, covariation, direction possible et variables confondantes sont examinées sans raccourci causal.",
+          "Au moins quatre limites sont reliées à leurs conséquences possibles sur les validités interne ou externe et sur l'applicabilité.",
+          "La proposition d'amélioration articule adéquation entre question et plan, réplication et qualité méthodologique sans appliquer une hiérarchie mécanique des preuves."
+        ]
+      },
+      {
+        "criterion": "Analyse éthique",
+        "weight": 15,
+        "requirements": [
+          "Le consentement libre et éclairé, la relation d'autorité et l'alternative à la participation sont analysés séparément.",
+          "Les risques, le retrait, la confidentialité, la conservation des données et le débriefing sont examinés.",
+          "Chaque problème identifié reçoit une mesure de protection réaliste sans inventer de décision réglementaire."
+        ]
+      },
+      {
+        "criterion": "Lecture stratégique, structure et sources",
+        "weight": 10,
+        "requirements": [
+          "La fiche respecte les six rubriques et permet de retrouver rapidement les informations clés du dossier.",
+          "La conclusion répond à la question initiale avec un degré de certitude proportionné aux données.",
+          "Au moins quatre ressources de l'étape sont citées précisément et utilisées pour justifier l'analyse."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions associées et annoter la première version en distinguant une erreur de repérage, une confusion conceptuelle ou une inférence excessive. Soumettre ensuite uniquement les rubriques insuffisantes, accompagnées d'un tableau à trois colonnes — affirmation initiale, problème identifié, formulation révisée — et conserver la première version pour comparaison."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "REF-007-OPENSTAX-2-1",
+      "REF-007-OPENSTAX-2-3",
+      "REF-007-PRICE-BASIC",
+      "REF-008-OPENSTAX-2-2",
+      "REF-008-OPENSTAX-2-3",
+      "REF-008-PRICE-BASIC",
+      "REF-009-OPENSTAX-2-2",
+      "REF-009-PRICE-NONEXP",
+      "REF-009-PRICE-EXPDESIGN",
+      "REF-009-OPENSTAX-2-3",
+      "REF-010-PRICE-BASIC",
+      "REF-010-PRICE-SURVEYS",
+      "REF-010-PRICE-MEASUREMENT",
+      "REF-010-PRICE-EXPERIMENT",
+      "REF-011-BELMONT",
+      "REF-011-OPENSTAX-2-4",
+      "REF-011-COMMON-RULE",
+      "REF-012-OPENSTAX-BIOLOGY",
+      "REF-012-APA-JARS",
+      "REF-012-OPENSTAX-PSYCHOLOGY",
+      "REF-013-STATPEARLS",
+      "REF-013-KESHAV",
+      "REF-014-OCEBM",
+      "REF-014-MURAD",
+      "REF-014-COCHRANE"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier RespireCampus et toutes ses données sont entièrement fictifs.",
+        "Revue humaine éditoriale et scientifique requise avant toute publication.",
+        "Les referenceIds ont été recoupés avec les huit PEDAGOGY_SPEC de l'étape ; leur accessibilité et leur édition doivent encore être revérifiées lors de la revue humaine avant publication.",
+        "Les vingt-quatre conceptSlugs correspondent exactement aux trois notions de chacune des huit PEDAGOGY_SPEC de l'étape.",
+        "L'évaluation porte sur le raisonnement méthodologique et éthique, pas sur le calcul statistique ni sur une décision réglementaire."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la fiche critique finale, du cas fictif, de la grille et de la remédiation pour l'étape 3.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

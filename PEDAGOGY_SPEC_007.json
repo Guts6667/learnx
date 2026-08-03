@@ -1,0 +1,287 @@
+{
+  "specId": "PEDAGOGY_SPEC_007",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "raisonner-scientifiquement",
+  "moduleSlug": "methode-scientifique",
+  "lesson": {
+    "title": "Question, hypothèse et opérationnalisation",
+    "slug": "question-hypothese-operationnalisation",
+    "summary": "Une recherche utile commence par une question délimitée, transforme une explication possible en prédiction réfutable, puis précise comment chaque variable sera manipulée ou mesurée. Cette leçon montre aussi qu'une opérationnalisation n'est jamais le construit lui-même et que sa qualité détermine la portée de la conclusion.",
+    "objectives": [
+      "Transformer un thème général en question de recherche délimitée et testable.",
+      "Distinguer théorie, hypothèse et prédiction observable.",
+      "Opérationnaliser un construit psychologique avec une mesure ou une manipulation explicite.",
+      "Évaluer ce qu'une opérationnalisation permet et ne permet pas de conclure."
+    ],
+    "prerequisites": ["Définir une démarche empirique et une proposition réfutable."],
+    "estimatedMinutes": 135,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Un thème comme « le sommeil » est trop vaste pour guider seul une étude. Une question de recherche précise une population, des variables et, si nécessaire, un contexte ou une période : par exemple, « Chez des adultes travaillant de jour, la durée de sommeil déclarée est-elle associée au nombre d'erreurs dans une tâche d'attention le lendemain ? » La formulation annonce ce qui sera observé sans prétendre encore connaître le résultat.",
+          "sourceKeys": ["openstax-psychology-2e-2-1", "price-basic-concepts"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une théorie organise des idées pour expliquer des phénomènes. Une hypothèse en dérive une prédiction spécifique et testable. Elle doit pouvoir être mise en défaut par une observation concevable : annoncer que deux variables seront liées dans un sens défini est plus informatif qu'affirmer qu'elles « auront peut-être un rapport ». Un résultat compatible soutient provisoirement l'hypothèse ; il ne prouve pas définitivement toute la théorie.",
+          "sourceKeys": ["openstax-psychology-2e-2-1"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Opérationnaliser consiste à indiquer exactement comment une variable sera observée, mesurée ou manipulée. La fatigue peut être définie par un score à une échelle nommée, un temps de réaction moyen dans une tâche décrite ou une durée d'éveil contrôlée. Ces indicateurs ne sont pas interchangeables : ils captent des facettes différentes et produisent des conclusions de portée différente.",
+          "sourceKeys": ["openstax-psychology-2e-2-3", "price-basic-concepts"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Pour étudier si une interruption réduit la concentration, une équipe compare une tâche de lecture sans interruption à la même tâche interrompue par trois notifications. Elle définit la concentration par le nombre de réponses correctes à cinq questions de compréhension. La manipulation est reproductible et la mesure est publique, mais elle n'autorise pas à conclure que les notifications diminuent toutes les formes de concentration dans tous les contextes.",
+          "sourceKeys": ["openstax-psychology-2e-2-3"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Chaîne de contrôle : question délimitée → hypothèse réfutable → variables nommées → opérations précises → résultat attendu → résultat qui contredirait l'hypothèse. Une rupture dans cette chaîne rend l'étude ambiguë, même si la collecte produit beaucoup de données.",
+          "sourceKeys": ["openstax-psychology-2e-2-1", "openstax-psychology-2e-2-3", "price-basic-concepts"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-2-1",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 2.1 Why Is Research Important?",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.1. OpenStax.",
+        "description": "Lire « The Process of Scientific Research » et relever la fonction d'une théorie, d'une hypothèse et d'un critère de réfutabilité.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "openstax-psychology-2e-2-3",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 2.3 Analyzing Findings, Designing an Experiment",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.3. OpenStax.",
+        "description": "Lire le passage sur l'opérationnalisation et identifier la variable manipulée, la variable mesurée et leurs définitions précises dans l'exemple.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "price-basic-concepts",
+        "type": "book_chapter",
+        "title": "Research Methods in Psychology — Basic Concepts",
+        "author": "Paul C. Price, Rajiv S. Jhangiani et I-Chant A. Chiang",
+        "url": "https://opentextbc.ca/researchmethods/chapter/basic-concepts/",
+        "citation": "Price, P. C., Jhangiani, R. S., & Chiang, I.-C. A. (2015). Basic Concepts. In Research Methods in Psychology (2nd Canadian ed.). BCcampus.",
+        "description": "Lire les passages « Variables » et « Population and Sample », puis proposer deux opérationnalisations distinctes d'un même construit.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Question de recherche délimitée",
+        "slug": "question-recherche-delimitee",
+        "description": "Une question de recherche relie un objet précis à une population, des variables et un contexte suffisamment explicites pour orienter une méthode.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-2-1", "price-basic-concepts"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question de recherche", "questionCount": 5}
+      },
+      {
+        "title": "Hypothèse testable et réfutable",
+        "slug": "hypothese-testable-refutable",
+        "description": "Une hypothèse formule une prédiction spécifique dont une observation possible pourrait montrer qu'elle est incorrecte.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-2-1"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Hypothèse testable", "questionCount": 5}
+      },
+      {
+        "title": "Opérationnalisation des variables",
+        "slug": "operationnalisation-variables",
+        "description": "Une définition opérationnelle décrit exactement comment un construit est manipulé ou mesuré et délimite l'interprétation des résultats.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-2-3", "price-basic-concepts"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Opérationnalisation", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Réduire un thème en question",
+        "description": "À partir du thème « réseaux sociaux et bien-être », rédiger une question précisant population, deux variables, contexte et période ; supprimer toute conclusion déjà contenue dans la question.",
+        "type": "writing", "isRequired": true, "weight": 1, "position": 1
+      },
+      {
+        "title": "Construire une hypothèse réfutable",
+        "description": "Dériver de la question une prédiction directionnelle et écrire un résultat possible qui la contredirait clairement.",
+        "type": "practice", "isRequired": true, "weight": 1, "position": 2
+      },
+      {
+        "title": "Comparer trois indicateurs",
+        "description": "Proposer pour le bien-être un autoquestionnaire, une mesure comportementale et une mesure physiologique ; préciser pour chacune ce qu'elle capte, une limite et le protocole de recueil.",
+        "type": "practice", "isRequired": true, "weight": 1, "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-007-OPENSTAX-2-1", "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax", "title": "Psychology 2e — 2.1 Why Is Research Important?", "year": 2020, "edition": "2e éd.",
+        "publication": "OpenStax, Rice University", "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important", "accessedAt": "2026-08-03",
+        "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified",
+        "notes": "Section consultée pour la méthode scientifique, la relation théorie-hypothèse et la réfutabilité."
+      },
+      {
+        "id": "REF-007-OPENSTAX-2-3", "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax", "title": "Psychology 2e — 2.3 Analyzing Findings", "year": 2020, "edition": "2e éd.",
+        "publication": "OpenStax, Rice University", "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings", "accessedAt": "2026-08-03",
+        "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified",
+        "notes": "Section consultée pour la définition opérationnelle et la construction d'une expérience."
+      },
+      {
+        "id": "REF-007-PRICE-BASIC", "type": "open_textbook",
+        "authors": ["Price, P. C.", "Jhangiani, R. S.", "Chiang, I.-C. A."],
+        "organization": "BCcampus", "title": "Research Methods in Psychology — Basic Concepts", "year": 2015, "edition": "2nd Canadian ed.",
+        "publication": "BCcampus Open Education", "doi": null,
+        "url": "https://opentextbc.ca/researchmethods/chapter/basic-concepts/", "accessedAt": "2026-08-03",
+        "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified",
+        "notes": "Manuel ouvert utilisé pour variables, population, échantillon et définitions opérationnelles."
+      }
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [
+        {"referenceId": "REF-007-OPENSTAX-2-1", "locator": "The Process of Scientific Research", "supports": "Passage d'une observation à une question empirique."},
+        {"referenceId": "REF-007-PRICE-BASIC", "locator": "Variables, Population and Sample", "supports": "Délimitation des variables et de la population."}
+      ], "confidence": "high", "confidenceRationale": "Deux manuels ouverts convergent sur les unités minimales d'une question empirique.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [
+        {"referenceId": "REF-007-OPENSTAX-2-1", "locator": "paragraphes sur theory, hypothesis et falsifiability", "supports": "Distinction théorie-hypothèse et caractère réfutable."}
+      ], "confidence": "high", "confidenceRationale": "Définitions explicites du manuel.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [
+        {"referenceId": "REF-007-OPENSTAX-2-3", "locator": "Designing an Experiment, paragraphes sur operational definition", "supports": "Nécessité de définir précisément la mesure."},
+        {"referenceId": "REF-007-PRICE-BASIC", "locator": "Variables, paragraphe sur operational definition", "supports": "Pluralité des opérations possibles pour un construit."}
+      ], "confidence": "very_high", "confidenceRationale": "Définitions concordantes dans deux manuels universitaires.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [
+        {"referenceId": "REF-007-OPENSTAX-2-3", "locator": "Designing an Experiment", "supports": "Manipulation, mesure et limite d'une définition opérationnelle."}
+      ], "confidence": "high", "confidenceRationale": "Exemple fictif original appliquant les critères explicités par la source.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [
+        {"referenceId": "REF-007-OPENSTAX-2-1", "locator": "The Process of Scientific Research", "supports": "Chaîne théorie, hypothèse, données et révision."},
+        {"referenceId": "REF-007-OPENSTAX-2-3", "locator": "The Experimental Hypothesis et Designing an Experiment", "supports": "Passage de l'hypothèse aux variables définies."},
+        {"referenceId": "REF-007-PRICE-BASIC", "locator": "Variables", "supports": "Lien entre construit, définition opérationnelle et données."}
+      ], "confidence": "high", "confidenceRationale": "Synthèse pédagogique fidèle aux trois sections consultées.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-psychology-2e-2-1", "referenceIds": ["REF-007-OPENSTAX-2-1"], "pedagogicalRationale": "Introduction accessible au raisonnement hypothético-déductif.", "learnerInstructions": "Identifier théorie, hypothèse et réfutation possible.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible avec description des figures.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "openstax-psychology-2e-2-3", "referenceIds": ["REF-007-OPENSTAX-2-3"], "pedagogicalRationale": "Exemple guidé d'opérationnalisation dans un plan expérimental.", "learnerInstructions": "Relever chaque définition opérationnelle et sa fonction.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "price-basic-concepts", "referenceIds": ["REF-007-PRICE-BASIC"], "pedagogicalRationale": "Renforce la distinction entre construit, variable et score.", "learnerInstructions": "Comparer deux opérations pour un même construit.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML ouvert ; lecture ciblée indiquée.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "question-recherche-delimitee",
+        "assessmentTitle": "Mini-évaluation — Question de recherche",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle question est la mieux délimitée ?", "explanation": "Elle précise population, variables et période sans présupposer le résultat.", "acceptedAnswers": [], "position": 1, "options": [
+            {"label": "Chez les salariés de nuit, la durée de sommeil déclarée est-elle associée aux erreurs commises durant le poste suivant ?", "isCorrect": true, "position": 1},
+            {"label": "Pourquoi le sommeil est-il important ?", "isCorrect": false, "position": 2},
+            {"label": "Le manque de sommeil détruit-il toujours la santé ?", "isCorrect": false, "position": 3},
+            {"label": "Tout savoir sur le sommeil", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "true_false", "prompt": "Une bonne question de recherche doit déjà affirmer que l'effet attendu existe.", "explanation": "La question délimite ce qui sera étudié sans transformer l'attente en conclusion.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels éléments peuvent délimiter une question empirique ?", "explanation": "Population, variables et contexte précisent ce qui sera effectivement étudié.", "acceptedAnswers": [], "position": 3, "options": [
+            {"label": "La population", "isCorrect": true, "position": 1}, {"label": "Les variables", "isCorrect": true, "position": 2},
+            {"label": "Le contexte ou la période", "isCorrect": true, "position": 3}, {"label": "Une conclusion certaine", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "single_choice", "prompt": "Pourquoi « les écrans » est-il insuffisant comme question de recherche ?", "explanation": "Un thème ne précise ni population, ni variable mesurée, ni relation étudiée.", "acceptedAnswers": [], "position": 4, "options": [
+            {"label": "C'est un thème, pas une relation empirique délimitée", "isCorrect": true, "position": 1}, {"label": "Il contient trop de chiffres", "isCorrect": false, "position": 2},
+            {"label": "Il impose une expérience randomisée", "isCorrect": false, "position": 3}, {"label": "Il réfute déjà une théorie", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "short_answer", "prompt": "Comment nomme-t-on l'ensemble des personnes sur lequel une étude souhaite tirer une conclusion ?", "explanation": "Cet ensemble est la population cible.", "acceptedAnswers": ["population", "population cible", "la population", "la population cible"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "hypothese-testable-refutable",
+        "assessmentTitle": "Mini-évaluation — Hypothèse testable",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle proposition est une hypothèse testable ?", "explanation": "Elle prédit une relation observable entre deux variables définissables.", "acceptedAnswers": [], "position": 1, "options": [
+            {"label": "Les participants interrompus auront en moyenne moins de réponses correctes que les autres", "isCorrect": true, "position": 1},
+            {"label": "Les interruptions ont une essence négative", "isCorrect": false, "position": 2}, {"label": "Tout résultat confirmera notre idée", "isCorrect": false, "position": 3}, {"label": "La concentration est mystérieuse", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "true_false", "prompt": "Un résultat compatible avec une hypothèse prouve définitivement toute la théorie dont elle est issue.", "explanation": "Il apporte un soutien provisoire à une prédiction, sans démontrer l'ensemble de la théorie.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles qualités caractérisent une hypothèse scientifique utile ?", "explanation": "Elle est spécifique, reliée à des observations et exposée à une réfutation possible.", "acceptedAnswers": [], "position": 3, "options": [
+            {"label": "Spécifique", "isCorrect": true, "position": 1}, {"label": "Testable", "isCorrect": true, "position": 2},
+            {"label": "Réfutable", "isCorrect": true, "position": 3}, {"label": "Compatible avec tous les résultats imaginables", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "single_choice", "prompt": "Quel énoncé décrit le mieux la relation entre théorie et hypothèse ?", "explanation": "Une hypothèse teste une conséquence précise dérivée d'un cadre explicatif plus général.", "acceptedAnswers": [], "position": 4, "options": [
+            {"label": "L'hypothèse est une prédiction précise dérivée d'une théorie", "isCorrect": true, "position": 1}, {"label": "Les deux termes sont toujours synonymes", "isCorrect": false, "position": 2},
+            {"label": "Une théorie est un résultat isolé", "isCorrect": false, "position": 3}, {"label": "Une hypothèse ne doit jamais être modifiée", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "short_answer", "prompt": "Quel terme désigne la capacité d'une hypothèse à être contredite par une observation possible ?", "explanation": "Il s'agit de la réfutabilité, aussi appelée falsifiabilité.", "acceptedAnswers": ["réfutabilité", "refutabilite", "falsifiabilité", "falsifiabilite"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "operationnalisation-variables",
+        "assessmentTitle": "Mini-évaluation — Opérationnalisation",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle définition opérationnelle de l'attention est la plus précise ?", "explanation": "Elle indique une tâche, une réponse comptée et une durée.", "acceptedAnswers": [], "position": 1, "options": [
+            {"label": "Nombre de cibles correctement détectées en dix minutes dans la tâche décrite", "isCorrect": true, "position": 1}, {"label": "Être attentif", "isCorrect": false, "position": 2},
+            {"label": "Avoir une bonne concentration", "isCorrect": false, "position": 3}, {"label": "Semble concentré selon le chercheur", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "true_false", "prompt": "Un construit psychologique et l'indicateur choisi pour le mesurer sont exactement la même chose.", "explanation": "L'indicateur représente une opération particulière et seulement une facette possible du construit.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles informations rendent une mesure reproductible ?", "explanation": "Instrument, procédure et règle de score doivent être publics et précis.", "acceptedAnswers": [], "position": 3, "options": [
+            {"label": "L'instrument ou la tâche", "isCorrect": true, "position": 1}, {"label": "La procédure d'administration", "isCorrect": true, "position": 2},
+            {"label": "La règle de calcul du score", "isCorrect": true, "position": 3}, {"label": "L'intuition privée de l'enquêteur", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "single_choice", "prompt": "Deux études utilisent des opérations différentes pour la fatigue. Quelle conséquence est la plus juste ?", "explanation": "Des mesures différentes peuvent capter des facettes distinctes et limiter la comparaison directe.", "acceptedAnswers": [], "position": 4, "options": [
+            {"label": "Leurs résultats peuvent concerner des facettes différentes de la fatigue", "isCorrect": true, "position": 1}, {"label": "L'une des études est automatiquement frauduleuse", "isCorrect": false, "position": 2},
+            {"label": "Les opérations n'affectent jamais l'interprétation", "isCorrect": false, "position": 3}, {"label": "Les deux études mesurent forcément la même chose", "isCorrect": false, "position": 4}
+          ]},
+          {"type": "short_answer", "prompt": "Comment nomme-t-on la description précise de la manière dont une variable sera mesurée ou manipulée ?", "explanation": "C'est une définition opérationnelle.", "acceptedAnswers": ["définition opérationnelle", "definition operationnelle", "opérationnalisation", "operationnalisation"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false,
+      "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false,
+      "notes": ["Revue humaine en méthodologie de la recherche requise avant publication.", "Les exemples sont fictifs et ne constituent pas des résultats empiriques."]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}
+    ]
+  }
+}
