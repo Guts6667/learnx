@@ -51,7 +51,8 @@ async function expectResponse(
 }
 
 async function checkDeployment(): Promise<void> {
-  const baseUrl = getDeploymentUrl(process.argv[2]);
+  const deploymentUrl = process.argv.slice(2).find((value) => value !== '--');
+  const baseUrl = getDeploymentUrl(deploymentUrl);
   const page = await expectResponse(baseUrl, '/', 'text/html');
   const html = await page.text();
 
