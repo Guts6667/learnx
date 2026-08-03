@@ -98,7 +98,7 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests service worker, déconnexion/changement de session et inspection du cache
   dans Chromium et Safari iOS.
 - Risque : régression de consultation hors ligne ; communiquer clairement la
-  nouvelle limite jusqu’au ticket V2-009.
+  nouvelle limite jusqu’au ticket V2-010.
 
 ## V2-002 — Borner la revue d’évaluation au propriétaire
 
@@ -260,7 +260,57 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests composants, navigation profonde, responsive et accessibilité.
 - Risque : préserver l’URL du niveau actif pour retour/rechargement.
 
-## V2-007 — Refonte UI responsive et système de composants
+## V2-007 — Parcours d’apprentissage centré sur la leçon
+
+**Priorité : P1. Dépendances : V2-003.**
+
+La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
+
+### Périmètre
+
+- Faire de la leçon le contexte permanent des contenus, ressources, tâches,
+  exercices, mini-évaluations, quiz et notes.
+- Depuis Aujourd’hui, ouvrir l’activité exacte recommandée et mémoriser le dernier
+  emplacement significatif.
+- Depuis le curriculum, permettre d’ouvrir une leçon visible en deux actions
+  maximum.
+- Transformer le module en séquence de cartes-leçons résumant durée, progression,
+  état et activités.
+- Composer une séquence pédagogique inter-types au lieu d’afficher toutes les
+  collections techniques les unes après les autres.
+- Fournir une seule action principale « Continuer », déterminée par l’état
+  serveur et l’ordre pédagogique.
+- Conserver les routes profondes quiz, mini-évaluation et exercice avec en-tête,
+  fil d’Ariane, sommaire et retour dans le contexte de la leçon.
+- Instrumenter les clics de navigation sans réponse, note ni texte libre.
+
+### Hors périmètre
+
+- Refonte complète des tokens et de l’identité visuelle.
+- Modification de la formule de progression.
+- Recommandation adaptative par IA.
+- Migration Prisma sans décision préalable sur l’ordonnancement inter-types.
+
+### Critères d’acceptation
+
+- « Continuer » depuis Aujourd’hui ou la leçon ouvre exactement la prochaine
+  activité pertinente.
+- Ressources et mises en pratique apparaissent au moment pédagogique utile, tout
+  en restant accessibles depuis un sommaire secondaire.
+- Brouillon, verrouillage, complétion et hors ligne ont des états explicites et
+  ne contournent aucune autorisation.
+- Mobile reste linéaire et focalisé ; desktop peut afficher un sommaire latéral.
+- Le retour, le rechargement et un lien profond restaurent le contexte de leçon.
+
+### Tests et risques
+
+- Tests unitaires de l’ordre et de la prochaine activité ; tests d’intégration du
+  parcours complet et de reprise exacte.
+- Playwright sur mobile, tablette, desktop et WebKit ; axe, clavier et focus.
+- Risque principal : les positions actuelles sont propres à chaque table. Valider
+  une séquence dérivée ou un ordre éditorial explicite avant toute migration.
+
+## V2-008 — Refonte UI responsive et système de composants
 
 **Priorité : P1. Dépendances : V2-006 pour l’admin, parallélisable ailleurs.**
 
@@ -290,9 +340,9 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Risque de chantier massif : livrer par verticales sans mélanger la logique
   métier.
 
-## V2-008 — Clarifier liens et actions
+## V2-009 — Clarifier liens et actions
 
-**Priorité : P1. Dépendances : V2-007.**
+**Priorité : P1. Dépendances : V2-008.**
 
 ### Périmètre
 
@@ -316,7 +366,7 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests sémantiques et audit automatisé des rôles.
 - Risque : conserver les liens éditoriaux dans les contenus et sources.
 
-## V2-009 — Politique hors ligne explicite et sûre
+## V2-010 — Politique hors ligne explicite et sûre
 
 **Priorité : P1. Dépendances : V2-001, V2-003.**
 
@@ -345,7 +395,7 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests offline/reconnect/account-switch sur iOS et Chromium.
 - Risque sécurité élevé si le stockage privé local n’est pas cloisonné.
 
-## V2-010 — Maîtriser les écritures concurrentes
+## V2-011 — Maîtriser les écritures concurrentes
 
 **Priorité : P1. Dépendances : V2-003.**
 
@@ -371,7 +421,7 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests avec promesses concurrentes et transactions réelles.
 - Risque de migration : isoler les colonnes de version dans un commit dédié.
 
-## V2-011 — Durcir authentification et en-têtes HTTP
+## V2-012 — Durcir authentification et en-têtes HTTP
 
 **Priorité : P1. Dépendances : V2-002.**
 
@@ -401,9 +451,9 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
 - Tests multi-instance simulés, headers et régression auth.
 - Risque : choisir une dépendance durable sans surcoût disproportionné.
 
-## V2-012 — Validation scientifique optionnelle
+## V2-013 — Validation scientifique optionnelle
 
-**Priorité : P1. Dépendances : V2-005, V2-007.**
+**Priorité : P1. Dépendances : V2-005, V2-008.**
 
 La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 
@@ -434,9 +484,9 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Autorisation, historique, retrait, empreinte, agrégation et accessibilité.
 - Risque légal : la pastille ne doit pas suggérer une accréditation de LearnX.
 
-## V2-013 — Accessibilité et matrice mobile
+## V2-014 — Accessibilité et matrice mobile
 
-**Priorité : P1. Dépendances : V2-007, V2-008.**
+**Priorité : P1. Dépendances : V2-008, V2-009.**
 
 ### Périmètre
 
@@ -461,7 +511,7 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Risque : faux sentiment de conformité si l’automatisation remplace la revue
   humaine.
 
-## V2-014 — Environnement local et CI reproductibles
+## V2-015 — Environnement local et CI reproductibles
 
 **Priorité : P1. Dépendances : V2-004.**
 
@@ -491,9 +541,9 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Risque : différences de routage entre Vite et Vercel à conserver dans les
   scénarios.
 
-## V2-015 — Pagination, chargement progressif et observabilité
+## V2-016 — Pagination, chargement progressif et observabilité
 
-**Priorité : P2. Dépendances : V2-006, V2-014.**
+**Priorité : P2. Dépendances : V2-006, V2-015.**
 
 ### Périmètre
 
@@ -519,9 +569,9 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Risque de changement de contrat : versionner les curseurs et garder les réponses
   typées.
 
-## V2-016 — Cycle de vie du compte et des notes
+## V2-017 — Cycle de vie du compte et des notes
 
-**Priorité : P2. Dépendances : V2-010, V2-011.**
+**Priorité : P2. Dépendances : V2-011, V2-012.**
 
 ### Périmètre
 

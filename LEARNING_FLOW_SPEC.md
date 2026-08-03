@@ -1,0 +1,383 @@
+# Parcours d’apprentissage centré sur la leçon
+
+## 1. Décision produit
+
+La leçon est l’unité d’apprentissage et de navigation de LearnX.
+
+Les blocs de cours, sources, ressources, tâches, mini-évaluations, quiz,
+exercices et notes ne doivent pas être présentés comme des inventaires globaux
+successifs. Ils restent rattachés à leur leçon et apparaissent au moment où ils
+sont pédagogiquement utiles.
+
+Une seule action principale, « Continuer », conduit vers la prochaine activité
+pertinente. Le système conserve néanmoins des routes profondes partageables pour
+un quiz, une mini-évaluation ou un exercice.
+
+Cette évolution ne modifie pas la hiérarchie de domaine :
+
+```text
+Program > Stage > Module > Lesson
+```
+
+## 2. Parcours observé au 3 août 2026
+
+### Routes
+
+```text
+/today
+/program
+/program/:programSlug
+/program/:programSlug/stage/:stageSlug
+/program/:programSlug/module/:moduleSlug
+/program/:programSlug/lesson/:lessonSlug
+/program/:programSlug/lesson/:lessonSlug/assessment?assessmentId=...
+/program/:programSlug/lesson/:lessonSlug/quiz?quizId=...
+```
+
+L’exercice ne possède pas de route dédiée : son éditeur est rendu directement
+dans la page de leçon. Les pages quiz et mini-évaluation rechargent la leçon pour
+retrouver leur activité et ne montrent que le titre de l’évaluation, sans en-tête
+persistant du programme, de l’étape et du module.
+
+### Depuis Aujourd’hui
+
+La carte principale expose déjà une action « Continuer », mais sa destination
+varie :
+
+- une tâche incomplète renvoie à la page de leçon sans cibler la tâche ;
+- une révision renvoie à la page de leçon sans cibler le contenu à revoir ;
+- une notion à valider renvoie à `/quiz`, alors que les mini-évaluations de
+  notions utilisent la route `/assessment` ;
+- une nouvelle étape ou un nouveau module renvoie à leur page intermédiaire ;
+- l’évaluation finale renvoie à la page de l’étape.
+
+La reprise n’ouvre donc pas toujours l’activité exacte et peut imposer plusieurs
+recherches ou clics supplémentaires.
+
+### Depuis le curriculum
+
+Le chemin complet peut demander quatre actions après la liste des programmes :
+
+```text
+programme → étape → module → leçon
+```
+
+La page module liste bien des cartes-leçons, mais elles ne présentent que titre,
+résumé et statut brouillon. Durée, progression et activités associées ne sont pas
+résumées.
+
+### Dans la leçon
+
+La page affiche actuellement, dans cet ordre :
+
+1. en-tête, durée, résumé et objectifs ;
+2. tous les blocs de contenu ;
+3. progression ;
+4. toutes les ressources ;
+5. toutes les tâches ;
+6. toutes les notions et mini-évaluations ;
+7. notes ;
+8. tous les quiz puis tous les exercices.
+
+Ce regroupement suit les collections techniques. Il sépare une explication de
+sa mise en pratique, oblige à parcourir une page longue et ne fournit aucune
+action principale capable de choisir la prochaine activité.
+
+### Contexte de navigation
+
+Le layout fournit un retour fondé sur l’historique du navigateur et une
+navigation basse. Il ne montre ni fil d’Ariane, ni sommaire de leçon, ni position
+dans le module. Une route profonde ouverte directement ne dispose donc pas d’un
+retour contextuel fiable vers son module.
+
+## 3. Architecture d’information cible
+
+```text
+Aujourd’hui
+└── Continuer l’activité exacte
+    └── Leçon et contexte du module
+        ├── Séquence pédagogique
+        │   ├── Comprendre
+        │   ├── Consulter une ressource
+        │   ├── Mettre en pratique
+        │   ├── Vérifier une notion
+        │   └── Consolider
+        ├── Sommaire
+        └── Continuer
+```
+
+Les activités restent des entités métier distinctes. La séquence est une vue de
+présentation ordonnée, pas une nouvelle hiérarchie de base de données.
+
+## 4. Entrées du parcours
+
+### 4.1 Aujourd’hui
+
+La carte principale décrit :
+
+- programme, étape, module et leçon ;
+- activité exacte et type d’activité ;
+- durée estimée de cette activité, pas seulement celle de la leçon ;
+- état éventuel hors ligne ou verrouillé ;
+- une seule action « Continuer ».
+
+Le clic ouvre directement l’activité : ancre stable dans la leçon ou route
+profonde conservant son contexte. Le serveur reste la source de vérité pour la
+recommandation ; le frontend ne reconstitue pas une autre priorité.
+
+Le dernier emplacement significatif est mémorisé au niveau activité. Reprendre
+une leçon ne renvoie pas systématiquement en haut de page.
+
+### 4.2 Curriculum
+
+Le parcours standard vise au maximum deux actions depuis le curriculum visible :
+
+1. ouvrir une étape ou un module depuis le programme ;
+2. ouvrir la carte-leçon.
+
+Une étape peut afficher directement ses modules dépliables et leurs cartes-leçons
+sans imposer une page de transition à chaque niveau. Les routes programme, étape
+et module restent disponibles pour partage, retour et grands curriculums.
+
+### 4.3 Module
+
+Le module est une séquence ordonnée de cartes-leçons. Chaque carte affiche :
+
+- titre, résumé court et durée totale indicative ;
+- progression et état : brouillon, verrouillée, disponible, en cours ou terminée ;
+- nombre et état synthétique des ressources, tâches, exercices, notions et quiz ;
+- activité suivante dans la leçon ;
+- action principale `Commencer`, `Continuer`, `Revoir` ou `Voir les prérequis`.
+
+Les détails peuvent être dépliés sans navigation, mais la carte entière ne doit
+pas devenir une zone interactive ambiguë.
+
+## 5. Espace unifié de leçon
+
+### 5.1 En-tête persistant
+
+Toute vue de leçon ou activité profonde affiche :
+
+- fil d’Ariane `Programme / Étape / Module / Leçon` ;
+- statut et durée ;
+- progression de la leçon ;
+- retour explicite au module ;
+- action « Continuer » lorsque pertinente.
+
+Sur desktop, un sommaire latéral peut rester visible. Sur mobile, l’en-tête est
+compact, le sommaire s’ouvre dans un tiroir et le contenu reste linéaire.
+
+### 5.2 Séquence pédagogique
+
+La page n’affiche plus toutes les collections l’une après l’autre. Elle compose
+des unités d’activité :
+
+```text
+bloc(s) de compréhension
+→ source ou ressource utile
+→ tâche ou exercice d’application
+→ mini-évaluation de la notion
+→ feedback et activité suivante
+```
+
+Une ressource citée reste visible sous le bloc qui la justifie. Une ressource à
+lire ou regarder peut s’ouvrir directement dans un nouvel onglet sûr ou dans un
+tiroir de détails, sans passage par une liste globale. La section globale
+« Ressources » reste accessible depuis le sommaire comme index secondaire.
+
+Les notes sont une commande contextuelle disponible pendant toute la leçon. Leur
+création conserve le lien à la leçon et, si possible, à l’activité courante.
+
+### 5.3 Action « Continuer »
+
+Il ne peut y avoir qu’une action principale visible par contexte. Sa décision est
+déterministe :
+
+1. activité requise déjà commencée et non terminée ;
+2. première activité requise non terminée dans l’ordre pédagogique ;
+3. quiz ou consolidation de fin de leçon requis ;
+4. terminer la leçon si toutes les conditions serveur sont satisfaites ;
+5. première activité de la prochaine leçon disponible ;
+6. évaluation finale d’étape lorsqu’elle devient disponible.
+
+Les activités optionnelles restent accessibles depuis le sommaire mais ne
+bloquent pas « Continuer ». Une tentative échouée ramène vers le contenu ou la
+remédiation indiquée avant de proposer une nouvelle tentative.
+
+Le frontend ne déclare jamais une activité réussie seul. Il consomme l’état et
+les préconditions calculés par le serveur.
+
+### 5.4 Ordonnancement inter-types
+
+Les positions actuelles sont propres à chaque table et ne peuvent pas exprimer
+un ordre arbitraire entre bloc, ressource, tâche, exercice et évaluation.
+
+La première implémentation doit donc définir un contrat typé
+`LessonActivitySequence` produisant des identifiants stables, un type, un ordre,
+un état, une durée et une destination. Deux stratégies restent possibles :
+
+1. séquence déterministe dérivée par phases à partir des données existantes ;
+2. ordre éditorial explicite reliant chaque mise en pratique au bloc ou à la
+   notion qui la précède.
+
+La stratégie 2 est recommandée pour respecter réellement le moment pédagogique.
+Elle nécessite une décision d’architecture séparée avant toute migration. Aucun
+champ Prisma n’est ajouté par cette spécification.
+
+## 6. Routes et conservation du contexte
+
+Les routes canoniques existantes sont conservées. Les destinations d’activité
+doivent inclure un identifiant stable :
+
+```text
+/program/:programSlug/lesson/:lessonSlug?activity=task:<taskId>
+/program/:programSlug/lesson/:lessonSlug/assessment?assessmentId=<id>
+/program/:programSlug/lesson/:lessonSlug/quiz?quizId=<id>
+/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId
+```
+
+La route d’exercice est une cible proposée ; son ajout sera validé pendant
+l’implémentation. Une route profonde affiche le même en-tête et le même fil
+d’Ariane que la leçon. « Retour à la leçon » restaure activité, défilement et
+sommaire. Le bouton retour du navigateur reste fonctionnel et ne remplace pas le
+retour contextuel.
+
+Les paramètres de destination sont validés côté serveur par appartenance à la
+leçon et autorisation de lecture. Une activité d’une autre leçon ne peut jamais
+être injectée dans le contexte courant.
+
+## 7. États
+
+### Brouillon
+
+- Visible uniquement au propriétaire admin authentifié.
+- Badge et bandeau de prévisualisation persistants.
+- Séquence consultable, mais mutations de progression désactivées.
+- « Continuer la prévisualisation » navigue sans créer de tentative publique.
+
+### Verrouillé
+
+- La carte indique la raison et les prérequis manquants.
+- L’action principale devient « Voir les prérequis ».
+- Une route profonde ne contourne pas le verrou côté serveur.
+
+### Terminé
+
+- La carte affiche la date et la progression complète.
+- L’action secondaire « Revoir » ouvre le sommaire ; l’action principale du
+  parcours va vers la prochaine leçon ou l’évaluation d’étape.
+- Revoir ne réinitialise aucune progression.
+
+### Hors ligne
+
+- Aucune donnée privée ne provient du cache partagé du service worker.
+- Si la leçon n’est pas explicitement disponible hors ligne, afficher un état
+  court avec nouvelle tentative, sans spinner indéfini.
+- Les mutations indisponibles sont désactivées et expliquées ; aucune réussite
+  n’est simulée.
+- La destination exacte est conservée pour la reconnexion.
+
+### Erreur ou contenu retiré
+
+- Une activité supprimée ou dépubliée retourne vers la leçon et recalcule la
+  prochaine activité.
+- L’erreur ne révèle pas l’existence d’un brouillon non autorisé.
+
+## 8. Responsive et accessibilité
+
+### Mobile
+
+- Colonne unique focalisée sur l’activité courante.
+- Action « Continuer » proche du contenu, sans masquer la navigation basse.
+- Sommaire dans un tiroir avec focus piégé, fermeture au clavier et restitution
+  du focus.
+- Zones tactiles d’au moins 44 × 44 px.
+
+### Desktop
+
+- Sommaire latéral et contenu principal sans dépasser une largeur de lecture
+  confortable.
+- Progression, contexte et prochaine activité visibles sans recopier les actions.
+
+### Exigences communes
+
+- Structure de titres logique et une seule cible principale par page.
+- `aria-current` sur activité et fil d’Ariane ; annonces des changements d’état.
+- Focus placé sur le titre de l’activité après navigation.
+- Navigation entièrement réalisable au clavier et avec zoom à 200 %.
+- Préférence de réduction des animations respectée.
+
+## 9. Mesure du parcours
+
+Les événements analytiques ne contiennent ni réponse, ni note, ni texte libre :
+
+```text
+today_continue_clicked
+curriculum_lesson_opened
+lesson_continue_clicked
+lesson_activity_opened
+lesson_activity_completed
+lesson_resource_opened
+lesson_breadcrumb_used
+lesson_resume_restored
+```
+
+Champs autorisés : identifiants internes, type d’activité, position, état,
+viewport, origine de navigation et durée agrégée. L’identité et le contenu des
+réponses restent exclus.
+
+Indicateurs : nombre de clics entre curriculum et leçon, taux de reprise exacte,
+abandons avant activité, retours arrière et progression entre activités.
+
+## 10. Critères d’acceptation
+
+- Depuis Aujourd’hui, « Continuer » ouvre l’activité exacte recommandée.
+- Depuis le curriculum, deux actions maximum ouvrent une leçon visible.
+- Le module affiche une séquence de cartes-leçons avec durée, progression et
+  synthèse de toutes leurs activités.
+- Une leçon ne présente plus les types d’activités comme des listes globales
+  successives constituant le parcours principal.
+- Ressources, tâches, exercices et évaluations restent dans le contexte de leur
+  leçon et de la notion concernée.
+- Une seule action principale choisit la prochaine activité selon les règles
+  serveur.
+- Quiz, mini-évaluations et exercices profonds conservent en-tête, fil d’Ariane,
+  retour et position dans la leçon.
+- Brouillon, verrouillage, complétion et hors ligne ne permettent aucun
+  contournement d’autorisation ou faux succès.
+- Les événements de navigation sont mesurés sans contenu pédagogique privé.
+
+## 11. Tests attendus
+
+- Tests unitaires de sélection de la prochaine activité et de l’ordre inter-types.
+- Tests d’autorisation sur brouillons, verrous et routes profondes.
+- Tests d’intégration : Aujourd’hui → activité exacte → Continuer → activité
+  suivante → leçon suivante.
+- Tests du nombre maximal de clics depuis programme, étape et module.
+- Tests de restauration du contexte après retour, rechargement et lien profond.
+- Tests offline/reconnexion sans chargement indéfini.
+- Playwright sur 390 × 844, tablette, 1440 × 900 et WebKit mobile.
+- Axe, clavier, focus, zoom 200 % et réduction des animations.
+- Tests analytics garantissant l’absence de réponses et textes libres.
+
+## 12. Hors périmètre
+
+- Refonte visuelle complète des tokens et de la marque.
+- Modification de la formule de progression, traitée par `V2-003`.
+- Publication en cascade, traitée par `V2-005`.
+- Validation scientifique, traitée séparément.
+- Recommandation adaptative par IA.
+- Édition collaborative ou réseau social.
+
+## 13. Décisions restantes
+
+1. Valider l’ordre éditorial explicite recommandé ou une séquence dérivée par
+   phases sans migration.
+2. Décider si l’exercice obtient une route profonde canonique ou reste une ancre
+   dans la leçon.
+3. Définir l’activité minimale mémorisée pour reprendre un long bloc de contenu :
+   bloc, sous-section ou simple activité.
+4. Choisir si une activité optionnelle commencée prend temporairement priorité
+   sur la prochaine activité requise.
+5. Définir le fournisseur et la durée de conservation des analytics avant toute
+   instrumentation.
