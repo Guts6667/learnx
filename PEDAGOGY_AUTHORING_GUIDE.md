@@ -268,6 +268,13 @@ Statuts autorisés :
 draft | editorial_review | subject_review | approved | published | archived
 ```
 
+`published` signifie que le contenu est disponible dans l'application. Il ne
+signifie pas qu'un professionnel l'a validé. `scientificAccuracy: false` et
+`subjectReviewer: null` sont compatibles avec `readyForPublication: true`
+lorsque les contrôles éditoriaux, pédagogiques, de sourcing et de seed sont
+satisfaits. La pastille scientifique dépend d'un enregistrement technique
+séparé portant sur la version effectivement revue.
+
 ### 5.1 Références
 
 Chaque entrée suit cette forme ; `null` est utilisé lorsque le champ ne
@@ -475,12 +482,16 @@ manquante de sa propre initiative. La spec retourne en révision.
 - [ ] Chaque ressource a été contrôlée et possède une consigne.
 - [ ] Les liens, éditions et segments média ont été vérifiés.
 - [ ] L’étape possède une évaluation finale.
-- [ ] Les revues éditoriale et de domaine sont renseignées avant approbation.
+- [ ] La revue éditoriale est renseignée avant publication personnelle.
+- [ ] La revue de domaine est renseignée uniquement avant d'afficher la mention
+      ou la pastille « Validé scientifiquement ».
 - [ ] `pnpm test -- prisma/seed.test.ts` passe après intégration.
 - [ ] Aucun changement Prisma, API ou backlog n’est inclus.
 
-Une case non satisfaite conserve `status: "draft"` ou
-`status: "editorial_review"` et `readyForPublication: false`.
+Une case de publication personnelle non satisfaite conserve `status: "draft"`
+ou `status: "editorial_review"` et `readyForPublication: false`. L'absence de
+revue de domaine conserve `scientificAccuracy: false`, mais ne bloque pas à elle
+seule `readyForPublication`.
 
 ## 9. Artefact d’évaluation finale d’étape
 

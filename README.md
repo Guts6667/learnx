@@ -4,6 +4,11 @@ LearnX est une PWA privée, mobile-first et modulaire permettant de suivre des p
 
 L’application n’est pas limitée à la psychologie. Chaque sujet est organisé sous forme de programme, lui-même découpé en étapes, modules et leçons.
 
+Le backlog V1 livré est conservé dans `BACKLOG_CODEX.md`. Les priorités issues
+de l’audit sécurité, intégrité, UX et production sont suivies dans
+`BACKLOG_V2.md`. La validation scientifique optionnelle et indépendante de la
+publication est spécifiée dans `SCIENTIFIC_REVIEW_SPEC.md`.
+
 ## Stack imposée
 
 - Preact

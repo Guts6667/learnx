@@ -55,7 +55,8 @@ ou à la sécurité immédiate, par exemple :
 - moteur de prérequis ou de dépendances entre notions ;
 - graphe automatique de réemploi et répétition espacée avancée ;
 - annotations bibliographiques visibles dans l’interface ;
-- validation éditoriale multi-rôles automatisée ;
+- portail autonome permettant à un réviseur externe de se connecter et de
+  signer lui-même une validation ;
 - import générique de sidecars et tableaux de bord de liens ;
 - génération ou correction automatique par IA ;
 - nouveaux médias interactifs ou types d’évaluation.

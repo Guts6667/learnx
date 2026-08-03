@@ -1,5 +1,9 @@
 # Backlog Codex
 
+> Ce fichier conserve l’historique V1. La suite ordonnée issue de l’audit du
+> 3 août 2026 est définie dans `BACKLOG_V2.md` ; les tickets livrés ci-dessous ne
+> sont pas réécrits.
+
 ## Règle
 
 Codex ne doit traiter qu’un ticket à la fois.

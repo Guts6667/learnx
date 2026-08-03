@@ -110,8 +110,11 @@ Une source utilisée DOIT :
 - être remplacée si elle est introuvable, trompeuse ou insuffisante.
 
 Les contenus de santé mentale NE DOIVENT PAS poser de diagnostic individuel,
-promettre un résultat thérapeutique ou remplacer un professionnel. Ils
-nécessitent une relecture de domaine avant publication.
+promettre un résultat thérapeutique ou remplacer un professionnel. Une version
+destinée à un usage personnel peut être publiée avant relecture de domaine si
+son absence de validation scientifique est explicite. La relecture de domaine
+reste obligatoire avant d'afficher une validation scientifique ou d'élargir la
+diffusion en présentant le contenu comme professionnellement vérifié.
 
 ## 5. Règles de citation
 
@@ -209,18 +212,27 @@ Le feedback n’expose jamais une bonne réponse avant la soumission.
 
 ## 9. Statuts et changements
 
-Le sidecar éditorial utilise :
+Le sidecar éditorial suit le cycle de disponibilité :
 
 ```text
-draft -> editorial_review -> subject_review -> approved -> published -> archived
+draft -> editorial_review -> approved -> published -> archived
 ```
 
 - `draft` : incomplet, non publiable ;
 - `editorial_review` : structure, clarté, liens et citations contrôlés ;
-- `subject_review` : exactitude et preuves contrôlées ;
-- `approved` : tous les contrôles bloquants sont satisfaits ;
-- `published` : contenu disponible ;
+- `subject_review` : état de travail optionnel pendant une revue scientifique,
+  avant ou après publication ;
+- `approved` : contrôles éditoriaux, pédagogiques et techniques satisfaits ;
+- `published` : contenu disponible, sans implication automatique de validation
+  scientifique ;
 - `archived` : retiré ou remplacé, motif conservé.
+
+La validation scientifique constitue un axe séparé. Elle renseigne le réviseur,
+ses qualifications, la date, le périmètre, la version contrôlée et, si elle
+existe, une preuve consultable. Seule une validation active correspondant à la
+version courante autorise la mention ou la pastille « Validé scientifiquement ».
+Un contenu publié sans cette preuve reste utilisable et affiche un état neutre
+« Revue scientifique non réalisée » dans sa vue détaillée.
 
 Toute modification d’une affirmation, d’une ressource obligatoire, d’un
 objectif ou d’une évaluation déclenche une revue proportionnée. La classification
@@ -228,7 +240,8 @@ MVP, validation technique ou V2 suit `PEDAGOGY_CHANGE_POLICY.md`.
 
 ## 10. Contrôle bloquant avant publication
 
-Une spécification ne peut être `approved` ou `published` que si :
+Une spécification ne peut être `approved` ou publiée pour usage personnel que
+si :
 
 - 100 % des blocs de connaissance sont reliés à des références vérifiées ;
 - 100 % des références citées existent et leurs localisateurs ont été contrôlés ;
@@ -243,6 +256,12 @@ Une spécification ne peut être `approved` ou `published` que si :
 - les risques d’accessibilité, de biais et de santé ont été examinés ;
 - la structure JSON passe les tests du seed ;
 - les responsables, dates de revue et historique sont renseignés.
+
+Le nom d'un réviseur de domaine et `scientificAccuracy: true` ne sont pas des
+conditions de publication personnelle. Ils sont en revanche obligatoires pour
+afficher une validation scientifique. La publication et la validation
+scientifique ne doivent jamais partager le même booléen ni être déduites l'une
+de l'autre.
 
 Une case manquante conserve le statut `draft` ou `editorial_review`. Une
 exception documentée ne peut pas contourner le sourcing, la validation des
