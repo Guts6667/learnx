@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:vercel": "pnpm prisma:generate && pnpm prisma:deploy && pnpm build",
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -b",
@@ -14,8 +15,10 @@
     "test:e2e": "playwright test",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db seed",
     "prisma:check": "tsx scripts/check-database.ts",
+    "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

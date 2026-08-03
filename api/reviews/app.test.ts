@@ -5,12 +5,12 @@ import {
   ReviewStatus,
   type PrismaClient,
 } from '../../generated/prisma/client';
-import type { AuthEnvironment } from '../_lib/auth';
+import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
   createPrismaReviewsRepository,
   createReviewsApp,
   type ReviewsRepository,
-} from './app';
+} from '../../src/server/api/reviews/app';
 
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';

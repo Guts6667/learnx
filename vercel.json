@@ -1,5 +1,20 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build:vercel",
+  "outputDirectory": "dist",
+  "regions": ["fra1"],
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "generated/prisma/**"
+    }
+  },
   "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
+    },
     {
       "source": "/((?!api/|@|src/|node_modules/).*)",
       "destination": "/index.html"

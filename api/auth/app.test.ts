@@ -4,15 +4,15 @@ import {
   createRequireUser,
   type AuthDependencies,
   type AuthEnvironment,
-} from '../_lib/auth';
+} from '../../src/server/api/_lib/auth';
 import type {
   AuthRepository,
   StoredSession,
   StoredUser,
-} from '../_lib/auth-types';
-import { hashSessionToken } from '../_lib/session';
-import { InMemoryLoginRateLimiter } from '../_lib/login-rate-limit';
-import { createAuthApp } from './app';
+} from '../../src/server/api/_lib/auth-types';
+import { InMemoryLoginRateLimiter } from '../../src/server/api/_lib/login-rate-limit';
+import { hashSessionToken } from '../../src/server/api/_lib/session';
+import { createAuthApp } from '../../src/server/api/auth/app';
 
 const testNow = new Date('2026-08-02T12:00:00.000Z');
 

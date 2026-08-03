@@ -4,12 +4,12 @@ import {
   ConceptProgressStatus,
   type PrismaClient,
 } from '../../generated/prisma/client';
-import type { AuthEnvironment } from '../_lib/auth';
+import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
   createConceptAssessmentsApp,
   createPrismaRepository,
   type ConceptAssessmentRepository,
-} from './app';
+} from '../../src/server/api/concept-assessments/app';
 
 const assessmentId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const conceptId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';

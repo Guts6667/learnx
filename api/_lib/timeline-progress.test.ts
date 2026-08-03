@@ -1,7 +1,7 @@
 import {
   calculateProgramPercent,
   calculateStagePercent,
-} from './timeline-progress';
+} from '../../src/server/api/_lib/timeline-progress';
 
 function lesson(percent?: number) {
   return { progress: percent === undefined ? [] : [{ percent }] };

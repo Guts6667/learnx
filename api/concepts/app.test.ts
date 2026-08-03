@@ -4,8 +4,11 @@ import {
   ConceptProgressStatus,
   ResourceProgressStatus,
 } from '../../generated/prisma/client';
-import type { AuthEnvironment } from '../_lib/auth';
-import { createConceptsApp, type ConceptRepository } from './app';
+import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
+import {
+  createConceptsApp,
+  type ConceptRepository,
+} from '../../src/server/api/concepts/app';
 
 const conceptId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';

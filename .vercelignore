@@ -1,0 +1,4 @@
+api/**/*.test.ts
+playwright-report
+test-results
+coverage

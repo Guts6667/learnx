@@ -1,0 +1,49 @@
+import { Hono } from 'hono';
+
+import { adminApp } from './admin/app.js';
+import { ApiError, toApiErrorBody } from './_lib/errors.js';
+import { authApp } from './auth/app.js';
+import { conceptAssessmentsApp } from './concept-assessments/app.js';
+import { conceptsApp } from './concepts/app.js';
+import { exercisesApp } from './exercises/app.js';
+import { notesApp } from './notes/app.js';
+import { curriculumApp } from './programs/app.js';
+import { progressApp } from './progress/app.js';
+import { quizzesApp } from './quizzes/app.js';
+import { reviewsApp } from './reviews/app.js';
+import { stageAssessmentsApp } from './stage-assessments/app.js';
+import { todayApp } from './today/app.js';
+
+export function createApiApp() {
+  const app = new Hono();
+
+  app.onError((error, context) => {
+    if (error instanceof ApiError) {
+      return context.json(toApiErrorBody(error), error.status);
+    }
+
+    return context.json(
+      toApiErrorBody(
+        new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500),
+      ),
+      500,
+    );
+  });
+
+  app.route('/', authApp);
+  app.route('/', adminApp);
+  app.route('/', curriculumApp);
+  app.route('/', progressApp);
+  app.route('/', conceptsApp);
+  app.route('/', conceptAssessmentsApp);
+  app.route('/', quizzesApp);
+  app.route('/', exercisesApp);
+  app.route('/', stageAssessmentsApp);
+  app.route('/', notesApp);
+  app.route('/', reviewsApp);
+  app.route('/', todayApp);
+
+  return app;
+}
+
+export const apiApp = createApiApp();

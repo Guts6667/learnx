@@ -1,12 +1,12 @@
 import type { MiddlewareHandler } from 'hono';
 
 import type { PrismaClient } from '../../generated/prisma/client';
-import type { AuthEnvironment } from '../_lib/auth';
+import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
   createPrismaRepository,
   createQuizzesApp,
   type QuizRepository,
-} from './app';
+} from '../../src/server/api/quizzes/app';
 
 const quizId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const lessonId = '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8';

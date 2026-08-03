@@ -62,6 +62,58 @@ pnpm prisma:check
 valide. Le seed du ticket d’initialisation est volontairement vide ; le
 programme exemple est importé dans TICKET-008.
 
+## Déploiement Vercel
+
+Le projet est configuré pour le preset Vite, une sortie statique dans `dist`
+et une Function Node.js Hono unique sous `/api`. Toutes les routes existantes
+sont regroupées derrière cette Function afin de rester sous la limite du plan
+Hobby. Elle s’exécute dans la région `fra1`, proche de la base Neon européenne.
+Le client Prisma généré est explicitement inclus dans son bundle, y compris ses
+modules internes chargés dynamiquement.
+Le build Vercel exécute dans l’ordre :
+
+```bash
+pnpm prisma:generate
+pnpm prisma:deploy
+pnpm build
+```
+
+`prisma:deploy` applique les migrations déjà versionnées avec
+`prisma migrate deploy`. Il ne crée pas de migration et ne réinitialise jamais
+la base.
+
+Configurer les variables suivantes dans les environnements Preview et
+Production du projet Vercel :
+
+- `DATABASE_URL` : connexion Neon poolée utilisée à l’exécution ;
+- `DIRECT_URL` : connexion Neon directe utilisée pendant les migrations ;
+- `ADMIN_EMAIL` : adresse du compte propriétaire utilisée uniquement par le
+  seed manuel.
+
+`APP_URL` est réservée aux futurs liens absolus et peut être renseignée avec
+l’origine HTTPS stable lorsqu’un domaine définitif est attribué. Elle n’est pas
+lue par le runtime actuel.
+
+Les valeurs réelles restent dans Vercel et dans les fichiers `.env` locaux
+ignorés par Git. Après leur modification, un nouveau déploiement est nécessaire.
+Le seed n’est volontairement pas lancé pendant le build : une migration de
+production doit être automatique et idempotente, tandis qu’une modification de
+contenu reste une opération explicite.
+
+Pour reproduire le build Vercel localement puis contrôler un déploiement :
+
+```bash
+npx vercel@latest pull --environment=preview
+npx vercel@latest build
+pnpm deployment:check -- https://URL-DU-DEPLOIEMENT
+```
+
+Le contrôle vérifie l’application, le manifest installable, le service worker
+et une Vercel Function. Sur iPhone, ouvrir ensuite l’URL HTTPS dans Safari,
+utiliser **Partager → Sur l’écran d’accueil**, lancer LearnX depuis l’icône et
+vérifier la navigation ainsi que la bannière hors ligne sur une page déjà
+consultée.
+
 ## Authentification serveur
 
 Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :

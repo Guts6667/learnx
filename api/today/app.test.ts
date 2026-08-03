@@ -1,7 +1,10 @@
 import type { MiddlewareHandler } from 'hono';
 
-import type { AuthEnvironment } from '../_lib/auth';
-import { createTodayApp, type TodayRepository } from './app';
+import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
+import {
+  createTodayApp,
+  type TodayRepository,
+} from '../../src/server/api/today/app';
 
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const now = new Date('2026-08-03T08:00:00.000Z');

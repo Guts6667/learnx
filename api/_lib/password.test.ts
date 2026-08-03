@@ -1,4 +1,7 @@
-import { hashPassword, verifyPassword } from './password';
+import {
+  hashPassword,
+  verifyPassword,
+} from '../../src/server/api/_lib/password';
 
 describe('password hashing', () => {
   it('uses argon2id hashes that verify without retaining the plain password', async () => {

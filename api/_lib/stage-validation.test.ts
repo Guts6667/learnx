@@ -5,7 +5,10 @@ import {
   TaskCompletionStatus,
   type PrismaClient,
 } from '../../generated/prisma/client';
-import { getStageValidation, refreshStageValidation } from './stage-validation';
+import {
+  getStageValidation,
+  refreshStageValidation,
+} from '../../src/server/api/_lib/stage-validation';
 
 const now = new Date('2026-08-03T08:00:00.000Z');
 
