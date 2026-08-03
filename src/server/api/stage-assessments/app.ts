@@ -94,14 +94,18 @@ export interface StageAssessmentRepository {
     assessmentId: string,
     userId: string,
   ): Promise<{ id: string } | null>;
-  findSubmissionForReview(submissionId: string): Promise<ReviewRecord | null>;
+  findSubmissionForReview(
+    submissionId: string,
+    ownerId: string,
+  ): Promise<ReviewRecord | null>;
   reviewSubmission(input: {
     id: string;
+    ownerId: string;
     reviewFeedback: string | null;
     reviewedAt: Date;
     score: number | null;
     status: 'NEEDS_REVISION' | 'VALIDATED';
-  }): Promise<SubmissionRecord>;
+  }): Promise<SubmissionRecord | null>;
   saveSubmission(input: {
     attachmentUrl?: string | null;
     contentMarkdown?: string | null;
@@ -207,9 +211,12 @@ export function createPrismaStageAssessmentRepository(
         select: { id: true },
       });
     },
-    async findSubmissionForReview(submissionId) {
-      const record = await client.stageAssessmentSubmission.findUnique({
-        where: { id: submissionId },
+    async findSubmissionForReview(submissionId, ownerId) {
+      const record = await client.stageAssessmentSubmission.findFirst({
+        where: {
+          id: submissionId,
+          stageAssessment: { stage: { program: { ownerId } } },
+        },
         select: {
           ...submissionSelect,
           stageAssessment: { select: { passingScore: true, stageId: true } },
@@ -226,16 +233,24 @@ export function createPrismaStageAssessmentRepository(
       };
     },
     async reviewSubmission(input) {
-      return client.stageAssessmentSubmission.update({
-        where: { id: input.id },
-        data: {
-          reviewFeedback: input.reviewFeedback,
-          reviewedAt: input.reviewedAt,
-          score: input.score,
-          status: input.status,
-        },
-        select: submissionSelect,
-      });
+      const submissions =
+        await client.stageAssessmentSubmission.updateManyAndReturn({
+          where: {
+            id: input.id,
+            stageAssessment: {
+              stage: { program: { ownerId: input.ownerId } },
+            },
+          },
+          data: {
+            reviewFeedback: input.reviewFeedback,
+            reviewedAt: input.reviewedAt,
+            score: input.score,
+            status: input.status,
+          },
+          select: submissionSelect,
+        });
+
+      return submissions[0] ?? null;
     },
     async saveSubmission(input) {
       return client.stageAssessmentSubmission.update({
@@ -426,7 +441,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
       }
 
       const reviewRecord =
-        await repository.findSubmissionForReview(submissionId);
+        await repository.findSubmissionForReview(submissionId, user.id);
       if (!reviewRecord) throw notFound();
 
       try {
@@ -448,12 +463,14 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
       const reviewedAt = now();
       const updated = await repository.reviewSubmission({
         id: submissionId,
+        ownerId: user.id,
         reviewFeedback: parsed.data.reviewFeedback ?? null,
         reviewedAt,
         score: parsed.data.score ?? null,
         status:
           parsed.data.action === 'validate' ? 'VALIDATED' : 'NEEDS_REVISION',
       });
+      if (!updated) throw notFound();
       await refreshValidation(
         reviewRecord.stageId,
         reviewRecord.submission.userId,
