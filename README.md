@@ -121,6 +121,32 @@ utiliser **Partager → Sur l’écran d’accueil**, lancer LearnX depuis l’i
 vérifier la navigation ainsi que la bannière hors ligne sur une page déjà
 consultée.
 
+La CI peut aussi fournir `DEPLOYMENT_CHECK_EMAIL` et
+`DEPLOYMENT_CHECK_PASSWORD` à un compte de contrôle dédié. La commande vérifie
+alors une connexion, la session, une lecture du curriculum puis la déconnexion,
+sans créer ni modifier de contenu métier.
+
+## Tests d’intégration réels
+
+`pnpm test:integration` construit l’application puis exécute Chromium desktop,
+Chromium mobile et WebKit mobile contre `api/index.ts`, Prisma et PostgreSQL,
+sans interception de `/api`. La commande refuse toute écriture tant que les
+variables suivantes ne désignent pas explicitement une branche Neon jetable :
+
+- `DATABASE_URL` et `DIRECT_URL` de la branche isolée ;
+- `NEON_BRANCH_ID` fourni lors de sa création ;
+- `LEARNX_INTEGRATION_DATABASE=ephemeral` ;
+- `LEARNX_INTEGRATION_RUN_ID`, unique pour l’exécution.
+
+Le workflow `integration.yml` crée une branche Neon par exécution, applique les
+migrations, injecte des fixtures dédiées via le parcours de test, puis supprime
+la branche avec une étape `always()`. GitHub doit contenir le secret
+`NEON_API_KEY` et la variable `NEON_PROJECT_ID`. Aucun identifiant ni URL de
+base n’est versionné. Le workflow `deployment-check.yml`, déclenché manuellement,
+utilise les secrets `LEARNX_DEPLOYMENT_EMAIL` et
+`LEARNX_DEPLOYMENT_PASSWORD`, ainsi que la variable
+`LEARNX_DEPLOYMENT_URL`.
+
 ## Authentification serveur
 
 Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :

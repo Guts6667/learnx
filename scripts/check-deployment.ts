@@ -11,6 +11,10 @@ const manifestSchema = z.object({
   name: z.string().min(1),
   start_url: z.literal('/'),
 });
+const authenticatedSessionSchema = z.object({
+  user: z.object({ email: z.email() }),
+});
+const programsSchema = z.object({ programs: z.array(z.unknown()) });
 
 function getDeploymentUrl(value: string | undefined): URL {
   if (!value) {
@@ -87,7 +91,87 @@ async function checkDeployment(): Promise<void> {
     throw new Error('The anonymous deployment check received a user session.');
   }
 
-  console.log(`Deployment verified: ${baseUrl.origin}`);
+  const email = process.env.DEPLOYMENT_CHECK_EMAIL;
+  const password = process.env.DEPLOYMENT_CHECK_PASSWORD;
+
+  if (Boolean(email) !== Boolean(password)) {
+    throw new Error(
+      'DEPLOYMENT_CHECK_EMAIL and DEPLOYMENT_CHECK_PASSWORD must be provided together.',
+    );
+  }
+
+  if (email && password) {
+    const loginResponse = await fetch(new URL('/api/auth/login', baseUrl), {
+      body: JSON.stringify({ email, password }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    if (!loginResponse.ok) {
+      throw new Error(
+        `Authenticated login returned HTTP ${loginResponse.status}.`,
+      );
+    }
+
+    const responseHeaders = loginResponse.headers as Headers & {
+      getSetCookie?: () => string[];
+    };
+    const rawCookie =
+      responseHeaders.getSetCookie?.()[0] ??
+      loginResponse.headers.get('set-cookie');
+    const cookie = rawCookie?.split(';', 1)[0];
+
+    if (!cookie)
+      throw new Error('Authenticated login did not set a session cookie.');
+
+    const authenticatedSessionResponse = await fetch(
+      new URL('/api/auth/session', baseUrl),
+      { headers: { accept: 'application/json', cookie } },
+    );
+
+    if (!authenticatedSessionResponse.ok) {
+      throw new Error(
+        `Authenticated session returned HTTP ${authenticatedSessionResponse.status}.`,
+      );
+    }
+
+    const authenticatedSession = authenticatedSessionSchema.parse(
+      await authenticatedSessionResponse.json(),
+    );
+
+    if (authenticatedSession.user.email !== email.toLowerCase()) {
+      throw new Error(
+        'The authenticated deployment check received another user.',
+      );
+    }
+
+    const programsResponse = await fetch(new URL('/api/programs', baseUrl), {
+      headers: { accept: 'application/json', cookie },
+    });
+
+    if (!programsResponse.ok) {
+      throw new Error(
+        `Authenticated curriculum returned HTTP ${programsResponse.status}.`,
+      );
+    }
+
+    programsSchema.parse(await programsResponse.json());
+
+    const logoutResponse = await fetch(new URL('/api/auth/logout', baseUrl), {
+      headers: { cookie },
+      method: 'POST',
+    });
+
+    if (logoutResponse.status !== 204) {
+      throw new Error(
+        `Authenticated logout returned HTTP ${logoutResponse.status}.`,
+      );
+    }
+  }
+
+  console.log(
+    `Deployment verified${email ? ' with authentication' : ''}: ${baseUrl.origin}`,
+  );
 }
 
 await checkDeployment();

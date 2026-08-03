@@ -2,7 +2,9 @@ node_modules/
 dist/
 coverage/
 playwright-report/
+playwright-report-integration/
 test-results/
+test-results-integration/
 generated/
 .env
 .env.*
