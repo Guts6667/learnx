@@ -1,0 +1,153 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_005",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "comprendre-cognition",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Comprendre la cognition",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser un dispositif fictif de formation en séparant performance et apprentissage, processus de mémoire, perception et attention, jugements métacognitifs et décisions d'étude, puis proposer une évaluation améliorée sans diagnostic ni promesse de transfert.",
+    "instructions": [
+      "Construire un tableau qui sépare, pour chaque résultat de SignalClair, l'observation, le processus cognitif possible, au moins une explication concurrente et la mesure supplémentaire nécessaire.",
+      "Distinguer performance immédiate, rétention différée, généralisation et transfert ; expliquer ce que les trois scores permettent et ne permettent pas de conclure.",
+      "Analyser la démonstration filmée selon l'attention, la rétention, la reproduction et la motivation, sans déduire de la seule réussite qu'un mécanisme particulier a produit l'apprentissage.",
+      "Cartographier les demandes adressées à la mémoire de travail et aux connaissances à long terme ; proposer au moins deux explications plausibles aux erreurs du jour 8, dont une portant sur l'encodage ou la récupération et une sur l'interférence ou la reconstruction.",
+      "Séparer signal sensoriel, organisation perceptive, contexte descendant et sélection attentionnelle dans les essais avec icône jaune, changement de couleur et messagerie concurrente ; reformuler le slogan sur le multitâche en fonction des données.",
+      "Calculer, pour chaque condition de test, l'écart en points entre confiance moyenne et exactitude moyenne ; identifier surconfiance ou sous-confiance et préciser pourquoi ces moyennes ne décrivent pas chaque participant.",
+      "Relier monitoring et contrôle aux choix de révision observés, puis proposer une boucle autorégulée comportant objectif, récupération sans support, confiance annoncée avant feedback, décision de reprise et vérification différée.",
+      "Concevoir une suite sur quatorze jours avec pratique distribuée, feedback, test de rétention, test de transfert proche et test plus éloigné ; décrire exactement ce qui change et ce qui reste commun entre les tâches.",
+      "Auditer les quatre affirmations du communiqué et remplacer chacune par une conclusion proportionnée aux observations, au plan, à la taille du groupe et aux mesures disponibles.",
+      "Citer précisément au moins quatre ressources de l'étape, dont une sur l'apprentissage, une sur la mémoire, une sur l'attention ou la perception et une sur la métacognition."
+    ],
+    "case": "Dossier entièrement fictif — SignalClair. Une association forme 24 adultes volontaires à traiter des demandes d'inscription dans un tableau de bord. La procédure comporte sept étapes et une règle contextuelle : une icône jaune demande une vérification supplémentaire, mais ne signifie pas automatiquement qu'il faut rejeter la demande. Au jour 1, tous regardent la même vidéo de douze minutes dans laquelle une experte verbalise la procédure sur six exemples. Ils peuvent mettre la vidéo en pause, puis réalisent trois essais guidés avec les indices pertinents surlignés et un feedback immédiat. L'équipe affirme que le simple fait d'avoir vu l'experte garantit l'apprentissage par observation. Sur un test immédiat de huit cas au même format, avec les surlignages, l'exactitude moyenne est de 87,5 % et la confiance moyenne annoncée avant correction est de 88 %. Au jour 3, un courriel récapitulatif formule à tort « icône jaune = rejet » ; aucune mesure ne permet de savoir qui l'a lu attentivement. Au jour 8, sans vidéo, sans surlignage et avant tout feedback, l'exactitude moyenne sur huit nouveaux cas de même format est de 62,5 % pour une confiance moyenne de 82 %. Neuf participants appliquent au moins une fois la règle erronée du courriel, parfois avec une forte confiance. Sur quatre cas présentés dans une nouvelle interface et avec un vocabulaire différent mais la même règle, l'exactitude moyenne est de 50 % et la confiance moyenne de 79 %. Le tableau de bord contient aussi une icône jaune ambiguë : sous l'en-tête « risque », elle est plus souvent interprétée comme un rejet ; sous l'en-tête « information », elle est plus souvent interprétée comme une demande de contrôle. L'association ne recueille pas de données individuelles suffisantes pour établir la cause de cette différence. Dans une série de cas simples sans messagerie, 78 % des indices cibles sont détectés, contre 59 % lorsqu'une réponse à un message doit être préparée en même temps. Lors d'un changement de couleur entre deux écrans séparés par une page blanche, 10 personnes sur 24 signalent spontanément le changement. Après le test différé, les participants disposent de vingt minutes libres : en moyenne, 70 % du temps est consacré à relire les exemples déjà résolus, 10 % à répondre sans support et 20 % à d'autres actions ; huit participants choisissent ensuite de retenter les catégories manquées après feedback. Il n'existe ni groupe de comparaison, ni assignation aléatoire, ni mesure au-delà du jour 8, ni test dans une activité professionnelle réelle. Le communiqué de l'association affirme : « SignalClair produit un apprentissage durable, transfère la compétence à toute interface, prouve que le cerveau ne peut pas multitâcher et rend chacun conscient de ce qu'il sait. » Toutes les personnes, données, interfaces et affirmations de ce dossier sont fictives et servent uniquement à l'évaluation.",
+    "estimatedMinutes": 180,
+    "submissionFormat": "Dossier de 1 500 à 1 800 mots comprenant un tableau observation–hypothèse–alternative–test, les calculs de calibration, un plan de suivi sur quatorze jours et un communiqué révisé de 180 à 250 mots.",
+    "conceptSlugs": [
+      "apprentissage-performance",
+      "apprentissage-observationnel",
+      "generalisation-transfert",
+      "processus-systemes-memoire",
+      "oubli-interference-reconstruction",
+      "recuperation-pratique-distribuee",
+      "sensation-perception-inference",
+      "traitements-ascendant-descendant-contexte",
+      "selection-attentionnelle-limites",
+      "monitoring-controle-metacognitifs",
+      "calibration-illusions-maitrise",
+      "autoregulation-fondee-preuves"
+    ],
+    "rubric": [
+      {
+        "criterion": "Apprentissage, observation et transfert",
+        "weight": 15,
+        "requirements": [
+          "Performance immédiate, rétention différée et transfert sont distingués à partir des trois conditions de test.",
+          "Attention, rétention, reproduction et motivation sont appliquées à la démonstration avec au moins une donnée manquante signalée pour chaque inférence non testée.",
+          "Les tâches de transfert proche et plus éloigné décrivent les éléments conservés et modifiés sans promettre une généralisation automatique."
+        ]
+      },
+      {
+        "criterion": "Mémoire, oubli et pratique durable",
+        "weight": 20,
+        "requirements": [
+          "Les demandes adressées à la mémoire de travail, aux connaissances sémantiques et aux traces épisodiques sont reliées à des éléments précis du cas.",
+          "Au moins deux explications concurrentes des erreurs sont formulées et l'influence du courriel erroné n'est pas présentée comme démontrée.",
+          "Le suivi combine tentatives de récupération, feedback, reprises espacées et mesure différée avec un calendrier explicite."
+        ]
+      },
+      {
+        "criterion": "Perception, contexte et attention",
+        "weight": 15,
+        "requirements": [
+          "Signal, perception et influence possible du contexte sont séparés pour l'icône jaune.",
+          "La baisse de détection en double tâche et le changement non signalé sont décrits sans les confondre ni leur attribuer un mécanisme unique.",
+          "Le slogan sur le multitâche est remplacé par une formulation bornée à la tâche, aux conditions et à la mesure observée."
+        ]
+      },
+      {
+        "criterion": "Métacognition, calibration et contrôle",
+        "weight": 15,
+        "requirements": [
+          "Les trois écarts confiance–exactitude sont calculés correctement et interprétés en points de pourcentage.",
+          "Les limites des moyennes agrégées sont signalées et aucune caractéristique fixe des personnes n'est diagnostiquée.",
+          "La boucle proposée relie une mesure de monitoring à une règle observable de contrôle, au feedback et à une vérification différée."
+        ]
+      },
+      {
+        "criterion": "Raisonnement intégré et limites",
+        "weight": 20,
+        "requirements": [
+          "Le tableau distingue systématiquement observation, mécanisme possible, explication concurrente et test discriminant.",
+          "L'absence de comparaison, d'assignation aléatoire, de suivi prolongé, de données individuelles et de situation professionnelle est reliée aux conclusions concernées.",
+          "Les quatre affirmations du communiqué sont corrigées sans diagnostic, causalité indue, promesse d'efficacité ou généralisation non mesurée."
+        ]
+      },
+      {
+        "criterion": "Traçabilité et qualité du dossier",
+        "weight": 15,
+        "requirements": [
+          "Au moins quatre ressources couvrant les quatre leçons sont citées avec un lien explicite vers l'affirmation soutenue.",
+          "Les calculs, dénominateurs, délais et conditions de mesure sont rapportés de manière reproductible.",
+          "Le dossier respecte les formats demandés et sépare clairement données fictives, interprétations et recommandations."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions associées puis soumettre uniquement les sections insuffisantes. Ajouter un tableau à cinq colonnes — affirmation initiale, donnée disponible, inférence autorisée, explication concurrente, test nécessaire — et réviser au moins une décision d'étude à partir d'une tentative de récupération avec confiance annoncée avant feedback."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "REF-018-OPENSTAX-6-1",
+      "REF-018-SODERSTROM-2015",
+      "REF-018-OPENSTAX-6-4",
+      "REF-018-OPENSTAX-6-2",
+      "REF-018-CEPEDA-2006",
+      "REF-018-PAN-2018",
+      "REF-019-OPENSTAX-8-1",
+      "REF-019-BADDELEY",
+      "REF-019-OPENSTAX-8-3",
+      "REF-019-ROEDIGER-MCDERMOTT",
+      "REF-019-ROEDIGER-KARPICKE",
+      "REF-019-CEPEDA",
+      "REF-019-OPENSTAX-8-4",
+      "REF-020-OPENSTAX-5-1",
+      "REF-020-GREGORY-1980",
+      "REF-020-EGETH-YANTIS-1997",
+      "REF-020-SIMONS-CHABRIS-1999",
+      "REF-020-SIMONS-RENSINK-2005",
+      "REF-020-PASHLER-1994",
+      "REF-020-CHUN-2011",
+      "REF-021-METCALFE",
+      "REF-021-DUNLOSKY",
+      "REF-021-ROEDIGER-KARPICKE",
+      "REF-021-OPENSTAX"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier SignalClair, ses personnes, données, interfaces et affirmations sont entièrement fictifs.",
+        "Revue humaine éditoriale et en psychologie cognitive requise avant publication.",
+        "Les douze conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_018 à 021.",
+        "Les vingt-quatre referenceIds correspondent exactement à l'union des références de PEDAGOGY_SPEC_018 à 021 ; liens, éditions et accessibilité doivent être revérifiés lors de la revue humaine.",
+        "Le cas n'autorise aucun diagnostic individuel, aucune causalité certaine, aucune promesse d'efficacité ni aucun transfert au-delà des tâches mesurées."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas cognitive intégratrice, de sa grille sur 100 points et de sa remédiation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

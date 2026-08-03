@@ -469,6 +469,72 @@ describe('sample program seed', () => {
     ).toBe(100);
   });
 
+  it('lit les quatre leçons et les douze banques de la cinquième étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stage = sampleSeed.program.stages.find(
+      (item) => item.slug === 'comprendre-cognition',
+    );
+    const lessons = stage?.modules[0].lessons ?? [];
+    const assessmentGroups = sampleSeed.conceptAssessmentBanks.filter(
+      (group) => group.stageSlug === 'comprendre-cognition',
+    );
+
+    expect(lessons.map((lesson) => lesson.slug)).toEqual([
+      'apprentissage',
+      'memoire',
+      'attention-perception',
+      'metacognition',
+    ]);
+    expect(lessons.map((lesson) => lesson.contentBlocks.length)).toEqual([
+      5, 6, 6, 6,
+    ]);
+    expect(lessons.map((lesson) => lesson.resources.length)).toEqual([
+      6, 7, 7, 4,
+    ]);
+    expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
+    expect(assessmentGroups).toHaveLength(4);
+    expect(
+      assessmentGroups.flatMap((group) => group.assessmentBanks),
+    ).toHaveLength(12);
+    expect(
+      assessmentGroups
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(60);
+
+    for (const lesson of lessons) {
+      const resourceKeys = new Set(
+        lesson.resources.map((resource) => resource.key),
+      );
+
+      expect(
+        lesson.contentBlocks.every(
+          (block) =>
+            block.content.sourceKeys.length > 0 &&
+            block.content.sourceKeys.every((key) => resourceKeys.has(key)),
+        ),
+      ).toBe(true);
+      expect(
+        lesson.concepts.every((concept) =>
+          concept.resourceKeys.every((key) => resourceKeys.has(key)),
+        ),
+      ).toBe(true);
+    }
+
+    expect(stage?.assessment).toMatchObject({
+      description: expect.stringContaining('dispositif fictif de formation'),
+      instructions: expect.stringContaining('## Cas SignalClair'),
+      rubric: expect.any(Array),
+    });
+    expect(
+      stage?.assessment.rubric?.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+  });
+
   it('refuse une source de bloc absente des ressources de la leçon', async () => {
     const sampleSeed = await readSampleSeed();
     const lesson = sampleSeed.program.stages[0].modules[0].lessons[1];
@@ -525,19 +591,19 @@ describe('sample program seed', () => {
     expect(stageAssessments).toHaveLength(5);
     expect(modules).toHaveLength(6);
     expect(lessons).toHaveLength(21);
-    expect(concepts).toHaveLength(55);
-    expect(assessments).toHaveLength(55);
-    expect(assessmentQuestions).toHaveLength(51);
+    expect(concepts).toHaveLength(63);
+    expect(assessments).toHaveLength(63);
+    expect(assessmentQuestions).toHaveLength(63);
     expect(
       [...assessmentQuestions.values()].reduce(
         (total, questions) => total + questions.length,
         0,
       ),
-    ).toBe(255);
-    expect(contentBlocks).toHaveLength(86);
-    expect(resources).toHaveLength(60);
-    expect(tasks).toHaveLength(51);
-    expect(exercises).toHaveLength(51);
+    ).toBe(315);
+    expect(contentBlocks).toHaveLength(109);
+    expect(resources).toHaveLength(84);
+    expect(tasks).toHaveLength(63);
+    expect(exercises).toHaveLength(63);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,
@@ -608,6 +674,15 @@ describe('sample program seed', () => {
       description: expect.stringContaining('fiche critique'),
       instructions: expect.stringContaining('## Cas RespireCampus'),
       rubric: expect.any(Array),
+    });
+    expect(stageAssessmentInputs.get('stage-5:1')).toMatchObject({
+      description: expect.stringContaining('dispositif fictif de formation'),
+      instructions: expect.stringContaining('## Cas SignalClair'),
+      rubric: expect.arrayContaining([
+        expect.objectContaining({
+          criterion: 'Métacognition, calibration et contrôle',
+        }),
+      ]),
     });
   });
 

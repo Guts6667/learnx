@@ -3657,80 +3657,944 @@
               {
                 "title": "Apprentissage",
                 "slug": "apprentissage",
+                "summary": "Apprendre ne se réduit ni à réussir pendant l'entraînement ni à recevoir un renforcement : un changement durable se juge par la rétention et le transfert, peut passer par l'observation et dépend des ressemblances pertinentes entre situations.",
                 "position": 1,
                 "estimatedMinutes": 150,
+                "prerequisites": [
+                  "Distinguer conditionnement classique, conditionnement opérant et apprentissage social.",
+                  "Décrire une observation sans confondre description, mécanisme et causalité."
+                ],
+                "objectives": [
+                  "Distinguer apprentissage durable, performance immédiate et autres causes possibles d'un changement observé.",
+                  "Analyser un apprentissage observationnel à partir de l'attention, de la rétention, de la reproduction et de la motivation.",
+                  "Distinguer discrimination, généralisation et transfert proche ou lointain.",
+                  "Concevoir une pratique et une évaluation qui testent la rétention et le transfert sans les présumer."
+                ],
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "En psychologie, l'apprentissage désigne un changement relativement durable de connaissances ou de conduites attribuable à l'expérience. Cette définition exclut un réflexe inné et invite à écarter, avant de conclure, des explications comme la fatigue, l'échauffement, la maturation ou un changement ponctuel de motivation. Une réussite isolée pendant l'exercice est un indice de performance, pas encore la preuve d'un apprentissage durable.",
+                      "sourceKeys": [
+                        "openstax-learning-6-1",
+                        "soderstrom-bjork-2015"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "La performance est ce qui est observable pendant ou juste après la pratique ; l'apprentissage est une modification plus stable que l'on infère. Les deux peuvent diverger : des aides fréquentes améliorent l'exécution immédiate sans garantir l'autonomie ultérieure, tandis qu'une pratique exigeante peut produire davantage d'erreurs sur le moment mais une meilleure rétention. Pour tester l'apprentissage, on prévoit une mesure différée, réalisée sans les aides d'entraînement, et si possible une tâche nouvelle. Même alors, la conclusion reste une inférence dépendante du plan et des mesures.",
+                      "sourceKeys": [
+                        "soderstrom-bjork-2015"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "L'apprentissage observationnel ajoute des médiations cognitives et sociales à l'expérience directe. Le modèle de Bandura distingue quatre conditions : prêter attention à l'action pertinente, en conserver une représentation, pouvoir la reproduire et être motivé à l'exécuter. Voir un comportement ne garantit donc ni sa mémorisation ni son imitation. Les conséquences observées chez le modèle peuvent modifier la motivation, mais une imitation constatée ne révèle pas à elle seule quel processus a été décisif.",
+                      "sourceKeys": [
+                        "openstax-observation-6-4"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "La discrimination consiste à répondre différemment à des indices proches ; la généralisation étend une réponse apprise à des stimuli ressemblants. Le transfert pose une question plus large : une connaissance ou une compétence acquise dans une tâche améliore-t-elle une autre tâche ou un autre contexte ? Un transfert proche conserve beaucoup d'éléments ; un transfert lointain en partage moins. Aucun seuil universel ne les sépare et la proximité doit être décrite. Le transfert est une donnée à mesurer, non une propriété que l'on peut déduire du seul fait d'avoir appris.",
+                      "sourceKeys": [
+                        "openstax-generalisation-6-2",
+                        "pan-rickard-2018"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 5,
+                    "content": {
+                      "text": "Pour viser une acquisition durable, on espace les séances, on demande des récupérations actives avec retour correctif et on varie progressivement les exemples en rendant leur structure commune explicite. La pratique distribuée améliore généralement la rétention verbale par rapport à une pratique massée, et les tests d'entraînement peuvent favoriser certains transferts. Ces résultats ne justifient toutefois ni une recette identique pour toutes les tâches ni la promesse d'un transfert lointain automatique : l'intervalle, le contenu, le critère final et la similarité entre entraînement et test modèrent les effets.",
+                      "sourceKeys": [
+                        "cepeda-et-al-2006",
+                        "pan-rickard-2018",
+                        "soderstrom-bjork-2015"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-learning-6-1",
+                    "type": "book_chapter",
+                    "title": "6.1 What Is Learning?",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/6-1-what-is-learning",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.1 What Is Learning? In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-1-what-is-learning",
+                    "description": "Lire la définition de l'apprentissage et repérer ce qui le distingue des comportements innés et d'une simple réaction.",
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "soderstrom-bjork-2015",
+                    "type": "article",
+                    "title": "Learning Versus Performance: An Integrative Review",
+                    "author": "Nicholas C. Soderstrom et Robert A. Bjork",
+                    "url": "https://doi.org/10.1177/1745691615569000",
+                    "citation": "Soderstrom, N. C., & Bjork, R. A. (2015). Learning versus performance: An integrative review. Perspectives on Psychological Science, 10(2), 176–199. https://doi.org/10.1177/1745691615569000",
+                    "description": "Lire le résumé et les sections introductives pour expliquer pourquoi la performance pendant l'entraînement peut mal renseigner sur la rétention et le transfert.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-observation-6-4",
+                    "type": "book_chapter",
+                    "title": "6.4 Observational Learning (Modeling)",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.4 Observational Learning (Modeling). In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling",
+                    "description": "Lire les quatre étapes du modelage puis les appliquer à une démonstration réelle ou filmée.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  },
+                  {
+                    "key": "openstax-generalisation-6-2",
+                    "type": "book_chapter",
+                    "title": "6.2 Classical Conditioning — General Processes",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.2 Classical Conditioning. In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+                    "description": "Relire uniquement les passages sur la discrimination et la généralisation afin de les comparer au transfert entre tâches.",
+                    "isRequired": false,
+                    "estimatedMinutes": 10,
+                    "position": 4
+                  },
+                  {
+                    "key": "cepeda-et-al-2006",
+                    "type": "article",
+                    "title": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis",
+                    "author": "Nicholas J. Cepeda, Harold Pashler, Edward Vul, John T. Wixted et Doug Rohrer",
+                    "url": "https://doi.org/10.1037/0033-2909.132.3.354",
+                    "citation": "Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354–380. https://doi.org/10.1037/0033-2909.132.3.354",
+                    "description": "Consulter le résumé et noter la différence entre pratique massée et distribuée ainsi que le rôle de l'intervalle de rétention.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 5
+                  },
+                  {
+                    "key": "pan-rickard-2018",
+                    "type": "article",
+                    "title": "Transfer of Test-Enhanced Learning: Meta-Analytic Review and Synthesis",
+                    "author": "Steven C. Pan et Timothy C. Rickard",
+                    "url": "https://doi.org/10.1037/bul0000151",
+                    "citation": "Pan, S. C., & Rickard, T. C. (2018). Transfer of test-enhanced learning: Meta-analytic review and synthesis. Psychological Bulletin, 144(7), 710–756. https://doi.org/10.1037/bul0000151",
+                    "description": "Lire le résumé pour identifier pourquoi la nature du test initial, du matériel et du test de transfert interdit de promettre un transfert uniforme.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 6
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Apprentissage",
-                    "slug": "apprentissage",
+                    "title": "Apprentissage durable et performance",
+                    "slug": "apprentissage-performance",
+                    "description": "L'apprentissage est un changement durable inféré à partir de mesures de rétention ou de transfert ; la performance immédiate est un indice utile mais insuffisant.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-learning-6-1",
+                      "soderstrom-bjork-2015"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Apprentissage",
+                      "title": "Mini-évaluation — Apprentissage et performance",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Apprentissage observationnel",
+                    "slug": "apprentissage-observationnel",
+                    "description": "Observer un modèle peut soutenir un apprentissage si attention, rétention, capacité de reproduction et motivation sont réunies, sans rendre l'imitation automatique.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-observation-6-4"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Apprentissage observationnel",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Généralisation, transfert et pratique durable",
+                    "slug": "generalisation-transfert",
+                    "description": "La généralisation et le transfert doivent être testés dans des situations décrites ; espacement, récupération et variation peuvent soutenir la durabilité sans garantir un transfert lointain.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-generalisation-6-2",
+                      "cepeda-et-al-2006",
+                      "pan-rickard-2018",
+                      "soderstrom-bjork-2015"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Généralisation et transfert",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Prouver plutôt que présumer l'apprentissage",
+                    "description": "À partir d'un entraînement fictif dont les scores progressent en séance, proposer deux explications concurrentes, puis concevoir une mesure différée sans aide et préciser quel résultat soutiendrait prudemment l'hypothèse d'un apprentissage durable.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Diagnostiquer une démonstration",
+                    "description": "Choisir une compétence quotidienne montrée par un modèle et construire une grille séparant attention, rétention, reproduction et motivation ; ajouter un contrôle pour vérifier l'acquisition sans déduire le mécanisme d'une seule réussite.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Planifier rétention et transfert",
+                    "description": "Élaborer sur sept jours un plan d'apprentissage d'un concept psychologique avec rappels espacés, récupération avec feedback, exemples variés, test différé, test proche et test plus lointain ; expliciter les ressemblances attendues et les limites d'interprétation.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Mémoire",
                 "slug": "memoire",
-                "position": 2,
+                "summary": "La mémoire regroupe des processus d'encodage, de maintien, de transformation et de récupération plutôt qu'un enregistrement fidèle rangé dans des boîtes. Cette leçon relie modèles fonctionnels, oubli et reconstruction à deux stratégies robustes d'apprentissage : récupérer activement et distribuer les reprises dans le temps.",
+                "objectives": [
+                  "Distinguer encodage, stockage ou maintien et récupération dans une situation concrète.",
+                  "Comparer mémoire de travail, mémoire épisodique, mémoire sémantique et apprentissages procéduraux sans les traiter comme des compartiments littéraux.",
+                  "Expliquer un oubli par un défaut d'encodage, une difficulté de récupération ou une interférence, en acceptant plusieurs causes possibles.",
+                  "Montrer pourquoi un souvenir est reconstructif et pourquoi confiance et exactitude ne sont pas synonymes.",
+                  "Concevoir une révision combinant récupération active, feedback et espacement adapté à l'échéance."
+                ],
+                "prerequisites": [
+                  "Distinguer apprentissage, performance immédiate et rétention différée.",
+                  "Reconnaître qu'un modèle psychologique est une représentation testable et non une copie littérale du cerveau."
+                ],
                 "estimatedMinutes": 180,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "La mémoire peut être décrite par trois grandes fonctions : encoder transforme une information afin qu'elle puisse être utilisée, stocker ou maintenir conserve des traces au-delà de l'instant, et récupérer rend une information disponible pour une tâche. Ces fonctions interagissent. Un échec au rappel ne prouve pas qu'une trace a disparu : l'information a pu être peu encodée, concurrencée ou inaccessible avec les indices présents. Inversement, reconnaître une réponse parmi quatre options ne démontre pas que l'on pourrait la rappeler sans indice.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-8-1"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Les modèles distinguent plusieurs fonctions sans imposer des boîtes étanches. La mémoire de travail maintient et transforme temporairement une quantité limitée d'information au service d'une activité ; le modèle multicomposant de Baddeley propose notamment des traitements verbaux et visuospatiaux coordonnés, ainsi qu'un mécanisme d'intégration avec les connaissances à long terme. À plus long terme, la mémoire épisodique concerne des événements situés, la mémoire sémantique des connaissances, et les apprentissages procéduraux des habiletés. Ces catégories se recouvrent dans les tâches réelles et ne correspondent pas chacune à un lieu unique du cerveau.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-8-1",
+                        "baddeley-episodic-buffer-2000"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Pour suivre une recette nouvelle, une personne maintient la prochaine quantité en mémoire de travail, utilise ses connaissances sémantiques sur les unités, récupère un épisode où elle a trop cuit un plat et exécute des gestes devenus procéduraux. La réussite ne passe donc pas en ligne droite d'un registre court vers un stockage long : plusieurs connaissances sont récupérées, combinées et mises à jour pendant l'action. Le schéma sensoriel → court terme → long terme reste un repère historique utile, mais il simplifie ces boucles.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-8-1",
+                        "baddeley-episodic-buffer-2000"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "L'oubli a plusieurs sources. Une information non traitée attentivement peut subir un défaut d'encodage. Une trace disponible peut manquer d'un indice de récupération approprié. L'interférence proactive survient lorsque des apprentissages antérieurs gênent les nouveaux ; l'interférence rétroactive lorsque des apprentissages plus récents gênent les anciens. Le temps écoulé est souvent confondu avec ces changements de contexte et ces interférences : observer une baisse avec le délai ne permet pas, seul, d'attribuer l'oubli à une simple dégradation passive.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-8-3"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Se souvenir est reconstructif : la récupération combine des éléments de la trace avec des connaissances, des associations et des indices actuels. Dans le paradigme de Deese-Roediger-McDermott, des participants peuvent rappeler avec assurance un mot fortement associé mais jamais présenté. Ce résultat montre qu'une impression vive ou confiante n'est pas une garantie d'exactitude ; il ne signifie pas que tout souvenir est faux ni qu'une expérience de liste de mots suffit à trancher un récit autobiographique particulier.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-8-3",
+                        "roediger-mcdermott-false-memories-1995"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Pour retenir durablement, alterner des tentatives de récupération sans support avec un feedback, puis les répéter sur plusieurs séances. Dans une étude sur des textes, Roediger et Karpicke ont observé que la pratique de test pouvait avantager la rétention différée par rapport à la relecture, même si la relecture favorisait la performance très immédiate. Une synthèse quantitative de Cepeda et collègues montre aussi un bénéfice général de la pratique distribuée, mais l'espacement utile dépend notamment du délai avant l'usage final. Ces résultats justifient une stratégie adaptable, pas un intervalle universel ni l'abandon de l'explication, de la compréhension et du feedback.",
+                      "sourceKeys": [
+                        "roediger-karpicke-test-enhanced-2006",
+                        "cepeda-distributed-practice-2006",
+                        "openstax-psychology-2e-8-4"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-8-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 8.1 How Memory Functions",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/8-1-how-memory-functions",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 8.1. OpenStax.",
+                    "description": "Lire les fonctions de la mémoire et les distinctions entre systèmes ; transformer chaque diagramme en hypothèses fonctionnelles plutôt qu'en boîtes anatomiques.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 1
+                  },
+                  {
+                    "key": "baddeley-episodic-buffer-2000",
+                    "type": "article",
+                    "title": "The episodic buffer: a new component of working memory?",
+                    "author": "Alan Baddeley",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/11058819/",
+                    "citation": "Baddeley, A. (2000). The episodic buffer: A new component of working memory? Trends in Cognitive Sciences, 4(11), 417–423. https://doi.org/10.1016/s1364-6613(00)01538-2",
+                    "description": "Lire le résumé et le schéma du modèle comme une proposition théorique révisable ; relever le problème d'intégration auquel répond le tampon épisodique.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-psychology-2e-8-3",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 8.3 Problems with Memory",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/8-3-problems-with-memory",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 8.3. OpenStax.",
+                    "description": "Lire Encoding Failure, Interference et Memory Construction Errors ; classer six oublis selon les mécanismes possibles sans forcer une cause unique.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 3
+                  },
+                  {
+                    "key": "roediger-mcdermott-false-memories-1995",
+                    "type": "article",
+                    "title": "Creating false memories: Remembering words not presented in lists",
+                    "author": "Henry L. Roediger III et Kathleen B. McDermott",
+                    "url": "https://doi.org/10.1037/0278-7393.21.4.803",
+                    "citation": "Roediger, H. L., III, & McDermott, K. B. (1995). Creating false memories: Remembering words not presented in lists. Journal of Experimental Psychology: Learning, Memory, and Cognition, 21(4), 803–814. https://doi.org/10.1037/0278-7393.21.4.803",
+                    "description": "Consulter le résumé et identifier manipulation, mot critique et résultat ; écrire ensuite deux limites à la généralisation hors des listes de mots.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 4
+                  },
+                  {
+                    "key": "roediger-karpicke-test-enhanced-2006",
+                    "type": "article",
+                    "title": "Test-enhanced learning: Taking memory tests improves long-term retention",
+                    "author": "Henry L. Roediger III et Jeffrey D. Karpicke",
+                    "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+                    "citation": "Roediger, H. L., III, & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255. https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+                    "description": "Lire le résumé et comparer les performances immédiates et différées des conditions d'étude et de test ; éviter de résumer l'effet par « tester est toujours meilleur ».",
+                    "isRequired": false,
+                    "estimatedMinutes": 25,
+                    "position": 5
+                  },
+                  {
+                    "key": "cepeda-distributed-practice-2006",
+                    "type": "article",
+                    "title": "Distributed practice in verbal recall tasks: A review and quantitative synthesis",
+                    "author": "Nicholas J. Cepeda, Harold Pashler, Edward Vul, John T. Wixted et Doug Rohrer",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/",
+                    "citation": "Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354–380. https://doi.org/10.1037/0033-2909.132.3.354",
+                    "description": "Lire le résumé et expliquer pourquoi le meilleur intervalle entre reprises dépend du délai de rétention visé.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 6
+                  },
+                  {
+                    "key": "openstax-psychology-2e-8-4",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 8.4 Ways to Enhance Memory",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 8.4. OpenStax.",
+                    "description": "Lire les stratégies d'étude et construire un plan qui combine élaboration, récupération, espacement, sommeil et vérification par feedback.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 7
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Mémoire",
-                    "slug": "memoire",
+                    "title": "Processus et systèmes de mémoire",
+                    "slug": "processus-systemes-memoire",
+                    "description": "Encoder, maintenir ou stocker et récupérer sont des fonctions interactives ; mémoire de travail, épisodique, sémantique et procédurale sont des distinctions utiles mais non des compartiments littéraux.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-8-1",
+                      "baddeley-episodic-buffer-2000"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Mémoire",
+                      "title": "Mini-évaluation — Processus et systèmes de mémoire",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Oubli, interférence et reconstruction",
+                    "slug": "oubli-interference-reconstruction",
+                    "description": "Un oubli peut provenir d'un encodage insuffisant, d'une récupération difficile ou d'interférences ; le rappel reconstruit une réponse et peut produire des erreurs confiantes.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-8-3",
+                      "roediger-mcdermott-false-memories-1995"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Oubli et reconstruction",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Récupération active et pratique distribuée",
+                    "slug": "recuperation-pratique-distribuee",
+                    "description": "Des tentatives de récupération avec feedback et des reprises espacées favorisent souvent la rétention différée ; leur mise en œuvre dépend du contenu, des erreurs et de l'échéance.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "roediger-karpicke-test-enhanced-2006",
+                      "cepeda-distributed-practice-2006",
+                      "openstax-psychology-2e-8-4"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Récupération et espacement",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Cartographier une activité de mémoire",
+                    "description": "Pour le scénario d'une personne qui cuisine avec une recette nouvelle, produire une carte reliant encodage, maintien, récupération, mémoire de travail, connaissances sémantiques, souvenir épisodique et habileté procédurale ; justifier chaque lien.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Diagnostiquer prudemment six oublis",
+                    "description": "Classer six scénarios fictifs selon défaut d'encodage, manque d'indice, interférence proactive, interférence rétroactive ou reconstruction ; proposer une seconde explication possible pour au moins trois scénarios.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Construire un protocole de révision",
+                    "description": "Planifier quatre séances sur quatorze jours pour vingt notions : prévoir rappel libre ou questions, feedback après tentative, reprise des erreurs et espacement ; justifier le calendrier et préciser comment mesurer la rétention au jour 14.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Attention et perception",
                 "slug": "attention-perception",
-                "position": 3,
+                "summary": "Percevoir ne consiste pas à enregistrer passivement le monde : les signaux sensoriels sont organisés et interprétés selon le contexte, les attentes et les buts, tandis que l'attention sélectionne certaines informations au prix de limites dont la portée doit être interprétée avec prudence.",
+                "objectives": [
+                  "Distinguer sensation, perception et interprétation perceptive.",
+                  "Expliquer comment traitements ascendant et descendant interagissent avec le contexte.",
+                  "Distinguer attention sélective, attention divisée, inattention et cécité au changement.",
+                  "Formuler une conclusion prudente à partir d'une tâche expérimentale sur l'attention ou la perception."
+                ],
+                "prerequisites": [
+                  "Distinguer stimulus, réponse et définition opérationnelle.",
+                  "Connaître les fonctions générales de la mémoire de travail et de la récupération."
+                ],
                 "estimatedMinutes": 150,
+                "position": 3,
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La sensation commence lorsque des récepteurs répondent à une énergie ou à une substance et que cette information est transduite en activité nerveuse. La perception désigne l'organisation, l'interprétation et l'expérience consciente de l'information sensorielle. La présence d'un signal détectable ne garantit donc pas qu'il sera consciemment identifié, et une même entrée peut recevoir des interprétations différentes selon les informations disponibles.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-5-1",
+                        "gregory-perceptions-hypotheses-1980"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Le traitement ascendant part des caractéristiques du stimulus et de leur combinaison progressive. Le traitement descendant mobilise notamment connaissances, attentes, buts et hypothèses pour orienter la recherche et interpréter une entrée parfois ambiguë. Ces expressions décrivent des influences complémentaires, non deux systèmes toujours séparés : un élément saillant peut attirer l'attention alors qu'un but détermine simultanément ce que l'on cherche et les endroits jugés plausibles.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-5-1",
+                        "egeth-yantis-visual-attention-1997"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Un même fragment sonore incomplet peut être compris différemment selon la phrase qui le précède. Les propriétés acoustiques constituent l'information ascendante ; le vocabulaire attendu et le sens de la phrase fournissent un contexte descendant. Une erreur perceptive n'implique pas automatiquement une défaillance des récepteurs : elle peut révéler que le système a privilégié une interprétation plausible mais incorrecte dans ce contexte. Cet exemple est illustratif et ne permet pas, à lui seul, d'identifier un mécanisme unique pour toute perception.",
+                      "sourceKeys": [
+                        "gregory-perceptions-hypotheses-1980",
+                        "openstax-psychology-2e-5-1"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "L'attention sélective priorise une source, un emplacement, un objet ou une propriété en fonction des buts et des caractéristiques du stimulus. Cette priorité améliore certains traitements sans signifier que toute information non sélectionnée est nécessairement supprimée. Dans une tâche d'inattention, une personne peut ne pas rapporter un objet inattendu visible lorsque son attention est fortement engagée ailleurs. La probabilité de le remarquer dépend toutefois de la tâche, de sa difficulté et des relations entre l'objet inattendu et les éléments suivis ; le phénomène ne démontre ni une cécité générale ni l'absence totale de traitement.",
+                      "sourceKeys": [
+                        "egeth-yantis-visual-attention-1997",
+                        "simons-chabris-gorillas-1999",
+                        "openstax-psychology-2e-5-1"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "L'inattention et la cécité au changement ne sont pas synonymes. L'inattention correspond au défaut de détection d'un événement inattendu pendant que l'attention est engagée ailleurs. La cécité au changement correspond au défaut de détection d'une modification entre deux états d'une scène, souvent lorsque le signal transitoire localisant la modification est masqué ou interrompu. Ces paradigmes renseignent sur la sélection, la comparaison et la représentation visuelles, mais leurs auteurs mettent en garde contre les conclusions extrêmes sur la pauvreté supposée de toute expérience consciente.",
+                      "sourceKeys": [
+                        "simons-chabris-gorillas-1999",
+                        "simons-rensink-change-blindness-2005"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Diviser l'attention entre deux tâches peut ralentir les réponses ou augmenter les erreurs lorsque les tâches sollicitent au même moment des opérations qui interfèrent, notamment certaines sélections de réponse. L'ampleur de ce coût varie avec le chevauchement des tâches, leur timing, leur difficulté, la pratique et la mesure choisie. Une étude de double tâche soutient donc une conclusion sur ces tâches et ces conditions ; elle ne justifie pas le slogan universel « le cerveau ne peut jamais faire deux choses à la fois ». Une interprétation prudente décrit le contraste, l'effet observé, les alternatives et les limites de généralisation.",
+                      "sourceKeys": [
+                        "pashler-dual-task-1994",
+                        "chun-golomb-turkbrowne-attention-2011"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-5-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 5.1 Sensation versus Perception",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/5-1-sensation-versus-perception",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 5.1: Sensation versus perception. OpenStax, Rice University.",
+                    "description": "Lire la section sur sensation, perception, traitements ascendant et descendant, puis relever ce que l'exemple d'inattention permet et ne permet pas de conclure.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 1
+                  },
+                  {
+                    "key": "gregory-perceptions-hypotheses-1980",
+                    "type": "article",
+                    "title": "Perceptions as hypotheses",
+                    "author": "Richard L. Gregory",
+                    "url": "https://doi.org/10.1098/rstb.1980.0090",
+                    "citation": "Gregory, R. L. (1980). Perceptions as hypotheses. Philosophical Transactions of the Royal Society of London. B, Biological Sciences, 290(1038), 181–197. https://doi.org/10.1098/rstb.1980.0090",
+                    "description": "Lire le résumé et les passages d'ouverture ; expliquer pourquoi l'analogie de l'hypothèse perceptive est un cadre théorique et non la preuve qu'une seule inférence explique toute perception.",
+                    "isRequired": false,
+                    "estimatedMinutes": 25,
+                    "position": 2
+                  },
+                  {
+                    "key": "egeth-yantis-visual-attention-1997",
+                    "type": "article",
+                    "title": "Visual Attention: Control, Representation, and Time Course",
+                    "author": "Howard E. Egeth et Steven Yantis",
+                    "url": "https://doi.org/10.1146/annurev.psych.48.1.269",
+                    "citation": "Egeth, H. E., & Yantis, S. (1997). Visual attention: Control, representation, and time course. Annual Review of Psychology, 48, 269–297. https://doi.org/10.1146/annurev.psych.48.1.269",
+                    "description": "Lire le résumé de la revue et distinguer contrôle dirigé par les buts, contrôle dirigé par le stimulus et bases spatiale ou objectuelle de la sélection.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  },
+                  {
+                    "key": "simons-chabris-gorillas-1999",
+                    "type": "article",
+                    "title": "Gorillas in Our Midst: Sustained Inattentional Blindness for Dynamic Events",
+                    "author": "Daniel J. Simons et Christopher F. Chabris",
+                    "url": "https://experts.illinois.edu/en/publications/gorillas-in-our-midst-sustained-inattentional-blindness-for-dynam/",
+                    "citation": "Simons, D. J., & Chabris, C. F. (1999). Gorillas in our midst: Sustained inattentional blindness for dynamic events. Perception, 28(9), 1059–1074. https://doi.org/10.1068/p281059",
+                    "description": "Lire le résumé institutionnel, identifier tâche principale, événement inattendu et variables qui modifient la détection, puis formuler une conclusion limitée au paradigme.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 4
+                  },
+                  {
+                    "key": "simons-rensink-change-blindness-2005",
+                    "type": "article",
+                    "title": "Change Blindness: Past, Present, and Future",
+                    "author": "Daniel J. Simons et Ronald A. Rensink",
+                    "url": "https://www.cs.ubc.ca/~rensink/publications/abs.05.0.html",
+                    "citation": "Simons, D. J., & Rensink, R. A. (2005). Change blindness: Past, present, and future. Trends in Cognitive Sciences, 9(1), 16–20. https://doi.org/10.1016/j.tics.2004.11.006",
+                    "description": "Lire le résumé et la copie auteur liée ; relever une inférence légitime et une extrapolation extrême rejetée par les auteurs.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 5
+                  },
+                  {
+                    "key": "pashler-dual-task-1994",
+                    "type": "article",
+                    "title": "Dual-task Interference in Simple Tasks: Data and Theory",
+                    "author": "Harold Pashler",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/7972591/",
+                    "citation": "Pashler, H. (1994). Dual-task interference in simple tasks: Data and theory. Psychological Bulletin, 116(2), 220–244. https://doi.org/10.1037/0033-2909.116.2.220",
+                    "description": "Lire la notice et le résumé de la revue ; distinguer interférence observée, goulot de sélection de réponse proposé et portée limitée aux tâches examinées.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 6
+                  },
+                  {
+                    "key": "chun-golomb-turkbrowne-attention-2011",
+                    "type": "article",
+                    "title": "A Taxonomy of External and Internal Attention",
+                    "author": "Marvin M. Chun, Julie D. Golomb et Nicholas B. Turk-Browne",
+                    "url": "https://doi.org/10.1146/annurev.psych.093008.100427",
+                    "citation": "Chun, M. M., Golomb, J. D., & Turk-Browne, N. B. (2011). A taxonomy of external and internal attention. Annual Review of Psychology, 62, 73–101. https://doi.org/10.1146/annurev.psych.093008.100427",
+                    "description": "Lire le résumé et utiliser la taxonomie pour montrer que l'attention peut sélectionner des informations perceptives ou des représentations internes selon plusieurs dimensions.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 7
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Attention et perception",
-                    "slug": "attention-perception",
+                    "title": "Sensation, perception et inférence",
+                    "slug": "sensation-perception-inference",
+                    "description": "La sensation transduit l'information physique, tandis que la perception l'organise et l'interprète ; les erreurs perceptives éclairent ces opérations sans prouver un mécanisme unique.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-5-1",
+                      "gregory-perceptions-hypotheses-1980"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Attention et perception",
+                      "title": "Mini-évaluation — Sensation et perception",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Traitements ascendant, descendant et contexte",
+                    "slug": "traitements-ascendant-descendant-contexte",
+                    "description": "La perception combine des informations issues du stimulus avec des influences liées aux attentes, aux connaissances, aux buts et au contexte.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-5-1",
+                      "egeth-yantis-visual-attention-1997"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Traitements et contexte",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Sélection attentionnelle et limites",
+                    "slug": "selection-attentionnelle-limites",
+                    "description": "L'attention priorise certaines informations ; inattention, cécité au changement et interférence en double tâche décrivent des limites distinctes dont l'ampleur dépend du paradigme.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "simons-chabris-gorillas-1999",
+                      "simons-rensink-change-blindness-2005",
+                      "pashler-dual-task-1994"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Attention et limites",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Séparer signal et interprétation",
+                    "description": "Pour six situations fictives, identifier le signal sensoriel, l'information ascendante, l'attente ou le contexte descendant et la perception rapportée ; signaler les informations manquantes sans diagnostiquer une erreur du système sensoriel.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Distinguer trois limites attentionnelles",
+                    "description": "Classer neuf scénarios fictifs entre inattention, cécité au changement, interférence en double tâche ou information insuffisante ; justifier chaque classement par la tâche, le moment de l'événement et la mesure de détection.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Auditer un slogan sur le multitâche",
+                    "description": "Une étude fictive compare une tâche de choix seule ou accompagnée d'une seconde réponse et observe un ralentissement. Rédiger 300 à 400 mots distinguant résultat, mécanisme possible, explications alternatives, conditions de généralisation et reformulation prudente du slogan « le cerveau ne peut pas multitâcher ».",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Métacognition",
                 "slug": "metacognition",
-                "position": 4,
+                "summary": "La métacognition relie ce qu'une personne estime savoir aux décisions qu'elle prend pour apprendre. Cette leçon distingue surveillance et contrôle, mesure la calibration plutôt que la seule confiance, puis construit une boucle d'autorégulation fondée sur récupération, feedback et vérification différée.",
+                "objectives": [
+                  "Distinguer monitoring métacognitif et contrôle de l'étude dans une situation concrète.",
+                  "Comparer confiance annoncée et performance observée afin de repérer surconfiance et sous-confiance.",
+                  "Identifier les indices de familiarité ou de fluidité qui peuvent créer une illusion de maîtrise.",
+                  "Choisir une action d'étude à partir d'une tentative de récupération, d'un feedback et d'une échéance explicite.",
+                  "Construire un plan autorégulé comportant objectifs, décisions, espacement et mesure différée."
+                ],
+                "prerequisites": [
+                  "Distinguer rappel libre, reconnaissance et relecture.",
+                  "Comprendre que performance immédiate et rétention différée peuvent diverger."
+                ],
                 "estimatedMinutes": 150,
+                "position": 4,
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La métacognition appliquée à l'apprentissage comporte au moins deux fonctions liées. Le monitoring produit un jugement sur son état cognitif : « pourrai-je rappeler cette notion demain ? », « cette réponse est-elle probablement correcte ? ». Le contrôle transforme ce jugement en décision : poursuivre, changer de stratégie, rechercher une explication, se tester, espacer une reprise ou arrêter. Un bon jugement sans action appropriée n'améliore pas l'étude ; une bonne technique mal choisie ou appliquée au mauvais contenu peut aussi échouer.",
+                      "sourceKeys": [
+                        "metcalfe-metacognitive-judgments-2009"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "La calibration décrit l'accord entre jugements et performances. Pour l'observer, on peut annoncer une probabilité de réussite avant chaque réponse, puis regrouper les items : parmi ceux jugés à 80 %, environ 80 % sont-ils réellement réussis ? Une forte confiance moyenne n'est pas une bonne calibration si elle accompagne beaucoup d'erreurs ; une personne peut aussi être systématiquement sous-confiante. La calibration dépend de la tâche, du délai, du type de test et des indices disponibles : ce n'est pas un trait global fixé une fois pour toutes.",
+                      "sourceKeys": [
+                        "metcalfe-metacognitive-judgments-2009",
+                        "roediger-karpicke-test-enhanced-2006"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Après trois relectures, un texte paraît fluide et familier. Cette facilité peut être utilisée à tort comme preuve que le contenu sera rappelé plus tard. Dans les expériences de Roediger et Karpicke, la répétition de l'étude augmentait la confiance déclarée alors que des tests de récupération favorisaient davantage la rétention après deux jours ou une semaine. Le résultat porte sur les textes, conditions et délais étudiés ; il illustre surtout pourquoi une prédiction doit être confrontée à une performance différée plutôt qu'à un sentiment pendant la lecture.",
+                      "sourceKeys": [
+                        "roediger-karpicke-test-enhanced-2006"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Le contrôle métacognitif alloue un temps limité. Metcalfe propose que l'apprenant écarte provisoirement ce qui est déjà maîtrisé et travaille ensuite des éléments accessibles mais pas encore acquis, sa « région proximale d'apprentissage », avant d'aborder des éléments plus difficiles. Cette heuristique exige des jugements suffisamment exacts et une mise en œuvre réelle. Elle ne signifie pas qu'il faut éviter définitivement les notions très difficiles, ni réviser seulement ce qui semble agréable : objectifs, importance, prérequis et échéance modifient la décision.",
+                      "sourceKeys": [
+                        "metcalfe-metacognitive-judgments-2009"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Une stratégie d'étude ne devient pas efficace parce qu'elle est dite « active ». La synthèse de Dunlosky et collègues évalue les techniques selon leurs effets, leur généralisation, les tâches et les conditions. La pratique de test et la pratique distribuée reçoivent un soutien élevé dans cette revue, tandis que surlignage et relecture seule offrent une base plus limitée pour une rétention durable. Cela n'interdit pas de relire pour comprendre : la décision pertinente combine compréhension initiale, récupération sans support, feedback, reprise des erreurs et espacement.",
+                      "sourceKeys": [
+                        "dunlosky-effective-techniques-2013",
+                        "openstax-psychology-2e-8-4",
+                        "roediger-karpicke-test-enhanced-2006"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Boucle d'autorégulation : définir un résultat observable et une date ; tenter de récupérer ou d'appliquer sans support ; annoncer sa confiance avant le feedback ; comparer réponse, confiance et critère ; choisir l'action suivante ; planifier une nouvelle tentative espacée ; enfin mesurer la rétention après un délai. Le plan est révisé avec les données obtenues. Une seule réussite immédiate ne suffit pas pour déclarer une notion maîtrisée, et un échec informatif sert à sélectionner l'explication ou la pratique suivante.",
+                      "sourceKeys": [
+                        "metcalfe-metacognitive-judgments-2009",
+                        "dunlosky-effective-techniques-2013",
+                        "roediger-karpicke-test-enhanced-2006"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "metcalfe-metacognitive-judgments-2009",
+                    "type": "article",
+                    "title": "Metacognitive Judgments and Control of Study",
+                    "author": "Janet Metcalfe",
+                    "url": "https://www.columbia.edu/cu/psychology/metcalfe/PDFs/Metcalfe2009.pdf",
+                    "citation": "Metcalfe, J. (2009). Metacognitive judgments and control of study. Current Directions in Psychological Science, 18(3), 159–163. https://doi.org/10.1111/j.1467-8721.2009.01628.x",
+                    "description": "Lire l'article et produire deux colonnes : jugements de monitoring et décisions de contrôle ; expliquer ensuite les conditions de la région proximale d'apprentissage.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 1
+                  },
+                  {
+                    "key": "dunlosky-effective-techniques-2013",
+                    "type": "article",
+                    "title": "Improving Students’ Learning With Effective Learning Techniques",
+                    "author": "John Dunlosky, Katherine A. Rawson, Elizabeth J. Marsh, Mitchell J. Nathan et Daniel T. Willingham",
+                    "url": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html",
+                    "citation": "Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., & Willingham, D. T. (2013). Improving students’ learning with effective learning techniques: Promising directions from cognitive and educational psychology. Psychological Science in the Public Interest, 14(1), 4–58. https://doi.org/10.1177/1529100612453266",
+                    "description": "Lire la présentation ouverte de la revue et comparer les raisons données pour la pratique de test, la pratique distribuée, la relecture et le surlignage.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 2
+                  },
+                  {
+                    "key": "roediger-karpicke-test-enhanced-2006",
+                    "type": "article",
+                    "title": "Test-enhanced learning: Taking memory tests improves long-term retention",
+                    "author": "Henry L. Roediger III et Jeffrey D. Karpicke",
+                    "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+                    "citation": "Roediger, H. L., III, & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255. https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+                    "description": "Lire le résumé et comparer performance, délai et confiance dans les conditions de relecture et de récupération ; relever deux limites de généralisation.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  },
+                  {
+                    "key": "openstax-psychology-2e-8-4",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 8.4 Ways to Enhance Memory",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 8.4. OpenStax.",
+                    "description": "Lire les stratégies d'étude, puis transformer une session de relecture en cycle comprenant récupération, vérification et reprise espacée.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 4
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Métacognition",
-                    "slug": "metacognition",
+                    "title": "Monitoring et contrôle métacognitifs",
+                    "slug": "monitoring-controle-metacognitifs",
+                    "description": "Le monitoring estime l'état de l'apprentissage ; le contrôle utilise ces jugements avec les objectifs et contraintes pour choisir l'action suivante.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "metcalfe-metacognitive-judgments-2009"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Métacognition",
+                      "title": "Mini-évaluation — Monitoring et contrôle",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Calibration et illusions de maîtrise",
+                    "slug": "calibration-illusions-maitrise",
+                    "description": "La calibration compare confiance et réussite observée ; familiarité et fluidité peuvent produire une surconfiance que seule une mesure pertinente permet de détecter.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "metcalfe-metacognitive-judgments-2009",
+                      "roediger-karpicke-test-enhanced-2006"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Calibration et illusions",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Autorégulation fondée sur les preuves",
+                    "slug": "autoregulation-fondee-preuves",
+                    "description": "Une boucle autorégulée définit un objectif, recueille une performance avec feedback, sélectionne une stratégie soutenue et vérifie la rétention après un délai.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "dunlosky-effective-techniques-2013",
+                      "openstax-psychology-2e-8-4",
+                      "roediger-karpicke-test-enhanced-2006"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Autorégulation",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Mesurer sa calibration",
+                    "description": "Répondre à dix questions sans support, annoncer avant feedback une confiance de 0 à 100 % pour chaque réponse, puis comparer confiance et exactitude par tranche et identifier une zone de surconfiance ou sous-confiance.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Remplacer une illusion de fluidité",
+                    "description": "À partir d'un scénario de trois relectures, concevoir une tentative de rappel, un critère de correction, un feedback et une vérification deux jours plus tard ; expliquer quelles données remplacent le sentiment de familiarité.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Construire un plan autorégulé",
+                    "description": "Pour douze notions à maîtriser en quatorze jours, définir résultats observables, diagnostic initial, priorités, quatre séances espacées, format de récupération, feedback, règle de reprise et test différé ; justifier les décisions en 400 à 600 mots.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               }
@@ -3743,7 +4607,65 @@
           "title": "Évaluation finale — Comprendre la cognition",
           "type": "case_study",
           "isRequired": true,
-          "passingScore": 70
+          "passingScore": 70,
+          "description": "Analyser un dispositif fictif de formation en séparant performance et apprentissage, processus de mémoire, perception et attention, jugements métacognitifs et décisions d'étude, puis proposer une évaluation améliorée sans diagnostic ni promesse de transfert.",
+          "instructions": "## Consignes\n1. Construire un tableau qui sépare, pour chaque résultat de SignalClair, l'observation, le processus cognitif possible, au moins une explication concurrente et la mesure supplémentaire nécessaire.\n2. Distinguer performance immédiate, rétention différée, généralisation et transfert ; expliquer ce que les trois scores permettent et ne permettent pas de conclure.\n3. Analyser la démonstration filmée selon l'attention, la rétention, la reproduction et la motivation, sans déduire de la seule réussite qu'un mécanisme particulier a produit l'apprentissage.\n4. Cartographier les demandes adressées à la mémoire de travail et aux connaissances à long terme ; proposer au moins deux explications plausibles aux erreurs du jour 8, dont une portant sur l'encodage ou la récupération et une sur l'interférence ou la reconstruction.\n5. Séparer signal sensoriel, organisation perceptive, contexte descendant et sélection attentionnelle dans les essais avec icône jaune, changement de couleur et messagerie concurrente ; reformuler le slogan sur le multitâche en fonction des données.\n6. Calculer, pour chaque condition de test, l'écart en points entre confiance moyenne et exactitude moyenne ; identifier surconfiance ou sous-confiance et préciser pourquoi ces moyennes ne décrivent pas chaque participant.\n7. Relier monitoring et contrôle aux choix de révision observés, puis proposer une boucle autorégulée comportant objectif, récupération sans support, confiance annoncée avant feedback, décision de reprise et vérification différée.\n8. Concevoir une suite sur quatorze jours avec pratique distribuée, feedback, test de rétention, test de transfert proche et test plus éloigné ; décrire exactement ce qui change et ce qui reste commun entre les tâches.\n9. Auditer les quatre affirmations du communiqué et remplacer chacune par une conclusion proportionnée aux observations, au plan, à la taille du groupe et aux mesures disponibles.\n10. Citer précisément au moins quatre ressources de l'étape, dont une sur l'apprentissage, une sur la mémoire, une sur l'attention ou la perception et une sur la métacognition.\n\n## Cas SignalClair\nDossier entièrement fictif — SignalClair. Une association forme 24 adultes volontaires à traiter des demandes d'inscription dans un tableau de bord. La procédure comporte sept étapes et une règle contextuelle : une icône jaune demande une vérification supplémentaire, mais ne signifie pas automatiquement qu'il faut rejeter la demande. Au jour 1, tous regardent la même vidéo de douze minutes dans laquelle une experte verbalise la procédure sur six exemples. Ils peuvent mettre la vidéo en pause, puis réalisent trois essais guidés avec les indices pertinents surlignés et un feedback immédiat. L'équipe affirme que le simple fait d'avoir vu l'experte garantit l'apprentissage par observation. Sur un test immédiat de huit cas au même format, avec les surlignages, l'exactitude moyenne est de 87,5 % et la confiance moyenne annoncée avant correction est de 88 %. Au jour 3, un courriel récapitulatif formule à tort « icône jaune = rejet » ; aucune mesure ne permet de savoir qui l'a lu attentivement. Au jour 8, sans vidéo, sans surlignage et avant tout feedback, l'exactitude moyenne sur huit nouveaux cas de même format est de 62,5 % pour une confiance moyenne de 82 %. Neuf participants appliquent au moins une fois la règle erronée du courriel, parfois avec une forte confiance. Sur quatre cas présentés dans une nouvelle interface et avec un vocabulaire différent mais la même règle, l'exactitude moyenne est de 50 % et la confiance moyenne de 79 %. Le tableau de bord contient aussi une icône jaune ambiguë : sous l'en-tête « risque », elle est plus souvent interprétée comme un rejet ; sous l'en-tête « information », elle est plus souvent interprétée comme une demande de contrôle. L'association ne recueille pas de données individuelles suffisantes pour établir la cause de cette différence. Dans une série de cas simples sans messagerie, 78 % des indices cibles sont détectés, contre 59 % lorsqu'une réponse à un message doit être préparée en même temps. Lors d'un changement de couleur entre deux écrans séparés par une page blanche, 10 personnes sur 24 signalent spontanément le changement. Après le test différé, les participants disposent de vingt minutes libres : en moyenne, 70 % du temps est consacré à relire les exemples déjà résolus, 10 % à répondre sans support et 20 % à d'autres actions ; huit participants choisissent ensuite de retenter les catégories manquées après feedback. Il n'existe ni groupe de comparaison, ni assignation aléatoire, ni mesure au-delà du jour 8, ni test dans une activité professionnelle réelle. Le communiqué de l'association affirme : « SignalClair produit un apprentissage durable, transfère la compétence à toute interface, prouve que le cerveau ne peut pas multitâcher et rend chacun conscient de ce qu'il sait. » Toutes les personnes, données, interfaces et affirmations de ce dossier sont fictives et servent uniquement à l'évaluation.\n\n## Format de soumission\nDossier de 1 500 à 1 800 mots comprenant un tableau observation–hypothèse–alternative–test, les calculs de calibration, un plan de suivi sur quatorze jours et un communiqué révisé de 180 à 250 mots.\n\n## Remédiation\nPour chaque critère sous 70 %, reprendre les notions associées puis soumettre uniquement les sections insuffisantes. Ajouter un tableau à cinq colonnes — affirmation initiale, donnée disponible, inférence autorisée, explication concurrente, test nécessaire — et réviser au moins une décision d'étude à partir d'une tentative de récupération avec confiance annoncée avant feedback.",
+          "rubric": [
+            {
+              "criterion": "Apprentissage, observation et transfert",
+              "weight": 15,
+              "requirements": [
+                "Performance immédiate, rétention différée et transfert sont distingués à partir des trois conditions de test.",
+                "Attention, rétention, reproduction et motivation sont appliquées à la démonstration avec au moins une donnée manquante signalée pour chaque inférence non testée.",
+                "Les tâches de transfert proche et plus éloigné décrivent les éléments conservés et modifiés sans promettre une généralisation automatique."
+              ]
+            },
+            {
+              "criterion": "Mémoire, oubli et pratique durable",
+              "weight": 20,
+              "requirements": [
+                "Les demandes adressées à la mémoire de travail, aux connaissances sémantiques et aux traces épisodiques sont reliées à des éléments précis du cas.",
+                "Au moins deux explications concurrentes des erreurs sont formulées et l'influence du courriel erroné n'est pas présentée comme démontrée.",
+                "Le suivi combine tentatives de récupération, feedback, reprises espacées et mesure différée avec un calendrier explicite."
+              ]
+            },
+            {
+              "criterion": "Perception, contexte et attention",
+              "weight": 15,
+              "requirements": [
+                "Signal, perception et influence possible du contexte sont séparés pour l'icône jaune.",
+                "La baisse de détection en double tâche et le changement non signalé sont décrits sans les confondre ni leur attribuer un mécanisme unique.",
+                "Le slogan sur le multitâche est remplacé par une formulation bornée à la tâche, aux conditions et à la mesure observée."
+              ]
+            },
+            {
+              "criterion": "Métacognition, calibration et contrôle",
+              "weight": 15,
+              "requirements": [
+                "Les trois écarts confiance–exactitude sont calculés correctement et interprétés en points de pourcentage.",
+                "Les limites des moyennes agrégées sont signalées et aucune caractéristique fixe des personnes n'est diagnostiquée.",
+                "La boucle proposée relie une mesure de monitoring à une règle observable de contrôle, au feedback et à une vérification différée."
+              ]
+            },
+            {
+              "criterion": "Raisonnement intégré et limites",
+              "weight": 20,
+              "requirements": [
+                "Le tableau distingue systématiquement observation, mécanisme possible, explication concurrente et test discriminant.",
+                "L'absence de comparaison, d'assignation aléatoire, de suivi prolongé, de données individuelles et de situation professionnelle est reliée aux conclusions concernées.",
+                "Les quatre affirmations du communiqué sont corrigées sans diagnostic, causalité indue, promesse d'efficacité ou généralisation non mesurée."
+              ]
+            },
+            {
+              "criterion": "Traçabilité et qualité du dossier",
+              "weight": 15,
+              "requirements": [
+                "Au moins quatre ressources couvrant les quatre leçons sont citées avec un lien explicite vers l'affirmation soutenue.",
+                "Les calculs, dénominateurs, délais et conditions de mesure sont rapportés de manière reproductible.",
+                "Le dossier respecte les formats demandés et sépare clairement données fictives, interprétations et recommandations."
+              ]
+            }
+          ]
         }
       }
     ],
@@ -10374,6 +11296,1611 @@
                   "position": 4
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "comprendre-cognition",
+      "moduleSlug": "cognition-apprentissage",
+      "lessonSlug": "apprentissage",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "apprentissage-performance",
+          "assessmentTitle": "Mini-évaluation — Apprentissage et performance",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel résultat constitue le meilleur indice d'un apprentissage durable ?",
+              "explanation": "Une performance différée et autonome renseigne mieux sur la persistance du changement qu'une réussite accompagnée pendant l'entraînement.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Une réussite différée sans les aides utilisées à l'entraînement",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une réussite immédiate avec correction pas à pas",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une impression de facilité pendant la lecture",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une forte motivation déclarée avant l'exercice",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une amélioration au fil d'une séance suffit à établir qu'un apprentissage durable a eu lieu.",
+              "explanation": "Elle peut refléter un apprentissage, mais aussi des aides, un échauffement ou un changement temporaire ; une mesure différée est nécessaire.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles explications faut-il considérer avant d'attribuer une meilleure performance à l'apprentissage ?",
+              "explanation": "Fatigue, maturation et aides contextuelles peuvent modifier la performance sans correspondre au changement durable visé.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La disparition d'une aide présente pendant l'entraînement",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La fatigue ou l'échauffement",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La maturation",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Le seul numéro de la séance",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi une pratique plus difficile peut-elle être utile malgré davantage d'erreurs immédiates ?",
+              "explanation": "La difficulté pendant l'entraînement et la rétention ultérieure ne varient pas nécessairement dans le même sens.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Elle peut soutenir une meilleure rétention ultérieure",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Toute erreur prouve automatiquement un apprentissage",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La performance immédiate n'a jamais aucune valeur",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La difficulté remplace le besoin d'évaluer",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Même un test différé ne permet qu'une inférence sur l'apprentissage, dépendante du plan et de la mesure.",
+              "explanation": "L'apprentissage n'est pas observé directement ; la solidité de l'inférence dépend du délai, des aides, de la tâche et des explications concurrentes.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "conceptSlug": "apprentissage-observationnel",
+          "assessmentTitle": "Mini-évaluation — Apprentissage observationnel",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Une personne regarde attentivement une démonstration mais ne peut plus décrire les étapes le lendemain. Quelle condition a probablement manqué ?",
+              "explanation": "L'attention a eu lieu, mais les informations n'ont pas été suffisamment conservées pour guider la reproduction.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La rétention",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'attention",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La reproduction",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La généralisation",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles conditions appartiennent au processus de modelage présenté dans la leçon ?",
+              "explanation": "Le modèle distingue attention, rétention, reproduction et motivation.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Attention",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Rétention",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Reproduction",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Motivation",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Maturation",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Le fait d'observer un comportement implique que la personne le reproduira.",
+              "explanation": "L'observation ne garantit ni conservation, ni capacité d'exécution, ni motivation à agir.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que désigne un renforcement vicariant ?",
+              "explanation": "La conséquence positive observée chez le modèle peut accroître la motivation de l'observateur à reproduire le comportement.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Observer qu'un modèle reçoit une conséquence positive",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Recevoir soi-même une récompense avant toute observation",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Oublier les étapes d'une démonstration",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Répéter un réflexe inné",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une imitation est observée après une vidéo. Quelle conclusion est la plus prudente ?",
+              "explanation": "L'imitation est compatible avec un apprentissage observationnel, mais ne permet pas d'isoler à elle seule le processus causal décisif.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "La vidéo a pu contribuer, mais le mécanisme précis reste à tester",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La motivation est nécessairement l'unique cause",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Toute expérience directe est exclue",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le comportement sera reproduit dans tous les contextes",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "conceptSlug": "generalisation-transfert",
+          "assessmentTitle": "Mini-évaluation — Généralisation et transfert",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Réagir de la même manière à un son appris et à un son très proche illustre surtout quoi ?",
+              "explanation": "Une réponse apprise s'étend ici à un stimulus semblable : c'est une généralisation de stimulus.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La généralisation",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La discrimination",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La maturation",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L'extinction",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle situation constitue le test de transfert le plus proche ?",
+              "explanation": "Le contexte change peu et la structure de la tâche reste presque identique.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Appliquer la même règle à un nouvel exemple de même format",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Réciter la règle dans le même exercice",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Résoudre un problème d'un domaine sans ressemblance décrite",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Relire la correction",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles pratiques peuvent soutenir une rétention durable selon les sources de la leçon ?",
+              "explanation": "L'espacement, la récupération avec feedback et des exemples variés sont utiles, à condition d'être alignés avec la tâche finale.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Espacer les séances",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Récupérer activement puis recevoir un feedback",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Varier progressivement les exemples",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Se fier uniquement à la facilité ressentie",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une amélioration sur le matériel entraîné garantit un transfert lointain.",
+              "explanation": "Le transfert dépend notamment des relations entre matériel, entraînement et test ; le transfert lointain doit être démontré séparément.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi faut-il décrire la ressemblance entre entraînement et test ?",
+              "explanation": "Proche et lointain sont des catégories graduelles ; décrire ce qui est partagé rend l'affirmation de transfert évaluable.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Pour qualifier et interpréter le transfert observé",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour rendre tout transfert automatique",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour éviter toute mesure différée",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour transformer une corrélation en causalité",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "comprendre-cognition",
+      "moduleSlug": "cognition-apprentissage",
+      "lessonSlug": "memoire",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "processus-systemes-memoire",
+          "assessmentTitle": "Mini-évaluation — Processus et systèmes de mémoire",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Une personne connaît la réponse quand elle la voit parmi quatre choix, mais ne la produit pas sans indice. Quelle distinction est la plus pertinente ?",
+              "explanation": "La reconnaissance fournit davantage d'indices que le rappel libre ; les performances peuvent donc différer.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Reconnaissance et rappel libre",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Mémoire vraie et mémoire fausse",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Intelligence et motivation",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Stockage et disparition certaine",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles fonctions participent à un épisode de mémoire ?",
+              "explanation": "Encodage, maintien ou stockage et récupération sont des fonctions complémentaires et interactives.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Encodage",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Stockage ou maintien",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Récupération",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Copie photographique garantie",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Les composantes d'un modèle de mémoire de travail sont nécessairement des boîtes anatomiques séparées dans le cerveau.",
+              "explanation": "Ce sont des constructions fonctionnelles proposées pour expliquer des performances et interactions.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle situation sollicite le plus directement la mémoire de travail ?",
+              "explanation": "Maintenir un nombre tout en effectuant une transformation combine stockage temporaire et traitement.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Retenir 27 puis lui ajouter mentalement 16",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Reconnaître son lieu de naissance",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Faire un geste automatisé appris depuis longtemps",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Nommer une capitale connue",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel type de mémoire à long terme concerne des événements personnellement situés dans un contexte ?",
+              "explanation": "Il s'agit de la mémoire épisodique.",
+              "acceptedAnswers": [
+                "mémoire épisodique",
+                "memoire episodique",
+                "épisodique",
+                "episodique"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "oubli-interference-reconstruction",
+          "assessmentTitle": "Mini-évaluation — Oubli et reconstruction",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Après avoir changé de code, une personne saisit encore souvent l'ancien. Quel mécanisme illustre le mieux ce cas ?",
+              "explanation": "L'ancien apprentissage gêne la récupération du nouveau : c'est une interférence proactive.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Interférence proactive",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Interférence rétroactive",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Mémoire procédurale",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Répétition espacée",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Un nouveau mot de passe rend l'ancien difficile à rappeler. Quel mécanisme est le plus directement illustré ?",
+              "explanation": "Le nouvel apprentissage gêne l'ancien : c'est une interférence rétroactive.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Interférence rétroactive",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Interférence proactive",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Encodage sémantique",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Effet de test",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Ne pas rappeler une information prouve qu'elle a entièrement disparu de la mémoire.",
+              "explanation": "Un défaut d'indice ou une interférence peuvent empêcher un rappel malgré une information encore disponible.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que montre prudemment le paradigme de listes associatives de Roediger et McDermott ?",
+              "explanation": "Des associations peuvent conduire à rappeler ou reconnaître un mot non présenté, parfois avec confiance, dans cette tâche contrôlée.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Un mot non présenté peut être rappelé",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les associations influencent la reconstruction",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Confiance et exactitude peuvent diverger",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Tout souvenir autobiographique est faux",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on l'échec qui survient lorsque l'information n'a pas été suffisamment traitée au départ ?",
+              "explanation": "Il s'agit d'un défaut d'encodage.",
+              "acceptedAnswers": [
+                "défaut d'encodage",
+                "defaut d'encodage",
+                "échec d'encodage",
+                "echec d'encodage"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "recuperation-pratique-distribuee",
+          "assessmentTitle": "Mini-évaluation — Récupération et espacement",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle activité constitue une tentative de récupération active ?",
+              "explanation": "Produire les idées sans support oblige à récupérer l'information avant le feedback.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Fermer le cours et écrire les cinq idées principales",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Relire passivement le même paragraphe",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Surligner sans se tester",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Copier mot à mot avec le cours ouvert",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une stratégie qui produit la meilleure performance immédiate garantit la meilleure rétention une semaine plus tard.",
+              "explanation": "Performance pendant l'étude et apprentissage durable peuvent diverger, comme dans les comparaisons relecture-test.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments rendent une pratique de récupération plus utile pédagogiquement ?",
+              "explanation": "La tentative préalable, le feedback, la reprise des erreurs et une mesure différée soutiennent l'apprentissage et son contrôle.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Tenter avant de regarder la réponse",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Recevoir un feedback",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Reprendre les erreurs",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Mémoriser une réponse fausse sans correction",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi ne peut-on pas imposer le même espacement optimal à tous les apprentissages ?",
+              "explanation": "Le bénéfice dépend notamment du délai de rétention visé, du contenu, du niveau initial et des reprises.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "L'intervalle utile dépend de l'objectif et du délai final",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'espacement ne fonctionne jamais",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Seule la première séance compte",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le calendrier remplace la compréhension",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on le fait de répartir les reprises sur plusieurs moments plutôt que de les masser ?",
+              "explanation": "Il s'agit de la pratique distribuée, ou espacement.",
+              "acceptedAnswers": [
+                "pratique distribuée",
+                "pratique distribuee",
+                "espacement",
+                "répétition espacée",
+                "repetition espacee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "comprendre-cognition",
+      "moduleSlug": "cognition-apprentissage",
+      "lessonSlug": "attention-perception",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "sensation-perception-inference",
+          "assessmentTitle": "Mini-évaluation — Sensation et perception",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle proposition distingue correctement sensation et perception ?",
+              "explanation": "La sensation concerne la détection et la transduction ; la perception organise et interprète l'information.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La sensation détecte et transduit ; la perception organise et interprète",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La sensation interprète ; la perception ne fait que mesurer",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Les deux termes désignent exactement la même opération",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La perception précède toujours tout signal sensoriel",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un stimulus physiquement présent et détectable est nécessairement identifié consciemment.",
+              "explanation": "La sélection attentionnelle et d'autres opérations peuvent empêcher son rapport conscient malgré sa présence.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles informations peuvent contribuer à une perception ?",
+              "explanation": "Signaux, contexte, connaissances et attentes peuvent conjointement contraindre l'interprétation.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Les caractéristiques sensorielles",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le contexte",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les connaissances et attentes",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une interprétation indépendante de toute information",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que permet d'abord d'étudier une erreur perceptive systématique ?",
+              "explanation": "Elle peut révéler les contraintes et hypothèses utilisées, sans prouver une défaillance sensorielle universelle.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Les opérations et hypothèses qui guident l'interprétation",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une lésion certaine chez chaque personne",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "L'inutilité de toutes les sensations",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une perception identique dans tous les contextes",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on la conversion de l'énergie d'un stimulus en activité nerveuse ?",
+              "explanation": "Cette conversion est la transduction.",
+              "acceptedAnswers": [
+                "transduction",
+                "la transduction"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "traitements-ascendant-descendant-contexte",
+          "assessmentTitle": "Mini-évaluation — Traitements et contexte",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel exemple illustre surtout une influence ascendante ?",
+              "explanation": "Un signal soudain et saillant provenant de l'environnement peut capter l'attention à partir de ses propriétés.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Un bruit soudain attire l'attention",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Chercher une clé jaune aux endroits habituels",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Interpréter un mot selon la phrase",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Prévoir la réponse avant le stimulus",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel exemple illustre surtout une influence descendante ?",
+              "explanation": "Le but, la connaissance de l'objet et les emplacements plausibles orientent la recherche.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Chercher une clé jaune sur les surfaces où elle est habituellement posée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Un flash intense active les récepteurs",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une vibration atteint la peau",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une molécule se lie à un récepteur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Traitements ascendant et descendant doivent toujours intervenir séparément et ne peuvent pas interagir.",
+              "explanation": "Les informations du stimulus et les buts ou attentes peuvent agir conjointement.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles influences peuvent orienter une recherche visuelle ?",
+              "explanation": "Saillance, objectif et contexte peuvent tous modifier la priorité donnée aux informations.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "La saillance du stimulus",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le but actuel",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les attentes contextuelles",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une séparation absolue entre signal et connaissance",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Un fragment sonore identique est compris comme deux mots différents selon la phrase. Quelle conclusion est la plus prudente ?",
+              "explanation": "Le contexte a modifié l'interprétation d'une entrée ambiguë ; l'exemple seul ne désigne pas un mécanisme universel.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Le contexte peut contraindre l'interprétation perceptive",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le signal acoustique a nécessairement changé",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La perception ignore toujours les signaux",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une seule théorie explique toute perception",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "conceptSlug": "selection-attentionnelle-limites",
+          "assessmentTitle": "Mini-évaluation — Attention et limites",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Qu'est-ce que l'inattention dans les paradigmes étudiés ?",
+              "explanation": "Il s'agit de ne pas rapporter un événement inattendu visible pendant que l'attention est engagée ailleurs.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Ne pas remarquer un événement inattendu en poursuivant une autre tâche",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ne pas détecter une modification entre deux vues",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Perdre définitivement un sens",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Oublier une information apprise la veille",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Qu'est-ce que la cécité au changement ?",
+              "explanation": "Elle désigne l'échec à détecter une modification entre états d'une scène, souvent lorsque le transitoire est masqué.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Ne pas détecter une modification entre deux états d'une scène",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ne jamais percevoir un objet immobile",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Choisir volontairement une seule tâche",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Confondre moyenne et médiane",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "De quoi peut dépendre l'interférence entre deux tâches ?",
+              "explanation": "Chevauchement, timing, difficulté et pratique modifient la concurrence entre opérations.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Le chevauchement des opérations",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le moment des réponses",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La difficulté et la pratique",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une incapacité identique dans toute situation",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L'expérience du gorille invisible prouve que toute personne manque toujours la moitié de ce qui se trouve devant elle.",
+              "explanation": "Le résultat dépend du paradigme, de la tâche, de sa difficulté et des propriétés de l'événement inattendu.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit préciser une conclusion tirée d'une tâche attentionnelle ?",
+              "explanation": "Une conclusion valable décrit les tâches, le contraste, la mesure et les limites de généralisation.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Les tâches et instructions",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La mesure de détection ou de performance",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les conditions et limites de généralisation",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un slogan universel sans données supplémentaires",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "comprendre-cognition",
+      "moduleSlug": "cognition-apprentissage",
+      "lessonSlug": "metacognition",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "monitoring-controle-metacognitifs",
+          "assessmentTitle": "Mini-évaluation — Monitoring et contrôle",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle action relève d'abord du monitoring métacognitif ?",
+              "explanation": "Estimer sa probabilité de rappel produit un jugement sur l'état de l'apprentissage.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Estimer à 60 % sa chance de rappeler une définition demain",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Planifier une nouvelle séance demain",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Choisir de demander une explication",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Retirer une notion du planning",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle action relève d'abord du contrôle métacognitif ?",
+              "explanation": "Choisir une nouvelle tentative à partir d'un jugement transforme l'information en décision d'étude.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Décider de refaire une question après une erreur confiante",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Évaluer sa confiance à 80 %",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Constater qu'une réponse est familière",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Prédire un score",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un jugement métacognitif exact améliore automatiquement l'apprentissage, même si aucune décision ne change.",
+              "explanation": "Le jugement doit être relié à un contrôle approprié et effectivement mis en œuvre.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels facteurs peuvent entrer dans une décision de contrôle ?",
+              "explanation": "Le jugement de maîtrise ne suffit pas ; importance, échéance et prérequis orientent aussi l'allocation du temps.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Le jugement de maîtrise",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'importance de la notion",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "L'échéance et les prérequis",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Le seul plaisir immédiat",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on la fonction qui choisit l'action d'étude à partir des jugements et objectifs ?",
+              "explanation": "Il s'agit du contrôle métacognitif.",
+              "acceptedAnswers": [
+                "contrôle métacognitif",
+                "controle metacognitif",
+                "contrôle",
+                "controle"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "calibration-illusions-maitrise",
+          "assessmentTitle": "Mini-évaluation — Calibration et illusions",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Une personne annonce 90 % de confiance pour dix réponses et n'en réussit que cinq. Quel constat est le plus juste ?",
+              "explanation": "Sa confiance dépasse nettement sa réussite observée : elle est surconfiante sur cet ensemble.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Elle présente une surconfiance",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle est parfaitement calibrée",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elle est nécessairement sous-confiante",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La performance ne peut pas être comparée à la confiance",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une forte confiance moyenne suffit à démontrer une bonne calibration.",
+              "explanation": "La calibration exige de comparer les jugements aux performances observées.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels indices peuvent nourrir une illusion de maîtrise après relecture ?",
+              "explanation": "La familiarité, la fluidité et la reconnaissance avec support peuvent être confondues avec un rappel futur sans support.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La familiarité",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La fluidité de lecture",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La reconnaissance avec le texte visible",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une réussite différée sans support",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle mesure teste le mieux la prédiction « je saurai l'expliquer demain » ?",
+              "explanation": "La mesure correspond à la tâche et au délai annoncés.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Une explication sans support le lendemain",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une quatrième relecture immédiate",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le temps passé à surligner",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le sentiment de facilité aujourd'hui",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on l'accord entre la confiance annoncée et la performance observée ?",
+              "explanation": "Il s'agit de la calibration.",
+              "acceptedAnswers": [
+                "calibration",
+                "la calibration"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "autoregulation-fondee-preuves",
+          "assessmentTitle": "Mini-évaluation — Autorégulation",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel enchaînement décrit le mieux une boucle autorégulée ?",
+              "explanation": "L'objectif guide une tentative mesurable, le feedback informe la décision suivante et un contrôle différé vérifie la rétention.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Objectif → tentative → feedback → décision → vérification différée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Relecture → sentiment de facilité → arrêt définitif",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Confiance → maîtrise automatique",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Temps passé → note garantie",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles stratégies reçoivent un soutien élevé dans la revue de Dunlosky et collègues ?",
+              "explanation": "La pratique de test et la pratique distribuée sont évaluées comme largement utiles dans la revue.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Pratique de test",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pratique distribuée",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Relecture seule comme unique mesure de maîtrise",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Surlignage sans vérification",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "La relecture est toujours inutile et doit être interdite dans tout plan d'apprentissage.",
+              "explanation": "Elle peut soutenir une compréhension initiale ; le problème est d'en faire la seule stratégie et la seule preuve de maîtrise.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Après une erreur commise avec 95 % de confiance, quelle action est la plus informative ?",
+              "explanation": "Il faut comprendre l'erreur, corriger puis vérifier ultérieurement que la correction peut être récupérée.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Analyser la cause, consulter le feedback et retester plus tard",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ignorer l'erreur car la confiance était forte",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Relire une fois puis déclarer la maîtrise",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Supprimer la notion du programme",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel élément fournit l'information correcte après une tentative et permet d'ajuster l'étude ?",
+              "explanation": "Il s'agit du feedback, ou retour correctif.",
+              "acceptedAnswers": [
+                "feedback",
+                "retour correctif",
+                "correction",
+                "rétroaction",
+                "retroaction"
+              ],
+              "position": 5,
+              "options": []
             }
           ]
         }
