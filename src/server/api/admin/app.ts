@@ -7,6 +7,12 @@ import {
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  createPrismaPublicationService,
+  PublicationPlanBlockedError,
+  PublicationPlanStaleError,
+  type PublicationService,
+} from './publication-service.js';
 
 interface AdminLesson {
   id: string;
@@ -40,6 +46,7 @@ interface AdminProgram {
   id: string;
   slug: string;
   stages: AdminStage[];
+  status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
   title: string;
 }
 
@@ -53,15 +60,8 @@ interface ModulePublicationState {
   lessons: LessonPublicationState[];
 }
 
-interface StagePublicationState {
-  assessments: Array<{ id: string }>;
-  id: string;
-  modules: ModulePublicationState[];
-}
-
 interface ModuleUpdate {
   description?: string;
-  isPublished?: boolean;
   position?: number;
   title?: string;
 }
@@ -73,10 +73,6 @@ interface LessonUpdate {
   title?: string;
 }
 
-interface StageUpdate {
-  isPublished: boolean;
-}
-
 export interface AdminRepository {
   findLessonForOwner(
     lessonId: string,
@@ -86,21 +82,14 @@ export interface AdminRepository {
     moduleId: string,
     ownerId: string,
   ): Promise<ModulePublicationState | null>;
-  findStageForOwner(
-    stageId: string,
-    ownerId: string,
-  ): Promise<StagePublicationState | null>;
   listCurriculum(ownerId: string): Promise<AdminProgram[]>;
   updateLesson(lessonId: string, input: LessonUpdate): Promise<AdminLesson>;
   updateModule(moduleId: string, input: ModuleUpdate): Promise<AdminModule>;
-  updateStage(
-    stageId: string,
-    input: StageUpdate,
-  ): Promise<{ id: string; isPublished: boolean }>;
 }
 
 interface AdminAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
+  publicationService?: PublicationService;
   repository?: AdminRepository;
 }
 
@@ -109,7 +98,6 @@ const positionSchema = z.number().int().min(0).max(10_000);
 const moduleUpdateSchema = z
   .object({
     description: z.string().trim().min(1).max(5_000).optional(),
-    isPublished: z.boolean().optional(),
     position: positionSchema.optional(),
     title: z.string().trim().min(1).max(200).optional(),
   })
@@ -122,7 +110,17 @@ const lessonUpdateSchema = z
     title: z.string().trim().min(1).max(200).optional(),
   })
   .refine((input) => Object.keys(input).length > 0);
-const stageUpdateSchema = z.object({ isPublished: z.boolean() }).strict();
+const publicationRequestSchema = z
+  .object({
+    action: z.enum(['PUBLISH', 'UNPUBLISH']),
+    mode: z.enum(['FULL', 'PARENT_ONLY']),
+    targetId: identifierSchema,
+    targetType: z.enum(['PROGRAM', 'STAGE', 'MODULE']),
+  })
+  .strict();
+const applyPublicationSchema = publicationRequestSchema.extend({
+  planId: z.string().regex(/^[a-f0-9]{64}$/),
+});
 
 const lessonSelect = {
   id: true,
@@ -193,39 +191,6 @@ export function createPrismaAdminRepository(
         },
       });
     },
-    async findStageForOwner(stageId, ownerId) {
-      return client.stage.findFirst({
-        where: { id: stageId, program: { ownerId } },
-        select: {
-          assessments: {
-            where: { isRequired: true },
-            select: { id: true },
-          },
-          id: true,
-          modules: {
-            where: { isPublished: true },
-            select: {
-              id: true,
-              lessons: {
-                where: { isPublished: true },
-                select: {
-                  concepts: {
-                    where: { isRequired: true },
-                    select: {
-                      assessments: {
-                        where: { isRequired: true },
-                        select: { id: true },
-                      },
-                    },
-                  },
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-      });
-    },
     async listCurriculum(ownerId) {
       return client.program.findMany({
         where: { ownerId },
@@ -233,6 +198,7 @@ export function createPrismaAdminRepository(
         select: {
           id: true,
           slug: true,
+          status: true,
           stages: {
             orderBy: { position: 'asc' },
             select: {
@@ -265,13 +231,6 @@ export function createPrismaAdminRepository(
         select: moduleSelect,
       });
     },
-    async updateStage(stageId, input) {
-      return client.stage.update({
-        where: { id: stageId },
-        data: input,
-        select: { id: true, isPublished: true },
-      });
-    },
   };
 }
 
@@ -301,22 +260,6 @@ function lessonNotReady(): ApiError {
   );
 }
 
-function moduleNotReady(): ApiError {
-  return new ApiError(
-    'LESSON_NOT_READY',
-    'A published module must contain at least one publishable lesson.',
-    409,
-  );
-}
-
-function stageNotReady(): ApiError {
-  return new ApiError(
-    'ASSESSMENT_NOT_READY',
-    'A published stage needs a final assessment and publishable content.',
-    409,
-  );
-}
-
 async function parseJson(request: Request): Promise<unknown> {
   try {
     return await request.json();
@@ -337,21 +280,6 @@ function isLessonReadyForPublication(lesson: LessonPublicationState): boolean {
   return lesson.concepts.every((concept) => concept.assessments.length > 0);
 }
 
-function isModuleReadyForPublication(module: ModulePublicationState): boolean {
-  return (
-    module.lessons.length > 0 &&
-    module.lessons.every(isLessonReadyForPublication)
-  );
-}
-
-function isStageReadyForPublication(stage: StagePublicationState): boolean {
-  return (
-    stage.assessments.length > 0 &&
-    stage.modules.length > 0 &&
-    stage.modules.every(isModuleReadyForPublication)
-  );
-}
-
 export function createAdminApp(options: AdminAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   let defaultRepository: AdminRepository | undefined;
@@ -359,6 +287,15 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     if (options.repository) return options.repository;
     defaultRepository ??= await getPrismaRepository();
     return defaultRepository;
+  };
+  let defaultPublicationService: PublicationService | undefined;
+  const getPublicationService = async () => {
+    if (options.publicationService) return options.publicationService;
+    if (!defaultPublicationService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultPublicationService = createPrismaPublicationService(prisma);
+    }
+    return defaultPublicationService;
   };
 
   app.use('*', options.authentication ?? requireUser);
@@ -388,6 +325,52 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     return context.json({ programs });
   });
 
+  app.post('/api/admin/publication/preview', async (context) => {
+    const parsed = publicationRequestSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const plan = await (
+      await getPublicationService()
+    ).preview(context.get('user').id, parsed.data);
+    if (!plan) throw notFound();
+
+    return context.json({ plan });
+  });
+
+  app.post('/api/admin/publication/apply', async (context) => {
+    const parsed = applyPublicationSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    try {
+      const plan = await (
+        await getPublicationService()
+      ).apply(context.get('user').id, parsed.data);
+      if (!plan) throw notFound();
+
+      return context.json({ plan });
+    } catch (error) {
+      if (error instanceof PublicationPlanStaleError) {
+        throw new ApiError(
+          'PUBLICATION_PLAN_STALE',
+          'The publication preview is no longer current.',
+          409,
+        );
+      }
+      if (error instanceof PublicationPlanBlockedError) {
+        throw new ApiError(
+          'PUBLICATION_BLOCKED',
+          'Publication requirements are not satisfied.',
+          409,
+        );
+      }
+      throw error;
+    }
+  });
+
   app.patch('/api/admin/modules/:moduleId', async (context) => {
     const moduleId = parseIdentifier(context.req.param('moduleId'));
     const parsed = moduleUpdateSchema.safeParse(
@@ -403,36 +386,8 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     );
 
     if (!ownedModule) throw notFound();
-    if (parsed.data.isPublished && !isModuleReadyForPublication(ownedModule)) {
-      throw moduleNotReady();
-    }
-
     return context.json({
       module: await repository.updateModule(moduleId, parsed.data),
-    });
-  });
-
-  app.patch('/api/admin/stages/:stageId', async (context) => {
-    const stageId = parseIdentifier(context.req.param('stageId'));
-    const parsed = stageUpdateSchema.safeParse(
-      await parseJson(context.req.raw),
-    );
-
-    if (!parsed.success) throw invalidRequest();
-
-    const repository = await getRepository();
-    const stage = await repository.findStageForOwner(
-      stageId,
-      context.get('user').id,
-    );
-
-    if (!stage) throw notFound();
-    if (parsed.data.isPublished && !isStageReadyForPublication(stage)) {
-      throw stageNotReady();
-    }
-
-    return context.json({
-      stage: await repository.updateStage(stageId, parsed.data),
     });
   });
 

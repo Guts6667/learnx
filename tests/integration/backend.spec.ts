@@ -74,6 +74,77 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       `${process.env.LEARNX_INTEGRATION_RUN_ID}-backend`,
     );
 
+    await expectStatus(
+      await outsider.post('/api/admin/publication/preview', {
+        data: {
+          action: 'UNPUBLISH',
+          mode: 'PARENT_ONLY',
+          targetId: fixture.moduleId,
+          targetType: 'MODULE',
+        },
+      }),
+      404,
+    );
+    const unpublishPreviewResponse = await expectStatus(
+      await owner.post('/api/admin/publication/preview', {
+        data: {
+          action: 'UNPUBLISH',
+          mode: 'PARENT_ONLY',
+          targetId: fixture.moduleId,
+          targetType: 'MODULE',
+        },
+      }),
+      200,
+    );
+    const unpublishPreview = (await unpublishPreviewResponse.json()) as {
+      plan: { planId: string };
+    };
+    const unpublishRequest = {
+      action: 'UNPUBLISH',
+      mode: 'PARENT_ONLY',
+      planId: unpublishPreview.plan.planId,
+      targetId: fixture.moduleId,
+      targetType: 'MODULE',
+    };
+    await expectStatus(
+      await owner.post('/api/admin/publication/apply', {
+        data: unpublishRequest,
+      }),
+      200,
+    );
+    await expectStatus(
+      await owner.post('/api/admin/publication/apply', {
+        data: unpublishRequest,
+      }),
+      200,
+    );
+    const publishPreviewResponse = await expectStatus(
+      await owner.post('/api/admin/publication/preview', {
+        data: {
+          action: 'PUBLISH',
+          mode: 'FULL',
+          targetId: fixture.moduleId,
+          targetType: 'MODULE',
+        },
+      }),
+      200,
+    );
+    const publishPreview = (await publishPreviewResponse.json()) as {
+      plan: { planId: string };
+    };
+    await expectStatus(
+      await owner.post('/api/admin/publication/apply', {
+        data: {
+          action: 'PUBLISH',
+          mode: 'FULL',
+          planId: publishPreview.plan.planId,
+          targetId: fixture.moduleId,
+          targetType: 'MODULE',
+        },
+      }),
+      200,
+    );
+
     const programsResponse = await expectStatus(
       await owner.get('/api/programs'),
       200,

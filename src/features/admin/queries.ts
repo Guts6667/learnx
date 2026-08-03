@@ -32,10 +32,11 @@ export interface AdminStage {
   title: string;
 }
 
-interface AdminProgram {
+export interface AdminProgram {
   id: string;
   slug: string;
   stages: AdminStage[];
+  status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
   title: string;
 }
 
@@ -51,8 +52,41 @@ interface AdminLessonResponse {
   lesson: AdminLesson;
 }
 
-interface AdminStageResponse {
-  stage: Pick<AdminStage, 'id' | 'isPublished'>;
+export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
+export type PublicationMode = 'FULL' | 'PARENT_ONLY';
+export type PublicationTargetType = 'MODULE' | 'PROGRAM' | 'STAGE';
+
+export interface PublicationPlan {
+  action: PublicationAction;
+  blockers: Array<{
+    code: string;
+    id: string;
+    message: string;
+    title: string;
+    type: PublicationTargetType | 'LESSON';
+  }>;
+  changes: Array<{
+    from: 'ACTIVE' | 'ARCHIVED' | 'DRAFT' | boolean;
+    id: string;
+    title: string;
+    to: 'ACTIVE' | 'DRAFT' | boolean;
+    type: PublicationTargetType | 'LESSON';
+  }>;
+  mode: PublicationMode;
+  planId: string;
+  target: { id: string; title: string; type: PublicationTargetType };
+  warnings: string[];
+}
+
+interface PublicationPlanResponse {
+  plan: PublicationPlan;
+}
+
+interface PublicationRequest {
+  action: PublicationAction;
+  mode: PublicationMode;
+  targetId: string;
+  targetType: PublicationTargetType;
 }
 
 const adminCurriculumKey = ['admin', 'curriculum'] as const;
@@ -93,13 +127,15 @@ export function useAdminCurriculumMutation() {
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
   const execute = useCallback(
-    async <T>(request: () => Promise<T>): Promise<T> => {
+    async <T>(request: () => Promise<T>, invalidate = true): Promise<T> => {
       setError(undefined);
       setIsPending(true);
 
       try {
         const response = await request();
-        await queryClient.invalidateQueries({ queryKey: adminCurriculumKey });
+        if (invalidate) {
+          await queryClient.invalidateQueries({ queryKey: adminCurriculumKey });
+        }
         return response;
       } catch (requestError) {
         setError(requestError);
@@ -113,9 +149,7 @@ export function useAdminCurriculumMutation() {
   const updateModule = useCallback(
     (
       moduleId: string,
-      input: Partial<
-        Pick<AdminModule, 'description' | 'isPublished' | 'position' | 'title'>
-      >,
+      input: Partial<Pick<AdminModule, 'description' | 'position' | 'title'>>,
     ) =>
       execute(() =>
         apiRequest<AdminModuleResponse>(
@@ -148,20 +182,40 @@ export function useAdminCurriculumMutation() {
       ),
     [execute],
   );
-  const updateStage = useCallback(
-    (stageId: string, isPublished: boolean) =>
+  const previewPublication = useCallback(
+    (input: PublicationRequest) =>
+      execute(
+        () =>
+          apiRequest<PublicationPlanResponse>(
+            '/api/admin/publication/preview',
+            {
+              body: JSON.stringify(input),
+              headers: { 'content-type': 'application/json' },
+              method: 'POST',
+            },
+          ),
+        false,
+      ).then(({ plan }) => plan),
+    [execute],
+  );
+  const applyPublication = useCallback(
+    (input: PublicationRequest & { planId: string }) =>
       execute(() =>
-        apiRequest<AdminStageResponse>(
-          `/api/admin/stages/${encodeURIComponent(stageId)}`,
-          {
-            body: JSON.stringify({ isPublished }),
-            headers: { 'content-type': 'application/json' },
-            method: 'PATCH',
-          },
-        ),
-      ),
+        apiRequest<PublicationPlanResponse>('/api/admin/publication/apply', {
+          body: JSON.stringify(input),
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+        }),
+      ).then(({ plan }) => plan),
     [execute],
   );
 
-  return { error, isPending, updateLesson, updateModule, updateStage };
+  return {
+    applyPublication,
+    error,
+    isPending,
+    previewPublication,
+    updateLesson,
+    updateModule,
+  };
 }

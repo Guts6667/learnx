@@ -56,6 +56,7 @@ function curriculumResponse() {
             title: 'Étape test',
           },
         ],
+        status: 'DRAFT',
         title: 'Programme test',
       },
     ],
@@ -119,7 +120,7 @@ describe('AdminPage', () => {
     expect(await screen.findByText('Programme test')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Module test')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Leçon test')).toBeInTheDocument();
-    expect(screen.getAllByText('Brouillon')).toHaveLength(3);
+    expect(screen.getAllByText('Brouillon')).toHaveLength(4);
 
     fireEvent.input(screen.getByLabelText('Titre du module'), {
       target: { value: 'Module renommé' },
@@ -182,5 +183,88 @@ describe('AdminPage', () => {
         'Publication impossible : publiez au moins une leçon prête et vérifiez les évaluations des notions obligatoires.',
       ),
     ).toBeInTheDocument();
+  });
+
+  it('affiche l’impact puis exige une confirmation avant la cascade', async () => {
+    const plan = {
+      action: 'PUBLISH',
+      blockers: [],
+      changes: [
+        {
+          from: false,
+          id: moduleId,
+          title: 'Module test',
+          to: true,
+          type: 'MODULE',
+        },
+        {
+          from: false,
+          id: lessonId,
+          title: 'Leçon test',
+          to: true,
+          type: 'LESSON',
+        },
+      ],
+      mode: 'FULL',
+      planId: 'a'.repeat(64),
+      target: { id: moduleId, title: 'Module test', type: 'MODULE' },
+      warnings: [],
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/auth/session') {
+        return Promise.resolve(jsonResponse({ user: adminUser }));
+      }
+      if (path === '/api/admin/publication/preview') {
+        expect(init?.method).toBe('POST');
+        return Promise.resolve(jsonResponse({ plan }));
+      }
+      if (path === '/api/admin/publication/apply') {
+        expect(init?.body).toBe(
+          JSON.stringify({
+            action: 'PUBLISH',
+            mode: 'FULL',
+            planId: plan.planId,
+            targetId: moduleId,
+            targetType: 'MODULE',
+          }),
+        );
+        return Promise.resolve(jsonResponse({ plan }));
+      }
+
+      return Promise.resolve(jsonResponse(curriculumResponse()));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Prévisualiser — publier Module test',
+      }),
+    );
+    expect(
+      await screen.findByText('Aperçu avant confirmation'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Publier la leçon « Leçon test »'),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      '/api/admin/publication/apply',
+      expect.anything(),
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Confirmer — publier' }),
+    );
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/admin/publication/apply',
+        expect.objectContaining({ method: 'POST' }),
+      );
+    });
   });
 });

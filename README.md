@@ -205,6 +205,21 @@ Sans `--apply`, la commande reste en simulation. Un `--program-id` peut réduire
 le périmètre ; `--all` doit être fourni explicitement pour couvrir tous les
 programmes.
 
+## Publication administrateur
+
+Les cascades programme, étape et module utilisent toujours deux requêtes :
+
+- `POST /api/admin/publication/preview` calcule les changements, avertissements,
+  préconditions manquantes et un `planId` sans modifier la base ;
+- `POST /api/admin/publication/apply` confirme exactement ce plan dans une
+  transaction sérialisable.
+
+Une confirmation obsolète est refusée. Répéter un plan déjà appliqué reste sans
+effet. La dépublication peut masquer uniquement le parent ou désactiver toute
+la branche ; dans les deux cas, progressions, tentatives, notes et soumissions
+sont conservées. Les contrôles portent seulement sur la complétude pédagogique
+et jamais sur une éventuelle validation scientifique.
+
 ## Documents
 
 - `PRODUCT_REQUIREMENTS.md`

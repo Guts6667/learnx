@@ -11,7 +11,11 @@ import { TextField } from '@/components/ui/TextField';
 import {
   type AdminLesson,
   type AdminModule,
+  type AdminProgram,
   type AdminStage,
+  type PublicationMode,
+  type PublicationPlan,
+  type PublicationTargetType,
   useAdminCurriculumMutation,
   useAdminCurriculumQuery,
 } from '@/features/admin/queries';
@@ -26,7 +30,22 @@ function StatusBadge({ isPublished }: { isPublished: boolean }) {
   );
 }
 
+function ProgramStatusBadge({ status }: { status: AdminProgram['status'] }) {
+  if (status === 'ARCHIVED') return <Badge>Archivé</Badge>;
+
+  return <StatusBadge isPublished={status === 'ACTIVE'} />;
+}
+
 function getMutationError(error: unknown): string {
+  if (
+    error instanceof ApiClientError &&
+    error.code === 'PUBLICATION_PLAN_STALE'
+  ) {
+    return 'Cet aperçu n’est plus à jour. Relancez la prévisualisation avant de confirmer.';
+  }
+  if (error instanceof ApiClientError && error.code === 'PUBLICATION_BLOCKED') {
+    return 'La publication reste bloquée par une précondition pédagogique.';
+  }
   if (error instanceof ApiClientError && error.code === 'LESSON_NOT_READY') {
     return 'Publication impossible : publiez au moins une leçon prête et vérifiez les évaluations des notions obligatoires.';
   }
@@ -38,6 +57,172 @@ function getMutationError(error: unknown): string {
   }
 
   return 'La modification n’a pas pu être enregistrée.';
+}
+
+function changeLabel(change: PublicationPlan['changes'][number]): string {
+  const verb =
+    change.to === true || change.to === 'ACTIVE' ? 'Publier' : 'Dépublier';
+  const type = {
+    LESSON: 'la leçon',
+    MODULE: 'le module',
+    PROGRAM: 'le programme',
+    STAGE: 'l’étape',
+  }[change.type];
+
+  return `${verb} ${type} « ${change.title} »`;
+}
+
+function PublicationAction({
+  isPublished,
+  targetId,
+  targetTitle,
+  targetType,
+}: {
+  isPublished: boolean;
+  targetId: string;
+  targetTitle: string;
+  targetType: PublicationTargetType;
+}) {
+  const mutation = useAdminCurriculumMutation();
+  const [mode, setMode] = useState<PublicationMode>('PARENT_ONLY');
+  const [plan, setPlan] = useState<PublicationPlan>();
+  const action = isPublished ? 'UNPUBLISH' : 'PUBLISH';
+  const effectiveMode = action === 'PUBLISH' ? 'FULL' : mode;
+  const actionLabel = isPublished ? 'Dépublier' : 'Publier';
+
+  async function preview() {
+    try {
+      setPlan(
+        await mutation.previewPublication({
+          action,
+          mode: effectiveMode,
+          targetId,
+          targetType,
+        }),
+      );
+    } catch {
+      setPlan(undefined);
+    }
+  }
+
+  async function apply() {
+    if (!plan) return;
+
+    try {
+      await mutation.applyPublication({
+        action: plan.action,
+        mode: plan.mode,
+        planId: plan.planId,
+        targetId: plan.target.id,
+        targetType: plan.target.type,
+      });
+      setPlan(undefined);
+    } catch {
+      // L’erreur normalisée est annoncée dans la zone de confirmation.
+    }
+  }
+
+  return (
+    <div class="space-y-3">
+      {isPublished ? (
+        <fieldset class="space-y-2 text-sm">
+          <legend class="font-medium text-slate-200">
+            Portée de la dépublication
+          </legend>
+          <label class="flex min-h-11 items-center gap-2">
+            <input
+              checked={mode === 'PARENT_ONLY'}
+              name={`publication-mode-${targetId}`}
+              onChange={() => {
+                setMode('PARENT_ONLY');
+                setPlan(undefined);
+              }}
+              type="radio"
+            />
+            Masquer seulement ce niveau
+          </label>
+          <label class="flex min-h-11 items-center gap-2">
+            <input
+              checked={mode === 'FULL'}
+              name={`publication-mode-${targetId}`}
+              onChange={() => {
+                setMode('FULL');
+                setPlan(undefined);
+              }}
+              type="radio"
+            />
+            Dépublier toute la branche
+          </label>
+        </fieldset>
+      ) : null}
+      <Button
+        isLoading={mutation.isPending && !plan}
+        onClick={() => void preview()}
+        size="sm"
+        variant={isPublished ? 'danger' : 'primary'}
+      >
+        Prévisualiser — {actionLabel.toLowerCase()} {targetTitle}
+      </Button>
+      {plan ? (
+        <Card
+          aria-live="polite"
+          class="space-y-4 border-cyan-800 bg-slate-950"
+          role="region"
+        >
+          <h4 class="font-semibold">Aperçu avant confirmation</h4>
+          <p class="text-sm text-slate-300">
+            {plan.changes.length === 0
+              ? 'L’état demandé est déjà appliqué.'
+              : `${plan.changes.length} élément${plan.changes.length > 1 ? 's' : ''} concerné${plan.changes.length > 1 ? 's' : ''}.`}
+          </p>
+          {plan.changes.length > 0 ? (
+            <ul class="list-disc space-y-1 pl-5 text-sm text-slate-300">
+              {plan.changes.map((change) => (
+                <li key={`${change.type}-${change.id}`}>
+                  {changeLabel(change)}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {plan.warnings.map((warning) => (
+            <p class="text-sm text-amber-200" key={warning}>
+              {warning}
+            </p>
+          ))}
+          {plan.blockers.length > 0 ? (
+            <div class="space-y-2" role="alert">
+              <p class="font-semibold text-red-200">Publication impossible</p>
+              <ul class="list-disc space-y-1 pl-5 text-sm text-red-200">
+                {plan.blockers.map((blocker) => (
+                  <li key={`${blocker.code}-${blocker.id}`}>
+                    {blocker.title} — {blocker.message}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {mutation.error ? (
+            <ErrorState description={getMutationError(mutation.error)} />
+          ) : null}
+          <div class="flex flex-wrap gap-3">
+            <Button
+              disabled={plan.blockers.length > 0}
+              isLoading={mutation.isPending}
+              onClick={() => void apply()}
+              variant={isPublished ? 'danger' : 'primary'}
+            >
+              Confirmer — {actionLabel.toLowerCase()}
+            </Button>
+            <Button onClick={() => setPlan(undefined)} variant="ghost">
+              Annuler
+            </Button>
+          </div>
+        </Card>
+      ) : mutation.error ? (
+        <ErrorState description={getMutationError(mutation.error)} />
+      ) : null}
+    </div>
+  );
 }
 
 function LessonEditor({ lesson }: { lesson: AdminLesson }) {
@@ -138,16 +323,6 @@ function ModuleEditor({ module }: { module: AdminModule }) {
     }
   }
 
-  async function togglePublication() {
-    try {
-      await mutation.updateModule(module.id, {
-        isPublished: !module.isPublished,
-      });
-    } catch {
-      // L’erreur normalisée est présentée sous le formulaire.
-    }
-  }
-
   return (
     <Card class="space-y-5">
       <div class="flex items-center justify-between gap-3">
@@ -186,14 +361,13 @@ function ModuleEditor({ module }: { module: AdminModule }) {
         >
           Enregistrer le module
         </Button>
-        <Button
-          isLoading={mutation.isPending}
-          onClick={() => void togglePublication()}
-          variant={module.isPublished ? 'danger' : 'primary'}
-        >
-          {module.isPublished ? 'Dépublier le module' : 'Publier le module'}
-        </Button>
       </div>
+      <PublicationAction
+        isPublished={module.isPublished}
+        targetId={module.id}
+        targetTitle={module.title}
+        targetType="MODULE"
+      />
 
       <div class="space-y-3 border-t border-slate-800 pt-5">
         <h4 class="text-lg font-semibold">Leçons</h4>
@@ -212,16 +386,6 @@ function ModuleEditor({ module }: { module: AdminModule }) {
 }
 
 function StageEditor({ stage }: { stage: AdminStage }) {
-  const mutation = useAdminCurriculumMutation();
-
-  async function togglePublication() {
-    try {
-      await mutation.updateStage(stage.id, !stage.isPublished);
-    } catch {
-      // L’erreur normalisée est présentée sous l’action.
-    }
-  }
-
   return (
     <section class="space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3">
@@ -229,20 +393,37 @@ function StageEditor({ stage }: { stage: AdminStage }) {
           <h3 class="text-lg font-semibold text-cyan-200">{stage.title}</h3>
           <StatusBadge isPublished={stage.isPublished} />
         </div>
-        <Button
-          isLoading={mutation.isPending}
-          onClick={() => void togglePublication()}
-          size="sm"
-          variant={stage.isPublished ? 'danger' : 'primary'}
-        >
-          {stage.isPublished ? 'Dépublier l’étape' : 'Publier l’étape'}
-        </Button>
       </div>
-      {mutation.error ? (
-        <ErrorState description={getMutationError(mutation.error)} />
-      ) : null}
+      <PublicationAction
+        isPublished={stage.isPublished}
+        targetId={stage.id}
+        targetTitle={stage.title}
+        targetType="STAGE"
+      />
       {stage.modules.map((module) => (
         <ModuleEditor key={module.id} module={module} />
+      ))}
+    </section>
+  );
+}
+
+function ProgramEditor({ program }: { program: AdminProgram }) {
+  const isPublished = program.status === 'ACTIVE';
+
+  return (
+    <section class="space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-2xl font-bold">{program.title}</h2>
+        <ProgramStatusBadge status={program.status} />
+      </div>
+      <PublicationAction
+        isPublished={isPublished}
+        targetId={program.id}
+        targetTitle={program.title}
+        targetType="PROGRAM"
+      />
+      {program.stages.map((stage) => (
+        <StageEditor key={stage.id} stage={stage} />
       ))}
     </section>
   );
@@ -273,7 +454,8 @@ export function AdminPage() {
           Administration
         </h1>
         <p class="leading-7 text-slate-300">
-          Modifiez et publiez les modules et leçons de vos programmes.
+          Modifiez les contenus et prévisualisez chaque publication avant de la
+          confirmer.
         </p>
       </header>
 
@@ -285,12 +467,7 @@ export function AdminPage() {
       ) : null}
 
       {programs.map((program) => (
-        <section class="space-y-5" key={program.id}>
-          <h2 class="text-2xl font-bold">{program.title}</h2>
-          {program.stages.map((stage) => (
-            <StageEditor key={stage.id} stage={stage} />
-          ))}
-        </section>
+        <ProgramEditor key={program.id} program={program} />
       ))}
     </section>
   );

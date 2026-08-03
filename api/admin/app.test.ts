@@ -5,6 +5,11 @@ import {
   createAdminApp,
   type AdminRepository,
 } from '../../src/server/api/admin/app';
+import {
+  PublicationPlanBlockedError,
+  PublicationPlanStaleError,
+  type PublicationService,
+} from '../../src/server/api/admin/publication-service';
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
@@ -53,7 +58,6 @@ function createRepository() {
     title: 'Leçon test',
   };
   let lessonReady = true;
-  let finalAssessmentReady = true;
   module.lessons = [lesson];
 
   const repository: AdminRepository = {
@@ -88,24 +92,6 @@ function createRepository() {
           }
         : null;
     },
-    async findStageForOwner(id, requestedOwnerId) {
-      if (id !== stageId || requestedOwnerId !== ownerId) return null;
-
-      const publishedLesson = {
-        concepts: [
-          { assessments: lessonReady ? [{ id: 'assessment-1' }] : [] },
-        ],
-        id: lessonId,
-      };
-
-      return {
-        assessments: finalAssessmentReady ? [{ id: 'final-1' }] : [],
-        id: stageId,
-        modules: module.isPublished
-          ? [{ id: moduleId, lessons: [publishedLesson] }]
-          : [],
-      };
-    },
     async listCurriculum(requestedOwnerId) {
       if (requestedOwnerId !== ownerId) return [];
 
@@ -123,6 +109,7 @@ function createRepository() {
               title: 'Étape test',
             },
           ],
+          status: 'DRAFT' as const,
           title: 'Programme test',
         },
       ];
@@ -138,19 +125,12 @@ function createRepository() {
       module = { ...module, ...input };
       return module;
     },
-    async updateStage(id, input) {
-      if (id !== stageId) throw new Error('Unexpected stage.');
-      return { id: stageId, isPublished: input.isPublished };
-    },
   };
 
   return {
     repository,
     setLessonReady(value: boolean) {
       lessonReady = value;
-    },
-    setFinalAssessmentReady(value: boolean) {
-      finalAssessmentReady = value;
     },
   };
 }
@@ -245,7 +225,7 @@ describe('administration minimale', () => {
     const response = await app.request(
       `http://localhost/api/admin/modules/${moduleId}`,
       {
-        body: JSON.stringify({ isPublished: true }),
+        body: JSON.stringify({ title: 'Modification interdite' }),
         headers: { 'content-type': 'application/json' },
         method: 'PATCH',
       },
@@ -304,73 +284,115 @@ describe('administration minimale', () => {
     }
   });
 
-  it('bloque la publication d’un module sans leçon publiée', async () => {
-    const repository = createRepository().repository;
-    const updateModule = vi.spyOn(repository, 'updateModule');
+  it('prévisualise puis applique exactement le même plan de publication', async () => {
+    const plan = {
+      action: 'PUBLISH' as const,
+      blockers: [],
+      changes: [
+        {
+          from: false,
+          id: moduleId,
+          title: 'Module test',
+          to: true,
+          type: 'MODULE' as const,
+        },
+      ],
+      mode: 'FULL' as const,
+      planId: 'a'.repeat(64),
+      target: { id: moduleId, title: 'Module test', type: 'MODULE' as const },
+      warnings: [],
+    };
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => plan),
+      preview: vi.fn(async () => plan),
+    };
     const app = createAdminApp({
       authentication: authentication(),
-      repository,
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const request = {
+      action: 'PUBLISH',
+      mode: 'FULL',
+      targetId: moduleId,
+      targetType: 'MODULE',
+    };
+    const preview = await app.request('/api/admin/publication/preview', {
+      body: JSON.stringify(request),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+    const apply = await app.request('/api/admin/publication/apply', {
+      body: JSON.stringify({ ...request, planId: plan.planId }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/modules/${moduleId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
-    );
-
-    expect(response.status).toBe(409);
-    expect(updateModule).not.toHaveBeenCalled();
+    expect(preview.status).toBe(200);
+    expect(apply.status).toBe(200);
+    expect(publicationService.preview).toHaveBeenCalledWith(ownerId, request);
+    expect(publicationService.apply).toHaveBeenCalledWith(ownerId, {
+      ...request,
+      planId: plan.planId,
+    });
   });
 
-  it('bloque une étape sans évaluation finale ou contenu public prêt', async () => {
-    const fixture = createRepository();
-    fixture.setFinalAssessmentReady(false);
-    const updateStage = vi.spyOn(fixture.repository, 'updateStage');
+  it('ne révèle pas le plan d’un autre propriétaire', async () => {
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => null),
+      preview: vi.fn(async () => null),
+    };
     const app = createAdminApp({
-      authentication: authentication(),
-      repository: fixture.repository,
+      authentication: authentication(otherUserId),
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const response = await app.request('/api/admin/publication/preview', {
+      body: JSON.stringify({
+        action: 'PUBLISH',
+        mode: 'FULL',
+        targetId: moduleId,
+        targetType: 'MODULE',
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/stages/${stageId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
+    expect(response.status).toBe(404);
+    expect(publicationService.preview).toHaveBeenCalledWith(
+      otherUserId,
+      expect.any(Object),
     );
-
-    expect(response.status).toBe(409);
-    expect(await response.json()).toMatchObject({
-      error: { code: 'ASSESSMENT_NOT_READY' },
-    });
-    expect(updateStage).not.toHaveBeenCalled();
   });
 
-  it('publie une étape prête appartenant à l’admin', async () => {
-    const fixture = createRepository();
-    await fixture.repository.updateLesson(lessonId, { isPublished: true });
-    await fixture.repository.updateModule(moduleId, { isPublished: true });
+  it.each([
+    [new PublicationPlanStaleError(), 'PUBLICATION_PLAN_STALE'],
+    [new PublicationPlanBlockedError(), 'PUBLICATION_BLOCKED'],
+  ])('normalise les conflits de confirmation', async (error, code) => {
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => {
+        throw error;
+      }),
+      preview: vi.fn(async () => null),
+    };
     const app = createAdminApp({
       authentication: authentication(),
-      repository: fixture.repository,
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const response = await app.request('/api/admin/publication/apply', {
+      body: JSON.stringify({
+        action: 'PUBLISH',
+        mode: 'FULL',
+        planId: 'a'.repeat(64),
+        targetId: moduleId,
+        targetType: 'MODULE',
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/stages/${stageId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
-    );
-
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({
-      stage: { id: stageId, isPublished: true },
-    });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ error: { code } });
   });
 });

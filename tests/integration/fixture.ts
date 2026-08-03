@@ -20,6 +20,7 @@ export interface IntegrationFixture {
   lessonId: string;
   lessonSlug: string;
   moduleSlug: string;
+  moduleId: string;
   ownerEmail: string;
   programId: string;
   programSlug: string;
@@ -258,6 +259,7 @@ export async function createIntegrationFixture(
     lessonId: lesson.id,
     lessonSlug,
     moduleSlug,
+    moduleId: module.id,
     ownerEmail,
     programId: program.id,
     programSlug,
