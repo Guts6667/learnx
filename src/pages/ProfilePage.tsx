@@ -30,8 +30,16 @@ export function ProfilePage() {
         {user.displayName}
       </h1>
       <p class="mt-4 text-base text-slate-300">{user.email}</p>
+      {user.role === 'ADMIN' ? (
+        <a
+          class="mt-6 inline-flex min-h-11 items-center text-cyan-300 underline"
+          href="/admin"
+        >
+          Ouvrir l’administration
+        </a>
+      ) : null}
       <Button
-        class="mt-8"
+        class="mt-8 block"
         isLoading={logoutMutation.isPending}
         onClick={handleLogout}
         variant="secondary"

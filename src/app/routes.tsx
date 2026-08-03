@@ -1,6 +1,7 @@
 import Router from 'preact-router';
 
 import { MobileLayout } from '@/components/layout/MobileLayout';
+import { AdminRoute } from '@/features/auth/AdminRoute';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import {
   ModulePage,
@@ -12,11 +13,12 @@ import { ConceptAssessmentPage } from '@/pages/ConceptAssessmentPage';
 import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotePage, NotesPage } from '@/pages/NotesPage';
-import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
+import { NotFoundPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { QuizPage } from '@/pages/QuizPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
 import { TodayPage } from '@/pages/TodayPage';
+import { AdminPage } from '@/pages/AdminPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -177,7 +179,9 @@ export function AppRoutes() {
           <ProfilePage />
         </ProtectedRoute>
         <ProtectedRoute path="/admin">
-          <PlaceholderPage title="Administration" />
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>
         </ProtectedRoute>
         <NotFoundPage default />
       </Router>
