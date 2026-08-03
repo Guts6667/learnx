@@ -9,12 +9,17 @@ Une spécification contient deux couches :
 
 1. `lesson`, payload strictement compatible avec une leçon de
    `seed/sample-program.json` ;
-2. `editorial`, sidecar de traçabilité non importé en base.
+2. `editorial`, sidecar de traçabilité dont les preuves de revue restent hors
+   base, mais dont les mappings de sources et banques sont projetés vers les
+   structures désormais acceptées par le seed.
 
 Le sidecar conserve les références, contrôles de liens, décisions et revues que
 le schéma de données actuel ne représente pas. Il ne justifie aucune migration.
-Lors de l’intégration, seul l’objet `lesson` remplace la leçon ciblée dans le
-seed. Les autres clés servent à localiser et contrôler cette opération.
+Lors de l’intégration, l’objet `lesson` remplace la leçon ciblée, les
+`editorial.assessmentBanks` alimentent le groupe racine
+`conceptAssessmentBanks` correspondant et les rattachements de références sont
+vérifiés contre `lesson.contentBlocks[].content.sourceKeys`. Les métadonnées de
+preuve, de confiance et de revue ne sont jamais copiées en base.
 
 En cas d’écart, `prisma/seed.ts` est la source de vérité pour le payload et
 `EDITORIAL_GUIDELINES.md` est la source de vérité éditoriale.
@@ -105,7 +110,8 @@ Forme exacte :
   "type": "definition",
   "position": 1,
   "content": {
-    "text": "Texte original du bloc."
+    "text": "Texte original du bloc.",
+    "sourceKeys": ["openstax-psychology-2e-1-1"]
   }
 }
 ```
@@ -117,8 +123,13 @@ rich_text | objective | definition | example | callout | quote | embed | divider
 ```
 
 `position` est un entier strictement positif, unique dans la leçon. `text` est
-non vide. La source du bloc est déclarée séparément dans
-`editorial.contentBlockSources` avec la même position.
+non vide. `sourceKeys` contient uniquement des clés présentes dans
+`lesson.resources`. Il est obligatoire pour tout bloc de connaissance
+publiable et vide seulement lorsqu'un `notApplicableReason` valide existe dans
+`editorial.contentBlockSources`. La preuve précise reste déclarée dans
+`editorial.contentBlockSources` avec la même position. Chaque clé visible doit
+être reliée, via `editorial.resourceChecks[].referenceIds`, à au moins une des
+références qui soutiennent le bloc.
 
 ### 4.3 Ressources recommandées (`lesson.resources`)
 
@@ -344,8 +355,11 @@ audio, `mediaSegment` utilise `HH:MM:SS-HH:MM:SS` et
 
 ### 5.4 Banques de questions
 
-Le seed MVP ne lit pas encore les questions. Elles sont néanmoins livrées dans
-`editorial.assessmentBanks`, avec une forme directement alignée sur
+Le seed MVP importe désormais les questions depuis les groupes racine
+`conceptAssessmentBanks`. Une `PEDAGOGY_SPEC` continue de les livrer dans
+`editorial.assessmentBanks` pour garder la leçon et sa preuve ensemble ; lors
+de l'intégration, elles sont copiées sans transformation sémantique dans le
+groupe ciblé par les quatre slugs. Leur forme est directement alignée sur
 `ConceptAssessmentQuestion` et `ConceptAssessmentOption` :
 
 ```json
@@ -384,9 +398,9 @@ correctes portent `isCorrect: true`.
 
 Chaque banque correspond à une notion de `lesson.concepts`. Son titre et son
 nombre de questions correspondent exactement à `concept.assessment`. Les
-questions ne sont jamais copiées dans `lesson` tant que `prisma/seed.ts` ne les
-accepte pas. Leur import relève d’une intégration technique séparée et ne doit
-pas retarder la rédaction.
+questions ne sont jamais copiées dans `lesson` : elles restent dans le groupe
+racine `conceptAssessmentBanks`, que `prisma/seed.ts` valide et importe de façon
+idempotente.
 
 ### 5.5 Historique
 
@@ -431,10 +445,15 @@ et ne doit pas être glissée dans une spec de leçon.
 1. Valider l’objet racine et le sidecar contre ce guide.
 2. Localiser programme, étape et module avec les trois slugs.
 3. Vérifier que `lesson.slug` est unique dans le module.
-4. Remplacer l’objet de leçon cible par `lesson`, sans copier `editorial`.
-5. Ne modifier aucun autre niveau du seed.
-6. Exécuter les tests du seed et les contrôles du projet.
-7. Conserver la `PEDAGOGY_SPEC` comme preuve éditoriale versionnée.
+4. Vérifier que chaque `content.sourceKeys` existe dans les ressources de la
+   leçon et correspond aux références déclarées dans le sidecar.
+5. Remplacer l’objet de leçon cible par `lesson`, sans copier les métadonnées de
+   revue d'`editorial`.
+6. Créer ou remplacer le groupe racine `conceptAssessmentBanks` ciblé par les
+   quatre slugs avec `editorial.assessmentBanks`.
+7. Ne modifier aucun autre niveau du seed.
+8. Exécuter les tests du seed et les contrôles du projet.
+9. Conserver la `PEDAGOGY_SPEC` comme preuve éditoriale versionnée.
 
 L’intégrateur NE DOIT PAS renommer un slug, convertir un type, inventer un
 champ, déplacer une référence dans `description` ou compléter une donnée
@@ -450,6 +469,8 @@ manquante de sa propre initiative. La spec retourne en révision.
 - [ ] Chaque évaluation possède une banque dont le titre et le nombre de
       questions correspondent aux métadonnées de la notion.
 - [ ] Tous les `resourceKeys` existent dans la même leçon.
+- [ ] Tous les `content.sourceKeys` existent dans la même leçon et correspondent
+      aux références déclarées pour le bloc.
 - [ ] Tous les blocs de connaissance ont des références avec localisateur.
 - [ ] Chaque ressource a été contrôlée et possède une consigne.
 - [ ] Les liens, éditions et segments média ont été vérifiés.

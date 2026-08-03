@@ -69,7 +69,9 @@
                     "position": 4,
                     "content": {
                       "text": "Le mot scientifique indique une méthode de travail : formuler une question précise, proposer une explication testable, recueillir des données de manière systématique et accepter que les conclusions soient corrigées par de nouvelles observations. Une étude isolée ne produit pas une vérité définitive. Les résultats gagnent en solidité lorsqu’ils sont examinés par d’autres chercheurs, reproduits et mis en relation avec l’ensemble des connaissances disponibles.",
-                      "sourceKeys": ["openstax-psychology-2e-2-1"]
+                      "sourceKeys": [
+                        "openstax-psychology-2e-2-1"
+                      ]
                     }
                   },
                   {
@@ -243,7 +245,9 @@
                     "position": 1,
                     "content": {
                       "text": "La psychologie n’est pas un bloc unique. Ses domaines se forment autour de questions, de populations, de niveaux d’analyse et de contextes différents. La psychologie cognitive étudie notamment l’attention, la mémoire, le langage et le raisonnement ; la psychologie du développement examine les changements au cours de la vie ; la psychologie sociale étudie l’influence d’autrui et des groupes ; la biopsychologie relie fonctionnement biologique et comportement. Cette carte est utile, mais elle n’est ni exhaustive ni composée de frontières étanches.",
-                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3"
+                      ]
                     }
                   },
                   {
@@ -262,7 +266,9 @@
                     "position": 3,
                     "content": {
                       "text": "Exemple inventé : une étudiante repousse régulièrement son travail. Une approche cognitive peut étudier la mémoire de travail et le contrôle attentionnel ; une approche développementale, l’évolution de l’autorégulation ; une approche sociale, les normes du groupe et la comparaison avec les pairs ; une approche de la santé, le sommeil et le stress. Nommer plusieurs domaines ne dispense pas de formuler ensuite des hypothèses testables et de recueillir des données.",
-                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3"
+                      ]
                     }
                   },
                   {
@@ -281,7 +287,9 @@
                     "position": 5,
                     "content": {
                       "text": "Erreur fréquente : confondre psychologie et psychothérapie. La clinique est un domaine important, mais la discipline étudie aussi le cerveau et le comportement, la perception, l’apprentissage, le développement, la personnalité, les relations sociales, la santé, l’éducation, le travail et de nombreux autres objets. Pour orienter une question, demandez d’abord quel phénomène est étudié, à quel niveau et dans quel but.",
-                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3"
+                      ]
                     }
                   }
                 ],
@@ -436,7 +444,9 @@
                     "position": 2,
                     "content": {
                       "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence.",
-                      "sourceKeys": ["service-public-psychologue-psychiatre"]
+                      "sourceKeys": [
+                        "service-public-psychologue-psychiatre"
+                      ]
                     }
                   },
                   {
@@ -444,7 +454,9 @@
                     "position": 3,
                     "content": {
                       "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente.",
-                      "sourceKeys": ["cncdp-code-deontologie-2021"]
+                      "sourceKeys": [
+                        "cncdp-code-deontologie-2021"
+                      ]
                     }
                   },
                   {
@@ -452,7 +464,9 @@
                     "position": 4,
                     "content": {
                       "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation.",
-                      "sourceKeys": ["cncdp-code-deontologie-2021"]
+                      "sourceKeys": [
+                        "cncdp-code-deontologie-2021"
+                      ]
                     }
                   },
                   {
@@ -659,60 +673,591 @@
               {
                 "title": "Naissance de la psychologie expérimentale",
                 "slug": "naissance-psychologie-experimentale",
+                "summary": "La psychologie expérimentale s'est constituée progressivement à l'intersection de la philosophie, de la physiologie et de nouvelles pratiques de mesure. Cette leçon utilise le laboratoire de Leipzig comme repère institutionnel, distingue expérimentation et simple introspection, puis compare structuralisme et fonctionnalisme sans réduire l'histoire de la discipline à une succession linéaire de fondateurs.",
+                "objectives": [
+                  "Expliquer pourquoi 1879 constitue un repère institutionnel plutôt qu'une naissance instantanée de la psychologie.",
+                  "Identifier ce que l'expérimentation et la mesure ont changé dans l'étude des processus psychologiques.",
+                  "Distinguer structuralisme et fonctionnalisme par leurs questions principales.",
+                  "Repérer une simplification historique et formuler une version plus nuancée."
+                ],
+                "prerequisites": [
+                  "Définir la psychologie comme étude scientifique des comportements et des processus mentaux."
+                ],
+                "estimatedMinutes": 120,
                 "position": 1,
-                "estimatedMinutes": 90,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Au XIXe siècle, les questions sur l'esprit ne quittent pas soudainement la philosophie pour devenir scientifiques. Des travaux en physiologie, psychophysique et mesure du temps de réaction rendent progressivement certains phénomènes accessibles à des observations contrôlées. La création par Wilhelm Wundt d'un laboratoire à Leipzig en 1879 sert souvent de repère, car elle matérialise une organisation durable de la recherche et de la formation. Ce repère ne signifie ni qu'aucune expérience psychologique n'existait auparavant, ni qu'une seule personne a créé toute la discipline.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2",
+                        "wozniak-wundt-physiological-psychology"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Une démarche expérimentale fait varier ou contrôle des conditions afin d'observer leurs effets sur une réponse définie. Dans les premiers laboratoires, on pouvait présenter un son ou une lumière, mesurer un temps de réaction et comparer des conditions répétées. Les comptes rendus de l'expérience consciente pouvaient aussi être recueillis, mais sous des conditions réglées ; ils ne se confondaient pas avec une auto-observation libre et invérifiable.",
+                      "sourceKeys": [
+                        "wundt-outlines-psychology-1897",
+                        "wozniak-wundt-physiological-psychology"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Dans une tâche simple, une personne appuie sur un bouton lorsqu'une lumière apparaît. Le chercheur définit le stimulus, enregistre le délai en millisecondes, répète les essais et compare par exemple une condition prévisible à une condition imprévisible. Le temps de réaction ne révèle pas directement toute la pensée de la personne, mais fournit un indicateur public et reproductible d'un processus délimité.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Le structuralisme, surtout associé à Edward Titchener, cherchait à décrire les éléments de l'expérience consciente. Le fonctionnalisme, associé notamment à William James, demandait plutôt à quoi servent les activités mentales et comment elles contribuent à l'adaptation. Les deux orientations ont utilisé l'introspection, mais avec des buts différents et aux côtés d'autres observations. Assimiler entièrement Wundt au structuralisme ultérieur de Titchener efface des différences historiques importantes.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2",
+                        "wundt-outlines-psychology-1897"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "À retenir : une discipline se construit par des institutions, des instruments, des méthodes et des débats. Les repères comme Leipzig en 1879 sont utiles à condition de ne pas transformer l'histoire en récit d'un inventeur unique, d'une méthode unique ou d'une progression inévitable vers les conceptions actuelles.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2",
+                        "wozniak-wundt-physiological-psychology"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-2",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.2 History of Psychology",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2. OpenStax.",
+                    "description": "Lire les passages sur Wundt, James, le structuralisme et le fonctionnalisme ; relever pour chacun la question étudiée, la méthode mentionnée et une limite.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 1
+                  },
+                  {
+                    "key": "wundt-outlines-psychology-1897",
+                    "type": "book_chapter",
+                    "title": "Outlines of Psychology — Introduction, section 1",
+                    "author": "Wilhelm Wundt, traduction de Charles Hubbard Judd",
+                    "url": "https://psychclassics.yorku.ca/Wundt/Outlines/sec1.htm",
+                    "citation": "Wundt, W. (1897). Outlines of Psychology, Introduction, section 1 (C. H. Judd, Trans.). Classics in the History of Psychology, York University.",
+                    "description": "Lire les premiers paragraphes comme source historique primaire et noter pourquoi la position de Wundt est plus complexe qu'une simple psychologie de l'introspection.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "wozniak-wundt-physiological-psychology",
+                    "type": "article",
+                    "title": "Introduction to Wundt's Principles of Physiological Psychology",
+                    "author": "Robert H. Wozniak",
+                    "url": "https://psychclassics.yorku.ca/Wundt/Physio/wozniak.htm",
+                    "citation": "Wozniak, R. H. Introduction to Wundt's Principles of Physiological Psychology. Classics in the History of Psychology, York University.",
+                    "description": "Lire la présentation du programme expérimental de Wundt et distinguer le texte historique de l'interprétation rétrospective proposée par l'auteur.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Naissance de la psychologie expérimentale",
-                    "slug": "naissance-psychologie-experimentale",
+                    "title": "Institutionnalisation de la psychologie scientifique",
+                    "slug": "institutionnalisation-psychologie-scientifique",
+                    "description": "La psychologie expérimentale s'est constituée par la convergence de méthodes, d'instruments, de laboratoires, de publications et de formations plutôt que par un acte fondateur isolé.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2",
+                      "wozniak-wundt-physiological-psychology"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Naissance de la psychologie expérimentale",
+                      "title": "Mini-évaluation — Institutionnalisation de la psychologie",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Expérimentation, mesure et introspection contrôlée",
+                    "slug": "experimentation-mesure-introspection",
+                    "description": "L'expérimentation rend publiques des conditions et des mesures définies, tandis que les comptes rendus subjectifs n'acquièrent une valeur scientifique que dans un protocole explicite et limité.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2",
+                      "wundt-outlines-psychology-1897"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Expérimentation et mesure",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Structuralisme et fonctionnalisme",
+                    "slug": "structuralisme-fonctionnalisme",
+                    "description": "Le structuralisme privilégie la composition de l'expérience consciente, tandis que le fonctionnalisme s'intéresse aux fonctions adaptatives des activités mentales et du comportement.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Structuralisme et fonctionnalisme",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Construire une frise critique",
+                    "description": "À partir de la section OpenStax, placer cinq repères avant et après 1879, puis ajouter sous chacun ce qu'il change réellement et ce qu'il ne permet pas d'affirmer.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Décomposer une expérience de temps de réaction",
+                    "description": "Décrire un stimulus, une réponse, une mesure, une condition comparée et une conclusion permise ; ajouter une conclusion que le protocole ne permettrait pas.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Comparer deux questions historiques",
+                    "description": "Produire un tableau de 200 à 300 mots opposant structuralisme et fonctionnalisme par objet, question, méthode, apport et limite, avec au moins deux sources attachées.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Behaviorisme et apprentissage",
                 "slug": "behaviorisme-apprentissage",
+                "summary": "Le behaviorisme a renforcé l'étude contrôlée des relations entre environnement et comportement. Cette leçon distingue son projet méthodologique des mécanismes d'apprentissage, puis compare conditionnement classique et conditionnement opérant en évitant les confusions entre renforcement, punition, positif et négatif.",
+                "objectives": [
+                  "Expliquer le projet méthodologique du behaviorisme et son contexte historique.",
+                  "Représenter un conditionnement classique avec ses stimuli et ses réponses.",
+                  "Analyser un conditionnement opérant à partir du comportement et de sa conséquence.",
+                  "Distinguer apport expérimental, domaine d'application et limites d'une explication behavioriste."
+                ],
+                "prerequisites": [
+                  "Distinguer comportement observable et processus mental.",
+                  "Comprendre le rôle d'une mesure et d'une condition expérimentale."
+                ],
+                "estimatedMinutes": 150,
                 "position": 2,
-                "estimatedMinutes": 120,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Au début du XXe siècle, John B. Watson défend une psychologie centrée sur les comportements observables et les relations entre stimuli et réponses. Ce projet refuse de faire d'états mentaux privés la base indispensable de l'explication scientifique. Il favorise des définitions opérationnelles, des protocoles contrôlés et des prédictions publiques. Le behaviorisme ne désigne toutefois pas une doctrine unique : les positions de Watson, de Skinner et des recherches contemporaines sur l'apprentissage ne sont pas interchangeables.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-behaviorism",
+                        "watson-1913-behaviorist-views"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans le conditionnement classique, un organisme apprend une relation entre des événements. Un stimulus initialement neutre, régulièrement associé à un stimulus qui provoque déjà une réponse, peut finir par déclencher une réponse conditionnée. Le mécanisme porte d'abord sur la valeur prédictive des stimuli ; il ne suppose pas que la personne décide volontairement de produire la réponse.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-6-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 3,
+                    "content": {
+                      "text": "Dans le conditionnement opérant, la probabilité future d'un comportement varie selon ses conséquences. Un renforcement augmente le comportement ; une punition le diminue. Positif signifie qu'un événement est ajouté et négatif qu'il est retiré. Ainsi, un renforcement négatif n'est pas une punition : il augmente un comportement parce qu'un événement aversif disparaît.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-6-3"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 4,
+                    "content": {
+                      "text": "Une application de révision félicite immédiatement l'utilisateur après dix minutes de travail et lui attribue un point. Si la fréquence des sessions augmente, le point ou la félicitation fonctionne comme renforcement positif. Si l'utilisateur révise pour faire cesser une alerte désagréable et que cette stratégie augmente, la disparition de l'alerte peut fonctionner comme renforcement négatif. La catégorie dépend de l'effet observé sur le comportement, pas de l'intention du concepteur ni du caractère moralement agréable de la conséquence.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-6-3"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "À retenir : les approches behavioristes ont produit des méthodes puissantes pour étudier l'apprentissage et modifier des comportements définis. Elles ne suffisent pas à elles seules à expliquer tout apprentissage humain, notamment lorsque les attentes, la mémoire, l'observation d'autrui, les buts ou le contexte social modifient la conduite. Une explication utile précise donc ce que le modèle prédit et ce qu'il laisse hors champ.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-behaviorism",
+                        "openstax-psychology-2e-6-2",
+                        "openstax-psychology-2e-6-3"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-2-behaviorism",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.2 History of Psychology, Behaviorism",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2, Behaviorism. OpenStax.",
+                    "description": "Lire le passage sur Watson et Skinner, puis distinguer projet méthodologique, objet étudié et héritage contemporain.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "openstax-psychology-2e-6-2",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 6.2 Classical Conditioning",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 6.2. OpenStax.",
+                    "description": "Lire jusqu'aux processus généraux inclus et dessiner un schéma stimulus-réponse pour un exemple original.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-psychology-2e-6-3",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 6.3 Operant Conditioning",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 6.3. OpenStax.",
+                    "description": "Lire les définitions et le tableau renforcement-punition ; classer quatre conséquences en justifiant l'effet attendu sur le comportement.",
+                    "isRequired": true,
+                    "estimatedMinutes": 40,
+                    "position": 3
+                  },
+                  {
+                    "key": "watson-1913-behaviorist-views",
+                    "type": "article",
+                    "title": "Psychology as the Behaviorist Views It",
+                    "author": "John B. Watson",
+                    "url": "https://psychclassics.yorku.ca/Watson/views.htm",
+                    "citation": "Watson, J. B. (1913). Psychology as the behaviorist views it. Psychological Review, 20, 158-177. Transcription, York University.",
+                    "description": "Lire les deux premiers paragraphes comme source primaire et relever une thèse méthodologique, un objectif annoncé et une limite à examiner aujourd'hui.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 4
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Behaviorisme et apprentissage",
-                    "slug": "behaviorisme-apprentissage",
+                    "title": "Projet behavioriste",
+                    "slug": "projet-behavioriste",
+                    "description": "Le behaviorisme méthodologique privilégie des relations publiquement observables entre environnement et comportement, avec des définitions et prédictions testables.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2-behaviorism",
+                      "watson-1913-behaviorist-views"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Behaviorisme et apprentissage",
+                      "title": "Mini-évaluation — Projet behavioriste",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Conditionnement classique",
+                    "slug": "conditionnement-classique",
+                    "description": "Le conditionnement classique décrit l'apprentissage d'une relation prédictive entre stimuli qui modifie une réponse déclenchée.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-6-2"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Conditionnement classique",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Conditionnement opérant",
+                    "slug": "conditionnement-operant",
+                    "description": "Le conditionnement opérant décrit comment les conséquences modifient la probabilité future d'un comportement.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-6-3"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Conditionnement opérant",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Lire un manifeste historique avec recul",
+                    "description": "Extraire du texte de Watson une phrase définissant l'objet ou le but de la psychologie, puis la reformuler et indiquer une contribution et une limite de cette position.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Cartographier un conditionnement classique",
+                    "description": "Créer un exemple original et identifier stimulus inconditionnel, réponse inconditionnelle, stimulus conditionnel et réponse conditionnée ; vérifier que l'ordre temporel est explicite.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Analyser des conséquences sans se fier aux mots courants",
+                    "description": "Classer six situations en renforcement positif, renforcement négatif, punition positive ou punition négative, puis justifier chaque réponse par l'ajout ou le retrait et l'augmentation ou la diminution du comportement.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Cognitivisme, humanisme et psychanalyse",
                 "slug": "courants-modernes",
+                "summary": "La psychologie contemporaine a hérité de courants qui ne posent ni les mêmes questions ni les mêmes exigences de preuve. Cette leçon présente la révolution cognitive, l'approche humaniste et la tradition psychanalytique ou psychodynamique en distinguant contribution historique, concepts, prédictions testables et portée empirique.",
+                "objectives": [
+                  "Expliquer comment la révolution cognitive a rendu les processus mentaux compatibles avec une étude expérimentale.",
+                  "Présenter les questions centrales de l'approche humaniste sans transformer ses valeurs en résultats démontrés.",
+                  "Distinguer la psychanalyse freudienne historique des approches psychodynamiques ultérieures.",
+                  "Comparer plusieurs courants à partir de leurs mécanismes, prédictions et niveaux de preuve."
+                ],
+                "prerequisites": [
+                  "Distinguer comportement observable et processus mental.",
+                  "Comprendre le projet behavioriste et les principes de conditionnement."
+                ],
+                "estimatedMinutes": 150,
                 "position": 3,
-                "estimatedMinutes": 120,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "À partir des années 1950, des travaux en psychologie, linguistique, informatique et neurosciences renouvellent l'étude de la mémoire, du langage, de l'attention et de la résolution de problèmes. La révolution cognitive ne revient pas simplement à une introspection libre : elle construit des modèles de traitement de l'information et les confronte à des réponses observables, des erreurs, des temps de réaction ou des performances de rappel. Un processus mental peut donc être théorisé sans être tenu pour directement visible.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-currents",
+                        "openstax-psychology-2e-1-3-cognitive"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Deux personnes obtiennent le même score à une tâche de mémoire, mais l'une répond rapidement avec quelques erreurs tandis que l'autre répond lentement sans erreur. Un modèle cognitif peut proposer des stratégies différentes, puis prédire comment la performance changera si le délai, la charge ou la consigne varie. Le modèle est utile s'il produit des prédictions qui peuvent échouer, pas seulement s'il raconte après coup une histoire plausible.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3-cognitive"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "L'approche humaniste se développe en réaction aux visions jugées trop déterministes du comportement et de la personnalité. Elle met l'accent sur l'expérience vécue, le sens, la capacité de choix, la relation et le développement de la personne. Carl Rogers insiste notamment sur une relation centrée sur la personne. Ces orientations ont influencé la pratique clinique et la conception de l'alliance, mais leurs valeurs, leurs modèles de personnalité et les effets d'une intervention doivent être évalués séparément.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-currents",
+                        "openstax-psychology-2e-11-5"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "La psychanalyse freudienne propose que des conflits et processus inconscients participent au comportement et à la personnalité. Son influence historique sur la psychothérapie, la culture et l'attention portée à l'histoire personnelle est majeure. Plusieurs propositions classiques sont toutefois difficiles à falsifier ou ont reçu peu de soutien direct. Les approches psychodynamiques ultérieures ont modifié concepts, durée et méthodes ; les évaluer exige de distinguer une théorie générale, un mécanisme précis et l'efficacité d'une intervention définie.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-currents",
+                        "openstax-psychology-2e-11-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "À retenir : comparer des courants ne consiste ni à choisir une école comme identité ni à les déclarer également prouvés. Pour un même cas, il faut préciser la question posée, le mécanisme proposé, les observations attendues, les explications alternatives et le niveau de preuve disponible. Des idées issues de traditions différentes peuvent être reformulées et testées sans valider l'ensemble de leur système historique.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-2-currents",
+                        "openstax-psychology-2e-1-3-cognitive",
+                        "openstax-psychology-2e-11-5",
+                        "openstax-psychology-2e-11-2"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-2-currents",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.2 History of Psychology",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2. OpenStax.",
+                    "description": "Lire les passages sur Freud, l'humanisme et la révolution cognitive ; construire une colonne contribution historique et une colonne affirmation testable.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 1
+                  },
+                  {
+                    "key": "openstax-psychology-2e-1-3-cognitive",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.3 Contemporary Psychology, Cognitive Psychology",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.3, Cognitive Psychology. OpenStax.",
+                    "description": "Lire la sous-section sur la psychologie cognitive et relever deux objets, deux mesures possibles et une collaboration interdisciplinaire.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-psychology-2e-11-5",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 11.5 Humanistic Approaches",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/11-5-humanistic-approaches",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 11.5. OpenStax.",
+                    "description": "Lire les passages sur Maslow et Rogers ; séparer les valeurs de l'approche, les propositions théoriques et les effets qui nécessiteraient une évaluation.",
+                    "isRequired": false,
+                    "estimatedMinutes": 25,
+                    "position": 3
+                  },
+                  {
+                    "key": "openstax-psychology-2e-11-2",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 11.2 Freud and the Psychodynamic Perspective",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/11-2-freud-and-the-psychodynamic-perspective",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 11.2. OpenStax.",
+                    "description": "Lire l'introduction et la critique finale ; distinguer description de la théorie, influence historique et soutien empirique d'une proposition précise.",
+                    "isRequired": false,
+                    "estimatedMinutes": 30,
+                    "position": 4
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Cognitivisme, humanisme et psychanalyse",
-                    "slug": "courants-modernes",
+                    "title": "Révolution cognitive",
+                    "slug": "revolution-cognitive",
+                    "description": "La révolution cognitive réintroduit l'étude de représentations et de processus mentaux au moyen de modèles produisant des prédictions observables.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2-currents",
+                      "openstax-psychology-2e-1-3-cognitive"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Cognitivisme, humanisme et psychanalyse",
+                      "title": "Mini-évaluation — Révolution cognitive",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Perspective humaniste",
+                    "slug": "perspective-humaniste",
+                    "description": "L'approche humaniste met l'accent sur l'expérience vécue, le sens, la relation et la capacité de développement, tout en exigeant de distinguer valeurs et affirmations empiriques.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2-currents",
+                      "openstax-psychology-2e-11-5"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Perspective humaniste",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Psychanalyse et approches psychodynamiques",
+                    "slug": "psychanalyse-psychodynamique",
+                    "description": "La psychanalyse historique et les approches psychodynamiques accordent un rôle aux processus inconscients et à l'histoire relationnelle, mais leurs propositions et interventions doivent être évaluées séparément.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-2-currents",
+                      "openstax-psychology-2e-11-2"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Psychanalyse et psychodynamique",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Transformer un mécanisme cognitif en prédiction",
+                    "description": "Choisir un phénomène de mémoire ou d'attention, proposer un mécanisme, une manipulation, une mesure et un résultat qui contredirait le mécanisme.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Séparer valeurs, théorie et preuve",
+                    "description": "À partir de la section humaniste, produire trois colonnes : valeur ou priorité, proposition sur le fonctionnement humain, observation nécessaire pour l'évaluer.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Comparer quatre explications d'un même cas",
+                    "description": "Pour une personne qui reporte une tâche importante, formuler une hypothèse behavioriste, cognitive, humaniste et psychodynamique ; indiquer pour chacune une prédiction, une donnée utile et une limite.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               }
@@ -725,7 +1270,56 @@
           "title": "Évaluation finale — Comprendre les grands courants",
           "type": "case_study",
           "isRequired": true,
-          "passingScore": 70
+          "passingScore": 70,
+          "description": "Comparer plusieurs explications psychologiques d'une même situation sans transformer les courants en étiquettes, en précisant pour chacun le mécanisme proposé, les prédictions, les données nécessaires, l'apport historique et les limites.",
+          "instructions": "## Consignes\n1. Lire le cas CampusLang et séparer les comportements observés, les déclarations de Maya et les interprétations proposées par l'équipe.\n2. Formuler une analyse behavioriste comprenant au moins une contingence opérante et, si elle est pertinente, une hypothèse de conditionnement classique.\n3. Formuler une analyse cognitive avec un mécanisme délimité, une manipulation possible, une mesure et un résultat qui contredirait l'hypothèse.\n4. Présenter ce qu'une perspective humaniste chercherait à comprendre dans l'expérience et les buts de Maya, sans présenter une valeur comme une preuve d'efficacité.\n5. Présenter une hypothèse psychodynamique prudente, puis indiquer ce qui la rendrait difficile à tester et quelles données permettraient au moins de la préciser.\n6. Comparer les quatre perspectives dans un tableau mécanisme-prédiction-donnée-limite et proposer une explication intégrée qui ne dépasse pas les informations disponibles.\n7. Citer au moins quatre ressources de l'étape, dont une source historique primaire, et distinguer explicitement citation historique et preuve contemporaine.\n\n## Cas CampusLang\nCampusLang propose une application facultative pour apprendre une langue. Maya, étudiante de première année, l'utilise chaque soir depuis six semaines. Au début, elle révisait surtout lorsque l'application affichait une série de jours consécutifs et lui attribuait des badges. Elle dit maintenant ressentir une tension dès qu'elle entend le son de rappel, même les jours où elle avait prévu de se reposer. Elle répond très vite aux exercices familiers mais échoue lorsqu'une consigne change légèrement. Lors d'un entretien, elle explique qu'elle veut parler avec sa grand-mère dans sa langue maternelle, mais qu'elle a honte de commettre des erreurs devant les autres. Un enseignant affirme que tout s'explique par les récompenses de l'application. Une collègue soutient que Maya manque simplement de confiance en elle. Un autre intervenant évoque un conflit inconscient lié aux attentes familiales, sans poser de question supplémentaire. L'équipe souhaite augmenter le nombre de rappels et vous demande quelle explication retenir. Aucune mesure antérieure, aucun groupe de comparaison et aucune information clinique ne sont disponibles.\n\n## Format de soumission\nDossier structuré de 1 200 à 1 500 mots comprenant un tableau comparatif et une conclusion intégrée.\n\n## Remédiation\nPour chaque critère sous 70 %, reprendre les notions associées puis réécrire uniquement les sections insuffisantes. La version révisée doit ajouter une prédiction réfutable, une donnée manquante et une limite pour chaque perspective concernée, tout en conservant la première version pour comparaison.",
+          "rubric": [
+            {
+              "criterion": "Exactitude historique et conceptuelle",
+              "weight": 20,
+              "requirements": [
+                "Les courants sont définis sans anachronisme majeur.",
+                "Conditionnement classique, conditionnement opérant et renforcement sont employés correctement.",
+                "Psychanalyse historique et approches psychodynamiques ultérieures ne sont pas confondues."
+              ]
+            },
+            {
+              "criterion": "Mécanismes et prédictions",
+              "weight": 25,
+              "requirements": [
+                "Chaque perspective comporte un mécanisme explicitement formulé.",
+                "Les analyses behavioriste et cognitive produisent des prédictions observables.",
+                "Les propositions ne sont pas de simples reformulations du comportement."
+              ]
+            },
+            {
+              "criterion": "Preuves, testabilité et limites",
+              "weight": 25,
+              "requirements": [
+                "Les données manquantes et explications alternatives sont identifiées.",
+                "Au moins un résultat susceptible de contredire chaque hypothèse testable est indiqué.",
+                "Influence historique, plausibilité et soutien empirique sont distingués."
+              ]
+            },
+            {
+              "criterion": "Comparaison et intégration",
+              "weight": 20,
+              "requirements": [
+                "Le tableau compare les perspectives selon les mêmes dimensions.",
+                "La conclusion combine les niveaux pertinents sans déclarer les courants équivalents.",
+                "La recommandation sur les rappels reste proportionnée aux données et envisage des effets indésirables."
+              ]
+            },
+            {
+              "criterion": "Sources et qualité de l'argumentation",
+              "weight": 10,
+              "requirements": [
+                "Au moins quatre ressources de l'étape sont citées précisément.",
+                "Une source primaire historique est présentée comme telle.",
+                "Le texte est structuré, nuancé et respecte le format demandé."
+              ]
+            }
+          ]
         }
       },
       {
@@ -2364,6 +2958,1143 @@
                   "position": 4
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "grands-courants",
+      "moduleSlug": "histoire-et-courants",
+      "lessonSlug": "naissance-psychologie-experimentale",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "institutionnalisation-psychologie-scientifique",
+          "assessmentTitle": "Mini-évaluation — Institutionnalisation de la psychologie",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi 1879 est-il souvent retenu dans l'histoire de la psychologie ?",
+              "explanation": "Le laboratoire de Leipzig constitue un repère institutionnel durable pour la recherche et la formation, sans être un commencement absolu.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Wundt y organise un laboratoire durable de recherche psychologique",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Toute réflexion sur l'esprit commence cette année-là",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La première mesure physiologique est réalisée cette année-là",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Toutes les écoles psychologiques sont fondées simultanément",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Le repère de 1879 prouve qu'aucune expérience liée à la psychologie n'existait auparavant.",
+              "explanation": "Des travaux en physiologie, psychophysique et mesure précèdent le laboratoire de Leipzig.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments participent à l'institutionnalisation d'une discipline scientifique ?",
+              "explanation": "Les laboratoires, instruments, formations et publications rendent une communauté et ses méthodes durables.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Des laboratoires",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Des instruments et protocoles",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Des formations et publications",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "L'opinion isolée d'un fondateur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle formulation historique est la plus prudente ?",
+              "explanation": "Une histoire rigoureuse utilise les repères sans attribuer toute la discipline à une personne ou une date.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Le laboratoire de Leipzig est un repère majeur parmi plusieurs transformations",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Wundt invente seul la psychologie en 1879",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La psychologie devient immédiatement identique dans tous les pays",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Les instruments rendent les débats théoriques inutiles",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Dans quelle ville Wundt organise-t-il le laboratoire utilisé comme repère en 1879 ?",
+              "explanation": "Le laboratoire se trouve à Leipzig, en Allemagne.",
+              "acceptedAnswers": [
+                "Leipzig"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "experimentation-mesure-introspection",
+          "assessmentTitle": "Mini-évaluation — Expérimentation et mesure",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel élément rend un temps de réaction utile scientifiquement ?",
+              "explanation": "Il s'agit d'une mesure définie, enregistrable et comparable entre des conditions explicites.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Il peut être mesuré et comparé selon un protocole",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Il révèle directement toute la pensée",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Il ne varie jamais entre deux essais",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Il remplace toute autre méthode",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit préciser une expérience simple de temps de réaction ?",
+              "explanation": "Le stimulus, la réponse, la mesure et les conditions comparées rendent le protocole interprétable.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Le stimulus présenté",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La réponse enregistrée",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les conditions comparées",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La personnalité complète du participant",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Wundt défendait uniquement une auto-observation libre, sans contrôle expérimental.",
+              "explanation": "Ses textes lient au contraire l'observation psychologique à des conditions expérimentales contrôlées.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une condition prévisible produit un temps moyen plus court qu'une condition imprévisible. Quelle conclusion est permise ?",
+              "explanation": "Le résultat porte sur la différence observée dans ce protocole ; il ne décrit pas toute l'activité mentale.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "La prévisibilité est associée à une réponse plus rapide dans ce protocole",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La condition révèle l'intelligence générale",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Tous les processus mentaux sont désormais expliqués",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La mesure rend inutile la répétition",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on le délai entre l'apparition d'un stimulus et la réponse enregistrée ?",
+              "explanation": "Ce délai est le temps de réaction.",
+              "acceptedAnswers": [
+                "temps de réaction",
+                "temps de reaction"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "structuralisme-fonctionnalisme",
+          "assessmentTitle": "Mini-évaluation — Structuralisme et fonctionnalisme",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle question correspond le mieux au fonctionnalisme ?",
+              "explanation": "Le fonctionnalisme s'intéresse à l'utilité et à la fonction adaptative des activités mentales et des comportements.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "À quoi cette activité mentale sert-elle dans l'adaptation ?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Quels éléments composent exactement cette expérience consciente ?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Quel renforcement suit ce comportement ?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Quelle structure cérébrale suffit à tout expliquer ?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "À qui le structuralisme est-il surtout associé dans cette leçon ?",
+              "explanation": "Le structuralisme systématique est surtout associé à Edward Titchener ; l'assimiler entièrement à Wundt est réducteur.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Edward Titchener",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "William James",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "B. F. Skinner",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Carl Rogers",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Structuralistes et fonctionnalistes ont toujours utilisé des méthodes totalement opposées.",
+              "explanation": "Ils se distinguaient surtout par leurs questions et leurs buts ; les deux ont notamment utilisé l'introspection.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles propositions décrivent correctement les deux orientations ?",
+              "explanation": "Le structuralisme porte sur la composition de l'expérience et le fonctionnalisme sur ses fonctions adaptatives.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Le structuralisme analyse les contenus de l'expérience",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le fonctionnalisme étudie l'utilité des activités mentales",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Le fonctionnalisme interdit toute mesure",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le structuralisme explique uniquement le comportement observable",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel courant est notamment associé à William James ?",
+              "explanation": "William James est une figure majeure du fonctionnalisme.",
+              "acceptedAnswers": [
+                "fonctionnalisme",
+                "le fonctionnalisme"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "grands-courants",
+      "moduleSlug": "histoire-et-courants",
+      "lessonSlug": "behaviorisme-apprentissage",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "projet-behavioriste",
+          "assessmentTitle": "Mini-évaluation — Projet behavioriste",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel objectif Watson met-il au premier plan dans son manifeste ?",
+              "explanation": "Watson présente une psychologie objective visant notamment la prédiction et le contrôle du comportement.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Prédire le comportement à partir de conditions observables",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Décrire uniquement des rêves",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Écarter toute expérimentation",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Mesurer directement l'inconscient",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Tous les auteurs qualifiés de behavioristes défendent exactement la même théorie.",
+              "explanation": "Le terme recouvre plusieurs positions historiques et théoriques ; Watson et Skinner ne sont pas interchangeables.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments correspondent au projet méthodologique behavioriste ?",
+              "explanation": "Le courant privilégie comportements mesurables, conditions publiques et prédictions testables.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Définir des comportements observables",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Contrôler les conditions expérimentales",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Formuler des prédictions testables",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Traiter toute expérience privée comme preuve suffisante",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle limite doit accompagner une explication strictement behavioriste ?",
+              "explanation": "Une analyse centrée sur les contingences peut laisser hors champ des processus cognitifs, sociaux ou biologiques pertinents.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Elle peut omettre des processus internes et le contexte social",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle ne produit jamais de prédiction",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elle interdit toute mesure",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elle explique nécessairement tout apprentissage",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel psychologue publie en 1913 Psychology as the Behaviorist Views It ?",
+              "explanation": "Il s'agit de John B. Watson.",
+              "acceptedAnswers": [
+                "John B. Watson",
+                "John Watson",
+                "Watson"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "conditionnement-classique",
+          "assessmentTitle": "Mini-évaluation — Conditionnement classique",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Dans le conditionnement classique, qu'apprend principalement l'organisme ?",
+              "explanation": "Il apprend qu'un stimulus en prédit un autre, ce qui modifie la réponse au premier.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Une relation prédictive entre des stimuli",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une règle morale",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une conséquence qui suit une action volontaire",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Un trait de personnalité stable",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une réponse conditionnée doit nécessairement être choisie volontairement.",
+              "explanation": "Le conditionnement classique porte souvent sur des réponses déclenchées sans décision volontaire.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Après plusieurs associations, un son auparavant neutre déclenche la salivation. Que devient le son ?",
+              "explanation": "Le son est devenu un stimulus conditionnel capable de déclencher une réponse conditionnée.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Un stimulus conditionnel",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une punition négative",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un comportement opérant",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une réponse inconditionnelle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments faut-il identifier dans un schéma complet de conditionnement classique ?",
+              "explanation": "Le schéma distingue stimuli et réponses avant et après l'apprentissage.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Stimulus inconditionnel",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Réponse inconditionnelle",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Stimulus conditionnel",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Réponse conditionnée",
+                  "isCorrect": true,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on la phase initiale pendant laquelle l'association conditionnelle se forme ?",
+              "explanation": "Cette phase est l'acquisition.",
+              "acceptedAnswers": [
+                "acquisition",
+                "l'acquisition"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "conditionnement-operant",
+          "assessmentTitle": "Mini-évaluation — Conditionnement opérant",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel effet définit un renforcement ?",
+              "explanation": "Un renforcement augmente la probabilité future du comportement qu'il suit.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Le comportement augmente",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le comportement diminue",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un stimulus disparaît toujours",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La personne juge la conséquence agréable",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une alarme cesse lorsqu'une personne boucle sa ceinture, ce qui augmente le port de la ceinture. De quoi s'agit-il ?",
+              "explanation": "Le retrait de l'alarme augmente le comportement : c'est un renforcement négatif.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Renforcement négatif",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Punition négative",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Renforcement positif",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Conditionnement classique uniquement",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Dans le vocabulaire opérant, négatif signifie mauvais ou nuisible.",
+              "explanation": "Négatif indique le retrait d'un événement ; il ne constitue pas un jugement moral.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles informations faut-il connaître pour classer une conséquence opérante ?",
+              "explanation": "Il faut déterminer ce qui est ajouté ou retiré et observer si le comportement augmente ou diminue.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Un événement est-il ajouté ou retiré ?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le comportement augmente-t-il ou diminue-t-il ?",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Quelle était l'intention déclarée ?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La conséquence paraît-elle moralement bonne ?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on le renforcement progressif d'approximations vers un comportement cible ?",
+              "explanation": "Cette procédure est le façonnement.",
+              "acceptedAnswers": [
+                "façonnement",
+                "faconnement",
+                "le façonnement",
+                "le faconnement"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "grands-courants",
+      "moduleSlug": "histoire-et-courants",
+      "lessonSlug": "courants-modernes",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "revolution-cognitive",
+          "assessmentTitle": "Mini-évaluation — Révolution cognitive",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Qu'est-ce qui distingue une explication cognitive scientifique d'un récit plausible après coup ?",
+              "explanation": "Un modèle scientifique produit des prédictions observables qui peuvent être contredites.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Elle produit des prédictions testables",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle utilise nécessairement un ordinateur",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elle refuse toute mesure comportementale",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elle explique tous les résultats possibles",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles mesures peuvent tester un modèle cognitif ?",
+              "explanation": "Temps, erreurs et rappel sont des indicateurs observables permettant de confronter le modèle aux données.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Temps de réaction",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Types d'erreurs",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Performance de rappel",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Intuition du chercheur seule",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "La révolution cognitive a rendu inutiles les comportements observables.",
+              "explanation": "Les modèles cognitifs sont justement testés au moyen de réponses et performances observables.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel contexte a contribué à la révolution cognitive ?",
+              "explanation": "Des développements en linguistique, informatique, neurosciences et psychologie ont renouvelé l'étude de l'esprit.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Des échanges entre plusieurs disciplines dans les années 1950",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'abandon de toute expérimentation",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La disparition de la mémoire comme objet",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le retour exclusif à la philosophie antique",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on le mouvement qui replace l'étude scientifique des processus mentaux au centre à partir des années 1950 ?",
+              "explanation": "Il s'agit de la révolution cognitive.",
+              "acceptedAnswers": [
+                "révolution cognitive",
+                "revolution cognitive",
+                "la révolution cognitive",
+                "la revolution cognitive"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "perspective-humaniste",
+          "assessmentTitle": "Mini-évaluation — Perspective humaniste",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel thème est central dans l'approche humaniste ?",
+              "explanation": "L'expérience vécue, le sens, la relation et le potentiel de développement occupent une place centrale.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Le développement de la personne et son expérience vécue",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Uniquement les réflexes conditionnés",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La suppression de toute subjectivité",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L'explication de chaque conduite par un gène",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une valeur humaniste et une affirmation d'efficacité thérapeutique se valident exactement de la même manière.",
+              "explanation": "Une valeur guide une pratique ; une affirmation d'effet nécessite une évaluation empirique définie.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "À quel psychologue l'approche centrée sur la personne est-elle surtout associée ?",
+              "explanation": "Carl Rogers a développé l'approche centrée sur la personne.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Carl Rogers",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "John Watson",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Edward Titchener",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Ivan Pavlov",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Pour évaluer une proposition humaniste, que faut-il distinguer ?",
+              "explanation": "La clarté exige de séparer valeurs, modèle théorique et effets observables d'une intervention.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Les valeurs privilégiées",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les propositions sur le fonctionnement humain",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les effets mesurables d'une intervention",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "L'idée que toute affirmation est équivalente",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel psychologue humaniste est associé à la hiérarchie des besoins et à l'actualisation de soi ?",
+              "explanation": "Il s'agit d'Abraham Maslow.",
+              "acceptedAnswers": [
+                "Abraham Maslow",
+                "Maslow"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "psychanalyse-psychodynamique",
+          "assessmentTitle": "Mini-évaluation — Psychanalyse et psychodynamique",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle distinction est la plus importante pour évaluer la tradition psychodynamique ?",
+              "explanation": "Une théorie historique, un mécanisme précis et une intervention définie ne possèdent pas automatiquement le même soutien.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Distinguer système historique, mécanisme et intervention",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Considérer toutes les approches comme identiques",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Confondre influence culturelle et preuve expérimentale",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Évaluer uniquement la notoriété de Freud",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L'influence historique d'une théorie suffit à démontrer toutes ses propositions.",
+              "explanation": "Influence historique et soutien empirique sont deux questions distinctes.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels thèmes appartiennent à la tradition psychanalytique ou psychodynamique ?",
+              "explanation": "Cette tradition met notamment l'accent sur les processus inconscients, les conflits et l'histoire relationnelle.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Processus inconscients",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Conflits psychiques",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Histoire relationnelle",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Refus de toute expérience personnelle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi certaines propositions freudiennes classiques sont-elles difficiles à évaluer scientifiquement ?",
+              "explanation": "Elles peuvent être formulées de manière à expliquer des résultats opposés, sans observation claire capable de les réfuter.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Elles manquent parfois de critères de falsification explicites",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elles utilisent toujours des mesures trop précises",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elles ne parlent jamais de comportement",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elles ont toutes été rétractées",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne la possibilité qu'une proposition soit contredite par une observation ?",
+              "explanation": "Il s'agit de la falsifiabilité, ou réfutabilité.",
+              "acceptedAnswers": [
+                "falsifiabilité",
+                "falsifiabilite",
+                "réfutabilité",
+                "refutabilite"
+              ],
+              "position": 5,
+              "options": []
             }
           ]
         }

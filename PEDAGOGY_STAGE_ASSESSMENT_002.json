@@ -1,0 +1,122 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_002",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "grands-courants",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Comprendre les grands courants",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Comparer plusieurs explications psychologiques d'une même situation sans transformer les courants en étiquettes, en précisant pour chacun le mécanisme proposé, les prédictions, les données nécessaires, l'apport historique et les limites.",
+    "instructions": [
+      "Lire le cas CampusLang et séparer les comportements observés, les déclarations de Maya et les interprétations proposées par l'équipe.",
+      "Formuler une analyse behavioriste comprenant au moins une contingence opérante et, si elle est pertinente, une hypothèse de conditionnement classique.",
+      "Formuler une analyse cognitive avec un mécanisme délimité, une manipulation possible, une mesure et un résultat qui contredirait l'hypothèse.",
+      "Présenter ce qu'une perspective humaniste chercherait à comprendre dans l'expérience et les buts de Maya, sans présenter une valeur comme une preuve d'efficacité.",
+      "Présenter une hypothèse psychodynamique prudente, puis indiquer ce qui la rendrait difficile à tester et quelles données permettraient au moins de la préciser.",
+      "Comparer les quatre perspectives dans un tableau mécanisme-prédiction-donnée-limite et proposer une explication intégrée qui ne dépasse pas les informations disponibles.",
+      "Citer au moins quatre ressources de l'étape, dont une source historique primaire, et distinguer explicitement citation historique et preuve contemporaine."
+    ],
+    "case": "CampusLang propose une application facultative pour apprendre une langue. Maya, étudiante de première année, l'utilise chaque soir depuis six semaines. Au début, elle révisait surtout lorsque l'application affichait une série de jours consécutifs et lui attribuait des badges. Elle dit maintenant ressentir une tension dès qu'elle entend le son de rappel, même les jours où elle avait prévu de se reposer. Elle répond très vite aux exercices familiers mais échoue lorsqu'une consigne change légèrement. Lors d'un entretien, elle explique qu'elle veut parler avec sa grand-mère dans sa langue maternelle, mais qu'elle a honte de commettre des erreurs devant les autres. Un enseignant affirme que tout s'explique par les récompenses de l'application. Une collègue soutient que Maya manque simplement de confiance en elle. Un autre intervenant évoque un conflit inconscient lié aux attentes familiales, sans poser de question supplémentaire. L'équipe souhaite augmenter le nombre de rappels et vous demande quelle explication retenir. Aucune mesure antérieure, aucun groupe de comparaison et aucune information clinique ne sont disponibles.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dossier structuré de 1 200 à 1 500 mots comprenant un tableau comparatif et une conclusion intégrée.",
+    "conceptSlugs": [
+      "institutionnalisation-psychologie-scientifique",
+      "experimentation-mesure-introspection",
+      "structuralisme-fonctionnalisme",
+      "projet-behavioriste",
+      "conditionnement-classique",
+      "conditionnement-operant",
+      "revolution-cognitive",
+      "perspective-humaniste",
+      "psychanalyse-psychodynamique"
+    ],
+    "rubric": [
+      {
+        "criterion": "Exactitude historique et conceptuelle",
+        "weight": 20,
+        "requirements": [
+          "Les courants sont définis sans anachronisme majeur.",
+          "Conditionnement classique, conditionnement opérant et renforcement sont employés correctement.",
+          "Psychanalyse historique et approches psychodynamiques ultérieures ne sont pas confondues."
+        ]
+      },
+      {
+        "criterion": "Mécanismes et prédictions",
+        "weight": 25,
+        "requirements": [
+          "Chaque perspective comporte un mécanisme explicitement formulé.",
+          "Les analyses behavioriste et cognitive produisent des prédictions observables.",
+          "Les propositions ne sont pas de simples reformulations du comportement."
+        ]
+      },
+      {
+        "criterion": "Preuves, testabilité et limites",
+        "weight": 25,
+        "requirements": [
+          "Les données manquantes et explications alternatives sont identifiées.",
+          "Au moins un résultat susceptible de contredire chaque hypothèse testable est indiqué.",
+          "Influence historique, plausibilité et soutien empirique sont distingués."
+        ]
+      },
+      {
+        "criterion": "Comparaison et intégration",
+        "weight": 20,
+        "requirements": [
+          "Le tableau compare les perspectives selon les mêmes dimensions.",
+          "La conclusion combine les niveaux pertinents sans déclarer les courants équivalents.",
+          "La recommandation sur les rappels reste proportionnée aux données et envisage des effets indésirables."
+        ]
+      },
+      {
+        "criterion": "Sources et qualité de l'argumentation",
+        "weight": 10,
+        "requirements": [
+          "Au moins quatre ressources de l'étape sont citées précisément.",
+          "Une source primaire historique est présentée comme telle.",
+          "Le texte est structuré, nuancé et respecte le format demandé."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions associées puis réécrire uniquement les sections insuffisantes. La version révisée doit ajouter une prédiction réfutable, une donnée manquante et une limite pour chaque perspective concernée, tout en conservant la première version pour comparaison."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "REF-004-OPENSTAX-HISTORY",
+      "REF-004-WUNDT",
+      "REF-005-OPENSTAX-HISTORY",
+      "REF-005-OPENSTAX-CLASSICAL",
+      "REF-005-OPENSTAX-OPERANT",
+      "REF-005-WATSON",
+      "REF-006-OPENSTAX-HISTORY",
+      "REF-006-OPENSTAX-COGNITIVE",
+      "REF-006-OPENSTAX-HUMANISTIC",
+      "REF-006-OPENSTAX-PSYCHODYNAMIC"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas CampusLang est entièrement fictif.",
+        "Revue humaine requise pour vérifier l'équilibre entre histoire, testabilité et pluralité théorique.",
+        "Aucune conclusion clinique ou diagnostique n'est demandée."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas finale, de sa grille et de sa remédiation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
