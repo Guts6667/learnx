@@ -21,7 +21,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+    "types": [
+      "vite/client",
+      "vite-plugin-pwa/preact",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": ["src"],
   "exclude": ["src/server"]

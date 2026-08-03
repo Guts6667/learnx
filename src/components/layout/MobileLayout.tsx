@@ -1,6 +1,7 @@
 import type { ComponentChildren } from 'preact';
 
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
+import { PwaStatus } from '@/features/pwa/PwaStatus';
 
 interface MobileLayoutProps {
   children: ComponentChildren;
@@ -17,6 +18,7 @@ export function MobileLayout({ children }: MobileLayoutProps) {
           <span class="text-sm text-slate-400">Parcours personnel</span>
         </div>
       </header>
+      <PwaStatus />
       <main
         id="main-content"
         class="mx-auto max-w-xl px-5 py-8 pb-28"

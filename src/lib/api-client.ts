@@ -16,6 +16,26 @@ export class ApiClientError extends Error {
   }
 }
 
+function isMutation(method: string | undefined): boolean {
+  const normalizedMethod = method?.toUpperCase() ?? 'GET';
+
+  return normalizedMethod !== 'GET' && normalizedMethod !== 'HEAD';
+}
+
+function assertOnlineMutation(method: string | undefined): void {
+  if (
+    isMutation(method) &&
+    typeof navigator !== 'undefined' &&
+    navigator.onLine === false
+  ) {
+    throw new ApiClientError(
+      'OFFLINE_MUTATION_NOT_ALLOWED',
+      'Cette action nécessite une connexion internet.',
+      0,
+    );
+  }
+}
+
 async function getError(response: Response): Promise<ApiClientError> {
   try {
     const body = (await response.json()) as ApiErrorResponse;
@@ -38,6 +58,8 @@ export async function apiRequest<T>(
   path: string,
   init: RequestInit = {},
 ): Promise<T> {
+  assertOnlineMutation(init.method);
+
   const response = await fetch(path, {
     ...init,
     credentials: 'include',
