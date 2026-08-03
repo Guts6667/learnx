@@ -1,5 +1,7 @@
-import { handle } from 'hono/vercel';
-
 import { notesApp } from './app.js';
 
-export default handle(notesApp);
+export default {
+  async fetch(request: Request): Promise<Response> {
+    return await notesApp.fetch(request);
+  },
+};
