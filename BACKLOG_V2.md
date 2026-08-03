@@ -15,6 +15,8 @@ ont donc été audités par le code et les tests, pas par une session de product
 
 ### Cap V2
 
+**Statut : plan validé par l’utilisateur.**
+
 La V2 est un gros polish UI/UX construit sur un socle stable. Elle n’est pas une
 nouvelle vague fonctionnelle.
 
@@ -115,7 +117,7 @@ retarder ces deux jalons.
 - Tests service worker, déconnexion/changement de session et inspection du cache
   dans Chromium et Safari iOS.
 - Risque : régression de consultation hors ligne ; communiquer clairement la
-  nouvelle limite jusqu’au ticket V2-010.
+  nouvelle limite jusqu’au ticket V2-011.
 
 ## V2-002 — Borner la revue d’évaluation au propriétaire
 
@@ -344,6 +346,12 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
   téléphone, tout en gardant le mobile prioritaire.
 - Revoir la hiérarchie des pages Aujourd’hui, curriculum, leçon, quiz, exercice,
   notes, révisions, profil et admin.
+- Rendre les contenus pédagogiques longs et Markdown avec un sous-ensemble sûr :
+  titres, paragraphes, listes ordonnées/non ordonnées, emphase et liens.
+- Structurer les évaluations finales en sections distinctes objectif, consignes,
+  cas et grille, avec un rythme de lecture adapté au mobile.
+- Garantir que le contenu long utilise le scroll principal, sans scroll imbriqué,
+  et reste entièrement au-dessus de la navigation fixe et de la safe area.
 
 ### Hors périmètre
 
@@ -354,10 +362,16 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Maquettes et états documentés avant migration page par page.
 - Aucun débordement de 320 px à grand écran ; contraste AA et focus visibles.
 - Les états chargement, vide, erreur, brouillon et hors ligne sont distincts.
+- Aucun jeton Markdown brut ni HTML non sûr n’est rendu ; la numérotation est une
+  vraie liste sémantique.
+- Aucun texte n’est masqué à 320/390 px, avec tailles système iOS, zoom 200 % et
+  VoiceOver ; les liens et sources restent accessibles.
 
 ### Tests et risques
 
 - Régressions visuelles multi-viewport, axe, clavier et préférences de mouvement.
+- Tests de rendu Markdown, XSS, contenus très longs, 320/390 px, zoom et padding
+  navigation + safe area.
 - Risque de chantier massif : livrer par verticales sans mélanger la logique
   métier.
 
@@ -387,7 +401,42 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Tests sémantiques et audit automatisé des rôles.
 - Risque : conserver les liens éditoriaux dans les contenus et sources.
 
-## V2-010 — Politique hors ligne explicite et sûre
+## V2-010 — Refonte de la navigation principale
+
+**Priorité : P1. Dépendances : V2-008, V2-009.**
+
+### Périmètre
+
+- Remplacer la barre actuelle par cinq destinations avec icône et libellé court :
+  `Accueil`, `Parcours`, `Réviser`, `Notes`, `Profil`.
+- Utiliser un texte lisible de 13–14 px, une barre plus confortable et un état
+  actif qui ne repose pas sur un simple soulignement.
+- Respecter safe areas, zones tactiles, 320/390 px et tailles système iOS.
+- Adapter la navigation au desktop sans dupliquer ni perdre le contexte courant.
+
+### Hors périmètre
+
+- Nouvelles destinations métier ou personnalisation de la navigation.
+
+### Critères d’acceptation
+
+- Les cinq destinations restent visibles, distinctes et atteignables au clavier
+  comme au toucher.
+- L’état actif combine forme/couleur et `aria-current`, sans dépendre uniquement
+  de la couleur ou du soulignement.
+- VoiceOver annonce icône, libellé et page active sans répétition parasite.
+- Aucun libellé n’est tronqué ou masqué à 320/390 px et la safe area iPhone est
+  respectée.
+- La variante desktop conserve les mêmes destinations et une hiérarchie claire.
+
+### Tests et risques
+
+- Tests composants, VoiceOver, clavier, 320/390 px, zoom 200 %, tailles système
+  iOS et desktop.
+- Risque : sélectionner une famille d’icônes légère et accessible sans gonfler le
+  bundle.
+
+## V2-011 — Politique hors ligne explicite et sûre
 
 **Priorité : P1. Dépendances : V2-001, V2-003.**
 
@@ -418,9 +467,9 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Tests offline/reconnect/account-switch sur iOS et Chromium.
 - Risque sécurité élevé si le stockage privé local n’est pas cloisonné.
 
-## V2-011 — Accessibilité et matrice mobile
+## V2-012 — Accessibilité et matrice mobile
 
-**Priorité : P1. Dépendances : V2-007, V2-008, V2-009.**
+**Priorité : P1. Dépendances : V2-007 à V2-011.**
 
 ### Périmètre
 
