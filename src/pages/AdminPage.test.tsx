@@ -30,6 +30,7 @@ function curriculumResponse() {
         stages: [
           {
             id: 'stage-1',
+            isPublished: false,
             modules: [
               {
                 description: 'Résumé du module',
@@ -118,7 +119,7 @@ describe('AdminPage', () => {
     expect(await screen.findByText('Programme test')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Module test')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Leçon test')).toBeInTheDocument();
-    expect(screen.getAllByText('Brouillon')).toHaveLength(2);
+    expect(screen.getAllByText('Brouillon')).toHaveLength(3);
 
     fireEvent.input(screen.getByLabelText('Titre du module'), {
       target: { value: 'Module renommé' },
@@ -178,7 +179,7 @@ describe('AdminPage', () => {
 
     expect(
       await screen.findByText(
-        'Publication impossible : chaque notion obligatoire doit avoir une évaluation obligatoire.',
+        'Publication impossible : publiez au moins une leçon prête et vérifiez les évaluations des notions obligatoires.',
       ),
     ).toBeInTheDocument();
   });

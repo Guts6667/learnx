@@ -26,6 +26,7 @@ interface AdminModule {
 
 interface AdminStage {
   id: string;
+  isPublished: boolean;
   modules: AdminModule[];
   position: number;
   slug: string;
@@ -44,6 +45,17 @@ interface LessonPublicationState {
   id: string;
 }
 
+interface ModulePublicationState {
+  id: string;
+  lessons: LessonPublicationState[];
+}
+
+interface StagePublicationState {
+  assessments: Array<{ id: string }>;
+  id: string;
+  modules: ModulePublicationState[];
+}
+
 interface ModuleUpdate {
   description?: string;
   isPublished?: boolean;
@@ -58,6 +70,10 @@ interface LessonUpdate {
   title?: string;
 }
 
+interface StageUpdate {
+  isPublished: boolean;
+}
+
 export interface AdminRepository {
   findLessonForOwner(
     lessonId: string,
@@ -66,10 +82,18 @@ export interface AdminRepository {
   findModuleForOwner(
     moduleId: string,
     ownerId: string,
-  ): Promise<{ id: string } | null>;
+  ): Promise<ModulePublicationState | null>;
+  findStageForOwner(
+    stageId: string,
+    ownerId: string,
+  ): Promise<StagePublicationState | null>;
   listCurriculum(ownerId: string): Promise<AdminProgram[]>;
   updateLesson(lessonId: string, input: LessonUpdate): Promise<AdminLesson>;
   updateModule(moduleId: string, input: ModuleUpdate): Promise<AdminModule>;
+  updateStage(
+    stageId: string,
+    input: StageUpdate,
+  ): Promise<{ id: string; isPublished: boolean }>;
 }
 
 interface AdminAppOptions {
@@ -95,6 +119,7 @@ const lessonUpdateSchema = z
     title: z.string().trim().min(1).max(200).optional(),
   })
   .refine((input) => Object.keys(input).length > 0);
+const stageUpdateSchema = z.object({ isPublished: z.boolean() }).strict();
 
 const lessonSelect = {
   id: true,
@@ -145,7 +170,57 @@ export function createPrismaAdminRepository(
     async findModuleForOwner(moduleId, ownerId) {
       return client.module.findFirst({
         where: { id: moduleId, stage: { program: { ownerId } } },
-        select: { id: true },
+        select: {
+          id: true,
+          lessons: {
+            where: { isPublished: true },
+            select: {
+              concepts: {
+                where: { isRequired: true },
+                select: {
+                  assessments: {
+                    where: { isRequired: true },
+                    select: { id: true },
+                  },
+                },
+              },
+              id: true,
+            },
+          },
+        },
+      });
+    },
+    async findStageForOwner(stageId, ownerId) {
+      return client.stage.findFirst({
+        where: { id: stageId, program: { ownerId } },
+        select: {
+          assessments: {
+            where: { isRequired: true },
+            select: { id: true },
+          },
+          id: true,
+          modules: {
+            where: { isPublished: true },
+            select: {
+              id: true,
+              lessons: {
+                where: { isPublished: true },
+                select: {
+                  concepts: {
+                    where: { isRequired: true },
+                    select: {
+                      assessments: {
+                        where: { isRequired: true },
+                        select: { id: true },
+                      },
+                    },
+                  },
+                  id: true,
+                },
+              },
+            },
+          },
+        },
       });
     },
     async listCurriculum(ownerId) {
@@ -159,6 +234,7 @@ export function createPrismaAdminRepository(
             orderBy: { position: 'asc' },
             select: {
               id: true,
+              isPublished: true,
               modules: {
                 orderBy: { position: 'asc' },
                 select: moduleSelect,
@@ -184,6 +260,13 @@ export function createPrismaAdminRepository(
         where: { id: moduleId },
         data: input,
         select: moduleSelect,
+      });
+    },
+    async updateStage(stageId, input) {
+      return client.stage.update({
+        where: { id: stageId },
+        data: input,
+        select: { id: true, isPublished: true },
       });
     },
   };
@@ -215,6 +298,22 @@ function lessonNotReady(): ApiError {
   );
 }
 
+function moduleNotReady(): ApiError {
+  return new ApiError(
+    'LESSON_NOT_READY',
+    'A published module must contain at least one publishable lesson.',
+    409,
+  );
+}
+
+function stageNotReady(): ApiError {
+  return new ApiError(
+    'ASSESSMENT_NOT_READY',
+    'A published stage needs a final assessment and publishable content.',
+    409,
+  );
+}
+
 async function parseJson(request: Request): Promise<unknown> {
   try {
     return await request.json();
@@ -233,6 +332,21 @@ function parseIdentifier(value: string): string {
 
 function isLessonReadyForPublication(lesson: LessonPublicationState): boolean {
   return lesson.concepts.every((concept) => concept.assessments.length > 0);
+}
+
+function isModuleReadyForPublication(module: ModulePublicationState): boolean {
+  return (
+    module.lessons.length > 0 &&
+    module.lessons.every(isLessonReadyForPublication)
+  );
+}
+
+function isStageReadyForPublication(stage: StagePublicationState): boolean {
+  return (
+    stage.assessments.length > 0 &&
+    stage.modules.length > 0 &&
+    stage.modules.every(isModuleReadyForPublication)
+  );
 }
 
 export function createAdminApp(options: AdminAppOptions = {}) {
@@ -286,9 +400,36 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     );
 
     if (!ownedModule) throw notFound();
+    if (parsed.data.isPublished && !isModuleReadyForPublication(ownedModule)) {
+      throw moduleNotReady();
+    }
 
     return context.json({
       module: await repository.updateModule(moduleId, parsed.data),
+    });
+  });
+
+  app.patch('/api/admin/stages/:stageId', async (context) => {
+    const stageId = parseIdentifier(context.req.param('stageId'));
+    const parsed = stageUpdateSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+
+    if (!parsed.success) throw invalidRequest();
+
+    const repository = await getRepository();
+    const stage = await repository.findStageForOwner(
+      stageId,
+      context.get('user').id,
+    );
+
+    if (!stage) throw notFound();
+    if (parsed.data.isPublished && !isStageReadyForPublication(stage)) {
+      throw stageNotReady();
+    }
+
+    return context.json({
+      stage: await repository.updateStage(stageId, parsed.data),
     });
   });
 

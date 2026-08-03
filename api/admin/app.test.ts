@@ -7,6 +7,7 @@ const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
+const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
 
 function authentication(
   id = ownerId,
@@ -49,6 +50,7 @@ function createRepository() {
     title: 'Leçon test',
   };
   let lessonReady = true;
+  let finalAssessmentReady = true;
   module.lessons = [lesson];
 
   const repository: AdminRepository = {
@@ -64,8 +66,42 @@ function createRepository() {
     },
     async findModuleForOwner(id, requestedOwnerId) {
       return id === moduleId && requestedOwnerId === ownerId
-        ? { id: moduleId }
+        ? {
+            id: moduleId,
+            lessons: lesson.isPublished
+              ? [
+                  {
+                    concepts: [
+                      {
+                        assessments: lessonReady
+                          ? [{ id: 'assessment-1' }]
+                          : [],
+                      },
+                    ],
+                    id: lessonId,
+                  },
+                ]
+              : [],
+          }
         : null;
+    },
+    async findStageForOwner(id, requestedOwnerId) {
+      if (id !== stageId || requestedOwnerId !== ownerId) return null;
+
+      const publishedLesson = {
+        concepts: [
+          { assessments: lessonReady ? [{ id: 'assessment-1' }] : [] },
+        ],
+        id: lessonId,
+      };
+
+      return {
+        assessments: finalAssessmentReady ? [{ id: 'final-1' }] : [],
+        id: stageId,
+        modules: module.isPublished
+          ? [{ id: moduleId, lessons: [publishedLesson] }]
+          : [],
+      };
     },
     async listCurriculum(requestedOwnerId) {
       if (requestedOwnerId !== ownerId) return [];
@@ -76,7 +112,8 @@ function createRepository() {
           slug: 'programme-test',
           stages: [
             {
-              id: 'stage-1',
+              id: stageId,
+              isPublished: false,
               modules: [module],
               position: 1,
               slug: 'etape-test',
@@ -98,12 +135,19 @@ function createRepository() {
       module = { ...module, ...input };
       return module;
     },
+    async updateStage(id, input) {
+      if (id !== stageId) throw new Error('Unexpected stage.');
+      return { id: stageId, isPublished: input.isPublished };
+    },
   };
 
   return {
     repository,
     setLessonReady(value: boolean) {
       lessonReady = value;
+    },
+    setFinalAssessmentReady(value: boolean) {
+      finalAssessmentReady = value;
     },
   };
 }
@@ -255,5 +299,75 @@ describe('administration minimale', () => {
         lesson: { isPublished },
       });
     }
+  });
+
+  it('bloque la publication d’un module sans leçon publiée', async () => {
+    const repository = createRepository().repository;
+    const updateModule = vi.spyOn(repository, 'updateModule');
+    const app = createAdminApp({
+      authentication: authentication(),
+      repository,
+    });
+
+    const response = await app.request(
+      `http://localhost/api/admin/modules/${moduleId}`,
+      {
+        body: JSON.stringify({ isPublished: true }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(updateModule).not.toHaveBeenCalled();
+  });
+
+  it('bloque une étape sans évaluation finale ou contenu public prêt', async () => {
+    const fixture = createRepository();
+    fixture.setFinalAssessmentReady(false);
+    const updateStage = vi.spyOn(fixture.repository, 'updateStage');
+    const app = createAdminApp({
+      authentication: authentication(),
+      repository: fixture.repository,
+    });
+
+    const response = await app.request(
+      `http://localhost/api/admin/stages/${stageId}`,
+      {
+        body: JSON.stringify({ isPublished: true }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'ASSESSMENT_NOT_READY' },
+    });
+    expect(updateStage).not.toHaveBeenCalled();
+  });
+
+  it('publie une étape prête appartenant à l’admin', async () => {
+    const fixture = createRepository();
+    await fixture.repository.updateLesson(lessonId, { isPublished: true });
+    await fixture.repository.updateModule(moduleId, { isPublished: true });
+    const app = createAdminApp({
+      authentication: authentication(),
+      repository: fixture.repository,
+    });
+
+    const response = await app.request(
+      `http://localhost/api/admin/stages/${stageId}`,
+      {
+        body: JSON.stringify({ isPublished: true }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      stage: { id: stageId, isPublished: true },
+    });
   });
 });

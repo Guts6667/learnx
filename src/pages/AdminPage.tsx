@@ -11,6 +11,7 @@ import { TextField } from '@/components/ui/TextField';
 import {
   type AdminLesson,
   type AdminModule,
+  type AdminStage,
   useAdminCurriculumMutation,
   useAdminCurriculumQuery,
 } from '@/features/admin/queries';
@@ -27,7 +28,13 @@ function StatusBadge({ isPublished }: { isPublished: boolean }) {
 
 function getMutationError(error: unknown): string {
   if (error instanceof ApiClientError && error.code === 'LESSON_NOT_READY') {
-    return 'Publication impossible : chaque notion obligatoire doit avoir une évaluation obligatoire.';
+    return 'Publication impossible : publiez au moins une leçon prête et vérifiez les évaluations des notions obligatoires.';
+  }
+  if (
+    error instanceof ApiClientError &&
+    error.code === 'ASSESSMENT_NOT_READY'
+  ) {
+    return 'Publication impossible : l’étape doit avoir une évaluation finale et au moins un module publié contenant une leçon prête.';
   }
 
   return 'La modification n’a pas pu être enregistrée.';
@@ -204,6 +211,43 @@ function ModuleEditor({ module }: { module: AdminModule }) {
   );
 }
 
+function StageEditor({ stage }: { stage: AdminStage }) {
+  const mutation = useAdminCurriculumMutation();
+
+  async function togglePublication() {
+    try {
+      await mutation.updateStage(stage.id, !stage.isPublished);
+    } catch {
+      // L’erreur normalisée est présentée sous l’action.
+    }
+  }
+
+  return (
+    <section class="space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <h3 class="text-lg font-semibold text-cyan-200">{stage.title}</h3>
+          <StatusBadge isPublished={stage.isPublished} />
+        </div>
+        <Button
+          isLoading={mutation.isPending}
+          onClick={() => void togglePublication()}
+          size="sm"
+          variant={stage.isPublished ? 'danger' : 'primary'}
+        >
+          {stage.isPublished ? 'Dépublier l’étape' : 'Publier l’étape'}
+        </Button>
+      </div>
+      {mutation.error ? (
+        <ErrorState description={getMutationError(mutation.error)} />
+      ) : null}
+      {stage.modules.map((module) => (
+        <ModuleEditor key={module.id} module={module} />
+      ))}
+    </section>
+  );
+}
+
 export function AdminPage() {
   const session = useSessionQuery();
   const isAdmin = session.data?.user?.role === 'ADMIN';
@@ -244,12 +288,7 @@ export function AdminPage() {
         <section class="space-y-5" key={program.id}>
           <h2 class="text-2xl font-bold">{program.title}</h2>
           {program.stages.map((stage) => (
-            <section class="space-y-4" key={stage.id}>
-              <h3 class="text-lg font-semibold text-cyan-200">{stage.title}</h3>
-              {stage.modules.map((module) => (
-                <ModuleEditor key={module.id} module={module} />
-              ))}
-            </section>
+            <StageEditor key={stage.id} stage={stage} />
           ))}
         </section>
       ))}

@@ -23,8 +23,9 @@ export interface AdminModule {
   title: string;
 }
 
-interface AdminStage {
+export interface AdminStage {
   id: string;
+  isPublished: boolean;
   modules: AdminModule[];
   position: number;
   slug: string;
@@ -48,6 +49,10 @@ interface AdminModuleResponse {
 
 interface AdminLessonResponse {
   lesson: AdminLesson;
+}
+
+interface AdminStageResponse {
+  stage: Pick<AdminStage, 'id' | 'isPublished'>;
 }
 
 const adminCurriculumKey = ['admin', 'curriculum'] as const;
@@ -143,6 +148,20 @@ export function useAdminCurriculumMutation() {
       ),
     [execute],
   );
+  const updateStage = useCallback(
+    (stageId: string, isPublished: boolean) =>
+      execute(() =>
+        apiRequest<AdminStageResponse>(
+          `/api/admin/stages/${encodeURIComponent(stageId)}`,
+          {
+            body: JSON.stringify({ isPublished }),
+            headers: { 'content-type': 'application/json' },
+            method: 'PATCH',
+          },
+        ),
+      ),
+    [execute],
+  );
 
-  return { error, isPending, updateLesson, updateModule };
+  return { error, isPending, updateLesson, updateModule, updateStage };
 }
