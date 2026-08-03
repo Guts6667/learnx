@@ -1,0 +1,774 @@
+{
+  "specId": "PEDAGOGY_SPEC_017",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "outils-quantitatifs",
+  "moduleSlug": "statistiques-fondamentales",
+  "lesson": {
+    "title": "Tests et interprétation",
+    "slug": "tests-interpretation",
+    "summary": "Un test statistique confronte des données à un modèle explicite ; son interprétation utile combine valeur p, estimation, taille d'effet, intervalle d'incertitude, risques d'erreur, multiplicité, qualité du plan et importance pratique.",
+    "objectives": [
+      "Expliquer la logique d'un test d'hypothèse et interpréter correctement une valeur p.",
+      "Lire conjointement une estimation, une taille d'effet et un intervalle de confiance.",
+      "Distinguer erreurs de type I et II et repérer le risque créé par des analyses multiples.",
+      "Rédiger une conclusion qui sépare compatibilité statistique, importance pratique et limites de l'étude."
+    ],
+    "prerequisites": [
+      "Décrire une distribution par des résumés et des représentations adaptés.",
+      "Distinguer estimation ponctuelle, variabilité d'échantillonnage et intervalle de confiance."
+    ],
+    "estimatedMinutes": 180,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Un test d'hypothèse commence par une question, un plan d'analyse et un modèle décrivant ce que l'on attendrait sous une hypothèse nulle. La statistique de test résume l'écart entre les données et cette attente. La valeur p est la probabilité, si le modèle et l'hypothèse nulle retenus étaient valides, d'obtenir un résultat au moins aussi incompatible avec eux que celui observé. Elle est donc conditionnelle au modèle, aux hypothèses du test et aux choix d'analyse.",
+          "sourceKeys": [
+            "asa-pvalues-2016",
+            "openstax-stats-9-introduction"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une valeur p de 0,03 ne signifie ni qu'il existe 3 % de chances que l'hypothèse nulle soit vraie, ni que le résultat a 97 % de chances de se reproduire. Une grande valeur p ne prouve pas non plus l'absence d'effet. Enfin, la valeur p ne mesure ni la taille d'un effet ni son importance scientifique ou pratique. Transformer arbitrairement p < 0,05 en verdict « vrai » et p ≥ 0,05 en verdict « faux » perd de l'information et encourage des conclusions trop catégoriques.",
+          "sourceKeys": [
+            "asa-pvalues-2016",
+            "wasserstein-beyond-p-2019"
+          ]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "L'estimation indique la direction et l'amplitude observées d'une différence ou d'une association. Une taille d'effet place cette amplitude sur une échelle interprétable, brute ou standardisée. Un intervalle de confiance construit par une procédure donnée fournit un ensemble de valeurs compatibles avec les données et le modèle à un niveau annoncé ; sa largeur renseigne sur la précision. Il n'annule ni un biais de mesure, ni un mauvais plan, ni une population mal choisie.",
+          "sourceKeys": [
+            "openstax-stats-8-intervals",
+            "wasserstein-beyond-p-2019"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Rejeter une hypothèse nulle alors qu'elle est vraie constitue une erreur de type I ; ne pas la rejeter alors qu'une différence pertinente existe constitue une erreur de type II. La puissance est la probabilité de détecter un effet défini lorsque le modèle alternatif correspondant est vrai. Répéter de nombreux tests puis ne retenir que les plus petites valeurs p augmente le risque de fausses alertes dans la famille d'analyses. Une stratégie transparente précise les analyses prévues, rapporte l'ensemble pertinent et utilise, lorsque nécessaire, une méthode adaptée à la multiplicité.",
+          "sourceKeys": [
+            "openstax-stats-9-2-errors",
+            "asa-pvalues-2016",
+            "wasserstein-beyond-p-2019"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "Deux études peuvent produire la même valeur p avec des effets très différents. Dans un très grand échantillon, une différence minuscule peut être peu compatible avec l'hypothèse nulle tout en restant négligeable pour la décision. Dans un petit échantillon, un effet potentiellement important peut être estimé avec un intervalle très large et une valeur p élevée. L'importance pratique se juge avec l'échelle de mesure, un seuil pertinent défini dans le contexte, les coûts, les bénéfices et les effets indésirables — jamais avec la valeur p seule.",
+          "sourceKeys": [
+            "asa-pvalues-2016",
+            "wasserstein-beyond-p-2019",
+            "openstax-stats-8-intervals"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Une conclusion proportionnée nomme la population, l'issue et le contraste étudiés ; rapporte l'estimation, son intervalle et la valeur p exacte lorsqu'elle est utile ; indique les analyses multiples et les hypothèses importantes ; compare l'effet à un repère pratique justifié ; puis explicite les limites du plan, de la mesure et de la généralisation. Elle évite les mots « prouve », « aucun effet » et « important » lorsqu'ils ne sont pas soutenus.",
+          "sourceKeys": [
+            "asa-pvalues-2016",
+            "wasserstein-beyond-p-2019"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "asa-pvalues-2016",
+        "type": "article",
+        "title": "The ASA's Statement on p-Values: Context, Process, and Purpose",
+        "author": "Ronald L. Wasserstein et Nicole A. Lazar",
+        "url": "https://doi.org/10.1080/00031305.2016.1154108",
+        "citation": "Wasserstein, R. L., & Lazar, N. A. (2016). The ASA's statement on p-values: Context, process, and purpose. The American Statistician, 70(2), 129–133. https://doi.org/10.1080/00031305.2016.1154108",
+        "description": "Lire les six principes de la déclaration puis corriger quatre interprétations erronées d'une valeur p.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1
+      },
+      {
+        "key": "wasserstein-beyond-p-2019",
+        "type": "article",
+        "title": "Moving to a World Beyond ‘p < 0.05’",
+        "author": "Ronald L. Wasserstein, Allen L. Schirm et Nicole A. Lazar",
+        "url": "https://doi.org/10.1080/00031305.2019.1583913",
+        "citation": "Wasserstein, R. L., Schirm, A. L., & Lazar, N. A. (2019). Moving to a world beyond ‘p < 0.05’. The American Statistician, 73(sup1), 1–19. https://doi.org/10.1080/00031305.2019.1583913",
+        "description": "Lire les sections d'ouverture sur l'abandon des verdicts binaires et relever les trois recommandations : accepter l'incertitude, être réfléchi et ouvert.",
+        "isRequired": false,
+        "estimatedMinutes": 35,
+        "position": 2
+      },
+      {
+        "key": "openstax-stats-9-introduction",
+        "type": "book_chapter",
+        "title": "Introductory Statistics 2e — Chapter 9: Hypothesis Testing with One Sample",
+        "author": "Barbara Illowsky et Susan Dean",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/9-introduction",
+        "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, chapter 9 introduction. OpenStax, Rice University.",
+        "description": "Lire l'introduction du chapitre 9 et reconstruire les étapes d'un test en distinguant hypothèses, données, décision statistique et conclusion en contexte.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "openstax-stats-9-2-errors",
+        "type": "book_chapter",
+        "title": "Introductory Statistics 2e — 9.2 Outcomes and the Type I and Type II Errors",
+        "author": "Barbara Illowsky et Susan Dean",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/9-2-outcomes-and-the-type-i-and-the-type-ii-errors",
+        "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 9.2. OpenStax, Rice University.",
+        "description": "Lire le tableau des quatre issues et formuler les erreurs de type I et II pour deux décisions concrètes.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "openstax-stats-8-intervals",
+        "type": "book_chapter",
+        "title": "Introductory Statistics 2e — Chapter 8: Confidence Intervals",
+        "author": "Barbara Illowsky et Susan Dean",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/8-introduction",
+        "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, chapter 8 introduction. OpenStax, Rice University.",
+        "description": "Lire l'introduction du chapitre 8 et distinguer estimation ponctuelle, marge d'erreur, largeur d'intervalle et précision.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Logique du test et valeur p",
+        "slug": "test-hypothese-valeur-p",
+        "description": "Une valeur p quantifie, sous le modèle et l'hypothèse nulle, la probabilité d'un résultat au moins aussi incompatible que celui observé ; elle n'est ni la probabilité de l'hypothèse ni un verdict scientifique.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "asa-pvalues-2016",
+          "openstax-stats-9-introduction"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Test et valeur p",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Estimation, taille d'effet et incertitude",
+        "slug": "estimation-taille-effet-incertitude",
+        "description": "L'estimation et la taille d'effet décrivent l'amplitude, tandis que l'intervalle exprime la précision et les valeurs compatibles avec les données sous les hypothèses du modèle.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-stats-8-intervals",
+          "wasserstein-beyond-p-2019"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Estimation et incertitude",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Erreurs, multiplicité et importance pratique",
+        "slug": "erreurs-multiplicite-importance-pratique",
+        "description": "Les risques d'erreur dépendent du plan et des décisions ; les analyses multiples exigent transparence et contrôle, et l'importance pratique se juge dans le contexte plutôt qu'avec un seuil de significativité.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-stats-9-2-errors",
+          "asa-pvalues-2016",
+          "wasserstein-beyond-p-2019"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Erreurs et importance pratique",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Décoder un résultat de test",
+        "description": "Pour six comptes rendus fictifs, distinguer hypothèse nulle, estimation, valeur p, décision statistique et conclusion ; réécrire chaque interprétation incorrecte en une phrase conditionnelle au modèle.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Auditer les analyses multiples",
+        "description": "Examiner un plan fictif comportant douze tests, identifier analyses prévues et exploratoires, résultats omis et risque de sélection, puis proposer une stratégie transparente en 200 à 250 mots.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Rédiger une conclusion proportionnée",
+        "description": "À partir d'une estimation, d'une taille d'effet, d'un intervalle, d'une valeur p et d'un seuil pratique fournis, rédiger 250 à 350 mots séparant résultat statistique, importance pratique, incertitude et limites.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-017-ASA-2016",
+        "type": "professional_statement",
+        "authors": [
+          "Wasserstein, R. L.",
+          "Lazar, N. A."
+        ],
+        "organization": "American Statistical Association",
+        "title": "The ASA's Statement on p-Values: Context, Process, and Purpose",
+        "year": 2016,
+        "edition": null,
+        "publication": "The American Statistician, 70(2), 129–133",
+        "doi": "https://doi.org/10.1080/00031305.2016.1154108",
+        "url": "https://doi.org/10.1080/00031305.2016.1154108",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Consultation ouverte via l'éditeur ; droits ASA/Taylor & Francis",
+        "status": "verified",
+        "notes": "Déclaration professionnelle formelle et éditorial méthodologique, non étude empirique ; DOI, auteurs, volume et pages vérifiés."
+      },
+      {
+        "id": "REF-017-WASSERSTEIN-2019",
+        "type": "methodological_editorial",
+        "authors": [
+          "Wasserstein, R. L.",
+          "Schirm, A. L.",
+          "Lazar, N. A."
+        ],
+        "organization": "American Statistical Association",
+        "title": "Moving to a World Beyond ‘p < 0.05’",
+        "year": 2019,
+        "edition": null,
+        "publication": "The American Statistician, 73(sup1), 1–19",
+        "doi": "https://doi.org/10.1080/00031305.2019.1583913",
+        "url": "https://doi.org/10.1080/00031305.2019.1583913",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-ND 4.0",
+        "status": "verified",
+        "notes": "Éditorial méthodologique du numéro spécial ; DOI, auteurs, volume, supplément et pages vérifiés."
+      },
+      {
+        "id": "REF-017-OPENSTAX-CH9",
+        "type": "textbook_chapter",
+        "authors": [
+          "Illowsky, B.",
+          "Dean, S."
+        ],
+        "organization": "OpenStax, Rice University",
+        "title": "Introductory Statistics 2e — Chapter 9: Hypothesis Testing with One Sample",
+        "year": 2023,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/9-introduction",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Introduction du chapitre et section 9.2 vérifiées ; manuel débutant utilisé pour la mécanique des tests et les erreurs."
+      },
+      {
+        "id": "REF-017-OPENSTAX-CH8",
+        "type": "textbook_chapter",
+        "authors": [
+          "Illowsky, B.",
+          "Dean, S."
+        ],
+        "organization": "OpenStax, Rice University",
+        "title": "Introductory Statistics 2e — Chapter 8: Confidence Intervals",
+        "year": 2023,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/8-introduction",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Introduction vérifiée pour estimation ponctuelle, intervalle et précision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-ASA-2016",
+            "locator": "principes 1 et 2, pp. 131–132",
+            "supports": "Définition conditionnelle de la valeur p et dépendance au modèle."
+          },
+          {
+            "referenceId": "REF-017-OPENSTAX-CH9",
+            "locator": "chapitre 9, introduction, étapes du test",
+            "supports": "Enchaînement hypothèses, données, analyse, décision et conclusion."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Déclaration de référence et manuel universitaire convergent sur la logique générale.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-ASA-2016",
+            "locator": "principes 2, 3, 5 et 6, pp. 131–132",
+            "supports": "La valeur p ne donne ni la probabilité de l'hypothèse, ni la taille ou l'importance de l'effet, ni une preuve complète."
+          },
+          {
+            "referenceId": "REF-017-WASSERSTEIN-2019",
+            "locator": "pp. 1–4, sections sur les seuils et la dichotomisation",
+            "supports": "Abandon des verdicts scientifiques fondés sur le seul passage d'un seuil."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Les deux textes de l'ASA visent directement ces erreurs d'interprétation.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-OPENSTAX-CH8",
+            "locator": "chapitre 8, introduction, paragraphes sur estimation ponctuelle, intervalle et marge d'erreur",
+            "supports": "Rôle de l'estimation et largeur de l'intervalle dans l'expression de la précision."
+          },
+          {
+            "referenceId": "REF-017-WASSERSTEIN-2019",
+            "locator": "pp. 4–8, recommandations de rapport complet et d'acceptation de l'incertitude",
+            "supports": "Nécessité de rapporter taille d'effet et incertitude dans le contexte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel et éditorial méthodologique soutiennent conjointement estimation et prudence d'interprétation.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-OPENSTAX-CH9",
+            "locator": "section 9.2, tableau des quatre issues et définitions de alpha, bêta et puissance",
+            "supports": "Définitions des erreurs de type I et II et de la puissance."
+          },
+          {
+            "referenceId": "REF-017-ASA-2016",
+            "locator": "principe 4 et discussion sur analyses multiples et rapport sélectif, p. 132",
+            "supports": "Importance de la transparence face à la multiplicité et à la sélection."
+          },
+          {
+            "referenceId": "REF-017-WASSERSTEIN-2019",
+            "locator": "pp. 8–12, ouverture, transparence et choix analytiques",
+            "supports": "Rapport complet des décisions et des analyses."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les définitions sont établies ; la réponse exacte à la multiplicité dépend ensuite du plan d'analyse.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-ASA-2016",
+            "locator": "principe 5, p. 132",
+            "supports": "La significativité ne mesure ni taille d'effet ni importance."
+          },
+          {
+            "referenceId": "REF-017-WASSERSTEIN-2019",
+            "locator": "pp. 4–8, importance pratique et contexte",
+            "supports": "Évaluation des résultats au-delà d'un seuil statistique."
+          },
+          {
+            "referenceId": "REF-017-OPENSTAX-CH8",
+            "locator": "chapitre 8, introduction, intervalle et marge d'erreur",
+            "supports": "Lien entre largeur de l'intervalle et précision de l'estimation."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Le principe ASA vise exactement la confusion entre significativité et importance.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-017-ASA-2016",
+            "locator": "principes 3 à 6, pp. 131–132",
+            "supports": "Rapport complet, transparence et limites d'une valeur p isolée."
+          },
+          {
+            "referenceId": "REF-017-WASSERSTEIN-2019",
+            "locator": "pp. 1–12, recommandations éditoriales générales",
+            "supports": "Conclusion nuancée, contextualisée et ouverte sur l'incertitude."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le gabarit est une synthèse pédagogique originale fidèle aux recommandations des deux textes.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "asa-pvalues-2016",
+        "referenceIds": [
+          "REF-017-ASA-2016"
+        ],
+        "pedagogicalRationale": "Texte d'autorité concis qui corrige directement les contresens les plus fréquents sur la valeur p.",
+        "learnerInstructions": "Lire les six principes et reformuler chacun avec un exemple.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page et PDF de l'éditeur ; texte anglais structuré en six principes.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Le DOI redirige vers Taylor & Francis ; métadonnées et texte consultés."
+      },
+      {
+        "resourceKey": "wasserstein-beyond-p-2019",
+        "referenceIds": [
+          "REF-017-WASSERSTEIN-2019"
+        ],
+        "pedagogicalRationale": "Approfondit le passage d'un verdict binaire à une communication contextualisée et transparente.",
+        "learnerInstructions": "Lire l'ouverture et relever les recommandations qui changent la manière de conclure.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Article HTML/PDF en anglais ; ressource facultative plus longue.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Le DOI redirige vers l'article ouvert de Taylor & Francis."
+      },
+      {
+        "resourceKey": "openstax-stats-9-introduction",
+        "referenceIds": [
+          "REF-017-OPENSTAX-CH9"
+        ],
+        "pedagogicalRationale": "Présente la mécanique minimale d'un test avant les précautions d'interprétation.",
+        "learnerInstructions": "Reconstituer les cinq étapes du test et nommer la décision permise.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible et compatible mobile ; manuel complet disponible en ligne.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-stats-9-2-errors",
+        "referenceIds": [
+          "REF-017-OPENSTAX-CH9"
+        ],
+        "pedagogicalRationale": "Relie les erreurs de décision à des conséquences concrètes plutôt qu'à des symboles seuls.",
+        "learnerInstructions": "Lire le tableau des quatre issues et écrire les deux erreurs dans deux contextes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible et tableau textuel.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-stats-8-intervals",
+        "referenceIds": [
+          "REF-017-OPENSTAX-CH8"
+        ],
+        "pedagogicalRationale": "Fournit une introduction accessible à l'estimation ponctuelle, à la marge d'erreur et à la précision.",
+        "learnerInstructions": "Distinguer estimation, marge d'erreur, bornes et niveau de confiance sur deux exemples.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible et compatible mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "test-hypothese-valeur-p",
+        "assessmentTitle": "Mini-évaluation — Test et valeur p",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que décrit correctement une valeur p ?",
+            "explanation": "Elle est calculée conditionnellement au modèle et à l'hypothèse nulle, pour des résultats au moins aussi incompatibles que celui observé.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "La probabilité, sous le modèle nul, d'un résultat au moins aussi incompatible", "isCorrect": true, "position": 1},
+              {"label": "La probabilité que l'hypothèse nulle soit vraie", "isCorrect": false, "position": 2},
+              {"label": "La probabilité exacte de réplication", "isCorrect": false, "position": 3},
+              {"label": "La taille de l'effet observé", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une valeur p de 0,03 signifie qu'il reste 3 % de chances que l'hypothèse nulle soit vraie.",
+            "explanation": "La valeur p conditionne sur l'hypothèse nulle ; elle ne lui attribue pas une probabilité.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {"label": "Vrai", "isCorrect": false, "position": 1},
+              {"label": "Faux", "isCorrect": true, "position": 2}
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations conditionnent l'interprétation d'une valeur p ?",
+            "explanation": "Plan, modèle, hypothèses et choix analytiques déterminent ce que mesure la valeur p.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {"label": "Le plan d'étude", "isCorrect": true, "position": 1},
+              {"label": "Les hypothèses du modèle", "isCorrect": true, "position": 2},
+              {"label": "Les choix d'analyse", "isCorrect": true, "position": 3},
+              {"label": "La seule présence du nombre 0,05", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une analyse préspécifiée produit p = 0,18. Quelle formulation est défendable ?",
+            "explanation": "Une grande valeur p ne prouve pas l'absence d'effet ; elle indique que les données ne fournissent pas ici une forte incompatibilité avec le modèle nul.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "Les données ne suffisent pas à rejeter le modèle nul selon ce test", "isCorrect": true, "position": 1},
+              {"label": "L'effet est exactement nul", "isCorrect": false, "position": 2},
+              {"label": "Le modèle nul a 82 % de chances d'être vrai", "isCorrect": false, "position": 3},
+              {"label": "L'étude prouve l'équivalence", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le passage de p = 0,049 à p = 0,051 transforme à lui seul la conclusion scientifique.",
+            "explanation": "Deux valeurs aussi proches n'autorisent pas des verdicts opposés sans considérer estimation, incertitude, plan et contexte.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {"label": "Vrai", "isCorrect": false, "position": 1},
+              {"label": "Faux", "isCorrect": true, "position": 2}
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "estimation-taille-effet-incertitude",
+        "assessmentTitle": "Mini-évaluation — Estimation et incertitude",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle information décrit directement l'amplitude observée d'une différence ?",
+            "explanation": "L'estimation ou la taille d'effet porte sur l'amplitude ; la valeur p porte sur une incompatibilité conditionnelle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "L'estimation de la différence", "isCorrect": true, "position": 1},
+              {"label": "Le seuil 0,05", "isCorrect": false, "position": 2},
+              {"label": "Le nom du logiciel", "isCorrect": false, "position": 3},
+              {"label": "Le rang de publication", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que signale surtout un intervalle très large autour d'une estimation ?",
+            "explanation": "Un intervalle large indique une estimation peu précise et de nombreuses valeurs compatibles avec les données et le modèle.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {"label": "Une forte incertitude sur l'amplitude", "isCorrect": true, "position": 1},
+              {"label": "Une absence certaine de biais", "isCorrect": false, "position": 2},
+              {"label": "Une causalité démontrée", "isCorrect": false, "position": 3},
+              {"label": "Une importance pratique automatique", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un intervalle étroit corrige automatiquement une mesure systématiquement biaisée.",
+            "explanation": "La précision ne supprime pas un biais systématique de mesure ou de plan.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {"label": "Vrai", "isCorrect": false, "position": 1},
+              {"label": "Faux", "isCorrect": true, "position": 2}
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il rapporter pour interpréter l'amplitude et l'incertitude ?",
+            "explanation": "Estimation, échelle, intervalle et taille d'effet répondent à des questions complémentaires.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "L'estimation sur son échelle", "isCorrect": true, "position": 1},
+              {"label": "L'intervalle de confiance", "isCorrect": true, "position": 2},
+              {"label": "Une taille d'effet pertinente", "isCorrect": true, "position": 3},
+              {"label": "Uniquement significatif ou non significatif", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Deux études estiment le même effet ; l'une a un intervalle beaucoup plus étroit. Que peut-on dire d'abord ?",
+            "explanation": "Sous leurs hypothèses respectives, l'étude à intervalle plus étroit estime l'effet avec davantage de précision.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {"label": "Son estimation est plus précise", "isCorrect": true, "position": 1},
+              {"label": "Elle est nécessairement sans biais", "isCorrect": false, "position": 2},
+              {"label": "Son effet est plus grand", "isCorrect": false, "position": 3},
+              {"label": "Elle prouve une généralisation universelle", "isCorrect": false, "position": 4}
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "erreurs-multiplicite-importance-pratique",
+        "assessmentTitle": "Mini-évaluation — Erreurs et importance pratique",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qu'est-ce qu'une erreur de type I ?",
+            "explanation": "Elle consiste à rejeter l'hypothèse nulle alors qu'elle est vraie dans le cadre du modèle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "Rejeter une hypothèse nulle vraie", "isCorrect": true, "position": 1},
+              {"label": "Ne pas rejeter une hypothèse nulle fausse", "isCorrect": false, "position": 2},
+              {"label": "Calculer une médiane", "isCorrect": false, "position": 3},
+              {"label": "Rapporter un intervalle", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qu'est-ce qu'une erreur de type II ?",
+            "explanation": "Elle consiste à ne pas rejeter l'hypothèse nulle alors que l'effet défini par l'alternative existe.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {"label": "Ne pas rejeter une hypothèse nulle fausse", "isCorrect": true, "position": 1},
+              {"label": "Rejeter une hypothèse nulle vraie", "isCorrect": false, "position": 2},
+              {"label": "Choisir un seuil à l'avance", "isCorrect": false, "position": 3},
+              {"label": "Décrire une dispersion", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles pratiques réduisent les conclusions trompeuses lors d'analyses multiples ?",
+            "explanation": "Préspécification, rapport complet et méthode de contrôle adaptée rendent la multiplicité visible et traitable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {"label": "Préspécifier les analyses principales", "isCorrect": true, "position": 1},
+              {"label": "Rapporter aussi les analyses non concluantes", "isCorrect": true, "position": 2},
+              {"label": "Employer un contrôle adapté lorsque nécessaire", "isCorrect": true, "position": 3},
+              {"label": "Ne montrer que la plus petite valeur p", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une différence statistiquement détectable est nécessairement assez grande pour changer une décision pratique.",
+            "explanation": "L'importance pratique dépend de l'amplitude, du contexte, des coûts, bénéfices et effets indésirables.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "Vrai", "isCorrect": false, "position": 1},
+              {"label": "Faux", "isCorrect": true, "position": 2}
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir une conclusion proportionnée ?",
+            "explanation": "Elle combine estimation, incertitude, transparence analytique, repère pratique et limites.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {"label": "Estimation et intervalle", "isCorrect": true, "position": 1},
+              {"label": "Analyses multiples pertinentes", "isCorrect": true, "position": 2},
+              {"label": "Importance pratique et limites", "isCorrect": true, "position": 3},
+              {"label": "Un verdict fondé sur 0,05 seulement", "isCorrect": false, "position": 4}
+            ]
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine de statistique appliquée requise avant publication.",
+        "La leçon refuse explicitement les contresens P(H0 | données), la dichotomisation automatique et la confusion entre significativité et importance.",
+        "Les DOI redirigent vers les pages éditeur ; l'accessibilité doit être revérifiée dans une session non authentifiée lors de la revue humaine."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, des sources, de trois exercices et de quinze questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

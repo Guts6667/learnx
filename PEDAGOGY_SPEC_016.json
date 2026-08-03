@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_016",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "outils-quantitatifs",
+  "moduleSlug": "statistiques-fondamentales",
+  "lesson": {
+    "title": "Distributions et incertitude",
+    "slug": "distributions-incertitude",
+    "summary": "Une moyenne isolée ne décrit ni la forme des données ni leur variabilité. Cette leçon distingue la dispersion des observations de l'incertitude d'une estimation, puis introduit l'erreur standard et les intervalles de confiance comme propriétés d'un processus d'échantillonnage soumis à des hypothèses.",
+    "objectives": [
+      "Décrire une distribution par sa forme, sa position et sa dispersion sans supposer qu'elle est normale.",
+      "Distinguer variabilité des observations et variabilité d'un estimateur entre échantillons.",
+      "Interpréter l'erreur standard comme l'écart-type d'une distribution d'échantillonnage.",
+      "Interpréter un intervalle de confiance par sa procédure de couverture et en expliciter les limites."
+    ],
+    "prerequisites": [
+      "Calculer et interpréter une moyenne, une médiane et un écart-type.",
+      "Distinguer population, échantillon, paramètre et statistique."
+    ],
+    "estimatedMinutes": 150,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Une distribution décrit comment les valeurs se répartissent. On examine ensemble sa position, sa dispersion et sa forme : symétrie ou asymétrie, concentration, queues, valeurs atypiques et présence éventuelle de plusieurs groupes. Deux séries peuvent avoir la même moyenne et le même écart-type tout en présentant des formes différentes. Un graphique adapté reste donc nécessaire avant d'appliquer un résumé ou un modèle ; la forme en cloche n'est jamais une hypothèse par défaut imposée aux données.",
+          "sourceKeys": ["nist-distribution-location-spread-shape", "openstax-intro-stats-2e-2-7"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La dispersion décrit l'éloignement des observations entre elles ou autour d'un centre. L'écart-type s'exprime dans l'unité des données et augmente généralement lorsque les valeurs s'étalent davantage autour de la moyenne. Il est sensible aux valeurs extrêmes et doit être lu avec la forme de la distribution. Il ne mesure ni la qualité d'une étude ni l'incertitude de la moyenne : une population peut être très hétérogène tout en permettant une estimation précise de sa moyenne si l'échantillonnage est approprié et suffisamment informatif.",
+          "sourceKeys": ["openstax-intro-stats-2e-2-7", "nist-distribution-location-spread-shape"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Si l'on tirait de nombreux échantillons de même taille selon le même protocole et calculait leur moyenne, ces moyennes formeraient une distribution d'échantillonnage. Son écart-type est l'erreur standard de la moyenne. Sous un échantillonnage aléatoire indépendant, elle vaut σ/√n lorsque l'écart-type de la population σ est connu ; en pratique, σ est souvent estimé. Augmenter n réduit alors l'erreur standard selon une racine carrée : multiplier la taille par quatre la divise approximativement par deux. Cela réduit l'incertitude aléatoire, pas un biais de sélection ou de mesure.",
+          "sourceKeys": ["openstax-intro-stats-2e-7-1"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Une population de scores possède une moyenne inconnue. Deux équipes appliquent le même échantillonnage aléatoire : A interroge 25 personnes et B en interroge 100. À dispersion de population comparable, l'erreur standard de la moyenne de B est environ la moitié de celle de A, car √100 vaut deux fois √25. Si B recrute uniquement des volontaires très motivés, sa moyenne peut néanmoins rester systématiquement décalée : une petite erreur standard autour d'une estimation biaisée ne rend pas l'estimation valide pour toute la population.",
+          "sourceKeys": ["openstax-intro-stats-2e-7-1"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Un intervalle de confiance associe une estimation ponctuelle à une marge d'incertitude calculée selon un modèle et des conditions. Pour une procédure à 95 %, si l'on répétait correctement l'échantillonnage et le calcul un grand nombre de fois, environ 95 % des intervalles ainsi produits contiendraient le paramètre fixe. Après calcul, l'intervalle obtenu contient ou non ce paramètre : le niveau de 95 % ne signifie ni que 95 % des individus sont dans l'intervalle, ni que le paramètre a 95 % de probabilité d'y être. Sa largeur renseigne sur la précision conditionnelle, sans garantir représentativité, absence de biais ou importance pratique.",
+          "sourceKeys": ["nist-confidence-intervals-7-1-4", "openstax-intro-stats-2e-7-1"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-distribution-location-spread-shape",
+        "type": "document",
+        "title": "NIST/SEMATECH e-Handbook — Distribution (Location, Spread and Shape)",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://www.itl.nist.gov/div898/handbook/ppc/section1/ppc131.htm",
+        "citation": "National Institute of Standards and Technology. (n.d.). Distribution (Location, Spread and Shape). In NIST/SEMATECH e-Handbook of Statistical Methods.",
+        "description": "Lire la page et décrire trois petits histogrammes en séparant explicitement position, dispersion et forme.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "openstax-intro-stats-2e-2-7",
+        "type": "book_chapter",
+        "title": "Introductory Statistics 2e — 2.7 Measures of the Spread of the Data",
+        "author": "Barbara Illowsky et Susan Dean",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+        "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.7. OpenStax.",
+        "description": "Lire l'introduction et les passages sur l'écart-type ; comparer deux séries de même moyenne mais de dispersions différentes.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 2
+      },
+      {
+        "key": "openstax-intro-stats-2e-7-1",
+        "type": "book_chapter",
+        "title": "Introductory Statistics 2e — 7.1 The Central Limit Theorem for Sample Means",
+        "author": "Barbara Illowsky et Susan Dean",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/7-1-the-central-limit-theorem-for-sample-means-averages",
+        "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 7.1. OpenStax.",
+        "description": "Lire jusqu'à la définition de l'erreur standard et simuler mentalement l'effet du passage de n = 25 à n = 100.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 3
+      },
+      {
+        "key": "nist-confidence-intervals-7-1-4",
+        "type": "document",
+        "title": "NIST/SEMATECH e-Handbook — What are confidence intervals?",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc14.htm",
+        "citation": "National Institute of Standards and Technology. (n.d.). What are confidence intervals? In NIST/SEMATECH e-Handbook of Statistical Methods.",
+        "description": "Lire le passage Confidence levels et reformuler l'interprétation fréquentiste en utilisant des échantillons répétés.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Forme et variabilité d’une distribution",
+        "slug": "forme-variabilite-distribution",
+        "description": "Une distribution se décrit conjointement par sa position, sa dispersion et sa forme ; aucun résumé numérique isolé ne remplace l'examen du motif des données.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["nist-distribution-location-spread-shape", "openstax-intro-stats-2e-2-7"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Distribution et variabilité", "questionCount": 5}
+      },
+      {
+        "title": "Échantillonnage et erreur standard",
+        "slug": "echantillonnage-erreur-standard",
+        "description": "L'erreur standard mesure la variabilité d'un estimateur entre échantillons répétés et diminue avec l'information disponible sous les conditions du modèle.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-intro-stats-2e-7-1"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Erreur standard", "questionCount": 5}
+      },
+      {
+        "title": "Intervalle de confiance et limites",
+        "slug": "intervalle-confiance-limites",
+        "description": "Un intervalle de confiance quantifie une incertitude d'échantillonnage selon une procédure et des hypothèses, sans mesurer la dispersion individuelle ni supprimer les biais.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["nist-confidence-intervals-7-1-4", "openstax-intro-stats-2e-7-1"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Intervalle de confiance", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Comparer deux distributions",
+        "description": "Pour les séries A = [4, 5, 5, 5, 6] et B = [1, 3, 5, 7, 9], calculer ou vérifier la même moyenne, comparer étendue et dispersion, puis expliquer en 100 mots pourquoi la moyenne seule masque une différence importante.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Simuler quatre tailles d’échantillon",
+        "description": "À partir d'un écart-type de population fictif égal à 12, calculer σ/√n pour n = 9, 36, 144 et 576 ; décrire la relation de racine carrée et préciser ce qui ne change pas dans la population.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Corriger des interprétations d’intervalle",
+        "description": "Une enquête rapporte une moyenne de 42 avec un intervalle à 95 % [38 ; 46]. Corriger quatre phrases affirmant respectivement que 95 % des personnes sont entre 38 et 46, que le paramètre a 95 % de probabilité d'y être, que l'échantillon est représentatif et que l'effet est important.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-016-NIST-DISTRIBUTION",
+        "type": "statistical_handbook",
+        "authors": ["National Institute of Standards and Technology"],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Distribution (Location, Spread and Shape)",
+        "year": null,
+        "edition": "NIST/SEMATECH e-Handbook, version web courante",
+        "publication": "NIST/SEMATECH e-Handbook of Statistical Methods",
+        "doi": null,
+        "url": "https://www.itl.nist.gov/div898/handbook/ppc/section1/ppc131.htm",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Ressource du gouvernement fédéral des États-Unis ; conditions NIST applicables",
+        "status": "verified",
+        "notes": "Page d'autorité utilisée pour les trois dimensions position, dispersion et forme ; le contexte industriel n'est pas transféré aux exemples psychologiques."
+      },
+      {
+        "id": "REF-016-OPENSTAX-SPREAD",
+        "type": "textbook",
+        "authors": ["Illowsky, B.", "Dean, S."],
+        "organization": "OpenStax",
+        "title": "Introductory Statistics 2e — 2.7 Measures of the Spread of the Data",
+        "year": 2023,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Manuel universitaire ouvert ; la règle empirique n'est pas généralisée hors des distributions en cloche symétriques."
+      },
+      {
+        "id": "REF-016-OPENSTAX-SAMPLING",
+        "type": "textbook",
+        "authors": ["Illowsky, B.", "Dean, S."],
+        "organization": "OpenStax",
+        "title": "Introductory Statistics 2e — 7.1 The Central Limit Theorem for Sample Means",
+        "year": 2023,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/7-1-the-central-limit-theorem-for-sample-means-averages",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Section consultée pour distribution d'échantillonnage, erreur standard et effet de la taille d'échantillon."
+      },
+      {
+        "id": "REF-016-NIST-CI",
+        "type": "statistical_handbook",
+        "authors": ["National Institute of Standards and Technology"],
+        "organization": "National Institute of Standards and Technology",
+        "title": "What are confidence intervals?",
+        "year": null,
+        "edition": "NIST/SEMATECH e-Handbook, version web courante",
+        "publication": "NIST/SEMATECH e-Handbook of Statistical Methods",
+        "doi": null,
+        "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc14.htm",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Ressource du gouvernement fédéral des États-Unis ; conditions NIST applicables",
+        "status": "verified",
+        "notes": "Référence institutionnelle pour l'interprétation en échantillonnages répétés."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {"referenceId": "REF-016-NIST-DISTRIBUTION", "locator": "section 3.1.3.1, définitions Location, Spread et Shape", "supports": "Description conjointe d'une distribution par position, dispersion et forme."},
+          {"referenceId": "REF-016-OPENSTAX-SPREAD", "locator": "section 2.7, introduction et remarque sur la forme", "supports": "Relation entre dispersion, écart-type et forme de la distribution."}
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Un manuel universitaire et un handbook institutionnel donnent des définitions concordantes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {"referenceId": "REF-016-OPENSTAX-SPREAD", "locator": "section 2.7, The standard deviation", "supports": "Écart-type comme mesure de l'étalement autour de la moyenne dans l'unité des données."},
+          {"referenceId": "REF-016-NIST-DISTRIBUTION", "locator": "section 3.1.3.1, Spread et mesures graphiques", "supports": "Lecture de la dispersion conjointement avec la distribution."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources convergentes ; la distinction avec l'incertitude de l'estimation est développée au bloc suivant.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {"referenceId": "REF-016-OPENSTAX-SAMPLING", "locator": "section 7.1, définition de la sampling distribution et de standard error", "supports": "Erreur standard comme écart-type des moyennes d'échantillons et formule σ/√n."}
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Définition et relation mathématique explicites dans le manuel.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {"referenceId": "REF-016-OPENSTAX-SAMPLING", "locator": "section 7.1, formule σ/√n", "supports": "Effet de la taille d'échantillon sur l'erreur standard sous les conditions du modèle."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Scénario fictif appliquant exactement la relation ; la limite liée au biais est explicitement séparée de l'incertitude aléatoire.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {"referenceId": "REF-016-NIST-CI", "locator": "section Confidence levels", "supports": "Interprétation d'un niveau de confiance par la proportion d'intervalles couvrant le paramètre lors d'échantillonnages répétés."},
+          {"referenceId": "REF-016-OPENSTAX-SAMPLING", "locator": "section 7.1, sampling variability et standard error", "supports": "Lien entre variabilité d'échantillonnage, précision et taille d'échantillon."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Référence institutionnelle directe et manuel convergent ; les contresens usuels sont explicitement exclus.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-distribution-location-spread-shape",
+        "referenceIds": ["REF-016-NIST-DISTRIBUTION"],
+        "pedagogicalRationale": "Cadre court pour décrire toute distribution sans privilégier immédiatement un indicateur.",
+        "learnerInstructions": "Séparer position, dispersion et forme sur trois graphiques.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ancienne mais lisible ; tableau textuel accompagnant les graphiques.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-intro-stats-2e-2-7",
+        "referenceIds": ["REF-016-OPENSTAX-SPREAD"],
+        "pedagogicalRationale": "Présentation progressive de la variabilité et de l'écart-type avec exemples numériques.",
+        "learnerInstructions": "Comparer deux séries et expliquer l'écart-type en mots avant tout calcul.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML avec formules et descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-intro-stats-2e-7-1",
+        "referenceIds": ["REF-016-OPENSTAX-SAMPLING"],
+        "pedagogicalRationale": "Relie simulation d'échantillons, distribution des moyennes et erreur standard.",
+        "learnerInstructions": "Tracer la chaîne population → échantillons → moyennes → erreur standard.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML avec formules et exemples ; lecture ciblée indiquée.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nist-confidence-intervals-7-1-4",
+        "referenceIds": ["REF-016-NIST-CI"],
+        "pedagogicalRationale": "Définition institutionnelle concise de la couverture en échantillonnages répétés.",
+        "learnerInstructions": "Reformuler le niveau de confiance sans employer une probabilité sur le paramètre fixe.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ancienne mais lisible, avec formules en texte alternatif limité.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "forme-variabilite-distribution",
+        "assessmentTitle": "Mini-évaluation — Distribution et variabilité",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions décrivent ensemble une distribution ?",
+            "explanation": "Position, dispersion et forme apportent des informations complémentaires.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "La position", "isCorrect": true, "position": 1},
+              {"label": "La dispersion", "isCorrect": true, "position": 2},
+              {"label": "La forme", "isCorrect": true, "position": 3},
+              {"label": "Le seul nombre d'observations", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux séries ayant la même moyenne ont nécessairement la même distribution.",
+            "explanation": "Elles peuvent différer par leur dispersion, leur asymétrie, leurs valeurs atypiques ou leurs groupes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Les séries A = [4, 5, 5, 5, 6] et B = [1, 3, 5, 7, 9] ont la même moyenne. Laquelle est la plus dispersée ?",
+            "explanation": "Les valeurs de B sont plus éloignées du centre et couvrent une étendue plus grande.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {"label": "La série B", "isCorrect": true, "position": 1},
+              {"label": "La série A", "isCorrect": false, "position": 2},
+              {"label": "Elles ont nécessairement la même dispersion", "isCorrect": false, "position": 3},
+              {"label": "La moyenne suffit pour répondre", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi tracer les données avant de supposer une distribution normale ?",
+            "explanation": "Le graphique peut révéler asymétrie, valeurs atypiques ou plusieurs groupes incompatibles avec ce raccourci.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "Pour examiner la forme réellement observée", "isCorrect": true, "position": 1},
+              {"label": "Pour garantir que la moyenne augmente", "isCorrect": false, "position": 2},
+              {"label": "Pour supprimer toutes les valeurs atypiques", "isCorrect": false, "position": 3},
+              {"label": "Pour prouver la causalité", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quelle mesure de dispersion s'exprime dans la même unité que les données et résume l'étalement autour de la moyenne ?",
+            "explanation": "Il s'agit de l'écart-type.",
+            "acceptedAnswers": ["écart-type", "ecart-type", "écart type", "ecart type"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "echantillonnage-erreur-standard",
+        "assessmentTitle": "Mini-évaluation — Erreur standard",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que décrit l'erreur standard de la moyenne ?",
+            "explanation": "Elle décrit la variabilité des moyennes obtenues par échantillonnages répétés selon le même protocole.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "La dispersion des moyennes entre échantillons", "isCorrect": true, "position": 1},
+              {"label": "La dispersion des individus dans un seul échantillon", "isCorrect": false, "position": 2},
+              {"label": "Le nombre de valeurs atypiques", "isCorrect": false, "position": 3},
+              {"label": "La taille de l'effet", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "À écart-type de population constant, que devient approximativement l'erreur standard lorsque n passe de 25 à 100 ?",
+            "explanation": "La taille est multipliée par quatre, donc √n par deux et l'erreur standard est divisée par deux.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {"label": "Elle est divisée par deux", "isCorrect": true, "position": 1},
+              {"label": "Elle est divisée par quatre", "isCorrect": false, "position": 2},
+              {"label": "Elle double", "isCorrect": false, "position": 3},
+              {"label": "Elle reste toujours identique", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une petite erreur standard garantit que l'échantillon représente correctement la population.",
+            "explanation": "Elle mesure une composante d'incertitude aléatoire ; elle ne détecte pas automatiquement un biais de sélection.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Sous un échantillonnage aléatoire indépendant, quels facteurs interviennent dans σ/√n ?",
+            "explanation": "La dispersion de population et la taille d'échantillon déterminent cette erreur standard théorique.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "L'écart-type de la population", "isCorrect": true, "position": 1},
+              {"label": "La taille de l'échantillon", "isCorrect": true, "position": 2},
+              {"label": "La racine carrée de la taille", "isCorrect": true, "position": 3},
+              {"label": "La couleur du graphique", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on la distribution formée par une statistique calculée sur de nombreux échantillons répétés ?",
+            "explanation": "C'est une distribution d'échantillonnage.",
+            "acceptedAnswers": ["distribution d'échantillonnage", "distribution d'echantillonnage", "distribution échantillonnale", "distribution echantillonnale"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "intervalle-confiance-limites",
+        "assessmentTitle": "Mini-évaluation — Intervalle de confiance",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que signifie correctement une procédure d'intervalle de confiance à 95 % ?",
+            "explanation": "À long terme et sous les conditions prévues, environ 95 % des intervalles produits couvrent le paramètre fixe.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {"label": "En échantillonnages répétés, environ 95 % des intervalles contiendraient le paramètre", "isCorrect": true, "position": 1},
+              {"label": "95 % des individus sont dans chaque intervalle", "isCorrect": false, "position": 2},
+              {"label": "Le paramètre change à chaque échantillon", "isCorrect": false, "position": 3},
+              {"label": "L'échantillon est représentatif avec une probabilité de 95 %", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Dans l'interprétation fréquentiste, après calcul d'un intervalle précis, le paramètre fixe a 95 % de probabilité d'être entre ses bornes.",
+            "explanation": "Le niveau de confiance qualifie la procédure répétée ; l'intervalle observé couvre ou ne couvre pas le paramètre fixe.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que ne garantit pas, à lui seul, un intervalle étroit ?",
+            "explanation": "La précision conditionnelle ne suffit pas pour juger biais, représentativité ou importance pratique.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {"label": "L'absence de biais", "isCorrect": true, "position": 1},
+              {"label": "La représentativité", "isCorrect": true, "position": 2},
+              {"label": "L'importance pratique", "isCorrect": true, "position": 3},
+              {"label": "Une meilleure précision sous le modèle", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Un intervalle à 95 % pour une moyenne vaut [38 ; 46]. Quelle phrase est la plus prudente ?",
+            "explanation": "Elle nomme le paramètre et le niveau sans transformer l'intervalle en plage individuelle.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {"label": "La procédure fournit [38 ; 46] comme valeurs compatibles pour la moyenne de population sous ses hypothèses", "isCorrect": true, "position": 1},
+              {"label": "95 % des scores individuels sont entre 38 et 46", "isCorrect": false, "position": 2},
+              {"label": "La moyenne observée est vraie pour chaque personne", "isCorrect": false, "position": 3},
+              {"label": "Le recrutement ne peut pas être biaisé", "isCorrect": false, "position": 4}
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on la moitié de la largeur ajoutée et retranchée à une estimation ponctuelle pour former un intervalle symétrique ?",
+            "explanation": "Il s'agit de la marge d'erreur.",
+            "acceptedAnswers": ["marge d'erreur", "marge d’erreur", "la marge d'erreur", "la marge d’erreur"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en statistique appliquée requise avant publication.",
+        "Les exemples numériques sont fictifs et servent uniquement à l'apprentissage.",
+        "La leçon distingue explicitement dispersion individuelle, erreur standard, précision, biais et interprétation fréquentiste."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

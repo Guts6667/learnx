@@ -1,0 +1,137 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_004",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "outils-quantitatifs",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Acquérir les outils quantitatifs",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser un petit jeu de données fictif, choisir des résumés adaptés et rédiger une conclusion qui distingue description, estimation, incertitude statistique, importance pratique, multiplicité et limites du plan.",
+    "instructions": [
+      "Lire le dossier PauseFocus et identifier la variable de groupe, la variable de résultat principale, leurs unités et le sens d'une amélioration.",
+      "Pour chaque groupe, calculer la moyenne, la médiane et l'étendue à partir des huit valeurs ; présenter les opérations et vérifier les résumés fournis par l'analyste.",
+      "Choisir, en le justifiant, les résumés à mettre en avant compte tenu de la petite taille des groupes et de la valeur élevée observée dans le groupe PauseFocus.",
+      "Interpréter séparément la différence moyenne, la taille d'effet standardisée, l'intervalle de confiance et la valeur p, sans attribuer à cette dernière la probabilité de l'hypothèse nulle.",
+      "Comparer les valeurs compatibles avec l'intervalle au seuil pratique préspécifié de deux erreurs évitées, et distinguer absence de preuve concluante, preuve d'absence et importance pratique.",
+      "Auditer les six analyses réalisées : expliquer le risque créé par la sélection du seul résultat p = 0,03 et proposer un compte rendu transparent distinguant analyse principale et analyses exploratoires.",
+      "Identifier au moins quatre limites portant sur la taille de l'échantillon, la population, la mesure, la durée, la multiplicité ou le plan, puis indiquer leur effet possible sur l'interprétation.",
+      "Rédiger une conclusion de 180 à 250 mots qui rapporte les nombres utiles, explicite l'incertitude et les limites, et ne transforme ni p = 0,20 ni p = 0,03 en verdict scientifique.",
+      "Citer au moins trois ressources de l'étape, dont une ressource consacrée à la valeur p et une consacrée aux intervalles ou à l'incertitude."
+    ],
+    "case": "Dossier entièrement fictif — PauseFocus. Seize adultes volontaires d'un même atelier sont répartis aléatoirement entre une pause guidée de deux minutes et l'attente habituelle avant une tâche de relecture. Le résultat principal préspécifié est le nombre d'erreurs laissées dans un texte de 30 erreurs ; une valeur plus faible est meilleure. Groupe habituel : 5, 6, 7, 8, 9, 10, 11, 12. Groupe PauseFocus : 4, 5, 6, 7, 7, 8, 9, 10. L'analyste fournit pour le contraste PauseFocus moins habituel une différence moyenne de −1,5 erreur, un intervalle de confiance à 95 % de [−3,9 ; 0,9], une valeur p bilatérale de 0,20 et une taille d'effet standardisée d'environ −0,67. Avant de voir les données, l'équipe avait défini comme pratiquement importante une réduction d'au moins 2 erreurs. Aucun effet indésirable n'est observé pendant la séance, mais il n'existe ni mesure ultérieure ni autre atelier. En plus du résultat principal, l'équipe teste cinq résultats secondaires sans ajustement ni distinction préalable. Leurs valeurs p sont 0,03, 0,09, 0,18, 0,41 et 0,62. Le communiqué ne mentionne que p = 0,03 pour la satisfaction et affirme que « PauseFocus fonctionne de manière statistiquement et pratiquement significative ». Les données, calculs et résultats secondaires sont fictifs et servent uniquement à l'évaluation.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier de 1 200 à 1 500 mots comprenant un tableau de calculs descriptifs, un audit des résultats inférentiels et une conclusion de 180 à 250 mots.",
+    "conceptSlugs": [
+      "types-variables-qualite-donnees",
+      "tableaux-graphiques-adaptes",
+      "centre-dispersion-forme",
+      "forme-variabilite-distribution",
+      "echantillonnage-erreur-standard",
+      "intervalle-confiance-limites",
+      "test-hypothese-valeur-p",
+      "estimation-taille-effet-incertitude",
+      "erreurs-multiplicite-importance-pratique"
+    ],
+    "rubric": [
+      {
+        "criterion": "Variables, calculs et exactitude descriptive",
+        "weight": 15,
+        "requirements": [
+          "Les variables, leurs unités et le sens de l'amélioration sont identifiés.",
+          "Moyennes, médianes et étendues des deux groupes sont calculées correctement.",
+          "Le tableau distingue données brutes, résumés et contraste entre groupes."
+        ]
+      },
+      {
+        "criterion": "Choix et lecture des résumés",
+        "weight": 15,
+        "requirements": [
+          "Le choix entre moyenne, médiane et dispersion est justifié à partir de la distribution observée.",
+          "La petite taille des groupes et la valeur 12 du groupe habituel sont examinées sans qualifier automatiquement une observation d'erreur.",
+          "Direction, amplitude et variabilité ne sont pas confondues."
+        ]
+      },
+      {
+        "criterion": "Estimation, intervalle et valeur p",
+        "weight": 20,
+        "requirements": [
+          "La différence moyenne et la taille d'effet sont interprétées dans le bon sens.",
+          "L'intervalle est présenté comme un ensemble de valeurs compatibles sous les hypothèses du modèle et son franchissement de zéro est expliqué.",
+          "La valeur p est interprétée conditionnellement au modèle, sans P(H0), probabilité de réplication ni verdict binaire."
+        ]
+      },
+      {
+        "criterion": "Importance pratique et conclusion",
+        "weight": 20,
+        "requirements": [
+          "L'estimation et l'intervalle sont comparés au seuil pratique de deux erreurs.",
+          "La conclusion distingue résultat observé, incertitude, absence de preuve concluante et preuve d'absence.",
+          "Le texte respecte 180 à 250 mots et emploie des formulations proportionnées."
+        ]
+      },
+      {
+        "criterion": "Erreurs, multiplicité et limites",
+        "weight": 20,
+        "requirements": [
+          "Les risques de type I et II sont reliés au cas sans prétendre qu'une erreur particulière a nécessairement eu lieu.",
+          "La sélection d'un résultat parmi six analyses est identifiée et une stratégie transparente est proposée.",
+          "Au moins quatre limites sont reliées à leur conséquence possible sur précision, validité ou généralisation."
+        ]
+      },
+      {
+        "criterion": "Traçabilité et qualité du dossier",
+        "weight": 10,
+        "requirements": [
+          "Les calculs peuvent être reproduits à partir du tableau.",
+          "Au moins trois ressources de l'étape sont citées précisément et soutiennent l'interprétation.",
+          "Analyse principale, analyses secondaires et affirmations du communiqué sont clairement séparées."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions associées puis soumettre uniquement les sections insuffisantes. Joindre un tableau à quatre colonnes — résultat numérique, interprétation initiale, erreur ou omission, formulation révisée — et recalculer les six résumés descriptifs sans supprimer la première version."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "REF-015-OPENSTAX-1-2",
+      "REF-015-OPENSTAX-2-2",
+      "REF-015-OPENSTAX-2-5",
+      "REF-015-OPENSTAX-2-7",
+      "REF-016-NIST-DISTRIBUTION",
+      "REF-016-OPENSTAX-SPREAD",
+      "REF-016-OPENSTAX-SAMPLING",
+      "REF-016-NIST-CI",
+      "REF-017-ASA-2016",
+      "REF-017-WASSERSTEIN-2019",
+      "REF-017-OPENSTAX-CH9",
+      "REF-017-OPENSTAX-CH8"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier PauseFocus, ses données et tous ses résultats sont entièrement fictifs.",
+        "Revue humaine éditoriale et statistique requise avant publication.",
+        "Les neuf conceptSlugs correspondent exactement aux trois notions de chacune des trois PEDAGOGY_SPEC de l'étape.",
+        "Les douze referenceIds ont été recoupés avec PEDAGOGY_SPEC_015 à 017 ; leur accessibilité et leur édition doivent encore être revérifiées lors de la revue humaine avant publication.",
+        "Les calculs descriptifs et inférentiels du cas ont été contrôlés ; les valeurs affichées sont arrondies."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas quantitative finale, de sa grille et de sa remédiation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -2935,7 +2935,7 @@
           ]
         }
       },
-      {
+            {
         "title": "Acquérir les outils quantitatifs",
         "slug": "outils-quantitatifs",
         "position": 4,
@@ -2948,60 +2948,629 @@
               {
                 "title": "Décrire des données",
                 "slug": "decrire-donnees",
+                "summary": "Décrire un jeu de données consiste d'abord à comprendre ce que chaque ligne et chaque variable représentent, puis à contrôler les erreurs visibles, choisir un tableau ou un graphique adapté et résumer conjointement le centre, la dispersion et la forme. Cette leçon privilégie l'interprétation de petits jeux de données plutôt que l'application mécanique de formules.",
+                "objectives": [
+                  "Distinguer variables catégorielles, quantitatives discrètes et quantitatives continues.",
+                  "Repérer des problèmes de qualité avant tout calcul.",
+                  "Choisir un tableau et un graphique adaptés au type de variable.",
+                  "Calculer et interpréter moyenne, médiane, étendue et écart-type.",
+                  "Choisir un couple centre-dispersion cohérent avec la forme et les valeurs atypiques."
+                ],
+                "prerequisites": [
+                  "Distinguer population, échantillon, variable et définition opérationnelle."
+                ],
+                "estimatedMinutes": 165,
                 "position": 1,
-                "estimatedMinutes": 150,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Avant tout calcul, il faut identifier l'unité d'observation — ce que représente une ligne — et le sens de chaque colonne. Une variable catégorielle classe des observations, par exemple le type de tâche. Une variable quantitative discrète résulte d'un comptage, comme le nombre d'erreurs. Une variable quantitative continue résulte d'une mesure pouvant, en principe, prendre des valeurs intermédiaires, comme une durée. Un code numérique tel que 1 = groupe contrôle et 2 = intervention reste catégoriel : l'apparence numérique ne suffit pas à autoriser une moyenne.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-1-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 2,
+                    "content": {
+                      "text": "Un audit minimal précède le résumé : vérifier les unités, les catégories prévues, les valeurs manquantes, les doublons, les valeurs impossibles et les valeurs extrêmes. Une valeur surprenante n'est pas automatiquement une erreur : il faut revenir à la collecte ou à la source, documenter la décision et conserver la valeur si elle est plausible. Corriger silencieusement ou supprimer seulement ce qui gêne le résultat déforme les données.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-1-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "Pour une variable catégorielle, un tableau de fréquences donne les effectifs et, lorsque les groupes n'ont pas le même total, les fréquences relatives ou pourcentages facilitent la comparaison ; un diagramme en barres conserve des barres séparées. Pour une variable quantitative, un tableau ordonné, un diagramme en points ou un histogramme montre la distribution. Dans un histogramme, les barres jointives représentent des intervalles numériques : modifier les bornes peut changer l'aspect, donc les axes, unités, effectifs et intervalles doivent être visibles.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-1-2",
+                        "openstax-intro-stats-2e-2-2"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 4,
+                    "content": {
+                      "text": "La moyenne additionne les valeurs et divise par leur nombre ; la médiane partage les données ordonnées en deux moitiés. Elles décrivent le centre mais pas la variabilité. L'étendue est la différence entre maximum et minimum. L'écart-type mesure la dispersion des valeurs autour de la moyenne et s'exprime dans la même unité que les données. Deux groupes peuvent donc avoir la même moyenne tout en présentant des dispersions très différentes.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-2-5",
+                        "openstax-intro-stats-2e-2-7"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 5,
+                    "content": {
+                      "text": "Considérons les durées 4, 5, 5, 6 et 30 minutes. La moyenne est 10 minutes, tandis que la médiane est 5 minutes : la valeur 30 tire fortement la moyenne vers le haut. Le graphique révèle une distribution très asymétrique et une valeur éloignée. L'intervalle interquartile, égal à la différence entre le troisième et le premier quartile, décrit l'étendue de la moitié centrale des valeurs. Dans ce cas, médiane et intervalle interquartile décrivent plus robustement le centre et la dispersion ; pour une distribution approximativement symétrique sans valeur influente, moyenne et écart-type peuvent être plus informatifs. Le choix doit être justifié par les données et accompagné d'un graphique, jamais dicté par une règle automatique unique.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-2-5",
+                        "openstax-intro-stats-2e-2-7"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-intro-stats-2e-1-2",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 1.2 Data, Sampling, and Variation in Data and Sampling",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 1.2. OpenStax.",
+                    "description": "Lire les passages sur données qualitatives, quantitatives discrètes et continues, puis les exemples de tableaux et diagrammes en barres ; classer les variables du premier exercice.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 1
+                  },
+                  {
+                    "key": "openstax-intro-stats-2e-2-2",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 2.2 Histograms, Frequency Polygons, and Time Series Graphs",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-2-histograms-frequency-polygons-and-time-series-graphs",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.2. OpenStax.",
+                    "description": "Lire l'introduction sur les histogrammes et relever ce que le graphique rend visible sur la forme, le centre et la dispersion d'une variable quantitative.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-intro-stats-2e-2-5",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 2.5 Measures of the Center of the Data",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-5-measures-of-the-center-of-the-data",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.5. OpenStax.",
+                    "description": "Lire les définitions de moyenne et médiane et refaire les calculs sur les deux petits jeux du troisième exercice, avec et sans valeur extrême.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 3
+                  },
+                  {
+                    "key": "openstax-intro-stats-2e-2-7",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 2.7 Measures of the Spread of the Data",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.7. OpenStax.",
+                    "description": "Lire l'introduction sur l'étendue et l'écart-type ; comparer deux séries ayant le même centre mais des dispersions différentes.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 4
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Décrire des données",
-                    "slug": "decrire-donnees",
+                    "title": "Types de variables et qualité des données",
+                    "slug": "types-variables-qualite-donnees",
+                    "description": "Le type d'une variable dépend de ce qu'elle représente, et toute analyse commence par un contrôle documenté des unités, valeurs manquantes, doublons, incohérences et valeurs extrêmes.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-intro-stats-2e-1-2"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Décrire des données",
+                      "title": "Mini-évaluation — Variables et qualité",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Tableaux et graphiques adaptés",
+                    "slug": "tableaux-graphiques-adaptes",
+                    "description": "Fréquences et barres décrivent des catégories, tandis que diagrammes en points et histogrammes montrent la distribution de valeurs quantitatives.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-intro-stats-2e-1-2",
+                      "openstax-intro-stats-2e-2-2"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Tableaux et graphiques",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Centre, dispersion et forme",
+                    "slug": "centre-dispersion-forme",
+                    "description": "Un résumé pertinent associe un indicateur de centre et un indicateur de dispersion, choisis après examen de la forme et des valeurs influentes.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-intro-stats-2e-2-5",
+                      "openstax-intro-stats-2e-2-7"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Centre et dispersion",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Auditer six observations",
+                    "description": "Jeu fictif : ID 01, 02, 02, 04, 05, 06 ; groupe A, A, A, B, B, B ; sommeil 7 h, 6 h, 6 h, vide, 25 h, 5 h ; erreurs 2, 4, 4, 3, -1, 6. Identifier l'unité d'observation, classer chaque variable, signaler doublon, données manquantes et valeurs impossibles ou à vérifier, puis produire un journal de décisions sans modifier silencieusement les données.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Passer des données au graphique",
+                    "description": "Jeu fictif de stratégie préférée : rappel, relecture, rappel, mixte, rappel, relecture, rappel, mixte, mixte, rappel. Construire le tableau des effectifs et pourcentages, choisir un diagramme en barres correctement légendé, puis expliquer pourquoi un histogramme ne convient pas à cette variable.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Comparer deux résumés",
+                    "description": "Pour A = [4, 5, 5, 6, 30] et B = [2, 4, 5, 6, 8], ordonner les valeurs, calculer moyenne, médiane et étendue, dessiner un diagramme en points, décrire forme et dispersion, puis choisir le résumé à communiquer pour chaque série. Vérifier les calculs et commenter l'effet de 30 dans A.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Distributions et incertitude",
                 "slug": "distributions-incertitude",
-                "position": 2,
+                "summary": "Une moyenne isolée ne décrit ni la forme des données ni leur variabilité. Cette leçon distingue la dispersion des observations de l'incertitude d'une estimation, puis introduit l'erreur standard et les intervalles de confiance comme propriétés d'un processus d'échantillonnage soumis à des hypothèses.",
+                "objectives": [
+                  "Décrire une distribution par sa forme, sa position et sa dispersion sans supposer qu'elle est normale.",
+                  "Distinguer variabilité des observations et variabilité d'un estimateur entre échantillons.",
+                  "Interpréter l'erreur standard comme l'écart-type d'une distribution d'échantillonnage.",
+                  "Interpréter un intervalle de confiance par sa procédure de couverture et en expliciter les limites."
+                ],
+                "prerequisites": [
+                  "Calculer et interpréter une moyenne, une médiane et un écart-type.",
+                  "Distinguer population, échantillon, paramètre et statistique."
+                ],
                 "estimatedMinutes": 150,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Une distribution décrit comment les valeurs se répartissent. On examine ensemble sa position, sa dispersion et sa forme : symétrie ou asymétrie, concentration, queues, valeurs atypiques et présence éventuelle de plusieurs groupes. Deux séries peuvent avoir la même moyenne et le même écart-type tout en présentant des formes différentes. Un graphique adapté reste donc nécessaire avant d'appliquer un résumé ou un modèle ; la forme en cloche n'est jamais une hypothèse par défaut imposée aux données.",
+                      "sourceKeys": [
+                        "nist-distribution-location-spread-shape",
+                        "openstax-intro-stats-2e-2-7"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "La dispersion décrit l'éloignement des observations entre elles ou autour d'un centre. L'écart-type s'exprime dans l'unité des données et augmente généralement lorsque les valeurs s'étalent davantage autour de la moyenne. Il est sensible aux valeurs extrêmes et doit être lu avec la forme de la distribution. Il ne mesure ni la qualité d'une étude ni l'incertitude de la moyenne : une population peut être très hétérogène tout en permettant une estimation précise de sa moyenne si l'échantillonnage est approprié et suffisamment informatif.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-2-7",
+                        "nist-distribution-location-spread-shape"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 3,
+                    "content": {
+                      "text": "Si l'on tirait de nombreux échantillons de même taille selon le même protocole et calculait leur moyenne, ces moyennes formeraient une distribution d'échantillonnage. Son écart-type est l'erreur standard de la moyenne. Sous un échantillonnage aléatoire indépendant, elle vaut σ/√n lorsque l'écart-type de la population σ est connu ; en pratique, σ est souvent estimé. Augmenter n réduit alors l'erreur standard selon une racine carrée : multiplier la taille par quatre la divise approximativement par deux. Cela réduit l'incertitude aléatoire, pas un biais de sélection ou de mesure.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-7-1"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 4,
+                    "content": {
+                      "text": "Une population de scores possède une moyenne inconnue. Deux équipes appliquent le même échantillonnage aléatoire : A interroge 25 personnes et B en interroge 100. À dispersion de population comparable, l'erreur standard de la moyenne de B est environ la moitié de celle de A, car √100 vaut deux fois √25. Si B recrute uniquement des volontaires très motivés, sa moyenne peut néanmoins rester systématiquement décalée : une petite erreur standard autour d'une estimation biaisée ne rend pas l'estimation valide pour toute la population.",
+                      "sourceKeys": [
+                        "openstax-intro-stats-2e-7-1"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Un intervalle de confiance associe une estimation ponctuelle à une marge d'incertitude calculée selon un modèle et des conditions. Pour une procédure à 95 %, si l'on répétait correctement l'échantillonnage et le calcul un grand nombre de fois, environ 95 % des intervalles ainsi produits contiendraient le paramètre fixe. Après calcul, l'intervalle obtenu contient ou non ce paramètre : le niveau de 95 % ne signifie ni que 95 % des individus sont dans l'intervalle, ni que le paramètre a 95 % de probabilité d'y être. Sa largeur renseigne sur la précision conditionnelle, sans garantir représentativité, absence de biais ou importance pratique.",
+                      "sourceKeys": [
+                        "nist-confidence-intervals-7-1-4",
+                        "openstax-intro-stats-2e-7-1"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "nist-distribution-location-spread-shape",
+                    "type": "document",
+                    "title": "NIST/SEMATECH e-Handbook — Distribution (Location, Spread and Shape)",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://www.itl.nist.gov/div898/handbook/ppc/section1/ppc131.htm",
+                    "citation": "National Institute of Standards and Technology. (n.d.). Distribution (Location, Spread and Shape). In NIST/SEMATECH e-Handbook of Statistical Methods.",
+                    "description": "Lire la page et décrire trois petits histogrammes en séparant explicitement position, dispersion et forme.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "openstax-intro-stats-2e-2-7",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 2.7 Measures of the Spread of the Data",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.7. OpenStax.",
+                    "description": "Lire l'introduction et les passages sur l'écart-type ; comparer deux séries de même moyenne mais de dispersions différentes.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-intro-stats-2e-7-1",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 7.1 The Central Limit Theorem for Sample Means",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/7-1-the-central-limit-theorem-for-sample-means-averages",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 7.1. OpenStax.",
+                    "description": "Lire jusqu'à la définition de l'erreur standard et simuler mentalement l'effet du passage de n = 25 à n = 100.",
+                    "isRequired": true,
+                    "estimatedMinutes": 35,
+                    "position": 3
+                  },
+                  {
+                    "key": "nist-confidence-intervals-7-1-4",
+                    "type": "document",
+                    "title": "NIST/SEMATECH e-Handbook — What are confidence intervals?",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc14.htm",
+                    "citation": "National Institute of Standards and Technology. (n.d.). What are confidence intervals? In NIST/SEMATECH e-Handbook of Statistical Methods.",
+                    "description": "Lire le passage Confidence levels et reformuler l'interprétation fréquentiste en utilisant des échantillons répétés.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 4
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Distributions et incertitude",
-                    "slug": "distributions-incertitude",
+                    "title": "Forme et variabilité d’une distribution",
+                    "slug": "forme-variabilite-distribution",
+                    "description": "Une distribution se décrit conjointement par sa position, sa dispersion et sa forme ; aucun résumé numérique isolé ne remplace l'examen du motif des données.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "nist-distribution-location-spread-shape",
+                      "openstax-intro-stats-2e-2-7"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Distributions et incertitude",
+                      "title": "Mini-évaluation — Distribution et variabilité",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Échantillonnage et erreur standard",
+                    "slug": "echantillonnage-erreur-standard",
+                    "description": "L'erreur standard mesure la variabilité d'un estimateur entre échantillons répétés et diminue avec l'information disponible sous les conditions du modèle.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-intro-stats-2e-7-1"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Erreur standard",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Intervalle de confiance et limites",
+                    "slug": "intervalle-confiance-limites",
+                    "description": "Un intervalle de confiance quantifie une incertitude d'échantillonnage selon une procédure et des hypothèses, sans mesurer la dispersion individuelle ni supprimer les biais.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "nist-confidence-intervals-7-1-4",
+                      "openstax-intro-stats-2e-7-1"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Intervalle de confiance",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Comparer deux distributions",
+                    "description": "Pour les séries A = [4, 5, 5, 5, 6] et B = [1, 3, 5, 7, 9], calculer ou vérifier la même moyenne, comparer étendue et dispersion, puis expliquer en 100 mots pourquoi la moyenne seule masque une différence importante.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Simuler quatre tailles d’échantillon",
+                    "description": "À partir d'un écart-type de population fictif égal à 12, calculer σ/√n pour n = 9, 36, 144 et 576 ; décrire la relation de racine carrée et préciser ce qui ne change pas dans la population.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Corriger des interprétations d’intervalle",
+                    "description": "Une enquête rapporte une moyenne de 42 avec un intervalle à 95 % [38 ; 46]. Corriger quatre phrases affirmant respectivement que 95 % des personnes sont entre 38 et 46, que le paramètre a 95 % de probabilité d'y être, que l'échantillon est représentatif et que l'effet est important.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               },
               {
                 "title": "Tests et interprétation",
                 "slug": "tests-interpretation",
-                "position": 3,
+                "summary": "Un test statistique confronte des données à un modèle explicite ; son interprétation utile combine valeur p, estimation, taille d'effet, intervalle d'incertitude, risques d'erreur, multiplicité, qualité du plan et importance pratique.",
+                "objectives": [
+                  "Expliquer la logique d'un test d'hypothèse et interpréter correctement une valeur p.",
+                  "Lire conjointement une estimation, une taille d'effet et un intervalle de confiance.",
+                  "Distinguer erreurs de type I et II et repérer le risque créé par des analyses multiples.",
+                  "Rédiger une conclusion qui sépare compatibilité statistique, importance pratique et limites de l'étude."
+                ],
+                "prerequisites": [
+                  "Décrire une distribution par des résumés et des représentations adaptés.",
+                  "Distinguer estimation ponctuelle, variabilité d'échantillonnage et intervalle de confiance."
+                ],
                 "estimatedMinutes": 180,
+                "position": 3,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Un test d'hypothèse commence par une question, un plan d'analyse et un modèle décrivant ce que l'on attendrait sous une hypothèse nulle. La statistique de test résume l'écart entre les données et cette attente. La valeur p est la probabilité, si le modèle et l'hypothèse nulle retenus étaient valides, d'obtenir un résultat au moins aussi incompatible avec eux que celui observé. Elle est donc conditionnelle au modèle, aux hypothèses du test et aux choix d'analyse.",
+                      "sourceKeys": [
+                        "asa-pvalues-2016",
+                        "openstax-stats-9-introduction"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 2,
+                    "content": {
+                      "text": "Une valeur p de 0,03 ne signifie ni qu'il existe 3 % de chances que l'hypothèse nulle soit vraie, ni que le résultat a 97 % de chances de se reproduire. Une grande valeur p ne prouve pas non plus l'absence d'effet. Enfin, la valeur p ne mesure ni la taille d'un effet ni son importance scientifique ou pratique. Transformer arbitrairement p < 0,05 en verdict « vrai » et p ≥ 0,05 en verdict « faux » perd de l'information et encourage des conclusions trop catégoriques.",
+                      "sourceKeys": [
+                        "asa-pvalues-2016",
+                        "wasserstein-beyond-p-2019"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 3,
+                    "content": {
+                      "text": "L'estimation indique la direction et l'amplitude observées d'une différence ou d'une association. Une taille d'effet place cette amplitude sur une échelle interprétable, brute ou standardisée. Un intervalle de confiance construit par une procédure donnée fournit un ensemble de valeurs compatibles avec les données et le modèle à un niveau annoncé ; sa largeur renseigne sur la précision. Il n'annule ni un biais de mesure, ni un mauvais plan, ni une population mal choisie.",
+                      "sourceKeys": [
+                        "openstax-stats-8-intervals",
+                        "wasserstein-beyond-p-2019"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Rejeter une hypothèse nulle alors qu'elle est vraie constitue une erreur de type I ; ne pas la rejeter alors qu'une différence pertinente existe constitue une erreur de type II. La puissance est la probabilité de détecter un effet défini lorsque le modèle alternatif correspondant est vrai. Répéter de nombreux tests puis ne retenir que les plus petites valeurs p augmente le risque de fausses alertes dans la famille d'analyses. Une stratégie transparente précise les analyses prévues, rapporte l'ensemble pertinent et utilise, lorsque nécessaire, une méthode adaptée à la multiplicité.",
+                      "sourceKeys": [
+                        "openstax-stats-9-2-errors",
+                        "asa-pvalues-2016",
+                        "wasserstein-beyond-p-2019"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 5,
+                    "content": {
+                      "text": "Deux études peuvent produire la même valeur p avec des effets très différents. Dans un très grand échantillon, une différence minuscule peut être peu compatible avec l'hypothèse nulle tout en restant négligeable pour la décision. Dans un petit échantillon, un effet potentiellement important peut être estimé avec un intervalle très large et une valeur p élevée. L'importance pratique se juge avec l'échelle de mesure, un seuil pertinent défini dans le contexte, les coûts, les bénéfices et les effets indésirables — jamais avec la valeur p seule.",
+                      "sourceKeys": [
+                        "asa-pvalues-2016",
+                        "wasserstein-beyond-p-2019",
+                        "openstax-stats-8-intervals"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Une conclusion proportionnée nomme la population, l'issue et le contraste étudiés ; rapporte l'estimation, son intervalle et la valeur p exacte lorsqu'elle est utile ; indique les analyses multiples et les hypothèses importantes ; compare l'effet à un repère pratique justifié ; puis explicite les limites du plan, de la mesure et de la généralisation. Elle évite les mots « prouve », « aucun effet » et « important » lorsqu'ils ne sont pas soutenus.",
+                      "sourceKeys": [
+                        "asa-pvalues-2016",
+                        "wasserstein-beyond-p-2019"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "asa-pvalues-2016",
+                    "type": "article",
+                    "title": "The ASA's Statement on p-Values: Context, Process, and Purpose",
+                    "author": "Ronald L. Wasserstein et Nicole A. Lazar",
+                    "url": "https://doi.org/10.1080/00031305.2016.1154108",
+                    "citation": "Wasserstein, R. L., & Lazar, N. A. (2016). The ASA's statement on p-values: Context, process, and purpose. The American Statistician, 70(2), 129–133. https://doi.org/10.1080/00031305.2016.1154108",
+                    "description": "Lire les six principes de la déclaration puis corriger quatre interprétations erronées d'une valeur p.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 1
+                  },
+                  {
+                    "key": "wasserstein-beyond-p-2019",
+                    "type": "article",
+                    "title": "Moving to a World Beyond ‘p < 0.05’",
+                    "author": "Ronald L. Wasserstein, Allen L. Schirm et Nicole A. Lazar",
+                    "url": "https://doi.org/10.1080/00031305.2019.1583913",
+                    "citation": "Wasserstein, R. L., Schirm, A. L., & Lazar, N. A. (2019). Moving to a world beyond ‘p < 0.05’. The American Statistician, 73(sup1), 1–19. https://doi.org/10.1080/00031305.2019.1583913",
+                    "description": "Lire les sections d'ouverture sur l'abandon des verdicts binaires et relever les trois recommandations : accepter l'incertitude, être réfléchi et ouvert.",
+                    "isRequired": false,
+                    "estimatedMinutes": 35,
+                    "position": 2
+                  },
+                  {
+                    "key": "openstax-stats-9-introduction",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — Chapter 9: Hypothesis Testing with One Sample",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/9-introduction",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, chapter 9 introduction. OpenStax, Rice University.",
+                    "description": "Lire l'introduction du chapitre 9 et reconstruire les étapes d'un test en distinguant hypothèses, données, décision statistique et conclusion en contexte.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 3
+                  },
+                  {
+                    "key": "openstax-stats-9-2-errors",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — 9.2 Outcomes and the Type I and Type II Errors",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/9-2-outcomes-and-the-type-i-and-the-type-ii-errors",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 9.2. OpenStax, Rice University.",
+                    "description": "Lire le tableau des quatre issues et formuler les erreurs de type I et II pour deux décisions concrètes.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 4
+                  },
+                  {
+                    "key": "openstax-stats-8-intervals",
+                    "type": "book_chapter",
+                    "title": "Introductory Statistics 2e — Chapter 8: Confidence Intervals",
+                    "author": "Barbara Illowsky et Susan Dean",
+                    "url": "https://openstax.org/books/introductory-statistics-2e/pages/8-introduction",
+                    "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, chapter 8 introduction. OpenStax, Rice University.",
+                    "description": "Lire l'introduction du chapitre 8 et distinguer estimation ponctuelle, marge d'erreur, largeur d'intervalle et précision.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 5
+                  }
+                ],
                 "concepts": [
                   {
-                    "title": "Tests et interprétation",
-                    "slug": "tests-interpretation",
+                    "title": "Logique du test et valeur p",
+                    "slug": "test-hypothese-valeur-p",
+                    "description": "Une valeur p quantifie, sous le modèle et l'hypothèse nulle, la probabilité d'un résultat au moins aussi incompatible que celui observé ; elle n'est ni la probabilité de l'hypothèse ni un verdict scientifique.",
                     "position": 1,
                     "isRequired": true,
                     "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "asa-pvalues-2016",
+                      "openstax-stats-9-introduction"
+                    ],
                     "assessment": {
                       "type": "quiz",
-                      "title": "Mini-quiz — Tests et interprétation",
+                      "title": "Mini-évaluation — Test et valeur p",
                       "questionCount": 5
                     }
+                  },
+                  {
+                    "title": "Estimation, taille d'effet et incertitude",
+                    "slug": "estimation-taille-effet-incertitude",
+                    "description": "L'estimation et la taille d'effet décrivent l'amplitude, tandis que l'intervalle exprime la précision et les valeurs compatibles avec les données sous les hypothèses du modèle.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-stats-8-intervals",
+                      "wasserstein-beyond-p-2019"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Estimation et incertitude",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Erreurs, multiplicité et importance pratique",
+                    "slug": "erreurs-multiplicite-importance-pratique",
+                    "description": "Les risques d'erreur dépendent du plan et des décisions ; les analyses multiples exigent transparence et contrôle, et l'importance pratique se juge dans le contexte plutôt qu'avec un seuil de significativité.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-stats-9-2-errors",
+                      "asa-pvalues-2016",
+                      "wasserstein-beyond-p-2019"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Erreurs et importance pratique",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Décoder un résultat de test",
+                    "description": "Pour six comptes rendus fictifs, distinguer hypothèse nulle, estimation, valeur p, décision statistique et conclusion ; réécrire chaque interprétation incorrecte en une phrase conditionnelle au modèle.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Auditer les analyses multiples",
+                    "description": "Examiner un plan fictif comportant douze tests, identifier analyses prévues et exploratoires, résultats omis et risque de sélection, puis proposer une stratégie transparente en 200 à 250 mots.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Rédiger une conclusion proportionnée",
+                    "description": "À partir d'une estimation, d'une taille d'effet, d'un intervalle, d'une valeur p et d'un seuil pratique fournis, rédiger 250 à 350 mots séparant résultat statistique, importance pratique, incertitude et limites.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
                   }
                 ]
               }
@@ -3014,7 +3583,65 @@
           "title": "Évaluation finale — Acquérir les outils quantitatifs",
           "type": "case_study",
           "isRequired": true,
-          "passingScore": 70
+          "passingScore": 70,
+          "description": "Analyser un petit jeu de données fictif, choisir des résumés adaptés et rédiger une conclusion qui distingue description, estimation, incertitude statistique, importance pratique, multiplicité et limites du plan.",
+          "instructions": "## Consignes\n1. Lire le dossier PauseFocus et identifier la variable de groupe, la variable de résultat principale, leurs unités et le sens d'une amélioration.\n2. Pour chaque groupe, calculer la moyenne, la médiane et l'étendue à partir des huit valeurs ; présenter les opérations et vérifier les résumés fournis par l'analyste.\n3. Choisir, en le justifiant, les résumés à mettre en avant compte tenu de la petite taille des groupes et de la valeur élevée observée dans le groupe PauseFocus.\n4. Interpréter séparément la différence moyenne, la taille d'effet standardisée, l'intervalle de confiance et la valeur p, sans attribuer à cette dernière la probabilité de l'hypothèse nulle.\n5. Comparer les valeurs compatibles avec l'intervalle au seuil pratique préspécifié de deux erreurs évitées, et distinguer absence de preuve concluante, preuve d'absence et importance pratique.\n6. Auditer les six analyses réalisées : expliquer le risque créé par la sélection du seul résultat p = 0,03 et proposer un compte rendu transparent distinguant analyse principale et analyses exploratoires.\n7. Identifier au moins quatre limites portant sur la taille de l'échantillon, la population, la mesure, la durée, la multiplicité ou le plan, puis indiquer leur effet possible sur l'interprétation.\n8. Rédiger une conclusion de 180 à 250 mots qui rapporte les nombres utiles, explicite l'incertitude et les limites, et ne transforme ni p = 0,20 ni p = 0,03 en verdict scientifique.\n9. Citer au moins trois ressources de l'étape, dont une ressource consacrée à la valeur p et une consacrée aux intervalles ou à l'incertitude.\n\n## Cas PauseFocus\nDossier entièrement fictif — PauseFocus. Seize adultes volontaires d'un même atelier sont répartis aléatoirement entre une pause guidée de deux minutes et l'attente habituelle avant une tâche de relecture. Le résultat principal préspécifié est le nombre d'erreurs laissées dans un texte de 30 erreurs ; une valeur plus faible est meilleure. Groupe habituel : 5, 6, 7, 8, 9, 10, 11, 12. Groupe PauseFocus : 4, 5, 6, 7, 7, 8, 9, 10. L'analyste fournit pour le contraste PauseFocus moins habituel une différence moyenne de −1,5 erreur, un intervalle de confiance à 95 % de [−3,9 ; 0,9], une valeur p bilatérale de 0,20 et une taille d'effet standardisée d'environ −0,67. Avant de voir les données, l'équipe avait défini comme pratiquement importante une réduction d'au moins 2 erreurs. Aucun effet indésirable n'est observé pendant la séance, mais il n'existe ni mesure ultérieure ni autre atelier. En plus du résultat principal, l'équipe teste cinq résultats secondaires sans ajustement ni distinction préalable. Leurs valeurs p sont 0,03, 0,09, 0,18, 0,41 et 0,62. Le communiqué ne mentionne que p = 0,03 pour la satisfaction et affirme que « PauseFocus fonctionne de manière statistiquement et pratiquement significative ». Les données, calculs et résultats secondaires sont fictifs et servent uniquement à l'évaluation.\n\n## Format de soumission\nDossier de 1 200 à 1 500 mots comprenant un tableau de calculs descriptifs, un audit des résultats inférentiels et une conclusion de 180 à 250 mots.\n\n## Remédiation\nPour chaque critère sous 70 %, reprendre les notions associées puis soumettre uniquement les sections insuffisantes. Joindre un tableau à quatre colonnes — résultat numérique, interprétation initiale, erreur ou omission, formulation révisée — et recalculer les six résumés descriptifs sans supprimer la première version.",
+          "rubric": [
+            {
+              "criterion": "Variables, calculs et exactitude descriptive",
+              "weight": 15,
+              "requirements": [
+                "Les variables, leurs unités et le sens de l'amélioration sont identifiés.",
+                "Moyennes, médianes et étendues des deux groupes sont calculées correctement.",
+                "Le tableau distingue données brutes, résumés et contraste entre groupes."
+              ]
+            },
+            {
+              "criterion": "Choix et lecture des résumés",
+              "weight": 15,
+              "requirements": [
+                "Le choix entre moyenne, médiane et dispersion est justifié à partir de la distribution observée.",
+                "La petite taille des groupes et la valeur 12 du groupe habituel sont examinées sans qualifier automatiquement une observation d'erreur.",
+                "Direction, amplitude et variabilité ne sont pas confondues."
+              ]
+            },
+            {
+              "criterion": "Estimation, intervalle et valeur p",
+              "weight": 20,
+              "requirements": [
+                "La différence moyenne et la taille d'effet sont interprétées dans le bon sens.",
+                "L'intervalle est présenté comme un ensemble de valeurs compatibles sous les hypothèses du modèle et son franchissement de zéro est expliqué.",
+                "La valeur p est interprétée conditionnellement au modèle, sans P(H0), probabilité de réplication ni verdict binaire."
+              ]
+            },
+            {
+              "criterion": "Importance pratique et conclusion",
+              "weight": 20,
+              "requirements": [
+                "L'estimation et l'intervalle sont comparés au seuil pratique de deux erreurs.",
+                "La conclusion distingue résultat observé, incertitude, absence de preuve concluante et preuve d'absence.",
+                "Le texte respecte 180 à 250 mots et emploie des formulations proportionnées."
+              ]
+            },
+            {
+              "criterion": "Erreurs, multiplicité et limites",
+              "weight": 20,
+              "requirements": [
+                "Les risques de type I et II sont reliés au cas sans prétendre qu'une erreur particulière a nécessairement eu lieu.",
+                "La sélection d'un résultat parmi six analyses est identifiée et une stratégie transparente est proposée.",
+                "Au moins quatre limites sont reliées à leur conséquence possible sur précision, validité ou généralisation."
+              ]
+            },
+            {
+              "criterion": "Traçabilité et qualité du dossier",
+              "weight": 10,
+              "requirements": [
+                "Les calculs peuvent être reproduits à partir du tableau.",
+                "Au moins trois ressources de l'étape sont citées précisément et soutiennent l'interprétation.",
+                "Analyse principale, analyses secondaires et affirmations du communiqué sont clairement séparées."
+              ]
+            }
+          ]
         }
       },
       {
@@ -8561,6 +9188,1192 @@
               ],
               "position": 5,
               "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "outils-quantitatifs",
+      "moduleSlug": "statistiques-fondamentales",
+      "lessonSlug": "decrire-donnees",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "types-variables-qualite-donnees",
+          "assessmentTitle": "Mini-évaluation — Variables et qualité",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel type de variable est le nombre d'erreurs commises dans une tâche ?",
+              "explanation": "Il s'agit d'un comptage prenant des valeurs entières : une variable quantitative discrète.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Quantitative discrète",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Quantitative continue",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Catégorielle nominale",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Texte libre sans variable",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Coder contrôle = 1 et intervention = 2 transforme le groupe en variable quantitative dont la moyenne a un sens.",
+              "explanation": "Les nombres ne sont ici que des étiquettes de catégories ; leur moyenne n'interprète pas un groupe intermédiaire.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels contrôles doivent précéder les calculs ?",
+              "explanation": "Unités, valeurs manquantes et impossibles peuvent modifier ou invalider un résumé.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vérifier les unités",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Identifier les valeurs manquantes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Examiner les valeurs impossibles",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Supprimer toute valeur éloignée sans vérification",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une durée de sommeil de 25 heures apparaît dans une colonne portant sur une nuit. Quelle est la première action correcte ?",
+              "explanation": "Une valeur surprenante doit être vérifiée contre la source et les unités avant correction ou exclusion.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vérifier la source, l'unité et la règle de collecte",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La remplacer silencieusement par la moyenne",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La conserver comme preuve d'un effet",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Supprimer toute la colonne",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on une variable obtenue par mesure et pouvant prendre des valeurs intermédiaires ?",
+              "explanation": "C'est une variable quantitative continue.",
+              "acceptedAnswers": [
+                "quantitative continue",
+                "variable quantitative continue"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "tableaux-graphiques-adaptes",
+          "assessmentTitle": "Mini-évaluation — Tableaux et graphiques",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel graphique convient pour comparer les effectifs de trois stratégies d'apprentissage ?",
+              "explanation": "Les stratégies sont des catégories ; un diagramme en barres compare leurs fréquences.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Diagramme en barres",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Histogramme des codes 1, 2 et 3",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Courbe continue sans axe",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Moyenne des noms de stratégie",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Dans un histogramme, les barres sont jointives parce qu'elles représentent des intervalles d'une variable quantitative.",
+              "explanation": "Les intervalles numériques se succèdent sans catégories séparées entre eux.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit permettre de lire un graphique statistique ?",
+              "explanation": "Un lecteur doit connaître la variable, l'échelle et les effectifs ou fréquences représentés.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Le nom et l'unité de la variable",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'échelle des axes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les effectifs ou fréquences",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une conclusion causale non testée",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Deux groupes ont des tailles différentes. Quel tableau facilite leur comparaison catégorielle ?",
+              "explanation": "Les fréquences relatives rapportent chaque effectif au total de son groupe.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Un tableau d'effectifs et de pourcentages par groupe",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Seulement le total combiné",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une moyenne des codes de catégorie",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Un axe sans dénominateur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on le nombre d'observations appartenant à une catégorie ou à une valeur ?",
+              "explanation": "C'est la fréquence, ou l'effectif.",
+              "acceptedAnswers": [
+                "fréquence",
+                "frequence",
+                "effectif",
+                "la fréquence",
+                "l'effectif"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "centre-dispersion-forme",
+          "assessmentTitle": "Mini-évaluation — Centre et dispersion",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle est la médiane de 2, 4, 5, 6 et 30 ?",
+              "explanation": "Les valeurs sont ordonnées et la valeur centrale est 5.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "5",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "9,4",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "28",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "30",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Deux jeux de données ayant la même moyenne ont nécessairement la même dispersion.",
+              "explanation": "Le centre ne suffit pas : les valeurs peuvent être plus ou moins éloignées de la moyenne.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Pour une distribution très asymétrique avec une valeur extrême plausible, quels éléments sont particulièrement utiles ?",
+              "explanation": "Le graphique montre la forme ; médiane et intervalle interquartile sont moins sensibles à la valeur extrême.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Un graphique de la distribution",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La médiane",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "L'intervalle interquartile",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La moyenne seule sans contexte",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle est l'étendue de 4, 5, 5, 6 et 30 ?",
+              "explanation": "L'étendue vaut maximum moins minimum : 30 - 4 = 26.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "26",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "10",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "5",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "34",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quelle mesure de dispersion exprime la distance typique des valeurs autour de la moyenne dans la même unité que les données ?",
+              "explanation": "Il s'agit de l'écart-type.",
+              "acceptedAnswers": [
+                "écart-type",
+                "ecart-type",
+                "écart type",
+                "ecart type"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "outils-quantitatifs",
+      "moduleSlug": "statistiques-fondamentales",
+      "lessonSlug": "distributions-incertitude",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "forme-variabilite-distribution",
+          "assessmentTitle": "Mini-évaluation — Distribution et variabilité",
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles dimensions décrivent ensemble une distribution ?",
+              "explanation": "Position, dispersion et forme apportent des informations complémentaires.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La position",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La dispersion",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La forme",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Le seul nombre d'observations",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Deux séries ayant la même moyenne ont nécessairement la même distribution.",
+              "explanation": "Elles peuvent différer par leur dispersion, leur asymétrie, leurs valeurs atypiques ou leurs groupes.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Les séries A = [4, 5, 5, 5, 6] et B = [1, 3, 5, 7, 9] ont la même moyenne. Laquelle est la plus dispersée ?",
+              "explanation": "Les valeurs de B sont plus éloignées du centre et couvrent une étendue plus grande.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La série B",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La série A",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elles ont nécessairement la même dispersion",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La moyenne suffit pour répondre",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi tracer les données avant de supposer une distribution normale ?",
+              "explanation": "Le graphique peut révéler asymétrie, valeurs atypiques ou plusieurs groupes incompatibles avec ce raccourci.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Pour examiner la forme réellement observée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour garantir que la moyenne augmente",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour supprimer toutes les valeurs atypiques",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour prouver la causalité",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quelle mesure de dispersion s'exprime dans la même unité que les données et résume l'étalement autour de la moyenne ?",
+              "explanation": "Il s'agit de l'écart-type.",
+              "acceptedAnswers": [
+                "écart-type",
+                "ecart-type",
+                "écart type",
+                "ecart type"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "echantillonnage-erreur-standard",
+          "assessmentTitle": "Mini-évaluation — Erreur standard",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que décrit l'erreur standard de la moyenne ?",
+              "explanation": "Elle décrit la variabilité des moyennes obtenues par échantillonnages répétés selon le même protocole.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La dispersion des moyennes entre échantillons",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La dispersion des individus dans un seul échantillon",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le nombre de valeurs atypiques",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La taille de l'effet",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "À écart-type de population constant, que devient approximativement l'erreur standard lorsque n passe de 25 à 100 ?",
+              "explanation": "La taille est multipliée par quatre, donc √n par deux et l'erreur standard est divisée par deux.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Elle est divisée par deux",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle est divisée par quatre",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elle double",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elle reste toujours identique",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une petite erreur standard garantit que l'échantillon représente correctement la population.",
+              "explanation": "Elle mesure une composante d'incertitude aléatoire ; elle ne détecte pas automatiquement un biais de sélection.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Sous un échantillonnage aléatoire indépendant, quels facteurs interviennent dans σ/√n ?",
+              "explanation": "La dispersion de population et la taille d'échantillon déterminent cette erreur standard théorique.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "L'écart-type de la population",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La taille de l'échantillon",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La racine carrée de la taille",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La couleur du graphique",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on la distribution formée par une statistique calculée sur de nombreux échantillons répétés ?",
+              "explanation": "C'est une distribution d'échantillonnage.",
+              "acceptedAnswers": [
+                "distribution d'échantillonnage",
+                "distribution d'echantillonnage",
+                "distribution échantillonnale",
+                "distribution echantillonnale"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "intervalle-confiance-limites",
+          "assessmentTitle": "Mini-évaluation — Intervalle de confiance",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que signifie correctement une procédure d'intervalle de confiance à 95 % ?",
+              "explanation": "À long terme et sous les conditions prévues, environ 95 % des intervalles produits couvrent le paramètre fixe.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "En échantillonnages répétés, environ 95 % des intervalles contiendraient le paramètre",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "95 % des individus sont dans chaque intervalle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le paramètre change à chaque échantillon",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L'échantillon est représentatif avec une probabilité de 95 %",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Dans l'interprétation fréquentiste, après calcul d'un intervalle précis, le paramètre fixe a 95 % de probabilité d'être entre ses bornes.",
+              "explanation": "Le niveau de confiance qualifie la procédure répétée ; l'intervalle observé couvre ou ne couvre pas le paramètre fixe.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que ne garantit pas, à lui seul, un intervalle étroit ?",
+              "explanation": "La précision conditionnelle ne suffit pas pour juger biais, représentativité ou importance pratique.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "L'absence de biais",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La représentativité",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "L'importance pratique",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une meilleure précision sous le modèle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Un intervalle à 95 % pour une moyenne vaut [38 ; 46]. Quelle phrase est la plus prudente ?",
+              "explanation": "Elle nomme le paramètre et le niveau sans transformer l'intervalle en plage individuelle.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "La procédure fournit [38 ; 46] comme valeurs compatibles pour la moyenne de population sous ses hypothèses",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "95 % des scores individuels sont entre 38 et 46",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La moyenne observée est vraie pour chaque personne",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le recrutement ne peut pas être biaisé",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Comment nomme-t-on la moitié de la largeur ajoutée et retranchée à une estimation ponctuelle pour former un intervalle symétrique ?",
+              "explanation": "Il s'agit de la marge d'erreur.",
+              "acceptedAnswers": [
+                "marge d'erreur",
+                "marge d’erreur",
+                "la marge d'erreur",
+                "la marge d’erreur"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "outils-quantitatifs",
+      "moduleSlug": "statistiques-fondamentales",
+      "lessonSlug": "tests-interpretation",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "test-hypothese-valeur-p",
+          "assessmentTitle": "Mini-évaluation — Test et valeur p",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que décrit correctement une valeur p ?",
+              "explanation": "Elle est calculée conditionnellement au modèle et à l'hypothèse nulle, pour des résultats au moins aussi incompatibles que celui observé.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La probabilité, sous le modèle nul, d'un résultat au moins aussi incompatible",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La probabilité que l'hypothèse nulle soit vraie",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La probabilité exacte de réplication",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La taille de l'effet observé",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une valeur p de 0,03 signifie qu'il reste 3 % de chances que l'hypothèse nulle soit vraie.",
+              "explanation": "La valeur p conditionne sur l'hypothèse nulle ; elle ne lui attribue pas une probabilité.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles informations conditionnent l'interprétation d'une valeur p ?",
+              "explanation": "Plan, modèle, hypothèses et choix analytiques déterminent ce que mesure la valeur p.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Le plan d'étude",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les hypothèses du modèle",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les choix d'analyse",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La seule présence du nombre 0,05",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une analyse préspécifiée produit p = 0,18. Quelle formulation est défendable ?",
+              "explanation": "Une grande valeur p ne prouve pas l'absence d'effet ; elle indique que les données ne fournissent pas ici une forte incompatibilité avec le modèle nul.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Les données ne suffisent pas à rejeter le modèle nul selon ce test",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'effet est exactement nul",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le modèle nul a 82 % de chances d'être vrai",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L'étude prouve l'équivalence",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Le passage de p = 0,049 à p = 0,051 transforme à lui seul la conclusion scientifique.",
+              "explanation": "Deux valeurs aussi proches n'autorisent pas des verdicts opposés sans considérer estimation, incertitude, plan et contexte.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "conceptSlug": "estimation-taille-effet-incertitude",
+          "assessmentTitle": "Mini-évaluation — Estimation et incertitude",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle information décrit directement l'amplitude observée d'une différence ?",
+              "explanation": "L'estimation ou la taille d'effet porte sur l'amplitude ; la valeur p porte sur une incompatibilité conditionnelle.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "L'estimation de la différence",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le seuil 0,05",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le nom du logiciel",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le rang de publication",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que signale surtout un intervalle très large autour d'une estimation ?",
+              "explanation": "Un intervalle large indique une estimation peu précise et de nombreuses valeurs compatibles avec les données et le modèle.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Une forte incertitude sur l'amplitude",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une absence certaine de biais",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une causalité démontrée",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une importance pratique automatique",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un intervalle étroit corrige automatiquement une mesure systématiquement biaisée.",
+              "explanation": "La précision ne supprime pas un biais systématique de mesure ou de plan.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que faut-il rapporter pour interpréter l'amplitude et l'incertitude ?",
+              "explanation": "Estimation, échelle, intervalle et taille d'effet répondent à des questions complémentaires.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "L'estimation sur son échelle",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L'intervalle de confiance",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Une taille d'effet pertinente",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Uniquement significatif ou non significatif",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Deux études estiment le même effet ; l'une a un intervalle beaucoup plus étroit. Que peut-on dire d'abord ?",
+              "explanation": "Sous leurs hypothèses respectives, l'étude à intervalle plus étroit estime l'effet avec davantage de précision.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Son estimation est plus précise",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle est nécessairement sans biais",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Son effet est plus grand",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elle prouve une généralisation universelle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "conceptSlug": "erreurs-multiplicite-importance-pratique",
+          "assessmentTitle": "Mini-évaluation — Erreurs et importance pratique",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Qu'est-ce qu'une erreur de type I ?",
+              "explanation": "Elle consiste à rejeter l'hypothèse nulle alors qu'elle est vraie dans le cadre du modèle.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Rejeter une hypothèse nulle vraie",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ne pas rejeter une hypothèse nulle fausse",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Calculer une médiane",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Rapporter un intervalle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Qu'est-ce qu'une erreur de type II ?",
+              "explanation": "Elle consiste à ne pas rejeter l'hypothèse nulle alors que l'effet défini par l'alternative existe.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Ne pas rejeter une hypothèse nulle fausse",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Rejeter une hypothèse nulle vraie",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Choisir un seuil à l'avance",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Décrire une dispersion",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles pratiques réduisent les conclusions trompeuses lors d'analyses multiples ?",
+              "explanation": "Préspécification, rapport complet et méthode de contrôle adaptée rendent la multiplicité visible et traitable.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Préspécifier les analyses principales",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Rapporter aussi les analyses non concluantes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Employer un contrôle adapté lorsque nécessaire",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Ne montrer que la plus petite valeur p",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une différence statistiquement détectable est nécessairement assez grande pour changer une décision pratique.",
+              "explanation": "L'importance pratique dépend de l'amplitude, du contexte, des coûts, bénéfices et effets indésirables.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit contenir une conclusion proportionnée ?",
+              "explanation": "Elle combine estimation, incertitude, transparence analytique, repère pratique et limites.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Estimation et intervalle",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Analyses multiples pertinentes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Importance pratique et limites",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un verdict fondé sur 0,05 seulement",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
             }
           ]
         }
