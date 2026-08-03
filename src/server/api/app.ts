@@ -17,6 +17,11 @@ import { todayApp } from './today/app.js';
 export function createApiApp() {
   const app = new Hono();
 
+  app.use('*', async (context, next) => {
+    await next();
+    context.header('Cache-Control', 'private, no-store');
+  });
+
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);

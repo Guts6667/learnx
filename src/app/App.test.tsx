@@ -3,6 +3,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 import { App } from '@/app/App';
 
 describe('App', () => {
+  beforeEach(() => {
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    });
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
   });
@@ -45,6 +52,28 @@ describe('App', () => {
     expect(
       screen.getByRole('status', { name: 'Vérification de la session' }),
     ).toBeInTheDocument();
+  });
+
+  it('affiche un état neutre hors ligne sans rediriger vers la connexion', () => {
+    window.history.pushState({}, '', '/today');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.reject(new TypeError('Network unavailable'))),
+    );
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(
+      screen.queryByRole('heading', { level: 1, name: 'Connexion' }),
+    ).not.toBeInTheDocument();
   });
 
   it('restaure la session après un rechargement', async () => {

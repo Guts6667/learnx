@@ -5,6 +5,7 @@ describe('consolidated Vercel API', () => {
     const response = await apiApp.request('/api/auth/session');
 
     expect(response.status).toBe(200);
+    expect(response.headers.get('cache-control')).toBe('private, no-store');
     await expect(response.json()).resolves.toEqual({ user: null });
   });
 
@@ -12,5 +13,6 @@ describe('consolidated Vercel API', () => {
     const response = await apiApp.request('/api/unknown');
 
     expect(response.status).toBe(401);
+    expect(response.headers.get('cache-control')).toBe('private, no-store');
   });
 });

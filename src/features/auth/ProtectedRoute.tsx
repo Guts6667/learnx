@@ -4,6 +4,7 @@ import { useEffect } from 'preact/hooks';
 
 import { Spinner } from '@/components/ui/Spinner';
 import { useSessionQuery } from '@/features/auth/session';
+import { useOnlineStatus } from '@/features/pwa/online-status';
 
 interface ProtectedRouteProps {
   children: ComponentChildren;
@@ -11,13 +12,32 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const isOnline = useOnlineStatus();
   const sessionQuery = useSessionQuery();
 
   useEffect(() => {
-    if (!sessionQuery.isPending && !sessionQuery.data?.user) {
+    if (isOnline && !sessionQuery.isPending && !sessionQuery.data?.user) {
       route('/login', true);
     }
-  }, [sessionQuery.data?.user, sessionQuery.isPending]);
+  }, [isOnline, sessionQuery.data?.user, sessionQuery.isPending]);
+
+  if (!isOnline) {
+    return (
+      <section
+        aria-labelledby="offline-private-title"
+        class="mx-auto max-w-md space-y-3 rounded-xl border border-slate-800 bg-slate-900 p-5 text-center"
+        role="status"
+      >
+        <h1 class="text-xl font-semibold" id="offline-private-title">
+          Mode hors ligne
+        </h1>
+        <p class="text-sm leading-6 text-slate-300">
+          Les contenus privés nécessitent une connexion. Reconnectez-vous pour
+          reprendre exactement où vous en étiez.
+        </p>
+      </section>
+    );
+  }
 
   if (sessionQuery.isPending) {
     return (
