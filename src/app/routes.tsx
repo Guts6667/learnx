@@ -15,6 +15,7 @@ import { NotePage, NotesPage } from '@/pages/NotesPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { QuizPage } from '@/pages/QuizPage';
+import { ReviewsPage } from '@/pages/ReviewsPage';
 import { TodayPage } from '@/pages/TodayPage';
 
 interface RouteParams {
@@ -166,7 +167,7 @@ export function AppRoutes() {
         <QuizRoute path="/program/:programSlug/lesson/:lessonSlug/quiz" />
         <LessonRoute path="/program/:programSlug/lesson/:lessonSlug" />
         <ProtectedRoute path="/reviews">
-          <PlaceholderPage title="Révisions" />
+          <ReviewsPage />
         </ProtectedRoute>
         <ProtectedRoute path="/notes">
           <NotesPage />
