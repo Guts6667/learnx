@@ -13,6 +13,9 @@ Une seule action principale, « Continuer », conduit vers la prochaine activit�
 pertinente. Le système conserve néanmoins des routes profondes partageables pour
 un quiz, une mini-évaluation ou un exercice.
 
+Cette spécification est un polish V2 construit sur les données existantes. Elle
+n’ajoute aucun nouveau modèle, workflow métier ou système d’analytics.
+
 Cette évolution ne modifie pas la hiérarchie de domaine :
 
 ```text
@@ -210,19 +213,27 @@ les préconditions calculés par le serveur.
 ### 5.4 Ordonnancement inter-types
 
 Les positions actuelles sont propres à chaque table et ne peuvent pas exprimer
-un ordre arbitraire entre bloc, ressource, tâche, exercice et évaluation.
+un ordre arbitraire entre bloc, ressource, tâche, exercice et évaluation. La V2
+choisit donc une séquence déterministe dérivée, sans migration :
 
-La première implémentation doit donc définir un contrat typé
-`LessonActivitySequence` produisant des identifiants stables, un type, un ordre,
-un état, une durée et une destination. Deux stratégies restent possibles :
+1. objectifs et blocs de contenu par `position` ;
+2. sources attachées rendues avec chaque bloc ;
+3. ressources obligatoires non encore rencontrées, puis optionnelles, par
+   `position` ;
+4. tâches par `position` ;
+5. notions et mini-évaluations par position de notion puis d’évaluation ;
+6. exercices par `position` ;
+7. quiz de synthèse par `position` ;
+8. complétion de la leçon.
 
-1. séquence déterministe dérivée par phases à partir des données existantes ;
-2. ordre éditorial explicite reliant chaque mise en pratique au bloc ou à la
-   notion qui la précède.
+L’interface ne rend pas ces phases comme huit listes globales simultanées : elle
+montre l’activité courante, les activités voisines et un sommaire. « Continuer »
+avance dans cette séquence en sautant les éléments optionnels non commencés.
 
-La stratégie 2 est recommandée pour respecter réellement le moment pédagogique.
-Elle nécessite une décision d’architecture séparée avant toute migration. Aucun
-champ Prisma n’est ajouté par cette spécification.
+Un contrat typé local `LessonActivitySequence` peut produire identifiant stable,
+type, ordre, état, durée et destination à partir de la réponse de leçon actuelle.
+L’ordre éditorial arbitraire reliant une mise en pratique à un bloc précis est
+reporté en V3, car il nécessiterait de nouvelles métadonnées ou une migration.
 
 ## 6. Routes et conservation du contexte
 
@@ -307,27 +318,12 @@ leçon et autorisation de lecture. Une activité d’une autre leçon ne peut ja
 - Navigation entièrement réalisable au clavier et avec zoom à 200 %.
 - Préférence de réduction des animations respectée.
 
-## 9. Mesure du parcours
+## 9. Mesure de qualité V2
 
-Les événements analytiques ne contiennent ni réponse, ni note, ni texte libre :
-
-```text
-today_continue_clicked
-curriculum_lesson_opened
-lesson_continue_clicked
-lesson_activity_opened
-lesson_activity_completed
-lesson_resource_opened
-lesson_breadcrumb_used
-lesson_resume_restored
-```
-
-Champs autorisés : identifiants internes, type d’activité, position, état,
-viewport, origine de navigation et durée agrégée. L’identité et le contenu des
-réponses restent exclus.
-
-Indicateurs : nombre de clics entre curriculum et leçon, taux de reprise exacte,
-abandons avant activité, retours arrière et progression entre activités.
+La V2 mesure le parcours dans les tests : nombre d’actions, destination exacte,
+restauration du contexte et absence de boucle. Elle n’intègre pas de fournisseur
+analytics ni de collecte persistée. L’instrumentation produit complète est une
+candidate V3.
 
 ## 10. Critères d’acceptation
 
@@ -345,7 +341,9 @@ abandons avant activité, retours arrière et progression entre activités.
   retour et position dans la leçon.
 - Brouillon, verrouillage, complétion et hors ligne ne permettent aucun
   contournement d’autorisation ou faux succès.
-- Les événements de navigation sont mesurés sans contenu pédagogique privé.
+- La séquence est dérivée exclusivement des données existantes, sans migration.
+- Les tests prouvent le maximum de deux actions depuis le curriculum et la reprise
+  exacte depuis Aujourd’hui.
 
 ## 11. Tests attendus
 
@@ -358,26 +356,22 @@ abandons avant activité, retours arrière et progression entre activités.
 - Tests offline/reconnexion sans chargement indéfini.
 - Playwright sur 390 × 844, tablette, 1440 × 900 et WebKit mobile.
 - Axe, clavier, focus, zoom 200 % et réduction des animations.
-- Tests analytics garantissant l’absence de réponses et textes libres.
 
 ## 12. Hors périmètre
 
 - Refonte visuelle complète des tokens et de la marque.
 - Modification de la formule de progression, traitée par `V2-003`.
 - Publication en cascade, traitée par `V2-005`.
-- Validation scientifique, traitée séparément.
+- Validation scientifique persistée, ordre éditorial arbitraire et analytics
+  produit, reportés dans `V3_CANDIDATES.md`.
 - Recommandation adaptative par IA.
 - Édition collaborative ou réseau social.
 
 ## 13. Décisions restantes
 
-1. Valider l’ordre éditorial explicite recommandé ou une séquence dérivée par
-   phases sans migration.
-2. Décider si l’exercice obtient une route profonde canonique ou reste une ancre
+1. Décider si l’exercice obtient une route profonde canonique ou reste une ancre
    dans la leçon.
-3. Définir l’activité minimale mémorisée pour reprendre un long bloc de contenu :
+2. Définir l’activité minimale mémorisée pour reprendre un long bloc de contenu :
    bloc, sous-section ou simple activité.
-4. Choisir si une activité optionnelle commencée prend temporairement priorité
+3. Choisir si une activité optionnelle commencée prend temporairement priorité
    sur la prochaine activité requise.
-5. Définir le fournisseur et la durée de conservation des analytics avant toute
-   instrumentation.

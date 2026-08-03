@@ -13,6 +13,21 @@ console. Aucune session authentifiée existante n’était disponible : Aujourd�
 les parcours, leçons, évaluations, exercices, notes, révisions, profil et admin
 ont donc été audités par le code et les tests, pas par une session de production.
 
+### Cap V2
+
+La V2 est un gros polish UI/UX construit sur un socle stable. Elle n’est pas une
+nouvelle vague fonctionnelle.
+
+Son ordre est volontairement court :
+
+1. corriger les P0 de confidentialité, autorisation et progression ;
+2. ajouter les tests backend réels indispensables ;
+3. simplifier le parcours de leçon et l’administration ;
+4. fiabiliser publication, responsive, actions, accessibilité et états offline.
+
+Les nouvelles capacités métier, migrations non indispensables au polish,
+analytics complets et workflows avancés sont reportés dans `V3_CANDIDATES.md`.
+
 ### Décisions invariantes
 
 - LearnX reste générique : `Program > Stage > Module > Lesson`, sans année ni
@@ -20,10 +35,11 @@ ont donc été audités par le code et les tests, pas par une session de product
 - La publication personnelle et la validation scientifique sont indépendantes.
 - Un contenu pédagogiquement complet peut être publié sans revue scientifique.
 - Publier ne signifie jamais « validé scientifiquement ».
-- La validation scientifique est optionnelle, historisée et périmée lorsque le
-  contenu revu change.
+- La validation scientifique reste une vision future optionnelle ; elle n’est
+  pas un ticket V2.
 - Les calculs de progression, de maîtrise et de validation restent côté serveur.
-- Un ticket correspond idéalement à un commit, avec migration isolée si besoin.
+- Un ticket correspond idéalement à un commit. Aucune migration n’est introduite
+  pour le polish ; une nécessité P0 imprévue doit être démontrée et isolée.
 
 ## Synthèse des preuves
 
@@ -64,8 +80,9 @@ ont donc été audités par le code et les tests, pas par une session de product
 
 ## Ordre de livraison
 
-Les tickets P0 constituent le jalon « intégrité et confidentialité ». Aucun
-chantier de refonte ou de validation scientifique ne doit les retarder.
+Les tickets P0 constituent le jalon « intégrité et confidentialité ». Le reste
+de la V2 constitue le jalon « polish du parcours ». Aucune capacité V3 ne doit
+retarder ces deux jalons.
 
 ## V2-001 — Supprimer le cache privé du service worker
 
@@ -178,6 +195,8 @@ chantier de refonte ou de validation scientifique ne doit les retarder.
   notes, révisions, progression et autorisations multi-utilisateurs.
 - Ajouter un projet Playwright mobile et un contrôle de déploiement authentifié
   avec compte de test dédié et secret CI.
+- Exécuter ces contrôles dans un environnement reproductible utilisant les vraies
+  Functions et une base isolée.
 
 ### Hors périmètre
 
@@ -282,14 +301,16 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
   serveur et l’ordre pédagogique.
 - Conserver les routes profondes quiz, mini-évaluation et exercice avec en-tête,
   fil d’Ariane, sommaire et retour dans le contexte de la leçon.
-- Instrumenter les clics de navigation sans réponse, note ni texte libre.
+- Dériver une séquence déterministe par phases à partir des données et positions
+  existantes, sans migration.
 
 ### Hors périmètre
 
 - Refonte complète des tokens et de l’identité visuelle.
 - Modification de la formule de progression.
 - Recommandation adaptative par IA.
-- Migration Prisma sans décision préalable sur l’ordonnancement inter-types.
+- Ordre éditorial arbitraire entre types et toute migration associée.
+- Instrumentation analytics produit persistée.
 
 ### Critères d’acceptation
 
@@ -307,12 +328,12 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Tests unitaires de l’ordre et de la prochaine activité ; tests d’intégration du
   parcours complet et de reprise exacte.
 - Playwright sur mobile, tablette, desktop et WebKit ; axe, clavier et focus.
-- Risque principal : les positions actuelles sont propres à chaque table. Valider
-  une séquence dérivée ou un ordre éditorial explicite avant toute migration.
+- Risque assumé : la séquence V2 par phases est moins fine qu’un ordre éditorial
+  explicite, reporté en V3.
 
 ## V2-008 — Refonte UI responsive et système de composants
 
-**Priorité : P1. Dépendances : V2-006 pour l’admin, parallélisable ailleurs.**
+**Priorité : P1. Dépendances : V2-006, V2-007.**
 
 ### Périmètre
 
@@ -374,119 +395,32 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 
 - Centraliser l’état réseau et désactiver les mutations non supportées hors ligne
   avec un message actionnable.
-- Choisir et implémenter soit un mode lecture téléchargé, isolé par utilisateur,
-  soit un mode privé en ligne uniquement.
-- Si une file de mutations est retenue, afficher les éléments en attente,
-  conflits et échecs sans jamais simuler une réussite.
+- Appliquer pour la V2 un mode privé en ligne uniquement : aucun téléchargement
+  privé ni file de mutations.
+- Conserver la destination et proposer une nouvelle tentative après reconnexion,
+  sans jamais simuler une réussite.
 
 ### Hors périmètre
 
 - Synchronisation collaborative temps réel.
+- Téléchargement privé par compte et file de mutations offline.
 
 ### Critères d’acceptation
 
 - Notes, quiz, exercices, progression et admin ne restent jamais en chargement
   indéfini hors connexion.
 - Déconnexion purge toute donnée locale privée.
-- Reconnexion résout les conflits selon une règle documentée.
+- Reconnexion restaure la destination et permet de relancer explicitement
+  l’action.
 
 ### Tests et risques
 
 - Tests offline/reconnect/account-switch sur iOS et Chromium.
 - Risque sécurité élevé si le stockage privé local n’est pas cloisonné.
 
-## V2-011 — Maîtriser les écritures concurrentes
+## V2-011 — Accessibilité et matrice mobile
 
-**Priorité : P1. Dépendances : V2-003.**
-
-### Périmètre
-
-- Ajouter versionnement optimiste ou prédicats d’état aux notes, exercices et
-  soumissions finales.
-- Rendre atomiques les transitions `DRAFT → SUBMITTED → REVIEWED`.
-- Prévenir double soumission, écrasement multi-onglets et régression d’état.
-
-### Hors périmètre
-
-- Édition collaborative en temps réel.
-
-### Critères d’acceptation
-
-- Une écriture obsolète retourne un conflit explicite avec option de recharge.
-- Un contenu soumis ne redevient pas brouillon par une sauvegarde concurrente.
-- Les tentatives restent historisées.
-
-### Tests et risques
-
-- Tests avec promesses concurrentes et transactions réelles.
-- Risque de migration : isoler les colonnes de version dans un commit dédié.
-
-## V2-012 — Durcir authentification et en-têtes HTTP
-
-**Priorité : P1. Dépendances : V2-002.**
-
-### Périmètre
-
-- Remplacer le rate limit mémoire par un mécanisme distribué/persisté compatible
-  serverless, couvrant connexion et inscription.
-- Limiter l’écriture `lastUsedAt` à un intervalle raisonnable et nettoyer les
-  sessions expirées.
-- Ajouter CSP, anti-framing, Referrer-Policy et Permissions-Policy adaptés.
-- Journaliser les événements de sécurité sans mot de passe, token ni donnée
-  sensible.
-
-### Hors périmètre
-
-- OAuth, SSO et MFA.
-
-### Critères d’acceptation
-
-- La limite s’applique entre instances et fournit une réponse/réinitialisation
-  prévisible.
-- Les pages et PWA fonctionnent sous la CSP sans `unsafe-eval` en production.
-- Une session active ne provoque pas une écriture DB à chaque requête.
-
-### Tests et risques
-
-- Tests multi-instance simulés, headers et régression auth.
-- Risque : choisir une dépendance durable sans surcoût disproportionné.
-
-## V2-013 — Validation scientifique optionnelle
-
-**Priorité : P1. Dépendances : V2-005, V2-008.**
-
-La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
-
-### Périmètre
-
-- Persister un historique par leçon : décision, identité consentie, qualifications,
-  organisation, date, périmètre, note, preuve et empreinte de contenu.
-- Calculer les états `non réalisée`, `active`, `à renouveler` et `retirée` sans
-  modifier `isPublished`.
-- Afficher détail accessible sur la leçon et agrégation des leçons publiées au
-  niveau module.
-- Autoriser uniquement le propriétaire admin à enregistrer ou retirer une preuve.
-
-### Hors périmètre
-
-- Accréditation juridique, paiement, score IA et portail de signature externe.
-
-### Critères d’acceptation
-
-- Une leçon sans revue reste publiable si elle est pédagogiquement complète.
-- Seule une validation active portant sur l’empreinte courante affiche la pastille
-  « Validé scientifiquement ».
-- Toute modification couverte rend la validation périmée automatiquement.
-- L’identité privée du réviseur n’est jamais exposée sans consentement.
-
-### Tests et risques
-
-- Autorisation, historique, retrait, empreinte, agrégation et accessibilité.
-- Risque légal : la pastille ne doit pas suggérer une accréditation de LearnX.
-
-## V2-014 — Accessibilité et matrice mobile
-
-**Priorité : P1. Dépendances : V2-008, V2-009.**
+**Priorité : P1. Dépendances : V2-007, V2-008, V2-009.**
 
 ### Périmètre
 
@@ -511,91 +445,6 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Risque : faux sentiment de conformité si l’automatisation remplace la revue
   humaine.
 
-## V2-015 — Environnement local et CI reproductibles
-
-**Priorité : P1. Dépendances : V2-004.**
-
-### Périmètre
-
-- Fournir une commande de développement unique démarrant Vite et les Functions,
-  avec URL réseau documentée pour téléphone.
-- Exécuter lint, typecheck, tests, build, migrations et E2E réel en CI.
-- Vérifier le déploiement, le manifeste, les redirections et une transaction
-  authentifiée non destructive.
-- Documenter la gestion des branches Neon et secrets Vercel.
-
-### Hors périmètre
-
-- Déploiement automatique du seed éditorial en production.
-
-### Critères d’acceptation
-
-- `pnpm dev` ne produit plus d’API 404 ni de chargement infini.
-- Une contribution neuve peut installer, migrer, seeder et tester avec la
-  documentation seule.
-- La CI bloque toute migration absente ou build non reproductible.
-
-### Tests et risques
-
-- Smoke local, CI et production ; aucune base partagée entre runs.
-- Risque : différences de routage entre Vite et Vercel à conserver dans les
-  scénarios.
-
-## V2-016 — Pagination, chargement progressif et observabilité
-
-**Priorité : P2. Dépendances : V2-006, V2-015.**
-
-### Périmètre
-
-- Paginer notes, révisions, historiques et grandes collections admin.
-- Charger le curriculum par niveau lorsque le volume le justifie.
-- Mesurer latence API, erreurs normalisées, requêtes lentes et poids des payloads
-  sans journaliser de données sensibles.
-- Ajouter une limite et un état d’erreur explicite à toute requête UI.
-
-### Hors périmètre
-
-- Entrepôt analytique produit.
-
-### Critères d’acceptation
-
-- Aucun écran ne charge une collection non bornée.
-- Les erreurs corrélées sont diagnosticables et les budgets de performance sont
-  documentés.
-
-### Tests et risques
-
-- Tests pagination, erreurs, grands volumes et budgets Lighthouse/API.
-- Risque de changement de contrat : versionner les curseurs et garder les réponses
-  typées.
-
-## V2-017 — Cycle de vie du compte et des notes
-
-**Priorité : P2. Dépendances : V2-011, V2-012.**
-
-### Périmètre
-
-- Ajouter suppression/restauration de note, pagination et indication de conflit.
-- Permettre changement de mot de passe, révocation des autres sessions et
-  suppression/export du compte selon la politique retenue.
-- Clarifier inscription ouverte ou sur invitation.
-
-### Hors périmètre
-
-- Gestion d’organisation ou facturation.
-
-### Critères d’acceptation
-
-- Les opérations sensibles demandent réauthentification et confirmation.
-- Suppression et export n’exposent jamais les données d’un autre utilisateur.
-- La politique d’inscription est appliquée côté serveur.
-
-### Tests et risques
-
-- Autorisation, réauthentification, révocation et récupération.
-- Risque RGPD : définir rétention, sauvegardes et suppression irréversible avant
-  mise en œuvre.
-
 ## Choix produit restant à arbitrer
 
 1. **Progression des exercices** — recommandation : compter l’exercice à la
@@ -610,13 +459,7 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 4. **Dépublication en cascade** — recommandation : cascade atomique explicite
    après aperçu, sans effacer les drapeaux enfants ni la progression si le parent
    seul masque temporairement la branche ; proposer une option de cascade totale.
-5. **Inscription** — choisir entre libre, liste d’invitation ou création admin.
-6. **Validation scientifique** — fixer la durée éventuelle d’expiration ;
-   l’empreinte de contenu reste dans tous les cas la cause automatique de
-   péremption.
-7. **Identité du réviseur** — préciser le texte de consentement et la visibilité
-   publique de la preuve.
-8. **Direction visuelle** — valider une maquette et les priorités desktop avant la
+5. **Direction visuelle** — valider une maquette et les priorités desktop avant la
    migration de toutes les pages.
 
 ## Portes de sortie V2
@@ -625,7 +468,10 @@ La spécification détaillée est `SCIENTIFIC_REVIEW_SPEC.md`.
 - Aucun cache privé partagé entre utilisateurs.
 - Autorisations croisées testées sur toutes les mutations sensibles.
 - Progression conforme aux règles produit et recalculable.
-- Publication transactionnelle, prévisualisée et indépendante de la validation
-  scientifique.
+- Publication transactionnelle et prévisualisée ; aucune revue scientifique
+  n’est requise.
 - Parcours critique réel testé sur desktop et mobile.
-- Accessibilité, offline, erreurs et performance vérifiés sur la production.
+- Parcours leçon, admin, responsive, actions, accessibilité et offline vérifiés
+  sur la production.
+- Aucune capacité listée dans `V3_CANDIDATES.md` n’a été commencée par effet de
+  bord.

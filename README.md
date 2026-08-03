@@ -6,9 +6,10 @@ L’application n’est pas limitée à la psychologie. Chaque sujet est organis
 
 Le backlog V1 livré est conservé dans `BACKLOG_CODEX.md`. Les priorités issues
 de l’audit sécurité, intégrité, UX et production sont suivies dans
-`BACKLOG_V2.md`. La validation scientifique optionnelle et indépendante de la
-publication est spécifiée dans `SCIENTIFIC_REVIEW_SPEC.md`. Le parcours unifié
-centré sur la leçon est défini dans `LEARNING_FLOW_SPEC.md`.
+`BACKLOG_V2.md`, centré sur la stabilité puis le polish UI/UX. Le parcours unifié
+centré sur la leçon est défini dans `LEARNING_FLOW_SPEC.md`. Les capacités métier
+reportées sont listées dans `V3_CANDIDATES.md` ; la validation scientifique
+optionnelle reste une vision future dans `SCIENTIFIC_REVIEW_SPEC.md`.
 
 ## Stack imposée
 

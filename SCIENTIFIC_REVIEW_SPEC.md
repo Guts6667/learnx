@@ -1,5 +1,8 @@
 # Validation scientifique optionnelle
 
+> Statut : vision candidate V3. Cette spécification ne fait pas partie du
+> backlog V2 de polish et ne doit déclencher ni migration, ni API, ni badge en V2.
+
 ## 1. Décision produit
 
 La publication et la validation scientifique sont indépendantes.
