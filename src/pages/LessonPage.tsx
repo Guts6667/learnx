@@ -1,4 +1,7 @@
+import { route } from 'preact-router';
+
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -19,6 +22,7 @@ import {
   useLessonProgressQuery,
 } from '@/features/curriculum/queries';
 import { ExerciseCard } from '@/features/exercises/ExerciseCard';
+import { useNoteMutation, useNotesQuery } from '@/features/notes/queries';
 
 const contentBlockLabels: Record<ContentBlockType, string> = {
   CALLOUT: 'À retenir',
@@ -605,6 +609,64 @@ function ConceptAssessmentsSection({
   );
 }
 
+function LessonNotesSection({
+  lessonId,
+  lessonTitle,
+}: {
+  lessonId: string;
+  lessonTitle: string;
+}) {
+  const query = useNotesQuery('', lessonId);
+  const mutation = useNoteMutation();
+
+  async function createLinkedNote() {
+    try {
+      const note = await mutation.create({
+        lessonId,
+        title: `Notes — ${lessonTitle}`,
+      });
+      void route(`/notes/${encodeURIComponent(note.id)}`);
+    } catch {
+      // L’erreur normalisée est affichée dans la section.
+    }
+  }
+
+  return (
+    <section aria-labelledby="lesson-notes-title" class="space-y-3">
+      <h2 class="text-xl font-semibold" id="lesson-notes-title">
+        Notes
+      </h2>
+      <Button
+        isLoading={mutation.isPending}
+        onClick={() => void createLinkedNote()}
+      >
+        Nouvelle note liée à cette leçon
+      </Button>
+      {mutation.error || query.error ? (
+        <ErrorState description="Les notes n’ont pas pu être chargées ou créées." />
+      ) : null}
+      {query.isPending ? (
+        <Spinner label="Chargement des notes" size="sm" />
+      ) : null}
+      {query.data?.notes.length ? (
+        <ul class="space-y-2">
+          {query.data.notes.map((note) => (
+            <li key={note.id}>
+              <a
+                class="flex min-h-11 items-center justify-between gap-3 rounded-xl bg-slate-900 px-4 py-3 text-cyan-300 underline"
+                href={`/notes/${encodeURIComponent(note.id)}`}
+              >
+                <span>{note.title}</span>
+                <span class="text-xs text-slate-400">Modifier</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
+  );
+}
+
 function AssessmentsSection({
   exercises,
   isPublished,
@@ -785,6 +847,8 @@ export function LessonPage({
         lessonSlug={lesson.slug}
         programSlug={programSlug}
       />
+
+      <LessonNotesSection lessonId={lesson.id} lessonTitle={lesson.title} />
 
       <AssessmentsSection
         exercises={lesson.exercises}

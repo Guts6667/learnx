@@ -15,7 +15,31 @@ describe('LessonPage', () => {
   });
 
   it('affiche le contenu, les ressources, les tâches et les évaluations', async () => {
-    const fetchMock = vi.fn((path: string) => {
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/notes' && init?.method === 'POST') {
+        return Promise.resolve(
+          jsonResponse({
+            note: {
+              createdAt: '2026-08-03T08:00:00.000Z',
+              id: 'note-1',
+              lesson: { id: 'lesson-1', slug: 'demarrer', title: 'Démarrer' },
+              markdown: '',
+              program: {
+                id: 'program-1',
+                slug: 'programme-test',
+                title: 'Programme test',
+              },
+              title: 'Notes — Démarrer',
+              updatedAt: '2026-08-03T08:00:00.000Z',
+            },
+          }),
+        );
+      }
+
+      if (path === '/api/notes?lessonId=lesson-1') {
+        return Promise.resolve(jsonResponse({ notes: [] }));
+      }
+
       if (path === '/api/lessons/lesson-1/progress') {
         return Promise.resolve(
           jsonResponse({
@@ -167,10 +191,34 @@ describe('LessonPage', () => {
       'href',
       '/program/programme-test/lesson/demarrer/assessment?assessmentId=assessment-1',
     );
+    expect(
+      screen.getByRole('button', {
+        name: 'Nouvelle note liée à cette leçon',
+      }),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Nouvelle note liée à cette leçon',
+      }),
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/notes',
+      expect.objectContaining({
+        body: JSON.stringify({
+          lessonId: 'lesson-1',
+          title: 'Notes — Démarrer',
+        }),
+        method: 'POST',
+      }),
+    );
   });
 
   it('met à jour une tâche avec la mutation de progression', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/notes?lessonId=lesson-1') {
+        return Promise.resolve(jsonResponse({ notes: [] }));
+      }
+
       if (path === '/api/lessons/demarrer?preview=true') {
         return Promise.resolve(
           jsonResponse({

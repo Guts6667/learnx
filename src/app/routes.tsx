@@ -11,6 +11,7 @@ import {
 import { ConceptAssessmentPage } from '@/pages/ConceptAssessmentPage';
 import { LessonPage } from '@/pages/LessonPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { NotePage, NotesPage } from '@/pages/NotesPage';
 import { NotFoundPage, PlaceholderPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { QuizPage } from '@/pages/QuizPage';
@@ -20,10 +21,23 @@ interface RouteParams {
   assessmentId?: string;
   lessonSlug?: string;
   moduleSlug?: string;
+  noteId?: string;
   path?: string;
   programSlug?: string;
   quizId?: string;
   stageSlug?: string;
+}
+
+function NoteRoute({ noteId, path }: RouteParams) {
+  void path;
+
+  if (!noteId) return null;
+
+  return (
+    <ProtectedRoute>
+      <NotePage noteId={noteId} />
+    </ProtectedRoute>
+  );
 }
 
 function ConceptAssessmentRoute({
@@ -155,11 +169,9 @@ export function AppRoutes() {
           <PlaceholderPage title="Révisions" />
         </ProtectedRoute>
         <ProtectedRoute path="/notes">
-          <PlaceholderPage title="Notes" />
+          <NotesPage />
         </ProtectedRoute>
-        <ProtectedRoute path="/notes/:noteId">
-          <PlaceholderPage title="Note" />
-        </ProtectedRoute>
+        <NoteRoute path="/notes/:noteId" />
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
