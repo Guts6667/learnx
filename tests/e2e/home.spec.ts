@@ -1,5 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 
+import { expectNoSeriousA11yViolations } from './accessibility';
+
 const credentials = {
   displayName: 'Apprenant E2E',
   email: 'learner@example.com',
@@ -526,12 +528,14 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(
     page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
   ).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
   await expectNoHorizontalOverflow(page);
 
   await openCriticalLesson(page);
+  await expectNoSeriousA11yViolations(page);
   await page.getByRole('button', { name: 'Continuer' }).click();
 
-  await page.getByRole('button', { name: 'Marquer comme terminée' }).click();
+  await page.getByRole('button', { name: 'Marquer comme terminé' }).click();
   await expect(
     page.getByRole('button', { name: 'Marquer comme à faire' }),
   ).toBeVisible();
@@ -567,7 +571,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await openCriticalLesson(page);
 
   await expect(
-    page.getByRole('heading', { level: 2, name: 'Tâche critique' }),
+    page.getByRole('heading', { level: 2, name: 'Contenu 1' }),
   ).toBeVisible();
   await expect(
     page.getByRole('progressbar', { name: /Progression de la leçon/ }),
@@ -596,6 +600,7 @@ test('affiche le sommaire pédagogique en une colonne sans débordement', async 
   await summaryTrigger.click();
   const dialog = page.getByRole('dialog', { name: 'Sommaire de la leçon' });
   await expect(dialog).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
   await expect(
     page.getByRole('button', { name: 'Fermer le panneau' }),
   ).toBeFocused();
@@ -638,6 +643,42 @@ test('affiche le sommaire pédagogique en une colonne sans débordement', async 
   await expect(
     page.getByRole('dialog', { name: 'Sommaire de la leçon' }),
   ).toBeVisible();
+});
+
+test('reste utilisable avec texte agrandi et réduction des animations', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+  await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
+
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Navigation principale' })
+      .getByRole('link', { name: 'Parcours' }),
+  ).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectNoSeriousA11yViolations(page);
+
+  const animationDuration = await page.locator('body').evaluate((element) =>
+    getComputedStyle(element).animationDuration,
+  );
+  expect(Number.parseFloat(animationDuration || '0')).toBeLessThanOrEqual(
+    0.01,
+  );
 });
 
 test('conserve la route privée et reprend après reconnexion', async ({

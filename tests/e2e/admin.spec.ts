@@ -1,5 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 
+import { expectNoSeriousA11yViolations } from './accessibility';
+
 const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
 const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
@@ -92,6 +94,7 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
   const trigger = page.getByRole('button', { name: 'Gérer ce contenu' });
   await trigger.click();
   await expect(page.getByRole('dialog')).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
   await expect(
     page.getByRole('button', { name: 'Fermer le panneau' }),
   ).toBeFocused();

@@ -17,16 +17,18 @@ import {
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   InMemoryLoginRateLimiter,
+  SharedLoginRateLimiter,
   type LoginRateLimiter,
 } from '../_lib/login-rate-limit.js';
 
 interface AuthAppOptions {
   dependencies?: AuthDependencies;
+  allowRegistration?: boolean;
   loginRateLimiter?: LoginRateLimiter;
   secureCookies?: boolean;
 }
 
-const loginRateLimiter = new InMemoryLoginRateLimiter();
+const sharedLoginRateLimiter = new SharedLoginRateLimiter();
 
 async function parseBody(request: Request): Promise<unknown> {
   try {
@@ -53,7 +55,13 @@ export function createAuthApp(options: AuthAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const secureCookies =
     options.secureCookies ?? process.env.NODE_ENV === 'production';
-  const rateLimiter = options.loginRateLimiter ?? loginRateLimiter;
+  const allowRegistration =
+    options.allowRegistration ?? process.env.NODE_ENV !== 'production';
+  const rateLimiter =
+    options.loginRateLimiter ??
+    (options.dependencies
+      ? new InMemoryLoginRateLimiter()
+      : sharedLoginRateLimiter);
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -69,6 +77,14 @@ export function createAuthApp(options: AuthAppOptions = {}) {
   });
 
   app.post('/api/auth/register', async (context) => {
+    if (!allowRegistration) {
+      throw new ApiError(
+        'REGISTRATION_DISABLED',
+        'Public registration is not available.',
+        403,
+      );
+    }
+
     const parsedInput = registerInputSchema.safeParse(
       await parseBody(context.req.raw),
     );
@@ -101,7 +117,7 @@ export function createAuthApp(options: AuthAppOptions = {}) {
       parsedInput.data.email,
     );
     const now = options.dependencies?.now() ?? new Date();
-    rateLimiter.assertAllowed(rateLimitKey, now);
+    await rateLimiter.assertAllowed(rateLimitKey, now);
 
     let result;
 
@@ -109,13 +125,13 @@ export function createAuthApp(options: AuthAppOptions = {}) {
       result = await loginUser(parsedInput.data, options.dependencies);
     } catch (error) {
       if (error instanceof ApiError && error.code === 'INVALID_CREDENTIALS') {
-        rateLimiter.registerFailure(rateLimitKey, now);
+        await rateLimiter.registerFailure(rateLimitKey, now);
       }
 
       throw error;
     }
 
-    rateLimiter.clear(rateLimitKey);
+    await rateLimiter.clear(rateLimitKey);
     setSessionCookie(context, result.sessionToken, secureCookies);
 
     return context.json({ user: result.user });
