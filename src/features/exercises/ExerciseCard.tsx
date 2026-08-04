@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import type { LessonExerciseSummary } from '@/features/curriculum/queries';
@@ -130,7 +131,7 @@ export function ExerciseCard({
           {exercise.isRequired ? 'Obligatoire' : 'Optionnel'}
         </Badge>
       </div>
-      <p class="text-sm leading-6 text-slate-300">{exercise.instructions}</p>
+      <SafeMarkdown content={exercise.instructions} />
       {isLessonPublished ? (
         <PublishedExerciseCard exerciseId={exercise.id} />
       ) : (

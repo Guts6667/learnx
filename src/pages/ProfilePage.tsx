@@ -1,6 +1,8 @@
 import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { useLogoutMutation, useSessionQuery } from '@/features/auth/session';
 
 export function ProfilePage() {
@@ -22,30 +24,33 @@ export function ProfilePage() {
   }
 
   return (
-    <section aria-labelledby="profile-title">
-      <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-        Compte
-      </p>
-      <h1 id="profile-title" class="mt-3 text-3xl font-bold tracking-tight">
-        {user.displayName}
-      </h1>
-      <p class="mt-4 text-base text-slate-300">{user.email}</p>
-      {user.role === 'ADMIN' ? (
-        <a
-          class="mt-6 inline-flex min-h-11 items-center text-cyan-300 underline"
-          href="/admin"
+    <section aria-labelledby="profile-title" class="page-shell">
+      <PageHeader
+        eyebrow="Compte"
+        id="profile-title"
+        title={user.displayName}
+      />
+      <Card class="max-w-2xl space-y-5">
+        <div>
+          <p class="text-sm text-slate-400">Adresse e-mail</p>
+          <p class="mt-1 break-all text-base text-slate-100">{user.email}</p>
+        </div>
+        {user.role === 'ADMIN' ? (
+          <a
+            class="inline-flex min-h-11 items-center text-cyan-300 underline"
+            href="/admin"
+          >
+            Ouvrir l’administration
+          </a>
+        ) : null}
+        <Button
+          isLoading={logoutMutation.isPending}
+          onClick={handleLogout}
+          variant="secondary"
         >
-          Ouvrir l’administration
-        </a>
-      ) : null}
-      <Button
-        class="mt-8 block"
-        isLoading={logoutMutation.isPending}
-        onClick={handleLogout}
-        variant="secondary"
-      >
-        Se déconnecter
-      </Button>
+          Se déconnecter
+        </Button>
+      </Card>
     </section>
   );
 }

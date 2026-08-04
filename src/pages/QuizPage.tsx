@@ -100,7 +100,7 @@ export function QuizPage({
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
 
   return (
-    <article class="space-y-6">
+    <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={quiz.title} lesson={lesson} />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
       <section class="space-y-3" aria-label="Informations du quiz">

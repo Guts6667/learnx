@@ -2,19 +2,30 @@ import type { ComponentChildren, JSX } from 'preact';
 
 import { classNames } from '@/components/ui/classNames';
 
+type CardTone = 'default' | 'accent' | 'muted';
+
 interface CardProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'class'> {
   children: ComponentChildren;
   class?: string;
+  tone?: CardTone;
 }
 
-export function Card({ children, class: className, ...props }: CardProps) {
+const toneClasses: Record<CardTone, string> = {
+  default: '',
+  accent: 'border-cyan-800/80 bg-cyan-950/25',
+  muted: 'bg-slate-900/60 shadow-none',
+};
+
+export function Card({
+  children,
+  class: className,
+  tone = 'default',
+  ...props
+}: CardProps) {
   return (
     <div
       {...props}
-      class={classNames(
-        'rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm shadow-slate-950/30',
-        className,
-      )}
+      class={classNames('ui-card p-5 sm:p-6', toneClasses[tone], className)}
     >
       {children}
     </div>

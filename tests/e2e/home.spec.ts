@@ -226,7 +226,11 @@ async function installJourneyApi(page: Page) {
           stage: {
             id: 'stage-1',
             isPublished: true,
-            program: { id: 'program-1', slug: 'programme-e2e', title: 'Programme E2E' },
+            program: {
+              id: 'program-1',
+              slug: 'programme-e2e',
+              title: 'Programme E2E',
+            },
             slug: 'stage-e2e',
             title: 'Étape E2E',
           },
@@ -419,6 +423,14 @@ async function openCriticalLesson(page: Page) {
   ).toBeVisible();
 }
 
+async function expectNoHorizontalOverflow(page: Page) {
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+}
+
 test('préserve le parcours critique après inscription et reconnexion', async ({
   page,
 }) => {
@@ -446,6 +458,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(
     page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
   ).toBeVisible();
+  await expectNoHorizontalOverflow(page);
 
   await openCriticalLesson(page);
   await page.getByRole('button', { name: 'Continuer' }).click();
@@ -491,4 +504,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(
     page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
+
+  await page.setViewportSize({ height: 700, width: 320 });
+  await expectNoHorizontalOverflow(page);
 });

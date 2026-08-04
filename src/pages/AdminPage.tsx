@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { Spinner } from '@/components/ui/Spinner';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 import {
@@ -807,7 +807,7 @@ export function AdminPage(props: AdminPageProps) {
   const query = useAdminNavigationQuery(navigationTarget(props));
 
   if (query.isPending)
-    return <Spinner label="Chargement de l’administration" />;
+    return <Skeleton label="Chargement de l’administration" />;
   if (query.error || !query.data) {
     return (
       <ErrorState description="Les contenus administrables n’ont pas pu être chargés." />
@@ -815,7 +815,7 @@ export function AdminPage(props: AdminPageProps) {
   }
 
   return (
-    <section aria-label="Administration" class="space-y-6">
+    <section aria-label="Administration" class="page-shell">
       <header class="space-y-2">
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Zone sécurisée

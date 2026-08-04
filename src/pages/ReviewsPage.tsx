@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { Spinner } from '@/components/ui/Spinner';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 import {
   type ReviewItem,
   useCompleteReviewMutation,
@@ -130,23 +131,18 @@ export function ReviewsPage() {
   }
 
   return (
-    <section aria-labelledby="reviews-title" class="space-y-6">
-      <header class="space-y-3">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Consolidation
-        </p>
-        <h1 class="text-3xl font-bold tracking-tight" id="reviews-title">
-          Révisions
-        </h1>
-        <p class="leading-7 text-slate-300">
-          Reprenez les notions à renforcer et leurs ressources recommandées.
-        </p>
-      </header>
+    <section aria-labelledby="reviews-title" class="page-shell">
+      <PageHeader
+        description="Reprenez les notions à renforcer et leurs ressources recommandées."
+        eyebrow="Consolidation"
+        id="reviews-title"
+        title="Révisions"
+      />
 
       {mutation.error ? (
         <ErrorState description="La révision n’a pas pu être mise à jour." />
       ) : null}
-      {query.isPending ? <Spinner label="Chargement des révisions" /> : null}
+      {query.isPending ? <Skeleton label="Chargement des révisions" /> : null}
       {query.error ? (
         <ErrorState description="Les révisions n’ont pas pu être chargées." />
       ) : null}
@@ -157,7 +153,7 @@ export function ReviewsPage() {
         />
       ) : null}
       {query.data?.reviews.length ? (
-        <ul class="space-y-4">
+        <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {query.data.reviews.map((item) => (
             <ReviewCard
               item={item}

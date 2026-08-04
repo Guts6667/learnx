@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/Card';
 import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Spinner } from '@/components/ui/Spinner';
 import {
   type LessonContentBlock,
@@ -43,7 +44,8 @@ const contentBlockLabels: Record<LessonContentBlock['type'], string> = {
 
 function getText(value: unknown): string {
   if (typeof value === 'string') return value;
-  if (Array.isArray(value)) return value.map(getText).filter(Boolean).join('\n');
+  if (Array.isArray(value))
+    return value.map(getText).filter(Boolean).join('\n');
   if (value && typeof value === 'object') {
     const record = value as Record<string, unknown>;
     const text = record.text ?? record.content ?? record.markdown;
@@ -64,7 +66,9 @@ function getSafeExternalUrl(url: string | null): string | null {
   if (!url) return null;
   try {
     const parsed = new URL(url);
-    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.toString() : null;
+    return ['http:', 'https:'].includes(parsed.protocol)
+      ? parsed.toString()
+      : null;
   } catch {
     return null;
   }
@@ -87,9 +91,7 @@ function ContentActivity({
       <p class="text-sm font-semibold text-cyan-300">
         {contentBlockLabels[block.type]}
       </p>
-      <p class="whitespace-pre-line leading-7 text-slate-200">
-        {getText(block.content)}
-      </p>
+      <SafeMarkdown content={getText(block.content)} />
       {sources.length === 0 ? null : (
         <footer class="border-t border-slate-700 pt-3">
           <h3 class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
@@ -157,7 +159,9 @@ function ResourceActivity({
           onClick={() => void onComplete()}
           variant="secondary"
         >
-          {status === 'COMPLETED' ? 'Ressource consultée' : 'Marquer comme consultée'}
+          {status === 'COMPLETED'
+            ? 'Ressource consultée'
+            : 'Marquer comme consultée'}
         </Button>
       ) : null}
     </Card>
@@ -187,7 +191,9 @@ function TaskActivity({
           onClick={() => void onToggle()}
           variant="secondary"
         >
-          {status === 'DONE' ? 'Marquer comme à faire' : 'Marquer comme terminée'}
+          {status === 'DONE'
+            ? 'Marquer comme à faire'
+            : 'Marquer comme terminée'}
         </Button>
       ) : null}
     </Card>
@@ -201,8 +207,8 @@ function SecondaryActivity({ activity }: { activity: LessonActivity }) {
         {activity.required ? 'Obligatoire' : 'Optionnel'}
       </Badge>
       <p class="leading-7 text-slate-300">
-        Cette activité s’ouvre dans une vue dédiée tout en conservant le contexte
-        de la leçon.
+        Cette activité s’ouvre dans une vue dédiée tout en conservant le
+        contexte de la leçon.
       </p>
     </Card>
   );
@@ -222,7 +228,8 @@ function ActivitySummary({
       <ol class="space-y-2">
         {activities.map((activity) => {
           const key = activityKey(activity.kind, activity.id);
-          const isCurrent = current?.id === activity.id && current.kind === activity.kind;
+          const isCurrent =
+            current?.id === activity.id && current.kind === activity.kind;
           return (
             <li key={key}>
               <a
@@ -340,9 +347,13 @@ function LessonWorkspace({
 
   async function updateTask(task: LessonTask) {
     const currentStatus = progress?.taskCompletions[task.id] ?? 'TODO';
-    await mutation.mutateAsync(`/api/tasks/${encodeURIComponent(task.id)}`, 'PATCH', {
-      status: currentStatus === 'DONE' ? 'TODO' : 'DONE',
-    });
+    await mutation.mutateAsync(
+      `/api/tasks/${encodeURIComponent(task.id)}`,
+      'PATCH',
+      {
+        status: currentStatus === 'DONE' ? 'TODO' : 'DONE',
+      },
+    );
   }
 
   async function continueLearning() {
@@ -383,14 +394,19 @@ function LessonWorkspace({
   const task = lesson.tasks.find((item) => item.id === current?.id);
 
   return (
-    <article class="space-y-6" aria-labelledby="lesson-title">
+    <article
+      class="mx-auto w-full max-w-6xl space-y-6"
+      aria-labelledby="lesson-title"
+    >
       <LessonContextHeader
         lesson={lesson}
         percent={progress?.lessonProgress.percent ?? 0}
       />
       {lesson.isPublished ? null : (
         <Card class="border border-amber-800/70 bg-amber-950/30">
-          <p class="font-semibold text-amber-200">Prévisualisation en lecture seule</p>
+          <p class="font-semibold text-amber-200">
+            Prévisualisation en lecture seule
+          </p>
           <p class="mt-2 text-sm text-amber-100/80">
             La séquence est consultable, mais aucune progression ne sera créée.
           </p>
@@ -426,11 +442,17 @@ function LessonWorkspace({
               )}
             </div>
           ) : null}
-          {block ? <ContentActivity block={block} resourcesByKey={resourcesByKey} /> : null}
+          {block ? (
+            <ContentActivity block={block} resourcesByKey={resourcesByKey} />
+          ) : null}
           {resource ? (
             <ResourceActivity
               isPending={mutation.isPending}
-              onComplete={lesson.isPublished ? () => updateResource(resource.id) : undefined}
+              onComplete={
+                lesson.isPublished
+                  ? () => updateResource(resource.id)
+                  : undefined
+              }
               resource={resource}
               status={progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'}
             />
@@ -443,7 +465,11 @@ function LessonWorkspace({
               task={task}
             />
           ) : null}
-          {current && !block && !resource && !task && current.kind !== 'COMPLETE' ? (
+          {current &&
+          !block &&
+          !resource &&
+          !task &&
+          current.kind !== 'COMPLETE' ? (
             <SecondaryActivity activity={current} />
           ) : null}
           {current?.kind === 'COMPLETE' ? (
@@ -468,7 +494,9 @@ function LessonWorkspace({
               isLoading={mutation.isPending}
               onClick={() => void continueLearning()}
             >
-              {lesson.isPublished ? 'Continuer' : 'Continuer la prévisualisation'}
+              {lesson.isPublished
+                ? 'Continuer'
+                : 'Continuer la prévisualisation'}
             </Button>
           ) : null}
           <Button
@@ -482,7 +510,10 @@ function LessonWorkspace({
         <aside class="hidden lg:block">
           <div class="sticky top-4 rounded-2xl border border-slate-800 p-4">
             <h2 class="mb-3 font-semibold">Sommaire</h2>
-            <ActivitySummary activities={sequence.activities} current={current} />
+            <ActivitySummary
+              activities={sequence.activities}
+              current={current}
+            />
           </div>
         </aside>
       </div>
@@ -542,5 +573,7 @@ export function LessonPage({
     );
   }
 
-  return <LessonWorkspace lesson={query.data.lesson} programSlug={programSlug} />;
+  return (
+    <LessonWorkspace lesson={query.data.lesson} programSlug={programSlug} />
+  );
 }

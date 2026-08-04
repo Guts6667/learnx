@@ -53,4 +53,15 @@ describe('navigation accessible', () => {
     ).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('navigation')).toHaveClass('app-safe-navigation');
   });
+
+  it('utilise un cadre responsive sans limiter le desktop à une largeur mobile', () => {
+    render(
+      <MobileLayout currentPath="/today">
+        <h1>Contenu large</h1>
+      </MobileLayout>,
+    );
+
+    expect(document.getElementById('main-content')).toHaveClass('app-frame');
+    expect(document.getElementById('main-content')).not.toHaveClass('max-w-xl');
+  });
 });

@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -86,40 +88,36 @@ export function NotesPage() {
   }
 
   return (
-    <section aria-labelledby="notes-title" class="space-y-6">
-      <header class="space-y-3">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Espace personnel
-        </p>
-        <h1 class="text-3xl font-bold tracking-tight" id="notes-title">
-          Notes
-        </h1>
-        <p class="leading-7 text-slate-300">
-          Conservez vos idées libres ou rattachez-les à une leçon.
-        </p>
-      </header>
-
-      <Button
-        class="w-full"
-        isLoading={mutation.isPending}
-        onClick={() => void createNote()}
-        size="lg"
-      >
-        Nouvelle note
-      </Button>
-
-      <TextField
-        label="Rechercher dans les notes"
-        onInput={(event) => setSearch(event.currentTarget.value)}
-        placeholder="Titre ou contenu"
-        type="search"
-        value={search}
+    <section aria-labelledby="notes-title" class="page-shell">
+      <PageHeader
+        description="Conservez vos idées libres ou rattachez-les à une leçon."
+        eyebrow="Espace personnel"
+        id="notes-title"
+        title="Notes"
       />
+
+      <div class="grid items-end gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
+        <TextField
+          label="Rechercher dans les notes"
+          onInput={(event) => setSearch(event.currentTarget.value)}
+          placeholder="Titre ou contenu"
+          type="search"
+          value={search}
+        />
+        <Button
+          class="w-full md:w-auto"
+          isLoading={mutation.isPending}
+          onClick={() => void createNote()}
+          size="lg"
+        >
+          Nouvelle note
+        </Button>
+      </div>
 
       {mutation.error ? (
         <ErrorState description="La note n’a pas pu être créée." />
       ) : null}
-      {query.isPending ? <Spinner label="Chargement des notes" /> : null}
+      {query.isPending ? <Skeleton label="Chargement des notes" /> : null}
       {query.error ? (
         <ErrorState description="Les notes n’ont pas pu être chargées." />
       ) : null}
@@ -134,7 +132,7 @@ export function NotesPage() {
         />
       ) : null}
       {query.data?.notes.length ? (
-        <ul class="space-y-3">
+        <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {query.data.notes.map((note) => (
             <NoteCard key={note.id} note={note} />
           ))}

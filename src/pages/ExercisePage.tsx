@@ -28,7 +28,8 @@ export function ExercisePage({
     }
   }, [exercise, lesson]);
 
-  if (lessonQuery.isPending) return <Spinner label="Chargement de l’exercice" />;
+  if (lessonQuery.isPending)
+    return <Spinner label="Chargement de l’exercice" />;
   if (lessonQuery.error) {
     return <ErrorState description="L’exercice n’a pas pu être chargé." />;
   }
@@ -46,10 +47,13 @@ export function ExercisePage({
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
 
   return (
-    <article class="space-y-6">
+    <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
-      <ExerciseCard exercise={exercise} isLessonPublished={lesson.isPublished} />
+      <ExerciseCard
+        exercise={exercise}
+        isLessonPublished={lesson.isPublished}
+      />
       <a
         class="inline-flex min-h-11 items-center text-cyan-300 underline"
         href={backHref}

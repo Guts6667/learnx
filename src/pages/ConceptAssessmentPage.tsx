@@ -103,14 +103,16 @@ export function ConceptAssessmentPage({
   const passingScore = assessment.concept.masteryThreshold;
   const key = activityKey('CONCEPT_ASSESSMENT', assessment.id);
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
-  const title =
-    assessment.title ?? `Évaluation — ${assessment.concept.title}`;
+  const title = assessment.title ?? `Évaluation — ${assessment.concept.title}`;
 
   return (
-    <article class="space-y-6">
+    <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
-      <section class="space-y-3" aria-label="Informations de la mini-évaluation">
+      <section
+        class="space-y-3"
+        aria-label="Informations de la mini-évaluation"
+      >
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Notion · {assessment.concept.title}
         </p>

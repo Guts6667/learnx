@@ -42,7 +42,7 @@ export function MobileLayout({
         Aller au contenu principal
       </a>
       <header class="app-safe-header border-b border-slate-800 bg-slate-950">
-        <div class="mx-auto flex max-w-xl items-center justify-between gap-3">
+        <div class="app-frame mx-auto flex items-center justify-between gap-3">
           <div class="flex items-center gap-2">
             {!rootPaths.has(currentPath) ? (
               <button
@@ -68,7 +68,7 @@ export function MobileLayout({
       <PwaStatus />
       <main
         id="main-content"
-        class="app-safe-main mx-auto max-w-xl py-8"
+        class="app-safe-main app-frame mx-auto py-8 lg:py-10"
         tabindex={-1}
       >
         {children}
