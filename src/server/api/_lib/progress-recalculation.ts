@@ -1,4 +1,5 @@
 import {
+  CanonicalActivityKind,
   ConceptProgressStatus,
   ExerciseSubmissionStatus,
   LessonProgressStatus,
@@ -126,6 +127,13 @@ async function readLessonState(
       },
     },
     select: {
+      activityCompletionCarryovers: {
+        where: {
+          ...currentRunFilter,
+          userId,
+        },
+        select: { activityKey: true, kind: true },
+      },
       concepts: {
         where: { isRequired: true },
         select: {
@@ -138,9 +146,10 @@ async function readLessonState(
         },
       },
       exercises: {
-        where: { isRequired: true },
+        where: { isCanonical: true, isRequired: true },
         select: {
           id: true,
+          key: true,
           submissions: {
             where: { ...currentRunFilter, userId },
             take: 1,
@@ -190,6 +199,7 @@ async function readLessonState(
         },
       },
       tasks: {
+        where: { isCanonical: true },
         orderBy: { position: 'asc' },
         select: {
           completions: {
@@ -199,6 +209,7 @@ async function readLessonState(
           },
           id: true,
           isRequired: true,
+          key: true,
         },
       },
     },
@@ -208,6 +219,16 @@ async function readLessonState(
 function toLessonSnapshot(
   lesson: NonNullable<Awaited<ReturnType<typeof readLessonState>>>,
 ): LessonProgressSnapshot {
+  const taskCarryovers = new Set(
+    (lesson.activityCompletionCarryovers ?? [])
+      .filter((item) => item.kind === CanonicalActivityKind.TASK)
+      .map((item) => item.activityKey),
+  );
+  const exerciseCarryovers = new Set(
+    (lesson.activityCompletionCarryovers ?? [])
+      .filter((item) => item.kind === CanonicalActivityKind.EXERCISE)
+      .map((item) => item.activityKey),
+  );
   const result = calculateLessonProgress({
     requiredConcepts: lesson.concepts.map(
       (concept) =>
@@ -215,18 +236,18 @@ function toLessonSnapshot(
     ),
     requiredExercises: lesson.exercises.map(
       (exercise) =>
-        exercise.submissions[0]?.status === ExerciseSubmissionStatus.SUBMITTED,
+        exercise.submissions[0]?.status ===
+          ExerciseSubmissionStatus.SUBMITTED ||
+        exerciseCarryovers.has(exercise.key),
     ),
     requiredQuizzes: lesson.quizzes.map((quiz) => quiz.attempts.length > 0),
-    requiredResources: lesson.resources
-      .filter((resource) => resource.isRequired)
-      .map(
-        (resource) =>
-          resource.progress[0]?.status === ResourceProgressStatus.COMPLETED,
-      ),
     requiredTasks: lesson.tasks
       .filter((task) => task.isRequired)
-      .map((task) => task.completions[0]?.status === TaskCompletionStatus.DONE),
+      .map(
+        (task) =>
+          task.completions[0]?.status === TaskCompletionStatus.DONE ||
+          taskCarryovers.has(task.key),
+      ),
   });
 
   return {
@@ -239,11 +260,14 @@ function toLessonSnapshot(
       ),
     ),
     exerciseStatusById: new Map(
-      lesson.exercises.flatMap((exercise) =>
-        exercise.submissions[0]
+      lesson.exercises.flatMap((exercise) => {
+        const inherited = exerciseCarryovers.has(exercise.key);
+        return exercise.submissions[0]
           ? [[exercise.id, exercise.submissions[0].status] as const]
-          : [],
-      ),
+          : inherited
+            ? [[exercise.id, ExerciseSubmissionStatus.SUBMITTED] as const]
+            : [];
+      }),
     ),
     lessonProgress: lesson.progress[0] ?? null,
     quizPassedById: new Map(
@@ -257,11 +281,14 @@ function toLessonSnapshot(
       ),
     ),
     taskStatusById: new Map(
-      lesson.tasks.flatMap((task) =>
-        task.completions[0]
+      lesson.tasks.flatMap((task) => {
+        const inherited = taskCarryovers.has(task.key);
+        return task.completions[0]
           ? [[task.id, task.completions[0].status] as const]
-          : [],
-      ),
+          : inherited
+            ? [[task.id, TaskCompletionStatus.DONE] as const]
+            : [];
+      }),
     ),
   };
 }
@@ -305,6 +332,7 @@ export async function refreshStageAndProgram(
           lessons: {
             where: { isPublished: true },
             select: {
+              id: true,
               concepts: {
                 where: { isRequired: true },
                 select: {
@@ -323,7 +351,7 @@ export async function refreshStageAndProgram(
                 select: { percent: true },
               },
               tasks: {
-                where: { isRequired: true },
+                where: { isCanonical: true, isRequired: true },
                 select: {
                   completions: {
                     where: { userId },
@@ -333,6 +361,10 @@ export async function refreshStageAndProgram(
                   id: true,
                   title: true,
                 },
+              },
+              exercises: {
+                where: { isCanonical: true, isRequired: true },
+                select: { id: true, title: true },
               },
             },
           },
@@ -344,12 +376,37 @@ export async function refreshStageAndProgram(
 
   if (!stage) return;
 
+  const lessonSnapshots = new Map<string, LessonProgressSnapshot>();
+  await Promise.all(
+    stage.modules.flatMap((module) =>
+      module.lessons.map(async (lesson) => {
+        const state = await readLessonState(
+          transaction,
+          lesson.id,
+          userId,
+          false,
+        );
+        if (state) lessonSnapshots.set(lesson.id, toLessonSnapshot(state));
+      }),
+    ),
+  );
+
   const stageProgress = stage.progress[0];
   const concepts = stage.modules.flatMap((module) =>
     module.lessons.flatMap((lesson) => lesson.concepts),
   );
   const tasks = stage.modules.flatMap((module) =>
-    module.lessons.flatMap((lesson) => lesson.tasks),
+    module.lessons.flatMap((lesson) =>
+      lesson.tasks.map((task) => ({ ...task, lessonId: lesson.id })),
+    ),
+  );
+  const exercises = stage.modules.flatMap((module) =>
+    module.lessons.flatMap((lesson) =>
+      (lesson.exercises ?? []).map((exercise) => ({
+        ...exercise,
+        lessonId: lesson.id,
+      })),
+    ),
   );
   const validation = calculateStageValidation({
     currentStatus: stageProgress?.status ?? StageProgressStatus.AVAILABLE,
@@ -367,9 +424,19 @@ export async function refreshStageAndProgram(
         concept.progress[0]?.status === ConceptProgressStatus.VALIDATED,
       title: concept.title,
     })),
+    requiredExercises: exercises.map((exercise) => ({
+      id: exercise.id,
+      isValidated:
+        lessonSnapshots.get(exercise.lessonId)?.exerciseStatusById.get(
+          exercise.id,
+        ) === ExerciseSubmissionStatus.SUBMITTED,
+      title: exercise.title,
+    })),
     requiredTasks: tasks.map((task) => ({
       id: task.id,
-      isValidated: task.completions[0]?.status === TaskCompletionStatus.DONE,
+      isValidated:
+        lessonSnapshots.get(task.lessonId)?.taskStatusById.get(task.id) ===
+        TaskCompletionStatus.DONE,
       title: task.title,
     })),
   });

@@ -45,9 +45,11 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
       estimatedMinutes: 15,
       exercises: [
         {
+          activityType: 'PRACTICE',
           id: 'exercise-1',
           instructions: 'Appliquer la notion.',
           isRequired: true,
+          key: 'activity-2',
           position: 1,
           rubric: null,
           title: 'Mise en pratique',
@@ -131,12 +133,28 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
       summary: 'Les notions essentielles.',
       tasks: [
         {
-          description: 'Écrire une synthèse courte.',
+          description: 'Lire la source de référence.',
           id: 'task-1',
           isRequired: true,
+          key: 'activity-1',
           position: 1,
-          title: 'Synthétiser',
-          type: 'WRITING',
+          resources: [
+            {
+              author: 'Ada Lovelace',
+              citation: null,
+              description: 'Une lecture complémentaire.',
+              estimatedMinutes: 5,
+              id: 'resource-1',
+              isRequired: true,
+              key: 'article-reference',
+              position: 1,
+              title: 'Article de référence',
+              type: 'ARTICLE',
+              url: 'https://example.com/article',
+            },
+          ],
+          title: 'Lire la référence',
+          type: 'READING',
           weight: 1,
         },
       ],
@@ -199,7 +217,7 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveAttribute('href', 'https://example.com/article');
-    expect(screen.getByText(/Source non sûre/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Source non sûre/)).toHaveLength(2);
     expect(
       screen.getAllByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveLength(1);
@@ -215,7 +233,7 @@ describe('LessonPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
     expect(
       await screen.findByRole('dialog', { name: 'Sommaire de la leçon' }),
-    ).toHaveTextContent('Synthétiser');
+    ).toHaveTextContent('Lire la référence');
     fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
     expect(
       screen.queryByRole('link', { name: 'Programme test' }),
@@ -303,10 +321,13 @@ describe('LessonPage', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Synthétiser' }),
+      await screen.findByRole('heading', { name: 'Lire la référence' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('link', { name: 'Article de référence' }),
+    ).toHaveLength(2);
     fireEvent.click(
-      screen.getByRole('button', { name: 'Marquer comme terminée' }),
+      screen.getByRole('button', { name: 'Marquer comme terminé' }),
     );
 
     expect(

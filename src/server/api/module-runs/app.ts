@@ -5,7 +5,6 @@ import {
   ConceptProgressStatus,
   LessonProgressStatus,
   ProgramStatus,
-  ResourceProgressStatus,
   ReviewStatus,
   TaskCompletionStatus,
   type Prisma,
@@ -139,11 +138,9 @@ async function buildPreview(
   ] = await Promise.all([
     client.lessonProgress.count({ where: { lesson: { moduleId }, userId } }),
     client.taskCompletion.count({
-      where: { task: { lesson: { moduleId } }, userId },
+      where: { task: { isCanonical: true, lesson: { moduleId } }, userId },
     }),
-    client.resourceProgress.count({
-      where: { resource: { lesson: { moduleId } }, userId },
-    }),
+    Promise.resolve(0),
     client.conceptProgress.count({
       where: { concept: { lesson: { moduleId } }, userId },
     }),
@@ -156,7 +153,11 @@ async function buildPreview(
       : Promise.resolve([]),
     currentRunId
       ? client.exerciseSubmission.count({
-          where: { moduleRunId: currentRunId, userId },
+          where: {
+            exercise: { isCanonical: true },
+            moduleRunId: currentRunId,
+            userId,
+          },
         })
       : Promise.resolve(0),
     client.quizAttempt.count({
@@ -245,15 +246,11 @@ export function createPrismaModuleRestartRepository(
                 },
               }),
               transaction.taskCompletion.updateMany({
-                where: { task: { lesson: { moduleId } }, userId },
-                data: { completedAt: null, status: TaskCompletionStatus.TODO },
-              }),
-              transaction.resourceProgress.updateMany({
-                where: { resource: { lesson: { moduleId } }, userId },
-                data: {
-                  completedAt: null,
-                  status: ResourceProgressStatus.NOT_STARTED,
+                where: {
+                  task: { isCanonical: true, lesson: { moduleId } },
+                  userId,
                 },
+                data: { completedAt: null, status: TaskCompletionStatus.TODO },
               }),
               transaction.conceptProgress.updateMany({
                 where: { concept: { lesson: { moduleId } }, userId },

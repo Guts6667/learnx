@@ -167,6 +167,10 @@ function StageValidationCard({
           {validation.requiredTasks.total}
         </li>
         <li>
+          Exercices obligatoires : {validation.requiredExercises?.validated ?? 0}/
+          {validation.requiredExercises?.total ?? 0}
+        </li>
+        <li>
           Évaluations finales : {validation.finalAssessments.validated}/
           {validation.finalAssessments.total}
         </li>

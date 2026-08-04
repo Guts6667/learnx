@@ -1,6 +1,5 @@
 export type LessonActivityKind =
   | 'CONTENT'
-  | 'RESOURCE'
   | 'TASK'
   | 'CONCEPT_ASSESSMENT'
   | 'EXERCISE'
@@ -69,7 +68,6 @@ const activityLabels: Record<LessonActivityKind, string> = {
   CONTENT: 'Comprendre',
   EXERCISE: 'Mettre en pratique',
   QUIZ: 'Consolider',
-  RESOURCE: 'Consulter une ressource',
   TASK: 'Réaliser une tâche',
 };
 
@@ -157,21 +155,6 @@ export function buildLessonActivitySequence(
       title: block.title ?? `Contenu ${block.position}`,
     }),
   );
-  const resources = byPosition(input.resources).map((resource) => {
-    const resourceStatus = progress?.resourceStatus[resource.id];
-    return createActivity(baseHref, {
-      estimatedMinutes: resource.estimatedMinutes ?? null,
-      id: resource.id,
-      kind: 'RESOURCE',
-      required: resource.isRequired ?? false,
-      status: status(
-        input.isPublished,
-        resourceStatus === 'COMPLETED',
-        resourceStatus === 'STARTED',
-      ),
-      title: resource.title ?? 'Ressource',
-    });
-  });
   const tasks = byPosition(input.tasks).map((task) =>
     createActivity(baseHref, {
       estimatedMinutes: null,
@@ -246,7 +229,6 @@ export function buildLessonActivitySequence(
   });
   const activities = [
     ...content,
-    ...resources,
     ...tasks,
     ...assessments,
     ...exercises,

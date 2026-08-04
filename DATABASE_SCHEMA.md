@@ -134,12 +134,14 @@ Types :
 
 - id
 - lesson_id
+- key
 - title
 - description nullable
 - type
 - is_required
 - weight
 - position
+- is_canonical
 
 Types :
 
@@ -151,6 +153,35 @@ Types :
 - writing
 - practice
 - project
+
+`unique(lesson_id, key)`. Les types `reading`, `watching`, `listening` et
+`checklist` sont les seules activités routées vers `tasks` par le seed.
+
+### task_resources
+
+- task_id
+- resource_id
+- primary key(task_id, resource_id)
+
+Cette relation explicite les supports nécessaires à une tâche sans transformer
+la ressource en étape de progression.
+
+### activity_completion_carryovers
+
+- id
+- user_id
+- lesson_id
+- activity_key
+- kind : task ou exercise
+- module_run_id
+- completed_at
+- sources_json
+- created_at
+- unique(user_id, lesson_id, activity_key, kind, module_run_id)
+
+Cette table conserve une réussite héritée d'un ancien miroir Task/Exercise ou
+d'une ressource explicitement liée. La reprise est bornée au `ModuleRun`
+courant : recommencer un module n'hérite jamais d'une réussite antérieure.
 
 
 ## Notions
@@ -367,10 +398,17 @@ Types :
 
 - id
 - lesson_id
+- key
+- activity_type
 - title
 - instructions
 - rubric_json nullable
 - is_required
+- position
+- is_canonical
+
+`unique(lesson_id, key)`. Les types `writing`, `practice`, `reflection` et
+`project` sont routés vers `exercises` par le seed.
 
 ### exercise_submissions
 

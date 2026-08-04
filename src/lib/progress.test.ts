@@ -40,17 +40,15 @@ describe('calculateLessonProgress', () => {
     ['requiredTasks', LESSON_PROGRESS_WEIGHTS.tasks],
     ['requiredQuizzes', LESSON_PROGRESS_WEIGHTS.quizzes],
     ['requiredExercises', LESSON_PROGRESS_WEIGHTS.exercises],
-    ['requiredResources', LESSON_PROGRESS_WEIGHTS.resources],
   ] as const;
 
-  it.each(Array.from({ length: 15 }, (_, index) => index + 1))(
+  it.each(Array.from({ length: 7 }, (_, index) => index + 1))(
     'redistribue les poids pour la combinaison de catégories %s',
     (mask) => {
       const input = {
         requiredConcepts: [true],
         requiredExercises: [] as boolean[],
         requiredQuizzes: [] as boolean[],
-        requiredResources: [] as boolean[],
         requiredTasks: [] as boolean[],
       };
       let availableWeight = 0;
@@ -76,7 +74,6 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [false],
         requiredExercises: [true],
         requiredQuizzes: [true],
-        requiredResources: [true],
         requiredTasks: [true],
       }),
     ).toEqual({ canComplete: false, percent: 100 });
@@ -88,7 +85,6 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [],
         requiredExercises: [],
         requiredQuizzes: [],
-        requiredResources: [],
         requiredTasks: [],
       }),
     ).toEqual({ canComplete: true, percent: 0 });
@@ -97,7 +93,6 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [true],
         requiredExercises: [false],
         requiredQuizzes: [],
-        requiredResources: [],
         requiredTasks: [],
       }).canComplete,
     ).toBe(false);

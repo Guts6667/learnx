@@ -6,7 +6,6 @@ export interface ProgressCategory {
 export const LESSON_PROGRESS_WEIGHTS = {
   exercises: 20,
   quizzes: 30,
-  resources: 10,
   tasks: 40,
 } as const;
 
@@ -14,7 +13,6 @@ export interface LessonProgressInput {
   requiredConcepts: boolean[];
   requiredExercises: boolean[];
   requiredQuizzes: boolean[];
-  requiredResources: boolean[];
   requiredTasks: boolean[];
 }
 
@@ -81,16 +79,11 @@ export function calculateLessonProgress(
       itemProgress: toItemProgress(input.requiredExercises),
       weight: LESSON_PROGRESS_WEIGHTS.exercises,
     },
-    {
-      itemProgress: toItemProgress(input.requiredResources),
-      weight: LESSON_PROGRESS_WEIGHTS.resources,
-    },
   ]);
   const trackedRequirements = [
     ...input.requiredTasks,
     ...input.requiredQuizzes,
     ...input.requiredExercises,
-    ...input.requiredResources,
   ];
 
   return {

@@ -271,6 +271,7 @@ describe('curriculum draft preview authorization', () => {
           },
         ],
         requiredConcepts: { total: 0, validated: 0 },
+        requiredExercises: { total: 0, validated: 0 },
         requiredTasks: { total: 0, validated: 0 },
         status: 'AVAILABLE',
       }),

@@ -399,6 +399,7 @@ progressApp.patch('/api/tasks/:taskId', async (context) => {
       const task = await transaction.task.findFirst({
         where: {
           id: taskId,
+          isCanonical: true,
           lesson: {
             isPublished: true,
             module: {

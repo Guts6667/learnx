@@ -91,7 +91,11 @@ export interface StageDetail extends StageSummary {
 export interface StageValidationRequirement {
   id: string | null;
   title: string;
-  type: 'FINAL_ASSESSMENT' | 'REQUIRED_CONCEPT' | 'REQUIRED_TASK';
+  type:
+    | 'FINAL_ASSESSMENT'
+    | 'REQUIRED_CONCEPT'
+    | 'REQUIRED_EXERCISE'
+    | 'REQUIRED_TASK';
 }
 
 export interface StageValidation {
@@ -99,6 +103,7 @@ export interface StageValidation {
   isValidated: boolean;
   missingRequirements: StageValidationRequirement[];
   requiredConcepts: { total: number; validated: number };
+  requiredExercises: { total: number; validated: number };
   requiredTasks: { total: number; validated: number };
   status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
 }
@@ -176,7 +181,9 @@ export interface LessonTask {
   description: string | null;
   id: string;
   isRequired: boolean;
+  key: string;
   position: number;
+  resources: LessonResource[];
   title: string;
   type: string;
   weight: number;

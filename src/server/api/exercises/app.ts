@@ -136,6 +136,7 @@ function publishedLessonWhere(userId: string) {
 function exerciseWhere(exerciseId: string, userId: string) {
   return {
     id: exerciseId,
+    isCanonical: true,
     lesson: publishedLessonWhere(userId),
   } as const;
 }

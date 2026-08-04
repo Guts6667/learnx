@@ -2,7 +2,10 @@ export type StageValidationProgressStatus =
   'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
 
 export type StageRequirementType =
-  'FINAL_ASSESSMENT' | 'REQUIRED_CONCEPT' | 'REQUIRED_TASK';
+  | 'FINAL_ASSESSMENT'
+  | 'REQUIRED_CONCEPT'
+  | 'REQUIRED_EXERCISE'
+  | 'REQUIRED_TASK';
 
 export interface StageRequirement {
   id: string | null;
@@ -21,6 +24,7 @@ export interface StageValidationInput {
   finalAssessments: StageValidationItem[];
   hasStarted: boolean;
   requiredConcepts: StageValidationItem[];
+  requiredExercises: StageValidationItem[];
   requiredTasks: StageValidationItem[];
 }
 
@@ -29,6 +33,7 @@ export interface StageValidationResult {
   isValidated: boolean;
   missingRequirements: StageRequirement[];
   requiredConcepts: { total: number; validated: number };
+  requiredExercises: { total: number; validated: number };
   requiredTasks: { total: number; validated: number };
   status: StageValidationProgressStatus;
 }
@@ -40,7 +45,10 @@ function countValidated(items: StageValidationItem[]) {
 export function getMissingStageRequirements(
   input: Pick<
     StageValidationInput,
-    'finalAssessments' | 'requiredConcepts' | 'requiredTasks'
+    | 'finalAssessments'
+    | 'requiredConcepts'
+    | 'requiredExercises'
+    | 'requiredTasks'
   >,
 ): StageRequirement[] {
   const requirements: StageRequirement[] = [
@@ -57,6 +65,13 @@ export function getMissingStageRequirements(
         id: task.id,
         title: task.title,
         type: 'REQUIRED_TASK' as const,
+      })),
+    ...input.requiredExercises
+      .filter((exercise) => !exercise.isValidated)
+      .map((exercise) => ({
+        id: exercise.id,
+        title: exercise.title,
+        type: 'REQUIRED_EXERCISE' as const,
       })),
   ];
 
@@ -84,7 +99,10 @@ export function getMissingStageRequirements(
 export function isStageValidated(
   input: Pick<
     StageValidationInput,
-    'finalAssessments' | 'requiredConcepts' | 'requiredTasks'
+    | 'finalAssessments'
+    | 'requiredConcepts'
+    | 'requiredExercises'
+    | 'requiredTasks'
   >,
 ): boolean {
   return getMissingStageRequirements(input).length === 0;
@@ -118,6 +136,10 @@ export function calculateStageValidation(
     requiredConcepts: {
       total: input.requiredConcepts.length,
       validated: countValidated(input.requiredConcepts),
+    },
+    requiredExercises: {
+      total: input.requiredExercises.length,
+      validated: countValidated(input.requiredExercises),
     },
     requiredTasks: {
       total: input.requiredTasks.length,

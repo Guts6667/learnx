@@ -16,7 +16,6 @@ import {
   type LessonProgressResponse,
   type LessonResource,
   type LessonTask,
-  type ResourceProgressStatus,
   type TaskCompletionStatus,
   useLessonProgressMutation,
   useLessonProgressQuery,
@@ -124,50 +123,6 @@ function ContentActivity({
   );
 }
 
-function ResourceActivity({
-  isPending,
-  onComplete,
-  resource,
-  status,
-}: {
-  isPending: boolean;
-  onComplete?: () => Promise<void>;
-  resource: LessonResource;
-  status: ResourceProgressStatus;
-}) {
-  const url = getSafeExternalUrl(resource.url);
-  return (
-    <Card class="space-y-4">
-      <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
-        {resource.isRequired ? 'Obligatoire' : 'Optionnelle'}
-      </Badge>
-      <p class="leading-7 text-slate-300">{resource.description}</p>
-      {url ? (
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href={url}
-          rel="noreferrer"
-          target="_blank"
-        >
-          Consulter la ressource
-        </a>
-      ) : null}
-      {onComplete ? (
-        <Button
-          disabled={status === 'COMPLETED'}
-          isLoading={isPending}
-          onClick={() => void onComplete()}
-          variant="secondary"
-        >
-          {status === 'COMPLETED'
-            ? 'Ressource consultée'
-            : 'Marquer comme consultée'}
-        </Button>
-      ) : null}
-    </Card>
-  );
-}
-
 function TaskActivity({
   isPending,
   onToggle,
@@ -185,6 +140,29 @@ function TaskActivity({
         {task.isRequired ? 'Obligatoire' : 'Optionnelle'}
       </Badge>
       <p class="leading-7 text-slate-300">{task.description}</p>
+      {(task.resources ?? []).length === 0 ? null : (
+        <ul class="space-y-2" aria-label="Supports de la tâche">
+          {(task.resources ?? []).map((resource) => {
+            const href = getSafeExternalUrl(resource.url);
+            return (
+              <li key={resource.id}>
+                {href ? (
+                  <a
+                    class="inline-flex min-h-11 items-center text-cyan-300 underline"
+                    href={href}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {resource.title}
+                  </a>
+                ) : (
+                  <span>{resource.title}</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
       {onToggle ? (
         <Button
           isLoading={isPending}
@@ -193,7 +171,7 @@ function TaskActivity({
         >
           {status === 'DONE'
             ? 'Marquer comme à faire'
-            : 'Marquer comme terminée'}
+            : 'Marquer comme terminé'}
         </Button>
       ) : null}
     </Card>
@@ -294,14 +272,6 @@ function LessonWorkspace({
     );
   }
 
-  async function updateResource(resourceId: string) {
-    await mutation.mutateAsync(
-      `/api/resources/${encodeURIComponent(resourceId)}/progress`,
-      'PATCH',
-      { status: 'COMPLETED' },
-    );
-  }
-
   async function updateTask(task: LessonTask) {
     const currentStatus = progress?.taskCompletions[task.id] ?? 'TODO';
     await mutation.mutateAsync(
@@ -354,7 +324,6 @@ function LessonWorkspace({
     ),
   );
   const block = lesson.contentBlocks.find((item) => item.id === current?.id);
-  const resource = lesson.resources.find((item) => item.id === current?.id);
   const task = lesson.tasks.find((item) => item.id === current?.id);
   const isCompletionActivity = current?.kind === 'COMPLETE';
   const isLessonCompleted = progress?.lessonProgress.status === 'COMPLETED';
@@ -389,6 +358,34 @@ function LessonWorkspace({
         </Card>
       )}
       <p class="leading-7 text-slate-300">{lesson.summary}</p>
+      {lesson.resources.length === 0 ? null : (
+        <Card class="space-y-3">
+          <h2 class="text-lg font-semibold" id="lesson-resources-title">
+            Ressources de la leçon
+          </h2>
+          <ul class="space-y-2" aria-labelledby="lesson-resources-title">
+            {lesson.resources.map((item) => {
+              const href = getSafeExternalUrl(item.url);
+              return (
+                <li key={item.id}>
+                  {href ? (
+                    <a
+                      class="inline-flex min-h-11 items-center text-cyan-300 underline"
+                      href={href}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {item.title}
+                    </a>
+                  ) : (
+                    <span>{item.title}</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+      )}
       <div class="grid gap-6">
         <section class="space-y-4" aria-labelledby="current-activity-title">
           {current ? (
@@ -410,18 +407,6 @@ function LessonWorkspace({
           {block ? (
             <ContentActivity block={block} resourcesByKey={resourcesByKey} />
           ) : null}
-          {resource ? (
-            <ResourceActivity
-              isPending={mutation.isPending}
-              onComplete={
-                lesson.isPublished
-                  ? () => updateResource(resource.id)
-                  : undefined
-              }
-              resource={resource}
-              status={progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'}
-            />
-          ) : null}
           {task ? (
             <TaskActivity
               isPending={mutation.isPending}
@@ -432,7 +417,6 @@ function LessonWorkspace({
           ) : null}
           {current &&
           !block &&
-          !resource &&
           !task &&
           current.kind !== 'COMPLETE' ? (
             <SecondaryActivity activity={current} />

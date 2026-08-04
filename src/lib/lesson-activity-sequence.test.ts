@@ -53,7 +53,6 @@ describe('lesson activity sequence', () => {
 
     expect(sequence.activities.map((activity) => activity.kind)).toEqual([
       'CONTENT',
-      'RESOURCE',
       'TASK',
       'CONCEPT_ASSESSMENT',
       'EXERCISE',
@@ -61,7 +60,7 @@ describe('lesson activity sequence', () => {
       'COMPLETE',
     ]);
     expect(sequence.current?.id).toBe('block-1');
-    expect(sequence.next?.id).toBe('resource-1');
+    expect(sequence.next?.id).toBe('task-1');
   });
 
   it('reprend après l’activité identifiée dans l’URL', () => {

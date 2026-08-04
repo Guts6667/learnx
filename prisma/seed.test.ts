@@ -14,6 +14,7 @@ function createRepository() {
     Parameters<SeedProgramRepository['replaceConceptAssessmentQuestions']>[1]
   >();
   const conceptResources = new Map<string, string[]>();
+  const taskResources = new Map<string, string[]>();
   const concepts = new Map<string, string>();
   const contentBlocks = new Map<string, string>();
   const exercises = new Map<string, string>();
@@ -30,6 +31,12 @@ function createRepository() {
   const tasks = new Map<string, string>();
 
   const repository: SeedProgramRepository = {
+    async archiveExerciseMirror(input) {
+      exercises.delete(`${input.lessonId}:${input.key}`);
+    },
+    async archiveTaskMirror(input) {
+      tasks.delete(`${input.lessonId}:${input.key}`);
+    },
     async deleteConceptsNotIn(lessonId, slugs) {
       for (const key of concepts.keys()) {
         if (
@@ -77,16 +84,6 @@ function createRepository() {
         }
       }
 
-      for (const key of tasks.keys()) {
-        const [lessonId, position] = key.split(':');
-
-        if (
-          lessonId === input.lessonId &&
-          !input.taskPositions.includes(Number(position))
-        ) {
-          tasks.delete(key);
-        }
-      }
     },
     async pruneExercises(lessonId, positions) {
       for (const key of exercises.keys()) {
@@ -100,12 +97,33 @@ function createRepository() {
         }
       }
     },
+    async pruneCanonicalActivities(input) {
+      for (const key of tasks.keys()) {
+        const [lessonId, activityKey] = key.split(':');
+        if (lessonId === input.lessonId && !input.taskKeys.includes(activityKey)) {
+          tasks.delete(key);
+        }
+      }
+      for (const key of exercises.keys()) {
+        const [lessonId, activityKey] = key.split(':');
+        if (
+          lessonId === input.lessonId &&
+          !input.exerciseKeys.includes(activityKey)
+        ) {
+          exercises.delete(key);
+        }
+      }
+    },
     async replaceConceptAssessmentQuestions(assessmentId, questions) {
       assessmentQuestions.set(assessmentId, questions);
     },
     async replaceConceptResources(conceptId, resourceIds) {
       conceptResources.set(conceptId, resourceIds);
     },
+    async replaceTaskResources(taskId, resourceIds) {
+      taskResources.set(taskId, resourceIds);
+    },
+    async syncActivityCarryovers() {},
     async upsertContentBlock(input) {
       const key = `${input.lessonId}:${input.position}`;
       const id = contentBlocks.get(key) ?? `block-${contentBlocks.size + 1}`;
@@ -135,7 +153,7 @@ function createRepository() {
       return { id };
     },
     async upsertExercise(input) {
-      const key = `${input.lessonId}:${input.position}`;
+      const key = `${input.lessonId}:${input.key}`;
       const id = exercises.get(key) ?? `exercise-${exercises.size + 1}`;
 
       exercises.set(key, id);
@@ -180,7 +198,7 @@ function createRepository() {
       return { id };
     },
     async upsertTask(input) {
-      const key = `${input.lessonId}:${input.position}`;
+      const key = `${input.lessonId}:${input.key}`;
       const id = tasks.get(key) ?? `task-${tasks.size + 1}`;
 
       tasks.set(key, id);
@@ -204,6 +222,7 @@ function createRepository() {
     stageAssessments,
     stageAssessmentInputs,
     tasks,
+    taskResources,
   };
 }
 
@@ -1073,6 +1092,27 @@ describe('sample program seed', () => {
     expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(403);
     expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(400);
     expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(210);
+    const passiveTypes = new Set([
+      'reading',
+      'watching',
+      'listening',
+      'checklist',
+    ]);
+    const canonicalTasks = lessons
+      .flatMap((lesson) => lesson.tasks)
+      .filter((task) => passiveTypes.has(task.type));
+    const canonicalExercises = lessons
+      .flatMap((lesson) => lesson.tasks)
+      .filter((task) => !passiveTypes.has(task.type));
+
+    expect(canonicalTasks).toHaveLength(8);
+    expect(canonicalExercises).toHaveLength(202);
+    expect(
+      canonicalTasks.every((task) => task.resourceKeys.length > 0),
+    ).toBe(true);
+    expect(
+      canonicalExercises.every((task) => task.resourceKeys.length === 0),
+    ).toBe(true);
 
     for (const lesson of lessons) {
       const resourceKeys = new Set(
@@ -1162,6 +1202,7 @@ describe('sample program seed', () => {
       stageAssessments,
       stageAssessmentInputs,
       tasks,
+      taskResources,
     } = createRepository();
 
     await seedSampleProgram(
@@ -1193,8 +1234,9 @@ describe('sample program seed', () => {
     ).toBe(1_050);
     expect(contentBlocks).toHaveLength(403);
     expect(resources).toHaveLength(400);
-    expect(tasks).toHaveLength(210);
-    expect(exercises).toHaveLength(210);
+    expect(tasks).toHaveLength(8);
+    expect(exercises).toHaveLength(202);
+    expect([...tasks.keys()].some((key) => exercises.has(key))).toBe(false);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,
@@ -1232,6 +1274,8 @@ describe('sample program seed', () => {
     expect(conceptResources.get(empiricalConceptId ?? '')).toEqual([
       openStaxId,
     ]);
+    const readingTaskId = tasks.get(`${firstLessonId}:activity-1`);
+    expect(taskResources.get(readingTaskId ?? '')).toEqual([openStaxId]);
     const objectAssessmentId = assessments.get(`${objectConceptId}:1`);
     const objectQuestions = assessmentQuestions.get(objectAssessmentId ?? '');
 
@@ -1242,9 +1286,10 @@ describe('sample program seed', () => {
         expect.objectContaining({ isCorrect: true }),
       ]),
     });
-    expect(exercises.has(`${firstLessonId}:1`)).toBe(true);
-    expect(exercises.has(`${firstLessonId}:2`)).toBe(true);
-    expect(exercises.has(`${firstLessonId}:3`)).toBe(true);
+    expect(tasks.has(`${firstLessonId}:activity-1`)).toBe(true);
+    expect(exercises.has(`${firstLessonId}:activity-1`)).toBe(false);
+    expect(exercises.has(`${firstLessonId}:activity-2`)).toBe(true);
+    expect(exercises.has(`${firstLessonId}:activity-3`)).toBe(true);
     expect(stageAssessmentInputs.get('stage-1:1')).toMatchObject({
       description: expect.stringContaining('projet d’intervention'),
       instructions: expect.stringContaining('## Cas NovaWork'),

@@ -89,10 +89,10 @@ function getLessonSummarySelect(userId: string) {
     _count: {
       select: {
         concepts: true,
-        exercises: true,
+        exercises: { where: { isCanonical: true } },
         quizzes: true,
         resources: true,
-        tasks: true,
+        tasks: { where: { isCanonical: true } },
       },
     },
     progress: {
@@ -407,6 +407,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         },
         contentBlocks: { orderBy: { position: 'asc' } },
         exercises: {
+          where: { isCanonical: true },
           orderBy: { position: 'asc' },
           select: {
             id: true,
@@ -430,7 +431,16 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           },
         },
         resources: { orderBy: { position: 'asc' } },
-        tasks: { orderBy: { position: 'asc' } },
+        tasks: {
+          where: { isCanonical: true },
+          orderBy: { position: 'asc' },
+          include: {
+            resources: {
+              orderBy: { resource: { position: 'asc' } },
+              include: { resource: true },
+            },
+          },
+        },
         module: {
           select: {
             id: true,
@@ -496,6 +506,10 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         quizzes: lesson.quizzes.map(({ _count, ...quiz }) => ({
           ...quiz,
           questionCount: _count.questions,
+        })),
+        tasks: lesson.tasks.map(({ resources, ...task }) => ({
+          ...task,
+          resources: resources.map((link) => link.resource),
         })),
       },
     });

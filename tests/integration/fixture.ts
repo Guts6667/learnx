@@ -134,6 +134,7 @@ export async function createIntegrationFixture(
   const task = await prisma.task.create({
     data: {
       description: 'Terminer la tâche de test.',
+      key: `task-${key}`,
       isRequired: true,
       lessonId: lesson.id,
       position: 1,
@@ -228,8 +229,10 @@ export async function createIntegrationFixture(
   });
   const exercise = await prisma.exercise.create({
     data: {
+      activityType: TaskType.PRACTICE,
       instructions: 'Rédiger une réponse courte.',
       isRequired: true,
+      key: `exercise-${key}`,
       lessonId: lesson.id,
       position: 1,
       rubric: { expected: 'Une réponse argumentée.' },

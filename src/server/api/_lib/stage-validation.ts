@@ -1,5 +1,7 @@
 import {
+  CanonicalActivityKind,
   ConceptProgressStatus,
+  ExerciseSubmissionStatus,
   ProgramStatus,
   StageAssessmentSubmissionStatus,
   StageProgressStatus,
@@ -12,6 +14,7 @@ import {
   type StageValidationResult,
 } from '../../../lib/stage-validation.js';
 import { calculateTargetEndDate } from '../../../lib/timeline.js';
+import { getCurrentModuleRun } from './module-runs.js';
 
 interface StageValidationOptions {
   preview?: boolean;
@@ -55,10 +58,12 @@ async function readStageValidationState(
         where: publicationFilter,
         orderBy: { position: 'asc' },
         select: {
+          id: true,
           lessons: {
             where: publicationFilter,
             orderBy: { position: 'asc' },
             select: {
+              id: true,
               concepts: {
                 where: { isRequired: true },
                 orderBy: { position: 'asc' },
@@ -73,7 +78,7 @@ async function readStageValidationState(
                 },
               },
               tasks: {
-                where: { isRequired: true },
+                where: { isCanonical: true, isRequired: true },
                 orderBy: { position: 'asc' },
                 select: {
                   completions: {
@@ -82,8 +87,14 @@ async function readStageValidationState(
                     select: { status: true },
                   },
                   id: true,
+                  key: true,
                   title: true,
                 },
+              },
+              exercises: {
+                where: { isCanonical: true, isRequired: true },
+                orderBy: { position: 'asc' },
+                select: { id: true, key: true, title: true },
               },
             },
           },
@@ -95,16 +106,63 @@ async function readStageValidationState(
 
   if (!stage) return null;
 
+  const currentRuns = await Promise.all(
+    stage.modules.map((module) =>
+      getCurrentModuleRun(prisma, module.id, userId),
+    ),
+  );
+  const currentRunIds = currentRuns.flatMap((run) => (run ? [run.id] : []));
+  const [exerciseSubmissions, carryovers] = await Promise.all([
+    currentRunIds.length > 0
+      ? prisma.exerciseSubmission.findMany({
+          where: {
+            moduleRunId: { in: currentRunIds },
+            status: ExerciseSubmissionStatus.SUBMITTED,
+            userId,
+          },
+          select: { exerciseId: true },
+        })
+      : [],
+    currentRunIds.length > 0
+      ? prisma.activityCompletionCarryover.findMany({
+          where: { moduleRunId: { in: currentRunIds }, userId },
+          select: { activityKey: true, kind: true, lessonId: true },
+        })
+      : [],
+  ]);
+  const submittedExerciseIds = new Set(
+    exerciseSubmissions.map((submission) => submission.exerciseId),
+  );
+  const taskCarryovers = new Set(
+    carryovers
+      .filter((item) => item.kind === CanonicalActivityKind.TASK)
+      .map((item) => `${item.lessonId}:${item.activityKey}`),
+  );
+  const exerciseCarryovers = new Set(
+    carryovers
+      .filter((item) => item.kind === CanonicalActivityKind.EXERCISE)
+      .map((item) => `${item.lessonId}:${item.activityKey}`),
+  );
+
   const progress = stage.progress[0];
   const concepts = stage.modules.flatMap((module) =>
     module.lessons.flatMap((lesson) => lesson.concepts),
   );
   const tasks = stage.modules.flatMap((module) =>
-    module.lessons.flatMap((lesson) => lesson.tasks),
+    module.lessons.flatMap((lesson) =>
+      lesson.tasks.map((task) => ({ ...task, lessonId: lesson.id })),
+    ),
+  );
+  const exercises = stage.modules.flatMap((module) =>
+    module.lessons.flatMap((lesson) =>
+      lesson.exercises.map((exercise) => ({ ...exercise, lessonId: lesson.id })),
+    ),
   );
   const hasActivity =
     concepts.some((concept) => concept.progress.length > 0) ||
     tasks.some((task) => task.completions.length > 0) ||
+    exerciseSubmissions.length > 0 ||
+    carryovers.length > 0 ||
     stage.assessments.some((assessment) => assessment.submissions.length > 0);
   const input: StageValidationInput = {
     currentStatus: progress?.status ?? StageProgressStatus.AVAILABLE,
@@ -125,9 +183,18 @@ async function readStageValidationState(
         concept.progress[0]?.status === ConceptProgressStatus.VALIDATED,
       title: concept.title,
     })),
+    requiredExercises: exercises.map((exercise) => ({
+      id: exercise.id,
+      isValidated:
+        submittedExerciseIds.has(exercise.id) ||
+        exerciseCarryovers.has(`${exercise.lessonId}:${exercise.key}`),
+      title: exercise.title,
+    })),
     requiredTasks: tasks.map((task) => ({
       id: task.id,
-      isValidated: task.completions[0]?.status === TaskCompletionStatus.DONE,
+      isValidated:
+        task.completions[0]?.status === TaskCompletionStatus.DONE ||
+        taskCarryovers.has(`${task.lessonId}:${task.key}`),
       title: task.title,
     })),
   };

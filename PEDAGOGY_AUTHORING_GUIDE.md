@@ -96,6 +96,35 @@ ci-dessus sont néanmoins obligatoires. Seul `prerequisites` peut être vide san
 justification. Les quatre listes pédagogiques ne peuvent pas être vides pour une
 leçon publiable.
 
+Chaque entrée de `tasks` décrit une seule intention pédagogique. Le moteur la
+route vers un seul modèle canonique :
+
+- `reading`, `watching`, `listening`, `checklist` deviennent une `Task` légère ;
+- `writing`, `practice`, `reflection`, `project` deviennent un `Exercise` avec
+  production ou réponse ;
+- une `Resource` reste un support et ne compte jamais comme activité autonome.
+
+Forme d'une entrée :
+
+```json
+{
+  "key": "activity-1",
+  "title": "Lire la définition de référence",
+  "description": "Lire la section indiquée puis marquer la tâche terminée.",
+  "type": "reading",
+  "isRequired": true,
+  "weight": 1,
+  "position": 1,
+  "resourceKeys": ["openstax-psychology-2e-1-1"]
+}
+```
+
+`key` est stable dans une leçon. Les anciens sidecars sans clé restent
+importables avec `activity-{position}`, mais toute nouvelle spécification doit
+la fournir. `resourceKeys` ne contient que des clés présentes dans
+`lesson.resources` et sert à afficher les supports au point d'usage d'une tâche
+passive. Une activité productive ne doit pas être dupliquée en tâche binaire.
+
 Ne jamais placer dans `lesson` des champs éditoriaux non reconnus comme
 `references`, `recommendedResources`, `takeaways`, `status`, `version`,
 `pedagogicalJustification`, `language` ou `access`. Zod les supprimerait

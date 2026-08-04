@@ -62,6 +62,13 @@ enum TaskType {
   @@map("task_type")
 }
 
+enum CanonicalActivityKind {
+  TASK     @map("task")
+  EXERCISE @map("exercise")
+
+  @@map("canonical_activity_kind")
+}
+
 enum LessonProgressStatus {
   AVAILABLE    @map("available")
   IN_PROGRESS  @map("in_progress")
@@ -175,28 +182,29 @@ enum ReviewStatus {
 }
 
 model User {
-  id                         String                      @id @default(uuid()) @db.Uuid
-  email                      String                      @unique
-  passwordHash               String                      @map("password_hash")
-  displayName                String                      @map("display_name")
-  role                       Role                        @default(USER)
-  createdAt                  DateTime                    @default(now()) @map("created_at")
-  updatedAt                  DateTime                    @updatedAt @map("updated_at")
-  sessions                   Session[]
-  programs                   Program[]
-  programProgresses          ProgramProgress[]
-  stageProgresses            StageProgress[]
-  lessonProgresses           LessonProgress[]
-  taskCompletions            TaskCompletion[]
-  resourceProgresses         ResourceProgress[]
-  conceptProgresses          ConceptProgress[]
-  conceptAttempts            ConceptAssessmentAttempt[]
-  quizAttempts               QuizAttempt[]
-  exerciseSubmissions        ExerciseSubmission[]
-  stageAssessmentSubmissions StageAssessmentSubmission[]
-  reviewItems                ReviewItem[]
-  notes                      Note[]
-  moduleRuns                 ModuleRun[]
+  id                           String                        @id @default(uuid()) @db.Uuid
+  email                        String                        @unique
+  passwordHash                 String                        @map("password_hash")
+  displayName                  String                        @map("display_name")
+  role                         Role                          @default(USER)
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  updatedAt                    DateTime                      @updatedAt @map("updated_at")
+  sessions                     Session[]
+  programs                     Program[]
+  programProgresses            ProgramProgress[]
+  stageProgresses              StageProgress[]
+  lessonProgresses             LessonProgress[]
+  taskCompletions              TaskCompletion[]
+  resourceProgresses           ResourceProgress[]
+  conceptProgresses            ConceptProgress[]
+  conceptAttempts              ConceptAssessmentAttempt[]
+  quizAttempts                 QuizAttempt[]
+  exerciseSubmissions          ExerciseSubmission[]
+  stageAssessmentSubmissions   StageAssessmentSubmission[]
+  reviewItems                  ReviewItem[]
+  notes                        Note[]
+  moduleRuns                   ModuleRun[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
 
   @@map("users")
 }
@@ -322,18 +330,19 @@ model Module {
 }
 
 model ModuleRun {
-  id                  String                     @id @default(uuid()) @db.Uuid
-  userId              String                     @map("user_id") @db.Uuid
-  moduleId            String                     @map("module_id") @db.Uuid
-  sequence            Int
-  startedAt           DateTime                   @default(now()) @map("started_at")
-  restartKey          String?                    @map("restart_key") @db.Uuid
-  createdAt           DateTime                   @default(now()) @map("created_at")
-  user                User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module              Module                     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  quizAttempts        QuizAttempt[]
-  conceptAttempts     ConceptAssessmentAttempt[]
-  exerciseSubmissions ExerciseSubmission[]
+  id                           String                        @id @default(uuid()) @db.Uuid
+  userId                       String                        @map("user_id") @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  sequence                     Int
+  startedAt                    DateTime                      @default(now()) @map("started_at")
+  restartKey                   String?                       @map("restart_key") @db.Uuid
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  user                         User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quizAttempts                 QuizAttempt[]
+  conceptAttempts              ConceptAssessmentAttempt[]
+  exerciseSubmissions          ExerciseSubmission[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
 
   @@unique([userId, moduleId, sequence])
   @@unique([userId, moduleId, restartKey])
@@ -342,28 +351,29 @@ model ModuleRun {
 }
 
 model Lesson {
-  id               String           @id @default(uuid()) @db.Uuid
-  moduleId         String           @map("module_id") @db.Uuid
-  title            String
-  slug             String
-  summary          String
-  objectives       Json             @map("objectives_json")
-  prerequisites    Json             @map("prerequisites_json")
-  estimatedMinutes Int?             @map("estimated_minutes")
-  position         Int              @default(0)
-  isPublished      Boolean          @default(false) @map("is_published")
-  createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @updatedAt @map("updated_at")
-  module           Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  contentBlocks    ContentBlock[]
-  resources        Resource[]
-  tasks            Task[]
-  progress         LessonProgress[]
-  concepts         Concept[]
-  quizzes          Quiz[]
-  exercises        Exercise[]
-  reviewItems      ReviewItem[]
-  notes            Note[]
+  id                           String                        @id @default(uuid()) @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  title                        String
+  slug                         String
+  summary                      String
+  objectives                   Json                          @map("objectives_json")
+  prerequisites                Json                          @map("prerequisites_json")
+  estimatedMinutes             Int?                          @map("estimated_minutes")
+  position                     Int                           @default(0)
+  isPublished                  Boolean                       @default(false) @map("is_published")
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  updatedAt                    DateTime                      @updatedAt @map("updated_at")
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contentBlocks                ContentBlock[]
+  resources                    Resource[]
+  tasks                        Task[]
+  progress                     LessonProgress[]
+  concepts                     Concept[]
+  quizzes                      Quiz[]
+  exercises                    Exercise[]
+  reviewItems                  ReviewItem[]
+  notes                        Note[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
 
   @@unique([moduleId, slug])
   @@index([moduleId, position])
@@ -399,6 +409,7 @@ model Resource {
   lesson           Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   progress         ResourceProgress[]
   conceptLinks     ConceptResource[]
+  taskLinks        TaskResource[]
 
   @@unique([lessonId, key])
   @@index([lessonId, position])
@@ -408,16 +419,20 @@ model Resource {
 model Task {
   id          String           @id @default(uuid()) @db.Uuid
   lessonId    String           @map("lesson_id") @db.Uuid
+  key         String
   title       String
   description String?
   type        TaskType
   isRequired  Boolean          @default(true) @map("is_required")
   weight      Float            @default(1)
   position    Int              @default(0)
+  isCanonical Boolean          @default(true) @map("is_canonical")
   lesson      Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   completions TaskCompletion[]
+  resources   TaskResource[]
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
   @@index([lessonId, position])
   @@map("tasks")
 }
@@ -566,17 +581,51 @@ model QuizAttempt {
 model Exercise {
   id           String               @id @default(uuid()) @db.Uuid
   lessonId     String               @map("lesson_id") @db.Uuid
+  key          String
+  activityType TaskType             @map("activity_type")
   title        String
   instructions String
   rubric       Json?                @map("rubric_json")
   isRequired   Boolean              @default(true) @map("is_required")
   position     Int                  @default(0)
+  isCanonical  Boolean              @default(true) @map("is_canonical")
   lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   submissions  ExerciseSubmission[]
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
   @@index([lessonId, position])
   @@map("exercises")
+}
+
+model TaskResource {
+  taskId     String   @map("task_id") @db.Uuid
+  resourceId String   @map("resource_id") @db.Uuid
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, resourceId])
+  @@index([resourceId])
+  @@map("task_resources")
+}
+
+model ActivityCompletionCarryover {
+  id          String                @id @default(uuid()) @db.Uuid
+  userId      String                @map("user_id") @db.Uuid
+  lessonId    String                @map("lesson_id") @db.Uuid
+  activityKey String                @map("activity_key")
+  kind        CanonicalActivityKind
+  moduleRunId String                @map("module_run_id") @db.Uuid
+  completedAt DateTime              @map("completed_at")
+  sources     Json                  @map("sources_json")
+  createdAt   DateTime              @default(now()) @map("created_at")
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson                @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun             @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId, activityKey, kind, moduleRunId])
+  @@index([lessonId, activityKey, kind])
+  @@map("activity_completion_carryovers")
 }
 
 model ExerciseSubmission {

@@ -49,11 +49,13 @@ function createRepository(input?: {
     async listLessons() {
       return [
         {
+          activityCompletionCarryovers: [],
           concepts: [],
           estimatedMinutes: 20,
           exercises: [],
           id: 'lesson-1',
           module: {
+            id: 'module-1',
             position: 1,
             slug: 'introduction',
             stage: {
@@ -76,7 +78,14 @@ function createRepository(input?: {
           quizzes: [],
           slug: 'definition',
           tasks: includeTask
-            ? [{ completions: [], id: 'task-1', title: 'Lire le chapitre' }]
+            ? [
+                {
+                  completions: [],
+                  id: 'task-1',
+                  key: 'activity-1',
+                  title: 'Lire le chapitre',
+                },
+              ]
             : [],
           title: 'Définir la psychologie',
         },
@@ -204,7 +213,14 @@ describe('today API', () => {
               : [],
           exercises:
             activity === 'exercise'
-              ? [{ id: 'exercise-1', submissions: [], title: 'Appliquer' }]
+              ? [
+                  {
+                    id: 'exercise-1',
+                    key: 'activity-1',
+                    submissions: [],
+                    title: 'Appliquer',
+                  },
+                ]
               : [],
           quizzes:
             activity === 'quiz'

@@ -193,6 +193,14 @@ Chaque leçon :
 - annonce des objectifs observables et évaluables ;
 - définit les termes avant de les employer comme acquis ;
 - progresse du simple vers le complexe ;
+- applique la règle « une intention pédagogique = une activité » : une
+  ressource reste un support consultable et n'est jamais une étape autonome de
+  progression ;
+- encode en tâche uniquement une action légère sans production (`reading`,
+  `watching`, `listening`, `checklist`) et en exercice toute production attendue
+  (`writing`, `practice`, `reflection`, `project`) ;
+- ne duplique jamais une lecture sous la forme ressource obligatoire, tâche et
+  exercice miroir ; la tâche de lecture référence directement son support ;
 - relie chaque notion obligatoire à une explication, un exemple ou une
   application, une tâche et une évaluation ;
 - distingue exemple illustratif et preuve ;

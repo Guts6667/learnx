@@ -6,9 +6,14 @@ import { fileURLToPath } from 'node:url';
 
 import { z } from 'zod';
 
+import {
+  belongsToCurrentModuleRun,
+  getCanonicalActivityKind,
+} from '../src/lib/canonical-activities';
 import { assertRequiredConceptHasValidationActivity } from '../src/lib/concepts';
 
 import {
+  CanonicalActivityKind,
   ConceptAssessmentType,
   ConceptQuestionType,
   ContentBlockType,
@@ -17,7 +22,6 @@ import {
   StageAssessmentType,
   TaskType,
   type Prisma,
-  type PrismaClient,
 } from '../generated/prisma/client';
 
 const programStatusSchema = z.enum(['draft', 'active', 'archived']);
@@ -129,12 +133,14 @@ const resourceSchema = z.object({
 });
 
 const taskSchema = z.object({
+  key: z.string().trim().min(1).optional(),
   title: z.string().trim().min(1),
   description: z.string().trim().min(1).optional(),
   type: taskTypeSchema,
   isRequired: z.boolean(),
   weight: z.number().positive(),
   position: z.number().int().positive(),
+  resourceKeys: z.array(z.string().trim().min(1)).default([]),
 });
 
 const conceptQuestionTypeSchema = z.enum([
@@ -225,9 +231,31 @@ export interface SeedProgramRepository {
     contentBlockPositions: number[];
     lessonId: string;
     resourceKeys: string[];
-    taskPositions: number[];
   }): Promise<void>;
-  pruneExercises(lessonId: string, positions: number[]): Promise<void>;
+  pruneCanonicalActivities(input: {
+    exerciseKeys: string[];
+    lessonId: string;
+    taskKeys: string[];
+  }): Promise<void>;
+  archiveExerciseMirror(input: {
+    activityType: TaskType;
+    key: string;
+    lessonId: string;
+    position: number;
+  }): Promise<void>;
+  archiveTaskMirror(input: {
+    key: string;
+    lessonId: string;
+    position: number;
+    type: TaskType;
+  }): Promise<void>;
+  replaceTaskResources(taskId: string, resourceIds: string[]): Promise<void>;
+  syncActivityCarryovers(input: {
+    kind: CanonicalActivityKind;
+    key: string;
+    lessonId: string;
+    resourceIds: string[];
+  }): Promise<void>;
   replaceConceptAssessmentQuestions(
     assessmentId: string,
     questions: Array<{
@@ -281,8 +309,10 @@ export interface SeedProgramRepository {
     position: number;
   }): Promise<{ id: string }>;
   upsertExercise(input: {
+    activityType: TaskType;
     instructions: string;
     isRequired: boolean;
+    key: string;
     lessonId: string;
     position: number;
     title: string;
@@ -338,12 +368,21 @@ export interface SeedProgramRepository {
   upsertTask(input: {
     description?: string;
     isRequired: boolean;
+    key: string;
     lessonId: string;
     position: number;
     title: string;
     type: TaskType;
     weight: number;
   }): Promise<{ id: string }>;
+}
+
+function isPassiveTask(type: z.infer<typeof taskTypeSchema>): boolean {
+  return getCanonicalActivityKind(type) === 'TASK';
+}
+
+function getActivityKey(task: z.infer<typeof taskSchema>): string {
+  return task.key ?? `activity-${task.position}`;
 }
 
 function toConceptAssessmentType(
@@ -554,10 +593,20 @@ export async function seedSampleProgram(
             (sourceKey) => !lessonResourceKeys.has(sourceKey),
           ),
         );
+        const missingTaskResourceKeys = lessonData.tasks.flatMap((task) =>
+          task.resourceKeys.filter(
+            (resourceKey) => !lessonResourceKeys.has(resourceKey),
+          ),
+        );
 
         if (missingSourceKeys.length > 0) {
           throw new Error(
             `Content blocks for "${lessonData.slug}" reference unknown resources: ${[...new Set(missingSourceKeys)].join(', ')}.`,
+          );
+        }
+        if (missingTaskResourceKeys.length > 0) {
+          throw new Error(
+            `Tasks for "${lessonData.slug}" reference unknown resources: ${[...new Set(missingTaskResourceKeys)].join(', ')}.`,
           );
         }
 
@@ -584,7 +633,6 @@ export async function seedSampleProgram(
             ),
             lessonId: lesson.id,
             resourceKeys: lessonData.resources.map((resource) => resource.key),
-            taskPositions: lessonData.tasks.map((task) => task.position),
           });
         }
 
@@ -617,33 +665,79 @@ export async function seedSampleProgram(
           resourceIdsByKey.set(resourceData.key, resource.id);
         }
 
+        const taskKeys = lessonData.tasks
+          .filter((task) => isPassiveTask(task.type))
+          .map(getActivityKey);
+        const exerciseKeys = lessonData.tasks
+          .filter((task) => !isPassiveTask(task.type))
+          .map(getActivityKey);
+        await repository.pruneCanonicalActivities({
+          exerciseKeys,
+          lessonId: lesson.id,
+          taskKeys,
+        });
+
         for (const taskData of lessonData.tasks) {
-          await repository.upsertTask({
-            description: taskData.description,
-            isRequired: taskData.isRequired,
-            lessonId: lesson.id,
-            position: taskData.position,
-            title: taskData.title,
-            type: toTaskType(taskData.type),
-            weight: taskData.weight,
+          const activityType = toTaskType(taskData.type);
+          const activityKey = getActivityKey(taskData);
+          const resourceIds = taskData.resourceKeys.map((resourceKey) => {
+            const resourceId = resourceIdsByKey.get(resourceKey);
+            if (!resourceId) {
+              throw new Error(
+                `Unknown resource key "${resourceKey}" for activity "${activityKey}".`,
+              );
+            }
+            return resourceId;
           });
-        }
 
-        if (lessonData.tasks.length > 0) {
-          await repository.pruneExercises(
-            lesson.id,
-            lessonData.tasks.map((task) => task.position),
-          );
-
-          for (const taskData of lessonData.tasks) {
-            await repository.upsertExercise({
-              instructions: taskData.description ?? taskData.title,
+          if (isPassiveTask(taskData.type)) {
+            const task = await repository.upsertTask({
+              description: taskData.description,
               isRequired: taskData.isRequired,
+              key: activityKey,
               lessonId: lesson.id,
               position: taskData.position,
               title: taskData.title,
+              type: activityType,
+              weight: taskData.weight,
             });
+            await repository.replaceTaskResources(task.id, resourceIds);
+            await repository.archiveExerciseMirror({
+              activityType,
+              key: activityKey,
+              lessonId: lesson.id,
+              position: taskData.position,
+            });
+            await repository.syncActivityCarryovers({
+              key: activityKey,
+              kind: CanonicalActivityKind.TASK,
+              lessonId: lesson.id,
+              resourceIds,
+            });
+            continue;
           }
+
+          await repository.upsertExercise({
+            activityType,
+            instructions: taskData.description ?? taskData.title,
+            isRequired: taskData.isRequired,
+            key: activityKey,
+            lessonId: lesson.id,
+            position: taskData.position,
+            title: taskData.title,
+          });
+          await repository.archiveTaskMirror({
+            key: activityKey,
+            lessonId: lesson.id,
+            position: taskData.position,
+            type: activityType,
+          });
+          await repository.syncActivityCarryovers({
+            key: activityKey,
+            kind: CanonicalActivityKind.EXERCISE,
+            lessonId: lesson.id,
+            resourceIds: [],
+          });
         }
 
         await repository.deleteConceptsNotIn(
@@ -746,7 +840,7 @@ export async function seedSampleProgram(
 }
 
 function createSeedProgramRepository(
-  client: PrismaClient,
+  client: Prisma.TransactionClient,
 ): SeedProgramRepository {
   return {
     async deleteConceptsNotIn(lessonId, slugs) {
@@ -763,80 +857,269 @@ function createSeedProgramRepository(
       });
     },
     async pruneEditorialContent(input) {
-      await client.$transaction([
-        client.contentBlock.deleteMany({
-          where: {
-            lessonId: input.lessonId,
-            position: { notIn: input.contentBlockPositions },
-          },
-        }),
-        client.resource.deleteMany({
-          where: {
-            lessonId: input.lessonId,
-            OR: [{ key: null }, { key: { notIn: input.resourceKeys } }],
-          },
-        }),
-        client.task.deleteMany({
-          where: {
-            lessonId: input.lessonId,
-            position: { notIn: input.taskPositions },
-          },
-        }),
-      ]);
-    },
-    async pruneExercises(lessonId, positions) {
-      await client.exercise.deleteMany({
+      await client.contentBlock.deleteMany({
         where: {
-          lessonId,
-          ...(positions.length > 0 ? { position: { notIn: positions } } : {}),
+          lessonId: input.lessonId,
+          position: { notIn: input.contentBlockPositions },
+        },
+      });
+      await client.resource.deleteMany({
+        where: {
+          lessonId: input.lessonId,
+          OR: [{ key: null }, { key: { notIn: input.resourceKeys } }],
         },
       });
     },
-    async replaceConceptAssessmentQuestions(assessmentId, questions) {
-      await client.$transaction(async (transaction) => {
-        await transaction.conceptAssessmentQuestion.deleteMany({
+    async pruneCanonicalActivities({ exerciseKeys, lessonId, taskKeys }) {
+      await client.task.updateMany({
+        where: {
+          isCanonical: true,
+          lessonId,
+          ...(taskKeys.length > 0 ? { key: { notIn: taskKeys } } : {}),
+        },
+        data: { isCanonical: false },
+      });
+      await client.exercise.updateMany({
+        where: {
+          isCanonical: true,
+          lessonId,
+          ...(exerciseKeys.length > 0
+            ? { key: { notIn: exerciseKeys } }
+            : {}),
+        },
+        data: { isCanonical: false },
+      });
+    },
+    async archiveExerciseMirror(input) {
+      await client.exercise.updateMany({
+        where: { lessonId: input.lessonId, position: input.position },
+        data: {
+          activityType: input.activityType,
+          isCanonical: false,
+          key: input.key,
+        },
+      });
+    },
+    async archiveTaskMirror(input) {
+      await client.task.updateMany({
+        where: { lessonId: input.lessonId, position: input.position },
+        data: { isCanonical: false, key: input.key, type: input.type },
+      });
+    },
+    async replaceTaskResources(taskId, resourceIds) {
+      await client.taskResource.deleteMany({ where: { taskId } });
+      if (resourceIds.length > 0) {
+        await client.taskResource.createMany({
+          data: resourceIds.map((resourceId) => ({ resourceId, taskId })),
+        });
+      }
+    },
+    async syncActivityCarryovers(input) {
+      const lesson = await client.lesson.findUnique({
+        where: { id: input.lessonId },
+        select: { moduleId: true },
+      });
+      if (!lesson) return;
+
+      const [taskCompletions, exerciseSubmissions, resourceProgresses] =
+        await Promise.all([
+          client.taskCompletion.findMany({
+            where: {
+              status: 'DONE',
+              task: {
+                isCanonical: false,
+                key: input.key,
+                lessonId: input.lessonId,
+              },
+            },
+            select: { completedAt: true, id: true, userId: true },
+          }),
+          client.exerciseSubmission.findMany({
+            where: {
+              status: 'SUBMITTED',
+              exercise: {
+                isCanonical: false,
+                key: input.key,
+                lessonId: input.lessonId,
+              },
+            },
+            select: {
+              id: true,
+              moduleRunId: true,
+              submittedAt: true,
+              userId: true,
+            },
+          }),
+          input.resourceIds.length > 0
+            ? client.resourceProgress.findMany({
+                where: {
+                  resourceId: { in: input.resourceIds },
+                  status: 'COMPLETED',
+                },
+                select: { completedAt: true, id: true, userId: true },
+              })
+            : [],
+        ]);
+      const userIds = [
+        ...new Set([
+          ...taskCompletions.map((item) => item.userId),
+          ...exerciseSubmissions.map((item) => item.userId),
+          ...resourceProgresses.map((item) => item.userId),
+        ]),
+      ];
+      if (userIds.length === 0) return;
+      const runs = await client.moduleRun.findMany({
+        where: { moduleId: lesson.moduleId, userId: { in: userIds } },
+        orderBy: [{ userId: 'asc' }, { sequence: 'desc' }],
+        select: { id: true, startedAt: true, userId: true },
+      });
+      const currentRunByUser = new Map<
+        string,
+        { id: string; startedAt: Date }
+      >();
+      for (const run of runs) {
+        if (!currentRunByUser.has(run.userId)) {
+          currentRunByUser.set(run.userId, run);
+        }
+      }
+
+      for (const userId of userIds) {
+        const currentRun = currentRunByUser.get(userId);
+        if (!currentRun) continue;
+        const moduleRunId = currentRun.id;
+        const sourceTaskIds = taskCompletions
+          .filter(
+            (item) =>
+              item.userId === userId &&
+              belongsToCurrentModuleRun(
+                item.completedAt,
+                currentRun.startedAt,
+              ),
+          )
+          .map((item) => item.id);
+        const sourceExerciseIds = exerciseSubmissions
+          .filter(
+            (item) => item.userId === userId && item.moduleRunId === moduleRunId,
+          )
+          .map((item) => item.id);
+        const sourceResourceIds = resourceProgresses
+          .filter(
+            (item) =>
+              item.userId === userId &&
+              belongsToCurrentModuleRun(
+                item.completedAt,
+                currentRun.startedAt,
+              ),
+          )
+          .map((item) => item.id);
+        if (
+          sourceTaskIds.length === 0 &&
+          sourceExerciseIds.length === 0 &&
+          sourceResourceIds.length === 0
+        ) {
+          continue;
+        }
+        const dates = [
+          ...taskCompletions
+            .filter(
+              (item) =>
+                item.userId === userId &&
+                belongsToCurrentModuleRun(
+                  item.completedAt,
+                  currentRun.startedAt,
+                ),
+            )
+            .map((item) => item.completedAt),
+          ...exerciseSubmissions
+            .filter(
+              (item) =>
+                item.userId === userId && item.moduleRunId === moduleRunId,
+            )
+            .map((item) => item.submittedAt),
+          ...resourceProgresses
+            .filter(
+              (item) =>
+                item.userId === userId &&
+                belongsToCurrentModuleRun(
+                  item.completedAt,
+                  currentRun.startedAt,
+                ),
+            )
+            .map((item) => item.completedAt),
+        ].filter((date): date is Date => date !== null);
+        const completedAt = dates.sort(
+          (left, right) => right.getTime() - left.getTime(),
+        )[0] ?? new Date(0);
+        const sources = {
+          exerciseSubmissionIds: sourceExerciseIds,
+          resourceProgressIds: sourceResourceIds,
+          taskCompletionIds: sourceTaskIds,
+        } satisfies Prisma.InputJsonObject;
+        await client.activityCompletionCarryover.upsert({
           where: {
-            assessmentId,
-            position: { notIn: questions.map((question) => question.position) },
+            userId_lessonId_activityKey_kind_moduleRunId: {
+              activityKey: input.key,
+              kind: input.kind,
+              lessonId: input.lessonId,
+              moduleRunId,
+              userId,
+            },
+          },
+          create: {
+            activityKey: input.key,
+            completedAt,
+            kind: input.kind,
+            lessonId: input.lessonId,
+            moduleRunId,
+            sources,
+            userId,
+          },
+          update: { completedAt, sources },
+        });
+      }
+    },
+    async replaceConceptAssessmentQuestions(assessmentId, questions) {
+      await client.conceptAssessmentQuestion.deleteMany({
+        where: {
+          assessmentId,
+          position: { notIn: questions.map((question) => question.position) },
+        },
+      });
+
+      for (const question of questions) {
+        const { options, ...questionData } = question;
+        const storedQuestion = await client.conceptAssessmentQuestion.upsert({
+          where: {
+            assessmentId_position: {
+              assessmentId,
+              position: question.position,
+            },
+          },
+          create: { ...questionData, assessmentId },
+          update: questionData,
+          select: { id: true },
+        });
+
+        await client.conceptAssessmentOption.deleteMany({
+          where: {
+            questionId: storedQuestion.id,
+            position: { notIn: options.map((option) => option.position) },
           },
         });
 
-        for (const question of questions) {
-          const { options, ...questionData } = question;
-          const storedQuestion =
-            await transaction.conceptAssessmentQuestion.upsert({
-              where: {
-                assessmentId_position: {
-                  assessmentId,
-                  position: question.position,
-                },
-              },
-              create: { ...questionData, assessmentId },
-              update: questionData,
-              select: { id: true },
-            });
-
-          await transaction.conceptAssessmentOption.deleteMany({
+        for (const option of options) {
+          await client.conceptAssessmentOption.upsert({
             where: {
-              questionId: storedQuestion.id,
-              position: { notIn: options.map((option) => option.position) },
-            },
-          });
-
-          for (const option of options) {
-            await transaction.conceptAssessmentOption.upsert({
-              where: {
-                questionId_position: {
-                  position: option.position,
-                  questionId: storedQuestion.id,
-                },
+              questionId_position: {
+                position: option.position,
+                questionId: storedQuestion.id,
               },
-              create: { ...option, questionId: storedQuestion.id },
-              update: option,
-            });
-          }
+            },
+            create: { ...option, questionId: storedQuestion.id },
+            update: option,
+          });
         }
-      });
+      }
     },
     async replaceConceptResources(conceptId, resourceIds) {
       if (resourceIds.length === 0) {
@@ -844,12 +1127,10 @@ function createSeedProgramRepository(
         return;
       }
 
-      await client.$transaction([
-        client.conceptResource.deleteMany({ where: { conceptId } }),
-        client.conceptResource.createMany({
-          data: resourceIds.map((resourceId) => ({ conceptId, resourceId })),
-        }),
-      ]);
+      await client.conceptResource.deleteMany({ where: { conceptId } });
+      await client.conceptResource.createMany({
+        data: resourceIds.map((resourceId) => ({ conceptId, resourceId })),
+      });
     },
     async upsertContentBlock(input) {
       const { lessonId, position, ...data } = input;
@@ -883,20 +1164,18 @@ function createSeedProgramRepository(
         });
       }
 
-      const [, assessment] = await client.$transaction([
-        client.conceptAssessment.deleteMany({
-          where: {
-            conceptId: input.conceptId,
-            id: { not: existing.id },
-            position: input.position,
-          },
-        }),
-        client.conceptAssessment.update({
-          where: { id: existing.id },
-          data: input,
-          select: { id: true },
-        }),
-      ]);
+      await client.conceptAssessment.deleteMany({
+        where: {
+          conceptId: input.conceptId,
+          id: { not: existing.id },
+          position: input.position,
+        },
+      });
+      const assessment = await client.conceptAssessment.update({
+        where: { id: existing.id },
+        data: input,
+        select: { id: true },
+      });
 
       return assessment;
     },
@@ -914,8 +1193,8 @@ function createSeedProgramRepository(
 
       return client.exercise.upsert({
         where: { lessonId_position: { lessonId, position } },
-        create: { lessonId, position, ...data },
-        update: data,
+        create: { isCanonical: true, lessonId, position, ...data },
+        update: { ...data, isCanonical: true },
       });
     },
     async upsertModule(input) {
@@ -968,8 +1247,8 @@ function createSeedProgramRepository(
 
       return client.task.upsert({
         where: { lessonId_position: { lessonId, position } },
-        create: { lessonId, position, ...data },
-        update: data,
+        create: { isCanonical: true, lessonId, position, ...data },
+        update: { ...data, isCanonical: true },
       });
     },
   };
@@ -1002,11 +1281,16 @@ async function main() {
 
     const sampleSeed = await readSampleSeed();
 
-    await seedSampleProgram(
-      createSeedProgramRepository(prisma),
-      owner.id,
-      sampleSeed.program,
-      sampleSeed.conceptAssessmentBanks,
+    await prisma.$transaction(
+      async (transaction) => {
+        await seedSampleProgram(
+          createSeedProgramRepository(transaction),
+          owner.id,
+          sampleSeed.program,
+          sampleSeed.conceptAssessmentBanks,
+        );
+      },
+      { maxWait: 10_000, timeout: 120_000 },
     );
 
     console.info('Sample program seeded successfully.');

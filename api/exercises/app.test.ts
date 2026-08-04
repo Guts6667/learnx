@@ -279,6 +279,7 @@ describe('exercise persistence filters', () => {
       expect.objectContaining({
         where: {
           id: exerciseId,
+          isCanonical: true,
           lesson: {
             isPublished: true,
             module: {

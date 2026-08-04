@@ -2,6 +2,7 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
+  CanonicalActivityKind,
   ConceptProgressStatus,
   LessonProgressStatus,
   ProgramStatus,
@@ -18,6 +19,7 @@ import {
 } from '../../../lib/recommendation.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { getCurrentModuleRun } from '../_lib/module-runs.js';
 
 interface ProgramRecord {
   id: string;
@@ -41,6 +43,11 @@ interface ReviewRecord {
 }
 
 interface LessonRecord {
+  activityCompletionCarryovers: Array<{
+    activityKey: string;
+    kind: string;
+    moduleRunId: string;
+  }>;
   concepts: Array<{
     assessments: Array<{ id: string; questions: Array<{ id: string }> }>;
     id: string;
@@ -50,11 +57,13 @@ interface LessonRecord {
   estimatedMinutes: number | null;
   exercises: Array<{
     id: string;
+    key: string;
     submissions: Array<{ status: string }>;
     title: string;
   }>;
   id: string;
   module: {
+    id: string;
     position: number;
     slug: string;
     stage: {
@@ -81,6 +90,7 @@ interface LessonRecord {
   tasks: Array<{
     completions: Array<{ status: string }>;
     id: string;
+    key: string;
     title: string;
   }>;
   title: string;
@@ -92,8 +102,7 @@ interface FinalAssessmentRecord {
     id: string;
     modules: Array<{
       lessons: Array<{
-        concepts: Array<{ progress: Array<{ status: string }> }>;
-        tasks: Array<{ completions: Array<{ status: string }> }>;
+        progress: Array<{ status: string }>;
       }>;
     }>;
     position: number;
@@ -171,25 +180,10 @@ export function createPrismaTodayRepository(
                   lessons: {
                     where: { isPublished: true },
                     select: {
-                      concepts: {
-                        where: { isRequired: true },
-                        select: {
-                          progress: {
-                            where: { userId },
-                            take: 1,
-                            select: { status: true },
-                          },
-                        },
-                      },
-                      tasks: {
-                        where: { isRequired: true },
-                        select: {
-                          completions: {
-                            where: { userId },
-                            take: 1,
-                            select: { status: true },
-                          },
-                        },
+                      progress: {
+                        where: { userId },
+                        take: 1,
+                        select: { status: true },
                       },
                     },
                   },
@@ -223,7 +217,7 @@ export function createPrismaTodayRepository(
       });
     },
     async listLessons(userId) {
-      return client.lesson.findMany({
+      const lessons = await client.lesson.findMany({
         where: {
           isPublished: true,
           module: {
@@ -241,6 +235,10 @@ export function createPrismaTodayRepository(
           { position: 'asc' },
         ],
         select: {
+          activityCompletionCarryovers: {
+            where: { userId },
+            select: { activityKey: true, kind: true, moduleRunId: true },
+          },
           concepts: {
             where: { isRequired: true },
             orderBy: { position: 'asc' },
@@ -263,10 +261,11 @@ export function createPrismaTodayRepository(
           },
           estimatedMinutes: true,
           exercises: {
-            where: { isRequired: true },
+            where: { isCanonical: true, isRequired: true },
             orderBy: { position: 'asc' },
             select: {
               id: true,
+              key: true,
               submissions: {
                 where: { userId },
                 take: 1,
@@ -278,6 +277,7 @@ export function createPrismaTodayRepository(
           id: true,
           module: {
             select: {
+              id: true,
               position: true,
               slug: true,
               stage: {
@@ -326,7 +326,7 @@ export function createPrismaTodayRepository(
           },
           slug: true,
           tasks: {
-            where: { isRequired: true },
+            where: { isCanonical: true, isRequired: true },
             orderBy: { position: 'asc' },
             select: {
               completions: {
@@ -335,12 +335,29 @@ export function createPrismaTodayRepository(
                 select: { status: true },
               },
               id: true,
+              key: true,
               title: true,
             },
           },
           title: true,
         },
       });
+      const moduleIds = [...new Set(lessons.map((lesson) => lesson.module.id))];
+      const currentRuns = await Promise.all(
+        moduleIds.map((moduleId) =>
+          getCurrentModuleRun(client, moduleId, userId),
+        ),
+      );
+      const currentRunIds = new Set(
+        currentRuns.flatMap((run) => (run ? [run.id] : [])),
+      );
+      return lessons.map((lesson) => ({
+        ...lesson,
+        activityCompletionCarryovers:
+          lesson.activityCompletionCarryovers.filter((carryover) =>
+            currentRunIds.has(carryover.moduleRunId),
+          ),
+      }));
     },
     async listPendingReviews(userId) {
       return client.reviewItem.findMany({
@@ -467,7 +484,15 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
   if (!currentLesson) return [];
 
   return currentLesson.tasks
-    .filter((task) => task.completions[0]?.status !== TaskCompletionStatus.DONE)
+    .filter(
+      (task) =>
+        task.completions[0]?.status !== TaskCompletionStatus.DONE &&
+        !currentLesson.activityCompletionCarryovers.some(
+          (carryover) =>
+            carryover.kind === CanonicalActivityKind.TASK &&
+            carryover.activityKey === task.key,
+        ),
+    )
     .map((task) => ({
       estimatedMinutes: currentLesson.estimatedMinutes,
       href: lessonActivityHref(
@@ -547,7 +572,15 @@ function exerciseCandidates(
 ): RecommendationCandidate[] {
   return lessons.flatMap((lesson) =>
     lesson.exercises
-      .filter((exercise) => exercise.submissions[0]?.status !== 'SUBMITTED')
+      .filter(
+        (exercise) =>
+          exercise.submissions[0]?.status !== 'SUBMITTED' &&
+          !lesson.activityCompletionCarryovers.some(
+            (carryover) =>
+              carryover.kind === CanonicalActivityKind.EXERCISE &&
+              carryover.activityKey === exercise.key,
+          ),
+      )
       .map((exercise) => ({
         estimatedMinutes: lesson.estimatedMinutes,
         href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/exercise/${encodeURIComponent(exercise.id)}?activity=${encodeURIComponent(`exercise:${exercise.id}`)}`,
@@ -635,21 +668,13 @@ function finalAssessmentCandidates(
       const lessons = assessment.stage.modules.flatMap(
         (module) => module.lessons,
       );
-      const conceptsAreValidated = lessons
-        .flatMap((lesson) => lesson.concepts)
-        .every(
-          (concept) =>
-            concept.progress[0]?.status === ConceptProgressStatus.VALIDATED,
-        );
-      const tasksAreDone = lessons
-        .flatMap((lesson) => lesson.tasks)
-        .every(
-          (task) => task.completions[0]?.status === TaskCompletionStatus.DONE,
-        );
+      const lessonsAreCompleted = lessons.every(
+        (lesson) =>
+          lesson.progress[0]?.status === LessonProgressStatus.COMPLETED,
+      );
 
       return (
-        conceptsAreValidated &&
-        tasksAreDone &&
+        lessonsAreCompleted &&
         assessment.stage.progress[0]?.status !== StageProgressStatus.LOCKED &&
         assessment.submissions[0]?.status !==
           StageAssessmentSubmissionStatus.VALIDATED &&
