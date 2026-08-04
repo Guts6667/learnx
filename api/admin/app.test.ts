@@ -1,4 +1,4 @@
-import type { MiddlewareHandler } from 'hono';
+import { Hono, type MiddlewareHandler } from 'hono';
 
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
@@ -196,6 +196,28 @@ describe('administration minimale', () => {
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({
       error: { code: 'FORBIDDEN' },
+    });
+  });
+
+  it('ne protège pas les routes privées qui ne font pas partie de l’administration', async () => {
+    const app = new Hono();
+    app.route(
+      '/',
+      createAdminApp({
+        authentication: authentication(ownerId, 'USER'),
+        navigationService: createNavigationService(),
+        repository: createRepository().repository,
+      }),
+    );
+    app.get('/api/programs', (context) =>
+      context.json({ programs: [{ title: 'Programme privé' }] }),
+    );
+
+    const response = await app.request('http://localhost/api/programs');
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      programs: [{ title: 'Programme privé' }],
     });
   });
 

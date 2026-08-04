@@ -268,8 +268,8 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     return defaultPublicationService;
   };
 
-  app.use('*', options.authentication ?? requireUser);
-  app.use('*', async (context, next) => {
+  app.use('/api/admin/*', options.authentication ?? requireUser);
+  app.use('/api/admin/*', async (context, next) => {
     if (context.get('user').role !== Role.ADMIN) throw forbidden();
     await next();
   });
