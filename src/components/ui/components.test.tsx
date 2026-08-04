@@ -7,7 +7,9 @@ import { Checkbox } from '@/components/ui/Checkbox';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -99,5 +101,26 @@ describe('design system minimal', () => {
     render(<OfflineBanner isOffline={false} />);
 
     expect(screen.queryByText(/vous êtes hors ligne/i)).not.toBeInTheDocument();
+  });
+
+  it('expose une hiérarchie de page et un skeleton annoncés', () => {
+    render(
+      <>
+        <PageHeader
+          description="Description lisible"
+          eyebrow="Parcours"
+          id="page-title"
+          title="Titre de page"
+        />
+        <Skeleton label="Chargement de la page" />
+      </>,
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Titre de page' }),
+    ).toHaveAttribute('id', 'page-title');
+    expect(
+      screen.getByRole('status', { name: 'Chargement de la page' }),
+    ).toBeInTheDocument();
   });
 });

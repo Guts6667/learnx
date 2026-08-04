@@ -1,0 +1,177 @@
+{
+  "specId": "PEDAGOGY_SPEC_045",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "moduleSlug": "mesure-interpretation-personnalite",
+  "lesson": {
+    "title": "Usages, limites et enjeux éthiques des tests",
+    "slug": "usages-limites-ethique-tests",
+    "summary": "Décider si, comment et par qui un test peut être utilisé en protégeant consentement, confidentialité, équité et possibilité de contestation.",
+    "objectives": [
+      "Évaluer l’adéquation entre un test, ses preuves, les qualifications de l’utilisateur et l’usage prévu.",
+      "Construire un protocole de consentement, confidentialité, minimisation et restitution.",
+      "Repérer les risques d’iniquité, de profilage et de décision automatisée à fort enjeu."
+    ],
+    "prerequisites": [
+      "Savoir distinguer fidélité, validité et normes.",
+      "Comprendre les limites des autoquestionnaires et de l’observation."
+    ],
+    "estimatedMinutes": 100,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un test fournit des scores destinés à soutenir certaines inférences. Il ne résume pas une personne et ne devrait jamais être traité comme une essence, une étiquette définitive ou un diagnostic autonome. La première décision éthique consiste parfois à ne pas tester : l’objectif doit être légitime, les données nécessaires, les preuves adaptées et les bénéfices proportionnés aux risques. À enjeu élevé, un score unique ne suffit pas pour décider de l’avenir d’une personne.",
+          "sourceKeys": ["itc-test-use", "apa-ethics-code"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Un utilisateur compétent choisit le test, vérifie sa documentation, administre et interprète selon ses qualifications et sait quand demander une expertise. Une plateforme grand public ne confère pas une compétence clinique ou professionnelle. Les limites du construit, de la population, de la langue et de l’usage doivent être explicites. Si l’instrument exige une qualification absente ou si les preuves ne couvrent pas la décision envisagée, l’usage doit être suspendu ou réduit.",
+          "sourceKeys": ["itc-test-use", "apa-ethics-code"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le consentement éclairé à l’évaluation décrit la finalité, le caractère obligatoire ou facultatif, les destinataires, la durée, les conséquences possibles et les droits. Il ne doit pas être confondu avec la base juridique du traitement des données : au sens du RGPD, le consentement n’est qu’une base possible et doit notamment être libre pour être valable. La personne doit savoir ce qui se passe si elle refuse et pouvoir poser des questions. Les exceptions légales exigent une analyse spécifique ; une leçon générale ne remplace pas un avis juridique.",
+          "sourceKeys": ["apa-ethics-code", "gdpr-chapter-3"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Confidentialité et minimisation commencent avant la passation : collecter seulement ce qui sert la finalité, limiter les accès, fixer une conservation, prévoir suppression ou rectification et, selon les risques, séparer les identifiants ou chiffrer. Les scores, réponses et commentaires peuvent révéler des informations personnelles sensibles même sans diagnostic. Un rapport ne doit pas circuler par défaut vers un manager, un proche ou un partenaire ; chaque destinataire et chaque réutilisation doivent avoir une base et une nécessité documentées.",
+          "sourceKeys": ["gdpr-chapter-3", "itc-test-use"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "L’équité ne consiste pas seulement à administrer exactement la même chose. Accessibilité, langue, normes, fonctionnement différentiel, possibilités d’aménagement et conséquences doivent être examinés. En recrutement, une procédure nouvelle ou assistée par IA reste soumise aux mêmes exigences de validation et de surveillance que les méthodes classiques. On documente les performances et erreurs par groupes, sans transformer l’appartenance à un groupe en explication individuelle ni masquer un impact défavorable.",
+          "sourceKeys": ["siop-ai-assessment-2023", "itc-test-use"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Le profilage évalue des aspects personnels pour analyser ou prédire une personne. Lorsqu’une décision exclusivement automatisée produit des effets juridiques ou comparables, l’article 22 du RGPD prévoit un encadrement particulier et, dans les cas autorisés, des garanties dont l’intervention humaine, l’expression du point de vue et la contestation. Une présence humaine purement symbolique ne suffit pas : elle doit pouvoir réexaminer la décision. Le résultat doit rester explicable, contestable et incertain, sans profilage clinique ni conseil thérapeutique.",
+          "sourceKeys": ["cnil-profilage-2018", "gdpr-chapter-3"]
+        }
+      }
+    ],
+    "resources": [
+      {"key": "itc-test-use", "title": "ITC Guidelines on Test Use", "type": "document", "url": "https://www.intestcom.org/files/guideline_test_use.pdf", "author": "International Test Commission", "citation": "International Test Commission. (2001). International Guidelines for Test Use, version 1.2.", "description": "Utiliser les sections sur compétence, choix, administration, interprétation, restitution et sécurité comme checklist d’usage.", "isRequired": true, "estimatedMinutes": 25, "position": 1},
+      {"key": "apa-ethics-code", "title": "Ethical Principles of Psychologists and Code of Conduct — Standard 9", "type": "website", "url": "https://www.apa.org/ethics/code", "author": "American Psychological Association", "citation": "American Psychological Association. (2017). Ethical Principles of Psychologists and Code of Conduct, Section 9: Assessment (2002, amended effective June 1, 2010 and January 1, 2017).", "description": "Lire la section 9 et relever les obligations liées aux bases, au consentement, à l’interprétation, à la restitution et à la sécurité.", "isRequired": true, "estimatedMinutes": 20, "position": 2},
+      {"key": "gdpr-chapter-3", "title": "Règlement général sur la protection des données", "type": "document", "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj", "author": "Union européenne", "citation": "Union européenne. (2016). Règlement (UE) 2016/679 relatif à la protection des données à caractère personnel. Journal officiel de l’Union européenne.", "description": "Repérer les principes, bases juridiques, droits, mesures de sécurité et garanties de l’article 22.", "isRequired": true, "estimatedMinutes": 20, "position": 3},
+      {"key": "cnil-profilage-2018", "title": "Profilage et décision entièrement automatisée", "type": "website", "url": "https://www.cnil.fr/fr/profilage-et-decision-entierement-automatisee", "author": "Commission nationale de l’informatique et des libertés", "citation": "CNIL. (2018). Profilage et décision entièrement automatisée.", "description": "Distinguer profilage et décision automatisée, puis lister information, intervention humaine et contestation.", "isRequired": true, "estimatedMinutes": 15, "position": 4},
+      {"key": "siop-ai-assessment-2023", "title": "Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection", "type": "document", "url": "https://www.siop.org/wp-content/uploads/legacy/SIOP%20Considerations%20and%20Recommendations%20for%20the%20Validation%20and%20Use%20of%20AI-Based%20Assessments%20for%20Employee%20Selection%20010323.pdf", "author": "Society for Industrial and Organizational Psychology", "citation": "Society for Industrial and Organizational Psychology. (2023). Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection.", "description": "Relever les exigences qui restent applicables aux évaluations assistées par IA et deux risques spécifiques à surveiller.", "isRequired": true, "estimatedMinutes": 22, "position": 5}
+    ],
+    "concepts": [
+      {"title": "Usage adapté et qualification", "slug": "usage-adapte-qualification", "description": "Le choix, l’administration et l’interprétation doivent correspondre à une finalité légitime, des preuves adaptées et des compétences réelles.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["itc-test-use", "apa-ethics-code"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Usage et compétence", "questionCount": 5}},
+      {"title": "Consentement, confidentialité et restitution", "slug": "consentement-confidentialite-restitution", "description": "Finalité, droits, destinataires, minimisation, sécurité et restitution compréhensible encadrent les données de test.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["apa-ethics-code", "gdpr-chapter-3", "itc-test-use"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Droits et données", "questionCount": 5}},
+      {"title": "Équité, profilage et décision responsable", "slug": "equite-profilage-decision", "description": "Les effets par groupes, l’accessibilité et les décisions automatisées exigent validation, surveillance, intervention humaine et contestabilité.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cnil-profilage-2018", "gdpr-chapter-3", "siop-ai-assessment-2023"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Équité et profilage", "questionCount": 5}}
+    ],
+    "tasks": [
+      {"title": "Décider s’il faut tester", "description": "Appliquer une checklist à trois demandes fictives : finalité, nécessité, preuves, qualifications, risques, alternatives et décision motivée d’utiliser, limiter ou refuser.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
+      {"title": "Concevoir une notice et un circuit de données", "description": "Rédiger une notice courte puis cartographier collecte, accès, conservation, restitution, rectification et suppression pour un usage personnel à faible enjeu.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
+      {"title": "Auditer un recrutement automatisé", "description": "Réviser un cas fictif de présélection par score de personnalité : validité, groupes, accessibilité, information, intervention humaine, contestation et conclusions interdites.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+    ]
+  },
+  "editorial": {
+    "status": "editorial_review",
+    "version": "1.0.0",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id": "REF-045-ITC-USE", "type": "professional_guideline", "authors": [], "organization": "International Test Commission", "title": "ITC Guidelines on Test Use", "year": 2001, "edition": "Version 1.2", "publication": "International Test Commission", "doi": null, "url": "https://www.intestcom.org/files/guideline_test_use.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Copyright ITC; consultation publique", "status": "verified", "notes": "Guide international de compétence et d’usage responsable."},
+      {"id": "REF-045-APA-ETHICS", "type": "professional_code", "authors": [], "organization": "American Psychological Association", "title": "Ethical Principles of Psychologists and Code of Conduct — Standard 9", "year": 2017, "edition": "2002 code, amended 2010 and 2017", "publication": "American Psychological Association", "doi": null, "url": "https://www.apa.org/ethics/code", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Official public code", "status": "verified", "notes": "Section 9 consacrée à l’évaluation psychologique."},
+      {"id": "REF-045-GDPR-CH3", "type": "regulation", "authors": [], "organization": "Union européenne", "title": "Règlement général sur la protection des données", "year": 2016, "edition": "Règlement (UE) 2016/679", "publication": "Journal officiel de l’Union européenne", "doi": null, "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "fr", "license": "Texte officiel public", "status": "verified", "notes": "Principes, bases juridiques, droits, sécurité et décisions automatisées."},
+      {"id": "REF-045-CNIL-PROFILAGE", "type": "official_guidance", "authors": [], "organization": "CNIL", "title": "Profilage et décision entièrement automatisée", "year": 2018, "edition": null, "publication": "Commission nationale de l’informatique et des libertés", "doi": null, "url": "https://www.cnil.fr/fr/profilage-et-decision-entierement-automatisee", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "fr", "license": "Information publique", "status": "verified", "notes": "Explication opérationnelle du profilage et de l’article 22."},
+      {"id": "REF-045-SIOP-AI-2023", "type": "professional_guideline", "authors": [], "organization": "Society for Industrial and Organizational Psychology", "title": "Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection", "year": 2023, "edition": null, "publication": "SIOP", "doi": null, "url": "https://www.siop.org/wp-content/uploads/legacy/SIOP%20Considerations%20and%20Recommendations%20for%20the%20Validation%20and%20Use%20of%20AI-Based%20Assessments%20for%20Employee%20Selection%20010323.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Professional guidance publicly accessible", "status": "verified", "notes": "Recommandations spécifiques aux évaluations IA en sélection."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-045-ITC-USE", "locator": "scope and good practice framework", "supports": "Test comme base d’inférences et décision de pertinence."}, {"referenceId": "REF-045-APA-ETHICS", "locator": "Standards 9.01 and 9.02", "supports": "Bases suffisantes et usage approprié des évaluations."}], "confidence": "high", "confidenceRationale": "Deux codes professionnels convergents.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-045-ITC-USE", "locator": "competent test user, choose and interpret tests", "supports": "Qualifications et choix adapté."}, {"referenceId": "REF-045-APA-ETHICS", "locator": "Standards 2 and 9", "supports": "Compétence et limites d’interprétation."}], "confidence": "high", "confidenceRationale": "Normes professionnelles explicites.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-045-APA-ETHICS", "locator": "Standard 9.03 informed consent", "supports": "Information et consentement pour l’évaluation."}, {"referenceId": "REF-045-GDPR-CH3", "locator": "articles 6, 7, 12 à 14 et 21", "supports": "Bases juridiques, conditions du consentement, transparence, information et droits."}], "confidence": "high", "confidenceRationale": "Code éthique et texte réglementaire complémentaires.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-045-GDPR-CH3", "locator": "articles 5, 13, 15 à 18 et 32", "supports": "Minimisation, conservation, accès, rectification, effacement, limitation et sécurité proportionnée au risque."}, {"referenceId": "REF-045-ITC-USE", "locator": "security, reporting and feedback", "supports": "Sécurité des matériaux et communication des résultats."}], "confidence": "high", "confidenceRationale": "Droits réglementaires et bonnes pratiques de test.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-045-SIOP-AI-2023", "locator": "validation, fairness and monitoring recommendations", "supports": "Même niveau d’examen pour évaluations IA et classiques."}, {"referenceId": "REF-045-ITC-USE", "locator": "fair testing and contextual factors", "supports": "Équité, aménagements et contexte local."}], "confidence": "high", "confidenceRationale": "Guides professionnels directement applicables.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-045-CNIL-PROFILAGE", "locator": "définitions, règles et garanties", "supports": "Profilage, décision automatisée, information et intervention humaine."}, {"referenceId": "REF-045-GDPR-CH3", "locator": "article 22", "supports": "Droit de ne pas subir certaines décisions automatisées et garanties des exceptions."}], "confidence": "high", "confidenceRationale": "Texte réglementaire et explication de l’autorité française.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "itc-test-use", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-045-ITC-USE"], "pedagogicalRationale": "Checklist internationale couvrant tout le cycle de test.", "learnerInstructions": "Relever une exigence par étape : choix, passation, interprétation, restitution, sécurité.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte avec sommaire.", "alternativeResourceKey": null, "notes": "Accès public contrôlé."},
+      {"resourceKey": "apa-ethics-code", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-045-APA-ETHICS"], "pedagogicalRationale": "Obligations éthiques précises pour l’évaluation psychologique.", "learnerInstructions": "Lire la section 9 et produire une checklist de six points.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Page HTML structurée ; navigation par standards.", "alternativeResourceKey": null, "notes": "Code officiel public."},
+      {"resourceKey": "gdpr-chapter-3", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "fr", "referenceIds": ["REF-045-GDPR-CH3"], "pedagogicalRationale": "Texte officiel des principes, bases, droits et garanties utiles aux données de test.", "learnerInstructions": "Repérer articles 5 à 7, 13, 15 à 17, 22 et 32 ; associer chaque principe ou droit à une action.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Texte officiel disponible en HTML, PDF et dans les langues de l’Union.", "alternativeResourceKey": null, "notes": "Texte officiel EUR-Lex."},
+      {"resourceKey": "cnil-profilage-2018", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "fr", "referenceIds": ["REF-045-CNIL-PROFILAGE"], "pedagogicalRationale": "Explication accessible des risques et garanties du profilage.", "learnerInstructions": "Distinguer profilage et décision automatisée puis lister trois garanties.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré en français.", "alternativeResourceKey": null, "notes": "Page officielle à jour contrôlée."},
+      {"resourceKey": "siop-ai-assessment-2023", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-045-SIOP-AI-2023"], "pedagogicalRationale": "Applique validation et équité aux outils IA de sélection.", "learnerInstructions": "Relever deux exigences classiques maintenues et deux risques spécifiques.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte long ; résumé exécutif recommandé.", "alternativeResourceKey": null, "notes": "Guide professionnel public."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "usage-adapte-qualification",
+        "assessmentTitle": "Mini-évaluation — Usage et compétence",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle est la première question avant d’utiliser un test ?", "explanation": "Il faut vérifier qu’une finalité légitime nécessite une mesure adaptée.", "acceptedAnswers": [], "position": 1, "options": [{"label": "La finalité justifie-t-elle une mesure adaptée ?", "isCorrect": true, "position": 1}, {"label": "Le résultat sera-t-il spectaculaire ?", "isCorrect": false, "position": 2}, {"label": "Peut-on créer un type définitif ?", "isCorrect": false, "position": 3}, {"label": "Peut-on éviter toute documentation ?", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une interface grand public confère automatiquement la qualification nécessaire pour interpréter un test clinique.", "explanation": "Les qualifications dépendent de la formation, du cadre et de l’instrument, pas de l’interface.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que vérifier pour juger l’adéquation d’un test ?", "explanation": "Finalité, preuves, population et qualifications sont toutes nécessaires.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La finalité", "isCorrect": true, "position": 1}, {"label": "Les preuves pour la population", "isCorrect": true, "position": 2}, {"label": "Les qualifications de l’utilisateur", "isCorrect": true, "position": 3}, {"label": "La promesse marketing seule", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Que faire si la qualification requise manque ?", "explanation": "Il faut renoncer, limiter l’usage ou solliciter une expertise qualifiée.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Suspendre l’usage ou solliciter une expertise", "isCorrect": true, "position": 1}, {"label": "Improviser un diagnostic", "isCorrect": false, "position": 2}, {"label": "Cacher la limite", "isCorrect": false, "position": 3}, {"label": "Profiler automatiquement", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne les connaissances et compétences requises pour utiliser correctement un test ?", "explanation": "Il s’agit de la qualification ou compétence.", "acceptedAnswers": ["qualification", "compétence", "competence", "compétences"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "consentement-confidentialite-restitution",
+        "assessmentTitle": "Mini-évaluation — Droits et données",
+        "questions": [
+          {"type": "multiple_choice", "prompt": "Que doit présenter une information préalable compréhensible ?", "explanation": "Finalité, destinataires et conséquences figurent parmi les éléments essentiels.", "acceptedAnswers": [], "position": 1, "options": [{"label": "La finalité", "isCorrect": true, "position": 1}, {"label": "Les destinataires", "isCorrect": true, "position": 2}, {"label": "Les conséquences du refus", "isCorrect": true, "position": 3}, {"label": "Une garantie de vérité absolue", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Le consentement autorise toute réutilisation future des scores sans nouvelle information.", "explanation": "Le consentement est lié à une finalité et ne constitue pas un blanc-seing.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Que signifie minimiser les données ?", "explanation": "On collecte seulement les données nécessaires à la finalité annoncée.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Collecter seulement ce qui est nécessaire", "isCorrect": true, "position": 1}, {"label": "Tout conserver sans durée", "isCorrect": false, "position": 2}, {"label": "Tout transmettre au manager", "isCorrect": false, "position": 3}, {"label": "Supprimer les droits", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles mesures protègent la confidentialité ?", "explanation": "Accès limité, sécurité et durée documentée réduisent les risques.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Limiter les accès", "isCorrect": true, "position": 1}, {"label": "Fixer une durée de conservation", "isCorrect": true, "position": 2}, {"label": "Sécuriser les données", "isCorrect": true, "position": 3}, {"label": "Publier les réponses nominatives", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel principe impose de ne collecter que les données nécessaires ?", "explanation": "Il s’agit de la minimisation des données.", "acceptedAnswers": ["minimisation", "minimisation des données", "data minimization"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "equite-profilage-decision",
+        "assessmentTitle": "Mini-évaluation — Équité et profilage",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel principe s’applique à une évaluation de recrutement assistée par IA ?", "explanation": "Elle reste soumise à des preuves, une validation et une surveillance rigoureuses.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Les exigences de validation restent applicables", "isCorrect": true, "position": 1}, {"label": "L’IA remplace toute validation", "isCorrect": false, "position": 2}, {"label": "Le secret commercial supprime les droits", "isCorrect": false, "position": 3}, {"label": "Le score devient un diagnostic", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles dimensions participent à l’équité ?", "explanation": "Accessibilité, fonctionnement des mesures et conséquences comptent ensemble.", "acceptedAnswers": [], "position": 2, "options": [{"label": "L’accessibilité", "isCorrect": true, "position": 1}, {"label": "Les effets par groupes", "isCorrect": true, "position": 2}, {"label": "Les conséquences d’erreur", "isCorrect": true, "position": 3}, {"label": "La même conclusion pour tous sans analyse", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Ajouter un humain qui ne peut pas modifier la décision garantit une intervention humaine significative.", "explanation": "L’intervention doit permettre un véritable réexamen et une contestation.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quel droit est associé aux décisions automatisées encadrées par l’article 22 ?", "explanation": "Dans les cas prévus, la personne doit notamment pouvoir demander une intervention humaine et contester.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Demander une intervention humaine et contester", "isCorrect": true, "position": 1}, {"label": "Supprimer toute information", "isCorrect": false, "position": 2}, {"label": "Obtenir un diagnostic", "isCorrect": false, "position": 3}, {"label": "Renoncer à la confidentialité", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne l’évaluation automatisée d’aspects personnels pour analyser ou prédire une personne ?", "explanation": "Il s’agit du profilage.", "acceptedAnswers": ["profilage", "profiling"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychométrie, éthique professionnelle et protection des données requise.",
+        "L’étape personnalite-differences-individuelles et le module mesure-interpretation-personnalite sont absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "Aucun score ne fonde seul diagnostic, profil définitif, conseil clinique ou décision à fort enjeu.",
+        "Qualifications, consentement, confidentialité, minimisation, équité et contestation sont des conditions explicites.",
+        "Les points juridiques sont pédagogiques et ne constituent pas un avis juridique personnalisé."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_ethics_and_data_protection"}
+    ]
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "specId": "PEDAGOGY_SPEC_044",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "moduleSlug": "mesure-interpretation-personnalite",
+  "lesson": {
+    "title": "Autoquestionnaires, observation et biais de réponse",
+    "slug": "autoquestionnaires-observation-biais-reponse",
+    "summary": "Comprendre ce que rapportent les autoquestionnaires, ce que voit l’observation et comment leurs biais et désaccords peuvent être analysés sans diagnostic ni soupçon automatique.",
+    "objectives": [
+      "Décrire les processus qui transforment une question en réponse déclarée.",
+      "Distinguer biais de réponse, réponse inattentive et divergence de perspective.",
+      "Construire une triangulation proportionnée entre autoévaluation, observation et contexte."
+    ],
+    "prerequisites": [
+      "Savoir qu’une mesure ne se confond pas avec le construit.",
+      "Connaître les notions de fidélité et de validité contextualisée."
+    ],
+    "estimatedMinutes": 90,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un autoquestionnaire recueille ce qu’une personne peut et veut rapporter en réponse à des items, dans une situation donnée. Il donne un accès utile à des expériences privées, des habitudes perçues et une image de soi, mais pas une lecture transparente de la personnalité. Compréhension, mémoire, cadre de référence, motivation et format de réponse participent au score. Un autoquestionnaire de personnalité ne constitue donc pas, à lui seul, un diagnostic.",
+          "sourceKeys": ["openstax-personality-assessment", "schwarz-1999"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Répondre suppose d’interpréter la question, rechercher des informations en mémoire, former un jugement puis le traduire dans les options proposées. Le vocabulaire, la période de référence, l’ordre des questions, les exemples et l’échelle suggèrent parfois un sens ou une norme implicite. Demander « souvent » sans durée ni situation peut conduire deux personnes semblables à employer des repères différents. Une formulation précise réduit certaines ambiguïtés sans supprimer toute incertitude.",
+          "sourceKeys": ["schwarz-1999", "tourangeau-yan-2007"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Désirabilité sociale, gestion d’impression, acquiescement ou styles extrêmes peuvent infléchir les réponses, surtout lorsque le sujet est sensible ou l’enjeu élevé. Une réponse favorable n’est pourtant pas une preuve de mensonge : elle peut refléter une interprétation différente, une mémoire imparfaite, une norme locale ou un changement réel. Il faut tester plusieurs explications et protéger la personne, plutôt que convertir un indice de biais en accusation ou en profil.",
+          "sourceKeys": ["tourangeau-yan-2007", "schwarz-1999"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Les réponses inattentives peuvent prendre des formes aléatoires ou systématiques. Temps très court, incohérences ou items d’attention ne détectent pas tous les mêmes cas et produisent aussi des faux positifs. Aucun seuil ne devrait exclure ou sanctionner automatiquement une personne. La qualité se prépare par un questionnaire bref, clair, accessible et volontaire ; les indicateurs servent ensuite à une analyse transparente, proportionnée et sensible au contexte.",
+          "sourceKeys": ["meade-craig-2012"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "L’observation échantillonne des comportements visibles dans certaines situations. Elle dépend des occasions d’observer, des consignes, du rôle de l’évaluateur, de sa relation avec la personne et de sa propre interprétation. La réactivité, l’effet de halo et un faible accord interévaluateurs limitent les conclusions. Structurer les comportements cibles, les périodes et la formation des observateurs améliore la traçabilité, sans transformer l’observation en mesure exhaustive ou neutre.",
+          "sourceKeys": ["openstax-research-approaches", "connelly-ones-2010"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Soi et autrui disposent d’informations différentes : les états internes sont moins visibles, tandis que certains comportements publics sont mieux échantillonnés par des proches. Accord et désaccord ne désignent pas automatiquement vérité et erreur ; ils peuvent révéler observabilité, contexte, relation ou définition différente du trait. Une triangulation responsable explicite la question, choisit des méthodes complémentaires, compare leurs conditions et conserve l’incertitude, sans profilage ni conseil clinique.",
+          "sourceKeys": ["vazire-2010", "connelly-ones-2010"]
+        }
+      }
+    ],
+    "resources": [
+      {"key": "openstax-personality-assessment", "title": "Psychology 2e — 11.9 Personality Assessment", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/11-9-personality-assessment", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.9 Personality Assessment. OpenStax.", "description": "Repérer les principales méthodes d’évaluation de la personnalité et leurs limites introductives.", "isRequired": true, "estimatedMinutes": 15, "position": 1},
+      {"key": "schwarz-1999", "title": "Self-Reports: How the Questions Shape the Answers", "type": "article", "url": "https://cci.drexel.edu/faculty/sgasson/Readings/Schwarz%20%5B1999%5D%20Self-reports%20-%20How%20the%20questions%20shape%20the%20answers.pdf", "author": "Norbert Schwarz", "citation": "Schwarz, N. (1999). Self-reports: How the questions shape the answers. American Psychologist, 54(2), 93–105. https://doi.org/10.1037/0003-066X.54.2.93", "description": "Suivre les étapes cognitives de réponse et relever deux effets de formulation ou d’échelle.", "isRequired": true, "estimatedMinutes": 20, "position": 2},
+      {"key": "tourangeau-yan-2007", "title": "Sensitive Questions in Surveys", "type": "article", "url": "https://doi.org/10.1037/0033-2909.133.5.859", "author": "Roger Tourangeau et Ting Yan", "citation": "Tourangeau, R., & Yan, T. (2007). Sensitive questions in surveys. Psychological Bulletin, 133(5), 859–883. https://doi.org/10.1037/0033-2909.133.5.859", "description": "Lire le résumé et identifier les mécanismes qui affectent une réponse à sujet sensible.", "isRequired": false, "estimatedMinutes": 15, "position": 3},
+      {"key": "meade-craig-2012", "title": "Identifying Careless Responses in Survey Data", "type": "article", "url": "https://ubc-emotionlab.ca/wp-content/uploads/2012/06/Meade-Craig-2012-Careless-Responding-in-Survey-Data.pdf", "author": "Adam W. Meade et S. Bartholomew Craig", "citation": "Meade, A. W., & Craig, S. B. (2012). Identifying careless responses in survey data. Psychological Methods, 17(3), 437–455. https://doi.org/10.1037/a0028085", "description": "Comparer les familles d’indicateurs et expliquer pourquoi aucun signal ne justifie une exclusion automatique.", "isRequired": true, "estimatedMinutes": 15, "position": 4},
+      {"key": "vazire-2010", "title": "Who Knows What About a Person? The Self–Other Knowledge Asymmetry Model", "type": "article", "url": "https://www.simine.com/docs/Vazire_JPSP_2010.pdf", "author": "Simine Vazire", "citation": "Vazire, S. (2010). Who knows what about a person? The self–other knowledge asymmetry model. Journal of Personality and Social Psychology, 98(2), 281–300. https://doi.org/10.1037/a0017908", "description": "Comparer accès du soi et d’autrui selon observabilité et caractère évaluatif du trait.", "isRequired": true, "estimatedMinutes": 20, "position": 5},
+      {"key": "connelly-ones-2010", "title": "An Other Perspective on Personality", "type": "article", "url": "https://www.hoganassessments.com/sites/default/files/Connelly%20%26%20Ones%20%282010%29.%20Psych%20Bull.pdf", "author": "Brian S. Connelly et Deniz S. Ones", "citation": "Connelly, B. S., & Ones, D. S. (2010). An other perspective on personality: Meta-analytic integration of observers’ accuracy and predictive validity. Psychological Bulletin, 136(6), 1092–1122. https://doi.org/10.1037/a0021212", "description": "Lire le résumé et distinguer consensus entre observateurs, accord soi-autrui et prédiction de comportements.", "isRequired": true, "estimatedMinutes": 18, "position": 6},
+      {"key": "openstax-research-approaches", "title": "Psychology 2e — 2.2 Approaches to Research", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 2.2 Approaches to Research. OpenStax.", "description": "Comparer enquête, observation naturaliste et observation contrôlée avec leurs limites.", "isRequired": false, "estimatedMinutes": 12, "position": 7}
+    ],
+    "concepts": [
+      {"title": "Autoquestionnaire comme rapport situé", "slug": "autoquestionnaire-rapport-situe", "description": "La réponse déclarée résulte d’une compréhension, d’un rappel, d’un jugement et d’un format contextualisés ; elle n’est pas un diagnostic.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-personality-assessment", "schwarz-1999"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Processus d’autoquestionnaire", "questionCount": 5}},
+      {"title": "Biais et qualité des réponses", "slug": "biais-qualite-reponses", "description": "Les biais et signaux d’inattention ont plusieurs causes et exigent des contrôles convergents, non punitifs et transparents.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["tourangeau-yan-2007", "meade-craig-2012", "schwarz-1999"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Biais de réponse", "questionCount": 5}},
+      {"title": "Observation et triangulation des perspectives", "slug": "observation-triangulation-perspectives", "description": "Soi et observateurs échantillonnent des informations différentes ; leurs convergences et écarts doivent être contextualisés.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["vazire-2010", "connelly-ones-2010", "openstax-research-approaches"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Observation et triangulation", "questionCount": 5}}
+    ],
+    "tasks": [
+      {"title": "Réécrire des items ambigus", "description": "Réviser six items fictifs : période, situation, double question, vocabulaire, options et enjeu de désirabilité ; justifier chaque modification.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
+      {"title": "Tester plusieurs explications d’une réponse", "description": "Pour trois profils de réponses fictifs, proposer mémoire, interprétation, contexte, présentation de soi et inattention comme hypothèses à départager sans accusation.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
+      {"title": "Construire une triangulation proportionnée", "description": "Définir une question non clinique puis combiner autoquestionnaire, observation structurée et contexte en précisant accès, biais, consentement et traitement des désaccords.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+    ]
+  },
+  "editorial": {
+    "status": "editorial_review",
+    "version": "1.0.0",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id": "REF-044-OPENSTAX-11-9", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 11.9 Personality Assessment", "year": 2020, "edition": "2e éd.", "publication": "Psychology 2e", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/11-9-personality-assessment", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Introduction aux méthodes d’évaluation de la personnalité."},
+      {"id": "REF-044-SCHWARZ-1999", "type": "journal_article", "authors": ["Schwarz, N."], "organization": null, "title": "Self-Reports: How the Questions Shape the Answers", "year": 1999, "edition": null, "publication": "American Psychologist, 54(2), 93–105", "doi": "10.1037/0003-066X.54.2.93", "url": "https://cci.drexel.edu/faculty/sgasson/Readings/Schwarz%20%5B1999%5D%20Self-reports%20-%20How%20the%20questions%20shape%20the%20answers.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Educational copy", "status": "verified", "notes": "Synthèse des processus cognitifs et conversationnels de réponse."},
+      {"id": "REF-044-TOURANGEAU-YAN-2007", "type": "journal_article", "authors": ["Tourangeau, R.", "Yan, T."], "organization": null, "title": "Sensitive Questions in Surveys", "year": 2007, "edition": null, "publication": "Psychological Bulletin, 133(5), 859–883", "doi": "10.1037/0033-2909.133.5.859", "url": "https://doi.org/10.1037/0033-2909.133.5.859", "accessedAt": "2026-08-04", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Abstract open; full text may require access", "status": "verified", "notes": "Revue sur les questions sensibles et erreurs de déclaration."},
+      {"id": "REF-044-MEADE-CRAIG-2012", "type": "journal_article", "authors": ["Meade, A. W.", "Craig, S. B."], "organization": null, "title": "Identifying Careless Responses in Survey Data", "year": 2012, "edition": null, "publication": "Psychological Methods, 17(3), 437–455", "doi": "10.1037/a0028085", "url": "https://ubc-emotionlab.ca/wp-content/uploads/2012/06/Meade-Craig-2012-Careless-Responding-in-Survey-Data.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Copie universitaire ouverte", "status": "verified", "notes": "Deux études comparant plusieurs indicateurs de réponse inattentive ; texte intégral ouvert."},
+      {"id": "REF-044-VAZIRE-2010", "type": "journal_article", "authors": ["Vazire, S."], "organization": null, "title": "Who Knows What About a Person? The Self–Other Knowledge Asymmetry Model", "year": 2010, "edition": null, "publication": "Journal of Personality and Social Psychology, 98(2), 281–300", "doi": "10.1037/a0017908", "url": "https://www.simine.com/docs/Vazire_JPSP_2010.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Author-hosted copy", "status": "verified", "notes": "Étude du modèle d’asymétrie de connaissance soi-autrui."},
+      {"id": "REF-044-CONNELLY-ONES-2010", "type": "meta_analysis", "authors": ["Connelly, B. S.", "Ones, D. S."], "organization": null, "title": "An Other Perspective on Personality", "year": 2010, "edition": null, "publication": "Psychological Bulletin, 136(6), 1092–1122", "doi": "10.1037/a0021212", "url": "https://www.hoganassessments.com/sites/default/files/Connelly%20%26%20Ones%20%282010%29.%20Psych%20Bull.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Publicly accessible publisher copy", "status": "verified", "notes": "Intégration méta-analytique des évaluations par observateurs."},
+      {"id": "REF-044-OPENSTAX-2-2", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.2 Approaches to Research", "year": 2020, "edition": "2e éd.", "publication": "Psychology 2e", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Introduction aux enquêtes et observations."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-044-OPENSTAX-11-9", "locator": "self-report inventories", "supports": "Place des autoquestionnaires dans l’évaluation de personnalité."}, {"referenceId": "REF-044-SCHWARZ-1999", "locator": "response process overview", "supports": "Réponse comme processus construit et situé."}], "confidence": "high", "confidenceRationale": "Manuel et synthèse méthodologique concordants.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-044-SCHWARZ-1999", "locator": "question comprehension, recall and response formatting", "supports": "Étapes cognitives et effets de formulation."}, {"referenceId": "REF-044-TOURANGEAU-YAN-2007", "locator": "survey response and sensitivity mechanisms", "supports": "Influence du contexte et de la sensibilité."}], "confidence": "high", "confidenceRationale": "Revues centrées sur le processus de réponse.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-044-TOURANGEAU-YAN-2007", "locator": "social desirability and misreporting", "supports": "Facteurs de déclaration sur sujets sensibles."}, {"referenceId": "REF-044-SCHWARZ-1999", "locator": "reporting the answer", "supports": "Présentation de soi et format de réponse."}], "confidence": "high", "confidenceRationale": "Synthèses convergentes, avec prudence sur l’intention.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-044-MEADE-CRAIG-2012", "locator": "abstract and two-study comparison of indicators", "supports": "Pluralité et efficacité contextuelle des indicateurs d’inattention."}], "confidence": "high", "confidenceRationale": "Études directement consacrées au phénomène.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-044-OPENSTAX-2-2", "locator": "naturalistic observation", "supports": "Observation comme échantillon de comportements en contexte."}, {"referenceId": "REF-044-CONNELLY-ONES-2010", "locator": "observer consensus and accuracy", "supports": "Accord et validité des évaluations par observateurs."}], "confidence": "high", "confidenceRationale": "Introduction méthodologique et méta-analyse complémentaires.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-044-VAZIRE-2010", "locator": "SOKA model and results", "supports": "Accès différencié selon observabilité et évaluativité."}, {"referenceId": "REF-044-CONNELLY-ONES-2010", "locator": "meta-analyses of consensus, self-other convergence and prediction", "supports": "Valeur et limites des perspectives d’autrui."}], "confidence": "high", "confidenceRationale": "Modèle testé et intégration méta-analytique.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-personality-assessment", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-OPENSTAX-11-9"], "pedagogicalRationale": "Introduction accessible aux méthodes de personnalité.", "learnerInstructions": "Repérer les méthodes et une limite de chacune.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré, figures légendées.", "alternativeResourceKey": null, "notes": "Licence ouverte."},
+      {"resourceKey": "schwarz-1999", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-SCHWARZ-1999"], "pedagogicalRationale": "Décompose clairement les opérations de réponse.", "learnerInstructions": "Suivre les étapes et relever deux effets du questionnaire.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte.", "alternativeResourceKey": null, "notes": "Copie universitaire accessible."},
+      {"resourceKey": "tourangeau-yan-2007", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "institutional", "language": "en", "referenceIds": ["REF-044-TOURANGEAU-YAN-2007"], "pedagogicalRationale": "Cadre de référence pour réponses sensibles et désirabilité.", "learnerInstructions": "Lire le résumé ; classer trois sources de déclaration inexacte.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Page DOI ; texte intégral potentiellement sous abonnement.", "alternativeResourceKey": "schwarz-1999", "notes": "Ressource facultative ; alternative ouverte fournie."},
+      {"resourceKey": "meade-craig-2012", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-MEADE-CRAIG-2012"], "pedagogicalRationale": "Compare empiriquement plusieurs indicateurs d’inattention.", "learnerInstructions": "Comparer les familles d’indicateurs et expliquer pourquoi plusieurs indices sont requis.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF textuel hébergé par une université.", "alternativeResourceKey": null, "notes": "Texte intégral ouvert contrôlé."},
+      {"resourceKey": "vazire-2010", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-VAZIRE-2010"], "pedagogicalRationale": "Explique les asymétries d’accès entre soi et autrui.", "learnerInstructions": "Comparer traits observables et états internes dans le modèle.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte auteur.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "connelly-ones-2010", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-CONNELLY-ONES-2010"], "pedagogicalRationale": "Donne une synthèse quantitative de la perspective des observateurs.", "learnerInstructions": "Distinguer consensus, accord soi-autrui et prédiction.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte long ; le résumé suffit au socle.", "alternativeResourceKey": null, "notes": "Copie publique accessible."},
+      {"resourceKey": "openstax-research-approaches", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-044-OPENSTAX-2-2"], "pedagogicalRationale": "Rappelle les compromis entre enquête et observation.", "learnerInstructions": "Comparer les deux méthodes dans un tableau.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré.", "alternativeResourceKey": null, "notes": "Ressource optionnelle ouverte."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "autoquestionnaire-rapport-situe",
+        "assessmentTitle": "Mini-évaluation — Processus d’autoquestionnaire",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que recueille directement un autoquestionnaire ?", "explanation": "Il recueille une réponse déclarée à des items dans un contexte.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Un rapport produit en réponse à des items", "isCorrect": true, "position": 1}, {"label": "L’essence d’un trait", "isCorrect": false, "position": 2}, {"label": "Un diagnostic certain", "isCorrect": false, "position": 3}, {"label": "Tous les comportements futurs", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles opérations participent à une réponse déclarée ?", "explanation": "Compréhension, rappel, jugement et mise en correspondance avec les options sont impliqués.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Comprendre la question", "isCorrect": true, "position": 1}, {"label": "Rechercher des informations en mémoire", "isCorrect": true, "position": 2}, {"label": "Choisir une option de réponse", "isCorrect": true, "position": 3}, {"label": "Révéler automatiquement un diagnostic", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Le sens de « souvent » est identique pour toutes les personnes sans autre précision.", "explanation": "Le cadre temporel et situationnel peut varier entre répondants.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quelle amélioration réduit une ambiguïté de fréquence ?", "explanation": "Une période et une situation précises stabilisent le référentiel.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Préciser période et situation", "isCorrect": true, "position": 1}, {"label": "Employer deux questions à la fois", "isCorrect": false, "position": 2}, {"label": "Supprimer toutes les options", "isCorrect": false, "position": 3}, {"label": "Promettre un diagnostic", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel préfixe désigne une mesure rapportée par la personne elle-même ?", "explanation": "Il s’agit d’une autoévaluation ou d’un autoquestionnaire.", "acceptedAnswers": ["auto", "autoévaluation", "auto-evaluation", "autoquestionnaire"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "biais-qualite-reponses",
+        "assessmentTitle": "Mini-évaluation — Biais de réponse",
+        "questions": [
+          {"type": "single_choice", "prompt": "Une réponse socialement favorable prouve-t-elle un mensonge ?", "explanation": "Plusieurs mécanismes alternatifs doivent être considérés.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Non, plusieurs explications restent possibles", "isCorrect": true, "position": 1}, {"label": "Oui, toujours", "isCorrect": false, "position": 2}, {"label": "Oui, si le score est élevé", "isCorrect": false, "position": 3}, {"label": "Oui, si la question est longue", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quels facteurs peuvent infléchir une réponse ?", "explanation": "Mémoire, désirabilité et cadre de référence peuvent tous jouer.", "acceptedAnswers": [], "position": 2, "options": [{"label": "La mémoire", "isCorrect": true, "position": 1}, {"label": "La désirabilité sociale", "isCorrect": true, "position": 2}, {"label": "Le cadre de référence", "isCorrect": true, "position": 3}, {"label": "Une essence invisible mesurée sans erreur", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un seul indicateur d’inattention identifie sans erreur toutes les réponses négligentes.", "explanation": "Les indicateurs repèrent des patrons différents et peuvent produire des erreurs.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quel usage est responsable pour un signal de réponse très rapide ?", "explanation": "Il s’agit d’un indice à contextualiser et croiser, pas d’une sanction automatique.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Le croiser avec d’autres informations", "isCorrect": true, "position": 1}, {"label": "Exclure automatiquement la personne", "isCorrect": false, "position": 2}, {"label": "Diagnostiquer un trouble", "isCorrect": false, "position": 3}, {"label": "Publier son identité", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel biais consiste à tendre à approuver les propositions indépendamment de leur contenu ?", "explanation": "Il s’agit de l’acquiescement.", "acceptedAnswers": ["acquiescement", "biais d’acquiescement", "acquiescence"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "observation-triangulation-perspectives",
+        "assessmentTitle": "Mini-évaluation — Observation et triangulation",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que mesure directement une observation structurée ?", "explanation": "Elle échantillonne des comportements définis dans des situations et périodes données.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Des comportements échantillonnés en contexte", "isCorrect": true, "position": 1}, {"label": "Toute la personnalité", "isCorrect": false, "position": 2}, {"label": "Les pensées privées sans inférence", "isCorrect": false, "position": 3}, {"label": "Un diagnostic automatique", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles limites peuvent affecter une observation ?", "explanation": "Occasions, relation et interprétation de l’observateur limitent la portée.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Les occasions d’observer", "isCorrect": true, "position": 1}, {"label": "La relation avec la personne", "isCorrect": true, "position": 2}, {"label": "Les biais de l’observateur", "isCorrect": true, "position": 3}, {"label": "Une vérité exhaustive garantie", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un désaccord soi-autrui signifie nécessairement que l’une des deux parties ment.", "explanation": "Les perspectives accèdent à des informations et contextes différents.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quelle méthode convient pour traiter plusieurs perspectives ?", "explanation": "La triangulation compare leurs accès, contextes et biais.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Une triangulation contextualisée", "isCorrect": true, "position": 1}, {"label": "Une moyenne sans documentation", "isCorrect": false, "position": 2}, {"label": "Un profil définitif", "isCorrect": false, "position": 3}, {"label": "L’abandon du consentement", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne le croisement raisonné de plusieurs méthodes ou perspectives ?", "explanation": "Il s’agit de la triangulation.", "acceptedAnswers": ["triangulation", "triangulation des méthodes", "triangulation des perspectives"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychométrie, méthodologie des enquêtes et personnalité requise.",
+        "L’étape personnalite-differences-individuelles et le module mesure-interpretation-personnalite sont absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "Un autoquestionnaire est un rapport situé et ne constitue jamais seul un diagnostic.",
+        "Les biais et désaccords ne servent ni à accuser, ni à profiler, ni à conseiller cliniquement.",
+        "La ressource au texte intégral institutionnel est facultative et dispose d’une alternative ouverte."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_survey_methods_and_personality"}
+    ]
+  }
+}

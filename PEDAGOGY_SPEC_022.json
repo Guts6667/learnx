@@ -1,0 +1,323 @@
+{
+  "specId": "PEDAGOGY_SPEC_022",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "organisation-systeme-nerveux",
+  "lesson": {
+    "title": "Neurones, communication et plasticité",
+    "slug": "neurones-communication-plasticite",
+    "summary": "Cette leçon relie l'organisation fonctionnelle du neurone, la transmission électrochimique, la neuromodulation et plusieurs formes de plasticité. Elle fournit le niveau biologique utile en psychologie tout en empêchant de déduire un comportement complexe d'une molécule, d'une synapse ou d'une image cérébrale isolée.",
+    "objectives": [
+      "Relier dendrites, corps cellulaire, axone, myéline et terminaisons à leurs rôles fonctionnels sans traiter le neurone comme un simple câble.",
+      "Décrire le potentiel d'action et les étapes d'une transmission synaptique chimique au niveau utile pour raisonner en psychologie.",
+      "Expliquer comment une neuromodulation dépend des récepteurs, des cellules, du circuit, de l'état et du contexte.",
+      "Distinguer plasticités synaptique, intrinsèque, homéostatique et structurelle sans présenter la plasticité comme illimitée ou nécessairement bénéfique.",
+      "Évaluer la portée d'une observation biologique en séparant mécanisme cellulaire, activité de circuit, mesure comportementale et causalité."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité et niveau d'explication.",
+      "Connaître les notions d'apprentissage, de mémoire et de mesure comportementale."
+    ],
+    "estimatedMinutes": 180,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un neurone est une cellule excitable insérée dans un réseau, et non une unité isolée. Dans un schéma fonctionnel simplifié, les dendrites et le corps cellulaire reçoivent et intègrent de nombreux signaux ; l'axone conduit des potentiels d'action vers des terminaisons ; les synapses transmettent ou modulent l'influence sur d'autres cellules. La myéline produite par des cellules gliales accélère la conduction sur de nombreux axones. Ces rôles ne sont pas des compartiments absolus : la morphologie, les propriétés électriques et les interactions avec la glie varient selon le type cellulaire et le circuit.",
+          "sourceKeys": ["openstax-psychology-2e-3-2"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "La membrane maintient des gradients ioniques qui contribuent au potentiel de repos. Des entrées locales modifient le potentiel de membrane ; leur intégration peut atteindre un seuil et déclencher un potentiel d'action. Celui-ci est régénéré le long de l'axone selon un principe tout-ou-rien pour chaque événement : une entrée plus forte n'agrandit pas indéfiniment un potentiel d'action, mais peut notamment modifier la fréquence et le moment des décharges. Le signal neural pertinent réside donc dans des patrons d'activité de cellules et de populations, pas dans une impulsion qui contiendrait à elle seule une pensée ou une émotion.",
+          "sourceKeys": ["openstax-psychology-2e-3-2", "ncbi-chemical-synapses"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "À une synapse chimique typique, l'arrivée d'un potentiel d'action ouvre des canaux calciques présynaptiques ; l'entrée de calcium favorise la fusion de vésicules et la libération d'un neurotransmetteur. Celui-ci se lie à des récepteurs, modifie des conductances ou des cascades intracellulaires, puis est éliminé, dégradé ou recapté selon le système. L'effet n'est pas contenu dans le seul nom du neurotransmetteur : il dépend du récepteur, de la cellule cible, des autres entrées, du moment et du circuit. « Excitateur » ou « inhibiteur » décrit un effet situé sur la probabilité d'activité, pas une valence psychologique bonne ou mauvaise.",
+          "sourceKeys": ["ncbi-chemical-synapses", "openstax-psychology-2e-3-2"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "La neuromodulation change les règles de fonctionnement d'une cellule ou d'un circuit : excitabilité intrinsèque, efficacité synaptique, gain, dynamique temporelle ou configuration fonctionnelle peuvent varier. Une même architecture anatomique peut ainsi produire plusieurs régimes d'activité selon les modulateurs et le contexte. Cela interdit l'équivalence « dopamine = plaisir », « sérotonine = bonheur » ou, plus généralement, « une molécule = un comportement ». Une molécule agit par plusieurs récepteurs, à plusieurs endroits et en interaction avec l'état du réseau ; un comportement résulte aussi de la tâche, de l'histoire, du corps et de l'environnement.",
+          "sourceKeys": ["marder-neuromodulation-2012", "bargmann-connectome-neuromodulators-2012"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "La plasticité désigne des changements dépendant de l'activité, de l'expérience, du développement, de l'état ou d'une lésion, à plusieurs échelles. Elle peut modifier l'efficacité de synapses, l'excitabilité d'une cellule, le nombre ou la forme de connexions, l'organisation de circuits et des propriétés de matière grise ou blanche. Des mécanismes associatifs comme certaines potentialisations ou dépressions coexistent avec des mécanismes homéostatiques qui tendent à stabiliser l'activité. Plasticité ne signifie donc ni changement illimité, ni amélioration garantie, ni effacement complet des contraintes biologiques ; un changement peut être transitoire, compensatoire, spécifique, insuffisant ou défavorable selon le critère étudié.",
+          "sourceKeys": ["citri-malenka-plasticity-2008", "turrigiano-homeostatic-2012", "zatorre-fields-johansenberg-2012"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Pour interpréter une donnée biologique, préciser au minimum le niveau mesuré, la résolution temporelle et spatiale, la tâche, le contraste, la direction de l'effet et les alternatives. Une association entre un marqueur neural et une performance ne prouve ni que le marqueur cause la performance, ni qu'il représente à lui seul le processus psychologique. Même une intervention causale teste une nécessité ou une suffisance dans des conditions délimitées. Les mesures du comportement restent indispensables pour définir ce que l'organisme fait ; les niveaux cellulaire, circuitaire, cognitif et contextuel se contraignent mutuellement sans se remplacer.",
+          "sourceKeys": ["krakauer-neuroscience-needs-behavior-2017", "zatorre-fields-johansenberg-2012", "bargmann-connectome-neuromodulators-2012"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-3-2",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 3.2 Cells of the Nervous System",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-2-cells-of-the-nervous-system",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 3.2: Cells of the nervous system. OpenStax, Rice University.",
+        "description": "Lire les parties Neuron Structure et Neuronal Communication, puis dessiner la chaîne entrée–intégration–conduction–transmission en annotant deux simplifications du schéma.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "ncbi-chemical-synapses",
+        "type": "book_chapter",
+        "title": "Neuroscience, 2nd edition — Chemical Synapses",
+        "author": "Dale Purves, George J. Augustine, David Fitzpatrick et collègues (dir.)",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK11009/",
+        "citation": "Purves, D., Augustine, G. J., Fitzpatrick, D., et al. (Eds.). (2001). Chemical synapses. In Neuroscience (2nd ed.). Sinauer Associates. NCBI Bookshelf.",
+        "description": "Lire la séquence de la figure 5.3 et produire six cartes reliant potentiel d'action, calcium, vésicule, neurotransmetteur, récepteur et effet postsynaptique.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "marder-neuromodulation-2012",
+        "type": "article",
+        "title": "Neuromodulation of Neuronal Circuits: Back to the Future",
+        "author": "Eve Marder",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3482119/",
+        "citation": "Marder, E. (2012). Neuromodulation of neuronal circuits: Back to the future. Neuron, 76(1), 1–11. https://doi.org/10.1016/j.neuron.2012.09.010",
+        "description": "Lire le résumé, l'introduction et la conclusion ; relever trois paramètres modifiables par un neuromodulateur et expliquer pourquoi une connectivité anatomique ne suffit pas à prédire la sortie du circuit.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "bargmann-connectome-neuromodulators-2012",
+        "type": "article",
+        "title": "Beyond the Connectome: How Neuromodulators Shape Neural Circuits",
+        "author": "Cornelia I. Bargmann",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22396302/",
+        "citation": "Bargmann, C. I. (2012). Beyond the connectome: How neuromodulators shape neural circuits. BioEssays, 34(6), 458–465. https://doi.org/10.1002/bies.201100185",
+        "description": "Lire le résumé et identifier pourquoi plusieurs circuits fonctionnels peuvent être compatibles avec une même carte anatomique.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 4
+      },
+      {
+        "key": "citri-malenka-plasticity-2008",
+        "type": "article",
+        "title": "Synaptic Plasticity: Multiple Forms, Functions, and Mechanisms",
+        "author": "Ami Citri et Robert C. Malenka",
+        "url": "https://www.nature.com/articles/1301559",
+        "citation": "Citri, A., & Malenka, R. C. (2008). Synaptic plasticity: Multiple forms, functions, and mechanisms. Neuropsychopharmacology, 33(1), 18–41. https://doi.org/10.1038/sj.npp.1301559",
+        "description": "Lire le résumé et les sections introductives sur LTP et LTD ; construire un tableau forme, durée, site d'expression, fonction proposée et limite d'inférence.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "turrigiano-homeostatic-2012",
+        "type": "article",
+        "title": "Homeostatic Synaptic Plasticity: Local and Global Mechanisms for Stabilizing Neuronal Function",
+        "author": "Gina Turrigiano",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3249629/",
+        "citation": "Turrigiano, G. (2012). Homeostatic synaptic plasticity: Local and global mechanisms for stabilizing neuronal function. Cold Spring Harbor Perspectives in Biology, 4(1), a005736. https://doi.org/10.1101/cshperspect.a005736",
+        "description": "Lire le résumé, l'introduction et la figure 1 ; expliquer comment flexibilité et stabilité peuvent coexister sans conclure que toute activité possède un point d'équilibre unique connu.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "zatorre-fields-johansenberg-2012",
+        "type": "article",
+        "title": "Plasticity in Gray and White: Neuroimaging Changes in Brain Structure during Learning",
+        "author": "Robert J. Zatorre, R. Douglas Fields et Heidi Johansen-Berg",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22426254/",
+        "citation": "Zatorre, R. J., Fields, R. D., & Johansen-Berg, H. (2012). Plasticity in gray and white: Neuroimaging changes in brain structure during learning. Nature Neuroscience, 15(4), 528–536. https://doi.org/10.1038/nn.3045",
+        "description": "Lire le résumé et relever séparément le changement d'imagerie observé, les mécanismes cellulaires possibles et ce que la mesure ne permet pas d'identifier.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 7
+      },
+      {
+        "key": "krakauer-neuroscience-needs-behavior-2017",
+        "type": "article",
+        "title": "Neuroscience Needs Behavior: Correcting a Reductionist Bias",
+        "author": "John W. Krakauer, Asif A. Ghazanfar, Alex Gomez-Marin, Malcolm A. MacIver et David Poeppel",
+        "url": "https://collaborate.princeton.edu/en/publications/neuroscience-needs-behavior-correcting-a-reductionist-bias/",
+        "citation": "Krakauer, J. W., Ghazanfar, A. A., Gomez-Marin, A., MacIver, M. A., & Poeppel, D. (2017). Neuroscience needs behavior: Correcting a reductionist bias. Neuron, 93(3), 480–490. https://doi.org/10.1016/j.neuron.2016.12.041",
+        "description": "Lire le résumé institutionnel et distinguer ce qu'apportent décomposition comportementale, mesure neurale et intervention causale dans l'étude d'une fonction.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 8
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Excitabilité et transmission neuronales",
+        "slug": "excitabilite-transmission-neuronales",
+        "description": "L'organisation du neurone, les gradients ioniques, le potentiel d'action et la transmission synaptique forment une chaîne électrochimique dont l'effet dépend de l'intégration cellulaire et du circuit.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-3-2", "ncbi-chemical-synapses"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Excitabilité et transmission", "questionCount": 5}
+      },
+      {
+        "title": "Neuromodulation située",
+        "slug": "neuromodulation-situee",
+        "description": "Un neuromodulateur modifie les propriétés de cellules et de circuits selon les récepteurs, le site, le moment et l'état ; son nom ne détermine pas un comportement unique.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["marder-neuromodulation-2012", "bargmann-connectome-neuromodulators-2012"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Neuromodulation", "questionCount": 5}
+      },
+      {
+        "title": "Plasticité multi-échelle et inférences",
+        "slug": "plasticite-multiechelle-inferences",
+        "description": "Des changements synaptiques, intrinsèques, homéostatiques ou structurels opèrent à différentes échelles ; leur observation ne suffit pas à prouver un apprentissage, un bénéfice ou une cause comportementale.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["citri-malenka-plasticity-2008", "turrigiano-homeostatic-2012", "zatorre-fields-johansenberg-2012", "krakauer-neuroscience-needs-behavior-2017"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Plasticité et inférences", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Construire une chaîne de communication",
+        "description": "À partir d'un schéma muet, annoter dendrites, soma, axone, myéline, terminaison et synapse, puis ordonner huit événements du potentiel d'action à l'effet postsynaptique et signaler deux simplifications du modèle.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Démonter une fiche neurotransmetteur",
+        "description": "Réécrire une fiche fictive affirmant « dopamine = plaisir » : identifier au moins cinq variables omises — récepteur, localisation, type cellulaire, circuit, dose ou dynamique, état, tâche — puis formuler une conclusion testable et prudente.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer une affirmation de neuroplasticité",
+        "description": "Pour une étude fictive montrant après entraînement un changement d'imagerie et une amélioration de score, produire une matrice séparant observations, mécanismes possibles, causalité, alternatives, généralisation et mesures supplémentaires ; conclure en 400 à 600 mots sans neuromythe.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-022-OPENSTAX", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.2 Cells of the Nervous System", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-2-cells-of-the-nervous-system", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel ouvert pour l'organisation neuronale, le potentiel d'action et l'introduction à la synapse."},
+      {"id": "REF-022-NCBI-SYNAPSES", "type": "textbook_chapter", "authors": ["Purves, D.", "Augustine, G. J.", "Fitzpatrick, D.", "et al. (Eds.)"], "organization": "NCBI Bookshelf, National Library of Medicine", "title": "Chemical Synapses", "year": 2001, "edition": "Neuroscience, 2nd ed.", "publication": "Sinauer Associates", "doi": null, "url": "https://www.ncbi.nlm.nih.gov/books/NBK11009/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Consultation NCBI Bookshelf selon accord éditeur", "status": "verified", "notes": "Chapitre ancien mais stable, utilisé uniquement pour la séquence canonique de transmission chimique."},
+      {"id": "REF-022-MARDER", "type": "review_article", "authors": ["Marder, E."], "organization": "Cell Press", "title": "Neuromodulation of Neuronal Circuits: Back to the Future", "year": 2012, "edition": null, "publication": "Neuron, 76(1), 1–11", "doi": "https://doi.org/10.1016/j.neuron.2012.09.010", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3482119/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur en libre accès via PubMed Central ; droits de l'éditeur applicables", "status": "verified", "notes": "Revue spécialisée sur la reconfiguration fonctionnelle des circuits par neuromodulation."},
+      {"id": "REF-022-BARGMANN", "type": "review_article", "authors": ["Bargmann, C. I."], "organization": "Wiley", "title": "Beyond the Connectome: How Neuromodulators Shape Neural Circuits", "year": 2012, "edition": null, "publication": "BioEssays, 34(6), 458–465", "doi": "https://doi.org/10.1002/bies.201100185", "url": "https://pubmed.ncbi.nlm.nih.gov/22396302/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Notice et résumé PubMed ouverts ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Synthèse sur l'écart entre connectivité anatomique et circuits fonctionnels modulés."},
+      {"id": "REF-022-CITRI-MALENKA", "type": "review_article", "authors": ["Citri, A.", "Malenka, R. C."], "organization": "Nature Portfolio", "title": "Synaptic Plasticity: Multiple Forms, Functions, and Mechanisms", "year": 2008, "edition": null, "publication": "Neuropsychopharmacology, 33(1), 18–41", "doi": "https://doi.org/10.1038/sj.npp.1301559", "url": "https://www.nature.com/articles/1301559", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Article intégral librement consultable ; droits Nature Portfolio applicables", "status": "verified", "notes": "Revue de référence sur la pluralité des formes et mécanismes de plasticité synaptique."},
+      {"id": "REF-022-TURRIGIANO", "type": "review_article", "authors": ["Turrigiano, G."], "organization": "Cold Spring Harbor Laboratory Press", "title": "Homeostatic Synaptic Plasticity: Local and Global Mechanisms for Stabilizing Neuronal Function", "year": 2012, "edition": null, "publication": "Cold Spring Harbor Perspectives in Biology, 4(1), a005736", "doi": "https://doi.org/10.1101/cshperspect.a005736", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3249629/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Texte intégral librement consultable via PubMed Central ; droits CSHL Press applicables", "status": "verified", "notes": "Revue spécialisée sur stabilité, mise à l'échelle synaptique et plasticité à plusieurs échelles."},
+      {"id": "REF-022-ZATORRE", "type": "review_article", "authors": ["Zatorre, R. J.", "Fields, R. D.", "Johansen-Berg, H."], "organization": "Nature Portfolio", "title": "Plasticity in Gray and White: Neuroimaging Changes in Brain Structure during Learning", "year": 2012, "edition": null, "publication": "Nature Neuroscience, 15(4), 528–536", "doi": "https://doi.org/10.1038/nn.3045", "url": "https://pubmed.ncbi.nlm.nih.gov/22426254/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Notice, résumé et manuscrit PMC accessibles ; droits de l'éditeur applicables", "status": "verified", "notes": "Revue utilisée pour les échelles structurelles et l'ambiguïté biologique des mesures d'imagerie."},
+      {"id": "REF-022-KRAKAUER", "type": "review_article", "authors": ["Krakauer, J. W.", "Ghazanfar, A. A.", "Gomez-Marin, A.", "MacIver, M. A.", "Poeppel, D."], "organization": "Cell Press", "title": "Neuroscience Needs Behavior: Correcting a Reductionist Bias", "year": 2017, "edition": null, "publication": "Neuron, 93(3), 480–490", "doi": "https://doi.org/10.1016/j.neuron.2016.12.041", "url": "https://collaborate.princeton.edu/en/publications/neuroscience-needs-behavior-correcting-a-reductionist-bias/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Résumé institutionnel ouvert ; article soumis aux droits de Cell Press", "status": "verified", "notes": "Revue conceptuelle sur complémentarité des analyses comportementales et des interventions neurales."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-022-OPENSTAX", "locator": "section 3.2, Neuron Structure, lignes 36–50 et figures 3.8–3.9", "supports": "Organisation fonctionnelle du neurone, myéline, glie et terminaisons synaptiques."}], "confidence": "high", "confidenceRationale": "Manuel universitaire ouvert adapté au niveau introductif ; la variabilité cellulaire est explicitement rappelée.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-022-OPENSTAX", "locator": "section 3.2, Neuronal Communication, potentiel de repos, seuil et potentiel d'action", "supports": "Gradients ioniques, seuil, propagation et caractère tout-ou-rien."}, {"referenceId": "REF-022-NCBI-SYNAPSES", "locator": "Chemical Synapses, introduction et figure 5.3", "supports": "Lien entre arrivée du potentiel d'action et transmission à la terminaison."}], "confidence": "high", "confidenceRationale": "Deux manuels convergent ; la formulation évite d'attribuer un contenu psychologique à une décharge isolée.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-022-NCBI-SYNAPSES", "locator": "Chemical Synapses, paragraphes de la figure 5.3 : Ca2+, fusion vésiculaire, récepteurs et effet postsynaptique", "supports": "Séquence de transmission chimique et augmentation ou diminution de la probabilité de décharge."}, {"referenceId": "REF-022-OPENSTAX", "locator": "section 3.2, figures 3.9 et 3.12 et passage Neuronal Communication", "supports": "Libération, liaison aux récepteurs, dégradation et recapture."}], "confidence": "high", "confidenceRationale": "Le mécanisme introductif est robuste ; les effets sont correctement rattachés aux récepteurs et au contexte cellulaire.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-022-MARDER", "locator": "résumé, pp. 1–3 et conclusion pp. 9–10", "supports": "Modification de l'excitabilité, de la force synaptique et de la sortie des circuits par neuromodulation."}, {"referenceId": "REF-022-BARGMANN", "locator": "résumé et pp. 458–465", "supports": "Une carte anatomique encode plusieurs configurations fonctionnelles dépendantes des modulateurs et du contexte."}], "confidence": "high", "confidenceRationale": "Deux revues spécialisées convergent et invalident les associations moléculaires univoques.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-022-CITRI-MALENKA", "locator": "résumé, pp. 18–21 et sections sur LTP/LTD", "supports": "Pluralité des formes, fonctions, durées et mécanismes de plasticité synaptique."}, {"referenceId": "REF-022-TURRIGIANO", "locator": "résumé, introduction et figure 1", "supports": "Mécanismes homéostatiques locaux et globaux stabilisant l'activité face aux changements plastiques."}, {"referenceId": "REF-022-ZATORRE", "locator": "résumé et pp. 528–535", "supports": "Changements associés à l'apprentissage en matière grise et blanche et ambiguïté de leur substrat cellulaire."}], "confidence": "high", "confidenceRationale": "Trois revues couvrent des échelles complémentaires et soutiennent une plasticité contrainte, diverse et non intrinsèquement bénéfique.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-022-KRAKAUER", "locator": "résumé et pp. 480–490", "supports": "Complémentarité entre décomposition comportementale et intervention neurale pour l'explication causale."}, {"referenceId": "REF-022-ZATORRE", "locator": "résumé et discussion des limites des marqueurs structurels", "supports": "Une mesure d'imagerie ne permet pas d'identifier directement un mécanisme cellulaire unique."}, {"referenceId": "REF-022-BARGMANN", "locator": "résumé et discussion du connectome fonctionnel", "supports": "La connectivité anatomique seule sous-détermine l'état fonctionnel du circuit."}], "confidence": "high", "confidenceRationale": "Les sources convergent sur la nécessité de distinguer mesure, mécanisme, causalité et niveau comportemental.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-psychology-2e-3-2", "referenceIds": ["REF-022-OPENSTAX"], "pedagogicalRationale": "Socle ouvert et illustré adapté à un adulte débutant.", "learnerInstructions": "Lire les deux sections ciblées et produire un schéma annoté avec ses limites.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML mobile, navigation clavier et descriptions textuelles des figures disponibles.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "ncbi-chemical-synapses", "referenceIds": ["REF-022-NCBI-SYNAPSES"], "pedagogicalRationale": "Séquence mécanistique compacte et institutionnelle de la transmission chimique.", "learnerInstructions": "Étudier uniquement le texte et la figure 5.3, puis ordonner les événements.", "language": "en", "accessType": "open", "accessibilityNotes": "Page HTML NCBI ; l'ouvrage complet est limité par l'accord éditeur mais le passage ciblé est affiché.", "alternativeResourceKey": "openstax-psychology-2e-3-2", "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Facultative en raison des restrictions de navigation de l'ouvrage."},
+      {"resourceKey": "marder-neuromodulation-2012", "referenceIds": ["REF-022-MARDER"], "pedagogicalRationale": "Revue spécialisée ouverte montrant comment un même circuit anatomique change de régime.", "learnerInstructions": "Lire les passages ciblés et relever paramètres, contexte et sortie du circuit.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central ; figures légendées.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "bargmann-connectome-neuromodulators-2012", "referenceIds": ["REF-022-BARGMANN"], "pedagogicalRationale": "Complément synthétique sur connectivité anatomique et configuration fonctionnelle.", "learnerInstructions": "Lire le résumé PubMed et formuler la limite d'une prédiction fondée sur le câblage seul.", "language": "en", "accessType": "open", "accessibilityNotes": "Notice et résumé HTML ouverts ; texte intégral selon abonnement.", "alternativeResourceKey": "marder-neuromodulation-2012", "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; la consigne est réalisable à partir du résumé."},
+      {"resourceKey": "citri-malenka-plasticity-2008", "referenceIds": ["REF-022-CITRI-MALENKA"], "pedagogicalRationale": "Revue structurante sur la diversité des plasticités synaptiques.", "learnerInstructions": "Lire les passages ciblés et comparer les formes sans réduire la plasticité à la LTP.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML intégral et PDF disponibles sur la page Nature.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "turrigiano-homeostatic-2012", "referenceIds": ["REF-022-TURRIGIANO"], "pedagogicalRationale": "Corrige le neuromythe d'une plasticité synonyme de changement sans contraintes.", "learnerInstructions": "Lire résumé, introduction et figure 1 puis expliquer la coexistence flexibilité–stabilité.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central ; figure accompagnée d'une légende.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "zatorre-fields-johansenberg-2012", "referenceIds": ["REF-022-ZATORRE"], "pedagogicalRationale": "Relie plasticité structurale et prudence d'inférence entre imagerie et mécanismes cellulaires.", "learnerInstructions": "Lire le résumé PubMed et séparer observation d'imagerie, mécanismes candidats et inconnues.", "language": "en", "accessType": "open", "accessibilityNotes": "Notice, résumé, figures et lien vers article PMC librement accessibles.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative d'approfondissement."},
+      {"resourceKey": "krakauer-neuroscience-needs-behavior-2017", "referenceIds": ["REF-022-KRAKAUER"], "pedagogicalRationale": "Cadre explicite contre le réductionnisme et pour la mesure comportementale.", "learnerInstructions": "Lire le résumé institutionnel et distinguer explication comportementale et test causal neural.", "language": "en", "accessType": "open", "accessibilityNotes": "Page institutionnelle HTML accessible avec résumé et métadonnées complètes.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ; la consigne ne dépend pas du texte éditeur."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "excitabilite-transmission-neuronales",
+        "assessmentTitle": "Mini-évaluation — Excitabilité et transmission",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel rôle fonctionnel simplifié associe correctement structure et fonction ?", "explanation": "Les dendrites reçoivent de nombreuses entrées et l'axone conduit des potentiels d'action vers les terminaisons.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Dendrites : réception ; axone : conduction vers les terminaisons", "isCorrect": true, "position": 1}, {"label": "Dendrites : production de myéline ; axone : stockage des souvenirs", "isCorrect": false, "position": 2}, {"label": "Soma : comportement ; synapse : personnalité", "isCorrect": false, "position": 3}, {"label": "Myéline : neurotransmetteur ; terminaison : hormone", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un potentiel d'action individuel devient proportionnellement plus grand lorsque le stimulus est plus intense.", "explanation": "Chaque potentiel d'action suit un principe tout-ou-rien ; l'intensité peut notamment modifier fréquence et temporalité des décharges.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles étapes appartiennent à une transmission synaptique chimique typique ?", "explanation": "L'arrivée du potentiel d'action ouvre des canaux calciques, favorise la fusion vésiculaire, puis le transmetteur agit sur des récepteurs.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Ouverture de canaux calciques présynaptiques", "isCorrect": true, "position": 1}, {"label": "Fusion de vésicules", "isCorrect": true, "position": 2}, {"label": "Liaison à des récepteurs postsynaptiques", "isCorrect": true, "position": 3}, {"label": "Transformation directe du neurotransmetteur en comportement", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "De quoi dépend l'effet excitateur ou inhibiteur d'un signal chimique ?", "explanation": "L'effet dépend notamment du récepteur, de la cellule cible et de son état, pas du seul nom de la molécule.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Du récepteur, de la cellule cible et du contexte d'intégration", "isCorrect": true, "position": 1}, {"label": "Uniquement du nom du neurotransmetteur", "isCorrect": false, "position": 2}, {"label": "Uniquement de la volonté de la personne", "isCorrect": false, "position": 3}, {"label": "De la valeur morale du comportement", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Comment nomme-t-on le seuil au-delà duquel une intégration membranaire déclenche un potentiel d'action ?", "explanation": "Il s'agit du seuil d'excitation, aussi appelé seuil de déclenchement.", "acceptedAnswers": ["seuil d'excitation", "seuil de déclenchement", "seuil"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "neuromodulation-situee",
+        "assessmentTitle": "Mini-évaluation — Neuromodulation",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que peut modifier un neuromodulateur dans un circuit ?", "explanation": "Il peut modifier excitabilité, force synaptique, gain et dynamique, reconfigurant la sortie du circuit.", "acceptedAnswers": [], "position": 1, "options": [{"label": "L'excitabilité et l'efficacité synaptique selon l'état du circuit", "isCorrect": true, "position": 1}, {"label": "Uniquement la forme anatomique visible à l'œil nu", "isCorrect": false, "position": 2}, {"label": "Directement un comportement unique dans toute situation", "isCorrect": false, "position": 3}, {"label": "Seulement la vitesse de lecture", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Pourquoi « dopamine = plaisir » est-il un raccourci invalide ?", "explanation": "La dopamine agit via plusieurs récepteurs et circuits, selon des dynamiques, états et tâches variés.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Plusieurs récepteurs produisent des effets différents", "isCorrect": true, "position": 1}, {"label": "Les sites et circuits d'action diffèrent", "isCorrect": true, "position": 2}, {"label": "Le contexte et l'état du réseau comptent", "isCorrect": true, "position": 3}, {"label": "Chaque molécule possède une signification psychologique fixe", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Connaître toutes les connexions anatomiques suffit toujours à prédire l'activité et le comportement produits.", "explanation": "Les modulateurs, les propriétés cellulaires et le contexte peuvent rendre actives différentes configurations fonctionnelles.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quelle conclusion est la plus prudente après une hausse d'un marqueur dopaminergique pendant une tâche ?", "explanation": "Le résultat est situé dans une mesure, un circuit, une tâche et un contraste ; il ne définit pas seul l'expérience psychologique.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Le marqueur varie dans les conditions mesurées ; le mécanisme et la portée doivent être précisés", "isCorrect": true, "position": 1}, {"label": "La personne ressent nécessairement plus de plaisir", "isCorrect": false, "position": 2}, {"label": "La dopamine cause tous les comportements observés", "isCorrect": false, "position": 3}, {"label": "Le contexte expérimental est sans importance", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles informations faut-il demander avant d'associer un neuromodulateur à un comportement ?", "explanation": "Récepteur, localisation, dynamique, tâche et mesure sont nécessaires pour délimiter l'inférence.", "acceptedAnswers": [], "position": 5, "options": [{"label": "Les récepteurs et cellules concernés", "isCorrect": true, "position": 1}, {"label": "Le circuit, le moment et la dose", "isCorrect": true, "position": 2}, {"label": "La tâche et la mesure comportementale", "isCorrect": true, "position": 3}, {"label": "La couleur choisie pour représenter la molécule", "isCorrect": false, "position": 4}]}
+        ]
+      },
+      {
+        "conceptSlug": "plasticite-multiechelle-inferences",
+        "assessmentTitle": "Mini-évaluation — Plasticité et inférences",
+        "questions": [
+          {"type": "multiple_choice", "prompt": "À quelles échelles une plasticité peut-elle être étudiée ?", "explanation": "Les changements peuvent concerner synapses, excitabilité, structure, myéline et organisation de circuits.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Efficacité synaptique", "isCorrect": true, "position": 1}, {"label": "Excitabilité cellulaire", "isCorrect": true, "position": 2}, {"label": "Structure et organisation de circuits", "isCorrect": true, "position": 3}, {"label": "Une seule échelle universelle", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel rôle caractérise une plasticité homéostatique ?", "explanation": "Elle tend à stabiliser un paramètre d'activité face à des perturbations, en interaction avec d'autres formes de plasticité.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Compenser des changements afin de contribuer à stabiliser l'activité", "isCorrect": true, "position": 1}, {"label": "Renforcer sans limite chaque synapse active", "isCorrect": false, "position": 2}, {"label": "Garantir un meilleur comportement", "isCorrect": false, "position": 3}, {"label": "Supprimer toute variabilité", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Observer un changement cérébral après entraînement prouve à lui seul le mécanisme cellulaire exact et la causalité du gain comportemental.", "explanation": "L'imagerie peut détecter un changement sans identifier un mécanisme cellulaire unique ni établir seule la chaîne causale.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles propositions évitent un neuromythe sur la plasticité ?", "explanation": "La plasticité est plurielle, contrainte, située et peut être adaptative, compensatoire ou défavorable selon le critère.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Elle varie selon l'échelle et le délai", "isCorrect": true, "position": 1}, {"label": "Elle ne garantit pas une amélioration", "isCorrect": true, "position": 2}, {"label": "Elle doit être reliée à des mesures fonctionnelles et comportementales", "isCorrect": true, "position": 3}, {"label": "Elle permet de reprogrammer sans limite toute fonction", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel énoncé décrit correctement le rapport entre cerveau et comportement ?", "explanation": "Les niveaux biologique, comportemental, cognitif et contextuel apportent des contraintes complémentaires.", "acceptedAnswers": [], "position": 5, "options": [{"label": "Les mesures neurales et comportementales sont complémentaires et ne se remplacent pas", "isCorrect": true, "position": 1}, {"label": "Une image cérébrale rend inutile l'analyse de la tâche", "isCorrect": false, "position": 2}, {"label": "Le comportement suffit à identifier chaque mécanisme cellulaire", "isCorrect": false, "position": 3}, {"label": "Une corrélation neurale établit toujours nécessité et suffisance", "isCorrect": false, "position": 4}]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine par une personne compétente en neurosciences requise avant publication ou validation scientifique.",
+        "L'étape bases-biologiques, le module organisation-systeme-nerveux et la leçon cible sont planifiés dans CURRICULUM_BLUEPRINT.md mais absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration : créer ou modifier le seed n'est pas autorisé par cette spécification et l'évaluation finale d'étape n'existe pas encore dans le seed.",
+        "La leçon évite explicitement les équivalences neurotransmetteur–comportement, la localisation simpliste et l'idée d'une plasticité illimitée ou toujours bénéfique.",
+        "Les ressources obligatoires sont ouvertes ; les consignes des ressources facultatives restent réalisables depuis leurs résumés ou pages institutionnelles."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}
+    ]
+  }
+}

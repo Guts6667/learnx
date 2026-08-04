@@ -1,7 +1,9 @@
 import type { MiddlewareHandler } from 'hono';
 
+import type { PrismaClient } from '../../generated/prisma/client';
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
+  createPrismaStageAssessmentRepository,
   createStageAssessmentsApp,
   type StageAssessmentRepository,
 } from '../../src/server/api/stage-assessments/app';
@@ -92,12 +94,15 @@ function createRepository() {
         ? { id: assessmentId }
         : null;
     },
-    async findSubmissionForReview(requestedSubmissionId) {
-      return requestedSubmissionId === submissionId
+    async findSubmissionForReview(requestedSubmissionId, requestedOwnerId) {
+      return requestedSubmissionId === submissionId &&
+        requestedOwnerId === userId
         ? { passingScore: 70, stageId, submission }
         : null;
     },
     async reviewSubmission(input) {
+      if (input.id !== submissionId || input.ownerId !== userId) return null;
+
       submission = {
         ...submission,
         reviewFeedback: input.reviewFeedback,
@@ -293,6 +298,72 @@ describe('stage assessment API', () => {
     expect(refreshValidation).toHaveBeenCalledWith(stageId, userId, now);
   });
 
+  it('hides a submission from another administrator owner', async () => {
+    const state = createRepository();
+    state.setSubmissionStatus('SUBMITTED');
+    const ownAdminApp = createStageAssessmentsApp({
+      authentication: authentication(userId, 'ADMIN'),
+      repository: state.repository,
+    });
+    const otherAdminApp = createStageAssessmentsApp({
+      authentication: authentication(otherUserId, 'ADMIN'),
+      repository: state.repository,
+    });
+    const unknownSubmissionId = '70c50ef3-3dbf-4e9a-b625-12fd7f91adab';
+
+    const crossOwnerResponse = await otherAdminApp.request(
+      `/api/stage-assessment-submissions/${submissionId}`,
+      jsonRequest('PATCH', { action: 'validate', score: 90 }),
+    );
+    const unknownResponse = await ownAdminApp.request(
+      `/api/stage-assessment-submissions/${unknownSubmissionId}`,
+      jsonRequest('PATCH', { action: 'validate', score: 90 }),
+    );
+
+    expect(crossOwnerResponse.status).toBe(404);
+    expect(unknownResponse.status).toBe(404);
+    expect(await crossOwnerResponse.json()).toEqual(
+      await unknownResponse.json(),
+    );
+    expect(state.getSubmission().status).toBe('SUBMITTED');
+  });
+
+  it('rejects anonymous review attempts', async () => {
+    const state = createRepository();
+    state.setSubmissionStatus('SUBMITTED');
+    const app = createStageAssessmentsApp({ repository: state.repository });
+
+    const response = await app.request(
+      `/api/stage-assessment-submissions/${submissionId}`,
+      jsonRequest('PATCH', { action: 'validate', score: 90 }),
+    );
+
+    expect(response.status).toBe(401);
+  });
+
+  it('rejects a review when the ownership predicate no longer matches at write time', async () => {
+    const state = createRepository();
+    state.setSubmissionStatus('SUBMITTED');
+    const reviewSubmission = vi.fn(async () => null);
+    const refreshValidation = vi.fn(async () => undefined);
+    const app = createStageAssessmentsApp({
+      authentication: authentication(userId, 'ADMIN'),
+      refreshValidation,
+      repository: { ...state.repository, reviewSubmission },
+    });
+
+    const response = await app.request(
+      `/api/stage-assessment-submissions/${submissionId}`,
+      jsonRequest('PATCH', { action: 'validate', score: 90 }),
+    );
+
+    expect(response.status).toBe(404);
+    expect(reviewSubmission).toHaveBeenCalledWith(
+      expect.objectContaining({ ownerId: userId }),
+    );
+    expect(refreshValidation).not.toHaveBeenCalled();
+  });
+
   it('does not review work that is not submitted', async () => {
     const state = createRepository();
     const app = createStageAssessmentsApp({
@@ -319,5 +390,36 @@ describe('stage assessment API', () => {
     );
     expect(response.status).toBe(400);
     expect(state.getSubmission().status).toBe('SUBMITTED');
+  });
+});
+
+describe('stage assessment persistence filters', () => {
+  it('includes the program owner in review reads and writes', async () => {
+    const findFirst = vi.fn(async () => null);
+    const updateManyAndReturn = vi.fn(async () => []);
+    const repository = createPrismaStageAssessmentRepository({
+      stageAssessmentSubmission: { findFirst, updateManyAndReturn },
+    } as unknown as PrismaClient);
+
+    await repository.findSubmissionForReview(submissionId, userId);
+    await repository.reviewSubmission({
+      id: submissionId,
+      ownerId: userId,
+      reviewFeedback: null,
+      reviewedAt: now,
+      score: 90,
+      status: 'VALIDATED',
+    });
+
+    const ownershipFilter = {
+      id: submissionId,
+      stageAssessment: { stage: { program: { ownerId: userId } } },
+    };
+    expect(findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: ownershipFilter }),
+    );
+    expect(updateManyAndReturn).toHaveBeenCalledWith(
+      expect.objectContaining({ where: ownershipFilter }),
+    );
   });
 });

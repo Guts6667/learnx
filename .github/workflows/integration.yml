@@ -1,0 +1,66 @@
+name: Integration
+
+on:
+  pull_request:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-functions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Create isolated Neon branch
+        id: neon
+        uses: neondatabase/create-branch-action@v6
+        with:
+          api_key: ${{ secrets.NEON_API_KEY }}
+          branch_name: ci-${{ github.run_id }}-${{ github.run_attempt }}
+          prisma: true
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+      - name: Apply migrations
+        run: pnpm prisma:deploy
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+      - name: Run real Functions and browser integration tests
+        run: pnpm test:integration
+        env:
+          CI: 'true'
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+          LEARNX_INTEGRATION_DATABASE: ephemeral
+          LEARNX_INTEGRATION_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          NEON_BRANCH_ID: ${{ steps.neon.outputs.branch_id }}
+          SESSION_SECRET: integration-session-secret-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: ignore
+          name: integration-playwright-${{ github.run_id }}
+          path: playwright-report-integration
+      - name: Delete isolated Neon branch
+        if: always() && steps.neon.outputs.branch_id != ''
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          api_key: ${{ secrets.NEON_API_KEY }}
+          branch: ${{ steps.neon.outputs.branch_id }}
+          project_id: ${{ vars.NEON_PROJECT_ID }}

@@ -10,6 +10,7 @@ import {
 
 const exerciseId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const lessonId = '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8';
+const moduleRunId = 'c46c1f22-af45-4490-b8ac-85829c689bd7';
 const submissionId = '97476e0e-2103-40c0-8185-f7601a8d2fd2';
 const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
@@ -36,6 +37,7 @@ function createRepository(ownerId = userId) {
         createdAt: Date;
         exerciseId: string;
         id: string;
+        moduleRunId: string;
         status: 'DRAFT' | 'SUBMITTED';
         submittedAt: Date | null;
         updatedAt: Date;
@@ -52,6 +54,7 @@ function createRepository(ownerId = userId) {
           createdAt,
           exerciseId,
           id: submissionId,
+          moduleRunId,
           status: 'DRAFT',
           submittedAt: null,
           updatedAt: createdAt,
@@ -276,6 +279,7 @@ describe('exercise persistence filters', () => {
       expect.objectContaining({
         where: {
           id: exerciseId,
+          isCanonical: true,
           lesson: {
             isPublished: true,
             module: {
@@ -288,6 +292,60 @@ describe('exercise persistence filters', () => {
           },
         },
       }),
+    );
+  });
+
+  it('recalcule la progression à la soumission dans la même transaction', async () => {
+    const currentRun = {
+      id: moduleRunId,
+      moduleId: 'ac7cae6f-1888-4698-a049-925c21c23720',
+      sequence: 1,
+      startedAt: createdAt,
+      userId,
+    };
+    const transaction = {
+      lesson: {
+        findUnique: vi.fn(async () => ({ moduleId: currentRun.moduleId })),
+      },
+      moduleRun: { findFirst: vi.fn(async () => currentRun) },
+      exerciseSubmission: {
+        findFirst: vi.fn(async () => ({
+          exercise: { lessonId },
+          moduleRunId,
+        })),
+        update: vi.fn(async () => ({
+          contentMarkdown: 'Réponse.',
+          createdAt,
+          exerciseId,
+          id: submissionId,
+          moduleRunId,
+          status: 'SUBMITTED' as const,
+          submittedAt,
+          updatedAt: submittedAt,
+          userId,
+        })),
+      },
+    };
+    const client = {
+      $transaction: vi.fn(
+        async (callback: (value: typeof transaction) => unknown) =>
+          callback(transaction),
+      ),
+    } as unknown as PrismaClient;
+    const recalculate = vi.fn(async () => ({}) as never);
+
+    await createPrismaExerciseRepository(client, recalculate).submitSubmission(
+      submissionId,
+      submittedAt,
+      userId,
+    );
+
+    expect(recalculate).toHaveBeenCalledWith(
+      transaction,
+      lessonId,
+      userId,
+      submittedAt,
+      { requirePublished: true },
     );
   });
 });

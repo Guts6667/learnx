@@ -10,7 +10,12 @@ import type {
   StoredSession,
   StoredUser,
 } from '../../src/server/api/_lib/auth-types';
-import { InMemoryLoginRateLimiter } from '../../src/server/api/_lib/login-rate-limit';
+import {
+  InMemoryLoginRateLimiter,
+  SharedLoginRateLimiter,
+  type LoginRateLimitRecord,
+  type LoginRateLimitRepository,
+} from '../../src/server/api/_lib/login-rate-limit';
 import { hashSessionToken } from '../../src/server/api/_lib/session';
 import { createAuthApp } from '../../src/server/api/auth/app';
 
@@ -122,6 +127,34 @@ function getSessionCookie(response: Response): string {
 }
 
 describe('auth API', () => {
+  it('disables public registration when production policy is active', async () => {
+    const { dependencies, users } = createTestDependencies();
+    const app = createAuthApp({
+      allowRegistration: false,
+      dependencies,
+      secureCookies: true,
+    });
+
+    const response = await app.request('http://localhost/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'learner@example.com',
+        password: 'correct-horse-battery-staple',
+        displayName: 'Learner',
+      }),
+      headers: { 'content-type': 'application/json' },
+    });
+
+    expect(response.status).toBe(403);
+    expect(await response.json()).toEqual({
+      error: {
+        code: 'REGISTRATION_DISABLED',
+        message: 'Public registration is not available.',
+      },
+    });
+    expect(users.size).toBe(0);
+  });
+
   it('registers a user, stores only a password hash and sets a secure production cookie', async () => {
     const { dependencies, users } = createTestDependencies();
     const app = createAuthApp({ dependencies, secureCookies: true });
@@ -297,6 +330,49 @@ describe('auth API', () => {
     expect(await limitedResponse.json()).toMatchObject({
       error: { code: 'TOO_MANY_LOGIN_ATTEMPTS' },
     });
+  });
+
+  it('shares login failures across serverless limiter instances', async () => {
+    const records = new Map<string, LoginRateLimitRecord>();
+    const repository: LoginRateLimitRepository = {
+      async clear(keyHash) {
+        records.delete(keyHash);
+      },
+      async find(keyHash) {
+        return records.get(keyHash) ?? null;
+      },
+      async recordFailure({ keyHash, now, windowStartedAfter }) {
+        const current = records.get(keyHash);
+        const active =
+          current && current.windowStartedAt >= windowStartedAfter
+            ? current
+            : null;
+
+        records.set(keyHash, {
+          failures: (active?.failures ?? 0) + 1,
+          windowStartedAt: active?.windowStartedAt ?? now,
+        });
+      },
+    };
+    const options = { maxFailures: 1, windowMs: 60_000 };
+    const firstInstance = new SharedLoginRateLimiter(repository, options);
+    const secondInstance = new SharedLoginRateLimiter(repository, options);
+
+    await firstInstance.registerFailure(
+      '203.0.113.1:learner@example.com',
+      testNow,
+    );
+
+    await expect(
+      secondInstance.assertAllowed(
+        '203.0.113.1:learner@example.com',
+        testNow,
+      ),
+    ).rejects.toMatchObject({
+      code: 'TOO_MANY_LOGIN_ATTEMPTS',
+      status: 429,
+    });
+    expect([...records.keys()][0]).not.toContain('learner@example.com');
   });
 
   it('makes the authenticated user available through requireUser', async () => {

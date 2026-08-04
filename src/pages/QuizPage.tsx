@@ -1,6 +1,13 @@
 import { Badge } from '@/components/ui/Badge';
+import { useEffect } from 'preact/hooks';
+import {
+  LessonContextHeader,
+  LessonActivitySummary,
+  lessonHref,
+} from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { Spinner } from '@/components/ui/Spinner';
 import { QuestionAssessmentExperience } from '@/features/assessments/QuestionAssessmentExperience';
 import { useLessonQuery } from '@/features/curriculum/queries';
@@ -9,6 +16,7 @@ import {
   useQuizAttemptsQuery,
   useQuizQuery,
 } from '@/features/quizzes/queries';
+import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 
 export function QuizPage({
   lessonSlug,
@@ -30,7 +38,13 @@ export function QuizPage({
   const quizQuery = useQuizQuery(selectedQuizId);
   const attemptsQuery = useQuizAttemptsQuery(selectedQuizId);
   const mutation = useQuizAttemptMutation(selectedQuizId);
-  const lessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+  const fallbackLessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+
+  useEffect(() => {
+    if (lesson && selectedQuiz) {
+      rememberActivity(lesson.id, activityKey('QUIZ', selectedQuiz.id));
+    }
+  }, [lesson, selectedQuiz]);
 
   if (lessonQuery.isPending) {
     return <Spinner label="Chargement du quiz" />;
@@ -44,12 +58,9 @@ export function QuizPage({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-            href={lessonHref}
-          >
-            Retour à la leçon
-          </a>
+          <NavigationAction href={fallbackLessonHref} variant="secondary">
+            Ouvrir la leçon
+          </NavigationAction>
         }
         description="Les quiz d’une leçon brouillon sont disponibles uniquement après publication."
         title="Quiz non publié"
@@ -61,12 +72,9 @@ export function QuizPage({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-            href={lessonHref}
-          >
-            Retour à la leçon
-          </a>
+          <NavigationAction href={fallbackLessonHref} variant="secondary">
+            Ouvrir la leçon
+          </NavigationAction>
         }
         description="Aucun quiz correspondant n’est disponible pour cette leçon."
         title="Quiz introuvable"
@@ -83,14 +91,14 @@ export function QuizPage({
   }
 
   const quiz = quizQuery.data.quiz;
+  const key = activityKey('QUIZ', quiz.id);
+  const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
 
   return (
-    <article aria-labelledby="quiz-title" class="space-y-6">
-      <header class="space-y-3">
+    <article class="mx-auto w-full max-w-5xl space-y-6">
+      <LessonContextHeader activityTitle={quiz.title} lesson={lesson} />
+      <section class="space-y-3" aria-label="Informations du quiz">
         <div class="flex flex-wrap items-center gap-3">
-          <h1 class="text-3xl font-bold tracking-tight" id="quiz-title">
-            {quiz.title}
-          </h1>
           <Badge tone={quiz.isRequired ? 'warning' : 'neutral'}>
             {quiz.isRequired ? 'Obligatoire' : 'Optionnel'}
           </Badge>
@@ -102,12 +110,12 @@ export function QuizPage({
           {quiz.questionCount} questions · seuil de réussite :{' '}
           {Math.round(quiz.passingScore)} %
         </p>
-      </header>
+      </section>
 
       <QuestionAssessmentExperience
         assessment={quiz}
         attempts={attemptsQuery.data?.attempts ?? []}
-        backHref={lessonHref}
+        backHref={backHref}
         error={mutation.error}
         isPending={mutation.isPending}
         key={quiz.id}
@@ -120,6 +128,7 @@ export function QuizPage({
         }}
         onSubmit={mutation.submit}
       />
+      <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>
   );
 }

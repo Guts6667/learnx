@@ -1,0 +1,209 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_007",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "developpement-vie",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Comprendre le développement au cours de la vie",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser le dossier fictif « Trajectoire de Samira » de la période prénatale au vieillissement : distinguer observations, mesures et inférences, comparer les plans transversal, longitudinal et séquentiel, puis construire une interprétation multidirectionnelle, probabiliste, culturellement située et non diagnostique.",
+    "instructions": [
+      "Construire une chronologie en six périodes — prénatal et naissance, petite enfance, enfance, adolescence, âge adulte, vieillissement — comportant pour chaque élément la donnée observée, la source ou mesure, l’inférence permise, au moins une alternative et la donnée manquante prioritaire.",
+      "Comparer les volets transversal, longitudinal et séquentiel dans une matrice indiquant question accessible, unités suivies, âges, cohortes, moments de mesure, forces, confusions, attrition ou pratique et conclusion autorisée. Proposer le plan le plus informatif pour une nouvelle collecte et le justifier.",
+      "Analyser continuité, discontinuité, stades, trajectoires, plasticité et multidirectionnalité sans transformer un modèle en calendrier universel. Donner dans le dossier un exemple possible d’équifinalité et un de multifinalité, en les formulant comme hypothèses et non comme faits causaux.",
+      "Interpréter les informations prénatales, la naissance à 35 semaines, le poids et les premiers jalons selon moment, dose ou durée inconnue, santé, mesure et contexte. Séparer prévention, risque probabiliste, fenêtre descriptive et diagnostic individuel.",
+      "Auditer l’interprétation du langage et de la cognition : distinguer score français, répertoire conceptuel combiné, audition, raisonnement non verbal, lecture, tâche et norme ; expliquer ce que le plurilinguisme autorise et n’autorise pas à conclure.",
+      "Réviser l’affirmation fondée sur l’unique séparation–réunion : préciser unité relationnelle, procédure, caregiver, fidélité, contexte culturel, autres relations et répétitions nécessaires. N’utiliser aucune catégorie d’attachement comme personnalité, diagnostic ou jugement familial.",
+      "Reformuler l’épisode de 16 ans à partir des résultats scolaires, responsabilités, pairs, occasions et contexte. Expliquer pourquoi exploration et prise de risque ne prouvent ni déficit global ni trajectoire adulte déterminée.",
+      "Interpréter reprise d’études, changements professionnels et données de 60 à 70 ans comme des trajectoires adultes hétérogènes. Distinguer vitesse, vocabulaire, audition, apprentissage, autonomie, pratique et sélection par attrition sans invoquer crise obligatoire ou déclin uniforme.",
+      "Hiérarchiser au moins huit données manquantes ou mesures complémentaires selon leur capacité à départager deux explications plausibles ; inclure comparabilité des mesures, attrition, exposition prénatale, audition, répertoire linguistique, relations, contexte historique et fonctionnement quotidien.",
+      "Réécrire les huit conclusions du brouillon en formulations proportionnées. La synthèse finale doit préserver autonomie, diversité familiale et linguistique, éviter blâme, âgisme et déterminisme, et signaler quand une inquiétude relève d’une évaluation professionnelle sans poser de diagnostic.",
+      "Citer précisément au moins huit ressources de l’étape, avec au moins une référence issue de chacune des six leçons, et relier chaque citation à la proposition qu’elle soutient."
+    ],
+    "case": "Dossier entièrement fictif — Trajectoire de Samira. Samira naît fictivement en 1956, à 35 semaines de gestation, avec un poids de 2,2 kg. Le dossier prénatal indique un accès irrégulier aux consultations et une hypertension pendant la grossesse, mais ne documente ni date de début, ni durée, ni sévérité, ni traitement, ni autres expositions. Une fiche rédigée des décennies plus tard affirme pourtant que « le manque de suivi a programmé ses difficultés futures ». Aucun résultat individuel ne peut être attribué à ces informations seules. Dans la petite enfance, Samira est régulièrement prise en charge par sa mère, son père et sa grand-mère. Un calendrier familial situe la station assise sans appui vers 8 mois et demi d’âge chronologique et les premiers pas autonomes vers 16 mois et demi, sans définition de l’observation, correction pour la prématurité ni suivi moteur standardisé. Ces deux dates isolées ne constituent ni une trajectoire complète ni un diagnostic. Les proches décrivent aussi une forte réactivité dans certaines transitions, mais des apaisements différents selon la personne, la routine et le moment ; aucun instrument standardisé de tempérament ou de corégulation n’est disponible. À 16 mois, une seule observation de séparation–réunion en laboratoire est réalisée avec sa mère. Samira proteste fortement au départ, cherche le contact au retour et demeure difficile à apaiser pendant la courte observation ; un code « résistant » est inscrit. La formation de l’observatrice, la fidélité interjuges, la familiarité du lieu, le sommeil et l’état de santé ne sont pas indiqués. Aucune autre relation ni autre situation n’est observée. Un résumé populaire transforme pourtant ce code en « attachement anxieux à vie causé par une mère incohérente ». Samira entend surtout l’arabe à domicile et le français en crèche. À 2 ans et 9 mois, son vocabulaire expressif français se situe au 20e percentile d’une norme monolingue francophone. Le vocabulaire conceptuel combiné entre ses langues, la compréhension, la pragmatique, la quantité et les contextes d’exposition ainsi que l’audition ne sont pas mesurés. Un compte rendu conclut à un « retard provoqué par deux langues ». À 7 ans, son raisonnement non verbal est dans la moyenne de la norme employée et ses relevés scolaires montrent une progression en lecture française sur trois mesures, sans effacement de la variabilité entre tâches. Une note de classe indique qu’elle commet d’abord plusieurs erreurs lorsqu’une règle de tri change, puis s’améliore avec des exemples ; la tâche, sa fidélité et ses exigences linguistiques ne sont pas documentées et ne mesurent pas une capacité exécutive globale. Aucun diagnostic développemental n’a été posé. À 16 ans, Samira participe avec des pairs à une excursion non autorisée et rentre le soir même. Sur la même période, ses résultats scolaires et les responsabilités qu’elle assume auprès d’une association locale sont préservés. Le dossier de presse retient seulement l’excursion et écrit que « son cerveau adolescent déficient annonçait l’instabilité adulte ». À 28 ans, Samira reprend des études. Entre 35 et 52 ans, elle change plusieurs fois de métier, notamment après une fermeture d’établissement et pour mieux articuler travail et soin d’un proche. Elle acquiert de nouvelles compétences et conserve des relations stables. Une chronique qualifie ces changements de « crise du milieu de vie » sans mesure du bien-être, des buts, des contraintes économiques ou du contexte historique. Un suivi longitudinal évalue Samira à 60, 65 et 70 ans avec des versions annoncées comme comparables d’épreuves de vocabulaire et de vitesse de traitement. Son vocabulaire reste stable et son score de vitesse diminue de 0,25 écart-type entre 60 et 70 ans. Les mêmes familles d’items sont répétées, ce qui peut produire de la pratique. Une baisse auditive est relevée à 68 ans, sans ajustement documenté des consignes sonores. À 70 ans, Samira vit de façon autonome, organise ses activités, apprend à utiliser une nouvelle application de transport et choisit un réseau social plus restreint mais satisfaisant. Le protocole ne comprend ni diagnostic clinique ni mesure exhaustive de mémoire. Dans la cohorte longitudinale complète, l’attrition atteint 18 % ; les personnes perdues de vue rapportaient plus souvent une mauvaise santé au départ. Le rapport conclut néanmoins que « Samira résiste au vieillissement » et que les personnes absentes auraient suivi la même moyenne. En 2026, un volet transversal compare 120 personnes de 25 ans et 120 personnes de 70 ans une seule fois. Le groupe de 70 ans obtient une vitesse moyenne inférieure de 1,1 écart-type. Les deux groupes diffèrent aussi par années de scolarité, familiarité numérique, lieux de recrutement et taux de baisse auditive ; l’équivalence de la mesure n’est pas établie. Les auteurs présentent la différence comme « la trajectoire normale de toute personne ». Un volet séquentiel recrute des cohortes nées en 1950–1959 et en 1970–1979, testées en 2016 puis en 2026. Il offre deux vagues par cohorte et des comparaisons partielles entre âge, cohorte et moment, mais utilise une nouvelle interface en 2026, subit une attrition différente selon santé et scolarité et ne rend pas âge, cohorte et période parfaitement indépendants. Le brouillon final affirme : « la prématurité explique toute la trajectoire ; une classification d’attachement révèle la personnalité ; deux langues retardent la cognition ; un écart adolescent prouve un cerveau déficient ; la reprise d’études est tardive ; les changements de métier prouvent une crise universelle ; la baisse de vitesse annonce une pathologie ; le transversal prouve comment chacun vieillit ». Toutes les personnes, institutions, mesures, données et affirmations de ce dossier sont fictives et servent uniquement à l’évaluation. Elles n’autorisent aucun diagnostic, pronostic individuel ou conseil médical.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier structuré de 1 500 à 1 900 mots comprenant une chronologie critique, une matrice comparative des trois plans, un tableau données–inférences–alternatives–mesures manquantes et une synthèse éthique révisant les huit conclusions du brouillon.",
+    "conceptSlugs": [
+      "continuite-discontinuite-stades",
+      "trajectoires-plasticite-multidirectionnelle",
+      "equifinalite-multifinalite-contextes",
+      "age-cohorte-temps-mesure",
+      "plans-transversal-longitudinal-sequentiel",
+      "attrition-mesure-ethique",
+      "periodes-prenatales-risque-exposition",
+      "petite-enfance-croissance-reflexes-motricite",
+      "variabilite-soins-attentifs-trajectoires",
+      "modeles-taches-trajectoires-cognitives",
+      "fonctions-executives-variabilite",
+      "acquisition-langage-repertoires-plurilingues",
+      "attachement-relationnel-mesure",
+      "temperament-coregulation-emotions",
+      "relations-contextes-trajectoires-socioemotionnelles",
+      "adolescence-opportunites-contextes",
+      "transitions-pluralite-vies-adultes",
+      "vieillissement-heterogene-agisme"
+    ],
+    "rubric": [
+      {
+        "criterion": "Plans temporels et portée des inférences",
+        "weight": 20,
+        "requirements": [
+          "La matrice distingue explicitement unités suivies, âge, cohorte et moment de mesure pour les plans transversal, longitudinal et séquentiel.",
+          "Le transversal n’est pas présenté comme une trajectoire individuelle ; le longitudinal traite pratique et attrition différentielle ; le séquentiel traite interface, chevauchement et confusion résiduelle.",
+          "Le plan proposé pour une nouvelle collecte correspond à une question définie et précise comparabilité, répétitions, recrutement, données manquantes et limites causales."
+        ]
+      },
+      {
+        "criterion": "Continuité, stades et trajectoires",
+        "weight": 15,
+        "requirements": [
+          "Continuité, discontinuité et stade sont définis relativement au construit et à la mesure, sans calendrier normatif appliqué à Samira.",
+          "La trajectoire distingue niveau, direction, fluctuations et tournants ; plasticité et multidirectionnalité comportent possibilités et contraintes.",
+          "Un exemple d’équifinalité et un de multifinalité sont formulés comme hypothèses contextualisées, sans causalité acquise ni destin individuel."
+        ]
+      },
+      {
+        "criterion": "Période prénatale et petite enfance",
+        "weight": 10,
+        "requirements": [
+          "Prématurité, poids, hypertension et accès aux soins sont décrits avec moment, durée, sévérité, expositions et mesures manquantes, sans cause unique.",
+          "Risque populationnel, recommandation de prévention, fenêtre descriptive et prédiction individuelle sont nettement séparés.",
+          "Les caregivers, ressources, soins attentifs et contextes sont intégrés sans blâme parental ni jugement culturel."
+        ]
+      },
+      {
+        "criterion": "Cognition, langage et plurilinguisme",
+        "weight": 15,
+        "requirements": [
+          "Le percentile français est rapporté à sa norme monolingue, à la tâche et à l’âge ; il n’est assimilé ni au répertoire complet ni à l’intelligence.",
+          "Vocabulaire conceptuel combiné, compréhension, pragmatique, exposition et audition sont identifiés comme mesures nécessaires, tandis que raisonnement et lecture restent des indicateurs distincts.",
+          "Le plurilinguisme est présenté comme répertoire situé, sans confusion automatique, retard présumé ni avantage exécutif général affirmé."
+        ]
+      },
+      {
+        "criterion": "Attachement et développement socioémotionnel",
+        "weight": 10,
+        "requirements": [
+          "Le code à 16 mois est limité à une relation, une procédure et un moment ; formation, fidélité, état de l’enfant et contexte sont discutés.",
+          "La classification n’est traitée ni comme personnalité, amour, diagnostic, causalité maternelle ni prédiction stable.",
+          "Plusieurs caregivers, corégulation, tempérament, pairs, institutions et significations culturelles sont proposés comme niveaux d’observation complémentaires."
+        ]
+      },
+      {
+        "criterion": "Adolescence, âge adulte et vieillissement",
+        "weight": 15,
+        "requirements": [
+          "L’excursion adolescente est interprétée avec exploration, pairs, contexte, résultats et responsabilités, sans déficience cérébrale globale ni avenir déterminé.",
+          "Reprise d’études et changements de métier sont situés dans les ressources, rôles et événements, sans jalon universel ni crise obligatoire.",
+          "Vitesse, vocabulaire, audition, pratique, autonomie, apprentissage et sélection par attrition soutiennent une lecture hétérogène et non âgiste ; aucune baisse isolée n’est diagnostique."
+        ]
+      },
+      {
+        "criterion": "Alternatives et données manquantes",
+        "weight": 10,
+        "requirements": [
+          "Chaque période comporte au moins une explication concurrente plausible et une mesure capable de la départager.",
+          "Au moins huit priorités couvrent exposition, mesure, langue ou audition, relations, cohorte ou période, attrition et fonctionnement quotidien.",
+          "La hiérarchisation explique le gain d’information attendu et distingue donnée absente, donnée imprécise et donnée non comparable."
+        ]
+      },
+      {
+        "criterion": "Communication éthique, culturelle et sourcée",
+        "weight": 5,
+        "requirements": [
+          "Les huit affirmations sont remplacées par des conclusions proportionnées excluant diagnostic, déterminisme, blâme, prescription familiale et âgisme.",
+          "Au moins huit citations au point d’usage couvrent les six leçons et soutiennent précisément la proposition associée.",
+          "La synthèse indique les limites, respecte l’autonomie de Samira et oriente seulement les préoccupations persistantes vers une évaluation professionnelle contextualisée."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère obtenu sous 70 %, reprendre uniquement la section correspondante en utilisant la fiche de correction suivante : (1) copier l’affirmation initiale ; (2) identifier la donnée et la mesure ; (3) nommer le plan, la période et le contexte ; (4) donner l’inférence maximale autorisée ; (5) proposer une alternative ; (6) demander une mesure discriminante ; (7) citer une référence de la leçon concernée. Si « Plans temporels » est insuffisant, reconstruire la matrice transversal–longitudinal–séquentiel et corriger les trois confusions âge–cohorte–temps, pratique–changement et attrition–représentativité. Si « Continuité », « Prénatal », « Cognition », « Attachement » ou « Adolescence–vieillissement » est insuffisant, réviser les passages associés en supprimant toute norme universelle, cause unique ou diagnostic. Si « Alternatives » est insuffisant, fournir huit paires alternative–mesure priorisées. Si « Communication » est insuffisant, réécrire les huit conclusions et ajouter au moins une citation précise par leçon. La nouvelle soumission comprend les seules sections corrigées et une courte liste des modifications."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-028-OPENSTAX-11",
+      "REF-028-OPENSTAX-12",
+      "REF-028-OPENSTAX-14",
+      "REF-028-BALTES",
+      "REF-028-MASTEN",
+      "REF-028-CICCHETTI",
+      "REF-028-BORNSTEIN",
+      "REF-029-OPENSTAX",
+      "REF-029-SCHAIE",
+      "REF-029-SALTHOUSE",
+      "REF-029-GUSTAVSON",
+      "REF-029-PUTNICK",
+      "REF-029-SRCD",
+      "REF-030-OPENSTAX-23",
+      "REF-030-ALWAN",
+      "REF-030-CDC",
+      "REF-030-OPENSTAX-31",
+      "REF-030-OPENSTAX-32",
+      "REF-030-WHO-MOTOR",
+      "REF-030-ADOLPH",
+      "REF-030-WHO-NURTURE",
+      "REF-031-OPENSTAX-5-3",
+      "REF-031-OPENSTAX-7-2",
+      "REF-031-DIAMOND",
+      "REF-031-OPENSTAX-5-4",
+      "REF-031-KUHL",
+      "REF-031-SAFFRAN",
+      "REF-031-HOFF",
+      "REF-031-OPENSTAX-7-5",
+      "REF-031-LEHTONEN",
+      "REF-032-OPENSTAX-4-4",
+      "REF-032-GROH",
+      "REF-032-FEARON",
+      "REF-032-VERHAGE",
+      "REF-032-OPENSTAX-4-2",
+      "REF-032-OPENSTAX-4-3",
+      "REF-032-MORRIS",
+      "REF-032-EISENBERG",
+      "REF-032-WHO",
+      "REF-032-OPENSTAX-4-5",
+      "REF-032-OPENSTAX-6-4",
+      "REF-033-BALTES",
+      "REF-033-NASEM-ADO",
+      "REF-033-BLAKEMORE-MILLS",
+      "REF-033-OPENSTAX-9-3",
+      "REF-033-EMERGING",
+      "REF-033-OPENSTAX-12-3",
+      "REF-033-OPENSTAX-11-4",
+      "REF-033-OPENSTAX-15-3",
+      "REF-033-HARADA",
+      "REF-033-NASEM-COG",
+      "REF-033-CHARLES",
+      "REF-033-WHO-AGEISM"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Trajectoire de Samira, la personne, les proches, institutions, mesures, données et affirmations sont entièrement fictifs.",
+        "Revue humaine développementale obligatoire avant publication, avec compétences en méthodes longitudinales et séquentielles, développement prénatal, plurilinguisme, attachement, adolescence et vieillissement.",
+        "Validation technique obligatoire : l’étape developpement-vie et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n’autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_028 à 033.",
+        "Les cinquante-trois referenceIds correspondent exactement à l’union des références des PEDAGOGY_SPEC_028 à 033 ; accès, éditions et liens devront être revérifiés pendant la revue humaine.",
+        "Le cas interdit tout diagnostic à distance, destin fondé sur une naissance, une classification relationnelle, une langue, un épisode adolescent ou un score de vieillissement, ainsi que tout blâme familial et toute formulation âgiste.",
+        "La publication reste bloquée jusqu’aux validations technique, éditoriale et scientifique de l’ensemble de l’étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l’étude de cas intégratrice Trajectoire de Samira, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_and_developmental_psychology"
+      }
+    ]
+  }
+}

@@ -3,6 +3,13 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 import { App } from '@/app/App';
 
 describe('App', () => {
+  beforeEach(() => {
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    });
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
   });
@@ -45,6 +52,126 @@ describe('App', () => {
     expect(
       screen.getByRole('status', { name: 'Vérification de la session' }),
     ).toBeInTheDocument();
+  });
+
+  it('affiche un état neutre hors ligne sans rediriger vers la connexion', () => {
+    window.history.pushState({}, '', '/today');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.reject(new TypeError('Network unavailable'))),
+    );
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(
+      screen.queryByRole('heading', { level: 1, name: 'Connexion' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('conserve la destination et revérifie la session après reconnexion', async () => {
+    window.history.pushState({}, '', '/today');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(
+        jsonResponse({
+          user: {
+            id: 'user-1',
+            email: 'learner@example.com',
+            displayName: 'Learner',
+            role: 'USER',
+          },
+        }),
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    });
+    fireEvent(window, new Event('online'));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/auth/session',
+      expect.objectContaining({ credentials: 'include' }),
+    );
+  });
+
+  it('propose une relance explicite après un échec réseau en ligne', async () => {
+    window.history.pushState({}, '', '/today');
+    const user = {
+      id: 'user-1',
+      email: 'learner@example.com',
+      displayName: 'Learner',
+      role: 'USER',
+    };
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('Network unavailable'))
+      .mockResolvedValue(jsonResponse({ user }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Connexion impossible',
+      }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('désactive la connexion tant que le navigateur est hors ligne', async () => {
+    window.history.pushState({}, '', '/login');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Connexion' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Se connecter' })).toBeDisabled();
+    expect(
+      screen.getByText(/Reconnectez-vous pour vérifier votre session/),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('restaure la session après un rechargement', async () => {
@@ -155,5 +282,116 @@ describe('App', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Connexion' }),
     ).toBeInTheDocument();
+  });
+
+  it('empile les actions du profil administrateur sans concurrence tactile', async () => {
+    window.history.pushState({}, '', '/profile');
+    const user = {
+      id: 'admin-1',
+      email:
+        'administrateur-avec-une-adresse-volontairement-longue@example.com',
+      displayName: 'Admin',
+      role: 'ADMIN',
+    };
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(jsonResponse({ user }))),
+    );
+
+    render(<App />);
+
+    const email = await screen.findByText(user.email);
+    const actions = screen.getByRole('heading', { level: 2, name: 'Actions' });
+    const adminLink = screen.getByRole('link', {
+      name: 'Ouvrir l’administration',
+    });
+    const logout = screen.getByRole('button', { name: 'Se déconnecter' });
+
+    expect(email).toHaveClass('break-all');
+    expect(adminLink).toHaveAttribute('href', '/admin');
+    expect(adminLink).toHaveClass('min-h-11', 'w-full');
+    expect(adminLink).not.toHaveClass('underline');
+    expect(logout).toHaveClass('min-h-11', 'w-full');
+    expect(actions.compareDocumentPosition(adminLink)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(adminLink.compareDocumentPosition(logout)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(adminLink.parentElement).toHaveClass('flex-col');
+  });
+
+  it('restaure directement une URL admin profonde', async () => {
+    const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
+    const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
+    const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
+    const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
+    window.history.pushState(
+      {},
+      '',
+      `/admin/program/${programId}/stage/${stageId}/module/${moduleId}/lesson/${lessonId}`,
+    );
+    const user = {
+      id: 'admin-1',
+      email: 'admin@example.com',
+      displayName: 'Admin',
+      role: 'ADMIN',
+    };
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/auth/session') {
+        return Promise.resolve(jsonResponse({ user }));
+      }
+      if (path === `/api/admin/lessons/${lessonId}`) {
+        return Promise.resolve(
+          jsonResponse({
+            kind: 'LESSON',
+            lesson: {
+              id: lessonId,
+              isPublished: false,
+              position: 0,
+              slug: 'lecon-test',
+              summary: 'Résumé profond',
+              title: 'Leçon profonde',
+              module: {
+                description: 'Résumé module',
+                id: moduleId,
+                isPublished: false,
+                position: 0,
+                slug: 'module-test',
+                title: 'Module profond',
+                stage: {
+                  id: stageId,
+                  isPublished: false,
+                  position: 0,
+                  slug: 'etape-test',
+                  title: 'Étape profonde',
+                  program: {
+                    id: programId,
+                    position: 0,
+                    slug: 'programme-test',
+                    status: 'DRAFT',
+                    title: 'Programme profond',
+                  },
+                },
+              },
+            },
+          }),
+        );
+      }
+
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Leçon profonde' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Programme profond')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      `/api/admin/lessons/${lessonId}`,
+      expect.any(Object),
+    );
   });
 });

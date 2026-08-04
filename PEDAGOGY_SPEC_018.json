@@ -26,10 +26,7 @@
         "position": 1,
         "content": {
           "text": "En psychologie, l'apprentissage désigne un changement relativement durable de connaissances ou de conduites attribuable à l'expérience. Cette définition exclut un réflexe inné et invite à écarter, avant de conclure, des explications comme la fatigue, l'échauffement, la maturation ou un changement ponctuel de motivation. Une réussite isolée pendant l'exercice est un indice de performance, pas encore la preuve d'un apprentissage durable.",
-          "sourceKeys": [
-            "openstax-learning-6-1",
-            "soderstrom-bjork-2015"
-          ]
+          "sourceKeys": ["openstax-learning-6-1", "soderstrom-bjork-2015"]
         }
       },
       {
@@ -37,9 +34,7 @@
         "position": 2,
         "content": {
           "text": "La performance est ce qui est observable pendant ou juste après la pratique ; l'apprentissage est une modification plus stable que l'on infère. Les deux peuvent diverger : des aides fréquentes améliorent l'exécution immédiate sans garantir l'autonomie ultérieure, tandis qu'une pratique exigeante peut produire davantage d'erreurs sur le moment mais une meilleure rétention. Pour tester l'apprentissage, on prévoit une mesure différée, réalisée sans les aides d'entraînement, et si possible une tâche nouvelle. Même alors, la conclusion reste une inférence dépendante du plan et des mesures.",
-          "sourceKeys": [
-            "soderstrom-bjork-2015"
-          ]
+          "sourceKeys": ["soderstrom-bjork-2015"]
         }
       },
       {
@@ -47,9 +42,7 @@
         "position": 3,
         "content": {
           "text": "L'apprentissage observationnel ajoute des médiations cognitives et sociales à l'expérience directe. Le modèle de Bandura distingue quatre conditions : prêter attention à l'action pertinente, en conserver une représentation, pouvoir la reproduire et être motivé à l'exécuter. Voir un comportement ne garantit donc ni sa mémorisation ni son imitation. Les conséquences observées chez le modèle peuvent modifier la motivation, mais une imitation constatée ne révèle pas à elle seule quel processus a été décisif.",
-          "sourceKeys": [
-            "openstax-observation-6-4"
-          ]
+          "sourceKeys": ["openstax-observation-6-4"]
         }
       },
       {
@@ -57,10 +50,7 @@
         "position": 4,
         "content": {
           "text": "La discrimination consiste à répondre différemment à des indices proches ; la généralisation étend une réponse apprise à des stimuli ressemblants. Le transfert pose une question plus large : une connaissance ou une compétence acquise dans une tâche améliore-t-elle une autre tâche ou un autre contexte ? Un transfert proche conserve beaucoup d'éléments ; un transfert lointain en partage moins. Aucun seuil universel ne les sépare et la proximité doit être décrite. Le transfert est une donnée à mesurer, non une propriété que l'on peut déduire du seul fait d'avoir appris.",
-          "sourceKeys": [
-            "openstax-generalisation-6-2",
-            "pan-rickard-2018"
-          ]
+          "sourceKeys": ["openstax-generalisation-6-2", "pan-rickard-2018"]
         }
       },
       {
@@ -158,10 +148,7 @@
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": [
-          "openstax-learning-6-1",
-          "soderstrom-bjork-2015"
-        ],
+        "resourceKeys": ["openstax-learning-6-1", "soderstrom-bjork-2015"],
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Apprentissage et performance",
@@ -175,9 +162,7 @@
         "position": 2,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": [
-          "openstax-observation-6-4"
-        ],
+        "resourceKeys": ["openstax-observation-6-4"],
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Apprentissage observationnel",
@@ -252,10 +237,26 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "Une réussite différée sans les aides utilisées à l'entraînement", "isCorrect": true, "position": 1},
-              {"label": "Une réussite immédiate avec correction pas à pas", "isCorrect": false, "position": 2},
-              {"label": "Une impression de facilité pendant la lecture", "isCorrect": false, "position": 3},
-              {"label": "Une forte motivation déclarée avant l'exercice", "isCorrect": false, "position": 4}
+              {
+                "label": "Une réussite différée sans les aides utilisées à l'entraînement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une réussite immédiate avec correction pas à pas",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une impression de facilité pendant la lecture",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une forte motivation déclarée avant l'exercice",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -265,8 +266,8 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -276,10 +277,22 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "La disparition d'une aide présente pendant l'entraînement", "isCorrect": true, "position": 1},
-              {"label": "La fatigue ou l'échauffement", "isCorrect": true, "position": 2},
-              {"label": "La maturation", "isCorrect": true, "position": 3},
-              {"label": "Le seul numéro de la séance", "isCorrect": false, "position": 4}
+              {
+                "label": "La disparition d'une aide présente pendant l'entraînement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La fatigue ou l'échauffement",
+                "isCorrect": true,
+                "position": 2
+              },
+              { "label": "La maturation", "isCorrect": true, "position": 3 },
+              {
+                "label": "Le seul numéro de la séance",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -289,10 +302,26 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "Elle peut soutenir une meilleure rétention ultérieure", "isCorrect": true, "position": 1},
-              {"label": "Toute erreur prouve automatiquement un apprentissage", "isCorrect": false, "position": 2},
-              {"label": "La performance immédiate n'a jamais aucune valeur", "isCorrect": false, "position": 3},
-              {"label": "La difficulté remplace le besoin d'évaluer", "isCorrect": false, "position": 4}
+              {
+                "label": "Elle peut soutenir une meilleure rétention ultérieure",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute erreur prouve automatiquement un apprentissage",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La performance immédiate n'a jamais aucune valeur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La difficulté remplace le besoin d'évaluer",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -302,8 +331,8 @@
             "acceptedAnswers": [],
             "position": 5,
             "options": [
-              {"label": "Vrai", "isCorrect": true, "position": 1},
-              {"label": "Faux", "isCorrect": false, "position": 2}
+              { "label": "Vrai", "isCorrect": true, "position": 1 },
+              { "label": "Faux", "isCorrect": false, "position": 2 }
             ]
           }
         ]
@@ -319,10 +348,14 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "La rétention", "isCorrect": true, "position": 1},
-              {"label": "L'attention", "isCorrect": false, "position": 2},
-              {"label": "La reproduction", "isCorrect": false, "position": 3},
-              {"label": "La généralisation", "isCorrect": false, "position": 4}
+              { "label": "La rétention", "isCorrect": true, "position": 1 },
+              { "label": "L'attention", "isCorrect": false, "position": 2 },
+              { "label": "La reproduction", "isCorrect": false, "position": 3 },
+              {
+                "label": "La généralisation",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -332,11 +365,11 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Attention", "isCorrect": true, "position": 1},
-              {"label": "Rétention", "isCorrect": true, "position": 2},
-              {"label": "Reproduction", "isCorrect": true, "position": 3},
-              {"label": "Motivation", "isCorrect": true, "position": 4},
-              {"label": "Maturation", "isCorrect": false, "position": 5}
+              { "label": "Attention", "isCorrect": true, "position": 1 },
+              { "label": "Rétention", "isCorrect": true, "position": 2 },
+              { "label": "Reproduction", "isCorrect": true, "position": 3 },
+              { "label": "Motivation", "isCorrect": true, "position": 4 },
+              { "label": "Maturation", "isCorrect": false, "position": 5 }
             ]
           },
           {
@@ -346,8 +379,8 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -357,10 +390,26 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "Observer qu'un modèle reçoit une conséquence positive", "isCorrect": true, "position": 1},
-              {"label": "Recevoir soi-même une récompense avant toute observation", "isCorrect": false, "position": 2},
-              {"label": "Oublier les étapes d'une démonstration", "isCorrect": false, "position": 3},
-              {"label": "Répéter un réflexe inné", "isCorrect": false, "position": 4}
+              {
+                "label": "Observer qu'un modèle reçoit une conséquence positive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Recevoir soi-même une récompense avant toute observation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Oublier les étapes d'une démonstration",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Répéter un réflexe inné",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -370,10 +419,26 @@
             "acceptedAnswers": [],
             "position": 5,
             "options": [
-              {"label": "La vidéo a pu contribuer, mais le mécanisme précis reste à tester", "isCorrect": true, "position": 1},
-              {"label": "La motivation est nécessairement l'unique cause", "isCorrect": false, "position": 2},
-              {"label": "Toute expérience directe est exclue", "isCorrect": false, "position": 3},
-              {"label": "Le comportement sera reproduit dans tous les contextes", "isCorrect": false, "position": 4}
+              {
+                "label": "La vidéo a pu contribuer, mais le mécanisme précis reste à tester",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La motivation est nécessairement l'unique cause",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Toute expérience directe est exclue",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le comportement sera reproduit dans tous les contextes",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           }
         ]
@@ -389,10 +454,18 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "La généralisation", "isCorrect": true, "position": 1},
-              {"label": "La discrimination", "isCorrect": false, "position": 2},
-              {"label": "La maturation", "isCorrect": false, "position": 3},
-              {"label": "L'extinction", "isCorrect": false, "position": 4}
+              {
+                "label": "La généralisation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La discrimination",
+                "isCorrect": false,
+                "position": 2
+              },
+              { "label": "La maturation", "isCorrect": false, "position": 3 },
+              { "label": "L'extinction", "isCorrect": false, "position": 4 }
             ]
           },
           {
@@ -402,10 +475,26 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Appliquer la même règle à un nouvel exemple de même format", "isCorrect": true, "position": 1},
-              {"label": "Réciter la règle dans le même exercice", "isCorrect": false, "position": 2},
-              {"label": "Résoudre un problème d'un domaine sans ressemblance décrite", "isCorrect": false, "position": 3},
-              {"label": "Relire la correction", "isCorrect": false, "position": 4}
+              {
+                "label": "Appliquer la même règle à un nouvel exemple de même format",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réciter la règle dans le même exercice",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Résoudre un problème d'un domaine sans ressemblance décrite",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Relire la correction",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -415,10 +504,26 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "Espacer les séances", "isCorrect": true, "position": 1},
-              {"label": "Récupérer activement puis recevoir un feedback", "isCorrect": true, "position": 2},
-              {"label": "Varier progressivement les exemples", "isCorrect": true, "position": 3},
-              {"label": "Se fier uniquement à la facilité ressentie", "isCorrect": false, "position": 4}
+              {
+                "label": "Espacer les séances",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Récupérer activement puis recevoir un feedback",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Varier progressivement les exemples",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Se fier uniquement à la facilité ressentie",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -428,8 +533,8 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -439,10 +544,26 @@
             "acceptedAnswers": [],
             "position": 5,
             "options": [
-              {"label": "Pour qualifier et interpréter le transfert observé", "isCorrect": true, "position": 1},
-              {"label": "Pour rendre tout transfert automatique", "isCorrect": false, "position": 2},
-              {"label": "Pour éviter toute mesure différée", "isCorrect": false, "position": 3},
-              {"label": "Pour transformer une corrélation en causalité", "isCorrect": false, "position": 4}
+              {
+                "label": "Pour qualifier et interpréter le transfert observé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour rendre tout transfert automatique",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter toute mesure différée",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour transformer une corrélation en causalité",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           }
         ]
@@ -528,7 +649,13 @@
       {
         "id": "REF-018-CEPEDA-2006",
         "type": "meta_analysis",
-        "authors": ["Cepeda, N. J.", "Pashler, H.", "Vul, E.", "Wixted, J. T.", "Rohrer, D."],
+        "authors": [
+          "Cepeda, N. J.",
+          "Pashler, H.",
+          "Vul, E.",
+          "Wixted, J. T.",
+          "Rohrer, D."
+        ],
         "organization": null,
         "title": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis",
         "year": 2006,
@@ -660,8 +787,16 @@
       {
         "contentBlockPosition": 1,
         "referenceLinks": [
-          {"referenceId": "REF-018-OPENSTAX-6-1", "locator": "section 6.1, définition de learning", "supports": "Définition de l'apprentissage comme changement relativement durable dû à l'expérience et distinction avec l'inné."},
-          {"referenceId": "REF-018-SODERSTROM-2015", "locator": "abstract et pp. 176–179", "supports": "Distinction entre performance observable pendant l'acquisition et apprentissage durable."}
+          {
+            "referenceId": "REF-018-OPENSTAX-6-1",
+            "locator": "section 6.1, définition de learning",
+            "supports": "Définition de l'apprentissage comme changement relativement durable dû à l'expérience et distinction avec l'inné."
+          },
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "abstract et pp. 176–179",
+            "supports": "Distinction entre performance observable pendant l'acquisition et apprentissage durable."
+          }
         ],
         "confidence": "very_high",
         "confidenceRationale": "Manuel universitaire et revue intégrative convergent sur la définition et la distinction centrale.",
@@ -670,7 +805,11 @@
       {
         "contentBlockPosition": 2,
         "referenceLinks": [
-          {"referenceId": "REF-018-SODERSTROM-2015", "locator": "abstract et sections Learning versus performance et implications", "supports": "Dissociation possible entre performance d'entraînement, rétention et transfert, et nécessité de tests différés."}
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "abstract et sections Learning versus performance et implications",
+            "supports": "Dissociation possible entre performance d'entraînement, rétention et transfert, et nécessité de tests différés."
+          }
         ],
         "confidence": "high",
         "confidenceRationale": "La revue couvre plusieurs domaines mais les conditions précises varient selon tâches et délais, ce que le bloc explicite.",
@@ -679,7 +818,11 @@
       {
         "contentBlockPosition": 3,
         "referenceLinks": [
-          {"referenceId": "REF-018-OPENSTAX-6-4", "locator": "section Steps in the Modeling Process", "supports": "Attention, rétention, reproduction, motivation et conséquences vicariantes dans le modelage."}
+          {
+            "referenceId": "REF-018-OPENSTAX-6-4",
+            "locator": "section Steps in the Modeling Process",
+            "supports": "Attention, rétention, reproduction, motivation et conséquences vicariantes dans le modelage."
+          }
         ],
         "confidence": "high",
         "confidenceRationale": "La source soutient les quatre composantes ; le texte évite d'en faire un diagnostic causal suffisant.",
@@ -688,8 +831,16 @@
       {
         "contentBlockPosition": 4,
         "referenceLinks": [
-          {"referenceId": "REF-018-OPENSTAX-6-2", "locator": "section General Processes in Classical Conditioning", "supports": "Définitions contrastées de discrimination et généralisation de stimulus."},
-          {"referenceId": "REF-018-PAN-2018", "locator": "abstract et cadre de synthèse du transfert", "supports": "Le transfert après récupération varie avec les relations entre entraînement, matériel et test."}
+          {
+            "referenceId": "REF-018-OPENSTAX-6-2",
+            "locator": "section General Processes in Classical Conditioning",
+            "supports": "Définitions contrastées de discrimination et généralisation de stimulus."
+          },
+          {
+            "referenceId": "REF-018-PAN-2018",
+            "locator": "abstract et cadre de synthèse du transfert",
+            "supports": "Le transfert après récupération varie avec les relations entre entraînement, matériel et test."
+          }
         ],
         "confidence": "high",
         "confidenceRationale": "Les notions sont étayées ; proche et lointain restent des qualifications relatives, explicitement présentées comme telles.",
@@ -698,9 +849,21 @@
       {
         "contentBlockPosition": 5,
         "referenceLinks": [
-          {"referenceId": "REF-018-CEPEDA-2006", "locator": "abstract et quantitative synthesis, pp. 354–380", "supports": "Avantage général de la pratique distribuée sur la pratique massée en rappel verbal et rôle des intervalles."},
-          {"referenceId": "REF-018-PAN-2018", "locator": "abstract et three-factor framework", "supports": "Bénéfices conditionnels de la récupération sur des tâches de transfert et facteurs modérateurs."},
-          {"referenceId": "REF-018-SODERSTROM-2015", "locator": "sections sur les conditions d'acquisition et la rétention", "supports": "Certaines conditions qui dégradent la performance immédiate peuvent soutenir l'apprentissage ultérieur."}
+          {
+            "referenceId": "REF-018-CEPEDA-2006",
+            "locator": "abstract et quantitative synthesis, pp. 354–380",
+            "supports": "Avantage général de la pratique distribuée sur la pratique massée en rappel verbal et rôle des intervalles."
+          },
+          {
+            "referenceId": "REF-018-PAN-2018",
+            "locator": "abstract et three-factor framework",
+            "supports": "Bénéfices conditionnels de la récupération sur des tâches de transfert et facteurs modérateurs."
+          },
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "sections sur les conditions d'acquisition et la rétention",
+            "supports": "Certaines conditions qui dégradent la performance immédiate peuvent soutenir l'apprentissage ultérieur."
+          }
         ],
         "confidence": "high",
         "confidenceRationale": "Deux synthèses quantitatives et une revue intégrative soutiennent les principes, avec une portée volontairement bornée par le texte.",

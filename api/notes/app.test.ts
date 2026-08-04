@@ -59,6 +59,12 @@ function createRepository() {
       records.set(id, record);
       return record;
     },
+    async deleteOwned(requestedNoteId, requestedUserId) {
+      if (owners.get(requestedNoteId) !== requestedUserId) return false;
+
+      owners.delete(requestedNoteId);
+      return records.delete(requestedNoteId);
+    },
     async findLessonForUser(requestedLessonId, requestedUserId) {
       return requestedLessonId === lessonId && requestedUserId === userId
         ? { id: lessonId, programId }
@@ -236,6 +242,43 @@ describe('notes API', () => {
     });
   });
 
+  it('supprime atomiquement seulement une note possédée', async () => {
+    const { records, repository } = createRepository();
+    await repository.create({
+      lessonId: null,
+      markdown: 'À supprimer',
+      programId: null,
+      title: 'Note privée',
+      userId,
+    });
+    const ownerApp = createNotesApp({
+      authentication: authenticationFor(userId),
+      repository,
+    });
+    const otherApp = createNotesApp({
+      authentication: authenticationFor(otherUserId),
+      repository,
+    });
+
+    const refused = await otherApp.request(
+      `http://localhost/api/notes/${noteId}`,
+      { method: 'DELETE' },
+    );
+    const deleted = await ownerApp.request(
+      `http://localhost/api/notes/${noteId}`,
+      { method: 'DELETE' },
+    );
+    const reloaded = await ownerApp.request(
+      `http://localhost/api/notes/${noteId}`,
+    );
+
+    expect(refused.status).toBe(404);
+    expect(records.has(noteId)).toBe(false);
+    expect(deleted.status).toBe(204);
+    expect(await deleted.text()).toBe('');
+    expect(reloaded.status).toBe(404);
+  });
+
   it('refuse les requêtes anonymes et invalides', async () => {
     const { repository } = createRepository();
     const anonymousApp = createNotesApp({ repository });
@@ -285,5 +328,16 @@ describe('notes persistence', () => {
         }),
       }),
     );
+  });
+
+  it('borne la suppression par identifiant et userId dans la même requête', async () => {
+    const deleteMany = vi.fn(async () => ({ count: 1 }));
+    const client = { note: { deleteMany } } as unknown as PrismaClient;
+    const repository = createPrismaNotesRepository(client);
+
+    await expect(repository.deleteOwned(noteId, userId)).resolves.toBe(true);
+    expect(deleteMany).toHaveBeenCalledWith({
+      where: { id: noteId, userId },
+    });
   });
 });

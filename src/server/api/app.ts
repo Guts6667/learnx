@@ -6,6 +6,7 @@ import { authApp } from './auth/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
 import { conceptsApp } from './concepts/app.js';
 import { exercisesApp } from './exercises/app.js';
+import { moduleRunsApp } from './module-runs/app.js';
 import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
 import { progressApp } from './progress/app.js';
@@ -16,6 +17,11 @@ import { todayApp } from './today/app.js';
 
 export function createApiApp() {
   const app = new Hono();
+
+  app.use('*', async (context, next) => {
+    await next();
+    context.header('Cache-Control', 'private, no-store');
+  });
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -38,6 +44,7 @@ export function createApiApp() {
   app.route('/', conceptAssessmentsApp);
   app.route('/', quizzesApp);
   app.route('/', exercisesApp);
+  app.route('/', moduleRunsApp);
   app.route('/', stageAssessmentsApp);
   app.route('/', notesApp);
   app.route('/', reviewsApp);

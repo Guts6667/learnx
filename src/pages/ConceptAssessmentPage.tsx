@@ -1,6 +1,13 @@
 import { Badge } from '@/components/ui/Badge';
+import { useEffect } from 'preact/hooks';
+import {
+  LessonContextHeader,
+  LessonActivitySummary,
+  lessonHref,
+} from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { Spinner } from '@/components/ui/Spinner';
 import { QuestionAssessmentExperience } from '@/features/assessments/QuestionAssessmentExperience';
 import {
@@ -9,6 +16,7 @@ import {
   useConceptAssessmentQuery,
 } from '@/features/concept-assessments/queries';
 import { useLessonQuery } from '@/features/curriculum/queries';
+import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 
 export function ConceptAssessmentPage({
   assessmentId,
@@ -40,7 +48,16 @@ export function ConceptAssessmentPage({
     selectedAssessmentId,
     preview,
   );
-  const lessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+  const fallbackLessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+
+  useEffect(() => {
+    if (lesson && selectedAssessment) {
+      rememberActivity(
+        lesson.id,
+        activityKey('CONCEPT_ASSESSMENT', selectedAssessment.id),
+      );
+    }
+  }, [lesson, selectedAssessment]);
 
   if (lessonQuery.isPending) {
     return <Spinner label="Chargement de la mini-évaluation" />;
@@ -56,12 +73,9 @@ export function ConceptAssessmentPage({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-            href={lessonHref}
-          >
-            Retour à la leçon
-          </a>
+          <NavigationAction href={fallbackLessonHref} variant="secondary">
+            Ouvrir la leçon
+          </NavigationAction>
         }
         description="Aucune mini-évaluation correspondante n’est disponible pour cette leçon."
         title="Mini-évaluation introuvable"
@@ -85,17 +99,21 @@ export function ConceptAssessmentPage({
 
   const assessment = assessmentQuery.data.assessment;
   const passingScore = assessment.concept.masteryThreshold;
+  const key = activityKey('CONCEPT_ASSESSMENT', assessment.id);
+  const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
+  const title = assessment.title ?? `Évaluation — ${assessment.concept.title}`;
 
   return (
-    <article aria-labelledby="assessment-title" class="space-y-6">
-      <header class="space-y-3">
+    <article class="mx-auto w-full max-w-5xl space-y-6">
+      <LessonContextHeader activityTitle={title} lesson={lesson} />
+      <section
+        class="space-y-3"
+        aria-label="Informations de la mini-évaluation"
+      >
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Notion · {assessment.concept.title}
         </p>
         <div class="flex flex-wrap items-center gap-3">
-          <h1 class="text-3xl font-bold tracking-tight" id="assessment-title">
-            {assessment.title ?? `Évaluation — ${assessment.concept.title}`}
-          </h1>
           <Badge tone={assessment.isRequired ? 'warning' : 'neutral'}>
             {assessment.isRequired ? 'Obligatoire' : 'Optionnelle'}
           </Badge>
@@ -110,12 +128,12 @@ export function ConceptAssessmentPage({
           {assessment.questionCount} questions · seuil de maîtrise :{' '}
           {Math.round(passingScore)} %
         </p>
-      </header>
+      </section>
 
       <QuestionAssessmentExperience
         assessment={{ ...assessment, passingScore }}
         attempts={attemptsQuery.data?.attempts ?? []}
-        backHref={lessonHref}
+        backHref={backHref}
         error={mutation.error}
         isPending={mutation.isPending}
         key={assessment.id}
@@ -129,6 +147,7 @@ export function ConceptAssessmentPage({
         }}
         onSubmit={mutation.submit}
       />
+      <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>
   );
 }

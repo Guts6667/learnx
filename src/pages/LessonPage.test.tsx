@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 
 import { AppProviders } from '@/app/providers';
 import { LessonPage } from '@/pages/LessonPage';
@@ -9,138 +9,197 @@ function jsonResponse(body: unknown): Response {
   });
 }
 
+function lessonResponse(isPublished: boolean, isLocked = false) {
+  return {
+    lesson: {
+      concepts: [
+        {
+          assessments: [
+            {
+              id: 'assessment-1',
+              isRequired: true,
+              position: 1,
+              questionCount: 5,
+              title: 'Mini-évaluation — Comprendre',
+            },
+          ],
+          id: 'concept-1',
+          isRequired: true,
+          masteryThreshold: 70,
+          position: 1,
+          slug: 'comprendre',
+          title: 'Comprendre',
+        },
+      ],
+      contentBlocks: [
+        {
+          content: {
+            sourceKeys: ['article-reference', 'unsafe-reference'],
+            text: 'Le contenu pédagogique.',
+          },
+          id: 'block-1',
+          position: 1,
+          type: 'RICH_TEXT',
+        },
+      ],
+      estimatedMinutes: 15,
+      exercises: [
+        {
+          activityType: 'PRACTICE',
+          id: 'exercise-1',
+          instructions: 'Appliquer la notion.',
+          isRequired: true,
+          key: 'activity-2',
+          position: 1,
+          rubric: null,
+          title: 'Mise en pratique',
+        },
+      ],
+      id: 'lesson-1',
+      isLocked,
+      isPublished,
+      module: {
+        id: 'module-1',
+        isPublished,
+        slug: 'premiers-pas',
+        stage: {
+          id: 'stage-1',
+          isPublished,
+          program: {
+            id: 'program-1',
+            slug: 'programme-test',
+            title: 'Programme test',
+          },
+          slug: 'introduction',
+          title: 'Introduction',
+        },
+        title: 'Premiers pas',
+      },
+      navigation: {
+        nextLesson: {
+          estimatedMinutes: 20,
+          id: 'lesson-2',
+          isPublished,
+          position: 2,
+          slug: 'approfondir',
+          summary: 'Aller plus loin.',
+          title: 'Approfondir',
+        },
+        previousLesson: null,
+      },
+      objectives: ['Comprendre la notion'],
+      position: 1,
+      prerequisites: [],
+      quizzes: [
+        {
+          description: 'Vérifier les acquis.',
+          id: 'quiz-1',
+          isRequired: true,
+          passingScore: 70,
+          position: 1,
+          questionCount: 4,
+          title: 'Quiz de la leçon',
+        },
+      ],
+      resources: [
+        {
+          author: 'Ada Lovelace',
+          citation: null,
+          description: 'Une lecture complémentaire.',
+          estimatedMinutes: 5,
+          id: 'resource-1',
+          isRequired: true,
+          key: 'article-reference',
+          position: 1,
+          title: 'Article de référence',
+          type: 'ARTICLE',
+          url: 'https://example.com/article',
+        },
+        {
+          author: 'Source inconnue',
+          citation: 'Citation non navigable',
+          description: null,
+          estimatedMinutes: null,
+          id: 'resource-2',
+          isRequired: false,
+          key: 'unsafe-reference',
+          position: 2,
+          title: 'Source non sûre',
+          type: 'WEBSITE',
+          url: 'javascript:alert(1)',
+        },
+      ],
+      slug: 'demarrer',
+      summary: 'Les notions essentielles.',
+      tasks: [
+        {
+          description: 'Lire la source de référence.',
+          id: 'task-1',
+          isRequired: true,
+          key: 'activity-1',
+          position: 1,
+          resources: [
+            {
+              author: 'Ada Lovelace',
+              citation: null,
+              description: 'Une lecture complémentaire.',
+              estimatedMinutes: 5,
+              id: 'resource-1',
+              isRequired: true,
+              key: 'article-reference',
+              position: 1,
+              title: 'Article de référence',
+              type: 'ARTICLE',
+              url: 'https://example.com/article',
+            },
+          ],
+          title: 'Lire la référence',
+          type: 'READING',
+          weight: 1,
+        },
+      ],
+      title: 'Démarrer',
+    },
+  };
+}
+
+function progressResponse(taskStatus: 'DONE' | 'TODO' = 'TODO') {
+  return {
+    canComplete: false,
+    conceptProgress: {},
+    exerciseSubmissions: {},
+    lessonProgress: {
+      completedAt: null,
+      percent: taskStatus === 'DONE' ? 20 : 0,
+      startedAt: '2026-08-03T08:00:00.000Z',
+      status: 'IN_PROGRESS',
+    },
+    quizPassed: {},
+    resourceProgress: {},
+    taskCompletions: { 'task-1': taskStatus },
+  };
+}
+
 describe('LessonPage', () => {
+  beforeEach(() => {
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    });
+  });
+
   afterEach(() => {
+    window.localStorage.clear();
+    window.history.replaceState(null, '', '/');
     vi.unstubAllGlobals();
   });
 
-  it('affiche le contenu, les ressources, les tâches et les évaluations', async () => {
+  it('unifie le contenu et son sommaire en prévisualisation brouillon', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (path === '/api/notes' && init?.method === 'POST') {
-        return Promise.resolve(
-          jsonResponse({
-            note: {
-              createdAt: '2026-08-03T08:00:00.000Z',
-              id: 'note-1',
-              lesson: { id: 'lesson-1', slug: 'demarrer', title: 'Démarrer' },
-              markdown: '',
-              program: {
-                id: 'program-1',
-                slug: 'programme-test',
-                title: 'Programme test',
-              },
-              title: 'Notes — Démarrer',
-              updatedAt: '2026-08-03T08:00:00.000Z',
-            },
-          }),
-        );
+        return Promise.resolve(jsonResponse({ note: { id: 'note-1' } }));
       }
-
-      if (path === '/api/notes?lessonId=lesson-1') {
-        return Promise.resolve(jsonResponse({ notes: [] }));
-      }
-
-      if (path === '/api/lessons/lesson-1/progress') {
-        return Promise.resolve(
-          jsonResponse({
-            lessonProgress: {
-              completedAt: null,
-              percent: 0,
-              startedAt: null,
-              status: 'AVAILABLE',
-            },
-            resourceProgress: {},
-            taskCompletions: {},
-          }),
-        );
-      }
-
-      return Promise.resolve(
-        jsonResponse({
-          lesson: {
-            contentBlocks: [
-              {
-                content: {
-                  sourceKeys: ['article-reference', 'unsafe-reference'],
-                  text: 'Le contenu pédagogique.',
-                },
-                id: 'block-1',
-                position: 1,
-                type: 'RICH_TEXT',
-              },
-            ],
-            concepts: [
-              {
-                assessments: [
-                  {
-                    id: 'assessment-1',
-                    isRequired: true,
-                    position: 1,
-                    questionCount: 5,
-                    title: 'Mini-évaluation — Comprendre',
-                  },
-                ],
-                id: 'concept-1',
-                isRequired: true,
-                masteryThreshold: 70,
-                position: 1,
-                slug: 'comprendre',
-                title: 'Comprendre',
-              },
-            ],
-            estimatedMinutes: 15,
-            exercises: [],
-            id: 'lesson-1',
-            isPublished: false,
-            objectives: ['Comprendre la notion'],
-            position: 1,
-            prerequisites: [],
-            quizzes: [],
-            resources: [
-              {
-                author: 'Ada Lovelace',
-                citation: null,
-                description: 'Une lecture complémentaire.',
-                estimatedMinutes: 5,
-                id: 'resource-1',
-                isRequired: true,
-                key: 'article-reference',
-                position: 1,
-                title: 'Article de référence',
-                type: 'ARTICLE',
-                url: 'https://example.com/article',
-              },
-              {
-                author: 'Source inconnue',
-                citation: 'Citation non navigable',
-                description: null,
-                estimatedMinutes: null,
-                id: 'resource-2',
-                isRequired: false,
-                key: 'unsafe-reference',
-                position: 2,
-                title: 'Source non sûre',
-                type: 'WEBSITE',
-                url: 'javascript:alert(1)',
-              },
-            ],
-            slug: 'demarrer',
-            summary: 'Les notions essentielles.',
-            tasks: [
-              {
-                description: 'Écrire une synthèse courte.',
-                id: 'task-1',
-                isRequired: true,
-                position: 1,
-                title: 'Synthétiser',
-                type: 'WRITING',
-                weight: 1,
-              },
-            ],
-            title: 'Démarrer',
-          },
-        }),
-      );
+      return Promise.resolve(jsonResponse(lessonResponse(false)));
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -153,147 +212,108 @@ describe('LessonPage', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Démarrer' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Comprendre la notion')).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
     expect(screen.getByText('Sources de ce bloc')).toBeInTheDocument();
-    expect(screen.getAllByText('Article de référence')).toHaveLength(2);
-    expect(screen.getAllByText(/Ada Lovelace/)).toHaveLength(2);
-    expect(screen.getAllByText('Source non sûre')).toHaveLength(2);
     expect(
-      screen.getByRole('link', { name: 'Voir la source' }),
+      screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveAttribute('href', 'https://example.com/article');
     expect(
-      await screen.findByRole('link', { name: 'Consulter la ressource' }),
-    ).toHaveAttribute('href', 'https://example.com/article');
-    expect(screen.getByText('Synthétiser')).toBeInTheDocument();
-    expect(screen.getByText('Brouillon')).toBeInTheDocument();
+      screen.getByRole('link', { name: 'Ouvrir la source' }),
+    ).toHaveClass('underline');
+    expect(screen.getAllByText(/Source non sûre/)).toHaveLength(2);
+    expect(
+      screen.getAllByRole('link', { name: 'Ouvrir la source' }),
+    ).toHaveLength(1);
     expect(
       screen.getByText('Prévisualisation en lecture seule'),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'Marquer comme terminée' }),
+      screen.getByRole('navigation', { name: 'Navigation pédagogique' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Retour à la leçon' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
+    expect(
+      await screen.findByRole('dialog', { name: 'Sommaire de la leçon' }),
+    ).toHaveTextContent('Lire la référence');
+    fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
+    expect(
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Leçon : Démarrer' }),
     ).not.toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalledWith(
       '/api/lessons/lesson-1/progress',
       expect.anything(),
     );
-    expect(
-      screen.getByRole('button', { name: 'Quiz indisponible' }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole('button', { name: 'Exercice indisponible' }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole('link', {
-        name: 'Prévisualiser et passer la mini-évaluation',
-      }),
-    ).toHaveAttribute(
-      'href',
-      '/program/programme-test/lesson/demarrer/assessment?assessmentId=assessment-1',
+    const content = screen.getByText('Le contenu pédagogique.');
+    const navigation = screen.getByRole('navigation', {
+      name: 'Navigation pédagogique',
+    });
+    const noteButton = screen.getByRole('button', {
+      name: 'Prendre une note liée',
+    });
+    const previous = screen.getByText('Précédent');
+    const continueButton = screen.getByRole('button', { name: 'Continuer' });
+
+    expect(content.compareDocumentPosition(navigation)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
     );
+    expect(noteButton.compareDocumentPosition(navigation)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(screen.getAllByText('Continuer')).toHaveLength(1);
     expect(
-      screen.getByRole('button', {
-        name: 'Nouvelle note liée à cette leçon',
-      }),
-    ).toBeInTheDocument();
+      screen.queryByRole('link', { name: 'Continuer' }),
+    ).not.toBeInTheDocument();
+    expect(previous.parentElement).toBe(continueButton.parentElement);
+    expect(previous.parentElement).toHaveClass('justify-between');
+    expect(previous.compareDocumentPosition(continueButton)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+
     fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Nouvelle note liée à cette leçon',
-      }),
+      screen.getByRole('button', { name: 'Prendre une note liée' }),
     );
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/api/notes',
-      expect.objectContaining({
-        body: JSON.stringify({
-          lessonId: 'lesson-1',
-          title: 'Notes — Démarrer',
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/notes',
+        expect.objectContaining({
+          body: JSON.stringify({
+            lessonId: 'lesson-1',
+            title: 'Notes — Démarrer',
+          }),
+          method: 'POST',
         }),
-        method: 'POST',
-      }),
+      ),
     );
   });
 
-  it('met à jour une tâche avec la mutation de progression', async () => {
+  it('restaure une tâche profonde et met sa progression à jour', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/program/programme-test/lesson/demarrer?activity=task%3Atask-1',
+    );
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/notes?lessonId=lesson-1') {
-        return Promise.resolve(jsonResponse({ notes: [] }));
-      }
-
       if (path === '/api/lessons/demarrer?preview=true') {
-        return Promise.resolve(
-          jsonResponse({
-            lesson: {
-              concepts: [],
-              contentBlocks: [],
-              estimatedMinutes: null,
-              exercises: [],
-              id: 'lesson-1',
-              isPublished: true,
-              objectives: [],
-              position: 1,
-              prerequisites: [],
-              quizzes: [
-                {
-                  description: 'Vérifier les acquis.',
-                  id: 'quiz-1',
-                  isRequired: true,
-                  passingScore: 70,
-                  position: 1,
-                  questionCount: 4,
-                  title: 'Quiz de la leçon',
-                },
-              ],
-              resources: [],
-              slug: 'demarrer',
-              summary: 'Les notions essentielles.',
-              tasks: [
-                {
-                  description: null,
-                  id: 'task-1',
-                  isRequired: true,
-                  position: 1,
-                  title: 'Synthétiser',
-                  type: 'WRITING',
-                  weight: 1,
-                },
-              ],
-              title: 'Démarrer',
-            },
-          }),
-        );
+        return Promise.resolve(jsonResponse(lessonResponse(true)));
       }
-
       if (path === '/api/lessons/lesson-1/progress') {
-        return Promise.resolve(
-          jsonResponse({
-            lessonProgress: {
-              completedAt: null,
-              percent: 0,
-              startedAt: null,
-              status: 'AVAILABLE',
-            },
-            resourceProgress: {},
-            taskCompletions: {},
-          }),
-        );
+        return Promise.resolve(jsonResponse(progressResponse()));
       }
-
-      expect(init).toMatchObject({
-        body: JSON.stringify({ status: 'DONE' }),
-        method: 'PATCH',
-      });
-      return Promise.resolve(
-        jsonResponse({
-          lessonProgress: {
-            completedAt: null,
-            percent: 100,
-            startedAt: '2026-08-02T00:00:00.000Z',
-            status: 'IN_PROGRESS',
-          },
-          resourceProgress: {},
-          taskCompletions: { 'task-1': 'DONE' },
-        }),
-      );
+      if (path === '/api/tasks/task-1' && init?.method === 'PATCH') {
+        return Promise.resolve(jsonResponse(progressResponse('DONE')));
+      }
+      throw new Error(`Unexpected request: ${path}`);
     });
     vi.stubGlobal('fetch', fetchMock);
 
@@ -303,8 +323,14 @@ describe('LessonPage', () => {
       </AppProviders>,
     );
 
+    expect(
+      await screen.findByRole('heading', { name: 'Lire la référence' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('link', { name: 'Article de référence' }),
+    ).toHaveLength(2);
     fireEvent.click(
-      await screen.findByRole('button', { name: 'Marquer comme terminée' }),
+      screen.getByRole('button', { name: 'Marquer comme terminé' }),
     );
 
     expect(
@@ -312,13 +338,68 @@ describe('LessonPage', () => {
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/tasks/task-1',
-      expect.objectContaining({ method: 'PATCH' }),
+      expect.objectContaining({
+        body: JSON.stringify({ status: 'DONE' }),
+        method: 'PATCH',
+      }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
     expect(
-      screen.getByRole('link', { name: 'Commencer le quiz' }),
+      screen.getByRole('link', { name: /Mini-évaluation — Comprendre/ }),
     ).toHaveAttribute(
       'href',
-      '/program/programme-test/lesson/demarrer/quiz?quizId=quiz-1',
+      '/program/programme-test/lesson/demarrer/assessment?assessmentId=assessment-1&activity=concept_assessment%3Aassessment-1',
     );
+  });
+
+  it('explique le verrouillage sans charger ni muter la progression', async () => {
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(jsonResponse(lessonResponse(true, true))),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Leçon verrouillée' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Voir les prérequis' }),
+    ).toHaveAttribute('href', '/program/programme-test/stage/introduction');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('affiche un état hors ligne explicite sans simuler de progression', async () => {
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((path: string) =>
+        path === '/api/lessons/demarrer?preview=true'
+          ? Promise.resolve(jsonResponse(lessonResponse(true)))
+          : Promise.reject(new TypeError('Network unavailable')),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Leçon indisponible hors ligne',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Aucune progression n’a été simulée/),
+    ).toBeInTheDocument();
   });
 });

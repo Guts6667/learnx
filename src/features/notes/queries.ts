@@ -143,6 +143,27 @@ export function useNoteMutation() {
       ),
     [execute],
   );
+  const remove = useCallback(
+    async (noteId: string) => {
+      setError(undefined);
+      setIsPending(true);
 
-  return { create, error, isPending, save };
+      try {
+        await apiRequest<undefined>(
+          `/api/notes/${encodeURIComponent(noteId)}`,
+          { method: 'DELETE' },
+        );
+        queryClient.removeQueries({ queryKey: ['note', noteId] });
+        await queryClient.invalidateQueries({ queryKey: ['notes'] });
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [queryClient],
+  );
+
+  return { create, error, isPending, remove, save };
 }

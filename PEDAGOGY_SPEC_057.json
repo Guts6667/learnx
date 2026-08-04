@@ -1,0 +1,651 @@
+{
+  "specId": "PEDAGOGY_SPEC_057",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "psychopathologie",
+  "moduleSlug": "familles-troubles",
+  "lesson": {
+    "title": "Troubles psychotiques, neurodéveloppementaux et de la personnalité",
+    "slug": "troubles-psychotiques-neurodeveloppementaux-personnalite",
+    "summary": "Comparer trois familles très hétérogènes sans réduire une personne à des manifestations, un diagnostic ou un stéréotype.",
+    "objectives": [
+      "Distinguer manifestation psychotique, trouble neurodéveloppemental et difficulté durable du fonctionnement de la personnalité.",
+      "Expliquer pourquoi trajectoire, développement, culture, contexte et diagnostics différentiels sont indispensables.",
+      "Corriger des représentations stigmatisantes et formuler une orientation générale non diagnostique."
+    ],
+    "prerequisites": [
+      "Distinguer symptôme, syndrome et trouble.",
+      "Savoir qu'une classification clinique ne décrit jamais toute la personne."
+    ],
+    "estimatedMinutes": 115,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une manifestation psychotique peut concerner la perception, les convictions, la pensée, le langage, le comportement ou l'expérience de soi et du monde. Elle ne désigne pas automatiquement une schizophrénie : elle peut apparaître dans plusieurs troubles mentaux, sous l'effet de substances ou médicaments, lors d'une affection neurologique ou médicale, ou dans d'autres contextes. Durée, chronologie, fonctionnement, état physique, sommeil, consommations et signification culturelle doivent être examinés. Une expérience inhabituelle isolée ne permet pas un diagnostic.",
+          "sourceKeys": ["who-icd11-cddr", "who-schizophrenia-2025"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Psychose ne signifie ni « double personnalité » ni violence. La grande majorité des personnes vivant avec un trouble psychotique ne commettent pas de violence. Un risque ne se déduit jamais d'une étiquette : il dépend d'une combinaison de facteurs, dont antécédents de violence, consommation récente de substances, état aigu et contexte social. Les personnes concernées peuvent aussi subir violence, exclusion et violations de leurs droits. On décrit des faits observables et une situation de sécurité, sans présumer dangerosité ou incapacité.",
+          "sourceKeys": ["who-schizophrenia-2025", "youn-violence-fep-2026"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Les troubles neurodéveloppementaux commencent pendant la période développementale et concernent des profils variés de cognition, communication, attention, apprentissage, motricité ou comportement. Autisme et TDAH ne sont ni interchangeables, ni des déficits globaux, ni une maladie unique à « guérir ». Les aptitudes et besoins diffèrent fortement, peuvent évoluer et dépendent de l'environnement. L'évaluation replace les difficultés et ressources dans l'âge, le contexte, la culture et plusieurs lieux de vie ; elle recherche aussi les situations associées ou concurrentes. Le langage identitaire ou centré sur la personne doit respecter la préférence de chacun.",
+          "sourceKeys": ["who-icd11-cddr", "who-autism-2025", "faraone-adhd-2021"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "Un trouble de la personnalité ne correspond pas à un « mauvais caractère ». Dans la CIM-11, l'évaluation porte d'abord sur une perturbation durable du fonctionnement de soi et des relations, son étendue et sa gravité, puis peut préciser des domaines de traits. Un trait fréquent, un conflit ponctuel ou une conduite jugée déplaisante ne suffit pas. La stabilité dans le temps, la présence dans différents contextes, la souffrance ou le retentissement, le développement, la culture, un épisode aigu, les substances et d'autres troubles doivent être considérés. La personnalité et le fonctionnement peuvent changer : une catégorie n'est ni une identité morale ni une condamnation immuable.",
+          "sourceKeys": ["who-icd11-cddr", "mulder-personality-2021"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "Devant une personne qui s'isole, dort peu et parle de façon inhabituelle, plusieurs hypothèses restent ouvertes. Il faut demander depuis quand, ce qui a changé, comment la personne comprend l'expérience, si elle prend des substances ou médicaments, présente une confusion ou un problème médical, et si elle peut satisfaire ses besoins essentiels. Une histoire développementale ancienne peut orienter vers des besoins neurodéveloppementaux ; une rupture récente du fonctionnement appelle d'autres vérifications. Aucun vocabulaire, intérêt intense, trait relationnel ou message sur un réseau social ne permet d'attribuer à distance autisme, psychose ou trouble de la personnalité.",
+          "sourceKeys": ["who-icd11-cddr", "who-autism-2025"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "On peut proposer calmement une évaluation qualifiée lorsque des expériences inhabituelles, difficultés développementales ou perturbations durables gênent la vie quotidienne. Une apparition brutale de psychose ou confusion, une incapacité à répondre aux besoins essentiels, un danger imminent ou une détresse extrême justifient une aide urgente locale. On écoute sans ridiculiser ni confirmer comme fait une conviction inhabituelle, utilise un langage concret, demande ce qui aiderait et respecte l'autonomie autant que la sécurité le permet. Cette leçon ne permet ni diagnostic d'autrui, ni estimation clinique du risque, ni recommandation de traitement individualisée.",
+          "sourceKeys": ["who-schizophrenia-2025", "who-icd11-cddr"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "who-icd11-cddr",
+        "title": "Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders",
+        "type": "document",
+        "url": "https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf",
+        "author": "Organisation mondiale de la Santé",
+        "citation": "World Health Organization. (2024). Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders.",
+        "description": "Comparer les descriptions cliniques, frontières, éléments développementaux et culturels sans appliquer le manuel à soi ou à autrui.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "who-schizophrenia-2025",
+        "title": "Schizophrenia",
+        "type": "website",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/schizophrenia",
+        "author": "Organisation mondiale de la Santé",
+        "citation": "World Health Organization. (2025). Schizophrenia. Fact sheet, 6 October 2025.",
+        "description": "Lire le panorama actuel, les manifestations possibles, le handicap, le rétablissement et les enjeux de droits humains.",
+        "isRequired": true,
+        "estimatedMinutes": 16,
+        "position": 2
+      },
+      {
+        "key": "who-autism-2025",
+        "title": "Autism",
+        "type": "website",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders",
+        "author": "Organisation mondiale de la Santé",
+        "citation": "World Health Organization. (2025). Autism. Fact sheet, 17 September 2025.",
+        "description": "Relever la diversité des aptitudes et besoins, leur évolution et la place de l'environnement.",
+        "isRequired": true,
+        "estimatedMinutes": 16,
+        "position": 3
+      },
+      {
+        "key": "faraone-adhd-2021",
+        "title": "The World Federation of ADHD International Consensus Statement: 208 Evidence-based conclusions about the disorder",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8328933/",
+        "author": "Stephen V. Faraone et al.",
+        "citation": "Faraone, S. V., et al. (2021). The World Federation of ADHD International Consensus Statement: 208 evidence-based conclusions about the disorder. Neuroscience & Biobehavioral Reviews, 128, 789–818. https://doi.org/10.1016/j.neubiorev.2021.01.022",
+        "description": "Consulter les conclusions sur hétérogénéité, évaluation clinique et limites des raccourcis diagnostiques.",
+        "isRequired": false,
+        "estimatedMinutes": 22,
+        "position": 4
+      },
+      {
+        "key": "mulder-personality-2021",
+        "title": "ICD-11 Personality Disorders: Utility and Implications of the New Model",
+        "type": "article",
+        "url": "https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2021.655548/full",
+        "author": "Roger T. Mulder",
+        "citation": "Mulder, R. T. (2021). ICD-11 Personality Disorders: Utility and Implications of the New Model. Frontiers in Psychiatry, 12, 655548. https://doi.org/10.3389/fpsyt.2021.655548",
+        "description": "Comprendre le modèle dimensionnel par fonctionnement, gravité et domaines de traits.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 5
+      },
+      {
+        "key": "youn-violence-fep-2026",
+        "title": "Systematic Review and Meta-Analysis: Risk Factors of Violence During First-Episode Psychosis",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12662831/",
+        "author": "Sarah Youn et al.",
+      "citation": "Youn, S., Watson, A. E., Guadagno, B. L., et al. (2026). Systematic Review and Meta-Analysis: Risk Factors of Violence During First-Episode Psychosis. Trauma, Violence, & Abuse, 27(1), 256–270. https://doi.org/10.1177/15248380241309297",
+        "description": "Lire le résumé pour distinguer prévalence populationnelle, majorité non violente et facteurs de risque contextuels.",
+        "isRequired": false,
+        "estimatedMinutes": 12,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Psychose, différentiel et stigmatisation",
+        "slug": "psychose-differentiel-stigmatisation",
+        "description": "Une manifestation psychotique exige contexte et différentiel ; elle ne prédit ni schizophrénie ni violence.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["who-icd11-cddr", "who-schizophrenia-2025", "youn-violence-fep-2026"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Psychose sans amalgame", "questionCount": 5}
+      },
+      {
+        "title": "Neurodéveloppement, diversité et contexte",
+        "slug": "neurodeveloppement-diversite-contexte",
+        "description": "Les profils neurodéveloppementaux sont variés, évolutifs et indissociables du développement et de l'environnement.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["who-icd11-cddr", "who-autism-2025", "faraone-adhd-2021"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Développement sans réduction", "questionCount": 5}
+      },
+      {
+        "title": "Fonctionnement de la personnalité et dimensionalité",
+        "slug": "personnalite-fonctionnement-dimensionalite",
+        "description": "Le modèle CIM-11 décrit fonctionnement, gravité et traits sans transformer une difficulté en faute morale ou identité fixe.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["who-icd11-cddr", "mulder-personality-2021"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Personnalité sans étiquette", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Cartographier les hypothèses concurrentes",
+        "description": "Pour une vignette d'expérience inhabituelle, lister observations, chronologie, santé, substances, développement, culture et sécurité sans retenir de diagnostic.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Réécrire trois messages stigmatisants",
+        "description": "Corriger trois messages associant psychose à violence, neurodéveloppement à déficit total et personnalité à faute morale.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Construire un arbre d'orientation générale",
+        "description": "Distinguer information, consultation qualifiée et urgence locale à partir de faits observables, sans diagnostic ni choix thérapeutique.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "status": "editorial_review",
+    "version": "1.0.0",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-057-WHO-CDDR",
+        "type": "diagnostic_manual",
+        "authors": [],
+        "organization": "World Health Organization",
+        "title": "Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders",
+        "year": 2024,
+        "edition": "ICD-11 CDDR",
+        "publication": "World Health Organization",
+        "doi": null,
+        "url": "https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "CC BY-NC-ND 3.0 IGO",
+        "status": "verified",
+        "notes": "Manuel clinique officiel ; non destiné à l'autodiagnostic."
+      },
+      {
+        "id": "REF-057-WHO-SCHIZOPHRENIA",
+        "type": "official_fact_sheet",
+        "authors": [],
+        "organization": "World Health Organization",
+        "title": "Schizophrenia",
+        "year": 2025,
+        "edition": "6 October 2025",
+        "publication": "WHO Fact sheets",
+        "doi": null,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/schizophrenia",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Information publique OMS",
+        "status": "verified",
+        "notes": "Panorama actuel et droits humains."
+      },
+      {
+        "id": "REF-057-WHO-AUTISM",
+        "type": "official_fact_sheet",
+        "authors": [],
+        "organization": "World Health Organization",
+        "title": "Autism",
+        "year": 2025,
+        "edition": "17 September 2025",
+        "publication": "WHO Fact sheets",
+        "doi": null,
+        "url": "https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Information publique OMS",
+        "status": "verified",
+        "notes": "Diversité des aptitudes, besoins et parcours."
+      },
+      {
+        "id": "REF-057-FARAONE-2021",
+        "type": "consensus_statement",
+        "authors": ["Faraone, S. V.", "Banaschewski, T.", "Coghill, D.", "et al."],
+        "organization": "World Federation of ADHD",
+        "title": "The World Federation of ADHD International Consensus Statement: 208 Evidence-based conclusions about the disorder",
+        "year": 2021,
+        "edition": null,
+        "publication": "Neuroscience & Biobehavioral Reviews, 128, 789–818",
+        "doi": "10.1016/j.neubiorev.2021.01.022",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8328933/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur en libre accès via PubMed Central ; droits de l'éditeur applicables",
+        "status": "verified",
+        "notes": "Consensus international fondé sur les preuves ; diagnostic réservé à une évaluation qualifiée."
+      },
+      {
+        "id": "REF-057-MULDER-2021",
+        "type": "review_article",
+        "authors": ["Mulder, R. T."],
+        "organization": null,
+        "title": "ICD-11 Personality Disorders: Utility and Implications of the New Model",
+        "year": 2021,
+        "edition": null,
+        "publication": "Frontiers in Psychiatry, 12, 655548",
+        "doi": "10.3389/fpsyt.2021.655548",
+        "url": "https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2021.655548/full",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY",
+        "status": "verified",
+        "notes": "Présentation critique du modèle dimensionnel CIM-11."
+      },
+      {
+        "id": "REF-057-YOUN-2026",
+        "type": "systematic_review",
+        "authors": ["Youn, S.", "Watson, A. E.", "Guadagno, B. L.", "et al."],
+        "organization": null,
+        "title": "Systematic Review and Meta-Analysis: Risk Factors of Violence During First-Episode Psychosis",
+        "year": 2026,
+        "edition": null,
+        "publication": "Trauma, Violence, & Abuse, 27(1), 256–270",
+        "doi": "10.1177/15248380241309297",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12662831/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Article en libre accès via PubMed Central",
+        "status": "verified",
+        "notes": "Publication électronique en 2025, assignée au volume 27(1) de 2026. La majorité n'est jamais violente ; les associations sont hétérogènes et contextuelles."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-CDDR", "locator": "Schizophrenia or other primary psychotic disorders; differential diagnosis", "supports": "Manifestations, chronologie et diagnostics différentiels."},
+          {"referenceId": "REF-057-WHO-SCHIZOPHRENIA", "locator": "Symptoms and patterns", "supports": "Panorama des manifestations psychotiques et fonctionnelles."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel clinique actuel et fiche OMS convergente.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-SCHIZOPHRENIA", "locator": "Human rights", "supports": "Stigmatisation, discrimination et violations de droits."},
+          {"referenceId": "REF-057-YOUN-2026", "locator": "Abstract and risk factors", "supports": "Majorité non violente et risque dépendant de facteurs multiples."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Revue systématique récente et source OMS.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-CDDR", "locator": "Neurodevelopmental disorders; developmental and cultural features", "supports": "Période développementale, hétérogénéité et contextualisation."},
+          {"referenceId": "REF-057-WHO-AUTISM", "locator": "Overview; abilities and needs", "supports": "Diversité des aptitudes et besoins, évolution et environnement."},
+          {"referenceId": "REF-057-FARAONE-2021", "locator": "Diagnosis and evidence-based conclusions", "supports": "Évaluation clinique et hétérogénéité du TDAH."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources actuelles couvrant classification, autisme et TDAH.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-CDDR", "locator": "Personality disorders and related traits", "supports": "Fonctionnement, gravité, domaines de traits, contexte et différentiel."},
+          {"referenceId": "REF-057-MULDER-2021", "locator": "The ICD-11 proposal and severity of personality disturbance", "supports": "Modèle dimensionnel et primat du fonctionnement."}
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel officiel et revue spécialisée convergents.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-CDDR", "locator": "Clinical assessment and differential diagnosis across relevant chapters", "supports": "Chronologie, santé, substances, développement et culture."},
+          {"referenceId": "REF-057-WHO-AUTISM", "locator": "Assessment and variability", "supports": "Importance de l'histoire développementale et de l'hétérogénéité."}
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Vignette pédagogique synthétique soutenue par les principes d'évaluation.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {"referenceId": "REF-057-WHO-SCHIZOPHRENIA", "locator": "Care and human rights", "supports": "Accès aux soins, respect et rétablissement possible."},
+          {"referenceId": "REF-057-WHO-CDDR", "locator": "Clinical assessment", "supports": "Nécessité d'une évaluation qualifiée et non réductrice."}
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Orientation générale prudente, sans conduite thérapeutique individualisée.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "who-icd11-cddr",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-WHO-CDDR"],
+        "pedagogicalRationale": "Référence CIM-11 actuelle pour les trois familles.",
+        "learnerInstructions": "Comparer les familles et différentiels sans appliquer les exigences à une personne réelle.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "PDF texte avec sommaire.",
+        "alternativeResourceKey": null,
+        "notes": "PDF OMS vérifié."
+      },
+      {
+        "resourceKey": "who-schizophrenia-2025",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-WHO-SCHIZOPHRENIA"],
+        "pedagogicalRationale": "Panorama accessible intégrant rétablissement et droits.",
+        "learnerInstructions": "Relever les manifestations possibles et les enjeux de stigmatisation sans construire de profil-type.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Page OMS vérifiée."
+      },
+      {
+        "resourceKey": "who-autism-2025",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-WHO-AUTISM"],
+        "pedagogicalRationale": "Source actuelle centrée sur diversité, fonctionnement et soutien.",
+        "learnerInstructions": "Identifier ce qui interdit de réduire l'autisme à un déficit total ou à un profil unique.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Page OMS vérifiée."
+      },
+      {
+        "resourceKey": "faraone-adhd-2021",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-FARAONE-2021"],
+        "pedagogicalRationale": "Consensus international pour cadrer preuve et évaluation du TDAH.",
+        "learnerInstructions": "Lire l'introduction et les conclusions relatives à l'évaluation ; ne pas utiliser l'article comme auto-test.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML intégral et tableaux.",
+        "alternativeResourceKey": null,
+        "notes": "Ressource facultative."
+      },
+      {
+        "resourceKey": "mulder-personality-2021",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-MULDER-2021"],
+        "pedagogicalRationale": "Explique clairement le changement dimensionnel de la CIM-11.",
+        "learnerInstructions": "Lire les sections sur fonctionnement, gravité et traits ; éviter toute application à un proche.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML et PDF texte.",
+        "alternativeResourceKey": null,
+        "notes": "Article vérifié."
+      },
+      {
+        "resourceKey": "youn-violence-fep-2026",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": ["REF-057-YOUN-2026"],
+        "pedagogicalRationale": "Démonte l'inférence automatique psychose-dangerosité tout en gardant une lecture nuancée du risque.",
+        "learnerInstructions": "Lire le résumé et distinguer risque relatif, risque absolu et facteurs contextuels.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML intégral via PubMed Central.",
+        "alternativeResourceKey": null,
+        "notes": "Ressource facultative."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "psychose-differentiel-stigmatisation",
+        "assessmentTitle": "Mini-évaluation — Psychose sans amalgame",
+        "questions": [
+          {
+            "type": "true_false",
+            "prompt": "Une manifestation psychotique suffit à conclure à une schizophrénie.",
+            "explanation": "Elle peut apparaître dans des situations multiples ; trajectoire et différentiel sont nécessaires.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations appartiennent au différentiel d'une expérience psychotique ?",
+            "explanation": "Chronologie, substances, santé et culture participent au jugement clinique.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [{"label": "Chronologie et sommeil", "isCorrect": true, "position": 1}, {"label": "Substances ou médicaments", "isCorrect": true, "position": 2}, {"label": "Santé physique et contexte culturel", "isCorrect": true, "position": 3}, {"label": "Un stéréotype médiatique", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle affirmation sur psychose et violence est correcte ?",
+            "explanation": "La majorité n'est jamais violente et le risque ne se déduit pas d'une étiquette.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [{"label": "Le risque dépend de facteurs multiples et ne se présume pas", "isCorrect": true, "position": 1}, {"label": "Toute personne psychotique est dangereuse", "isCorrect": false, "position": 2}, {"label": "Il n'existe jamais aucun facteur de risque", "isCorrect": false, "position": 3}, {"label": "Un diagnostic prédit chaque conduite", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Comment répondre à une conviction inhabituelle ?",
+            "explanation": "Une réponse calme distingue respect de la personne et validation factuelle de la conviction.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [{"label": "Écouter calmement", "isCorrect": true, "position": 1}, {"label": "Décrire les faits observables", "isCorrect": true, "position": 2}, {"label": "Chercher une aide si la sécurité est compromise", "isCorrect": true, "position": 3}, {"label": "Ridiculiser ou confronter agressivement", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel mot désigne l'examen d'autres explications possibles ?",
+            "explanation": "Il s'agit du diagnostic différentiel.",
+            "acceptedAnswers": ["diagnostic différentiel", "diagnostic differentiel", "différentiel", "differentiel"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "neurodeveloppement-diversite-contexte",
+        "assessmentTitle": "Mini-évaluation — Développement sans réduction",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel repère est central pour un trouble neurodéveloppemental ?",
+            "explanation": "Le profil s'inscrit dans la période et l'histoire développementales.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [{"label": "L'histoire développementale", "isCorrect": true, "position": 1}, {"label": "Une vidéo isolée", "isCorrect": false, "position": 2}, {"label": "Un intérêt précis", "isCorrect": false, "position": 3}, {"label": "Un jugement moral", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un diagnostic neurodéveloppemental décrit toutes les capacités d'une personne.",
+            "explanation": "Aptitudes, difficultés et besoins sont hétérogènes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit intégrer une évaluation prudente ?",
+            "explanation": "Plusieurs contextes, ressources et situations associées sont examinés.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [{"label": "Plusieurs lieux de vie", "isCorrect": true, "position": 1}, {"label": "Les ressources et difficultés", "isCorrect": true, "position": 2}, {"label": "Culture et environnement", "isCorrect": true, "position": 3}, {"label": "Une checklist seule", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation respecte la neurodiversité ?",
+            "explanation": "Elle décrit besoins et préférences sans nier difficultés ni réduire la personne.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [{"label": "Demander les besoins et la préférence de langage", "isCorrect": true, "position": 1}, {"label": "Présumer une incapacité globale", "isCorrect": false, "position": 2}, {"label": "Promettre une guérison de l'identité", "isCorrect": false, "position": 3}, {"label": "Utiliser la même description pour tous", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel principe rappelle que les profils ne sont pas identiques ?",
+            "explanation": "Le principe est l'hétérogénéité.",
+            "acceptedAnswers": ["hétérogénéité", "heterogeneite", "diversité", "diversite"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "personnalite-fonctionnement-dimensionalite",
+        "assessmentTitle": "Mini-évaluation — Personnalité sans étiquette",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que considère d'abord le modèle CIM-11 des troubles de la personnalité ?",
+            "explanation": "Il évalue le fonctionnement de soi et interpersonnel ainsi que la gravité.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [{"label": "Le fonctionnement et la gravité", "isCorrect": true, "position": 1}, {"label": "La sympathie ressentie", "isCorrect": false, "position": 2}, {"label": "Un défaut moral", "isCorrect": false, "position": 3}, {"label": "Un conflit isolé", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un trait marqué suffit toujours à diagnostiquer un trouble de la personnalité.",
+            "explanation": "Il faut une perturbation durable du fonctionnement avec contexte, étendue et retentissement.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions évitent l'étiquette hâtive ?",
+            "explanation": "Temps, contextes, culture et différentiel sont indispensables.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [{"label": "Stabilité dans le temps", "isCorrect": true, "position": 1}, {"label": "Présence dans plusieurs contextes", "isCorrect": true, "position": 2}, {"label": "Culture et diagnostics différentiels", "isCorrect": true, "position": 3}, {"label": "Une dispute récente", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi l'expression « personnalité toxique » est-elle inadéquate ici ?",
+            "explanation": "Elle moralise et fige au lieu de décrire un fonctionnement clinique contextualisé.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [{"label": "Elle transforme une description en condamnation morale", "isCorrect": true, "position": 1}, {"label": "Elle est un diagnostic CIM-11", "isCorrect": false, "position": 2}, {"label": "Elle mesure la gravité", "isCorrect": false, "position": 3}, {"label": "Elle remplace l'évaluation", "isCorrect": false, "position": 4}]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme décrit un modèle organisé par degrés plutôt que par cases fixes ?",
+            "explanation": "Le modèle est dimensionnel.",
+            "acceptedAnswers": ["dimensionnel", "modèle dimensionnel", "modele dimensionnel", "dimensionalité"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychopathologie, neurodéveloppement et lutte contre la stigmatisation requise.",
+        "L'étape psychopathologie et le module familles-troubles sont absents du seed actuel.",
+        "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "Panorama non diagnostique : aucune checklist d'auto-étiquetage, estimation individuelle du risque ou recommandation thérapeutique.",
+        "Vérifier avant publication les formulations sur culture, neurodiversité, violence, droits humains et urgence locale."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de la leçon et de ses évaluations.",
+        "reviewRequired": "technical_editorial_clinical_neurodevelopmental_personality_and_anti_stigma_review"
+      }
+    ]
+  }
+}

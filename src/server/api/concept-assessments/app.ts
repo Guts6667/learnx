@@ -17,7 +17,11 @@ import {
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
-import { refreshStageValidation } from '../_lib/stage-validation.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
+import { ensureCurrentModuleRunForLesson } from '../_lib/module-runs.js';
 
 interface AssessmentQuestionReadModel {
   acceptedAnswers: string[];
@@ -56,6 +60,7 @@ interface AttemptReadModel {
   passed: boolean;
   score: number;
   submittedAt: Date;
+  runSequence?: number;
 }
 
 interface RecordedAttempt {
@@ -205,11 +210,13 @@ function serializeAttempt(attempt: AttemptReadModel) {
     passed: attempt.passed,
     score: attempt.score,
     submittedAt: attempt.submittedAt,
+    runSequence: attempt.runSequence ?? 1,
   };
 }
 
 export function createPrismaRepository(
   client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
 ): ConceptAssessmentRepository {
   return {
     async findAssessmentForUser(assessmentId, userId, preview) {
@@ -277,13 +284,24 @@ export function createPrismaRepository(
       };
     },
     async listAttempts(assessmentId, userId) {
-      return client.conceptAssessmentAttempt.findMany({
+      const attempts = await client.conceptAssessmentAttempt.findMany({
         where: { assessmentId, userId },
         orderBy: { submittedAt: 'desc' },
+        include: { moduleRun: { select: { sequence: true } } },
       });
+      return attempts.map(({ moduleRun, ...attempt }) => ({
+        ...attempt,
+        runSequence: moduleRun.sequence,
+      }));
     },
     async recordAttempt(input) {
-      return client.$transaction(async (transaction) => {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const moduleRun = await ensureCurrentModuleRunForLesson(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+        );
         const currentProgress = await transaction.conceptProgress.findUnique({
           where: {
             userId_conceptId: {
@@ -296,9 +314,12 @@ export function createPrismaRepository(
           currentProgress?.bestScore ?? 0,
           input.score,
         );
-        const status = input.passed
-          ? ConceptProgressStatus.VALIDATED
-          : ConceptProgressStatus.NEEDS_REVIEW;
+        const wasValidated =
+          currentProgress?.status === ConceptProgressStatus.VALIDATED;
+        const status =
+          input.passed || wasValidated
+            ? ConceptProgressStatus.VALIDATED
+            : ConceptProgressStatus.NEEDS_REVIEW;
         const validatedAt = input.passed
           ? input.submittedAt
           : (currentProgress?.validatedAt ?? null);
@@ -307,6 +328,7 @@ export function createPrismaRepository(
             data: {
               answers: input.answers,
               assessmentId: input.assessmentId,
+              moduleRunId: moduleRun.id,
               passed: input.passed,
               score: input.score,
               submittedAt: input.submittedAt,
@@ -375,7 +397,20 @@ export function createPrismaRepository(
           });
         }
 
-        return { attempt, progress };
+        const lessonProgress = await recalculateProgress(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+          { requirePublished: false },
+        );
+
+        if (!lessonProgress) throw notFound();
+
+        return {
+          attempt: { ...attempt, runSequence: moduleRun.sequence },
+          progress,
+        };
       });
     },
   };
@@ -393,13 +428,7 @@ export function createConceptAssessmentsApp(
   const app = new Hono<AuthEnvironment>();
   const now = options.now ?? (() => new Date());
   const refreshValidation =
-    options.refreshValidation ??
-    (options.repository
-      ? async () => undefined
-      : async (stageId: string, userId: string, refreshedAt: Date) => {
-          const { prisma } = await import('../../prisma.js');
-          await refreshStageValidation(prisma, stageId, userId, refreshedAt);
-        });
+    options.refreshValidation ?? (async () => undefined);
 
   app.use('*', options.authentication ?? requireUser);
 

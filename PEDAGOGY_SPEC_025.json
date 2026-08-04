@@ -1,0 +1,340 @@
+{
+  "specId": "PEDAGOGY_SPEC_025",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "etudier-cerveau-comportement",
+  "lesson": {
+    "title": "Lésions, neuropsychologie et études de cas",
+    "slug": "lesions-neuropsychologie-cas",
+    "summary": "Les lésions offrent une expérience naturelle précieuse pour tester quelles composantes cérébrales sont nécessaires à une fonction, mais elles ne découpent ni le cerveau ni l'esprit en modules simples. Cette leçon articule logique causale, dissociations, études de cas et séries de cas, réseaux, diaschisis, plasticité, généralisation et protection des personnes.",
+    "objectives": [
+      "Distinguer l'inférence permise par une lésion naturelle de celle permise par une lésion expérimentale et expliciter leurs contraintes causales et éthiques.",
+      "Interpréter une dissociation et une double dissociation en contrôlant difficulté, fidélité et sensibilité des tâches.",
+      "Comparer étude de cas unique, série de cas et cartographie de groupes selon la question, la variabilité et la généralisation visée.",
+      "Expliquer comment déconnexion, diaschisis et plasticité limitent l'équation entre site lésé et fonction perdue.",
+      "Formuler une conclusion neuropsychologique prudente sans inférence inverse abusive et protéger consentement, vie privée et confidentialité."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité, variable confondante et validité externe.",
+      "Décrire le cerveau comme un ensemble de structures et de réseaux connectés plutôt que comme une collection de centres indépendants."
+    ],
+    "estimatedMinutes": 180,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "La méthode lésionnelle relie une modification anatomique à une modification de performance. Chez l'humain, les accidents vasculaires, traumatismes, tumeurs ou résections cliniquement nécessaires constituent des lésions naturelles : le chercheur ne les assigne pas. Dans certains modèles non humains, une lésion expérimentale permet de mieux contrôler le site, le moment et la comparaison, mais elle impose des obligations de bien-être et ne garantit pas le transfert à l'humain. Lorsque l'apparition d'une lésion précède un déficit bien mesuré, l'observation peut soutenir qu'un tissu ou un réseau intact était nécessaire à la performance dans ces conditions. Elle ne prouve pas que ce tissu suffit à produire la fonction, qu'il en est le siège exclusif, ni que tout dommage similaire donnera le même profil.",
+          "sourceKeys": ["vaidya-lesion-studies-2019", "moore-lesion-mapping-guide-2024", "wma-helsinki-2024"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une dissociation simple apparaît lorsqu'une personne réussit nettement mieux une tâche B qu'une tâche A. Elle suggère que les deux tâches ne sollicitent pas exactement les mêmes opérations, mais peut aussi refléter une différence de difficulté, de fidélité ou de sensibilité. Une double dissociation ajoute un second cas présentant le profil inverse : A relativement préservée et B altérée. Elle renforce l'hypothèse de composantes au moins partiellement distinctes, sans démontrer à elle seule deux modules anatomiques isolés ni éliminer les différences préalables entre personnes.",
+          "sourceKeys": ["castles-cognitive-neuropsychology-2014", "vaidya-lesion-studies-2019"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "L'étude de cas permet une description fine d'un profil rare, de ses erreurs et de son évolution. Une série de cas cherche ensuite si le mécanisme proposé se retrouve malgré l'hétérogénéité ; une analyse de groupe peut estimer des associations plus générales entre lésions et scores. Aucune stratégie ne remplace les autres. Les lésions naturelles ne sont ni aléatoires ni uniformes : l'anatomie vasculaire, la taille et l'étiologie corrèlent les zones endommagées. Les traitements, atteintes diffuses, sélections de patients et mesures choisies peuvent aussi expliquer une partie du déficit. Une réplication avec le même biais anatomique ne le supprime pas.",
+          "sourceKeys": ["moore-lesion-mapping-guide-2024", "mah-lesion-inference-2014", "vaidya-lesion-studies-2019"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Une lésion focale peut perturber des connexions et modifier l'activité de régions distantes : c'est l'une des formes de diaschisis. Le symptôme peut donc dépendre d'un réseau plutôt que du seul volume détruit. Son expression change aussi avec l'œdème, la récupération spontanée, l'apprentissage de stratégies et la plasticité. Comparer phase aiguë et phase chronique renseigne des états différents. Une récupération ne démontre pas que la zone lésée était inutile ; une absence initiale de déficit ne suffit pas non plus si la tâche manque de sensibilité ou si d'autres voies compensent.",
+          "sourceKeys": ["joutsa-lesion-network-mapping-2022", "prigatano-neuroplasticity-2021"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 5,
+        "content": {
+          "text": "L'inférence prospective part d'une fonction ou d'un modèle et demande si une lésion précise altère une performance définie. L'inférence inverse part d'une zone lésée ou activée et affirme directement quel processus mental est engagé ou perdu. Elle est fragile lorsque la zone participe à plusieurs réseaux et que sa sélectivité n'est pas établie. Une conclusion robuste combine profil comportemental, chronologie, anatomie de la lésion, connectivité, comparaisons appropriées et méthodes convergentes. Elle précise la nécessité observée, les alternatives et la population à laquelle elle peut se généraliser.",
+          "sourceKeys": ["vaidya-lesion-studies-2019", "poldrack-reverse-inference-2011", "moore-lesion-mapping-guide-2024"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Une personne ayant une lésion n'est ni une démonstration publique ni un pseudonyme suffisant. La participation et l'usage de données identifiables requièrent l'information et le consentement applicables, ainsi que l'examen éthique prévu. Les descriptions, images et combinaisons rares de détails peuvent permettre une réidentification même sans nom. Un compte rendu ne conserve que les informations nécessaires à la question, protège vie privée et confidentialité, indique les limites et évite les récits sensationnalistes. Le consentement ne transfère jamais la responsabilité de protection au participant.",
+          "sourceKeys": ["wma-helsinki-2024", "care-case-report-checklist"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "vaidya-lesion-studies-2019",
+        "type": "article",
+        "title": "Lesion Studies in Contemporary Neuroscience",
+        "author": "Avinash R. Vaidya, Maia S. Pujara, Michael Petrides, Elisabeth A. Murray et Lesley K. Fellows",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6712987/",
+        "citation": "Vaidya, A. R., Pujara, M. S., Petrides, M., Murray, E. A., & Fellows, L. K. (2019). Lesion studies in contemporary neuroscience. Trends in Cognitive Sciences, 23(8), 653–671. https://doi.org/10.1016/j.tics.2019.05.009",
+        "description": "Lire What inferences can lesion studies support? et les sections sur limites et triangulation ; dresser deux colonnes « nécessité soutenue » et « conclusion non permise ».",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "castles-cognitive-neuropsychology-2014",
+        "type": "article",
+        "title": "Developmental disorders: what can be learned from cognitive neuropsychology?",
+        "author": "Anne Castles, Saskia Kohnen, Lyndsey Nickels et Jon Brock",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3866432/",
+        "citation": "Castles, A., Kohnen, S., Nickels, L., & Brock, J. (2014). Developmental disorders: What can be learned from cognitive neuropsychology? Philosophical Transactions of the Royal Society B, 369(1634), 20130407. https://doi.org/10.1098/rstb.2013.0407",
+        "description": "Lire The cognitive neuropsychological approach et Dissociations and their reliability ; distinguer cas unique, dissociation, double dissociation et explications concurrentes.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "moore-lesion-mapping-guide-2024",
+        "type": "article",
+        "title": "Lesion mapping in neuropsychological research: A practical and conceptual guide",
+        "author": "Margaret J. Moore, Nele Demeyere, Chris Rorden et Jason B. Mattingley",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11474248/",
+        "citation": "Moore, M. J., Demeyere, N., Rorden, C., & Mattingley, J. B. (2024). Lesion mapping in neuropsychological research: A practical and conceptual guide. Cortex, 170, 38–52. https://doi.org/10.1016/j.cortex.2023.10.001",
+        "description": "Lire l'histoire des cas et les limites de la cartographie lésion-symptôme ; relever les biais de couverture, de taille, d'étiologie et d'analyse.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 3
+      },
+      {
+        "key": "mah-lesion-inference-2014",
+        "type": "article",
+        "title": "Human brain lesion-deficit inference remapped",
+        "author": "Yee-Haur Mah, Masud Husain, Geraint Rees et Parashkev Nachev",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4132645/",
+        "citation": "Mah, Y.-H., Husain, M., Rees, G., & Nachev, P. (2014). Human brain lesion-deficit inference remapped. Brain, 137(9), 2522–2531. https://doi.org/10.1093/brain/awu164",
+        "description": "Lire le résumé et l'explication du biais vasculaire ; expliquer pourquoi une zone collatéralement atteinte peut être localisée à tort comme critique.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 4
+      },
+      {
+        "key": "joutsa-lesion-network-mapping-2022",
+        "type": "article",
+        "title": "Lesion network mapping for symptom localization: recent developments and future directions",
+        "author": "Juho Joutsa, Daniel T. Corp et Michael D. Fox",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9724189/",
+        "citation": "Joutsa, J., Corp, D. T., & Fox, M. D. (2022). Lesion network mapping for symptom localization: Recent developments and future directions. Current Opinion in Neurology, 35(4), 453–459. https://doi.org/10.1097/WCO.0000000000001085",
+        "description": "Lire le résumé, l'introduction et les limites ; reformuler le passage d'une localisation ponctuelle à une hypothèse de circuit sans présenter la méthode comme définitive.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      },
+      {
+        "key": "prigatano-neuroplasticity-2021",
+        "type": "article",
+        "title": "Neuropsychological rehabilitation, neuroimaging and neuroplasticity: A clinical commentary",
+        "author": "George P. Prigatano, Lucia W. Braga, Spring Flores Johnson et Lígia M. N. Souza",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8543255/",
+        "citation": "Prigatano, G. P., Braga, L. W., Johnson, S. F., & Souza, L. M. N. (2021). Neuropsychological rehabilitation, neuroimaging and neuroplasticity: A clinical commentary. NeuroRehabilitation, 49(2), 255–265. https://doi.org/10.3233/NRE-218024",
+        "description": "Lire A definition of neuroplasticity et Diaschisis and neuroplasticity ; séparer dommage direct, dysfonction distante, récupération spontanée et changement associé à la réhabilitation.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 6
+      },
+      {
+        "key": "poldrack-reverse-inference-2011",
+        "type": "article",
+        "title": "Inferring mental states from neuroimaging data: From reverse inference to large-scale decoding",
+        "author": "Russell A. Poldrack",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3240863/",
+        "citation": "Poldrack, R. A. (2011). Inferring mental states from neuroimaging data: From reverse inference to large-scale decoding. Neuron, 72(5), 692–697. https://doi.org/10.1016/j.neuron.2011.11.001",
+        "description": "Lire l'introduction et le cadre probabiliste ; expliquer pourquoi l'association d'une région à plusieurs processus limite l'inférence d'un état mental à partir de cette région.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 7
+      },
+      {
+        "key": "wma-helsinki-2024",
+        "type": "document",
+        "title": "Declaration of Helsinki — Medical Research Involving Human Participants",
+        "author": "World Medical Association",
+        "url": "https://www.wma.net/what-we-do/medical-ethics/declaration-of-helsinki/",
+        "citation": "World Medical Association. (2024). Declaration of Helsinki: Ethical principles for medical research involving human participants. Version adoptée en octobre 2024.",
+        "description": "Lire les principes sur consentement, vie privée, confidentialité, protocole et responsabilité du chercheur ; les appliquer à l'usage de données neuropsychologiques identifiables.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 8
+      },
+      {
+        "key": "care-case-report-checklist",
+        "type": "document",
+        "title": "CARE Checklist — 2013",
+        "author": "CARE Case Report Guidelines",
+        "url": "https://www.care-statement.org/checklist",
+        "citation": "CARE Case Report Guidelines. (2013). CARE Checklist.",
+        "description": "Consulter Patient information et Informed consent ; vérifier qu'un cas pédagogique ou publiable ne conserve que les détails nécessaires et documente le consentement requis.",
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 9
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Inférence lésionnelle et nécessité causale",
+        "slug": "inference-lesionnelle-necessite",
+        "description": "Une lésion précédant un déficit peut soutenir la nécessité d'un tissu ou réseau dans des conditions définies, mais les lésions naturelles non assignées et les lésions expérimentales animales ont des biais, limites de transfert et obligations distincts.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["vaidya-lesion-studies-2019", "moore-lesion-mapping-guide-2024", "mah-lesion-inference-2014"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Inférence lésionnelle", "questionCount": 5}
+      },
+      {
+        "title": "Dissociations, cas et séries de cas",
+        "slug": "dissociations-cas-series",
+        "description": "Dissociation et double dissociation décrivent des profils comparés ; les cas détaillent les mécanismes possibles et les séries examinent leur récurrence sans effacer la variabilité individuelle.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["castles-cognitive-neuropsychology-2014", "vaidya-lesion-studies-2019", "moore-lesion-mapping-guide-2024"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Dissociations et cas", "questionCount": 5}
+      },
+      {
+        "title": "Réseaux, généralisation et éthique",
+        "slug": "reseaux-generalisation-ethique",
+        "description": "Diaschisis, déconnexion, plasticité et sélectivité fonctionnelle limitent la localisation simple et l'inférence inverse ; toute étude protège consentement, vie privée et confidentialité.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["joutsa-lesion-network-mapping-2022", "prigatano-neuroplasticity-2021", "poldrack-reverse-inference-2011", "wma-helsinki-2024", "care-case-report-checklist"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Réseaux, limites et éthique", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Construire une inférence lésionnelle prudente",
+        "description": "Pour un cas fictif présentant un déficit mnésique après un AVC, produire un tableau séparant chronologie, performance, localisation, étiologie, variables confondantes, comparaison et méthodes convergentes ; rédiger une conclusion de nécessité conditionnelle et trois conclusions non permises.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Tester une double dissociation",
+        "description": "Les contrôles obtiennent 85–95 aux tâches A et B ; le cas 1 obtient A=22, B=91 et le cas 2 A=89, B=27. Évaluer si le profil soutient une double dissociation, puis demander les fidélités, distributions de contrôle, difficultés, lésions et réplications nécessaires avant d'inférer deux composantes distinctes.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer un récit neuropsychologique",
+        "description": "Réviser un compte rendu fictif qui conclut « l'amygdale est le centre de la peur » à partir d'un cas, publie une image et des détails biographiques rares. Identifier inférence inverse, effets de réseau, moment de mesure, généralisation abusive et risques de réidentification ; proposer un titre, une conclusion et une version minimisée des données.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-025-VAIDYA", "type": "review_article", "authors": ["Vaidya, A. R.", "Pujara, M. S.", "Petrides, M.", "Murray, E. A.", "Fellows, L. K."], "organization": "Trends in Cognitive Sciences / PubMed Central", "title": "Lesion Studies in Contemporary Neuroscience", "year": 2019, "edition": null, "publication": "Trends in Cognitive Sciences, 23(8), 653–671", "doi": "https://doi.org/10.1016/j.tics.2019.05.009", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6712987/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue méthodologique centrale sur force causale, limites, lésions humaines naturelles et lésions expérimentales non humaines."},
+      {"id": "REF-025-CASTLES", "type": "review_article", "authors": ["Castles, A.", "Kohnen, S.", "Nickels, L.", "Brock, J."], "organization": "The Royal Society / PubMed Central", "title": "Developmental disorders: what can be learned from cognitive neuropsychology?", "year": 2014, "edition": null, "publication": "Philosophical Transactions of the Royal Society B, 369(1634), 20130407", "doi": "https://doi.org/10.1098/rstb.2013.0407", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3866432/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Article ouvert sur PubMed Central ; licence de la Royal Society indiquée dans l'article", "status": "verified", "notes": "Utilisé pour la logique des cas, dissociations et doubles dissociations ; les enjeux développementaux ne sont pas généralisés aux lésions acquises."},
+      {"id": "REF-025-MOORE", "type": "review_article", "authors": ["Moore, M. J.", "Demeyere, N.", "Rorden, C.", "Mattingley, J. B."], "organization": "Cortex / PubMed Central", "title": "Lesion mapping in neuropsychological research: A practical and conceptual guide", "year": 2024, "edition": null, "publication": "Cortex, 170, 38–52", "doi": "https://doi.org/10.1016/j.cortex.2023.10.001", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11474248/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Guide méthodologique récent pour cas, cartographie et biais de couverture et d'analyse."},
+      {"id": "REF-025-MAH", "type": "primary_article", "authors": ["Mah, Y.-H.", "Husain, M.", "Rees, G.", "Nachev, P."], "organization": "Oxford University Press / PubMed Central", "title": "Human brain lesion-deficit inference remapped", "year": 2014, "edition": null, "publication": "Brain, 137(9), 2522–2531", "doi": "https://doi.org/10.1093/brain/awu164", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4132645/", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Article ouvert sur PubMed Central ; conditions Oxford University Press", "status": "verified", "notes": "Étude méthodologique sur 581 lésions ischémiques et biais multivarié lié notamment à l'anatomie vasculaire."},
+      {"id": "REF-025-JOUTSA", "type": "review_article", "authors": ["Joutsa, J.", "Corp, D. T.", "Fox, M. D."], "organization": "Current Opinion in Neurology / PubMed Central", "title": "Lesion network mapping for symptom localization: recent developments and future directions", "year": 2022, "edition": null, "publication": "Current Opinion in Neurology, 35(4), 453–459", "doi": "https://doi.org/10.1097/WCO.0000000000001085", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9724189/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue spécialisée pour déconnexion, diaschisis et passage du foyer lésionnel au réseau ; limites méthodologiques conservées."},
+      {"id": "REF-025-PRIGATANO", "type": "review_article", "authors": ["Prigatano, G. P.", "Braga, L. W.", "Johnson, S. F.", "Souza, L. M. N."], "organization": "NeuroRehabilitation / PubMed Central", "title": "Neuropsychological rehabilitation, neuroimaging and neuroplasticity: A clinical commentary", "year": 2021, "edition": null, "publication": "NeuroRehabilitation, 49(2), 255–265", "doi": "https://doi.org/10.3233/NRE-218024", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8543255/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC 4.0", "status": "verified", "notes": "Commentaire clinique et revue sélective ; utilisé prudemment pour définir plasticité, récupération spontanée et diaschisis, non pour estimer un effet thérapeutique."},
+      {"id": "REF-025-POLDRACK", "type": "review_article", "authors": ["Poldrack, R. A."], "organization": "Neuron / PubMed Central", "title": "Inferring mental states from neuroimaging data: From reverse inference to large-scale decoding", "year": 2011, "edition": null, "publication": "Neuron, 72(5), 692–697", "doi": "https://doi.org/10.1016/j.neuron.2011.11.001", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3240863/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; copyright Elsevier", "status": "verified", "notes": "Perspective méthodologique centrée sur l'imagerie fonctionnelle, utilisée uniquement pour formaliser la limite de l'inférence inverse."},
+      {"id": "REF-025-WMA", "type": "official_guideline", "authors": ["World Medical Association"], "organization": "World Medical Association", "title": "Declaration of Helsinki: Ethical principles for medical research involving human participants", "year": 2024, "edition": "révision d'octobre 2024", "publication": "World Medical Association", "doi": null, "url": "https://www.wma.net/what-we-do/medical-ethics/declaration-of-helsinki/", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Document officiel consultable en ligne ; droits WMA", "status": "verified", "notes": "Version 2024 courante ; les versions antérieures sont remplacées selon la WMA."},
+      {"id": "REF-025-CARE", "type": "official_guideline", "authors": ["CARE Case Report Guidelines"], "organization": "CARE Case Report Guidelines", "title": "CARE Checklist", "year": 2013, "edition": "checklist 2013", "publication": "CARE Statement", "doi": null, "url": "https://www.care-statement.org/checklist", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Checklist officielle consultable en ligne", "status": "verified", "notes": "Utilisée seulement pour les éléments de compte rendu de cas et l'exigence de consentement éclairé."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-025-VAIDYA", "locator": "What inferences can lesion studies support? et sections sur limites des lésions humaines et expérimentales", "supports": "Inférence de nécessité, distinction association-nécessité, contrôle expérimental non humain et limites de suffisance, d'exclusivité et de transfert."}, {"referenceId": "REF-025-MOORE", "locator": "sections 1 et 2 sur approches par cas et cartographie lésionnelle", "supports": "Origines naturelles diverses et conditions d'interprétation des relations lésion-comportement."}, {"referenceId": "REF-025-WMA", "locator": "version 2024, principe 21", "supports": "Exigence de respect du bien-être animal dans la recherche appropriée."}], "confidence": "high", "confidenceRationale": "Deux revues méthodologiques spécialisées et une norme éthique convergent ; nécessité, contrôle, transfert et protection sont distingués.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-025-CASTLES", "locator": "section 2, The cognitive neuropsychological approach, et section 3.a.i", "supports": "Définition, intérêt et limites des dissociations et doubles dissociations."}, {"referenceId": "REF-025-VAIDYA", "locator": "sections sur neuropsychologie cognitive, cas et inférences", "supports": "Portée fonctionnelle des profils lésionnels et limites des architectures modulaires simples."}], "confidence": "high", "confidenceRationale": "Les sources décrivent la même logique et les explications concurrentes liées aux tâches et aux individus.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-025-MOORE", "locator": "sections sur single case approaches, mass univariate lesion mapping et methodological limitations", "supports": "Complémentarité des cas et groupes et biais d'étiologie, couverture, volume et analyse."}, {"referenceId": "REF-025-MAH", "locator": "résumé, introduction et résultats de simulation", "supports": "Distorsion de la localisation par la structure multivariée des lésions ischémiques et anatomie vasculaire."}, {"referenceId": "REF-025-VAIDYA", "locator": "Limitations of human lesion studies et Concluding remarks", "supports": "Hétérogénéité, traitements, étiologie, échantillons et besoin de méthodes convergentes."}], "confidence": "high", "confidenceRationale": "Guide récent, étude méthodologique primaire et revue générale convergent sur les biais non aléatoires.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-025-JOUTSA", "locator": "résumé, introduction et principe de lesion network mapping", "supports": "Effets distants, déconnexion, diaschisis et localisation au niveau des circuits."}, {"referenceId": "REF-025-PRIGATANO", "locator": "sections 3, 7 et 9", "supports": "Définitions de plasticité, récupération spontanée, diaschisis et limites d'interprétation clinique."}], "confidence": "high", "confidenceRationale": "Revue de réseaux et commentaire clinique convergent ; les effets de temps sont distingués sans promesse de récupération.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-025-VAIDYA", "locator": "What inferences can lesion studies support? et Concluding remarks", "supports": "Nécessité, triangulation et limites propres à chaque méthode."}, {"referenceId": "REF-025-POLDRACK", "locator": "Introduction et A probabilistic framework for inference in neuroimaging", "supports": "Définition de l'inférence inverse et rôle de la sélectivité fonctionnelle."}, {"referenceId": "REF-025-MOORE", "locator": "sections conceptuelles et limites de la cartographie", "supports": "Conditions de généralisation et besoin de relier mesure comportementale, lésion et méthode."}], "confidence": "high", "confidenceRationale": "La limite de l'inférence inverse vient de l'imagerie mais est explicitement transposée avec prudence aux récits lésionnels ; la triangulation repose sur deux revues lésionnelles.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-025-WMA", "locator": "version 2024, principes 9, 21, 22 et 26 sur protection, protocole et consentement", "supports": "Responsabilité du chercheur, consentement, vie privée, confidentialité et minimisation des risques."}, {"referenceId": "REF-025-CARE", "locator": "CARE Checklist, Patient information et Informed consent", "supports": "Sélection des informations de cas et consentement éclairé pour la publication."}], "confidence": "very_high", "confidenceRationale": "Documents officiels courants ; le texte reste au niveau des obligations générales et renvoie aux règles applicables.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "vaidya-lesion-studies-2019", "referenceIds": ["REF-025-VAIDYA"], "pedagogicalRationale": "Revue ouverte couvrant forces, limites et complémentarité des méthodes lésionnelles.", "learnerInstructions": "Distinguer ce que la nécessité permet d'affirmer de la suffisance, de l'exclusivité et de la généralisation.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "castles-cognitive-neuropsychology-2014", "referenceIds": ["REF-025-CASTLES"], "pedagogicalRationale": "Présentation ouverte et précise de la logique des cas, dissociations et doubles dissociations.", "learnerInstructions": "Lire seulement les sections indiquées et transférer la logique méthodologique, non les conclusions propres au développement.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "moore-lesion-mapping-guide-2024", "referenceIds": ["REF-025-MOORE"], "pedagogicalRationale": "Guide récent et ouvert reliant histoire des cas, méthodes de groupe et biais contemporains.", "learnerInstructions": "Construire une grille biais-conséquence-correction à partir des sections ciblées.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML ouvert sur PubMed Central ; PDF disponible.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "mah-lesion-inference-2014", "referenceIds": ["REF-025-MAH"], "pedagogicalRationale": "Étude primaire illustrant concrètement un biais invisible à la réplication conventionnelle.", "learnerInstructions": "Lire résumé et schémas explicatifs ; ne pas généraliser la magnitude observée à toute étiologie.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."},
+      {"resourceKey": "joutsa-lesion-network-mapping-2022", "referenceIds": ["REF-025-JOUTSA"], "pedagogicalRationale": "Revue ouverte pour passer du foyer à une hypothèse de réseau et comprendre diaschisis et déconnexion.", "learnerInstructions": "Identifier hypothèse, données ajoutées par le connectome et limites de validation.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "prigatano-neuroplasticity-2021", "referenceIds": ["REF-025-PRIGATANO"], "pedagogicalRationale": "Texte ouvert pour distinguer plasticité, récupération spontanée, diaschisis et changement associé à une intervention.", "learnerInstructions": "Séparer mécanismes proposés et preuves d'efficacité ; relever les limites déclarées par les auteurs.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; commentaire clinique et revue sélective."},
+      {"resourceKey": "poldrack-reverse-inference-2011", "referenceIds": ["REF-025-POLDRACK"], "pedagogicalRationale": "Cadre ouvert pour reconnaître une inférence inverse et le rôle de la sélectivité.", "learnerInstructions": "Transposer uniquement la structure logique, en distinguant clairement activation fonctionnelle et lésion.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative centrée sur l'imagerie fonctionnelle."},
+      {"resourceKey": "wma-helsinki-2024", "referenceIds": ["REF-025-WMA"], "pedagogicalRationale": "Norme officielle courante pour ancrer protection, consentement et responsabilité.", "learnerInstructions": "Appliquer les principes 9, 21, 22 et 26 à un dossier neuropsychologique fictif.", "language": "en", "accessType": "open", "accessibilityNotes": "Page officielle HTML ; PDF et traductions disponibles depuis la page.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "care-case-report-checklist", "referenceIds": ["REF-025-CARE"], "pedagogicalRationale": "Checklist officielle courte pour le contenu minimal et le consentement d'un compte rendu de cas.", "learnerInstructions": "Contrôler Patient information et Informed consent, sans assimiler conformité de forme et approbation éthique complète.", "language": "en", "accessType": "open", "accessibilityNotes": "Page HTML courte et checklist téléchargeable.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "inference-lesionnelle-necessite",
+        "assessmentTitle": "Mini-évaluation — Inférence lésionnelle",
+        "questions": [
+          {"type": "single_choice", "prompt": "Une lésion focale précède un déficit mesuré sur une tâche sensible. Quelle conclusion est la plus prudente ?", "explanation": "L'observation peut soutenir la nécessité du tissu ou réseau intact dans ces conditions, sans établir suffisance ni exclusivité.", "acceptedAnswers": [], "position": 1, "options": [{"label": "La région ou le réseau était nécessaire à cette performance dans les conditions étudiées", "isCorrect": true, "position": 1}, {"label": "La région produit seule toute la fonction", "isCorrect": false, "position": 2}, {"label": "Toute personne avec cette lésion aura le même déficit", "isCorrect": false, "position": 3}, {"label": "Aucun autre réseau ne participe à la tâche", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une lésion naturelle humaine est une manipulation aléatoirement assignée par le chercheur.", "explanation": "Le chercheur observe une atteinte survenue pour des raisons cliniques ou accidentelles ; localisation, taille et étiologie ne sont pas randomisées.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels éléments peuvent confondre une relation lésion-déficit ?", "explanation": "Étiologie et anatomie corrélée, traitements, atteintes additionnelles et propriétés des tâches peuvent contribuer au résultat.", "acceptedAnswers": [], "position": 3, "options": [{"label": "L'anatomie vasculaire et la taille de la lésion", "isCorrect": true, "position": 1}, {"label": "Les médicaments et atteintes diffuses", "isCorrect": true, "position": 2}, {"label": "La fidélité et la difficulté des tâches", "isCorrect": true, "position": 3}, {"label": "Le seul ordre alphabétique des participants", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel avantage principal une lésion expérimentale contrôlée peut-elle offrir par rapport à une lésion naturelle ?", "explanation": "Dans les modèles où elle est éthiquement autorisée, la manipulation peut mieux contrôler site, moment et comparaison, mais son transfert reste limité.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Un meilleur contrôle de la manipulation et de la comparaison", "isCorrect": true, "position": 1}, {"label": "Une généralisation automatique de l'animal à l'humain", "isCorrect": false, "position": 2}, {"label": "L'absence de toute obligation éthique", "isCorrect": false, "position": 3}, {"label": "La preuve qu'une région suffit à toute fonction", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme décrit l'idée qu'un tissu ou réseau intact est requis pour une performance, sans dire qu'il suffit à la produire ?", "explanation": "Il s'agit de la nécessité fonctionnelle, ou nécessité causale dans les conditions étudiées.", "acceptedAnswers": ["nécessité", "necessite", "nécessité fonctionnelle", "necessite fonctionnelle", "nécessité causale", "necessite causale"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "dissociations-cas-series",
+        "assessmentTitle": "Mini-évaluation — Dissociations et cas",
+        "questions": [
+          {"type": "single_choice", "prompt": "Pourquoi une dissociation simple peut-elle être trompeuse ?", "explanation": "Un écart entre tâches peut venir de leur difficulté ou sensibilité plutôt que de deux composantes distinctes.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Les tâches peuvent différer en difficulté ou en sensibilité", "isCorrect": true, "position": 1}, {"label": "Une dissociation exige toujours mille participants", "isCorrect": false, "position": 2}, {"label": "Les lésions n'affectent jamais les performances", "isCorrect": false, "position": 3}, {"label": "Toute tâche mesure exactement une seule fonction", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel profil décrit une double dissociation entre A et B ?", "explanation": "Deux cas présentent des profils inverses : A altérée/B préservée puis A préservée/B altérée.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Cas 1 : A altérée, B préservée ; cas 2 : A préservée, B altérée", "isCorrect": true, "position": 1}, {"label": "Deux cas faibles sur A et B", "isCorrect": false, "position": 2}, {"label": "Un cas faible sur A et B", "isCorrect": false, "position": 3}, {"label": "Deux contrôles équivalents sur A et B", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une double dissociation prouve à elle seule que deux fonctions occupent deux modules anatomiques isolés.", "explanation": "Elle soutient une indépendance fonctionnelle relative, mais ne fixe pas à elle seule une architecture anatomique univoque.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels apports une série de cas peut-elle fournir ?", "explanation": "Elle teste la récurrence, décrit l'hétérogénéité et permet des comparaisons tout en conservant les profils individuels.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Vérifier si un profil se reproduit", "isCorrect": true, "position": 1}, {"label": "Décrire des variations entre individus", "isCorrect": true, "position": 2}, {"label": "Comparer des facteurs comme taille ou moment de la lésion", "isCorrect": true, "position": 3}, {"label": "Garantir une généralisation universelle", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Comment nomme-t-on deux profils inverses d'altération et de préservation sur deux tâches ?", "explanation": "Il s'agit d'une double dissociation.", "acceptedAnswers": ["double dissociation", "une double dissociation"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "reseaux-generalisation-ethique",
+        "assessmentTitle": "Mini-évaluation — Réseaux, limites et éthique",
+        "questions": [
+          {"type": "single_choice", "prompt": "Qu'est-ce que la diaschisis rappelle à propos d'une lésion focale ?", "explanation": "Une atteinte focale peut perturber l'activité de régions distantes mais connectées.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Elle peut modifier des régions distantes connectées", "isCorrect": true, "position": 1}, {"label": "Elle n'affecte que les neurones détruits", "isCorrect": false, "position": 2}, {"label": "Elle garantit une récupération complète", "isCorrect": false, "position": 3}, {"label": "Elle rend inutile toute mesure comportementale", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un même profil doit être interprété identiquement en phase aiguë et plusieurs années après la lésion.", "explanation": "Œdème, diaschisis, récupération, apprentissage et plasticité peuvent modifier les mécanismes et performances au cours du temps.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Quelle phrase illustre une inférence inverse abusive ?", "explanation": "Elle déduit un processus mental précis du seul emplacement, sans établir la sélectivité ni mesurer le processus.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La lésion touche l'amygdale, donc la personne ne peut plus ressentir la peur", "isCorrect": true, "position": 1}, {"label": "Le score de peur doit être mesuré avec une tâche définie", "isCorrect": false, "position": 2}, {"label": "Le réseau et la chronologie doivent être examinés", "isCorrect": false, "position": 3}, {"label": "La conclusion doit préciser ses alternatives", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles protections restent nécessaires lors de la diffusion d'un cas ?", "explanation": "Consentement applicable, minimisation, confidentialité et examen des risques de réidentification restent nécessaires ; retirer le nom ne suffit pas toujours.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Documenter le consentement applicable", "isCorrect": true, "position": 1}, {"label": "Retirer les détails non nécessaires", "isCorrect": true, "position": 2}, {"label": "Évaluer le risque de réidentification par combinaison de détails", "isCorrect": true, "position": 3}, {"label": "Supposer qu'un pseudonyme élimine tout risque", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel accord libre et informé doit être documenté lorsque la publication d'un cas l'exige ?", "explanation": "Il s'agit du consentement éclairé du participant ou patient selon les règles applicables.", "acceptedAnswers": ["consentement éclairé", "consentement eclaire", "consentement informé", "consentement informe", "consentement"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en neuropsychologie cognitive, neurologie et méthodologie lésionnelle requise avant publication.",
+        "Validation technique requise : l'étape bases-biologiques et le module etudier-cerveau-comportement ne sont pas encore présents dans le seed.",
+        "L'évaluation finale de l'étape 6 doit être créée et validée avant toute publication de l'étape.",
+        "La leçon distingue lésions humaines naturelles et lésions expérimentales non humaines ; elle ne décrit aucune création expérimentale de lésion chez l'humain.",
+        "Dissociation et double dissociation sont présentées comme des arguments sous conditions, non comme preuves automatiques de modules anatomiques isolés.",
+        "Diaschisis, déconnexion, moment de mesure et plasticité empêchent l'équation simple site lésé = fonction perdue.",
+        "Les ressources obligatoires sont ouvertes ; toutes les consignes peuvent être réalisées sans accès institutionnel.",
+        "Les DOI, pages PubMed Central et versions officielles WMA/CARE ont été vérifiés le 3 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_and_subject"}
+    ]
+  }
+}

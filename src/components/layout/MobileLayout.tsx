@@ -1,6 +1,8 @@
 import type { ComponentChildren } from 'preact';
 import { route } from 'preact-router';
+import { useCallback, useState } from 'preact/hooks';
 
+import { BackNavigationProvider } from '@/components/layout/BackNavigationContext';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { PwaStatus } from '@/features/pwa/PwaStatus';
 
@@ -17,6 +19,11 @@ export function MobileLayout({
   children,
   currentPath = window.location.pathname,
 }: MobileLayoutProps) {
+  const [backTarget, setBackTarget] = useState<string | null>(null);
+  const updateBackTarget = useCallback((href: string | null) => {
+    setBackTarget(href);
+  }, []);
+
   function focusMainContent() {
     window.requestAnimationFrame(() => {
       document.getElementById('main-content')?.focus();
@@ -24,6 +31,11 @@ export function MobileLayout({
   }
 
   function goBack() {
+    if (backTarget) {
+      route(backTarget);
+      return;
+    }
+
     if (canGoBack) {
       window.history.back();
       return;
@@ -33,7 +45,7 @@ export function MobileLayout({
   }
 
   return (
-    <div class="min-h-dvh bg-slate-950 text-slate-100">
+    <div class="app-layout min-h-dvh bg-slate-950 text-slate-100">
       <a
         class="fixed top-2 left-2 z-50 -translate-y-20 rounded-xl bg-cyan-300 px-4 py-3 font-semibold text-slate-950 transition focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-white"
         href="#main-content"
@@ -42,7 +54,7 @@ export function MobileLayout({
         Aller au contenu principal
       </a>
       <header class="app-safe-header border-b border-slate-800 bg-slate-950">
-        <div class="mx-auto flex max-w-xl items-center justify-between gap-3">
+        <div class="app-frame mx-auto flex items-center justify-between gap-3">
           <div class="flex items-center gap-2">
             {!rootPaths.has(currentPath) ? (
               <button
@@ -66,13 +78,15 @@ export function MobileLayout({
         </div>
       </header>
       <PwaStatus />
-      <main
-        id="main-content"
-        class="app-safe-main mx-auto max-w-xl py-8"
-        tabindex={-1}
-      >
-        {children}
-      </main>
+      <BackNavigationProvider onTargetChange={updateBackTarget}>
+        <main
+          id="main-content"
+          class="app-safe-main app-frame mx-auto py-8 lg:py-10"
+          tabindex={-1}
+        >
+          {children}
+        </main>
+      </BackNavigationProvider>
       <BottomNavigation currentPath={currentPath} />
     </div>
   );

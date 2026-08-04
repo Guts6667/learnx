@@ -257,7 +257,48 @@ Les paramètres de destination sont validés côté serveur par appartenance à 
 leçon et autorisation de lecture. Une activité d’une autre leçon ne peut jamais
 être injectée dans le contexte courant.
 
-## 7. États
+## 7. Rendu des contenus longs et évaluations finales
+
+### Défaut observé
+
+`StageAssessmentCard` affiche actuellement `assessment.instructions` directement
+dans un unique élément `<p>`. Le navigateur fusionne les retours à la ligne et
+le texte conserve les jetons `## Consignes` ou `## Cas ...` visibles. Les listes
+numérotées deviennent un paragraphe dense et les sections objectif, consignes,
+cas et remédiation n’ont aucune hiérarchie sémantique.
+
+Sur mobile, ce bloc très long approche la navigation fixe. Le contenu doit
+utiliser le scroll principal et un padding bas calculé avec la hauteur réelle de
+la navigation et `env(safe-area-inset-bottom)` afin qu’aucun texte ne soit masqué.
+
+### Contrat de rendu V2
+
+- Interpréter uniquement un sous-ensemble Markdown sûr : titres, paragraphes,
+  listes ordonnées/non ordonnées, emphase et liens.
+- Produire des éléments HTML sémantiques ; ne jamais afficher de jetons Markdown
+  bruts lorsque leur syntaxe est valide.
+- Refuser ou neutraliser tout HTML brut, script, gestionnaire d’événement, URL
+  dangereuse ou protocole non autorisé.
+- Présenter objectif, consignes, cas et grille dans des sections distinctes avec
+  titres et espacements cohérents.
+- Rendre chaque consigne dans un véritable `<ol>`/`<li>` plutôt que dans un texte
+  numéroté fusionné.
+- Garder une largeur de lecture confortable, un interlignage généreux et des
+  paragraphes suffisamment espacés à 320/390 px.
+- N’utiliser aucun scroll imbriqué pour le corps de l’évaluation ; la page entière
+  reste le conteneur de défilement.
+- Réserver en bas l’espace de la navigation fixe et de la safe area.
+- Conserver des liens et sources identifiables, focusables et annoncés avec un
+  intitulé explicite.
+
+### Validation
+
+- Tests de titres, paragraphes, emphase, liens et listes structurées.
+- Tests XSS et protocoles de liens interdits.
+- Tests de contenus très longs, 320/390 px et absence de texte sous la navigation.
+- Tests zoom 200 %, tailles système iOS, clavier et VoiceOver.
+
+## 8. États
 
 ### Brouillon
 
@@ -294,7 +335,7 @@ leçon et autorisation de lecture. Une activité d’une autre leçon ne peut ja
   prochaine activité.
 - L’erreur ne révèle pas l’existence d’un brouillon non autorisé.
 
-## 8. Responsive et accessibilité
+## 9. Responsive et accessibilité
 
 ### Mobile
 
@@ -318,14 +359,14 @@ leçon et autorisation de lecture. Une activité d’une autre leçon ne peut ja
 - Navigation entièrement réalisable au clavier et avec zoom à 200 %.
 - Préférence de réduction des animations respectée.
 
-## 9. Mesure de qualité V2
+## 10. Mesure de qualité V2
 
 La V2 mesure le parcours dans les tests : nombre d’actions, destination exacte,
 restauration du contexte et absence de boucle. Elle n’intègre pas de fournisseur
 analytics ni de collecte persistée. L’instrumentation produit complète est une
 candidate V3.
 
-## 10. Critères d’acceptation
+## 11. Critères d’acceptation
 
 - Depuis Aujourd’hui, « Continuer » ouvre l’activité exacte recommandée.
 - Depuis le curriculum, deux actions maximum ouvrent une leçon visible.
@@ -344,8 +385,10 @@ candidate V3.
 - La séquence est dérivée exclusivement des données existantes, sans migration.
 - Les tests prouvent le maximum de deux actions depuis le curriculum et la reprise
   exacte depuis Aujourd’hui.
+- Les évaluations finales longues sont structurées, sûres et entièrement lisibles
+  au-dessus de la navigation fixe.
 
-## 11. Tests attendus
+## 12. Tests attendus
 
 - Tests unitaires de sélection de la prochaine activité et de l’ordre inter-types.
 - Tests d’autorisation sur brouillons, verrous et routes profondes.
@@ -356,8 +399,9 @@ candidate V3.
 - Tests offline/reconnexion sans chargement indéfini.
 - Playwright sur 390 × 844, tablette, 1440 × 900 et WebKit mobile.
 - Axe, clavier, focus, zoom 200 % et réduction des animations.
+- Rendu Markdown sûr, XSS, listes sémantiques et très longs contenus mobiles.
 
-## 12. Hors périmètre
+## 13. Hors périmètre
 
 - Refonte visuelle complète des tokens et de la marque.
 - Modification de la formule de progression, traitée par `V2-003`.
@@ -367,11 +411,12 @@ candidate V3.
 - Recommandation adaptative par IA.
 - Édition collaborative ou réseau social.
 
-## 13. Décisions restantes
+## 14. Décisions V2 appliquées
 
-1. Décider si l’exercice obtient une route profonde canonique ou reste une ancre
-   dans la leçon.
-2. Définir l’activité minimale mémorisée pour reprendre un long bloc de contenu :
-   bloc, sous-section ou simple activité.
-3. Choisir si une activité optionnelle commencée prend temporairement priorité
-   sur la prochaine activité requise.
+1. L’exercice utilise la route profonde canonique
+   `/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
+2. Le bloc de contenu est l’unité minimale de reprise. La clé d’activité courante
+   reste dans l’URL et est mémorisée localement par leçon pour survivre au retour
+   et au rechargement, sans créer de donnée métier ni de migration.
+3. Une activité optionnelle commencée reste accessible dans le sommaire, mais ne
+   prend pas la priorité sur la prochaine activité obligatoire de « Continuer ».

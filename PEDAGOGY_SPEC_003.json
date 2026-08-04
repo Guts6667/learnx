@@ -25,35 +25,40 @@
         "type": "rich_text",
         "position": 1,
         "content": {
-          "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste."
+        "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste.",
+        "sourceKeys": ["legifrance-titre-psychologue-article-44", "service-public-psychologue-psychiatre"]
         }
       },
       {
         "type": "definition",
         "position": 2,
         "content": {
-          "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence."
+        "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence.",
+        "sourceKeys": ["service-public-psychologue-psychiatre"]
         }
       },
       {
         "type": "example",
         "position": 3,
         "content": {
-          "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente."
+        "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente.",
+        "sourceKeys": ["cncdp-code-deontologie-2021"]
         }
       },
       {
         "type": "rich_text",
         "position": 4,
         "content": {
-          "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation."
+        "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation.",
+        "sourceKeys": ["cncdp-code-deontologie-2021"]
         }
       },
       {
         "type": "callout",
         "position": 5,
         "content": {
-          "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte."
+        "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte.",
+        "sourceKeys": ["cncdp-code-deontologie-2021", "legifrance-titre-psychologue-article-44"]
         }
       }
     ],
@@ -607,7 +612,7 @@
     "review": {
       "editorialReviewer": null,
       "subjectReviewer": null,
-      "scientificAccuracy": true,
+      "scientificAccuracy": false,
       "pedagogicalAlignment": true,
       "seedCompatibility": true,
       "linksAndMedia": true,

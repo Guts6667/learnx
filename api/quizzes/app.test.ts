@@ -328,4 +328,53 @@ describe('quiz persistence filters', () => {
       }),
     );
   });
+
+  it('recalcule la progression dans la transaction de tentative', async () => {
+    const moduleRun = {
+      id: 'd0575bf7-b4f7-4ab4-86db-5720d7a63885',
+      moduleId: 'ac7cae6f-1888-4698-a049-925c21c23720',
+      sequence: 1,
+      startedAt: submittedAt,
+      userId,
+    };
+    const create = vi.fn(async () => ({
+      answers: [],
+      id: 'attempt-1',
+      passed: true,
+      score: 100,
+      submittedAt,
+    }));
+    const transaction = {
+      lesson: {
+        findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
+      },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
+      quizAttempt: { create },
+    };
+    const client = {
+      $transaction: vi.fn(
+        async (callback: (value: typeof transaction) => unknown) =>
+          callback(transaction),
+      ),
+    } as unknown as PrismaClient;
+    const recalculate = vi.fn(async () => ({}) as never);
+
+    await createPrismaRepository(client, recalculate).recordAttempt({
+      answers: [],
+      lessonId,
+      passed: true,
+      quizId,
+      score: 100,
+      submittedAt,
+      userId,
+    });
+
+    expect(recalculate).toHaveBeenCalledWith(
+      transaction,
+      lessonId,
+      userId,
+      submittedAt,
+      { requirePublished: true },
+    );
+  });
 });

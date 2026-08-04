@@ -15,6 +15,9 @@ const now = new Date('2026-08-03T08:00:00.000Z');
 function createPrisma(stage: object | null) {
   const upsert = vi.fn(() => Promise.resolve({}));
   const prisma = {
+    activityCompletionCarryover: { findMany: vi.fn(() => Promise.resolve([])) },
+    exerciseSubmission: { findMany: vi.fn(() => Promise.resolve([])) },
+    moduleRun: { findFirst: vi.fn(() => Promise.resolve(null)) },
     stage: { findFirst: vi.fn(() => Promise.resolve(stage)) },
     stageProgress: { upsert },
   } as unknown as PrismaClient;
@@ -39,6 +42,7 @@ function stageRecord() {
     estimatedDurationDays: 7,
     modules: [
       {
+        id: 'module-1',
         lessons: [
           {
             concepts: [
@@ -53,6 +57,8 @@ function stageRecord() {
                 title: 'Notion',
               },
             ],
+            exercises: [],
+            id: 'lesson-1',
             tasks: [
               {
                 completions: [
@@ -61,6 +67,7 @@ function stageRecord() {
                   },
                 ],
                 id: 'task-1',
+                key: 'activity-1',
                 title: 'Exercice',
               },
             ],

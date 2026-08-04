@@ -35,7 +35,10 @@
         "position": 2,
         "content": {
           "text": "Les modèles distinguent plusieurs fonctions sans imposer des boîtes étanches. La mémoire de travail maintient et transforme temporairement une quantité limitée d'information au service d'une activité ; le modèle multicomposant de Baddeley propose notamment des traitements verbaux et visuospatiaux coordonnés, ainsi qu'un mécanisme d'intégration avec les connaissances à long terme. À plus long terme, la mémoire épisodique concerne des événements situés, la mémoire sémantique des connaissances, et les apprentissages procéduraux des habiletés. Ces catégories se recouvrent dans les tâches réelles et ne correspondent pas chacune à un lieu unique du cerveau.",
-          "sourceKeys": ["openstax-psychology-2e-8-1", "baddeley-episodic-buffer-2000"]
+          "sourceKeys": [
+            "openstax-psychology-2e-8-1",
+            "baddeley-episodic-buffer-2000"
+          ]
         }
       },
       {
@@ -43,7 +46,10 @@
         "position": 3,
         "content": {
           "text": "Pour suivre une recette nouvelle, une personne maintient la prochaine quantité en mémoire de travail, utilise ses connaissances sémantiques sur les unités, récupère un épisode où elle a trop cuit un plat et exécute des gestes devenus procéduraux. La réussite ne passe donc pas en ligne droite d'un registre court vers un stockage long : plusieurs connaissances sont récupérées, combinées et mises à jour pendant l'action. Le schéma sensoriel → court terme → long terme reste un repère historique utile, mais il simplifie ces boucles.",
-          "sourceKeys": ["openstax-psychology-2e-8-1", "baddeley-episodic-buffer-2000"]
+          "sourceKeys": [
+            "openstax-psychology-2e-8-1",
+            "baddeley-episodic-buffer-2000"
+          ]
         }
       },
       {
@@ -59,7 +65,10 @@
         "position": 5,
         "content": {
           "text": "Se souvenir est reconstructif : la récupération combine des éléments de la trace avec des connaissances, des associations et des indices actuels. Dans le paradigme de Deese-Roediger-McDermott, des participants peuvent rappeler avec assurance un mot fortement associé mais jamais présenté. Ce résultat montre qu'une impression vive ou confiante n'est pas une garantie d'exactitude ; il ne signifie pas que tout souvenir est faux ni qu'une expérience de liste de mots suffit à trancher un récit autobiographique particulier.",
-          "sourceKeys": ["openstax-psychology-2e-8-3", "roediger-mcdermott-false-memories-1995"]
+          "sourceKeys": [
+            "openstax-psychology-2e-8-3",
+            "roediger-mcdermott-false-memories-1995"
+          ]
         }
       },
       {
@@ -67,7 +76,11 @@
         "position": 6,
         "content": {
           "text": "Pour retenir durablement, alterner des tentatives de récupération sans support avec un feedback, puis les répéter sur plusieurs séances. Dans une étude sur des textes, Roediger et Karpicke ont observé que la pratique de test pouvait avantager la rétention différée par rapport à la relecture, même si la relecture favorisait la performance très immédiate. Une synthèse quantitative de Cepeda et collègues montre aussi un bénéfice général de la pratique distribuée, mais l'espacement utile dépend notamment du délai avant l'usage final. Ces résultats justifient une stratégie adaptable, pas un intervalle universel ni l'abandon de l'explication, de la compréhension et du feedback.",
-          "sourceKeys": ["roediger-karpicke-test-enhanced-2006", "cepeda-distributed-practice-2006", "openstax-psychology-2e-8-4"]
+          "sourceKeys": [
+            "roediger-karpicke-test-enhanced-2006",
+            "cepeda-distributed-practice-2006",
+            "openstax-psychology-2e-8-4"
+          ]
         }
       }
     ],
@@ -165,8 +178,15 @@
         "position": 1,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["openstax-psychology-2e-8-1", "baddeley-episodic-buffer-2000"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Processus et systèmes de mémoire", "questionCount": 5}
+        "resourceKeys": [
+          "openstax-psychology-2e-8-1",
+          "baddeley-episodic-buffer-2000"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Processus et systèmes de mémoire",
+          "questionCount": 5
+        }
       },
       {
         "title": "Oubli, interférence et reconstruction",
@@ -175,8 +195,15 @@
         "position": 2,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["openstax-psychology-2e-8-3", "roediger-mcdermott-false-memories-1995"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Oubli et reconstruction", "questionCount": 5}
+        "resourceKeys": [
+          "openstax-psychology-2e-8-3",
+          "roediger-mcdermott-false-memories-1995"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Oubli et reconstruction",
+          "questionCount": 5
+        }
       },
       {
         "title": "Récupération active et pratique distribuée",
@@ -185,8 +212,16 @@
         "position": 3,
         "isRequired": true,
         "masteryThreshold": 70,
-        "resourceKeys": ["roediger-karpicke-test-enhanced-2006", "cepeda-distributed-practice-2006", "openstax-psychology-2e-8-4"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Récupération et espacement", "questionCount": 5}
+        "resourceKeys": [
+          "roediger-karpicke-test-enhanced-2006",
+          "cepeda-distributed-practice-2006",
+          "openstax-psychology-2e-8-4"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Récupération et espacement",
+          "questionCount": 5
+        }
       }
     ],
     "tasks": [
@@ -226,63 +261,697 @@
     "lastReviewedAt": "2026-08-03",
     "nextReviewAt": "2027-08-03",
     "references": [
-      {"id": "REF-019-OPENSTAX-8-1", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 8.1 How Memory Functions", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/8-1-how-memory-functions", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel introductif utilisé pour fonctions et distinctions de mémoire ; le modèle séquentiel est explicitement présenté comme historique et simplifié."},
-      {"id": "REF-019-BADDELEY", "type": "review_article", "authors": ["Baddeley, A."], "organization": "Trends in Cognitive Sciences", "title": "The episodic buffer: A new component of working memory?", "year": 2000, "edition": null, "publication": "Trends in Cognitive Sciences, 4(11), 417–423", "doi": "https://doi.org/10.1016/s1364-6613(00)01538-2", "url": "https://pubmed.ncbi.nlm.nih.gov/11058819/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Résumé PubMed ouvert ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Source théorique et de synthèse ; le modèle n'est pas assimilé à une cartographie anatomique littérale."},
-      {"id": "REF-019-OPENSTAX-8-3", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 8.3 Problems with Memory", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/8-3-problems-with-memory", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Source de synthèse pour défaut d'encodage, interférence et reconstruction."},
-      {"id": "REF-019-ROEDIGER-MCDERMOTT", "type": "primary_article", "authors": ["Roediger, H. L., III", "McDermott, K. B."], "organization": "American Psychological Association", "title": "Creating false memories: Remembering words not presented in lists", "year": 1995, "edition": null, "publication": "Journal of Experimental Psychology: Learning, Memory, and Cognition, 21(4), 803–814", "doi": "https://doi.org/10.1037/0278-7393.21.4.803", "url": "https://doi.org/10.1037/0278-7393.21.4.803", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Article soumis aux droits de l'APA ; métadonnées et résumé consultables", "status": "verified", "notes": "Expérience de listes de mots ; toute généralisation autobiographique ou judiciaire est explicitement exclue."},
-      {"id": "REF-019-ROEDIGER-KARPICKE", "type": "primary_article", "authors": ["Roediger, H. L., III", "Karpicke, J. D."], "organization": "Association for Psychological Science", "title": "Test-enhanced learning: Taking memory tests improves long-term retention", "year": 2006, "edition": null, "publication": "Psychological Science, 17(3), 249–255", "doi": "https://doi.org/10.1111/j.1467-9280.2006.01693.x", "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Article soumis aux droits de l'éditeur ; page DOI consultable", "status": "verified", "notes": "Études expérimentales sur des textes et des délais définis ; aucune universalité n'est revendiquée."},
-      {"id": "REF-019-CEPEDA", "type": "meta_analysis", "authors": ["Cepeda, N. J.", "Pashler, H.", "Vul, E.", "Wixted, J. T.", "Rohrer, D."], "organization": "American Psychological Association", "title": "Distributed practice in verbal recall tasks: A review and quantitative synthesis", "year": 2006, "edition": null, "publication": "Psychological Bulletin, 132(3), 354–380", "doi": "https://doi.org/10.1037/0033-2909.132.3.354", "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/", "accessedAt": "2026-08-03", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Résumé PubMed ouvert ; article soumis aux droits de l'APA", "status": "verified", "notes": "Synthèse quantitative centrée sur le rappel verbal ; l'intervalle optimal dépend notamment du délai de rétention."},
-      {"id": "REF-019-OPENSTAX-8-4", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 8.4 Ways to Enhance Memory", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel introductif utilisé pour la mise en œuvre pédagogique, en complément des études et synthèses spécialisées."}
+      {
+        "id": "REF-019-OPENSTAX-8-1",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 8.1 How Memory Functions",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/8-1-how-memory-functions",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Manuel introductif utilisé pour fonctions et distinctions de mémoire ; le modèle séquentiel est explicitement présenté comme historique et simplifié."
+      },
+      {
+        "id": "REF-019-BADDELEY",
+        "type": "review_article",
+        "authors": ["Baddeley, A."],
+        "organization": "Trends in Cognitive Sciences",
+        "title": "The episodic buffer: A new component of working memory?",
+        "year": 2000,
+        "edition": null,
+        "publication": "Trends in Cognitive Sciences, 4(11), 417–423",
+        "doi": "https://doi.org/10.1016/s1364-6613(00)01538-2",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11058819/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé PubMed ouvert ; article soumis aux droits de l'éditeur",
+        "status": "verified",
+        "notes": "Source théorique et de synthèse ; le modèle n'est pas assimilé à une cartographie anatomique littérale."
+      },
+      {
+        "id": "REF-019-OPENSTAX-8-3",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 8.3 Problems with Memory",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/8-3-problems-with-memory",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Source de synthèse pour défaut d'encodage, interférence et reconstruction."
+      },
+      {
+        "id": "REF-019-ROEDIGER-MCDERMOTT",
+        "type": "primary_article",
+        "authors": ["Roediger, H. L., III", "McDermott, K. B."],
+        "organization": "American Psychological Association",
+        "title": "Creating false memories: Remembering words not presented in lists",
+        "year": 1995,
+        "edition": null,
+        "publication": "Journal of Experimental Psychology: Learning, Memory, and Cognition, 21(4), 803–814",
+        "doi": "https://doi.org/10.1037/0278-7393.21.4.803",
+        "url": "https://doi.org/10.1037/0278-7393.21.4.803",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Article soumis aux droits de l'APA ; métadonnées et résumé consultables",
+        "status": "verified",
+        "notes": "Expérience de listes de mots ; toute généralisation autobiographique ou judiciaire est explicitement exclue."
+      },
+      {
+        "id": "REF-019-ROEDIGER-KARPICKE",
+        "type": "primary_article",
+        "authors": ["Roediger, H. L., III", "Karpicke, J. D."],
+        "organization": "Association for Psychological Science",
+        "title": "Test-enhanced learning: Taking memory tests improves long-term retention",
+        "year": 2006,
+        "edition": null,
+        "publication": "Psychological Science, 17(3), 249–255",
+        "doi": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Article soumis aux droits de l'éditeur ; page DOI consultable",
+        "status": "verified",
+        "notes": "Études expérimentales sur des textes et des délais définis ; aucune universalité n'est revendiquée."
+      },
+      {
+        "id": "REF-019-CEPEDA",
+        "type": "meta_analysis",
+        "authors": [
+          "Cepeda, N. J.",
+          "Pashler, H.",
+          "Vul, E.",
+          "Wixted, J. T.",
+          "Rohrer, D."
+        ],
+        "organization": "American Psychological Association",
+        "title": "Distributed practice in verbal recall tasks: A review and quantitative synthesis",
+        "year": 2006,
+        "edition": null,
+        "publication": "Psychological Bulletin, 132(3), 354–380",
+        "doi": "https://doi.org/10.1037/0033-2909.132.3.354",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé PubMed ouvert ; article soumis aux droits de l'APA",
+        "status": "verified",
+        "notes": "Synthèse quantitative centrée sur le rappel verbal ; l'intervalle optimal dépend notamment du délai de rétention."
+      },
+      {
+        "id": "REF-019-OPENSTAX-8-4",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 8.4 Ways to Enhance Memory",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Manuel introductif utilisé pour la mise en œuvre pédagogique, en complément des études et synthèses spécialisées."
+      }
     ],
     "contentBlockSources": [
-      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-019-OPENSTAX-8-1", "locator": "section 8.1, Encoding, Storage et Retrieval", "supports": "Trois fonctions de la mémoire et distinction rappel, reconnaissance et réapprentissage."}], "confidence": "high", "confidenceRationale": "Définitions de manuel directement alignées ; le texte ajoute une prudence fonctionnelle cohérente avec les distinctions présentées.", "notApplicableReason": null},
-      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-019-OPENSTAX-8-1", "locator": "section 8.1, Atkinson-Shiffrin, working memory et long-term memory", "supports": "Distinctions fonctionnelles entre mémoire à court terme, travail et systèmes à long terme."}, {"referenceId": "REF-019-BADDELEY", "locator": "résumé et modèle multicomposant révisé, pp. 417–423", "supports": "Coordination de composants et intégration avec la mémoire à long terme."}], "confidence": "high", "confidenceRationale": "Manuel et article théorique convergent ; les composants restent explicitement des constructions de modèle.", "notApplicableReason": null},
-      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-019-OPENSTAX-8-1", "locator": "sections Working Memory et Long-term Memory", "supports": "Mobilisation conjointe de connaissances sémantiques, épisodiques et procédurales."}, {"referenceId": "REF-019-BADDELEY", "locator": "rôle intégratif du tampon épisodique", "supports": "Intégration temporaire d'informations de sources différentes."}], "confidence": "moderate", "confidenceRationale": "Exemple fictif original illustrant les modèles sans prétendre identifier directement des mécanismes chez une personne.", "notApplicableReason": null},
-      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-019-OPENSTAX-8-3", "locator": "Encoding Failure et Interference", "supports": "Défaut d'encodage, interférences proactive et rétroactive et difficultés d'accès."}], "confidence": "high", "confidenceRationale": "Synthèse de manuel directement centrée sur les mécanismes présentés ; aucune cause unique n'est imposée.", "notApplicableReason": null},
-      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-019-OPENSTAX-8-3", "locator": "Memory Construction and Reconstruction", "supports": "Caractère reconstructif et influence d'informations ou d'indices."}, {"referenceId": "REF-019-ROEDIGER-MCDERMOTT", "locator": "expériences 1 et 2, pp. 803–814", "supports": "Rappel et reconnaissance de mots critiques non présentés dans des listes associatives."}], "confidence": "high", "confidenceRationale": "Expérience primaire et synthèse convergent ; les limites de généralisation sont explicites.", "notApplicableReason": null},
-      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-019-ROEDIGER-KARPICKE", "locator": "expériences 1 et 2, comparaison restudy/test aux délais immédiat et différé", "supports": "Avantage différé de la récupération dans les conditions étudiées."}, {"referenceId": "REF-019-CEPEDA", "locator": "résumé et synthèse quantitative, pp. 354–380", "supports": "Bénéfice de la distribution et interaction entre intervalle d'étude et délai de rétention."}, {"referenceId": "REF-019-OPENSTAX-8-4", "locator": "section 8.4, Rehearsal et Study Strategies", "supports": "Mise en œuvre de stratégies d'encodage et de révision."}], "confidence": "high", "confidenceRationale": "Étude primaire, méta-analyse et manuel convergent ; la formulation conserve les modérateurs et n'annonce aucune recette universelle.", "notApplicableReason": null}
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-OPENSTAX-8-1",
+            "locator": "section 8.1, Encoding, Storage et Retrieval",
+            "supports": "Trois fonctions de la mémoire et distinction rappel, reconnaissance et réapprentissage."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Définitions de manuel directement alignées ; le texte ajoute une prudence fonctionnelle cohérente avec les distinctions présentées.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-OPENSTAX-8-1",
+            "locator": "section 8.1, Atkinson-Shiffrin, working memory et long-term memory",
+            "supports": "Distinctions fonctionnelles entre mémoire à court terme, travail et systèmes à long terme."
+          },
+          {
+            "referenceId": "REF-019-BADDELEY",
+            "locator": "résumé et modèle multicomposant révisé, pp. 417–423",
+            "supports": "Coordination de composants et intégration avec la mémoire à long terme."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel et article théorique convergent ; les composants restent explicitement des constructions de modèle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-OPENSTAX-8-1",
+            "locator": "sections Working Memory et Long-term Memory",
+            "supports": "Mobilisation conjointe de connaissances sémantiques, épisodiques et procédurales."
+          },
+          {
+            "referenceId": "REF-019-BADDELEY",
+            "locator": "rôle intégratif du tampon épisodique",
+            "supports": "Intégration temporaire d'informations de sources différentes."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Exemple fictif original illustrant les modèles sans prétendre identifier directement des mécanismes chez une personne.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-OPENSTAX-8-3",
+            "locator": "Encoding Failure et Interference",
+            "supports": "Défaut d'encodage, interférences proactive et rétroactive et difficultés d'accès."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse de manuel directement centrée sur les mécanismes présentés ; aucune cause unique n'est imposée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-OPENSTAX-8-3",
+            "locator": "Memory Construction and Reconstruction",
+            "supports": "Caractère reconstructif et influence d'informations ou d'indices."
+          },
+          {
+            "referenceId": "REF-019-ROEDIGER-MCDERMOTT",
+            "locator": "expériences 1 et 2, pp. 803–814",
+            "supports": "Rappel et reconnaissance de mots critiques non présentés dans des listes associatives."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Expérience primaire et synthèse convergent ; les limites de généralisation sont explicites.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-019-ROEDIGER-KARPICKE",
+            "locator": "expériences 1 et 2, comparaison restudy/test aux délais immédiat et différé",
+            "supports": "Avantage différé de la récupération dans les conditions étudiées."
+          },
+          {
+            "referenceId": "REF-019-CEPEDA",
+            "locator": "résumé et synthèse quantitative, pp. 354–380",
+            "supports": "Bénéfice de la distribution et interaction entre intervalle d'étude et délai de rétention."
+          },
+          {
+            "referenceId": "REF-019-OPENSTAX-8-4",
+            "locator": "section 8.4, Rehearsal et Study Strategies",
+            "supports": "Mise en œuvre de stratégies d'encodage et de révision."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Étude primaire, méta-analyse et manuel convergent ; la formulation conserve les modérateurs et n'annonce aucune recette universelle.",
+        "notApplicableReason": null
+      }
     ],
     "resourceChecks": [
-      {"resourceKey": "openstax-psychology-2e-8-1", "referenceIds": ["REF-019-OPENSTAX-8-1"], "pedagogicalRationale": "Introduction structurée aux fonctions et systèmes pour débutant.", "learnerInstructions": "Transformer les diagrammes en fonctions et interactions, sans leur attribuer un lieu anatomique unique.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible avec descriptions de figures.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
-      {"resourceKey": "baddeley-episodic-buffer-2000", "referenceIds": ["REF-019-BADDELEY"], "pedagogicalRationale": "Montre qu'un modèle influent évolue lorsqu'un problème explicatif apparaît.", "learnerInstructions": "Identifier le problème théorique, la composante proposée et une limite de l'image en boîtes.", "language": "en", "accessType": "open", "accessibilityNotes": "Résumé PubMed HTML ouvert ; texte intégral potentiellement soumis à accès éditeur.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; le résumé suffit à la consigne minimale."},
-      {"resourceKey": "openstax-psychology-2e-8-3", "referenceIds": ["REF-019-OPENSTAX-8-3"], "pedagogicalRationale": "Synthèse accessible des mécanismes d'oubli et erreurs de reconstruction.", "learnerInstructions": "Classer les scénarios en conservant plusieurs explications lorsque les données ne tranchent pas.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible avec descriptions de figures.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
-      {"resourceKey": "roediger-mcdermott-false-memories-1995", "referenceIds": ["REF-019-ROEDIGER-MCDERMOTT"], "pedagogicalRationale": "Étude primaire classique permettant d'observer une erreur reconstructive contrôlée.", "learnerInstructions": "Repérer le mot critique non présenté et formuler deux limites de généralisation.", "language": "en", "accessType": "paid", "accessibilityNotes": "Page DOI ouverte ; texte intégral soumis à l'accès éditeur, ressource facultative.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; aucune application diagnostique ou judiciaire directe."},
-      {"resourceKey": "roediger-karpicke-test-enhanced-2006", "referenceIds": ["REF-019-ROEDIGER-KARPICKE"], "pedagogicalRationale": "Étude primaire qui distingue performance immédiate et rétention différée.", "learnerInstructions": "Comparer les conditions, le délai et le résultat avant de tirer une règle d'étude.", "language": "en", "accessType": "paid", "accessibilityNotes": "Page DOI et métadonnées ouvertes ; texte intégral soumis à l'accès éditeur, ressource facultative.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; le DOI a été vérifié."},
-      {"resourceKey": "cepeda-distributed-practice-2006", "referenceIds": ["REF-019-CEPEDA"], "pedagogicalRationale": "Synthèse quantitative pour éviter un intervalle d'espacement arbitraire.", "learnerInstructions": "Relier intervalle entre séances et délai de rétention visé.", "language": "en", "accessType": "open", "accessibilityNotes": "Résumé PubMed HTML ouvert ; lien vers texte intégral indiqué.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."},
-      {"resourceKey": "openstax-psychology-2e-8-4", "referenceIds": ["REF-019-OPENSTAX-8-4"], "pedagogicalRationale": "Relie mécanismes de mémoire et pratiques d'étude accessibles.", "learnerInstructions": "Construire un protocole combinant plusieurs stratégies et une mesure différée.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible avec descriptions de figures.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."}
+      {
+        "resourceKey": "openstax-psychology-2e-8-1",
+        "referenceIds": ["REF-019-OPENSTAX-8-1"],
+        "pedagogicalRationale": "Introduction structurée aux fonctions et systèmes pour débutant.",
+        "learnerInstructions": "Transformer les diagrammes en fonctions et interactions, sans leur attribuer un lieu anatomique unique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "baddeley-episodic-buffer-2000",
+        "referenceIds": ["REF-019-BADDELEY"],
+        "pedagogicalRationale": "Montre qu'un modèle influent évolue lorsqu'un problème explicatif apparaît.",
+        "learnerInstructions": "Identifier le problème théorique, la composante proposée et une limite de l'image en boîtes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Résumé PubMed HTML ouvert ; texte intégral potentiellement soumis à accès éditeur.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; le résumé suffit à la consigne minimale."
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-8-3",
+        "referenceIds": ["REF-019-OPENSTAX-8-3"],
+        "pedagogicalRationale": "Synthèse accessible des mécanismes d'oubli et erreurs de reconstruction.",
+        "learnerInstructions": "Classer les scénarios en conservant plusieurs explications lorsque les données ne tranchent pas.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "roediger-mcdermott-false-memories-1995",
+        "referenceIds": ["REF-019-ROEDIGER-MCDERMOTT"],
+        "pedagogicalRationale": "Étude primaire classique permettant d'observer une erreur reconstructive contrôlée.",
+        "learnerInstructions": "Repérer le mot critique non présenté et formuler deux limites de généralisation.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Page DOI ouverte ; texte intégral soumis à l'accès éditeur, ressource facultative.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; aucune application diagnostique ou judiciaire directe."
+      },
+      {
+        "resourceKey": "roediger-karpicke-test-enhanced-2006",
+        "referenceIds": ["REF-019-ROEDIGER-KARPICKE"],
+        "pedagogicalRationale": "Étude primaire qui distingue performance immédiate et rétention différée.",
+        "learnerInstructions": "Comparer les conditions, le délai et le résultat avant de tirer une règle d'étude.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Page DOI et métadonnées ouvertes ; texte intégral soumis à l'accès éditeur, ressource facultative.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; le DOI a été vérifié."
+      },
+      {
+        "resourceKey": "cepeda-distributed-practice-2006",
+        "referenceIds": ["REF-019-CEPEDA"],
+        "pedagogicalRationale": "Synthèse quantitative pour éviter un intervalle d'espacement arbitraire.",
+        "learnerInstructions": "Relier intervalle entre séances et délai de rétention visé.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Résumé PubMed HTML ouvert ; lien vers texte intégral indiqué.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-8-4",
+        "referenceIds": ["REF-019-OPENSTAX-8-4"],
+        "pedagogicalRationale": "Relie mécanismes de mémoire et pratiques d'étude accessibles.",
+        "learnerInstructions": "Construire un protocole combinant plusieurs stratégies et une mesure différée.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      }
     ],
     "assessmentBanks": [
       {
         "conceptSlug": "processus-systemes-memoire",
         "assessmentTitle": "Mini-évaluation — Processus et systèmes de mémoire",
         "questions": [
-          {"type": "single_choice", "prompt": "Une personne connaît la réponse quand elle la voit parmi quatre choix, mais ne la produit pas sans indice. Quelle distinction est la plus pertinente ?", "explanation": "La reconnaissance fournit davantage d'indices que le rappel libre ; les performances peuvent donc différer.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Reconnaissance et rappel libre", "isCorrect": true, "position": 1}, {"label": "Mémoire vraie et mémoire fausse", "isCorrect": false, "position": 2}, {"label": "Intelligence et motivation", "isCorrect": false, "position": 3}, {"label": "Stockage et disparition certaine", "isCorrect": false, "position": 4}]},
-          {"type": "multiple_choice", "prompt": "Quelles fonctions participent à un épisode de mémoire ?", "explanation": "Encodage, maintien ou stockage et récupération sont des fonctions complémentaires et interactives.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Encodage", "isCorrect": true, "position": 1}, {"label": "Stockage ou maintien", "isCorrect": true, "position": 2}, {"label": "Récupération", "isCorrect": true, "position": 3}, {"label": "Copie photographique garantie", "isCorrect": false, "position": 4}]},
-          {"type": "true_false", "prompt": "Les composantes d'un modèle de mémoire de travail sont nécessairement des boîtes anatomiques séparées dans le cerveau.", "explanation": "Ce sont des constructions fonctionnelles proposées pour expliquer des performances et interactions.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
-          {"type": "single_choice", "prompt": "Quelle situation sollicite le plus directement la mémoire de travail ?", "explanation": "Maintenir un nombre tout en effectuant une transformation combine stockage temporaire et traitement.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Retenir 27 puis lui ajouter mentalement 16", "isCorrect": true, "position": 1}, {"label": "Reconnaître son lieu de naissance", "isCorrect": false, "position": 2}, {"label": "Faire un geste automatisé appris depuis longtemps", "isCorrect": false, "position": 3}, {"label": "Nommer une capitale connue", "isCorrect": false, "position": 4}]},
-          {"type": "short_answer", "prompt": "Quel type de mémoire à long terme concerne des événements personnellement situés dans un contexte ?", "explanation": "Il s'agit de la mémoire épisodique.", "acceptedAnswers": ["mémoire épisodique", "memoire episodique", "épisodique", "episodique"], "position": 5, "options": []}
+          {
+            "type": "single_choice",
+            "prompt": "Une personne connaît la réponse quand elle la voit parmi quatre choix, mais ne la produit pas sans indice. Quelle distinction est la plus pertinente ?",
+            "explanation": "La reconnaissance fournit davantage d'indices que le rappel libre ; les performances peuvent donc différer.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Reconnaissance et rappel libre",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Mémoire vraie et mémoire fausse",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Intelligence et motivation",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Stockage et disparition certaine",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles fonctions participent à un épisode de mémoire ?",
+            "explanation": "Encodage, maintien ou stockage et récupération sont des fonctions complémentaires et interactives.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Encodage", "isCorrect": true, "position": 1 },
+              {
+                "label": "Stockage ou maintien",
+                "isCorrect": true,
+                "position": 2
+              },
+              { "label": "Récupération", "isCorrect": true, "position": 3 },
+              {
+                "label": "Copie photographique garantie",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les composantes d'un modèle de mémoire de travail sont nécessairement des boîtes anatomiques séparées dans le cerveau.",
+            "explanation": "Ce sont des constructions fonctionnelles proposées pour expliquer des performances et interactions.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle situation sollicite le plus directement la mémoire de travail ?",
+            "explanation": "Maintenir un nombre tout en effectuant une transformation combine stockage temporaire et traitement.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Retenir 27 puis lui ajouter mentalement 16",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Reconnaître son lieu de naissance",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Faire un geste automatisé appris depuis longtemps",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Nommer une capitale connue",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel type de mémoire à long terme concerne des événements personnellement situés dans un contexte ?",
+            "explanation": "Il s'agit de la mémoire épisodique.",
+            "acceptedAnswers": [
+              "mémoire épisodique",
+              "memoire episodique",
+              "épisodique",
+              "episodique"
+            ],
+            "position": 5,
+            "options": []
+          }
         ]
       },
       {
         "conceptSlug": "oubli-interference-reconstruction",
         "assessmentTitle": "Mini-évaluation — Oubli et reconstruction",
         "questions": [
-          {"type": "single_choice", "prompt": "Après avoir changé de code, une personne saisit encore souvent l'ancien. Quel mécanisme illustre le mieux ce cas ?", "explanation": "L'ancien apprentissage gêne la récupération du nouveau : c'est une interférence proactive.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Interférence proactive", "isCorrect": true, "position": 1}, {"label": "Interférence rétroactive", "isCorrect": false, "position": 2}, {"label": "Mémoire procédurale", "isCorrect": false, "position": 3}, {"label": "Répétition espacée", "isCorrect": false, "position": 4}]},
-          {"type": "single_choice", "prompt": "Un nouveau mot de passe rend l'ancien difficile à rappeler. Quel mécanisme est le plus directement illustré ?", "explanation": "Le nouvel apprentissage gêne l'ancien : c'est une interférence rétroactive.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Interférence rétroactive", "isCorrect": true, "position": 1}, {"label": "Interférence proactive", "isCorrect": false, "position": 2}, {"label": "Encodage sémantique", "isCorrect": false, "position": 3}, {"label": "Effet de test", "isCorrect": false, "position": 4}]},
-          {"type": "true_false", "prompt": "Ne pas rappeler une information prouve qu'elle a entièrement disparu de la mémoire.", "explanation": "Un défaut d'indice ou une interférence peuvent empêcher un rappel malgré une information encore disponible.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
-          {"type": "multiple_choice", "prompt": "Que montre prudemment le paradigme de listes associatives de Roediger et McDermott ?", "explanation": "Des associations peuvent conduire à rappeler ou reconnaître un mot non présenté, parfois avec confiance, dans cette tâche contrôlée.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Un mot non présenté peut être rappelé", "isCorrect": true, "position": 1}, {"label": "Les associations influencent la reconstruction", "isCorrect": true, "position": 2}, {"label": "Confiance et exactitude peuvent diverger", "isCorrect": true, "position": 3}, {"label": "Tout souvenir autobiographique est faux", "isCorrect": false, "position": 4}]},
-          {"type": "short_answer", "prompt": "Comment nomme-t-on l'échec qui survient lorsque l'information n'a pas été suffisamment traitée au départ ?", "explanation": "Il s'agit d'un défaut d'encodage.", "acceptedAnswers": ["défaut d'encodage", "defaut d'encodage", "échec d'encodage", "echec d'encodage"], "position": 5, "options": []}
+          {
+            "type": "single_choice",
+            "prompt": "Après avoir changé de code, une personne saisit encore souvent l'ancien. Quel mécanisme illustre le mieux ce cas ?",
+            "explanation": "L'ancien apprentissage gêne la récupération du nouveau : c'est une interférence proactive.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Interférence proactive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Interférence rétroactive",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Mémoire procédurale",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Répétition espacée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Un nouveau mot de passe rend l'ancien difficile à rappeler. Quel mécanisme est le plus directement illustré ?",
+            "explanation": "Le nouvel apprentissage gêne l'ancien : c'est une interférence rétroactive.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Interférence rétroactive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Interférence proactive",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Encodage sémantique",
+                "isCorrect": false,
+                "position": 3
+              },
+              { "label": "Effet de test", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Ne pas rappeler une information prouve qu'elle a entièrement disparu de la mémoire.",
+            "explanation": "Un défaut d'indice ou une interférence peuvent empêcher un rappel malgré une information encore disponible.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que montre prudemment le paradigme de listes associatives de Roediger et McDermott ?",
+            "explanation": "Des associations peuvent conduire à rappeler ou reconnaître un mot non présenté, parfois avec confiance, dans cette tâche contrôlée.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Un mot non présenté peut être rappelé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les associations influencent la reconstruction",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Confiance et exactitude peuvent diverger",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Tout souvenir autobiographique est faux",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on l'échec qui survient lorsque l'information n'a pas été suffisamment traitée au départ ?",
+            "explanation": "Il s'agit d'un défaut d'encodage.",
+            "acceptedAnswers": [
+              "défaut d'encodage",
+              "defaut d'encodage",
+              "échec d'encodage",
+              "echec d'encodage"
+            ],
+            "position": 5,
+            "options": []
+          }
         ]
       },
       {
         "conceptSlug": "recuperation-pratique-distribuee",
         "assessmentTitle": "Mini-évaluation — Récupération et espacement",
         "questions": [
-          {"type": "single_choice", "prompt": "Quelle activité constitue une tentative de récupération active ?", "explanation": "Produire les idées sans support oblige à récupérer l'information avant le feedback.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Fermer le cours et écrire les cinq idées principales", "isCorrect": true, "position": 1}, {"label": "Relire passivement le même paragraphe", "isCorrect": false, "position": 2}, {"label": "Surligner sans se tester", "isCorrect": false, "position": 3}, {"label": "Copier mot à mot avec le cours ouvert", "isCorrect": false, "position": 4}]},
-          {"type": "true_false", "prompt": "Une stratégie qui produit la meilleure performance immédiate garantit la meilleure rétention une semaine plus tard.", "explanation": "Performance pendant l'étude et apprentissage durable peuvent diverger, comme dans les comparaisons relecture-test.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
-          {"type": "multiple_choice", "prompt": "Quels éléments rendent une pratique de récupération plus utile pédagogiquement ?", "explanation": "La tentative préalable, le feedback, la reprise des erreurs et une mesure différée soutiennent l'apprentissage et son contrôle.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Tenter avant de regarder la réponse", "isCorrect": true, "position": 1}, {"label": "Recevoir un feedback", "isCorrect": true, "position": 2}, {"label": "Reprendre les erreurs", "isCorrect": true, "position": 3}, {"label": "Mémoriser une réponse fausse sans correction", "isCorrect": false, "position": 4}]},
-          {"type": "single_choice", "prompt": "Pourquoi ne peut-on pas imposer le même espacement optimal à tous les apprentissages ?", "explanation": "Le bénéfice dépend notamment du délai de rétention visé, du contenu, du niveau initial et des reprises.", "acceptedAnswers": [], "position": 4, "options": [{"label": "L'intervalle utile dépend de l'objectif et du délai final", "isCorrect": true, "position": 1}, {"label": "L'espacement ne fonctionne jamais", "isCorrect": false, "position": 2}, {"label": "Seule la première séance compte", "isCorrect": false, "position": 3}, {"label": "Le calendrier remplace la compréhension", "isCorrect": false, "position": 4}]},
-          {"type": "short_answer", "prompt": "Comment nomme-t-on le fait de répartir les reprises sur plusieurs moments plutôt que de les masser ?", "explanation": "Il s'agit de la pratique distribuée, ou espacement.", "acceptedAnswers": ["pratique distribuée", "pratique distribuee", "espacement", "répétition espacée", "repetition espacee"], "position": 5, "options": []}
+          {
+            "type": "single_choice",
+            "prompt": "Quelle activité constitue une tentative de récupération active ?",
+            "explanation": "Produire les idées sans support oblige à récupérer l'information avant le feedback.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Fermer le cours et écrire les cinq idées principales",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Relire passivement le même paragraphe",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Surligner sans se tester",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Copier mot à mot avec le cours ouvert",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une stratégie qui produit la meilleure performance immédiate garantit la meilleure rétention une semaine plus tard.",
+            "explanation": "Performance pendant l'étude et apprentissage durable peuvent diverger, comme dans les comparaisons relecture-test.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent une pratique de récupération plus utile pédagogiquement ?",
+            "explanation": "La tentative préalable, le feedback, la reprise des erreurs et une mesure différée soutiennent l'apprentissage et son contrôle.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Tenter avant de regarder la réponse",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Recevoir un feedback",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Reprendre les erreurs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Mémoriser une réponse fausse sans correction",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi ne peut-on pas imposer le même espacement optimal à tous les apprentissages ?",
+            "explanation": "Le bénéfice dépend notamment du délai de rétention visé, du contenu, du niveau initial et des reprises.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "L'intervalle utile dépend de l'objectif et du délai final",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L'espacement ne fonctionne jamais",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Seule la première séance compte",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le calendrier remplace la compréhension",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on le fait de répartir les reprises sur plusieurs moments plutôt que de les masser ?",
+            "explanation": "Il s'agit de la pratique distribuée, ou espacement.",
+            "acceptedAnswers": [
+              "pratique distribuée",
+              "pratique distribuee",
+              "espacement",
+              "répétition espacée",
+              "repetition espacee"
+            ],
+            "position": 5,
+            "options": []
+          }
         ]
       }
     ],
@@ -302,7 +971,13 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
     ]
   }
 }

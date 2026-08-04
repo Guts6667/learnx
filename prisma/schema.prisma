@@ -62,6 +62,13 @@ enum TaskType {
   @@map("task_type")
 }
 
+enum CanonicalActivityKind {
+  TASK     @map("task")
+  EXERCISE @map("exercise")
+
+  @@map("canonical_activity_kind")
+}
+
 enum LessonProgressStatus {
   AVAILABLE    @map("available")
   IN_PROGRESS  @map("in_progress")
@@ -175,27 +182,29 @@ enum ReviewStatus {
 }
 
 model User {
-  id                         String                      @id @default(uuid()) @db.Uuid
-  email                      String                      @unique
-  passwordHash               String                      @map("password_hash")
-  displayName                String                      @map("display_name")
-  role                       Role                        @default(USER)
-  createdAt                  DateTime                    @default(now()) @map("created_at")
-  updatedAt                  DateTime                    @updatedAt @map("updated_at")
-  sessions                   Session[]
-  programs                   Program[]
-  programProgresses          ProgramProgress[]
-  stageProgresses            StageProgress[]
-  lessonProgresses           LessonProgress[]
-  taskCompletions            TaskCompletion[]
-  resourceProgresses         ResourceProgress[]
-  conceptProgresses          ConceptProgress[]
-  conceptAttempts            ConceptAssessmentAttempt[]
-  quizAttempts               QuizAttempt[]
-  exerciseSubmissions        ExerciseSubmission[]
-  stageAssessmentSubmissions StageAssessmentSubmission[]
-  reviewItems                ReviewItem[]
-  notes                      Note[]
+  id                           String                        @id @default(uuid()) @db.Uuid
+  email                        String                        @unique
+  passwordHash                 String                        @map("password_hash")
+  displayName                  String                        @map("display_name")
+  role                         Role                          @default(USER)
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  updatedAt                    DateTime                      @updatedAt @map("updated_at")
+  sessions                     Session[]
+  programs                     Program[]
+  programProgresses            ProgramProgress[]
+  stageProgresses              StageProgress[]
+  lessonProgresses             LessonProgress[]
+  taskCompletions              TaskCompletion[]
+  resourceProgresses           ResourceProgress[]
+  conceptProgresses            ConceptProgress[]
+  conceptAttempts              ConceptAssessmentAttempt[]
+  quizAttempts                 QuizAttempt[]
+  exerciseSubmissions          ExerciseSubmission[]
+  stageAssessmentSubmissions   StageAssessmentSubmission[]
+  reviewItems                  ReviewItem[]
+  notes                        Note[]
+  moduleRuns                   ModuleRun[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
 
   @@map("users")
 }
@@ -211,6 +220,16 @@ model Session {
 
   @@index([userId, expiresAt])
   @@map("sessions")
+}
+
+model LoginRateLimit {
+  keyHash         String   @id @map("key_hash")
+  failures        Int
+  windowStartedAt DateTime @map("window_started_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([windowStartedAt])
+  @@map("login_rate_limits")
 }
 
 model Program {
@@ -301,47 +320,70 @@ model StageAssessmentSubmission {
 }
 
 model Module {
-  id               String   @id @default(uuid()) @db.Uuid
-  stageId          String   @map("stage_id") @db.Uuid
+  id               String      @id @default(uuid()) @db.Uuid
+  stageId          String      @map("stage_id") @db.Uuid
   title            String
   slug             String
   description      String
-  position         Int      @default(0)
-  estimatedMinutes Int?     @map("estimated_minutes")
-  isPublished      Boolean  @default(false) @map("is_published")
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  stage            Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  position         Int         @default(0)
+  estimatedMinutes Int?        @map("estimated_minutes")
+  isPublished      Boolean     @default(false) @map("is_published")
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  stage            Stage       @relation(fields: [stageId], references: [id], onDelete: Cascade)
   lessons          Lesson[]
+  runs             ModuleRun[]
 
   @@unique([stageId, slug])
   @@index([stageId, position])
   @@map("modules")
 }
 
+model ModuleRun {
+  id                           String                        @id @default(uuid()) @db.Uuid
+  userId                       String                        @map("user_id") @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  sequence                     Int
+  startedAt                    DateTime                      @default(now()) @map("started_at")
+  restartKey                   String?                       @map("restart_key") @db.Uuid
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  user                         User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quizAttempts                 QuizAttempt[]
+  conceptAttempts              ConceptAssessmentAttempt[]
+  exerciseSubmissions          ExerciseSubmission[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
+
+  @@unique([userId, moduleId, sequence])
+  @@unique([userId, moduleId, restartKey])
+  @@index([userId, moduleId, startedAt])
+  @@map("module_runs")
+}
+
 model Lesson {
-  id               String           @id @default(uuid()) @db.Uuid
-  moduleId         String           @map("module_id") @db.Uuid
-  title            String
-  slug             String
-  summary          String
-  objectives       Json             @map("objectives_json")
-  prerequisites    Json             @map("prerequisites_json")
-  estimatedMinutes Int?             @map("estimated_minutes")
-  position         Int              @default(0)
-  isPublished      Boolean          @default(false) @map("is_published")
-  createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @updatedAt @map("updated_at")
-  module           Module           @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  contentBlocks    ContentBlock[]
-  resources        Resource[]
-  tasks            Task[]
-  progress         LessonProgress[]
-  concepts         Concept[]
-  quizzes          Quiz[]
-  exercises        Exercise[]
-  reviewItems      ReviewItem[]
-  notes            Note[]
+  id                           String                        @id @default(uuid()) @db.Uuid
+  moduleId                     String                        @map("module_id") @db.Uuid
+  title                        String
+  slug                         String
+  summary                      String
+  objectives                   Json                          @map("objectives_json")
+  prerequisites                Json                          @map("prerequisites_json")
+  estimatedMinutes             Int?                          @map("estimated_minutes")
+  position                     Int                           @default(0)
+  isPublished                  Boolean                       @default(false) @map("is_published")
+  createdAt                    DateTime                      @default(now()) @map("created_at")
+  updatedAt                    DateTime                      @updatedAt @map("updated_at")
+  module                       Module                        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  contentBlocks                ContentBlock[]
+  resources                    Resource[]
+  tasks                        Task[]
+  progress                     LessonProgress[]
+  concepts                     Concept[]
+  quizzes                      Quiz[]
+  exercises                    Exercise[]
+  reviewItems                  ReviewItem[]
+  notes                        Note[]
+  activityCompletionCarryovers ActivityCompletionCarryover[]
 
   @@unique([moduleId, slug])
   @@index([moduleId, position])
@@ -377,6 +419,7 @@ model Resource {
   lesson           Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   progress         ResourceProgress[]
   conceptLinks     ConceptResource[]
+  taskLinks        TaskResource[]
 
   @@unique([lessonId, key])
   @@index([lessonId, position])
@@ -386,16 +429,20 @@ model Resource {
 model Task {
   id          String           @id @default(uuid()) @db.Uuid
   lessonId    String           @map("lesson_id") @db.Uuid
+  key         String
   title       String
   description String?
   type        TaskType
   isRequired  Boolean          @default(true) @map("is_required")
   weight      Float            @default(1)
   position    Int              @default(0)
+  isCanonical Boolean          @default(true) @map("is_canonical")
   lesson      Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   completions TaskCompletion[]
+  resources   TaskResource[]
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
   @@index([lessonId, position])
   @@map("tasks")
 }
@@ -525,40 +572,77 @@ model QuestionOption {
 }
 
 model QuizAttempt {
-  id          String   @id @default(uuid()) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  quizId      String   @map("quiz_id") @db.Uuid
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  quizId      String    @map("quiz_id") @db.Uuid
+  moduleRunId String    @map("module_run_id") @db.Uuid
   score       Float
   passed      Boolean
-  answers     Json     @map("answers_json")
-  submittedAt DateTime @default(now()) @map("submitted_at")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  answers     Json      @map("answers_json")
+  submittedAt DateTime  @default(now()) @map("submitted_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@index([userId, quizId, submittedAt], map: "quiz_attempts_user_quiz_submitted_idx")
+  @@index([userId, quizId, moduleRunId, submittedAt], map: "quiz_attempts_user_quiz_run_submitted_idx")
   @@map("quiz_attempts")
 }
 
 model Exercise {
   id           String               @id @default(uuid()) @db.Uuid
   lessonId     String               @map("lesson_id") @db.Uuid
+  key          String
+  activityType TaskType             @map("activity_type")
   title        String
   instructions String
   rubric       Json?                @map("rubric_json")
   isRequired   Boolean              @default(true) @map("is_required")
   position     Int                  @default(0)
+  isCanonical  Boolean              @default(true) @map("is_canonical")
   lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   submissions  ExerciseSubmission[]
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
   @@index([lessonId, position])
   @@map("exercises")
+}
+
+model TaskResource {
+  taskId     String   @map("task_id") @db.Uuid
+  resourceId String   @map("resource_id") @db.Uuid
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, resourceId])
+  @@index([resourceId])
+  @@map("task_resources")
+}
+
+model ActivityCompletionCarryover {
+  id          String                @id @default(uuid()) @db.Uuid
+  userId      String                @map("user_id") @db.Uuid
+  lessonId    String                @map("lesson_id") @db.Uuid
+  activityKey String                @map("activity_key")
+  kind        CanonicalActivityKind
+  moduleRunId String                @map("module_run_id") @db.Uuid
+  completedAt DateTime              @map("completed_at")
+  sources     Json                  @map("sources_json")
+  createdAt   DateTime              @default(now()) @map("created_at")
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson                @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun             @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId, activityKey, kind, moduleRunId])
+  @@index([lessonId, activityKey, kind])
+  @@map("activity_completion_carryovers")
 }
 
 model ExerciseSubmission {
   id              String                   @id @default(uuid()) @db.Uuid
   userId          String                   @map("user_id") @db.Uuid
   exerciseId      String                   @map("exercise_id") @db.Uuid
+  moduleRunId     String                   @map("module_run_id") @db.Uuid
   contentMarkdown String                   @default("") @map("content_markdown")
   status          ExerciseSubmissionStatus @default(DRAFT)
   submittedAt     DateTime?                @map("submitted_at")
@@ -566,8 +650,9 @@ model ExerciseSubmission {
   updatedAt       DateTime                 @updatedAt @map("updated_at")
   user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   exercise        Exercise                 @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  moduleRun       ModuleRun                @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, exerciseId])
+  @@unique([userId, exerciseId, moduleRunId])
   @@index([exerciseId, status])
   @@map("exercise_submissions")
 }
@@ -670,14 +755,16 @@ model ConceptAssessmentAttempt {
   id           String            @id @default(uuid()) @db.Uuid
   userId       String            @map("user_id") @db.Uuid
   assessmentId String            @map("assessment_id") @db.Uuid
+  moduleRunId  String            @map("module_run_id") @db.Uuid
   answers      Json              @map("answers_json")
   score        Float
   passed       Boolean
   submittedAt  DateTime          @default(now()) @map("submitted_at")
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   assessment   ConceptAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  moduleRun    ModuleRun         @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@index([userId, assessmentId, submittedAt], map: "concept_assessment_attempts_user_assessment_submitted_idx")
+  @@index([userId, assessmentId, moduleRunId, submittedAt], map: "concept_assessment_attempts_user_assessment_run_submitted_idx")
   @@map("concept_assessment_attempts")
 }
 

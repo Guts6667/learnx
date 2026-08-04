@@ -1,0 +1,1060 @@
+{
+  "specId": "PEDAGOGY_SPEC_039",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "motivation-emotion-stress",
+  "moduleSlug": "emotion-adaptation",
+  "lesson": {
+    "title": "Stress, coping, santé et limites des inférences",
+    "slug": "stress-coping-sante",
+    "summary": "Le stress articule stresseurs, évaluations, réponses et conséquences dans le temps. Coping, soutien, conditions matérielles et inégalités modifient ces processus, tandis que les associations avec la santé exigent des inférences prudentes.",
+    "objectives": [
+      "Distinguer stresseur, évaluation, réponse aiguë et exposition chronique.",
+      "Comparer coping centré sur le problème, l’émotion, le sens et le soutien selon le contexte.",
+      "Interpréter biomarqueur, charge allostatique et résultat de santé sans causalité indue.",
+      "Inclure inégalités et contraintes structurelles sans victim-blaming."
+    ],
+    "prerequisites": [
+      "Connaître régulation émotionnelle et flexibilité.",
+      "Distinguer association, causalité et variable confondante.",
+      "Connaître systèmes autonome et endocrinien sans réductionnisme."
+    ],
+    "estimatedMinutes": 160,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un stresseur est une demande ou condition ; la réponse de stress désigne des changements physiologiques, cognitifs, émotionnels et comportementaux ; le stress peut aussi être modélisé comme une transaction entre demandes évaluées et ressources. Confondre événement, ressenti et biomarqueur rend l’explication circulaire. Une réponse aiguë est limitée dans le temps ; une exposition chronique implique répétition ou persistance, mais aucune durée unique ne définit tous les systèmes.",
+          "sourceKeys": [
+            "openstax-stress-14-1",
+            "openstax-stress-14-3"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Les réponses aiguës mobilisent plusieurs systèmes selon la tâche, l’heure, l’anticipation, l’activité, la santé et les médicaments. Fréquence cardiaque, conductance ou cortisol n’est chacun ni le stress entier ni un compteur universel. Les trajectoires diffèrent par niveau de base, réactivité et récupération. L’allostasie décrit l’ajustement par le changement ; la charge allostatique tente de résumer une accumulation multisystémique, avec des choix de biomarqueurs et seuils qui varient entre études.",
+          "sourceKeys": [
+            "openstax-stress-14-3",
+            "juster-allostatic-load-2010"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Le coping regroupe les efforts pour gérer les demandes et leurs conséquences. Agir sur le problème convient davantage lorsque celui-ci est modifiable ; gérer l’émotion ou le sens peut être essentiel lorsque la perte est irréversible ; soutien, information, repos ou action collective peuvent se combiner. Une stratégie n’est pas bonne par nature : sa fonction, son coût, sa faisabilité, sa temporalité et les effets observés comptent. Imposer l’optimisme ou le contrôle peut nier une menace réelle.",
+          "sourceKeys": [
+            "openstax-coping-14-4",
+            "folkman-coping-2004"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Les expositions ne sont pas distribuées au hasard. Travail précaire, logement, discrimination, violences, charge de soin, pollution, accès aux services et pouvoir de décision façonnent demandes et ressources. Une différence de santé associée au stress perçu peut aussi refléter exposition matérielle, sélection, mesure ou maladie préexistante. Réduire l’analyse au style individuel de coping produit du victim-blaming et détourne des interventions organisationnelles et politiques.",
+          "sourceKeys": [
+            "who-social-determinants-2025",
+            "allostatic-disparities-2009"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Les études reliant stress et santé utilisent expériences brèves, enquêtes, cohortes, biomarqueurs ou dossiers médicaux ; elles n’estiment pas la même chose. Autoévaluation et symptôme peuvent partager une méthode, une maladie peut augmenter le stress rapporté, et attrition ou statut socioéconomique peuvent confondre l’association. Même longitudinal, un lien temporel n’établit pas à lui seul le mécanisme. Taille d’effet, incertitude, multiplicité, réplication et population sont indispensables.",
+          "sourceKeys": [
+            "openstax-stress-14-3",
+            "allostatic-disparities-2009"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Aucun profil de cortisol, score de stress ou inventaire de coping ne pose seul un diagnostic ni ne prédit une maladie individuelle. Une leçon générale ne remplace pas des soins et ne promet pas qu’une technique préviendra une pathologie. Une conclusion responsable distingue résultat moyen et personne, décrit les effets indésirables et limites, reconnaît les ressources sociales et oriente toute préoccupation de santé vers des professionnels qualifiés.",
+          "sourceKeys": [
+            "openstax-stress-14-3",
+            "who-social-determinants-2025"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-stress-14-1",
+        "title": "Psychology 2e — 14.1 What Is Stress?",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/14-1-what-is-stress",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 14.1 What Is Stress? OpenStax.",
+        "description": "Lire définitions stimulus, réponse et transaction ; produire un exemple séparant stresseur et réponse.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "openstax-stress-14-3",
+        "title": "Psychology 2e — 14.3 Stress and Illness",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/14-3-stress-and-illness",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 14.3 Stress and Illness. OpenStax.",
+        "description": "Lire les mécanismes proposés et relever cinq limites avant toute conclusion de santé.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "openstax-coping-14-4",
+        "title": "Psychology 2e — 14.4 Regulation of Stress",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/14-4-regulation-of-stress",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 14.4 Regulation of Stress. OpenStax.",
+        "description": "Comparer coping centré problème et émotion en corrigeant toute hiérarchie universelle.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "juster-allostatic-load-2010",
+        "title": "Allostatic Load Biomarkers of Chronic Stress and Impact on Health",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2864527/",
+        "author": "Robert-Paul Juster et al.",
+        "citation": "Juster, R.-P., McEwen, B. S., & Lupien, S. J. (2010). Allostatic load biomarkers of chronic stress and impact on health. Neuroscience and Biobehavioral Reviews, 35(1), 2–16. https://doi.org/10.1016/j.neubiorev.2009.10.002",
+        "description": "Lire résumé et limites de mesure ; comparer niveau de base, réactivité, récupération et indice composite.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 4
+      },
+      {
+        "key": "folkman-coping-2004",
+        "title": "Coping: Pitfalls and Promise",
+        "type": "article",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/14744233/",
+        "author": "Susan Folkman et Judith T. Moskowitz",
+        "citation": "Folkman, S., & Moskowitz, J. T. (2004). Coping: Pitfalls and promise. Annual Review of Psychology, 55, 745–774. https://doi.org/10.1146/annurev.psych.55.090902.141456",
+        "description": "Consulter résumé et modèle ; relever pourquoi contexte et mesure empêchent un classement simple.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "allostatic-disparities-2009",
+        "title": "Socio-Economic Status, Cortisol and Allostatic Load",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2755130/",
+        "author": "Jennifer B. Dowd et al.",
+        "citation": "Dowd, J. B., Simanek, A. M., & Aiello, A. E. (2009). Socio-economic status, cortisol and allostatic load. International Journal of Epidemiology, 38(5), 1297–1309. https://doi.org/10.1093/ije/dyp277",
+        "description": "Lire la revue et relever hétérogénéité des biomarqueurs, composition des échantillons et alternatives.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "who-social-determinants-2025",
+        "title": "World Report on Social Determinants of Health Equity",
+        "type": "document",
+        "url": "https://www.who.int/teams/social-determinants-of-health/equity-and-health/world-report-on-social-determinants-of-health-equity",
+        "author": "World Health Organization",
+        "citation": "World Health Organization. (2025). World report on social determinants of health equity. WHO.",
+        "description": "Lire les messages clés ; relier deux inégalités de santé aux conditions et ressources plutôt qu’aux seuls choix individuels.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 7
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Stresseurs, réponses et temporalités",
+        "slug": "stresseurs-reponses-temporalites",
+        "description": "Stresseur, évaluation et réponses aiguës ou chroniques sont distingués, avec mesures et temporalités propres.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-stress-14-1",
+          "juster-allostatic-load-2010"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Processus de stress",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Coping, ressources et contexte",
+        "slug": "coping-ressources-contextes",
+        "description": "Les efforts centrés sur problème, émotion, sens ou soutien dépendent de la contrôlabilité et des ressources réelles.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-coping-14-4",
+          "folkman-coping-2004"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Coping et contexte",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Santé, inégalités et inférences",
+        "slug": "stress-sante-inegalites-inferences",
+        "description": "Les liens moyens entre stress, biomarqueurs et santé exigent contrôle des confusions, des inégalités et de la causalité inverse.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-stress-14-3",
+          "allostatic-disparities-2009",
+          "who-social-determinants-2025"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Stress, santé et limites",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Séparer stresseur et réponse",
+        "description": "Pour un cas fictif, produire une chronologie stresseur–évaluation–réponses–récupération et préciser ce que chaque mesure n’établit pas.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Construire un plan de coping situé",
+        "description": "Comparer quatre options selon contrôlabilité, coût, sécurité, soutien, temporalité et niveau individuel ou structurel, sans prescrire une solution unique.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer une étude stress–santé",
+        "description": "Réviser un communiqué causal à partir d’une cohorte fictive : mesures, temporalité, confusion, causalité inverse, attrition, inégalités, taille d’effet et conclusion non diagnostique.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-039-OPENSTAX-14-1",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 14.1 What Is Stress?",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/14-1-what-is-stress",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Définitions introductives."
+      },
+      {
+        "id": "REF-039-OPENSTAX-14-3",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 14.3 Stress and Illness",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/14-3-stress-and-illness",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Synthèse pédagogique nuancée par les revues méthodologiques."
+      },
+      {
+        "id": "REF-039-OPENSTAX-14-4",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 14.4 Regulation of Stress",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/14-4-regulation-of-stress",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Typologie du coping, sans hiérarchie universelle."
+      },
+      {
+        "id": "REF-039-JUSTER",
+        "type": "review_article",
+        "authors": [
+          "Juster, R.-P.",
+          "McEwen, B. S.",
+          "Lupien, S. J."
+        ],
+        "organization": "Elsevier",
+        "title": "Allostatic Load Biomarkers of Chronic Stress and Impact on Health",
+        "year": 2010,
+        "edition": null,
+        "publication": "Neuroscience and Biobehavioral Reviews, 35(1), 2–16",
+        "doi": "https://doi.org/10.1016/j.neubiorev.2009.10.002",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2864527/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur ouvert via PMC",
+        "status": "verified",
+        "notes": "Cadre allostatique et limites des biomarqueurs."
+      },
+      {
+        "id": "REF-039-FOLKMAN",
+        "type": "review_article",
+        "authors": [
+          "Folkman, S.",
+          "Moskowitz, J. T."
+        ],
+        "organization": "Annual Reviews",
+        "title": "Coping: Pitfalls and Promise",
+        "year": 2004,
+        "edition": null,
+        "publication": "Annual Review of Psychology, 55, 745–774",
+        "doi": "https://doi.org/10.1146/annurev.psych.55.090902.141456",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/14744233/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé PubMed ouvert",
+        "status": "verified",
+        "notes": "Ressource facultative au texte intégral."
+      },
+      {
+        "id": "REF-039-DOWD",
+        "type": "review_article",
+        "authors": [
+          "Dowd, J. B.",
+          "Simanek, A. M.",
+          "Aiello, A. E."
+        ],
+        "organization": "Oxford University Press",
+        "title": "Socio-Economic Status, Cortisol and Allostatic Load",
+        "year": 2009,
+        "edition": null,
+        "publication": "International Journal of Epidemiology, 38(5), 1297–1309",
+        "doi": "https://doi.org/10.1093/ije/dyp277",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2755130/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Texte ouvert via PMC",
+        "status": "verified",
+        "notes": "Revue des associations et hétérogénéités de mesure."
+      },
+      {
+        "id": "REF-039-WHO",
+        "type": "institutional_report",
+        "authors": [
+          "World Health Organization"
+        ],
+        "organization": "World Health Organization",
+        "title": "World Report on Social Determinants of Health Equity",
+        "year": 2025,
+        "edition": "2025",
+        "publication": "World Health Organization",
+        "doi": null,
+        "url": "https://www.who.int/teams/social-determinants-of-health/equity-and-health/world-report-on-social-determinants-of-health-equity",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Licence OMS applicable",
+        "status": "verified",
+        "notes": "Rapport officiel sur conditions sociales et inégalités de santé."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-OPENSTAX-14-1",
+            "locator": "définitions stimulus, réponse et processus",
+            "supports": "Distinction stresseur, réponse et évaluation."
+          },
+          {
+            "referenceId": "REF-039-OPENSTAX-14-3",
+            "locator": "réponses physiologiques et stress chronique",
+            "supports": "Pluralité des réponses et distinction entre épisodes aigus et expositions persistantes."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel ouvert explicite.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-JUSTER",
+            "locator": "résumé, tableaux et discussion",
+            "supports": "Allostasie, charge et limites biomarqueurs."
+          },
+          {
+            "referenceId": "REF-039-OPENSTAX-14-3",
+            "locator": "physiological basis of stress",
+            "supports": "Mobilisation de plusieurs systèmes physiologiques et effets dépendant de la temporalité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Revue spécialisée ouverte.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-OPENSTAX-14-4",
+            "locator": "Coping Styles",
+            "supports": "Coping problème et émotion."
+          },
+          {
+            "referenceId": "REF-039-FOLKMAN",
+            "locator": "résumé",
+            "supports": "Dépendance au contexte et pièges de mesure."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux synthèses complémentaires.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-WHO",
+            "locator": "key messages",
+            "supports": "Conditions sociales et inégalités de santé."
+          },
+          {
+            "referenceId": "REF-039-DOWD",
+            "locator": "résultats et discussion",
+            "supports": "SES, cortisol et hétérogénéité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Rapport mondial et revue systématique convergent.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-OPENSTAX-14-3",
+            "locator": "Stress and Illness et méthodes citées",
+            "supports": "Diversité des plans et limites des liens entre stress et santé."
+          },
+          {
+            "referenceId": "REF-039-DOWD",
+            "locator": "méthodes et limites",
+            "supports": "Confusions et variabilité des indices."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Limites méthodologiques directement documentées.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-039-OPENSTAX-14-3",
+            "locator": "Stress and Illness",
+            "supports": "Relations moyennes avec la santé."
+          },
+          {
+            "referenceId": "REF-039-WHO",
+            "locator": "key messages",
+            "supports": "Contexte social et prudence individuelle."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources complémentaires, clinique exclue.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-stress-14-1",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-OPENSTAX-14-1"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire définitions stimulus, réponse et transaction ; produire un exemple séparant stresseur et réponse.",
+        "learnerInstructions": "Lire définitions stimulus, réponse et transaction ; produire un exemple séparant stresseur et réponse.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "openstax-stress-14-3",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-OPENSTAX-14-3"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire les mécanismes proposés et relever cinq limites avant toute conclusion de santé.",
+        "learnerInstructions": "Lire les mécanismes proposés et relever cinq limites avant toute conclusion de santé.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "openstax-coping-14-4",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-OPENSTAX-14-4"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Comparer coping centré problème et émotion en corrigeant toute hiérarchie universelle.",
+        "learnerInstructions": "Comparer coping centré problème et émotion en corrigeant toute hiérarchie universelle.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "juster-allostatic-load-2010",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-JUSTER"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire résumé et limites de mesure ; comparer niveau de base, réactivité, récupération et indice composite.",
+        "learnerInstructions": "Lire résumé et limites de mesure ; comparer niveau de base, réactivité, récupération et indice composite.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "folkman-coping-2004",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "institutional",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-FOLKMAN"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Consulter résumé et modèle ; relever pourquoi contexte et mesure empêchent un classement simple.",
+        "learnerInstructions": "Consulter résumé et modèle ; relever pourquoi contexte et mesure empêchent un classement simple.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Résumé ouvert, facultatif.",
+        "alternativeResourceKey": "openstax-coping-14-4",
+        "notes": "Accès limité signalé ; une alternative ouverte est fournie."
+      },
+      {
+        "resourceKey": "allostatic-disparities-2009",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-DOWD"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire la revue et relever hétérogénéité des biomarqueurs, composition des échantillons et alternatives.",
+        "learnerInstructions": "Lire la revue et relever hétérogénéité des biomarqueurs, composition des échantillons et alternatives.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "who-social-determinants-2025",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-039-WHO"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire les messages clés ; relier deux inégalités de santé aux conditions et ressources plutôt qu’aux seuls choix individuels.",
+        "learnerInstructions": "Lire les messages clés ; relier deux inégalités de santé aux conditions et ressources plutôt qu’aux seuls choix individuels.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Page officielle et rapport téléchargeable.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "stresseurs-reponses-temporalites",
+        "assessmentTitle": "Mini-évaluation — Processus de stress",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qu’est-ce qu’un stresseur ?",
+            "explanation": "C’est une demande ou condition, distincte de la réponse.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une demande ou condition",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un biomarqueur unique",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un diagnostic",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une maladie certaine",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un cortisol élevé mesure à lui seul tout le stress.",
+            "explanation": "Un biomarqueur est contextuel et non spécifique.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions décrivent une réponse ?",
+            "explanation": "Niveau de base, réactivité et récupération sont distincts.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Niveau de base",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réactivité",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Récupération",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Cause certaine",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que résume la charge allostatique ?",
+            "explanation": "C’est un indice composite variable, non un compteur universel.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Une tentative de résumé multisystémique",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un diagnostic individuel",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une émotion",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un gène",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme désigne l’ajustement par le changement ?",
+            "explanation": "Il s’agit de l’allostasie.",
+            "acceptedAnswers": [
+              "allostasie",
+              "l’allostasie",
+              "allostasis"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "coping-ressources-contextes",
+        "assessmentTitle": "Mini-évaluation — Coping et contexte",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand agir sur le problème est-il surtout pertinent ?",
+            "explanation": "Lorsque le stresseur est réellement modifiable.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Quand il est modifiable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toujours",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Jamais",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Seulement après diagnostic",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le coping centré émotion est toujours inférieur.",
+            "explanation": "Sa pertinence dépend du but et de la contrôlabilité.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles ressources peuvent participer au coping ?",
+            "explanation": "Les réponses peuvent être diverses et combinées.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Soutien social",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Information",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Action collective",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Optimisme imposé",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel risque présente une injonction au contrôle face à une contrainte réelle ?",
+            "explanation": "Elle peut nier la menace et blâmer la personne.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Victim-blaming",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Mesure plus fiable",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Causalité démontrée",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Soutien accru garanti",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme désigne les efforts pour gérer demandes et conséquences ?",
+            "explanation": "Il s’agit du coping.",
+            "acceptedAnswers": [
+              "coping",
+              "adaptation",
+              "stratégies de coping",
+              "strategies de coping"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "stress-sante-inegalites-inferences",
+        "assessmentTitle": "Mini-évaluation — Stress, santé et limites",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une association longitudinale stress–maladie prouve-t-elle le mécanisme ?",
+            "explanation": "Temporalité seule ne supprime pas confusion et causalité inverse.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Non, des alternatives restent possibles",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Oui, toujours",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Oui si le score est élevé",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Oui pour chaque personne",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les expositions aux stresseurs sont réparties également.",
+            "explanation": "Les conditions sociales structurent expositions et ressources.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles limites examiner dans une étude de santé ?",
+            "explanation": "Ces éléments bornent l’inférence.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Confusion",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Causalité inverse",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Attrition",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Diagnostic depuis une moyenne",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi inclure logement et travail ?",
+            "explanation": "Ils façonnent demandes, contrôle, exposition et ressources.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Ce sont des déterminants sociaux pertinents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ils prouvent un trait individuel",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ils remplacent toute mesure",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ils éliminent l’incertitude",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel biais survient si la maladie augmente ensuite le stress déclaré ?",
+            "explanation": "C’est la causalité inverse.",
+            "acceptedAnswers": [
+              "causalité inverse",
+              "causalite inverse"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie de la santé, stress, coping et épidémiologie sociale requise.",
+        "L’étape motivation-emotion-stress et le module emotion-adaptation sont absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "Aucun biomarqueur, score ou stratégie ne fonde diagnostic, prédiction individuelle ou promesse thérapeutique.",
+        "Les inégalités et contraintes structurelles sont incluses pour prévenir le victim-blaming.",
+        "Toutes les ressources obligatoires sont ouvertes."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de la leçon et de ses évaluations.",
+        "reviewRequired": "technical_editorial_health_psychology_and_social_epidemiology"
+      }
+    ]
+  }
+}

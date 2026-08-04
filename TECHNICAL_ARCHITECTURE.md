@@ -147,7 +147,7 @@ Préfixe : `/api`
 
 ### Auth
 
-- `POST /api/auth/register`
+- `POST /api/auth/register` — disponible hors production uniquement
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
@@ -203,7 +203,9 @@ Préfixe : `/api`
 
 - accès PostgreSQL uniquement côté serveur ;
 - cookies de session sécurisés ;
-- protection brute-force simple sur login ;
+- protection brute-force partagée dans PostgreSQL entre les instances
+  serverless, avec clé client/e-mail hachée ;
+- inscription directe désactivée en production jusqu’au cycle d’accès V3 ;
 - validation Zod de toutes les entrées ;
 - vérification systématique de propriété par `userId` ;
 - Markdown rendu après sanitisation ;

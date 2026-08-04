@@ -42,6 +42,24 @@ function lessonResponse(isPublished: boolean) {
       exercises: [],
       id: 'lesson-1',
       isPublished,
+      module: {
+        id: 'module-1',
+        isPublished,
+        slug: 'premiers-pas',
+        stage: {
+          id: 'stage-1',
+          isPublished,
+          program: {
+            id: 'program-1',
+            slug: 'programme-test',
+            title: 'Programme test',
+          },
+          slug: 'introduction',
+          title: 'Introduction',
+        },
+        title: 'Premiers pas',
+      },
+      navigation: { nextLesson: null, previousLesson: null },
       objectives: [],
       position: 1,
       prerequisites: [],
@@ -148,7 +166,22 @@ describe('ConceptAssessmentPage', () => {
         name: 'Mini-évaluation — Démarche empirique',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Brouillon')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Sommaire' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Leçon : Démarrer' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
+    expect(
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
     expect(
       screen.queryByText('Les données sont indispensables.'),
     ).not.toBeInTheDocument();
@@ -161,6 +194,10 @@ describe('ConceptAssessmentPage', () => {
     expect(
       await screen.findByText('Les données sont indispensables.'),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Continuer' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
     expect(fetchMock).toHaveBeenCalledWith(
       `${basePath}/attempts?preview=true`,
       expect.objectContaining({ method: 'POST' }),

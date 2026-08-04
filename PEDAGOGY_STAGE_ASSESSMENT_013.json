@@ -1,0 +1,200 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_013",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "integration-preuves",
+  "assessment": {
+    "seed": {
+      "title": "Projet final — Enquêter sur une affirmation psychologique",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Mener une enquête documentaire reproductible sur une affirmation psychologique contemporaine choisie dans un périmètre sûr et non clinique, comparer les méthodes et résultats, évaluer réplication, généralisation et communication publique, puis produire une conclusion proportionnée accompagnée d'une présentation de huit minutes.",
+    "instructions": [
+      "Choisir une affirmation contemporaine, vérifiable et non clinique portant sur apprentissage adulte, attention dans une tâche ordinaire, coopération, communication publique ou conditions de travail à faible enjeu. Archiver sa formulation exacte, sa date, son support et son contexte ; exclure diagnostic, symptômes, traitement, santé individuelle, mineurs vulnérables et décision personnelle à fort enjeu.",
+      "Transformer l'affirmation en une question délimitée distinguant thème, connaissance recherchée et décision éventuelle. Définir population, phénomène ou intervention, comparaison si pertinente, résultats, contexte et horizon au moyen d'un cadre flexible justifié ; annoncer inclusions, exclusions, concepts et conclusions impossibles.",
+      "Rédiger puis exécuter une stratégie de recherche proportionnée et reproductible : sources documentaires, requêtes complètes, synonymes, termes contrôlés, dates, filtres, références sentinelles, volumes, dédoublonnage, sélection et raisons d'exclusion. Conserver l'historique de toute révision du périmètre ou des requêtes.",
+      "Construire une carte des sources par rôle et unité : étude primaire, rapport lié à la même étude, synthèse, guide ou standard. Vérifier DOI, version, correction ou rétractation, financement, conflits et pratiques éditoriales ; justifier retenir, contextualiser, remplacer ou exclure sans pyramide automatique ni verdict fondé sur un signal isolé.",
+      "Extraire dans une matrice commune construit, opérationnalisation, population cible, échantillon, recrutement, contexte, plan, comparateur, mesures, temporalité, attrition, estimand ou contraste, résultats, incertitude et risques de biais. Signaler explicitement toute cellule non rapportée et toute comparabilité insuffisante.",
+      "Comparer direction, magnitude, intervalles, importance pratique, analyses de sensibilité et hétérogénéité clinique, méthodologique ou statistique. Ne compter ni études positives ni valeurs p significatives ; si une combinaison quantitative n'est pas défendable, produire une synthèse structurée qui conserve dépendances, divergences et incertitude.",
+      "Évaluer ce que le corpus montre sur reproductibilité computationnelle, réplication avec nouvelles données et robustesse aux choix raisonnables. Examiner préenregistrements, écarts déclarés, matériaux, code, données, résultats nuls et conflits ; traiter chaque réplication comme une information cumulative, jamais comme verdict sur une équipe.",
+      "Définir la cible de généralisation selon personnes, stimuli, tâches, lieux, langues et périodes. Auditer diversité, recrutement, accès, collaborations locales, traduction, significations, comparabilité et invariance lorsque pertinente ; utiliser WEIRD comme critique de portée, sans dichotomie culturelle, déficit de groupe ou trait national.",
+      "Analyser la circulation publique de l'affirmation : distinguer information erronée, intention de désinformer non démontrée et désaccord scientifique. Cartographier domaine des experts, poids des preuves, sources d'incertitude, valeurs et intérêts, puis rédiger une correction courte qui évite fausse balance, accusation sans preuve et promesse d'effet boomerang ou d'adhésion.",
+      "Rédiger la conclusion en séparant faits rapportés, inférences et jugements. Répondre directement avec direction, magnitude et certitude ; calibrer le langage causal au plan et à l'estimand ; expliquer biais, imprécision, incohérence, indirectness, limites de transfert et raisons d'une éventuelle absence de conclusion.",
+      "Examiner applicabilité, bénéfices et dommages possibles, autonomie, confidentialité, accessibilité, ressources, acceptabilité, faisabilité, équité et valeurs divergentes. Proposer deux à quatre pistes de vérification classées par la question qu'elles résoudraient, avec méthode, population, donnée attendue et garde-fou éthique ; prévoir une ouverture responsable ou un accès contrôlé selon les risques.",
+      "Livrer un dossier sourcé de 1 800 à 2 400 mots, hors références et annexes, avec journal de recherche, matrice et registre des décisions en annexe, puis une présentation de huit minutes adaptée à un public non spécialiste. Citer au point d'usage le corpus retenu et au moins une ressource méthodologique de chacune des sept leçons ; ne fournir aucun diagnostic ni conseil médical ou psychologique individuel."
+    ],
+    "case": "Mandat entièrement fictif — Observatoire Lucide. Une association fictive d'éducation aux médias demande une note sur une affirmation psychologique contemporaine largement partagée. Le commanditaire veut savoir ce que les preuves permettent réellement de dire, à qui le résultat pourrait s'appliquer, quelles incertitudes demeurent et quelle vérification serait la plus informative. Il n'attend ni fact-check binaire, ni palmarès d'experts, ni recommandation individuelle. Le sujet est choisi par l'apprenant dans l'un des périmètres suivants : apprentissage chez des adultes, attention pendant une tâche ordinaire, coopération dans des équipes volontaires, correction d'informations publiques ou organisation du travail à faible enjeu. Exemples de forme, à reformuler plutôt qu'à reprendre comme vrais : « des questionnaires de récupération espacés améliorent la rétention différée dans une formation adulte », « la présence de notifications modifie l'attention pendant une tâche de bureau », « une correction accompagnée d'une explication réduit l'adhésion à une affirmation factuellement erronée » ou « une procédure de décision indépendante améliore l'usage d'informations uniques dans une équipe ». Sont hors périmètre : toute affirmation permettant de diagnostiquer, prévenir ou traiter un trouble ; tout conseil sur médicament, psychothérapie, alimentation, sommeil ou santé d'une personne ; suicide, automutilation, violence ou urgence ; prédiction individuelle depuis un test ; interventions sur mineurs ou groupes ne pouvant consentir ; sélection, sanction ou décision automatisée à fort enjeu. Si la recherche exploratoire montre que le sujet franchit ces limites, l'apprenant le reformule ou en choisit un autre et conserve la trace de cette décision. Le dossier part d'une trace publique datée — article, vidéo, publicité, billet ou déclaration — dont il archive le texte exact sans supposer l'intention de son auteur. Il formule une question descriptive, associative ou causale et sélectionne le cadre utile sans remplir artificiellement toutes ses cases. La recherche est proportionnée au temps disponible : elle ne prétend pas être une revue systématique exhaustive. Elle utilise au moins deux voies documentaires pertinentes, conserve les requêtes et dates, relie les rapports provenant d'une même étude et vérifie la version des sources. Le nombre de références n'est pas un substitut à leur rôle ou leur pertinence ; l'apprenant justifie pourquoi le corpus suffit ou non à une conclusion. La matrice compare les phénomènes réellement mesurés plutôt que les seuls mots employés. Elle distingue population cible et échantillon, association et effet causal, assignation et adhésion lorsque pertinent, résultat immédiat et différé, magnitude et seule significativité. Elle documente données manquantes, attrition, dépendance entre rapports, hétérogénéité et risques de biais. Une étude plus grande n'annule pas une mauvaise mesure, une réplication divergente ne prouve ni fraude ni incompétence et un préenregistrement ne garantit pas la validité. L'analyse de science ouverte distingue code, données, protocole, réplication et robustesse. Elle justifie ce qui peut être ouvert, placé sous accès contrôlé ou non partagé selon consentement, réidentification, droits collectifs, connaissances sensibles, coûts et gouvernance. L'analyse de généralisation nomme explicitement personnes, tâches, stimuli, lieux, langues et périodes. Elle ne transforme pas WEIRD en deux types d'humanité, un pays en culture homogène ou une différence moyenne en trait essentiel. Lorsque des scores entre groupes sont comparés, la traduction, la signification, les conditions de passation et l'invariance sont examinées selon ce que permet le corpus. La partie communication distingue erreur, tromperie intentionnelle et désaccord méthodologique. Elle évalue les compétences pertinentes plutôt que le prestige seul, déclare conflits et affiliations sans les traiter comme preuve automatique de fausseté, qualifie chaque source d'incertitude et donne aux positions un poids proportionné aux preuves. Une correction affirme d'abord ce qui est soutenu, localise l'erreur et fournit une explication de remplacement ; elle ne promet ni adhésion ni effet identique dans tous les publics. La conclusion finale répond en six mouvements : réponse délimitée ; résultat principal avec ordre de grandeur ; degré de confiance et raisons ; limites causales ; applicabilité ; implications prudentes et prochaine information utile. Elle sépare observations, inférences et valeurs, reconnaît qu'absence de preuve et preuve d'absence diffèrent, et peut conclure que le corpus ne départage pas les hypothèses. La présentation de huit minutes expose la question, la recherche, deux contrastes méthodologiques décisifs, la conclusion calibrée et la prochaine vérification. Elle rend l'incertitude compréhensible sans la transformer en « 50–50 » et réserve les détails reproductibles au dossier et aux annexes. Toutes les organisations et situations du mandat sont fictives ; seules les sources réellement choisies et vérifiées par l'apprenant documentent l'affirmation étudiée.",
+    "estimatedMinutes": 180,
+    "submissionFormat": "Dossier sourcé de 1 800 à 2 400 mots, hors références et annexes, accompagné d'un journal de recherche, d'une matrice de comparaison, d'un registre des décisions et d'un support pour une présentation orale de huit minutes.",
+    "conceptSlugs": [
+      "reproductibilite-replication-robustesse",
+      "preenregistrement-transparence",
+      "ouverture-responsable-equitable",
+      "cibles-conditions-generalisation",
+      "diversite-sans-essentialisme",
+      "comparabilite-mesures-contexte",
+      "information-erronee-correction",
+      "expertise-incertitude-interets",
+      "poids-preuve-debat-public",
+      "question-visee-perimetre",
+      "cadres-formulation-flexibles",
+      "delimitation-revisable",
+      "recherche-proportionnee-reproductible",
+      "role-unite-sources",
+      "statut-integrite-editoriale",
+      "construits-echantillons-plans",
+      "design-estimand-biais",
+      "effet-incertitude-heterogeneite",
+      "faits-inferences-incertitude",
+      "portee-causale-langage",
+      "applicabilite-valeurs-ethique"
+    ],
+    "rubric": [
+      {
+        "criterion": "Question, visée et périmètre sûr",
+        "weight": 15,
+        "requirements": [
+          "L'affirmation publique est archivée fidèlement et la question distingue thème, connaissance recherchée et décision éventuelle.",
+          "Population, phénomène, comparaison, résultat, contexte et horizon sont délimités par un cadre choisi pour son utilité, sans cases artificielles.",
+          "Inclusions, exclusions, définitions, révisions et conclusions impossibles sont tracées ; le périmètre reste non clinique et à faible enjeu."
+        ]
+      },
+      {
+        "criterion": "Recherche reproductible et hiérarchie justifiée des sources",
+        "weight": 15,
+        "requirements": [
+          "Bases, autres voies, requêtes, dates, filtres, volumes, doublons, sélection et limites permettent de reconstruire la recherche sans prétention d'exhaustivité indue.",
+          "Études, rapports liés, synthèses, guides et standards sont distingués par unité et rôle plutôt que classés automatiquement.",
+          "Versions, corrections, rétractations, financement, conflits et pratiques éditoriales conduisent à des décisions motivées sans verdict depuis un indice isolé."
+        ]
+      },
+      {
+        "criterion": "Comparaison des méthodes et des résultats",
+        "weight": 20,
+        "requirements": [
+          "La matrice couvre construit, opérationnalisation, population, échantillon, recrutement, contexte, plan, comparateur, mesure, temporalité et attrition.",
+          "Le contraste ou estimand, les hypothèses et le risque de biais propre au résultat sont reconstruits ; les informations non rapportées restent visibles.",
+          "Direction, magnitude, intervalles, importance pratique, sensibilité et hétérogénéité remplacent le vote de significativité et le comptage des études.",
+          "La synthèse conserve divergences, dépendances, incomparabilités et incertitude et refuse une moyenne lorsque sa justification manque."
+        ]
+      },
+      {
+        "criterion": "Réplication, transparence et ouverture responsable",
+        "weight": 10,
+        "requirements": [
+          "Reproductibilité, réplication et robustesse sont distinguées et reliées à ce que chaque vérification permet d'apprendre.",
+          "Préenregistrement, écarts, explorations, code, données, matériaux, résultats nuls et conflits sont examinés sans badge de qualité automatique.",
+          "Le plan d'ouverture équilibre contrôle, confidentialité, consentement, droits collectifs, coûts, crédit et gouvernance avec accès ouvert ou restreint justifié."
+        ]
+      },
+      {
+        "criterion": "Généralisation, diversité, culture et mesure",
+        "weight": 10,
+        "requirements": [
+          "La cible de généralisation explicite personnes, stimuli, tâches, lieux, langues et périodes ainsi que les hypothèses de transport.",
+          "Échantillonnage, accès, pouvoir, collaboration locale et dimensions culturelles sont décrits sans dichotomie WEIRD ou essentialisme national.",
+          "Traduction, sens des construits, passation, comparabilité et invariance sont examinés avant toute comparaison de groupes."
+        ]
+      },
+      {
+        "criterion": "Désinformation, expertise et communication de l'incertitude",
+        "weight": 10,
+        "requirements": [
+          "Erreur, intention de tromper non démontrée et désaccord scientifique sont distingués selon les éléments disponibles.",
+          "Expertise, poids des preuves, valeurs, intérêts et sources d'incertitude sont délimités sans prestige automatique ni fausse balance.",
+          "La correction courte affirme le fait soutenu, localise l'erreur, explique une alternative, cite ses sources et ne promet ni adhésion ni boomerang."
+        ]
+      },
+      {
+        "criterion": "Conclusion, applicabilité, éthique et vérifications futures",
+        "weight": 15,
+        "requirements": [
+          "Faits, inférences et jugements sont séparés ; la réponse comporte magnitude, certitude et raisons de l'incertitude.",
+          "Le langage causal correspond au plan, au contraste, aux hypothèses et aux biais ; absence de preuve et preuve d'absence ne sont pas confondues.",
+          "Applicabilité, dommages, autonomie, confidentialité, accessibilité, ressources, valeurs et équité sont explicites sans conseil individuel.",
+          "Deux à quatre pistes de vérification ciblent des inconnues prioritaires avec méthode, population, données attendues et garde-fous éthiques."
+        ]
+      },
+      {
+        "criterion": "Dossier, traçabilité, citations et présentation",
+        "weight": 5,
+        "requirements": [
+          "Le dossier respecte 1 800 à 2 400 mots, les annexes sont exploitables et toutes les affirmations factuelles sont citées au point d'usage.",
+          "Le corpus est justifié par sa pertinence et couvre au moins une ressource méthodologique de chacune des sept leçons, sans quota substitué à la qualité.",
+          "La présentation tient en huit minutes, expose question, méthode, contrastes décisifs, conclusion calibrée et prochaine vérification pour un public non spécialiste."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante avec une fiche à dix colonnes : affirmation, construit, population, méthode, contraste, résultat, incertitude, portée, risque éthique, source. Pour « Question », reformuler en une phrase, choisir un cadre flexible, fixer inclusions, exclusions et conclusions impossibles, puis journaliser toute révision. Pour « Recherche », fournir les requêtes exécutables, dates, volumes et décisions ; relier les rapports d'une même étude et revérifier statut, corrections et intérêts. Pour « Comparaison », compléter toutes les cellules disponibles, reconstruire les estimands et remplacer tout vote de significativité par direction, magnitude, intervalle, hétérogénéité et biais. Pour « Réplication », classer chaque pratique en reproductibilité, réplication ou robustesse et produire un plan d'ouverture proportionné. Pour « Généralisation », créer une matrice personnes–stimuli–tâches–lieux–langues–périodes et traiter traduction, contexte et invariance sans essentialisme. Pour « Communication », distinguer erreur, intention et désaccord, cartographier expertise et poids de preuve, puis réécrire la correction sans fausse balance ni effet garanti. Pour « Conclusion », annoter faits–inférences–jugements, calibrer les verbes, ajouter applicabilité, éthique et deux à quatre vérifications ciblées. Pour « Présentation », réduire à cinq messages minutés et déplacer les détails dans les annexes. La resoumission contient les seules sections corrigées, le journal actualisé et un bref relevé des modifications."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-064-NASEM",
+      "REF-064-NOSEK-REVIEW",
+      "REF-064-PREREG",
+      "REF-064-TOP",
+      "REF-064-UNESCO",
+      "REF-064-CARE",
+      "REF-065-YARKONI",
+      "REF-065-HENRICH",
+      "REF-065-APICELLA",
+      "REF-065-PUTNICK",
+      "REF-065-JARS",
+      "REF-065-SCHIMMELPFENNIG",
+      "REF-066-NASEM",
+      "REF-066-ECKER",
+      "REF-066-WOOD-PORTER",
+      "REF-066-OECD",
+      "REF-066-ALLEA",
+      "REF-066-SCHMID",
+      "REF-067-COCHRANE-CH2",
+      "REF-067-JBI-QUESTION",
+      "REF-067-OHAT-PECO",
+      "REF-067-COOKE-SPIDER",
+      "REF-068-COCHRANE-CH4",
+      "REF-068-PRISMA-S",
+      "REF-068-CROSSMARK",
+      "REF-068-COPE",
+      "REF-068-ICMJE",
+      "REF-068-TCS",
+      "REF-069-APA-JARS",
+      "REF-069-ICH-E9R1",
+      "REF-069-COCHRANE-CH8",
+      "REF-069-COCHRANE-CH10",
+      "REF-069-COCHRANE-CH12",
+      "REF-070-COCHRANE-CH15",
+      "REF-070-GRADE-OVERVIEW",
+      "REF-070-GRADE-ETD",
+      "REF-070-STROBE"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le mandat Observatoire Lucide, l'association, ses demandes et les exemples de sujets sont fictifs ; le corpus du projet doit être constitué de sources réelles vérifiées par l'apprenant.",
+        "Revue humaine obligatoire avant publication, avec compétences en méthodologie, synthèse des preuves, métascience, recherche documentaire, psychologie culturelle, psychométrie, communication scientifique, intégrité, science ouverte et éthique.",
+        "Validation technique obligatoire : l'étape integration-preuves et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n'autorise aucune modification technique.",
+        "Les vingt-et-un conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_064 à 070.",
+        "Les trente-sept referenceIds correspondent exactement à l'union des références des PEDAGOGY_SPEC_064 à 070 ; liens, accès, éditions et statuts éditoriaux doivent être revérifiés pendant la revue humaine.",
+        "Le projet demeure dans un périmètre adulte, non clinique et à faible enjeu ; diagnostic, traitement, urgence, conseil médical ou psychologique, prédiction individuelle et décision à fort enjeu sont exclus.",
+        "La recherche est proportionnée et reproductible sans être faussement qualifiée de revue systématique exhaustive ; aucun nombre minimal de sources ne remplace rôle, pertinence et qualité.",
+        "La publication reste bloquée jusqu'aux validations technique, éditoriale, scientifique, documentaire, culturelle et éthique de l'ensemble de l'étape et du protocole de présentation."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création du projet final Observatoire Lucide, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_methodology_evidence_synthesis_metascience_information_retrieval_cultural_psychology_communication_open_science_and_ethics"
+      }
+    ]
+  }
+}

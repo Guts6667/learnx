@@ -13,6 +13,14 @@ import {
 } from '../../../lib/exercises.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
+import {
+  ensureCurrentModuleRunForLesson,
+  getCurrentModuleRunForLesson,
+} from '../_lib/module-runs.js';
 
 type SubmissionStatus = keyof typeof ExerciseSubmissionStatus;
 
@@ -21,6 +29,7 @@ interface ExerciseSubmissionRecord {
   createdAt: Date;
   exerciseId: string;
   id: string;
+  moduleRunId: string;
   status: SubmissionStatus;
   submittedAt: Date | null;
   updatedAt: Date;
@@ -54,10 +63,12 @@ export interface ExerciseRepository {
   saveSubmission(
     submissionId: string,
     contentMarkdown: string,
+    userId: string,
   ): Promise<ExerciseSubmissionRecord>;
   submitSubmission(
     submissionId: string,
     submittedAt: Date,
+    userId: string,
   ): Promise<ExerciseSubmissionRecord>;
 }
 
@@ -125,18 +136,21 @@ function publishedLessonWhere(userId: string) {
 function exerciseWhere(exerciseId: string, userId: string) {
   return {
     id: exerciseId,
+    isCanonical: true,
     lesson: publishedLessonWhere(userId),
   } as const;
 }
 
 export function createPrismaExerciseRepository(
   client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
 ): ExerciseRepository {
   const submissionSelect = {
     contentMarkdown: true,
     createdAt: true,
     exerciseId: true,
     id: true,
+    moduleRunId: true,
     status: true,
     submittedAt: true,
     updatedAt: true,
@@ -145,52 +159,129 @@ export function createPrismaExerciseRepository(
 
   return {
     async createOrGetSubmission(exerciseId, userId) {
-      return client.exerciseSubmission.upsert({
-        where: { userId_exerciseId: { exerciseId, userId } },
-        create: { exerciseId, userId },
-        update: {},
-        select: submissionSelect,
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const exercise = await transaction.exercise.findUnique({
+          where: { id: exerciseId },
+          select: { lessonId: true },
+        });
+        if (!exercise) throw notFound();
+        const moduleRun = await ensureCurrentModuleRunForLesson(
+          transaction,
+          exercise.lessonId,
+          userId,
+          new Date(),
+        );
+        return transaction.exerciseSubmission.upsert({
+          where: {
+            userId_exerciseId_moduleRunId: {
+              exerciseId,
+              moduleRunId: moduleRun.id,
+              userId,
+            },
+          },
+          create: { exerciseId, moduleRunId: moduleRun.id, userId },
+          update: {},
+          select: submissionSelect,
+        });
       });
     },
     async findExerciseForUser(exerciseId, userId) {
       const exercise = await client.exercise.findFirst({
         where: exerciseWhere(exerciseId, userId),
-        include: {
-          submissions: {
-            where: { userId },
-            take: 1,
-            select: submissionSelect,
-          },
-        },
       });
 
       if (!exercise) return null;
-
-      const { submissions, ...exerciseData } = exercise;
-      return { ...exerciseData, submission: submissions[0] ?? null };
+      const moduleRun = await getCurrentModuleRunForLesson(
+        client,
+        exercise.lessonId,
+        userId,
+      );
+      const submission = moduleRun
+        ? await client.exerciseSubmission.findUnique({
+            where: {
+              userId_exerciseId_moduleRunId: {
+                exerciseId,
+                moduleRunId: moduleRun.id,
+                userId,
+              },
+            },
+            select: submissionSelect,
+          })
+        : null;
+      return { ...exercise, submission };
     },
     async findOwnedSubmission(submissionId, userId) {
-      return client.exerciseSubmission.findFirst({
+      const submission = await client.exerciseSubmission.findFirst({
         where: {
           id: submissionId,
           userId,
           exercise: { lesson: publishedLessonWhere(userId) },
         },
-        select: submissionSelect,
+        include: {
+          exercise: { select: { lessonId: true } },
+        },
+      });
+      if (!submission) return null;
+      const currentRun = await getCurrentModuleRunForLesson(
+        client,
+        submission.exercise.lessonId,
+        userId,
+      );
+      if (currentRun?.id !== submission.moduleRunId) return null;
+      const { exercise: _exercise, ...record } = submission;
+      void _exercise;
+      return record;
+    },
+    async saveSubmission(submissionId, contentMarkdown, userId) {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const submission = await transaction.exerciseSubmission.findFirst({
+          where: { id: submissionId, userId },
+          include: { exercise: { select: { lessonId: true } } },
+        });
+        if (!submission) throw notFound();
+        const currentRun = await getCurrentModuleRunForLesson(
+          transaction,
+          submission.exercise.lessonId,
+          userId,
+        );
+        if (currentRun?.id !== submission.moduleRunId) throw notFound();
+        return transaction.exerciseSubmission.update({
+          where: { id: submissionId },
+          data: { contentMarkdown },
+          select: submissionSelect,
+        });
       });
     },
-    async saveSubmission(submissionId, contentMarkdown) {
-      return client.exerciseSubmission.update({
-        where: { id: submissionId },
-        data: { contentMarkdown },
-        select: submissionSelect,
-      });
-    },
-    async submitSubmission(submissionId, submittedAt) {
-      return client.exerciseSubmission.update({
-        where: { id: submissionId },
-        data: { status: ExerciseSubmissionStatus.SUBMITTED, submittedAt },
-        select: submissionSelect,
+    async submitSubmission(submissionId, submittedAt, userId) {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const currentSubmission =
+          await transaction.exerciseSubmission.findFirst({
+            where: { id: submissionId, userId },
+            include: { exercise: { select: { lessonId: true } } },
+          });
+        if (!currentSubmission) throw notFound();
+        const currentRun = await getCurrentModuleRunForLesson(
+          transaction,
+          currentSubmission.exercise.lessonId,
+          userId,
+        );
+        if (currentRun?.id !== currentSubmission.moduleRunId) throw notFound();
+        const submission = await transaction.exerciseSubmission.update({
+          where: { id: submissionId },
+          data: { status: ExerciseSubmissionStatus.SUBMITTED, submittedAt },
+          select: submissionSelect,
+        });
+        const progress = await recalculateProgress(
+          transaction,
+          currentSubmission.exercise.lessonId,
+          userId,
+          submittedAt,
+          { requirePublished: true },
+        );
+
+        if (!progress) throw notFound();
+
+        return submission;
       });
     },
   };
@@ -285,6 +376,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
     const updated = await repository.saveSubmission(
       submissionId,
       parsed.data.contentMarkdown,
+      context.get('user').id,
     );
     return context.json({ submission: serializeSubmission(updated) });
   });
@@ -310,7 +402,11 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
         throw conflict(error instanceof Error ? error.message : 'Conflict.');
       }
 
-      const updated = await repository.submitSubmission(submissionId, now());
+      const updated = await repository.submitSubmission(
+        submissionId,
+        now(),
+        context.get('user').id,
+      );
       return context.json({ submission: serializeSubmission(updated) });
     },
   );

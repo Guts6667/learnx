@@ -2,7 +2,9 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
+  LessonProgressStatus,
   ProgramStatus,
+  StageProgressStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
@@ -69,7 +71,7 @@ function getPublicationFilter(preview: boolean) {
   return preview ? {} : { isPublished: true };
 }
 
-const publishedLessonSelect = {
+const lessonSummarySelect = {
   id: true,
   title: true,
   slug: true,
@@ -81,24 +83,91 @@ const publishedLessonSelect = {
   position: true,
 } as const;
 
-function getModuleInclude(preview: boolean) {
+function getLessonSummarySelect(userId: string) {
+  return {
+    ...lessonSummarySelect,
+    _count: {
+      select: {
+        concepts: true,
+        exercises: { where: { isCanonical: true } },
+        quizzes: true,
+        resources: true,
+        tasks: { where: { isCanonical: true } },
+      },
+    },
+    progress: {
+      where: { userId },
+      take: 1,
+      select: { percent: true, status: true },
+    },
+  } as const;
+}
+
+function getModuleInclude(preview: boolean, userId: string) {
   return {
     lessons: {
       where: getPublicationFilter(preview),
       orderBy: { position: 'asc' as const },
-      select: publishedLessonSelect,
+      select: getLessonSummarySelect(userId),
     },
   };
 }
 
-function getStageInclude(preview: boolean) {
+function getStageInclude(preview: boolean, userId: string) {
   return {
     modules: {
       where: getPublicationFilter(preview),
       orderBy: { position: 'asc' as const },
-      include: getModuleInclude(preview),
+      include: getModuleInclude(preview, userId),
+    },
+    progress: {
+      where: { userId },
+      take: 1,
+      select: { status: true },
     },
   };
+}
+
+interface LessonSummaryRecord {
+  _count: {
+    concepts: number;
+    exercises: number;
+    quizzes: number;
+    resources: number;
+    tasks: number;
+  };
+  progress: Array<{ percent: number; status: LessonProgressStatus }>;
+}
+
+function serializeLessonSummary<T extends LessonSummaryRecord>(
+  lesson: T,
+  isLocked = false,
+) {
+  const { _count, progress, ...summary } = lesson;
+  return {
+    ...summary,
+    activityCounts: _count,
+    isLocked,
+    progress: progress[0] ?? {
+      percent: 0,
+      status: LessonProgressStatus.AVAILABLE,
+    },
+  };
+}
+
+function serializeModules<
+  T extends { lessons: LessonSummaryRecord[] },
+>(modules: T[], isLocked = false) {
+  return modules.map((module) => ({
+    ...module,
+    lessons: module.lessons.map((lesson) =>
+      serializeLessonSummary(lesson, isLocked),
+    ),
+  }));
+}
+
+function isStageLocked(stage: { progress?: Array<{ status: string }> }): boolean {
+  return stage.progress?.[0]?.status === StageProgressStatus.LOCKED;
 }
 
 export function createCurriculumApp(options: CurriculumAppOptions = {}) {
@@ -171,7 +240,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         stages: {
           where: getPublicationFilter(preview),
           orderBy: { position: 'asc' },
-          include: getStageInclude(preview),
+          include: getStageInclude(preview, user.id),
         },
       },
     });
@@ -183,10 +252,15 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const [timeline, stages] = await Promise.all([
       readProgramTimeline(prisma, program.id, user.id),
       Promise.all(
-        program.stages.map(async (stage) => ({
-          ...stage,
-          timeline: await readStageTimeline(prisma, stage.id, user.id),
-        })),
+        program.stages.map(async (stage) => {
+          const { progress, ...stageSummary } = stage;
+          void progress;
+          return {
+            ...stageSummary,
+            modules: serializeModules(stage.modules, isStageLocked(stage)),
+            timeline: await readStageTimeline(prisma, stage.id, user.id),
+          };
+        }),
       ),
     ]);
 
@@ -207,7 +281,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           status: getProgramStatusFilter(preview),
         },
       },
-      include: getStageInclude(preview),
+      include: getStageInclude(preview, user.id),
     });
 
     if (!stage) {
@@ -219,7 +293,16 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       readStageValidation(prisma, stage.id, user.id, { preview }),
     ]);
 
-    return context.json({ stage: { ...stage, timeline, validation } });
+    const { progress, ...stageSummary } = stage;
+    void progress;
+    return context.json({
+      stage: {
+        ...stageSummary,
+        modules: serializeModules(stage.modules, isStageLocked(stage)),
+        timeline,
+        validation,
+      },
+    });
   });
 
   app.get('/api/modules/:moduleSlug', async (context) => {
@@ -239,7 +322,23 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         },
       },
       take: 2,
-      include: getModuleInclude(preview),
+      include: {
+        ...getModuleInclude(preview, user.id),
+        stage: {
+          select: {
+            id: true,
+            isPublished: true,
+            slug: true,
+            title: true,
+            program: { select: { id: true, slug: true, title: true } },
+            progress: {
+              where: { userId: user.id },
+              take: 1,
+              select: { status: true },
+            },
+          },
+        },
+      },
     });
 
     if (modules.length === 0) {
@@ -250,7 +349,18 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       throw ambiguousResource();
     }
 
-    return context.json({ module: modules[0] });
+    const moduleIsLocked = isStageLocked(modules[0].stage);
+    const { progress, ...stageContext } = modules[0].stage;
+    void progress;
+    return context.json({
+      module: {
+        ...modules[0],
+        lessons: modules[0].lessons.map((lesson) =>
+          serializeLessonSummary(lesson, moduleIsLocked),
+        ),
+        stage: stageContext,
+      },
+    });
   });
 
   app.get('/api/lessons/:lessonSlug', async (context) => {
@@ -297,6 +407,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         },
         contentBlocks: { orderBy: { position: 'asc' } },
         exercises: {
+          where: { isCanonical: true },
           orderBy: { position: 'asc' },
           select: {
             id: true,
@@ -320,7 +431,43 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           },
         },
         resources: { orderBy: { position: 'asc' } },
-        tasks: { orderBy: { position: 'asc' } },
+        tasks: {
+          where: { isCanonical: true },
+          orderBy: { position: 'asc' },
+          include: {
+            resources: {
+              orderBy: { resource: { position: 'asc' } },
+              include: { resource: true },
+            },
+          },
+        },
+        module: {
+          select: {
+            id: true,
+            isPublished: true,
+            lessons: {
+              where: getPublicationFilter(preview),
+              orderBy: { position: 'asc' },
+              select: lessonSummarySelect,
+            },
+            slug: true,
+            title: true,
+            stage: {
+              select: {
+                id: true,
+                isPublished: true,
+                slug: true,
+                title: true,
+                program: { select: { id: true, slug: true, title: true } },
+                progress: {
+                  where: { userId: user.id },
+                  take: 1,
+                  select: { status: true },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -333,13 +480,36 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     }
 
     const lesson = lessons[0];
+    const currentLessonIndex = lesson.module.lessons.findIndex(
+      (candidate) => candidate.id === lesson.id,
+    );
+    const previousLesson = lesson.module.lessons[currentLessonIndex - 1] ?? null;
+    const nextLesson = lesson.module.lessons[currentLessonIndex + 1] ?? null;
+    const lessonIsLocked = isStageLocked(lesson.module.stage);
+    const { progress, ...stageContext } = lesson.module.stage;
+    const { lessons: siblingLessons, ...moduleWithoutLessons } = lesson.module;
+    const moduleContext = { ...moduleWithoutLessons, stage: stageContext };
+    void siblingLessons;
+    void progress;
 
     return context.json({
       lesson: {
         ...lesson,
+        isLocked: lessonIsLocked,
+        module: moduleContext,
+        navigation: {
+          nextLesson: nextLesson ? { ...nextLesson, isLocked: lessonIsLocked } : null,
+          previousLesson: previousLesson
+            ? { ...previousLesson, isLocked: lessonIsLocked }
+            : null,
+        },
         quizzes: lesson.quizzes.map(({ _count, ...quiz }) => ({
           ...quiz,
           questionCount: _count.questions,
+        })),
+        tasks: lesson.tasks.map(({ resources, ...task }) => ({
+          ...task,
+          resources: resources.map((link) => link.resource),
         })),
       },
     });

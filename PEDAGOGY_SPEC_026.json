@@ -1,0 +1,1388 @@
+{
+  "specId": "PEDAGOGY_SPEC_026",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "etudier-cerveau-comportement",
+  "lesson": {
+    "title": "Imagerie, électrophysiologie et limites d’inférence",
+    "slug": "imagerie-electrophysiologie-inferences",
+    "summary": "Cette leçon apprend à choisir une méthode d’étude du cerveau à partir d’une question et d’un signal, plutôt qu’à mémoriser un catalogue de machines. Elle compare IRMf, TEP, EEG, potentiels évoqués et MEG, puis relie résolution, plan d’étude, multiplicité des tests, flexibilité analytique, inférence inverse et reproductibilité.",
+    "objectives": [
+      "Choisir entre IRMf, TEP, EEG, potentiels évoqués et MEG en fonction du signal recherché, de l’échelle temporelle et de la localisation attendue.",
+      "Distinguer mesure électrique ou magnétique, signal hémodynamique et traceur moléculaire sans les assimiler directement à un processus psychologique.",
+      "Séparer résolution spatiale et temporelle, précision de mesure et validité de l’inférence.",
+      "Évaluer si un plan autorise une conclusion corrélationnelle ou soutient une conclusion causale délimitée.",
+      "Auditer une analyse en considérant comparaisons multiples, flexibilité analytique, inférence inverse et reproductibilité."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité, variable, opérationnalisation et plan expérimental.",
+      "Connaître les principes généraux de communication neuronale et l’organisation du système nerveux."
+    ],
+    "estimatedMinutes": 180,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le choix d’une méthode commence par une question : cherche-t-on où une différence apparaît, quand elle apparaît, quel système moléculaire est engagé, ou si une manipulation modifie un comportement ? Il faut ensuite préciser le signal accessible, le plan, l’échelle et les contraintes. Aucune méthode n’est universellement « meilleure » : une excellente résolution temporelle ne compense pas un plan incapable de tester la conclusion visée, et une image anatomiquement précise n’identifie pas à elle seule un état mental.",
+          "sourceKeys": [
+            "openstax-psychology-2e-3-4",
+            "nichols-mri-best-practices-2017"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "L’IRMf mesure principalement des variations du signal BOLD liées à l’oxygénation et au débit sanguin : c’est un indice hémodynamique indirect de l’activité neurale, utile pour comparer finement des localisations mais plus lent que les événements électriques qui y contribuent. La TEP détecte la distribution d’un radiotraceur injecté ; selon le traceur, elle peut renseigner sur le métabolisme, le débit ou des cibles moléculaires. Elle implique une exposition aux rayonnements et décrit généralement des changements plus lents. Dans les deux cas, la couleur d’une carte représente une estimation statistique, pas une photographie de neurones ou de pensées.",
+          "sourceKeys": [
+            "logothetis-fmri-2008",
+            "nibib-nuclear-medicine",
+            "openstax-psychology-2e-3-4"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "L’EEG enregistre à la surface du cuir chevelu des différences de potentiel produites par l’activité synchronisée de populations neuronales ; la MEG mesure les champs magnétiques associés. Les deux suivent des variations à l’échelle de la milliseconde, mais reconstruire leurs sources cérébrales exige des modèles et n’offre pas une localisation unique. Un potentiel évoqué, ou ERP, n’est pas une machine distincte : c’est une réponse EEG liée temporellement à un événement, souvent estimée par répétition et moyennage. La latence ou l’amplitude d’une composante ne nomme pas automatiquement une opération cognitive.",
+          "sourceKeys": [
+            "ncbi-eeg-introduction",
+            "keil-eeg-meg-guidelines-2014",
+            "baillet-meg-2017"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Observer qu’un signal BOLD, TEP, EEG, ERP ou MEG covarie avec une condition établit d’abord une association dans le contraste étudié. La priorité temporelle ou la localisation ne suffit pas à prouver qu’un mécanisme est nécessaire ou suffisant. Une conclusion causale demande un plan qui exclut des alternatives, par exemple une assignation aléatoire à une manipulation et une comparaison appropriée. Une intervention neurale peut renforcer l’argument causal, mais ses effets diffus, la stratégie de la personne et la spécificité de la tâche limitent encore la portée de la conclusion.",
+          "sourceKeys": [
+            "krakauer-neuroscience-needs-behavior-2017",
+            "poldrack-reverse-inference-2006"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Les données cérébrales contiennent souvent des milliers de voxels, capteurs, instants, fréquences ou contrastes. Tester chacun sans contrôler la famille de tests augmente les faux positifs ; la famille, la correction et les analyses confirmatoires doivent être annoncées. Prétraitement, exclusion, région d’intérêt, modèle et seuil offrent aussi de nombreux chemins analytiques plausibles. Les déclarer à l’avance lorsque c’est possible, documenter les écarts, partager code et paramètres, puis tester la robustesse réduit l’opacité sans garantir qu’un résultat se reproduira.",
+          "sourceKeys": [
+            "alberton-multiple-testing-2020",
+            "carp-analytic-flexibility-2012",
+            "botvinik-nezer-many-teams-2020",
+            "nichols-mri-best-practices-2017"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Pour décider et conclure, suivre la chaîne question → construit → signal → plan → résolution → analyse → incertitude → réplication. Une activation dans une région souvent associée à un processus ne suffit pas à identifier ce processus : l’inférence inverse dépend notamment de la sélectivité de la région et du taux de base des activations. Une étude reproductible rend les choix et résultats vérifiables ; une réplication teste si l’effet réapparaît dans de nouvelles données et conditions. La conclusion finale doit rester proportionnée au plan, au signal et à l’ensemble des analyses réalisées.",
+          "sourceKeys": [
+            "poldrack-reverse-inference-2006",
+            "nichols-mri-best-practices-2017",
+            "botvinik-nezer-many-teams-2020"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-3-4",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 3.4 The Brain and Spinal Cord",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-4-the-brain-and-spinal-cord",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 3.4: The brain and spinal cord. OpenStax, Rice University.",
+        "description": "Lire Brain Imaging ; construire une première comparaison EEG, TEP, IRM et IRMf en séparant signal, résolution et usage.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "nibib-nuclear-medicine",
+        "type": "website",
+        "title": "Nuclear Medicine",
+        "author": "National Institute of Biomedical Imaging and Bioengineering",
+        "url": "https://www.nibib.nih.gov/science-education/science-topics/nuclear-medicine",
+        "citation": "National Institute of Biomedical Imaging and Bioengineering. (s. d.). Nuclear medicine. National Institutes of Health.",
+        "description": "Lire les sections sur radiotraceurs et TEP ; noter ce qui est injecté, détecté et inféré ainsi que la contrainte liée aux rayonnements.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "ncbi-eeg-introduction",
+        "type": "book_chapter",
+        "title": "Electroencephalography (EEG): An Introductory Text and Atlas — Introduction",
+        "author": "American Epilepsy Society",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK390346/",
+        "citation": "Britton, J. W., Frey, L. C., Hopp, J. L., et al. (2016). Electroencephalography (EEG): An introductory text and atlas of normal and abnormal findings. American Epilepsy Society.",
+        "description": "Lire l’introduction ; relier électrodes, différences de potentiel, rythme temporel et limites d’interprétation.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "nichols-mri-best-practices-2017",
+        "type": "article",
+        "title": "Best Practices in Data Analysis and Sharing in Neuroimaging Using MRI",
+        "author": "Thomas E. Nichols et collègues",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5685169/",
+        "citation": "Nichols, T. E., Das, S., Eickhoff, S. B., et al. (2017). Best practices in data analysis and sharing in neuroimaging using MRI. Nature Neuroscience, 20(3), 299–303. https://doi.org/10.1038/nn.4500",
+        "description": "Lire l’article ; extraire une liste de décisions à rendre transparentes depuis la planification jusqu’au partage des résultats.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "botvinik-nezer-many-teams-2020",
+        "type": "article",
+        "title": "Variability in the Analysis of a Single Neuroimaging Dataset by Many Teams",
+        "author": "Rotem Botvinik-Nezer et collègues",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7771346/",
+        "citation": "Botvinik-Nezer, R., Holzmeister, F., Camerer, C. F., et al. (2020). Variability in the analysis of a single neuroimaging dataset by many teams. Nature, 582(7810), 84–88. https://doi.org/10.1038/s41586-020-2314-9",
+        "description": "Lire résumé, figure de synthèse et discussion ; relever comment des équipes peuvent obtenir des résultats différents à partir des mêmes données.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      },
+      {
+        "key": "poldrack-reverse-inference-2006",
+        "type": "article",
+        "title": "Can Cognitive Processes Be Inferred from Neuroimaging Data?",
+        "author": "Russell A. Poldrack",
+        "url": "https://brainmapping.org/NITP/PNA/Readings/Poldrack2006.pdf",
+        "citation": "Poldrack, R. A. (2006). Can cognitive processes be inferred from neuroimaging data? Trends in Cognitive Sciences, 10(2), 59–63. https://doi.org/10.1016/j.tics.2005.12.004",
+        "description": "Lire l’article ; réécrire trois inférences inverses en conclusions conditionnelles mentionnant sélectivité, taux de base et explications alternatives.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 6
+      },
+      {
+        "key": "logothetis-fmri-2008",
+        "type": "article",
+        "title": "What We Can Do and What We Cannot Do with fMRI",
+        "author": "Nikos K. Logothetis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18548064/",
+        "citation": "Logothetis, N. K. (2008). What we can do and what we cannot do with fMRI. Nature, 453(7197), 869–878. https://doi.org/10.1038/nature06976",
+        "description": "Lire le résumé et examiner pourquoi le BOLD est un signal indirect dont l’interprétation requiert un modèle neurovasculaire.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 7
+      },
+      {
+        "key": "keil-eeg-meg-guidelines-2014",
+        "type": "article",
+        "title": "Committee Report: Publication Guidelines and Recommendations for Studies Using Electroencephalography and Magnetoencephalography",
+        "author": "Andreas Keil et collègues",
+        "url": "https://www.emilykappenman.org/wp-content/uploads/2015/03/2014-Keil-Psychophysiology.pdf",
+        "citation": "Keil, A., Debener, S., Gratton, G., et al. (2014). Committee report: Publication guidelines and recommendations for studies using electroencephalography and magnetoencephalography. Psychophysiology, 51(1), 1–21. https://doi.org/10.1111/psyp.12147",
+        "description": "Consulter les recommandations sur acquisition, prétraitement, ERP et compte rendu ; identifier cinq informations nécessaires à une réplication.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 8
+      },
+      {
+        "key": "baillet-meg-2017",
+        "type": "article",
+        "title": "Magnetoencephalography for Brain Electrophysiology and Imaging",
+        "author": "Sylvain Baillet",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28230841/",
+        "citation": "Baillet, S. (2017). Magnetoencephalography for brain electrophysiology and imaging. Nature Neuroscience, 20(3), 327–339. https://doi.org/10.1038/nn.4504",
+        "description": "Lire le résumé ; distinguer mesure magnétique, résolution temporelle et reconstruction de sources.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 9
+      },
+      {
+        "key": "alberton-multiple-testing-2020",
+        "type": "article",
+        "title": "Multiple Testing Correction over Contrasts for Brain Imaging",
+        "author": "Bianca A. V. Alberton, Thomas E. Nichols, Humberto R. Gamba et Anderson M. Winkler",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8191638/",
+        "citation": "Alberton, B. A. V., Nichols, T. E., Gamba, H. R., & Winkler, A. M. (2020). Multiple testing correction over contrasts for brain imaging. NeuroImage, 216, 116760. https://doi.org/10.1016/j.neuroimage.2020.116760",
+        "description": "Lire résumé et introduction ; définir la famille de tests pertinente pour une analyse fictive comprenant voxels et contrastes.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 10
+      },
+      {
+        "key": "carp-analytic-flexibility-2012",
+        "type": "article",
+        "title": "On the Plurality of (Methodological) Worlds: Estimating the Analytic Flexibility of fMRI Experiments",
+        "author": "Joshua Carp",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3468892/",
+        "citation": "Carp, J. (2012). On the plurality of (methodological) worlds: Estimating the analytic flexibility of fMRI experiments. Frontiers in Neuroscience, 6, 149. https://doi.org/10.3389/fnins.2012.00149",
+        "description": "Lire résumé et discussion ; classer les choix d’analyse selon qu’ils sont justifiés, déclarés à l’avance ou exploratoires.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 11
+      },
+      {
+        "key": "krakauer-neuroscience-needs-behavior-2017",
+        "type": "article",
+        "title": "Neuroscience Needs Behavior: Correcting a Reductionist Bias",
+        "author": "John W. Krakauer, Asif A. Ghazanfar, Alex Gomez-Marin, Malcolm A. MacIver et David Poeppel",
+        "url": "https://collaborate.princeton.edu/en/publications/neuroscience-needs-behavior-correcting-a-reductionist-bias/",
+        "citation": "Krakauer, J. W., Ghazanfar, A. A., Gomez-Marin, A., MacIver, M. A., & Poeppel, D. (2017). Neuroscience needs behavior: Correcting a reductionist bias. Neuron, 93(3), 480–490. https://doi.org/10.1016/j.neuron.2016.12.041",
+        "description": "Lire le résumé et la synthèse institutionnelle ; préciser pourquoi une intervention neurale n’élimine pas la nécessité d’une théorie et d’une mesure du comportement.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 12
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Signaux, méthodes et résolutions",
+        "slug": "signaux-methodes-resolutions",
+        "description": "IRMf, TEP, EEG, ERP et MEG accèdent à des signaux différents ; leur valeur dépend de la question, de l’échelle et des hypothèses de mesure.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-3-4",
+          "nibib-nuclear-medicine",
+          "ncbi-eeg-introduction",
+          "logothetis-fmri-2008",
+          "keil-eeg-meg-guidelines-2014",
+          "baillet-meg-2017"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Signaux et résolutions",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Plans, causalité et inférence inverse",
+        "slug": "plans-causalite-inference-inverse",
+        "description": "Le plan détermine la portée causale ; une localisation, une latence ou une activation ne suffit pas à identifier la cause ou le processus psychologique.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "poldrack-reverse-inference-2006",
+          "krakauer-neuroscience-needs-behavior-2017"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Plans et inférences",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Multiplicité, flexibilité et reproductibilité",
+        "slug": "multiplicite-flexibilite-reproductibilite",
+        "description": "Le nombre de tests et de décisions analytiques impose des corrections, une traçabilité et des vérifications de robustesse avant toute généralisation.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nichols-mri-best-practices-2017",
+          "botvinik-nezer-many-teams-2020",
+          "alberton-multiple-testing-2020",
+          "carp-analytic-flexibility-2012"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Analyse et reproductibilité",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Choisir une méthode à partir de six questions",
+        "description": "Pour six scénarios — chronologie milliseconde, localisation BOLD, cible moléculaire, réponse liée à un événement, comparaison de réseaux et effet d’une manipulation — choisir une méthode et un plan, puis indiquer signal, résolution utile, limite et méthode complémentaire.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Auditer une affirmation causale issue d’une carte",
+        "description": "À partir d’un communiqué fictif affirmant qu’une zone « cause » une décision, identifier contraste, signal, variables confondues et inférence inverse ; réécrire la conclusion puis proposer un plan susceptible de tester une relation causale délimitée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Préenregistrer une analyse reproductible",
+        "description": "Rédiger un plan de 600 à 800 mots précisant hypothèses, exclusions, prétraitement, famille de tests, correction, régions ou fenêtres, analyses exploratoires, données et code partageables, contrôle de robustesse et réplication.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-026-OPENSTAX",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax, Rice University",
+        "title": "Psychology 2e — 3.4 The Brain and Spinal Cord",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/3-4-the-brain-and-spinal-cord",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Introduction comparative aux principaux outils d’imagerie et à l’EEG ; ses simplifications sont nuancées par les sources méthodologiques."
+      },
+      {
+        "id": "REF-026-NIBIB",
+        "type": "institutional_resource",
+        "authors": [],
+        "organization": "National Institute of Biomedical Imaging and Bioengineering, NIH",
+        "title": "Nuclear Medicine",
+        "year": null,
+        "edition": null,
+        "publication": "NIBIB Science Education",
+        "doi": null,
+        "url": "https://www.nibib.nih.gov/science-education/science-topics/nuclear-medicine",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Ressource éducative d’une agence fédérale américaine",
+        "status": "verified",
+        "notes": "Source institutionnelle ouverte sur radiotraceurs, détection et usages de la TEP."
+      },
+      {
+        "id": "REF-026-EEG",
+        "type": "textbook",
+        "authors": [
+          "Britton, J. W.",
+          "Frey, L. C.",
+          "Hopp, J. L.",
+          "et al."
+        ],
+        "organization": "American Epilepsy Society",
+        "title": "Electroencephalography (EEG): An Introductory Text and Atlas of Normal and Abnormal Findings",
+        "year": 2016,
+        "edition": "1re éd.",
+        "publication": "American Epilepsy Society",
+        "doi": null,
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK390346/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Texte intégral ouvert via NCBI Bookshelf",
+        "status": "verified",
+        "notes": "Introduction clinique et physiologique à la mesure EEG."
+      },
+      {
+        "id": "REF-026-NICHOLS",
+        "type": "guideline_article",
+        "authors": [
+          "Nichols, T. E.",
+          "Das, S.",
+          "Eickhoff, S. B.",
+          "et al."
+        ],
+        "organization": "Nature Portfolio",
+        "title": "Best Practices in Data Analysis and Sharing in Neuroimaging Using MRI",
+        "year": 2017,
+        "edition": null,
+        "publication": "Nature Neuroscience, 20(3), 299–303",
+        "doi": "https://doi.org/10.1038/nn.4500",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5685169/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur ouvert via PubMed Central ; droits Nature Portfolio applicables",
+        "status": "verified",
+        "notes": "Recommandations collectives sur conception, analyse, transparence et partage en IRM."
+      },
+      {
+        "id": "REF-026-BOTVINIK",
+        "type": "primary_article",
+        "authors": [
+          "Botvinik-Nezer, R.",
+          "Holzmeister, F.",
+          "Camerer, C. F.",
+          "et al."
+        ],
+        "organization": "Nature Portfolio",
+        "title": "Variability in the Analysis of a Single Neuroimaging Dataset by Many Teams",
+        "year": 2020,
+        "edition": null,
+        "publication": "Nature, 582(7810), 84–88",
+        "doi": "https://doi.org/10.1038/s41586-020-2314-9",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7771346/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur ouvert via PubMed Central ; droits Nature Portfolio applicables",
+        "status": "verified",
+        "notes": "Étude multiéquipes montrant la variabilité des pipelines et résultats sur un même jeu de données."
+      },
+      {
+        "id": "REF-026-POLDRACK",
+        "type": "review_article",
+        "authors": [
+          "Poldrack, R. A."
+        ],
+        "organization": "Elsevier",
+        "title": "Can Cognitive Processes Be Inferred from Neuroimaging Data?",
+        "year": 2006,
+        "edition": null,
+        "publication": "Trends in Cognitive Sciences, 10(2), 59–63",
+        "doi": "https://doi.org/10.1016/j.tics.2005.12.004",
+        "url": "https://brainmapping.org/NITP/PNA/Readings/Poldrack2006.pdf",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Copie auteur accessible ; article soumis aux droits Elsevier",
+        "status": "verified",
+        "notes": "Référence méthodologique sur la logique et les conditions de l’inférence inverse."
+      },
+      {
+        "id": "REF-026-LOGOTHETIS",
+        "type": "review_article",
+        "authors": [
+          "Logothetis, N. K."
+        ],
+        "organization": "Nature Portfolio",
+        "title": "What We Can Do and What We Cannot Do with fMRI",
+        "year": 2008,
+        "edition": null,
+        "publication": "Nature, 453(7197), 869–878",
+        "doi": "https://doi.org/10.1038/nature06976",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18548064/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Notice et résumé PubMed ouverts ; article soumis aux droits Nature Portfolio",
+        "status": "verified",
+        "notes": "Revue de référence sur le caractère indirect du BOLD et les limites de l’IRMf."
+      },
+      {
+        "id": "REF-026-KEIL",
+        "type": "guideline_article",
+        "authors": [
+          "Keil, A.",
+          "Debener, S.",
+          "Gratton, G.",
+          "et al."
+        ],
+        "organization": "Society for Psychophysiological Research",
+        "title": "Committee Report: Publication Guidelines and Recommendations for Studies Using Electroencephalography and Magnetoencephalography",
+        "year": 2014,
+        "edition": null,
+        "publication": "Psychophysiology, 51(1), 1–21",
+        "doi": "https://doi.org/10.1111/psyp.12147",
+        "url": "https://www.emilykappenman.org/wp-content/uploads/2015/03/2014-Keil-Psychophysiology.pdf",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Copie auteur ouverte ; droits Wiley applicables",
+        "status": "verified",
+        "notes": "Recommandations de comité pour acquisition, traitement, ERP/MEG et compte rendu."
+      },
+      {
+        "id": "REF-026-BAILLET",
+        "type": "review_article",
+        "authors": [
+          "Baillet, S."
+        ],
+        "organization": "Nature Portfolio",
+        "title": "Magnetoencephalography for Brain Electrophysiology and Imaging",
+        "year": 2017,
+        "edition": null,
+        "publication": "Nature Neuroscience, 20(3), 327–339",
+        "doi": "https://doi.org/10.1038/nn.4504",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28230841/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Notice et résumé PubMed ouverts ; article soumis aux droits Nature Portfolio",
+        "status": "verified",
+        "notes": "Synthèse sur signal MEG, dynamique milliseconde et imagerie de sources."
+      },
+      {
+        "id": "REF-026-ALBERTON",
+        "type": "primary_article",
+        "authors": [
+          "Alberton, B. A. V.",
+          "Nichols, T. E.",
+          "Gamba, H. R.",
+          "Winkler, A. M."
+        ],
+        "organization": "Elsevier",
+        "title": "Multiple Testing Correction over Contrasts for Brain Imaging",
+        "year": 2020,
+        "edition": null,
+        "publication": "NeuroImage, 216, 116760",
+        "doi": "https://doi.org/10.1016/j.neuroimage.2020.116760",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8191638/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-ND 4.0",
+        "status": "verified",
+        "notes": "Étude méthodologique ouverte sur multiplicité des points d’image et des contrastes."
+      },
+      {
+        "id": "REF-026-CARP",
+        "type": "primary_article",
+        "authors": [
+          "Carp, J."
+        ],
+        "organization": "Frontiers",
+        "title": "On the Plurality of (Methodological) Worlds: Estimating the Analytic Flexibility of fMRI Experiments",
+        "year": 2012,
+        "edition": null,
+        "publication": "Frontiers in Neuroscience, 6, 149",
+        "doi": "https://doi.org/10.3389/fnins.2012.00149",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3468892/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY",
+        "status": "verified",
+        "notes": "Estimation empirique de la flexibilité des pipelines IRMf publiés."
+      },
+      {
+        "id": "REF-026-KRAKAUER",
+        "type": "review_article",
+        "authors": [
+          "Krakauer, J. W.",
+          "Ghazanfar, A. A.",
+          "Gomez-Marin, A.",
+          "MacIver, M. A.",
+          "Poeppel, D."
+        ],
+        "organization": "Cell Press",
+        "title": "Neuroscience Needs Behavior: Correcting a Reductionist Bias",
+        "year": 2017,
+        "edition": null,
+        "publication": "Neuron, 93(3), 480–490",
+        "doi": "https://doi.org/10.1016/j.neuron.2016.12.041",
+        "url": "https://collaborate.princeton.edu/en/publications/neuroscience-needs-behavior-correcting-a-reductionist-bias/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Notice institutionnelle ouverte ; article soumis aux droits Cell Press",
+        "status": "verified",
+        "notes": "Cadre critique pour relier intervention neurale, théorie et mesure comportementale."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-OPENSTAX",
+            "locator": "section 3.4, Brain Imaging",
+            "supports": "Introduction comparative à plusieurs méthodes et à leurs usages."
+          },
+          {
+            "referenceId": "REF-026-NICHOLS",
+            "locator": "pp. 299–303, recommandations de conception et d’analyse",
+            "supports": "Nécessité d’aligner question, conception, acquisition et analyse."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Une ressource introductive et des recommandations méthodologiques convergent vers un choix guidé par la question.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-LOGOTHETIS",
+            "locator": "résumé et discussion du couplage neurovasculaire",
+            "supports": "BOLD comme signal hémodynamique indirect et limites de son interprétation neurale."
+          },
+          {
+            "referenceId": "REF-026-NIBIB",
+            "locator": "sections Nuclear Medicine et Positron Emission Tomography",
+            "supports": "Injection, distribution et détection de radiotraceurs en TEP."
+          },
+          {
+            "referenceId": "REF-026-OPENSTAX",
+            "locator": "section 3.4, Brain Imaging",
+            "supports": "Repères accessibles sur TEP et IRMf."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La revue spécialisée précise l’IRMf et la source NIH décrit directement le principe de la TEP.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-EEG",
+            "locator": "Introduction et principes de l’enregistrement EEG",
+            "supports": "Mesure de différences de potentiel à la surface et sensibilité temporelle."
+          },
+          {
+            "referenceId": "REF-026-KEIL",
+            "locator": "pp. 1–21, recommandations EEG, ERP et MEG",
+            "supports": "Définition opérationnelle des signaux, ERP, prétraitements et compte rendu."
+          },
+          {
+            "referenceId": "REF-026-BAILLET",
+            "locator": "résumé et sections sur électrophysiologie et imagerie de sources",
+            "supports": "Mesure magnétique, dynamique milliseconde et dépendance aux modèles de sources."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel, recommandations de comité et revue spécialisée couvrent signal, temps, ERP et reconstruction.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-KRAKAUER",
+            "locator": "résumé et argument sur intervention neurale et comportement",
+            "supports": "Une intervention doit être reliée à une théorie et une mesure du comportement pour soutenir une explication."
+          },
+          {
+            "referenceId": "REF-026-POLDRACK",
+            "locator": "pp. 59–63, distinction déduction et inférence inverse",
+            "supports": "Une activation associée à une tâche ne prouve ni processus précis ni cause complète."
+          }
+        ],
+        "confidence": "medium",
+        "confidenceRationale": "Les principes soutiennent la différence association–causalité ; toute intervention particulière exige toutefois un audit de ses effets et contrôles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-ALBERTON",
+            "locator": "résumé, introduction et discussion",
+            "supports": "Multiplicité des tests sur points d’image et contrastes et nécessité d’une correction."
+          },
+          {
+            "referenceId": "REF-026-CARP",
+            "locator": "résumé, méthodes et discussion",
+            "supports": "Nombre et diversité des choix plausibles dans les pipelines IRMf."
+          },
+          {
+            "referenceId": "REF-026-BOTVINIK",
+            "locator": "résumé, résultats des 70 équipes et discussion",
+            "supports": "Variabilité des workflows et conclusions sur un même jeu de données."
+          },
+          {
+            "referenceId": "REF-026-NICHOLS",
+            "locator": "recommandations d’analyse, transparence et partage",
+            "supports": "Déclaration des choix, partage du code et bonnes pratiques de robustesse."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux études empiriques et deux travaux méthodologiques documentent des risques distincts et leurs contrôles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-026-POLDRACK",
+            "locator": "pp. 59–63, analyse bayésienne",
+            "supports": "Rôle de la sélectivité et des taux de base dans l’inférence inverse."
+          },
+          {
+            "referenceId": "REF-026-NICHOLS",
+            "locator": "pp. 299–303",
+            "supports": "Transparence, partage et vérifiabilité des analyses d’imagerie."
+          },
+          {
+            "referenceId": "REF-026-BOTVINIK",
+            "locator": "discussion et recommandations",
+            "supports": "Nécessité d’examiner la robustesse aux pipelines et de reproduire les résultats."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources relient logique d’inférence, traçabilité analytique et variabilité empirique.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-3-4",
+        "referenceIds": [
+          "REF-026-OPENSTAX"
+        ],
+        "pedagogicalRationale": "Vue d’ensemble ouverte avant les nuances méthodologiques.",
+        "learnerInstructions": "Lire Brain Imaging et produire le premier tableau comparatif.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML mobile, navigation clavier et descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; ressource librement accessible."
+      },
+      {
+        "resourceKey": "nibib-nuclear-medicine",
+        "referenceIds": [
+          "REF-026-NIBIB"
+        ],
+        "pedagogicalRationale": "Explication institutionnelle accessible du radiotraceur et de la TEP.",
+        "learnerInstructions": "Lire les sections ciblées et remplir signal, mesure, inférence et contrainte.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée et illustrations légendées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; source officielle NIH ouverte."
+      },
+      {
+        "resourceKey": "ncbi-eeg-introduction",
+        "referenceIds": [
+          "REF-026-EEG"
+        ],
+        "pedagogicalRationale": "Socle ouvert sur le signal réellement enregistré en EEG.",
+        "learnerInstructions": "Lire l’introduction et relier signal, capteurs, temps et limites.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML et version imprimable via NCBI Bookshelf.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; texte intégral ouvert."
+      },
+      {
+        "resourceKey": "nichols-mri-best-practices-2017",
+        "referenceIds": [
+          "REF-026-NICHOLS"
+        ],
+        "pedagogicalRationale": "Cadre central de conception, analyse et transparence.",
+        "learnerInstructions": "Lire l’article et construire la liste de décisions déclarables.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML et PDF via PubMed Central ; figures légendées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; manuscrit ouvert."
+      },
+      {
+        "resourceKey": "botvinik-nezer-many-teams-2020",
+        "referenceIds": [
+          "REF-026-BOTVINIK"
+        ],
+        "pedagogicalRationale": "Démonstration concrète de la variabilité analytique.",
+        "learnerInstructions": "Lire les sections ciblées et comparer données identiques, pipelines et conclusions.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML et PDF via PubMed Central ; figures légendées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; manuscrit ouvert."
+      },
+      {
+        "resourceKey": "poldrack-reverse-inference-2006",
+        "referenceIds": [
+          "REF-026-POLDRACK"
+        ],
+        "pedagogicalRationale": "Outil logique central contre l’identification automatique d’un processus.",
+        "learnerInstructions": "Lire l’article et reformuler trois affirmations en conclusions conditionnelles.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF auteur textuel ; zoom ou extraction de texte parfois utiles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Obligatoire ; copie auteur accessible."
+      },
+      {
+        "resourceKey": "logothetis-fmri-2008",
+        "referenceIds": [
+          "REF-026-LOGOTHETIS"
+        ],
+        "pedagogicalRationale": "Précise la relation indirecte entre BOLD et activité neurale.",
+        "learnerInstructions": "Lire le résumé et consigner trois limites d’une lecture directe des cartes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Notice et résumé HTML PubMed ; texte intégral selon abonnement.",
+        "alternativeResourceKey": "openstax-psychology-2e-3-4",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; résumé ouvert et alternative obligatoire disponible."
+      },
+      {
+        "resourceKey": "keil-eeg-meg-guidelines-2014",
+        "referenceIds": [
+          "REF-026-KEIL"
+        ],
+        "pedagogicalRationale": "Référence spécialisée pour ERP, EEG/MEG et reproductibilité.",
+        "learnerInstructions": "Consulter les sections pertinentes et établir cinq exigences de compte rendu.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF auteur textuel avec tableaux ; navigation par recherche.",
+        "alternativeResourceKey": "ncbi-eeg-introduction",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; copie auteur ouverte."
+      },
+      {
+        "resourceKey": "baillet-meg-2017",
+        "referenceIds": [
+          "REF-026-BAILLET"
+        ],
+        "pedagogicalRationale": "Approfondit le compromis temporel et la reconstruction de sources en MEG.",
+        "learnerInstructions": "Lire le résumé et distinguer mesure au capteur et estimation de source.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Notice et résumé HTML PubMed ; texte intégral selon abonnement.",
+        "alternativeResourceKey": "keil-eeg-meg-guidelines-2014",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; résumé ouvert et alternative ouverte disponible."
+      },
+      {
+        "resourceKey": "alberton-multiple-testing-2020",
+        "referenceIds": [
+          "REF-026-ALBERTON"
+        ],
+        "pedagogicalRationale": "Rend concret le choix de la famille de tests en imagerie.",
+        "learnerInstructions": "Lire résumé et introduction puis définir la famille d’une analyse fictive.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML et PDF via PubMed Central.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; article ouvert sous CC BY-NC-ND."
+      },
+      {
+        "resourceKey": "carp-analytic-flexibility-2012",
+        "referenceIds": [
+          "REF-026-CARP"
+        ],
+        "pedagogicalRationale": "Documente l’ampleur des choix de pipeline IRMf.",
+        "learnerInstructions": "Lire les sections ciblées et classer choix confirmatoires et exploratoires.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML et PDF via PubMed Central.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; article CC BY ouvert."
+      },
+      {
+        "resourceKey": "krakauer-neuroscience-needs-behavior-2017",
+        "referenceIds": [
+          "REF-026-KRAKAUER"
+        ],
+        "pedagogicalRationale": "Empêche de confondre perturbation neurale et explication complète du comportement.",
+        "learnerInstructions": "Lire la synthèse et identifier les mesures comportementales nécessaires.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Notice institutionnelle HTML ; texte intégral selon accès éditeur.",
+        "alternativeResourceKey": "poldrack-reverse-inference-2006",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Facultative ; synthèse ouverte et alternative obligatoire disponible."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "signaux-methodes-resolutions",
+        "assessmentTitle": "Mini-évaluation — Signaux et résolutions",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel signal l’IRMf BOLD mesure-t-elle principalement ?",
+            "explanation": "Le BOLD reflète des variations hémodynamiques liées à l’oxygénation ; il est indirect par rapport à l’activité neurale.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une variation hémodynamique liée à l’oxygénation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Chaque potentiel d’action individuel",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La pensée consciente elle-même",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un radiotraceur injecté",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle méthode est directement conçue pour suivre la distribution d’un radiotraceur ?",
+            "explanation": "La TEP détecte les produits de désintégration associés à un radiotraceur administré.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "La TEP",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L’EEG",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La MEG",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’ERP",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles affirmations décrivent correctement EEG, ERP et MEG ?",
+            "explanation": "EEG et MEG enregistrent des signaux électrophysiologiques rapides ; un ERP est une estimation EEG liée à un événement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "L’EEG mesure des différences de potentiel au cuir chevelu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La MEG mesure des champs magnétiques associés à l’activité neurale",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un ERP est une réponse EEG liée temporellement à un événement",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un ERP est un scanner hémodynamique indépendant",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une résolution temporelle élevée garantit une localisation cérébrale unique et une interprétation psychologique valide.",
+            "explanation": "Résolutions temporelle et spatiale, problème inverse et validité psychologique sont des dimensions distinctes.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel sigle désigne la réponse EEG estimée en relation temporelle avec un événement ?",
+            "explanation": "Il s’agit de l’ERP, aussi appelé potentiel évoqué ou potentiel lié à l’événement.",
+            "acceptedAnswers": [
+              "ERP",
+              "potentiel évoqué",
+              "potentiel evoque",
+              "potentiel lié à l’événement"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "plans-causalite-inference-inverse",
+        "assessmentTitle": "Mini-évaluation — Plans et inférences",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une activation BOLD est plus forte en condition A qu’en condition B. Quelle conclusion est directement soutenue ?",
+            "explanation": "Le contraste soutient d’abord une association entre condition et signal dans ce plan, pas une cause complète.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le signal diffère entre A et B dans les conditions mesurées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La région cause nécessairement le comportement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un processus mental unique a été identifié",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Toute explication alternative est exclue",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments renforcent une conclusion causale délimitée ?",
+            "explanation": "Une manipulation, l’assignation aléatoire, un contrôle pertinent et une mesure comportementale alignée réduisent des alternatives.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Une manipulation définie",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une assignation aléatoire lorsque possible",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une condition contrôle et une mesure comportementale",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une carte colorée sans comparaison",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le fait qu’un signal précède un comportement suffit à démontrer qu’il le cause.",
+            "explanation": "La priorité temporelle est pertinente mais n’exclut ni cause commune, ni confusion, ni chaîne intermédiaire.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qu’est-ce qu’une inférence inverse en neuroimagerie ?",
+            "explanation": "Elle va de l’observation d’une activation à l’affirmation d’un processus psychologique supposé associé.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Inférer un processus mental à partir d’une activation observée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Prédire une activation à partir d’une tâche définie",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Corriger plusieurs tests",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Mesurer un radiotraceur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il examiner avant d’accepter une inférence inverse ?",
+            "explanation": "Sa force dépend de la sélectivité, des taux de base, du contraste et des processus alternatifs.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "La sélectivité de la région ou du motif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le taux de base des activations",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le contraste et les explications alternatives",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Seulement la couleur la plus vive",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "multiplicite-flexibilite-reproductibilite",
+        "assessmentTitle": "Mini-évaluation — Analyse et reproductibilité",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi corriger les comparaisons multiples en imagerie ?",
+            "explanation": "Multiplier les tests augmente la probabilité de faux positifs dans la famille considérée.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Pour contrôler l’excès de faux positifs dans une famille de tests",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour transformer une corrélation en causalité",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour améliorer automatiquement la résolution spatiale",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour éliminer toute incertitude",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels choix peuvent contribuer à la flexibilité analytique ?",
+            "explanation": "Exclusions, prétraitement, ROI, modèle et seuils peuvent produire des chemins analytiques distincts.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Les exclusions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le prétraitement et le modèle",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les régions, fenêtres et seuils",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le DOI de l’article",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Préenregistrer une analyse garantit que son résultat sera vrai et répliqué.",
+            "explanation": "La préinscription réduit certaines ambiguïtés ; elle ne corrige ni mauvais plan, ni erreur de mesure, ni hasard.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que montre principalement l’étude où de nombreuses équipes ont analysé le même jeu de données ?",
+            "explanation": "Des pipelines plausibles différents peuvent conduire à des estimations et décisions différentes.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Les choix analytiques peuvent modifier les résultats et conclusions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute analyse donne exactement la même réponse",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les données cérébrales n’ont aucune valeur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une seule équipe doit toujours être crue",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles pratiques soutiennent une analyse reproductible et une conclusion robuste ?",
+            "explanation": "Traçabilité, code et paramètres, séparation confirmatoire–exploratoire, robustesse et réplication rendent les résultats plus vérifiables.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Documenter données, paramètres et code",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Séparer analyses confirmatoires et exploratoires",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Tester robustesse et réplication",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Ne rapporter que le pipeline le plus favorable",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine par une personne compétente en neurosciences cognitives, neuroimagerie et électrophysiologie requise avant validation scientifique.",
+        "L’étape bases-biologiques, le module etudier-cerveau-comportement et la leçon cible sont planifiés dans CURRICULUM_BLUEPRINT.md mais absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration : cette spécification n’autorise aucune modification du seed, du schéma de données, de Prisma ou de l’API.",
+        "La leçon choisit les méthodes à partir des questions et signaux ; elle n’établit aucun classement universel entre IRMf, TEP, EEG, ERP et MEG.",
+        "Toute distinction corrélation–causalité et toute mention d’intervention doivent être contrôlées lors de la revue scientifique afin d’éviter une conclusion de nécessité ou suffisance non soutenue.",
+        "Les six ressources obligatoires sont ouvertes ; les ressources facultatives fermées au texte intégral disposent d’un résumé ouvert et d’une alternative ouverte."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon planifiée, de douze ressources, de trois exercices et de quinze questions corrigées, sans modification du seed.",
+        "reviewRequired": "technical_editorial_and_neuroscience"
+      }
+    ]
+  }
+}

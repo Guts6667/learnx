@@ -15,6 +15,8 @@ ont donc été audités par le code et les tests, pas par une session de product
 
 ### Cap V2
 
+**Statut : plan validé par l’utilisateur.**
+
 La V2 est un gros polish UI/UX construit sur un socle stable. Elle n’est pas une
 nouvelle vague fonctionnelle.
 
@@ -84,6 +86,13 @@ Les tickets P0 constituent le jalon « intégrité et confidentialité ». Le re
 de la V2 constitue le jalon « polish du parcours ». Aucune capacité V3 ne doit
 retarder ces deux jalons.
 
+Dans le jalon polish, l’ordre de navigation est explicite : `V2-006` →
+`V2-007` → `V2-008` → `V2-008A` → `V2-008B` → `V2-009` → `V2-010`. Le
+redémarrage de module de `V2-008A` et la synchronisation historique de
+`V2-008B` restent conditionnés à la validation préalable de leur modèle
+serveur ; ces points ne doivent pas être contournés par une simulation
+frontend ou une suppression silencieuse de données.
+
 ## V2-001 — Supprimer le cache privé du service worker
 
 **Priorité : P0. Dépendances : aucune.**
@@ -115,7 +124,7 @@ retarder ces deux jalons.
 - Tests service worker, déconnexion/changement de session et inspection du cache
   dans Chromium et Safari iOS.
 - Risque : régression de consultation hors ligne ; communiquer clairement la
-  nouvelle limite jusqu’au ticket V2-010.
+  nouvelle limite jusqu’au ticket V2-011.
 
 ## V2-002 — Borner la revue d’évaluation au propriétaire
 
@@ -344,6 +353,12 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
   téléphone, tout en gardant le mobile prioritaire.
 - Revoir la hiérarchie des pages Aujourd’hui, curriculum, leçon, quiz, exercice,
   notes, révisions, profil et admin.
+- Rendre les contenus pédagogiques longs et Markdown avec un sous-ensemble sûr :
+  titres, paragraphes, listes ordonnées/non ordonnées, emphase et liens.
+- Structurer les évaluations finales en sections distinctes objectif, consignes,
+  cas et grille, avec un rythme de lecture adapté au mobile.
+- Garantir que le contenu long utilise le scroll principal, sans scroll imbriqué,
+  et reste entièrement au-dessus de la navigation fixe et de la safe area.
 
 ### Hors périmètre
 
@@ -354,16 +369,253 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Maquettes et états documentés avant migration page par page.
 - Aucun débordement de 320 px à grand écran ; contraste AA et focus visibles.
 - Les états chargement, vide, erreur, brouillon et hors ligne sont distincts.
+- Aucun jeton Markdown brut ni HTML non sûr n’est rendu ; la numérotation est une
+  vraie liste sémantique.
+- Aucun texte n’est masqué à 320/390 px, avec tailles système iOS, zoom 200 % et
+  VoiceOver ; les liens et sources restent accessibles.
 
 ### Tests et risques
 
 - Régressions visuelles multi-viewport, axe, clavier et préférences de mouvement.
+- Tests de rendu Markdown, XSS, contenus très longs, 320/390 px, zoom et padding
+  navigation + safe area.
 - Risque de chantier massif : livrer par verticales sans mélanger la logique
   métier.
 
+## V2-008A — Navigation pédagogique explicite et reprise de module
+
+**Priorité : P1. Dépendances : V2-003, V2-007, V2-008.**
+
+### Périmètre
+
+#### Navigation contextuelle UX-friendly
+
+- Afficher sur la leçon, le quiz, la mini-évaluation et l’exercice une
+  navigation pédagogique persistante et immédiatement compréhensible.
+- Sur mobile, placer une barre contextuelle compacte au-dessus de la navigation
+  globale ; sur desktop, utiliser un en-tête ou un rail contextuel sans réduire
+  excessivement la largeur de lecture.
+- Proposer des commandes textuelles explicites : `Retour à la leçon`,
+  `Sommaire`, `Précédent` et `Suivant` ou `Continuer`. Une icône peut compléter
+  le texte, jamais le remplacer.
+- Afficher le nom du module et de la leçon ainsi que la position dans la
+  séquence, par exemple `Activité 3 sur 8`.
+- Après la soumission d’un quiz ou d’un exercice, présenter clairement le retour
+  à la leçon et l’activité suivante disponible.
+- Rendre le bouton du sommaire visuellement proéminent avec un libellé explicite ;
+  sa découvrabilité ne doit pas dépendre d’un onboarding.
+- Conserver les URL profondes, l’historique du navigateur, le contexte de
+  leçon, la restitution du focus et le fonctionnement à 320/390 px, au clavier
+  et au lecteur d’écran.
+
+#### Recommencer un module
+
+- Ajouter sur la page module une action secondaire et destructive
+  `Recommencer ce module`.
+- Présenter avant confirmation la liste exacte des progressions remises à zéro
+  et des données conservées.
+- Après confirmation, ouvrir la première leçon disponible du module, remettre
+  sa progression courante à zéro et recalculer module, étape, programme et
+  timeline dans une transaction atomique.
+- Conserver toutes les notes et l’historique des tentatives.
+- Distinguer la nouvelle reprise des tentatives antérieures afin qu’aucune
+  ancienne réussite ne valide automatiquement la reprise courante.
+- Protéger la commande par l’autorisation de l’utilisateur/propriétaire et la
+  rendre idempotente et sûre en concurrence.
+
+### Hors périmètre
+
+- Modification de contenu pédagogique.
+- Redémarrage d’un programme entier ou d’une étape entière.
+- Suppression des notes ou de l’historique des tentatives.
+- Gamification.
+- Refonte de la navigation globale du `V2-010`.
+- Clarification générale des liens et actions du `V2-009`.
+
+### Critères d’acceptation
+
+- Une activité profonde indique toujours module, leçon, position et quatre
+  destinations compréhensibles sans revenir à la navigation globale.
+- `Retour à la leçon`, `Sommaire`, `Précédent` et `Suivant/Continuer` restent
+  visibles ou atteignables sans ambiguïté sur mobile et desktop.
+- Après soumission, le focus rejoint le feedback puis l’utilisateur peut revenir
+  à la leçon ou avancer sans perdre le contexte ni créer une double soumission.
+- Le retour navigateur et une URL profonde restaurent la même activité et le
+  même contexte autorisé.
+- La confirmation de redémarrage énumère tâches, ressources, notions, quiz,
+  exercices et progression concernés, et indique explicitement que notes et
+  tentatives historiques sont conservées.
+- Un redémarrage confirmé crée une nouvelle reprise identifiable, remet à zéro
+  uniquement l’état courant du module et ouvre sa première leçon disponible.
+- Une tentative réussie avant la borne de la nouvelle reprise ne contribue ni à
+  sa maîtrise ni à sa progression.
+- Le recalcul des niveaux supérieurs est atomique ; une erreur ne laisse aucun
+  état partiel et répéter la même commande ne crée pas plusieurs reprises.
+- Un autre utilisateur, un visiteur ou un propriétaire hors périmètre ne peut
+  ni prévisualiser l’impact privé ni redémarrer le module.
+- Aucun contenu ne déborde ou n’est masqué par les deux barres à 320/390 px ; les
+  commandes ont des zones tactiles d’au moins 44 px et des noms accessibles.
+
+### Tests
+
+- Tests unitaires de position, précédent/suivant, première activité disponible
+  et restauration d’une URL profonde.
+- Tests composants de la barre contextuelle, du sommaire proéminent, du focus
+  après soumission et de la confirmation détaillée.
+- Tests d’intégration serveur du redémarrage avec notes conservées, tentatives
+  historiques exclues de la reprise courante et recalcul de toute la hiérarchie.
+- Tests d’autorisation croisée, transaction avec rollback forcé, idempotence et
+  deux confirmations concurrentes.
+- Playwright sur 320/390 px, tablette et desktop : leçon, quiz,
+  mini-évaluation, exercice, retour navigateur, clavier et lecteur d’écran.
+
+### Risques et décision préalable obligatoire
+
+Le schéma ne possède actuellement ni `ModuleProgress` ni notion de reprise ou
+de `run`, alors que les tentatives doivent être conservées. Un vrai redémarrage
+ne doit donc jamais être simulé côté frontend, obtenu en supprimant
+silencieusement l’historique, ni reposer sur un détournement de `startedAt` ou
+`lastViewedAt`.
+
+Avant toute implémentation de ce ticket, Codex doit inspecter le modèle et les
+requêtes de progression, présenter le plus petit modèle serveur cohérent pour
+matérialiser une nouvelle reprise — borne temporelle, run de module ou
+équivalent —, expliquer précisément si une migration est nécessaire et attendre
+la validation de l’utilisateur. Aucun code de redémarrage ni migration ne doit
+être écrit avant cette décision.
+
+## V2-008B — Unifier les activités pédagogiques canoniques
+
+**Priorité : P1. Dépendances : V2-003, V2-007, V2-008A.**
+
+### Décision produit
+
+Une intention pédagogique correspond à une seule activité dans la progression :
+
+- une `Resource` est un support consultable depuis les blocs, sources et
+  activités, jamais une activité autonome de la séquence linéaire ;
+- `reading`, `watching`, `listening` et `checklist` deviennent exclusivement des
+  `Task`, validables sans production ;
+- `writing`, `practice`, `reflection` et `project` deviennent exclusivement des
+  `Exercise`, avec réponse ou production ;
+- quiz et mini-évaluations de notion restent des activités distinctes.
+
+Le seed actuel contient 210 entrées éditoriales projetées simultanément en 210
+`Task` et 210 `Exercise`. Avec le routage canonique des données actuelles, les
+comptes attendus deviennent **8 tâches** et **202 exercices**, sans supprimer les
+231 ressources ni leurs relations aux contenus et notions.
+
+### Périmètre
+
+- Retirer `RESOURCE` de `LessonActivityKind` et de la séquence linéaire, tout en
+  conservant les cartes, citations et liens de ressources dans le contenu et le
+  sommaire documentaire adapté.
+- Router chaque entrée `tasks` du sidecar vers un seul modèle dans le seed selon
+  son type, sans créer de couple `Task`/`Exercise` miroir.
+- Écarter des réponses API et de l’interface le membre non canonique d’un ancien
+  couple miroir ; ne jamais compter simultanément les deux états.
+- Adapter Aujourd’hui, reprise exacte, préconditions, progression de leçon,
+  validation d’étape, admin et révisions aux activités canoniques.
+- Conserver l’accès aux ressources et l’intégralité des tentatives, soumissions
+  et complétions historiques.
+- Documenter et exécuter une synchronisation idempotente des données existantes
+  avant de supprimer ou archiver un miroir devenu non canonique.
+- Mettre à jour `EDITORIAL_GUIDELINES.md` et `PEDAGOGY_AUTHORING_GUIDE.md` : une
+  lecture obligatoire n’est pas dupliquée par une ressource obligatoire, et
+  toute production attendue est décrite comme un exercice.
+
+### Migration et décision préalable obligatoire
+
+La déduplication d’affichage (`RESOURCE` hors séquence et un seul membre visible
+par couple existant) est sûre si les deux enregistrements historiques restent
+intacts. La modification du seed ne l’est pas seule : ses opérations de prune
+peuvent supprimer un `Task` ou un `Exercise` et entraîner en cascade ses
+complétions ou soumissions.
+
+Avant implémentation, Codex doit présenter puis faire valider le plus petit
+modèle serveur qui :
+
+1. identifie durablement l’activité canonique et son éventuel miroir historique,
+   sans déduire cette relation du seul titre ;
+2. reporte une ancienne complétion vers l’activité canonique sans fabriquer une
+   réponse utilisateur ni une tentative pédagogique ;
+3. conserve les enregistrements historiques dans un état archivé et exclu des
+   séquences/calculs, ou les rattache à une trace de migration équivalente ;
+4. permet un rollback et une relance idempotente sur une base sauvegardée.
+
+Une migration Prisma dédiée est probablement nécessaire pour distinguer
+explicitement les miroirs historiques et les états reportés. Elle doit rester
+dans ce ticket autonome, après validation de son schéma et de son plan de
+backfill. Il est interdit de simuler le résultat côté frontend, de créer une
+`ExerciseSubmission` factice ou de supprimer silencieusement l’historique.
+
+Le plus petit modèle proposé avant validation est le suivant :
+
+- ajouter une clé éditoriale stable et obligatoire à chaque entrée de
+  `lesson.tasks`, persistée sur `Task` ou `Exercise` ; ne pas utiliser le titre
+  comme identité ;
+- ajouter `isCanonical` sur `Task` et `Exercise` afin de conserver en lecture
+  historique les anciens miroirs sans les exposer ni les compter ;
+- ajouter `TaskResource(taskId, resourceId)` et `task.resourceKeys` au contrat
+  éditorial pour relier explicitement une tâche passive à ses supports ;
+- backfiller les couples historiques selon l’identité seed actuelle
+  `(lessonId, position)`, enregistrer leur même clé éditoriale, puis choisir le
+  membre canonique selon `TaskType` ; ce rapprochement est limité au script de
+  migration audité et n’est jamais refait à partir d’un titre ;
+- pour le calcul d’un état hérité, agréger le membre canonique et son miroir
+  non canonique portant la même clé : `TaskCompletion.DONE` ou
+  `ExerciseSubmission.SUBMITTED` suffit à conserver l’acquis, tandis que les
+  tentatives et productions originales restent attachées à leur ligne
+  historique ; aucune soumission synthétique n’est créée ;
+- sur une base neuve, créer uniquement le membre canonique. Sur une base
+  existante, le pruning archive les miroirs et ne les supprime qu’au terme
+  d’une politique de rétention ultérieure explicitement validée.
+
+Ce plan requiert donc une migration Prisma et un backfill transactionnel. Il
+doit être approuvé avant toute modification du schéma, du seed ou des données.
+
+### Hors périmètre
+
+- Modification des contenus pédagogiques ou des sources.
+- Fusion d’un quiz avec une mini-évaluation.
+- Nouvel ordre éditorial arbitraire entre types.
+- Refonte de la navigation globale de `V2-010`.
+- Reset de progression ou suppression de notes.
+
+### Critères d’acceptation
+
+- Aucune activité `RESOURCE` n’apparaît dans la séquence, mais chaque ressource
+  et citation reste accessible depuis sa leçon.
+- Une entrée éditoriale produit exactement une `Task` ou un `Exercise` selon la
+  table de routage ; aucun couple miroir n’est exposé ou compté deux fois.
+- `Lire la définition universitaire de la psychologie` est une seule tâche avec
+  son lien et l’action `Marquer comme terminé` ; `Formuler sa propre définition`
+  est uniquement un exercice avec production.
+- Les anciens états terminés restent reconnus par l’activité canonique, sans
+  perte d’historique ni réussite artificielle.
+- Les pourcentages, préconditions, Aujourd’hui, reprise, validation d’étape et
+  timeline utilisent tous la même collection canonique côté serveur.
+- La synchronisation est transactionnelle, idempotente, vérifiable avant
+  écriture et réversible depuis une sauvegarde.
+- Aucun doublon, débordement ou action masquée n’apparaît à 320/390 px.
+
+### Tests et risques
+
+- Tests unitaires de la table de routage pour les huit `TaskType`, de la
+  séquence sans `RESOURCE` et de l’absence de miroir.
+- Tests seed sur base vide et base héritée : 8 tâches, 202 exercices, 210
+  intentions, 231 ressources conservées et deux exécutions idempotentes.
+- Tests d’intégration de report de progression dans les deux directions,
+  historique conservé, transaction/rollback, concurrence et autorisation.
+- Tests Aujourd’hui, progression, validation d’étape, reprise de module,
+  révisions et admin ; tests composants et Playwright à 320/390 px.
+- Risque critique : les contraintes uniques actuelles par position et les
+  cascades de suppression peuvent détruire des preuves d’activité si le
+  backfill et l’archivage ne précèdent pas le nouveau prune du seed.
+
 ## V2-009 — Clarifier liens et actions
 
-**Priorité : P1. Dépendances : V2-008.**
+**Priorité : P1. Dépendances : V2-008, V2-008A, V2-008B.**
 
 ### Périmètre
 
@@ -387,7 +639,42 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Tests sémantiques et audit automatisé des rôles.
 - Risque : conserver les liens éditoriaux dans les contenus et sources.
 
-## V2-010 — Politique hors ligne explicite et sûre
+## V2-010 — Refonte de la navigation principale
+
+**Priorité : P1. Dépendances : V2-008, V2-009.**
+
+### Périmètre
+
+- Remplacer la barre actuelle par cinq destinations avec icône et libellé court :
+  `Accueil`, `Parcours`, `Réviser`, `Notes`, `Profil`.
+- Utiliser un texte lisible de 13–14 px, une barre plus confortable et un état
+  actif qui ne repose pas sur un simple soulignement.
+- Respecter safe areas, zones tactiles, 320/390 px et tailles système iOS.
+- Adapter la navigation au desktop sans dupliquer ni perdre le contexte courant.
+
+### Hors périmètre
+
+- Nouvelles destinations métier ou personnalisation de la navigation.
+
+### Critères d’acceptation
+
+- Les cinq destinations restent visibles, distinctes et atteignables au clavier
+  comme au toucher.
+- L’état actif combine forme/couleur et `aria-current`, sans dépendre uniquement
+  de la couleur ou du soulignement.
+- VoiceOver annonce icône, libellé et page active sans répétition parasite.
+- Aucun libellé n’est tronqué ou masqué à 320/390 px et la safe area iPhone est
+  respectée.
+- La variante desktop conserve les mêmes destinations et une hiérarchie claire.
+
+### Tests et risques
+
+- Tests composants, VoiceOver, clavier, 320/390 px, zoom 200 %, tailles système
+  iOS et desktop.
+- Risque : sélectionner une famille d’icônes légère et accessible sans gonfler le
+  bundle.
+
+## V2-011 — Politique hors ligne explicite et sûre
 
 **Priorité : P1. Dépendances : V2-001, V2-003.**
 
@@ -418,9 +705,9 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Tests offline/reconnect/account-switch sur iOS et Chromium.
 - Risque sécurité élevé si le stockage privé local n’est pas cloisonné.
 
-## V2-011 — Accessibilité et matrice mobile
+## V2-012 — Accessibilité et matrice mobile
 
-**Priorité : P1. Dépendances : V2-007, V2-008, V2-009.**
+**Priorité : P1. Dépendances : V2-007 à V2-011.**
 
 ### Périmètre
 

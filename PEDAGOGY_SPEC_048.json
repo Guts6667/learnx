@@ -1,0 +1,390 @@
+{
+  "specId": "PEDAGOGY_SPEC_048",
+  "schemaVersion": "1.0.0",
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "psychologie-sociale",
+  "moduleSlug": "percevoir-influencer",
+  "lesson": {
+    "title": "Décision en groupe",
+    "slug": "decision-groupe",
+    "summary": "Comprendre quand un groupe combine utilement ses connaissances, quand il les déforme et comment concevoir une décision collective plus traçable.",
+    "objectives": [
+      "Identifier les gains et pertes possibles d’une décision collective selon la tâche et la composition du groupe.",
+      "Expliquer le partage biaisé de l’information, le groupthink et la polarisation sans les ériger en lois universelles.",
+      "Évaluer les conditions de la sagesse des foules, notamment diversité, indépendance et agrégation.",
+      "Concevoir une procédure qui favorise information unique, désaccord et révision traçable."
+    ],
+    "prerequisites": [
+      "Distinguer conformité normative et informationnelle.",
+      "Interpréter un résultat moyen sans prédire chaque conduite individuelle."
+    ],
+    "estimatedMinutes": 210,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un groupe peut réunir des connaissances, détecter des erreurs et rendre une décision plus légitime. Il peut aussi perdre de l’information par coordination insuffisante, domination, effort inégal ou agrégation inadéquate. La performance dépend de la tâche, de la distribution de l’expertise, des incitations et de la procédure : un groupe n’est ni naturellement plus sage ni naturellement moins rationnel qu’un individu.",
+          "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Avant une réunion, certains faits sont connus de tous et d’autres seulement de quelques membres. La discussion tend à répéter l’information partagée, surtout quand une préférence est annoncée tôt ou qu’un statut oriente la parole. Dans une tâche à profil caché, la meilleure option n’apparaît qu’après mise en commun des indices uniques. Il faut donc suivre ce qui a été apporté, pas seulement qui a parlé ou combien d’arguments ont été répétés.",
+          "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Le groupthink est un modèle proposé pour décrire certaines décisions où recherche d’accord, fermeture aux objections et défaut de procédure contribuent à une analyse pauvre. La recherche n’en fait pas une loi générale : les tests empiriques sont hétérogènes, les reconstructions historiques exposées au raisonnement rétrospectif et la cohésion seule n’est ni une preuve ni une cause suffisante. Le terme sert de grille d’hypothèses à vérifier, jamais d’étiquette après un échec.",
+          "sourceKeys": ["esser-1998", "openstax-influence-12-4"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "La polarisation de groupe désigne un déplacement moyen, après discussion, vers une direction déjà favorisée initialement. Comparaison sociale, arguments nouveaux et identification au groupe peuvent y contribuer. Ce phénomène n’apparaît pas dans toute discussion, ne signifie pas nécessairement extrémisme et dépend de la mesure, de la composition du groupe et du sujet. Il faut comparer les positions avant et après, ainsi que leur dispersion.",
+          "sourceKeys": ["openstax-influence-12-4", "kerr-tindale-2004"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "La sagesse des foules exige au minimum des jugements suffisamment divers, une certaine indépendance et une règle d’agrégation adaptée. Dans une expérience d’estimation, Lorenz et ses collègues ont montré qu’une influence sociale même modérée pouvait réduire la diversité et accroître la confiance sans améliorer l’exactitude. Ce résultat porte sur une tâche et un dispositif précis : il alerte sur une condition de l’agrégation, sans établir que toute communication dégrade une foule.",
+          "sourceKeys": ["bang-frith-2017", "lorenz-et-al-2011"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Une procédure robuste peut recueillir les estimations avant discussion, demander chaque information unique, associer expertise et confiance calibrée, distribuer la parole, protéger un désaccord argumenté, solliciter une revue externe et conserver un journal des hypothèses et révisions. Selon la tâche, vote, moyenne, débat contradictoire ou délégation experte ne produisent pas le même résultat. Aucun rituel ne garantit une bonne décision : il faut définir le critère, tester la procédure et autoriser la correction.",
+          "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004", "lorenz-et-al-2011"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-influence-12-4",
+        "title": "Psychology 2e — 12.4 Conformity, Compliance, and Obedience",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 12.4 Conformity, Compliance, and Obedience. OpenStax.",
+        "description": "Lire les sections groupthink et polarisation ; reformuler chaque notion avec une condition et une limite.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "bang-frith-2017",
+        "title": "Making Better Decisions in Groups",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5579088/",
+        "author": "Dan Bang et Chris D. Frith",
+        "citation": "Bang, D., & Frith, C. D. (2017). Making better decisions in groups. Royal Society Open Science, 4, 170193. https://doi.org/10.1098/rsos.170193",
+        "description": "Lire la revue ; relever conditions d’agrégation, confiance, communication et procédures correctrices.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 2
+      },
+      {
+        "key": "kerr-tindale-2004",
+        "title": "Group Performance and Decision Making",
+        "type": "article",
+        "url": "https://www.annualreviews.org/content/journals/10.1146/annurev.psych.55.090902.142009",
+        "author": "Norbert L. Kerr et R. Scott Tindale",
+        "citation": "Kerr, N. L., & Tindale, R. S. (2004). Group performance and decision making. Annual Review of Psychology, 55, 623–655. https://doi.org/10.1146/annurev.psych.55.090902.142009",
+        "description": "Consulter la synthèse si disponible ; cartographier tâche, ressources, processus et critère de performance.",
+        "isRequired": false,
+        "estimatedMinutes": 30,
+        "position": 3
+      },
+      {
+        "key": "esser-1998",
+        "title": "Alive and Well after 25 Years: A Review of Groupthink Research",
+        "type": "article",
+        "url": "https://www.sciencedirect.com/science/article/pii/S0749597898927583",
+        "author": "James K. Esser",
+        "citation": "Esser, J. K. (1998). Alive and well after 25 years: A review of groupthink research. Organizational Behavior and Human Decision Processes, 73(2–3), 116–141. https://doi.org/10.1006/obhd.1998.2758",
+        "description": "Consulter la revue si disponible ; distinguer valeur heuristique, soutien empirique et limites méthodologiques.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "lorenz-et-al-2011",
+        "title": "How Social Influence Can Undermine the Wisdom of Crowd Effect",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3107299/",
+        "author": "Jan Lorenz, Heiko Rauhut, Frank Schweitzer et Dirk Helbing",
+        "citation": "Lorenz, J., Rauhut, H., Schweitzer, F., & Helbing, D. (2011). How social influence can undermine the wisdom of crowd effect. PNAS, 108(22), 9020–9025. https://doi.org/10.1073/pnas.1008636108",
+        "description": "Lire méthode et résultats ; séparer diversité, exactitude et confiance, puis limiter la conclusion au dispositif étudié.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Gains, pertes et information partagée",
+        "slug": "gains-pertes-information-partagee",
+        "description": "La décision dépend de la tâche, des connaissances distribuées, de la participation et de la manière dont les informations sont mises en commun.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["bang-frith-2017", "kerr-tindale-2004"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Information collective", "questionCount": 5}
+      },
+      {
+        "title": "Groupthink, polarisation et limites",
+        "slug": "groupthink-polarisation-limites",
+        "description": "Ces modèles décrivent des configurations possibles et doivent être testés par des observations avant-après et des hypothèses concurrentes.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-influence-12-4", "esser-1998", "kerr-tindale-2004"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Dynamiques de groupe", "questionCount": 5}
+      },
+      {
+        "title": "Procédures de décision collective",
+        "slug": "procedures-decision-collective",
+        "description": "Indépendance initiale, explicitation des informations uniques, confiance calibrée et traçabilité peuvent améliorer la décision selon la tâche.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["bang-frith-2017", "lorenz-et-al-2011"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Procédures collectives", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Auditer une réunion de décision",
+        "description": "À partir d’un cas fictif, cartographier tâche, expertise, informations partagées ou uniques, ordre de parole, critère de succès et possibilité de révision.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Simuler un profil caché",
+        "description": "Distribuer des indices différents à quatre rôles, recueillir les choix avant discussion, puis comparer informations répétées, informations uniques et décision finale.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Concevoir un protocole collectif",
+        "description": "Proposer pour un comité une séquence d’estimation indépendante, mise en commun, désaccord protégé, agrégation, journal de décision et seuil de révision ; justifier chaque choix.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr-FR",
+    "audience": "Adulte débutant en psychologie",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-048-OPENSTAX-12-4",
+        "type": "textbook_chapter",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 12.4 Conformity, Compliance, and Obedience",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Introduction au groupthink et à la polarisation."
+      },
+      {
+        "id": "REF-048-BANG-FRITH",
+        "type": "review_article",
+        "authors": ["Bang, D.", "Frith, C. D."],
+        "organization": null,
+        "title": "Making Better Decisions in Groups",
+        "year": 2017,
+        "edition": null,
+        "publication": "Royal Society Open Science, 4, 170193",
+        "doi": "10.1098/rsos.170193",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5579088/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Revue ouverte des conditions et procédures de décision collective."
+      },
+      {
+        "id": "REF-048-KERR-TINDALE",
+        "type": "review_article",
+        "authors": ["Kerr, N. L.", "Tindale, R. S."],
+        "organization": null,
+        "title": "Group Performance and Decision Making",
+        "year": 2004,
+        "edition": null,
+        "publication": "Annual Review of Psychology, 55, 623–655",
+        "doi": "10.1146/annurev.psych.55.090902.142009",
+        "url": "https://www.annualreviews.org/content/journals/10.1146/annurev.psych.55.090902.142009",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Accès institutionnel selon abonnement",
+        "status": "verified",
+        "notes": "Revue générale ; ressource facultative car texte intégral potentiellement restreint."
+      },
+      {
+        "id": "REF-048-ESSER",
+        "type": "review_article",
+        "authors": ["Esser, J. K."],
+        "organization": null,
+        "title": "Alive and Well after 25 Years: A Review of Groupthink Research",
+        "year": 1998,
+        "edition": null,
+        "publication": "Organizational Behavior and Human Decision Processes, 73(2–3), 116–141",
+        "doi": "10.1006/obhd.1998.2758",
+        "url": "https://www.sciencedirect.com/science/article/pii/S0749597898927583",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Accès institutionnel selon abonnement",
+        "status": "verified",
+        "notes": "Revue critique ; ressource facultative et accès intégral potentiellement restreint."
+      },
+      {
+        "id": "REF-048-LORENZ",
+        "type": "primary_article",
+        "authors": ["Lorenz, J.", "Rauhut, H.", "Schweitzer, F.", "Helbing, D."],
+        "organization": null,
+        "title": "How Social Influence Can Undermine the Wisdom of Crowd Effect",
+        "year": 2011,
+        "edition": null,
+        "publication": "Proceedings of the National Academy of Sciences, 108(22), 9020–9025",
+        "doi": "10.1073/pnas.1008636108",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3107299/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Libre consultation via PMC",
+        "status": "verified",
+        "notes": "Étude primaire sur influence, diversité, confiance et exactitude dans une tâche d’estimation."
+      }
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [
+        {"referenceId": "REF-048-BANG-FRITH", "locator": "benefits and limitations of group decisions", "supports": "Conditions des gains et pertes collectifs."},
+        {"referenceId": "REF-048-KERR-TINDALE", "locator": "task and group performance framework", "supports": "Dépendance à la tâche, aux ressources et aux processus."}
+      ], "confidence": "high", "confidenceRationale": "Deux revues générales convergentes.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [
+        {"referenceId": "REF-048-BANG-FRITH", "locator": "information sharing and confidence", "supports": "Partage incomplet et coordination des connaissances."},
+        {"referenceId": "REF-048-KERR-TINDALE", "locator": "shared and unshared information", "supports": "Biais de discussion dans les profils cachés."}
+      ], "confidence": "high", "confidenceRationale": "Résultats synthétisés dans deux revues.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [
+        {"referenceId": "REF-048-ESSER", "locator": "review conclusions and methodological limitations", "supports": "Soutien empirique hétérogène et limites du modèle de groupthink."},
+        {"referenceId": "REF-048-OPENSTAX-12-4", "locator": "groupthink", "supports": "Définition introductive du modèle."}
+      ], "confidence": "moderate", "confidenceRationale": "Le modèle est utile mais les opérationnalisations et résultats restent discutés.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [
+        {"referenceId": "REF-048-OPENSTAX-12-4", "locator": "group polarization", "supports": "Définition du déplacement après discussion."},
+        {"referenceId": "REF-048-KERR-TINDALE", "locator": "group polarization mechanisms", "supports": "Conditions, mesures et mécanismes possibles."}
+      ], "confidence": "moderate", "confidenceRationale": "Effet documenté mais conditionnel et sensible au dispositif.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [
+        {"referenceId": "REF-048-BANG-FRITH", "locator": "collective intelligence and independence", "supports": "Conditions de diversité, confiance et agrégation."},
+        {"referenceId": "REF-048-LORENZ", "locator": "methods, results and discussion", "supports": "Réduction de diversité et hausse de confiance dans le dispositif étudié."}
+      ], "confidence": "high", "confidenceRationale": "Étude primaire interprétée au moyen d’une revue récente.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [
+        {"referenceId": "REF-048-BANG-FRITH", "locator": "strategies for improving group decisions", "supports": "Procédures d’indépendance, confiance et communication."},
+        {"referenceId": "REF-048-KERR-TINDALE", "locator": "decision rules and performance", "supports": "Adaptation de la règle à la tâche."},
+        {"referenceId": "REF-048-LORENZ", "locator": "social influence and diversity", "supports": "Nécessité de protéger l’indépendance initiale."}
+      ], "confidence": "moderate", "confidenceRationale": "Recommandations fondées sur plusieurs mécanismes sans garantie universelle.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-influence-12-4", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-048-OPENSTAX-12-4"], "pedagogicalRationale": "Donne une première définition du groupthink et de la polarisation.", "learnerInstructions": "Lire les sections groupthink et polarisation ; reformuler chaque notion avec une condition et une limite.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "bang-frith-2017", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-048-BANG-FRITH"], "pedagogicalRationale": "Revue ouverte reliant mécanismes et améliorations possibles.", "learnerInstructions": "Lire la revue ; relever conditions d’agrégation, confiance, communication et procédures correctrices.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML et PDF accessibles via PMC.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "kerr-tindale-2004", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "institutional", "language": "en", "referenceIds": ["REF-048-KERR-TINDALE"], "pedagogicalRationale": "Revue de référence sur tâches, processus et performance.", "learnerInstructions": "Consulter la synthèse si disponible ; cartographier tâche, ressources, processus et critère de performance.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Résumé ouvert ; texte intégral selon abonnement.", "alternativeResourceKey": "bang-frith-2017", "notes": "Facultatif ; alternative ouverte fournie."},
+      {"resourceKey": "esser-1998", "checkedAt": "2026-08-04", "urlStatus": "restricted", "accessType": "institutional", "language": "en", "referenceIds": ["REF-048-ESSER"], "pedagogicalRationale": "Apporte la revue critique nécessaire pour ne pas universaliser le groupthink.", "learnerInstructions": "Consulter la revue si disponible ; distinguer valeur heuristique, soutien empirique et limites méthodologiques.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Résumé ouvert ; texte intégral selon abonnement.", "alternativeResourceKey": "bang-frith-2017", "notes": "Facultatif ; alternative ouverte fournie."},
+      {"resourceKey": "lorenz-et-al-2011", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-048-LORENZ"], "pedagogicalRationale": "Permet une lecture concrète des critères diversité, exactitude et confiance.", "learnerInstructions": "Lire méthode et résultats ; séparer diversité, exactitude et confiance, puis limiter la conclusion au dispositif étudié.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML et PDF accessibles via PMC.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "gains-pertes-information-partagee",
+        "assessmentTitle": "Mini-évaluation — Information collective",
+        "questions": [
+          {"type": "single_choice", "prompt": "De quoi dépend d’abord la performance d’un groupe ?", "explanation": "Tâche, expertise, processus et règle de décision interagissent.", "acceptedAnswers": [], "position": 1, "options": [{"label": "De la tâche et de la procédure", "isCorrect": true, "position": 1}, {"label": "Du nombre seul", "isCorrect": false, "position": 2}, {"label": "De la cohésion seule", "isCorrect": false, "position": 3}, {"label": "D’une sagesse naturelle", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un groupe est toujours plus précis qu’un individu.", "explanation": "Les gains et pertes varient selon les conditions.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Qu’est-ce qui peut masquer une information unique ?", "explanation": "Répétition, préférence précoce et statut peuvent biaiser la discussion.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La répétition du déjà partagé", "isCorrect": true, "position": 1}, {"label": "Une préférence annoncée tôt", "isCorrect": true, "position": 2}, {"label": "Une parole dominée par le statut", "isCorrect": true, "position": 3}, {"label": "Un inventaire explicite des indices", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Dans un profil caché, la meilleure option apparaît lorsque…", "explanation": "Les indices uniques doivent être effectivement mis en commun.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Les informations uniques sont partagées", "isCorrect": true, "position": 1}, {"label": "Seuls les faits communs sont répétés", "isCorrect": false, "position": 2}, {"label": "Le premier avis devient définitif", "isCorrect": false, "position": 3}, {"label": "Le statut décide", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Comment appelle-t-on une tâche où les indices décisifs sont distribués entre membres ?", "explanation": "Il s’agit d’un profil caché.", "acceptedAnswers": ["profil caché", "profil cache", "hidden profile"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "groupthink-polarisation-limites",
+        "assessmentTitle": "Mini-évaluation — Dynamiques de groupe",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle utilisation du groupthink est la plus rigoureuse ?", "explanation": "Le modèle guide des hypothèses à confronter à des observations.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Une grille d’hypothèses à tester", "isCorrect": true, "position": 1}, {"label": "Une explication automatique de tout échec", "isCorrect": false, "position": 2}, {"label": "Un diagnostic de personnalité", "isCorrect": false, "position": 3}, {"label": "Une loi universelle", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "La cohésion suffit à prouver un groupthink.", "explanation": "La cohésion seule n’est ni preuve ni cause suffisante.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que faut-il mesurer pour parler de polarisation ?", "explanation": "Il faut comparer direction, moyenne et dispersion avant-après.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Les positions avant discussion", "isCorrect": true, "position": 1}, {"label": "Les positions après discussion", "isCorrect": true, "position": 2}, {"label": "La dispersion", "isCorrect": true, "position": 3}, {"label": "Seulement l’impression de l’animateur", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quelle description de la polarisation est la plus rigoureuse ?", "explanation": "Elle décrit un déplacement moyen dans une direction initialement favorisée, pas forcément l’extrémisme.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Un déplacement moyen conditionnel", "isCorrect": true, "position": 1}, {"label": "Un extrémisme inévitable", "isCorrect": false, "position": 2}, {"label": "Une unanimité complète", "isCorrect": false, "position": 3}, {"label": "Une erreur individuelle", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel biais menace une reconstruction d’échec faite uniquement après coup ?", "explanation": "Le raisonnement rétrospectif peut faire paraître l’issue évidente.", "acceptedAnswers": ["biais rétrospectif", "biais retrospectif", "raisonnement rétrospectif", "raisonnement retrospectif"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "procedures-decision-collective",
+        "assessmentTitle": "Mini-évaluation — Procédures collectives",
+        "questions": [
+          {"type": "single_choice", "prompt": "Pourquoi recueillir des estimations avant discussion ?", "explanation": "Cela préserve une information initiale moins contaminée par l’influence sociale.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Préserver l’indépendance initiale", "isCorrect": true, "position": 1}, {"label": "Empêcher toute révision", "isCorrect": false, "position": 2}, {"label": "Garantir l’exactitude", "isCorrect": false, "position": 3}, {"label": "Supprimer l’expertise", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Dans l’étude de Lorenz, plus de confiance signifiait nécessairement plus d’exactitude.", "explanation": "La confiance augmentait sans amélioration correspondante de l’exactitude.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles pratiques rendent une décision plus révisable ?", "explanation": "Trace, critères et revue permettent de comprendre et corriger.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Journaliser les hypothèses", "isCorrect": true, "position": 1}, {"label": "Définir un seuil de révision", "isCorrect": true, "position": 2}, {"label": "Prévoir une revue externe", "isCorrect": true, "position": 3}, {"label": "Effacer les désaccords", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quelle affirmation sur les procédures est correcte ?", "explanation": "Une procédure doit être adaptée et évaluée ; elle ne garantit rien seule.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Elles doivent être adaptées à la tâche", "isCorrect": true, "position": 1}, {"label": "Une même procédure convient toujours", "isCorrect": false, "position": 2}, {"label": "Le vote est toujours supérieur", "isCorrect": false, "position": 3}, {"label": "Le débat garantit la vérité", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quelle propriété des jugements doit être protégée avant agrégation ?", "explanation": "Une certaine indépendance des jugements est nécessaire.", "acceptedAnswers": ["indépendance", "independance", "indépendance des jugements", "independance des jugements"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie sociale, décision collective et méthodologie requise.",
+        "L’étape psychologie-sociale et le module percevoir-influencer sont planifiés mais absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "Groupthink et polarisation sont des modèles conditionnels, jamais des lois universelles.",
+        "Les recommandations procédurales sont liées à la tâche et ne garantissent pas une bonne décision.",
+        "Les ressources obligatoires sont ouvertes ; les deux ressources institutionnelles sont facultatives et disposent d’une alternative ouverte."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_and_group_decision"}
+    ]
+  }
+}

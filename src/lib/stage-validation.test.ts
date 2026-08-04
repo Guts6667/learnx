@@ -16,6 +16,9 @@ function validInput(): StageValidationInput {
       { id: 'concept-1', isValidated: true, title: 'Notion 1' },
       { id: 'concept-2', isValidated: true, title: 'Notion 2' },
     ],
+    requiredExercises: [
+      { id: 'exercise-1', isValidated: true, title: 'Production 1' },
+    ],
     requiredTasks: [{ id: 'task-1', isValidated: true, title: 'Exercice 1' }],
   };
 }
@@ -29,6 +32,7 @@ describe('stage validation', () => {
       isValidated: true,
       missingRequirements: [],
       requiredConcepts: { total: 2, validated: 2 },
+      requiredExercises: { total: 1, validated: 1 },
       requiredTasks: { total: 1, validated: 1 },
       status: 'COMPLETED',
     });

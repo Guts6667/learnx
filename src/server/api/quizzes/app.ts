@@ -14,6 +14,11 @@ import {
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  recalculateLessonProgress,
+  runSerializableProgressTransaction,
+} from '../_lib/progress-recalculation.js';
+import { ensureCurrentModuleRunForLesson } from '../_lib/module-runs.js';
 
 interface QuizQuestionReadModel {
   acceptedAnswers: string[];
@@ -47,10 +52,12 @@ interface QuizAttemptReadModel {
   passed: boolean;
   score: number;
   submittedAt: Date;
+  runSequence?: number;
 }
 
 interface RecordQuizAttemptInput {
   answers: Prisma.InputJsonValue;
+  lessonId: string;
   passed: boolean;
   quizId: string;
   score: number;
@@ -165,10 +172,14 @@ function serializeAttempt(attempt: QuizAttemptReadModel) {
     passed: attempt.passed,
     score: attempt.score,
     submittedAt: attempt.submittedAt,
+    runSequence: attempt.runSequence ?? 1,
   };
 }
 
-export function createPrismaRepository(client: PrismaClient): QuizRepository {
+export function createPrismaRepository(
+  client: PrismaClient,
+  recalculateProgress = recalculateLessonProgress,
+): QuizRepository {
   return {
     async findPublishedQuizForUser(quizId, userId) {
       const quiz = await client.quiz.findFirst({
@@ -212,21 +223,47 @@ export function createPrismaRepository(client: PrismaClient): QuizRepository {
       };
     },
     async listAttempts(quizId, userId) {
-      return client.quizAttempt.findMany({
+      const attempts = await client.quizAttempt.findMany({
         where: { quizId, userId },
         orderBy: { submittedAt: 'desc' },
+        include: { moduleRun: { select: { sequence: true } } },
       });
+      return attempts.map(({ moduleRun, ...attempt }) => ({
+        ...attempt,
+        runSequence: moduleRun.sequence,
+      }));
     },
     async recordAttempt(input) {
-      return client.quizAttempt.create({
-        data: {
-          answers: input.answers,
-          passed: input.passed,
-          quizId: input.quizId,
-          score: input.score,
-          submittedAt: input.submittedAt,
-          userId: input.userId,
-        },
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const moduleRun = await ensureCurrentModuleRunForLesson(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+        );
+        const attempt = await transaction.quizAttempt.create({
+          data: {
+            answers: input.answers,
+            moduleRunId: moduleRun.id,
+            passed: input.passed,
+            quizId: input.quizId,
+            score: input.score,
+            submittedAt: input.submittedAt,
+            userId: input.userId,
+          },
+        });
+
+        const progress = await recalculateProgress(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+          { requirePublished: true },
+        );
+
+        if (!progress) throw notFound();
+
+        return { ...attempt, runSequence: moduleRun.sequence };
       });
     },
   };
@@ -318,6 +355,7 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
 
     const attempt = await repository.recordAttempt({
       answers: toJsonValue(parsedAttempt.data.answers),
+      lessonId: quiz.lessonId,
       passed: result.passed,
       quizId,
       score: result.score,

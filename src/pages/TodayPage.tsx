@@ -2,8 +2,10 @@ import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Spinner } from '@/components/ui/Spinner';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
 import type { RecommendationKind } from '@/lib/recommendation';
 
@@ -29,18 +31,15 @@ export function TodayPage() {
   const query = useTodayQuery();
 
   return (
-    <section aria-labelledby="today-title" class="space-y-5">
-      <div>
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Parcours personnel
-        </p>
-        <h1 id="today-title" class="mt-3 text-3xl font-bold tracking-tight">
-          Aujourd’hui
-        </h1>
-      </div>
+    <section aria-labelledby="today-title" class="page-shell">
+      <PageHeader
+        eyebrow="Parcours personnel"
+        id="today-title"
+        title="Aujourd’hui"
+      />
 
       {query.isPending ? (
-        <Spinner label="Chargement d’aujourd’hui" />
+        <Skeleton label="Chargement d’aujourd’hui" />
       ) : query.error ? (
         <ErrorState description="Les recommandations n’ont pas pu être chargées." />
       ) : query.data?.program ? (
@@ -48,12 +47,9 @@ export function TodayPage() {
       ) : (
         <EmptyState
           action={
-            <a
-              class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-              href="/program"
-            >
+            <NavigationAction href="/program" variant="secondary">
               Voir les programmes
-            </a>
+            </NavigationAction>
           }
           description="Démarrez un programme publié pour recevoir une recommandation quotidienne."
           title="Aucun programme actif"
@@ -71,20 +67,9 @@ function TodayContent({
   program: NonNullable<TodayResponse['program']>;
 }) {
   return (
-    <>
-      <Card class="space-y-4">
-        <div>
-          <p class="text-sm text-slate-400">Programme actif</p>
-          <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
-        </div>
-        <ProgressBar
-          label={`Progression — ${Math.round(program.percent)} %`}
-          value={program.percent}
-        />
-      </Card>
-
+    <div class="grid min-w-0 gap-5 lg:grid-cols-12">
       {data.action ? (
-        <Card class="space-y-4 border-cyan-900">
+        <Card class="space-y-5 lg:col-span-7 lg:row-span-2" tone="accent">
           <Badge
             tone={data.action.kind === 'OVERDUE_REVIEW' ? 'danger' : 'info'}
           >
@@ -96,6 +81,7 @@ function TodayContent({
               <p class="mt-2 text-sm text-slate-300">
                 {data.action.stageTitle}
                 {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
+                {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
               </p>
             ) : null}
             {data.action.estimatedMinutes ? (
@@ -104,21 +90,30 @@ function TodayContent({
               </p>
             ) : null}
           </div>
-          <a
-            class="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950"
-            href={data.action.href}
-          >
+          <NavigationAction class="w-full" href={data.action.href} size="lg">
             Continuer
-          </a>
+          </NavigationAction>
         </Card>
       ) : (
         <EmptyState
+          class="lg:col-span-7 lg:row-span-2"
           description="Aucune action pédagogique n’est requise pour le moment."
           title="Tout est à jour"
         />
       )}
 
-      <div class="grid gap-3 sm:grid-cols-2">
+      <Card class="space-y-4 lg:col-span-5">
+        <div>
+          <p class="text-sm text-slate-400">Programme actif</p>
+          <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
+        </div>
+        <ProgressBar
+          label={`Progression — ${Math.round(program.percent)} %`}
+          value={program.percent}
+        />
+      </Card>
+
+      <div class="grid gap-3 sm:grid-cols-2 lg:col-span-5">
         <Card>
           <p class="text-sm text-slate-400">Révisions dues</p>
           <p class="mt-2 text-2xl font-bold">{data.reviewsDue}</p>
@@ -126,18 +121,19 @@ function TodayContent({
         <Card>
           <p class="text-sm text-slate-400">Dernière activité</p>
           {data.lastActivity ? (
-            <a
-              class="mt-2 inline-flex min-h-11 items-center text-sm text-cyan-300 underline"
+            <NavigationAction
+              class="mt-2 w-full"
               href={data.lastActivity.href}
+              variant="ghost"
             >
               {data.lastActivity.title} ·{' '}
               {formatLastActivity(data.lastActivity.at)}
-            </a>
+            </NavigationAction>
           ) : (
             <p class="mt-2 text-sm text-slate-300">Aucune activité récente</p>
           )}
         </Card>
       </div>
-    </>
+    </div>
   );
 }

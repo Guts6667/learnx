@@ -1,13 +1,20 @@
-import type { MiddlewareHandler } from 'hono';
+import { Hono, type MiddlewareHandler } from 'hono';
 
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
   createAdminApp,
   type AdminRepository,
 } from '../../src/server/api/admin/app';
+import type { AdminNavigationService } from '../../src/server/api/admin/navigation-service';
+import {
+  PublicationPlanBlockedError,
+  PublicationPlanStaleError,
+  type PublicationService,
+} from '../../src/server/api/admin/publication-service';
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
+const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
@@ -53,7 +60,6 @@ function createRepository() {
     title: 'Leçon test',
   };
   let lessonReady = true;
-  let finalAssessmentReady = true;
   module.lessons = [lesson];
 
   const repository: AdminRepository = {
@@ -88,45 +94,6 @@ function createRepository() {
           }
         : null;
     },
-    async findStageForOwner(id, requestedOwnerId) {
-      if (id !== stageId || requestedOwnerId !== ownerId) return null;
-
-      const publishedLesson = {
-        concepts: [
-          { assessments: lessonReady ? [{ id: 'assessment-1' }] : [] },
-        ],
-        id: lessonId,
-      };
-
-      return {
-        assessments: finalAssessmentReady ? [{ id: 'final-1' }] : [],
-        id: stageId,
-        modules: module.isPublished
-          ? [{ id: moduleId, lessons: [publishedLesson] }]
-          : [],
-      };
-    },
-    async listCurriculum(requestedOwnerId) {
-      if (requestedOwnerId !== ownerId) return [];
-
-      return [
-        {
-          id: 'program-1',
-          slug: 'programme-test',
-          stages: [
-            {
-              id: stageId,
-              isPublished: false,
-              modules: [module],
-              position: 1,
-              slug: 'etape-test',
-              title: 'Étape test',
-            },
-          ],
-          title: 'Programme test',
-        },
-      ];
-    },
     async updateLesson(id, input) {
       if (id !== lessonId) throw new Error('Unexpected lesson.');
       lesson = { ...lesson, ...input };
@@ -138,10 +105,6 @@ function createRepository() {
       module = { ...module, ...input };
       return module;
     },
-    async updateStage(id, input) {
-      if (id !== stageId) throw new Error('Unexpected stage.');
-      return { id: stageId, isPublished: input.isPublished };
-    },
   };
 
   return {
@@ -149,8 +112,60 @@ function createRepository() {
     setLessonReady(value: boolean) {
       lessonReady = value;
     },
-    setFinalAssessmentReady(value: boolean) {
-      finalAssessmentReady = value;
+  };
+}
+
+function createNavigationService(): AdminNavigationService {
+  const program = {
+    id: programId,
+    position: 0,
+    slug: 'programme-test',
+    status: 'DRAFT' as const,
+    title: 'Programme test',
+  };
+  const stage = {
+    id: stageId,
+    isPublished: false,
+    position: 0,
+    slug: 'etape-test',
+    title: 'Étape test',
+  };
+  const module = {
+    description: 'Description initiale',
+    id: moduleId,
+    isPublished: false,
+    position: 0,
+    slug: 'module-test',
+    title: 'Module test',
+  };
+  const lesson = {
+    id: lessonId,
+    isPublished: false,
+    position: 0,
+    slug: 'lecon-test',
+    summary: 'Résumé initial',
+    title: 'Leçon test',
+  };
+
+  return {
+    async findLesson(id, requestedOwnerId) {
+      if (id !== lessonId || requestedOwnerId !== ownerId) return null;
+      return { ...lesson, module: { ...module, stage: { ...stage, program } } };
+    },
+    async findModule(id, requestedOwnerId) {
+      if (id !== moduleId || requestedOwnerId !== ownerId) return null;
+      return { ...module, lessons: [lesson], stage: { ...stage, program } };
+    },
+    async findProgram(id, requestedOwnerId) {
+      if (id !== programId || requestedOwnerId !== ownerId) return null;
+      return { ...program, stages: [stage] };
+    },
+    async findStage(id, requestedOwnerId) {
+      if (id !== stageId || requestedOwnerId !== ownerId) return null;
+      return { ...stage, modules: [module], program };
+    },
+    async listPrograms(requestedOwnerId) {
+      return requestedOwnerId === ownerId ? [program] : [];
     },
   };
 }
@@ -158,23 +173,25 @@ function createRepository() {
 describe('administration minimale', () => {
   it('refuse une requête anonyme avant de consulter les données', async () => {
     const repository = createRepository().repository;
-    const listCurriculum = vi.spyOn(repository, 'listCurriculum');
-    const app = createAdminApp({ repository });
+    const navigationService = createNavigationService();
+    const listPrograms = vi.spyOn(navigationService, 'listPrograms');
+    const app = createAdminApp({ navigationService, repository });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(401);
-    expect(listCurriculum).not.toHaveBeenCalled();
+    expect(listPrograms).not.toHaveBeenCalled();
   });
 
   it('refuse un utilisateur authentifié sans rôle admin', async () => {
     const repository = createRepository().repository;
     const app = createAdminApp({
       authentication: authentication(ownerId, 'USER'),
+      navigationService: createNavigationService(),
       repository,
     });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(403);
     expect(await response.json()).toMatchObject({
@@ -182,26 +199,84 @@ describe('administration minimale', () => {
     });
   });
 
+  it('ne protège pas les routes privées qui ne font pas partie de l’administration', async () => {
+    const app = new Hono();
+    app.route(
+      '/',
+      createAdminApp({
+        authentication: authentication(ownerId, 'USER'),
+        navigationService: createNavigationService(),
+        repository: createRepository().repository,
+      }),
+    );
+    app.get('/api/programs', (context) =>
+      context.json({ programs: [{ title: 'Programme privé' }] }),
+    );
+
+    const response = await app.request('http://localhost/api/programs');
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      programs: [{ title: 'Programme privé' }],
+    });
+  });
+
   it('liste uniquement le parcours appartenant à l’admin', async () => {
     const repository = createRepository().repository;
-    const listCurriculum = vi.spyOn(repository, 'listCurriculum');
+    const navigationService = createNavigationService();
+    const listPrograms = vi.spyOn(navigationService, 'listPrograms');
     const app = createAdminApp({
       authentication: authentication(),
+      navigationService,
       repository,
     });
 
-    const response = await app.request('http://localhost/api/admin/curriculum');
+    const response = await app.request('http://localhost/api/admin/programs');
 
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({
-      programs: [
-        {
-          stages: [{ modules: [{ lessons: [{ title: 'Leçon test' }] }] }],
-          title: 'Programme test',
-        },
-      ],
+      kind: 'PROGRAMS',
+      programs: [{ position: 0, title: 'Programme test' }],
     });
-    expect(listCurriculum).toHaveBeenCalledWith(ownerId);
+    expect(listPrograms).toHaveBeenCalledWith(ownerId);
+  });
+
+  it.each([
+    ['programs', programId, 'PROGRAM', 'program', 'Étape test'],
+    ['stages', stageId, 'STAGE', 'stage', 'Module test'],
+    ['modules', moduleId, 'MODULE', 'module', 'Leçon test'],
+    ['lessons', lessonId, 'LESSON', 'lesson', 'Leçon test'],
+  ])(
+    'charge à la demande le niveau %s et son contexte immédiat',
+    async (segment, id, kind, key, expectedTitle) => {
+      const app = createAdminApp({
+        authentication: authentication(),
+        navigationService: createNavigationService(),
+        repository: createRepository().repository,
+      });
+
+      const response = await app.request(`/api/admin/${segment}/${id}`);
+      const body = (await response.json()) as Record<string, unknown>;
+
+      expect(response.status).toBe(200);
+      expect(body.kind).toBe(kind);
+      expect(JSON.stringify(body[key])).toContain(expectedTitle);
+    },
+  );
+
+  it('ne révèle pas un niveau appartenant à un autre propriétaire', async () => {
+    const app = createAdminApp({
+      authentication: authentication(otherUserId),
+      navigationService: createNavigationService(),
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request(`/api/admin/lessons/${lessonId}`);
+
+    expect(response.status).toBe(404);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'RESOURCE_NOT_FOUND' },
+    });
   });
 
   it('modifie les champs administrables d’un module appartenant à l’admin', async () => {
@@ -216,7 +291,7 @@ describe('administration minimale', () => {
       {
         body: JSON.stringify({
           description: 'Résumé modifié',
-          position: 2,
+          position: 0,
           title: 'Module modifié',
         }),
         headers: { 'content-type': 'application/json' },
@@ -228,7 +303,7 @@ describe('administration minimale', () => {
     expect(await response.json()).toMatchObject({
       module: {
         description: 'Résumé modifié',
-        position: 2,
+        position: 0,
         title: 'Module modifié',
       },
     });
@@ -245,7 +320,7 @@ describe('administration minimale', () => {
     const response = await app.request(
       `http://localhost/api/admin/modules/${moduleId}`,
       {
-        body: JSON.stringify({ isPublished: true }),
+        body: JSON.stringify({ title: 'Modification interdite' }),
         headers: { 'content-type': 'application/json' },
         method: 'PATCH',
       },
@@ -304,73 +379,115 @@ describe('administration minimale', () => {
     }
   });
 
-  it('bloque la publication d’un module sans leçon publiée', async () => {
-    const repository = createRepository().repository;
-    const updateModule = vi.spyOn(repository, 'updateModule');
+  it('prévisualise puis applique exactement le même plan de publication', async () => {
+    const plan = {
+      action: 'PUBLISH' as const,
+      blockers: [],
+      changes: [
+        {
+          from: false,
+          id: moduleId,
+          title: 'Module test',
+          to: true,
+          type: 'MODULE' as const,
+        },
+      ],
+      mode: 'FULL' as const,
+      planId: 'a'.repeat(64),
+      target: { id: moduleId, title: 'Module test', type: 'MODULE' as const },
+      warnings: [],
+    };
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => plan),
+      preview: vi.fn(async () => plan),
+    };
     const app = createAdminApp({
       authentication: authentication(),
-      repository,
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const request = {
+      action: 'PUBLISH',
+      mode: 'FULL',
+      targetId: moduleId,
+      targetType: 'MODULE',
+    };
+    const preview = await app.request('/api/admin/publication/preview', {
+      body: JSON.stringify(request),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+    const apply = await app.request('/api/admin/publication/apply', {
+      body: JSON.stringify({ ...request, planId: plan.planId }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/modules/${moduleId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
-    );
-
-    expect(response.status).toBe(409);
-    expect(updateModule).not.toHaveBeenCalled();
+    expect(preview.status).toBe(200);
+    expect(apply.status).toBe(200);
+    expect(publicationService.preview).toHaveBeenCalledWith(ownerId, request);
+    expect(publicationService.apply).toHaveBeenCalledWith(ownerId, {
+      ...request,
+      planId: plan.planId,
+    });
   });
 
-  it('bloque une étape sans évaluation finale ou contenu public prêt', async () => {
-    const fixture = createRepository();
-    fixture.setFinalAssessmentReady(false);
-    const updateStage = vi.spyOn(fixture.repository, 'updateStage');
+  it('ne révèle pas le plan d’un autre propriétaire', async () => {
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => null),
+      preview: vi.fn(async () => null),
+    };
     const app = createAdminApp({
-      authentication: authentication(),
-      repository: fixture.repository,
+      authentication: authentication(otherUserId),
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const response = await app.request('/api/admin/publication/preview', {
+      body: JSON.stringify({
+        action: 'PUBLISH',
+        mode: 'FULL',
+        targetId: moduleId,
+        targetType: 'MODULE',
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/stages/${stageId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
+    expect(response.status).toBe(404);
+    expect(publicationService.preview).toHaveBeenCalledWith(
+      otherUserId,
+      expect.any(Object),
     );
-
-    expect(response.status).toBe(409);
-    expect(await response.json()).toMatchObject({
-      error: { code: 'ASSESSMENT_NOT_READY' },
-    });
-    expect(updateStage).not.toHaveBeenCalled();
   });
 
-  it('publie une étape prête appartenant à l’admin', async () => {
-    const fixture = createRepository();
-    await fixture.repository.updateLesson(lessonId, { isPublished: true });
-    await fixture.repository.updateModule(moduleId, { isPublished: true });
+  it.each([
+    [new PublicationPlanStaleError(), 'PUBLICATION_PLAN_STALE'],
+    [new PublicationPlanBlockedError(), 'PUBLICATION_BLOCKED'],
+  ])('normalise les conflits de confirmation', async (error, code) => {
+    const publicationService: PublicationService = {
+      apply: vi.fn(async () => {
+        throw error;
+      }),
+      preview: vi.fn(async () => null),
+    };
     const app = createAdminApp({
       authentication: authentication(),
-      repository: fixture.repository,
+      publicationService,
+      repository: createRepository().repository,
+    });
+    const response = await app.request('/api/admin/publication/apply', {
+      body: JSON.stringify({
+        action: 'PUBLISH',
+        mode: 'FULL',
+        planId: 'a'.repeat(64),
+        targetId: moduleId,
+        targetType: 'MODULE',
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
     });
 
-    const response = await app.request(
-      `http://localhost/api/admin/stages/${stageId}`,
-      {
-        body: JSON.stringify({ isPublished: true }),
-        headers: { 'content-type': 'application/json' },
-        method: 'PATCH',
-      },
-    );
-
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({
-      stage: { id: stageId, isPublished: true },
-    });
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ error: { code } });
   });
 });

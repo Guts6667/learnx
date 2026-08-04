@@ -1,0 +1,311 @@
+{
+  "specId": "PEDAGOGY_SPEC_028",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "developpement-vie",
+  "moduleSlug": "cadres-methodes-developpement",
+  "lesson": {
+    "title": "Continuité, stades et trajectoires",
+    "slug": "continuite-stades-trajectoires",
+    "summary": "Le développement associe changements et stabilités à plusieurs échelles. Cette leçon traite continuité, discontinuité, stades, trajectoires, plasticité, multidirectionnalité, équifinalité, multifinalité et cascades sans transformer une moyenne de groupe, un risque ou une étape théorique en destin individuel.",
+    "objectives": [
+      "Distinguer changement continu, discontinuité observée et modèle de stades en précisant la variable, l'échelle et la mesure.",
+      "Décrire une trajectoire à partir d'observations répétées sans confondre moyenne de groupe et parcours individuel.",
+      "Expliquer plasticité et multidirectionnalité comme possibilités contraintes et variables selon les périodes et les contextes.",
+      "Mobiliser équifinalité et multifinalité pour corriger une prédiction développementale déterministe.",
+      "Formuler une hypothèse de cascade et de transaction personne-contexte en indiquant les données temporelles et comparatives nécessaires."
+    ],
+    "prerequisites": [
+      "Distinguer description, corrélation, causalité et prédiction probabiliste.",
+      "Comprendre qu'une moyenne et une variation entre personnes ne décrivent pas nécessairement une personne particulière."
+    ],
+    "estimatedMinutes": 170,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "La psychologie du développement étudie les changements et les stabilités de la conception à la fin de la vie, dans des domaines physiques, cognitifs et psychosociaux qui peuvent évoluer ensemble ou différemment. Le mot développement ne signifie donc ni progrès uniforme ni simple croissance de l'enfant. Une même personne peut gagner une stratégie, perdre de la vitesse dans une autre tâche et conserver certaines préférences. Avant d'expliquer une évolution, il faut nommer le construit observé, la période, la population, la méthode et le contexte historique.",
+          "sourceKeys": ["openstax-lifespan-1-1", "baltes-lifespan-1987"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un changement est dit continu lorsque la variable mesurée évolue graduellement à l'échelle choisie ; une discontinuité correspond à une réorganisation ou à une différence qualitative proposée. Un stade est un modèle qui ordonne des configurations et avance des critères de transition. Ce n'est pas une étiquette naturelle automatiquement visible, une norme morale ni une date limite universelle. Le même phénomène peut sembler graduel avec une mesure fine et discontinu avec des catégories grossières. Une théorie de stades doit donc préciser domaine, séquence, mécanisme, variations attendues et observations capables de la contredire.",
+          "sourceKeys": ["openstax-lifespan-1-2", "baltes-lifespan-1987", "bornstein-specificity-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Une trajectoire décrit la forme du changement au fil d'observations répétées : niveau initial, direction, rythme, fluctuations et éventuels tournants. La courbe moyenne d'un groupe ne constitue pas le parcours d'un individu ; deux personnes peuvent produire la même moyenne avec des chemins opposés. La perspective du cours de la vie ajoute que le développement est multidimensionnel et multidirectionnel, avec gains, pertes et réorganisations. La plasticité désigne une capacité de modification, mais elle possède des contraintes biologiques, expérientielles et institutionnelles et peut varier selon la période, le domaine et la personne.",
+          "sourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-1-1"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "L'équifinalité signifie que des chemins différents peuvent aboutir à une issue ressemblante ; la multifinalité signifie qu'une condition initiale semblable peut être suivie d'issues différentes. Ces principes rendent insuffisant tout raisonnement du type « événement précoce donc résultat certain ». Un facteur peut modifier une probabilité sans être nécessaire ni suffisant. Pour interpréter un risque ou une protection, il faut examiner combinaison, intensité, durée, moment, ressources, réponses de la personne, contexte culturel et résultat précisément mesuré. Ces concepts viennent notamment de la psychopathologie développementale, mais ils servent ici à raisonner sur des trajectoires sans pathologiser la variation ordinaire.",
+          "sourceKeys": ["cicchetti-rogosch-1996", "baltes-lifespan-1987", "bornstein-specificity-2017"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 5,
+        "content": {
+          "text": "Une cascade développementale est l'hypothèse qu'un changement dans un domaine ou un système contribue, directement ou indirectement, à des changements ultérieurs dans d'autres domaines. Une succession temporelle ou une corrélation ne suffit pas : il faut des mesures répétées, des alternatives plausibles, la stabilité antérieure des variables, des facteurs communs et, si possible, des réplications ou interventions convergentes. Une cascade peut aussi être réciproque : l'enfant transforme ses occasions d'apprendre tandis que son environnement répond à ses actions. Elle formule un programme de recherche, pas une chaîne causale acquise d'avance.",
+          "sourceKeys": ["masten-cicchetti-2010", "openstax-lifespan-1-4"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Les trajectoires sont situées. Les relations proches, institutions, conditions matérielles, normes culturelles et événements historiques créent ou restreignent des occasions, et la personne agit dans ces contextes. Une conclusion responsable précise donc de qui, de quel processus, de quel domaine, de quel lieu et de quelle période elle parle. Elle recherche des variations plutôt que de traiter un échantillon comme universel. Pour comparer réellement des trajectoires, la leçon suivante examinera les plans transversaux, longitudinaux et séquentiels qui séparent imparfaitement âge, cohorte et moment de mesure.",
+          "sourceKeys": ["openstax-lifespan-1-4", "bornstein-specificity-2017", "baltes-lifespan-1987"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-lifespan-1-1",
+        "type": "book",
+        "title": "Lifespan Development — 1.1 Psychology and Human Development",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/1-1-psychology-and-human-development",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 1.1 Psychology and Human Development. In Lifespan Development. OpenStax.",
+        "description": "Lire la définition du développement sur la vie entière et distinguer domaines, changement, stabilité et multidisciplinarité.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "openstax-lifespan-1-2",
+        "type": "book",
+        "title": "Lifespan Development — 1.2 Themes of Development",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/1-2-themes-of-development",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 1.2 Themes of Development. In Lifespan Development. OpenStax.",
+        "description": "Comparer continuité, discontinuité et stades ; relever ce qui dépend de la mesure et discuter les formulations trop universelles.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "openstax-lifespan-1-4",
+        "type": "book",
+        "title": "Lifespan Development — 1.4 Contexts and Settings of Development",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/1-4-contexts-and-settings-of-development",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 1.4 Contexts and Settings of Development. In Lifespan Development. OpenStax.",
+        "description": "Cartographier les systèmes proches, institutionnels, culturels et historiques puis identifier les transactions personne-contexte.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "baltes-lifespan-1987",
+        "type": "article",
+        "title": "Theoretical Propositions of Life-Span Developmental Psychology: On the Dynamics Between Growth and Decline",
+        "author": "Paul B. Baltes",
+        "url": "https://www.imprs-life.mpg.de/25277/022_baltes_1987.pdf",
+        "citation": "Baltes, P. B. (1987). Theoretical propositions of life-span developmental psychology: On the dynamics between growth and decline. Developmental Psychology, 23(5), 611–626. https://doi.org/10.1037/0012-1649.23.5.611",
+        "description": "Lire les propositions sur développement toute la vie, multidirectionnalité, plasticité, histoire et gains-pertes ; produire une carte de limites.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 4
+      },
+      {
+        "key": "masten-cicchetti-2010",
+        "type": "article",
+        "title": "Developmental Cascades",
+        "author": "Ann S. Masten et Dante Cicchetti",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/20576173/",
+        "citation": "Masten, A. S., & Cicchetti, D. (2010). Developmental cascades. Development and Psychopathology, 22(3), 491–495. https://doi.org/10.1017/S0954579410000222",
+        "description": "Lire le résumé et formuler une cascade comme hypothèse temporelle à tester, non comme causalité déjà démontrée.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "cicchetti-rogosch-1996",
+        "type": "article",
+        "title": "Equifinality and Multifinality in Developmental Psychopathology",
+        "author": "Dante Cicchetti et Fred A. Rogosch",
+        "url": "https://www.cambridge.org/core/journals/development-and-psychopathology/article/equifinality-and-multifinality-in-developmental-psychopathology/1CD6116D8D0F5CA4469DD1126A6FFFCB",
+        "citation": "Cicchetti, D., & Rogosch, F. A. (1996). Equifinality and multifinality in developmental psychopathology. Development and Psychopathology, 8(4), 597–600. https://doi.org/10.1017/S0954579400007318",
+        "description": "Utiliser le résumé pour définir les deux principes, puis les appliquer sans transformer la variation ordinaire en trouble.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 6
+      },
+      {
+        "key": "bornstein-specificity-2017",
+        "type": "article",
+        "title": "The Specificity Principle in Acculturation Science",
+        "author": "Marc H. Bornstein",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5234695/",
+        "citation": "Bornstein, M. H. (2017). The specificity principle in acculturation science. Perspectives on Psychological Science, 12(1), 3–45. https://doi.org/10.1177/1745691616655997",
+        "description": "Lire le principe de spécificité et appliquer les questions quoi-où-qui-comment-quand à une généralisation développementale.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 7
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Continuité, discontinuité et stades",
+        "slug": "continuite-discontinuite-stades",
+        "description": "Continuité et discontinuité dépendent du construit, de l'échelle et de la mesure ; un stade est un modèle testable, pas une norme ni une date limite universelle.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-lifespan-1-1", "openstax-lifespan-1-2", "baltes-lifespan-1987"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Continuité et stades", "questionCount": 5}
+      },
+      {
+        "title": "Trajectoires, plasticité et multidirectionnalité",
+        "slug": "trajectoires-plasticite-multidirectionnelle",
+        "description": "Une trajectoire décrit un changement répété ; la plasticité est une possibilité contrainte et la multidirectionnalité autorise gains, pertes et réorganisations simultanés.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-1-1"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Trajectoires et plasticité", "questionCount": 5}
+      },
+      {
+        "title": "Équifinalité, multifinalité et contextes",
+        "slug": "equifinalite-multifinalite-contextes",
+        "description": "Des chemins différents peuvent converger et des départs proches diverger ; risques, protections, cascades et contextes modifient des probabilités sans imposer un destin.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["cicchetti-rogosch-1996", "masten-cicchetti-2010", "openstax-lifespan-1-4", "bornstein-specificity-2017"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Chemins et contextes", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Auditer une théorie de stades",
+        "description": "Choisir un schéma fictif en quatre stades. Identifier construit, indicateurs, séquence, transition, variations admises et observation falsifiante ; réécrire deux légendes qui confondent description, norme et jugement de valeur.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Comparer trois trajectoires",
+        "description": "À partir d'un tableau fictif de cinq temps pour trois personnes, tracer les trajectoires, calculer ou décrire la moyenne, puis relever ce que la moyenne masque : niveau initial, pente, tournant, fluctuation et divergence individuelle.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Corriger une prédiction déterministe",
+        "description": "Réviser l'énoncé « cet événement précoce produira forcément cet adulte ». Mobiliser équifinalité, multifinalité, temporalité, contexte culturel, ressources et résultat mesuré ; proposer deux hypothèses concurrentes et les observations longitudinales requises.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id":"REF-028-OPENSTAX-11","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.1 Psychology and Human Development","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-1-psychology-and-human-development","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Manuel universitaire ouvert utilisé pour le vocabulaire introductif ; les généralisations sont encadrées par les sources spécialisées."},
+      {"id":"REF-028-OPENSTAX-12","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.2 Themes of Development","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-2-themes-of-development","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Source introductive ; les passages normatifs ou trop linéaires ne sont pas repris."},
+      {"id":"REF-028-OPENSTAX-14","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.4 Contexts and Settings of Development","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-4-contexts-and-settings-of-development","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Cadre écologique et transactionnel introductif, recoupé avec Baltes et Bornstein."},
+      {"id":"REF-028-BALTES","type":"theoretical_article","authors":["Baltes, P. B."],"organization":"Developmental Psychology / Max Planck Institute for Human Development","title":"Theoretical Propositions of Life-Span Developmental Psychology: On the Dynamics Between Growth and Decline","year":1987,"edition":null,"publication":"Developmental Psychology, 23(5), 611–626","doi":"https://doi.org/10.1037/0012-1649.23.5.611","url":"https://www.imprs-life.mpg.de/25277/022_baltes_1987.pdf","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Copie institutionnelle ouverte ; droits APA","status":"verified","notes":"Article théorique fondateur ; ses propositions guident le cadre mais ne constituent pas seules une preuve empirique."},
+      {"id":"REF-028-MASTEN","type":"review_article","authors":["Masten, A. S.","Cicchetti, D."],"organization":"Development and Psychopathology / PubMed","title":"Developmental Cascades","year":2010,"edition":null,"publication":"Development and Psychopathology, 22(3), 491–495","doi":"https://doi.org/10.1017/S0954579410000222","url":"https://pubmed.ncbi.nlm.nih.gov/20576173/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Résumé ouvert ; article soumis aux droits de l'éditeur","status":"verified","notes":"Synthèse conceptuelle courte ; ressource facultative et causalité explicitement traitée comme hypothèse à tester."},
+      {"id":"REF-028-CICCHETTI","type":"theoretical_article","authors":["Cicchetti, D.","Rogosch, F. A."],"organization":"Development and Psychopathology","title":"Equifinality and Multifinality in Developmental Psychopathology","year":1996,"edition":null,"publication":"Development and Psychopathology, 8(4), 597–600","doi":"https://doi.org/10.1017/S0954579400007318","url":"https://www.cambridge.org/core/journals/development-and-psychopathology/article/equifinality-and-multifinality-in-developmental-psychopathology/1CD6116D8D0F5CA4469DD1126A6FFFCB","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Résumé ouvert ; article soumis aux droits de l'éditeur","status":"verified","notes":"Source conceptuelle issue de la psychopathologie développementale ; utilisation non diagnostique et non pathologisante."},
+      {"id":"REF-028-BORNSTEIN","type":"theoretical_article","authors":["Bornstein, M. H."],"organization":"Perspectives on Psychological Science / PubMed Central","title":"The Specificity Principle in Acculturation Science","year":2017,"edition":null,"publication":"Perspectives on Psychological Science, 12(1), 3–45","doi":"https://doi.org/10.1177/1745691616655997","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5234695/","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Manuscrit auteur ouvert sur PubMed Central ; droits de l'éditeur","status":"verified","notes":"Cadre de spécificité utilisé pour limiter les universalisations culturelles, démographiques et temporelles."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition":1,"referenceLinks":[{"referenceId":"REF-028-OPENSTAX-11","locator":"section 1.1, Introduction et What Is Lifespan Development?","supports":"Développement comme changement et stabilité de la conception à la mort et pluralité des domaines."},{"referenceId":"REF-028-BALTES","locator":"Abstract et propositions 1 à 3","supports":"Développement toute la vie, multidimensionnel et multidirectionnel."}],"confidence":"high","confidenceRationale":"Le manuel et le cadre théorique convergent ; aucune progression uniforme n'est postulée.","notApplicableReason":null},
+      {"contentBlockPosition":2,"referenceLinks":[{"referenceId":"REF-028-OPENSTAX-12","locator":"section Continuous versus Discontinuous Development","supports":"Distinction introductive entre changements graduels et théories de stades."},{"referenceId":"REF-028-BALTES","locator":"propositions sur multidirectionnalité et pluralisme méthodologique","supports":"Pluralité des formes de changement selon domaines et périodes."},{"referenceId":"REF-028-BORNSTEIN","locator":"The specificity principle: what, where, who, how and when","supports":"Nécessité de préciser construit, contexte, personnes, mécanisme et temps."}],"confidence":"high","confidenceRationale":"Les sources permettent de traiter le stade comme modèle situé ; la formulation évite toute date limite universelle.","notApplicableReason":null},
+      {"contentBlockPosition":3,"referenceLinks":[{"referenceId":"REF-028-BALTES","locator":"propositions 2 à 5 et discussion growth and decline","supports":"Multidirectionnalité, gains-pertes et plasticité contrainte."},{"referenceId":"REF-028-OPENSTAX-11","locator":"section What Is Lifespan Development?","supports":"Changements et stabilité dans plusieurs domaines au long de la vie."}],"confidence":"high","confidenceRationale":"La notion de trajectoire est explicitement séparée de la moyenne de groupe et la plasticité n'est pas illimitée.","notApplicableReason":null},
+      {"contentBlockPosition":4,"referenceLinks":[{"referenceId":"REF-028-CICCHETTI","locator":"article complet, définitions d'equifinality et multifinality","supports":"Convergence de chemins différents et divergence depuis des conditions similaires."},{"referenceId":"REF-028-BALTES","locator":"propositions sur plasticity et historical embeddedness","supports":"Variabilité conditionnelle et inscription historique des trajectoires."},{"referenceId":"REF-028-BORNSTEIN","locator":"principle of specificity","supports":"Qualification des effets selon personnes, processus, domaines, lieux et temps."}],"confidence":"high","confidenceRationale":"Les principes sont définis par leur source canonique et appliqués avec un avertissement explicite contre la pathologisation.","notApplicableReason":null},
+      {"contentBlockPosition":5,"referenceLinks":[{"referenceId":"REF-028-MASTEN","locator":"Abstract et article introductif sur developmental cascades","supports":"Effets possibles entre niveaux, domaines et systèmes au cours du temps."},{"referenceId":"REF-028-OPENSTAX-14","locator":"sections Bronfenbrenner et Dynamic Systems Theory","supports":"Interactions réciproques entre personne et contextes imbriqués."}],"confidence":"moderate","confidenceRationale":"Les sources soutiennent le cadre ; toute cascade particulière reste une hypothèse causale nécessitant un devis adapté.","notApplicableReason":null},
+      {"contentBlockPosition":6,"referenceLinks":[{"referenceId":"REF-028-OPENSTAX-14","locator":"Ecological Systems et Dynamic Systems Theory","supports":"Contextes proches, institutionnels, culturels, historiques et transactions."},{"referenceId":"REF-028-BORNSTEIN","locator":"sections définissant what, where, who, how, when","supports":"Principe de spécificité contre les généralisations universelles."},{"referenceId":"REF-028-BALTES","locator":"proposition 5, historical and cultural conditions","supports":"Inscription historique et culturelle du développement."}],"confidence":"high","confidenceRationale":"Les trois cadres convergent sur une interprétation située ; aucun groupe n'est pris comme norme universelle.","notApplicableReason":null}
+    ],
+    "resourceChecks": [
+      {"resourceKey":"openstax-lifespan-1-1","referenceIds":["REF-028-OPENSTAX-11"],"pedagogicalRationale":"Introduction ouverte au périmètre de la psychologie du développement.","learnerInstructions":"Dresser une matrice période-domaine-changement-stabilité à partir du chapitre.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"openstax-lifespan-1-2","referenceIds":["REF-028-OPENSTAX-12"],"pedagogicalRationale":"Point d'entrée lisible sur continuité, discontinuité et stades.","learnerInstructions":"Repérer les définitions, puis annoter ce qui dépend de l'échelle ou pourrait être trop normatif.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Les formulations de progression unidirectionnelle ne sont pas reprises dans la leçon."},
+      {"resourceKey":"openstax-lifespan-1-4","referenceIds":["REF-028-OPENSTAX-14"],"pedagogicalRationale":"Cadre ouvert pour représenter les contextes et transactions.","learnerInstructions":"Relier chaque système à un exemple sans attribuer une causalité automatique.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"baltes-lifespan-1987","referenceIds":["REF-028-BALTES"],"pedagogicalRationale":"Cadre fondateur pour multidirectionnalité, gains-pertes, plasticité et histoire.","learnerInstructions":"Transformer chaque proposition en énoncé testable et noter ses limites.","language":"en","accessType":"open","accessibilityNotes":"PDF institutionnel ouvert ; mise en page académique dense.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"masten-cicchetti-2010","referenceIds":["REF-028-MASTEN"],"pedagogicalRationale":"Définition concise des cascades et de leurs enjeux méthodologiques.","learnerInstructions":"Le résumé suffit ; écrire quelles mesures répétées seraient nécessaires pour une cascade donnée.","language":"en","accessType":"institutional","accessibilityNotes":"Résumé et métadonnées ouverts sur PubMed ; texte intégral non requis.","alternativeResourceKey":"openstax-lifespan-1-4","checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Ressource facultative avec alternative ouverte."},
+      {"resourceKey":"cicchetti-rogosch-1996","referenceIds":["REF-028-CICCHETTI"],"pedagogicalRationale":"Source canonique des notions d'équifinalité et de multifinalité.","learnerInstructions":"Utiliser le résumé pour définir les termes et éviter toute application diagnostique.","language":"en","accessType":"institutional","accessibilityNotes":"Résumé et métadonnées accessibles ; texte intégral selon accès institutionnel.","alternativeResourceKey":"bornstein-specificity-2017","checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Ressource facultative ; la définition et l'exercice sont autonomes."},
+      {"resourceKey":"bornstein-specificity-2017","referenceIds":["REF-028-BORNSTEIN"],"pedagogicalRationale":"Cadre ouvert pour qualifier les généralisations culturelles et temporelles.","learnerInstructions":"Appliquer quoi-où-qui-comment-quand à trois prédictions développementales.","language":"en","accessType":"open","accessibilityNotes":"Manuscrit HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "continuite-discontinuite-stades",
+        "assessmentTitle": "Mini-évaluation — Continuité et stades",
+        "questions": [
+          {"type":"single_choice","prompt":"Quand un changement peut-il être décrit comme continu ?","explanation":"La continuité porte sur la variable et l'échelle retenues, pas sur une essence générale du développement.","acceptedAnswers":[],"position":1,"options":[{"label":"Quand la variable évolue graduellement à l'échelle observée","isCorrect":true,"position":1},{"label":"Quand toutes les personnes évoluent au même rythme","isCorrect":false,"position":2},{"label":"Quand aucune mesure n'est réalisée","isCorrect":false,"position":3},{"label":"Quand le changement est toujours bénéfique","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un stade théorique est une date limite universelle que chaque personne doit respecter.","explanation":"Un stade est un modèle avec un domaine, des critères et des variations à tester ; ce n'est pas une norme morale universelle.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Que doit préciser une théorie de stades testable ?","explanation":"Construits, ordre, transitions, variations et critères de réfutation rendent le modèle évaluable.","acceptedAnswers":[],"position":3,"options":[{"label":"Le domaine étudié","isCorrect":true,"position":1},{"label":"Les critères de transition","isCorrect":true,"position":2},{"label":"Les observations qui la contrediraient","isCorrect":true,"position":3},{"label":"Une supériorité morale du dernier stade","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Pourquoi un même phénomène peut-il sembler continu dans une étude et discontinu dans une autre ?","explanation":"La fréquence d'observation, la précision et la catégorisation modifient la forme visible du changement.","acceptedAnswers":[],"position":4,"options":[{"label":"Les échelles et instruments de mesure peuvent différer","isCorrect":true,"position":1},{"label":"Une seule des études comporte nécessairement des personnes","isCorrect":false,"position":2},{"label":"La continuité exclut toute variation","isCorrect":false,"position":3},{"label":"Un stade ne peut jamais être étudié","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne un modèle ordonnant des configurations développementales et leurs transitions ?","explanation":"Le terme attendu est stade, à comprendre comme construction théorique testable.","acceptedAnswers":["stade","un stade","modèle de stades","modele de stades"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "trajectoires-plasticite-multidirectionnelle",
+        "assessmentTitle": "Mini-évaluation — Trajectoires et plasticité",
+        "questions": [
+          {"type":"single_choice","prompt":"Que faut-il pour décrire directement une trajectoire individuelle ?","explanation":"Une trajectoire exige des observations répétées de la même personne ou unité au cours du temps.","acceptedAnswers":[],"position":1,"options":[{"label":"Plusieurs observations de la même personne à des moments distincts","isCorrect":true,"position":1},{"label":"Une seule moyenne de groupe","isCorrect":false,"position":2},{"label":"Une théorie sans données","isCorrect":false,"position":3},{"label":"Deux groupes d'âge observés une seule fois","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"La trajectoire moyenne d'un groupe décrit nécessairement le parcours de chaque membre.","explanation":"Des trajectoires individuelles différentes peuvent produire la même moyenne.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Que permet la notion de multidirectionnalité ?","explanation":"Plusieurs domaines peuvent simultanément montrer gains, pertes, stabilité ou réorganisation.","acceptedAnswers":[],"position":3,"options":[{"label":"Un gain dans un domaine","isCorrect":true,"position":1},{"label":"Une perte dans un autre domaine","isCorrect":true,"position":2},{"label":"Une stabilité ou réorganisation ailleurs","isCorrect":true,"position":3},{"label":"Une progression identique pour toutes les capacités","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quelle définition de la plasticité est la plus prudente ?","explanation":"La plasticité est une capacité de modification conditionnelle, non une promesse de changement sans borne.","acceptedAnswers":[],"position":4,"options":[{"label":"Une possibilité de modification qui varie selon domaine, période, personne et contexte","isCorrect":true,"position":1},{"label":"La garantie que toute intervention fonctionne pour tous","isCorrect":false,"position":2},{"label":"L'absence de toute contrainte biologique","isCorrect":false,"position":3},{"label":"L'immuabilité après l'enfance","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne la forme du changement observé chez une unité au fil de plusieurs temps ?","explanation":"Il s'agit de la trajectoire développementale.","acceptedAnswers":["trajectoire","une trajectoire","trajectoire développementale","trajectoire developpementale"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "equifinalite-multifinalite-contextes",
+        "assessmentTitle": "Mini-évaluation — Chemins et contextes",
+        "questions": [
+          {"type":"single_choice","prompt":"Des expériences initiales différentes sont suivies d'une issue comparable. Quel principe cela illustre-t-il ?","explanation":"L'équifinalité décrit plusieurs chemins pouvant converger vers une issue ressemblante.","acceptedAnswers":[],"position":1,"options":[{"label":"Équifinalité","isCorrect":true,"position":1},{"label":"Multifinalité","isCorrect":false,"position":2},{"label":"Déterminisme","isCorrect":false,"position":3},{"label":"Randomisation","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Deux personnes exposées à une condition semblable suivent des parcours différents. Quel principe est central ?","explanation":"La multifinalité décrit la divergence possible depuis des conditions de départ ressemblantes.","acceptedAnswers":[],"position":2,"options":[{"label":"Multifinalité","isCorrect":true,"position":1},{"label":"Équifinalité","isCorrect":false,"position":2},{"label":"Stade universel","isCorrect":false,"position":3},{"label":"Causalité certaine","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un facteur de risque suffit à prédire avec certitude le résultat d'une personne.","explanation":"Un risque modifie une probabilité dans des conditions données ; il n'est généralement ni nécessaire ni suffisant.","acceptedAnswers":[],"position":3,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Quelles précisions limitent une généralisation développementale abusive ?","explanation":"La spécificité requiert de préciser personnes, processus, contexte et période.","acceptedAnswers":[],"position":4,"options":[{"label":"La population concernée","isCorrect":true,"position":1},{"label":"Le processus et le résultat mesurés","isCorrect":true,"position":2},{"label":"Le contexte culturel et historique","isCorrect":true,"position":3},{"label":"L'idée que l'échantillon représente automatiquement l'humanité","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne l'hypothèse qu'un changement dans un domaine contribue à des changements ultérieurs dans d'autres domaines ?","explanation":"Il s'agit d'une cascade développementale, qui doit être testée avec des données temporelles et des explications concurrentes.","acceptedAnswers":["cascade","cascade développementale","cascade developpementale","une cascade développementale","une cascade developpementale"],"position":5,"options":[]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie du développement, méthodologie longitudinale et diversité culturelle requise avant publication.",
+        "Validation technique requise : l'étape parente developpement-vie et le module cadres-methodes-developpement sont absents du seed actuel.",
+        "Les notions de stade et de trajectoire restent liées au construit, à l'échelle, à la mesure et au contexte ; aucune chronologie universelle n'est prescrite.",
+        "Plasticité, risque, protection et cascades sont formulés de manière probabiliste ; aucun facteur précoce n'est présenté comme destin.",
+        "Équifinalité et multifinalité sont empruntées à la psychopathologie développementale sans pathologiser la variation ordinaire.",
+        "Les ressources obligatoires sont ouvertes ; les deux textes à accès limité sont facultatifs et disposent d'alternatives ouvertes.",
+        "Les URLs, DOI, pages OpenStax, PubMed, PubMed Central et copie institutionnelle ont été vérifiés le 4 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de sept ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_and_cultural"}
+    ]
+  }
+}

@@ -47,24 +47,9 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{css,html,js,png,svg,woff2}'],
+        importScripts: ['/sw-cache-cleanup.js'],
         navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/api\//],
-        runtimeCaching: [
-          {
-            handler: 'NetworkFirst',
-            method: 'GET',
-            options: {
-              cacheName: 'learnx-pedagogy-v1',
-              cacheableResponse: { statuses: [200] },
-              expiration: {
-                maxAgeSeconds: 60 * 60 * 24 * 30,
-                maxEntries: 30,
-              },
-              networkTimeoutSeconds: 4,
-            },
-            urlPattern: /\/api\/lessons\/[^/?]+(?:\?preview=true)?$/,
-          },
-        ],
       },
     }),
   ],

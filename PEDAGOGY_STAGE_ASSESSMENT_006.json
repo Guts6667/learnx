@@ -1,0 +1,202 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_006",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Relier cerveau, corps et comportement",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Évaluer un programme fictif consacré à l’adaptation à un changement de règle : comparer les méthodes qui peuvent en étudier le déroulement et construire une explication reliant comportement, neurones, systèmes corporels, réseaux, développement et différences individuelles sans réductionnisme, diagnostic ni causalité indue.",
+    "instructions": [
+      "Construire un tableau observation–mesure–niveau–inférence autorisée–alternative–test nécessaire pour chaque résultat du dossier CapChange.",
+      "Définir la fonction étudiée à partir de la tâche et des mesures comportementales ; distinguer vitesse, exactitude, maintien de l’ancienne règle et adaptation à la nouvelle sans leur attribuer un mécanisme biologique unique.",
+      "Comparer EEG/ERP, MEG, IRMf et TEP pour trois questions — quand l’ajustement apparaît, quels réseaux y contribuent et quel système moléculaire pourrait être étudié — en indiquant signal, résolutions, plan, contraintes et méthode complémentaire. Justifier les méthodes non retenues.",
+      "Réviser le plan d’analyse : définir la famille de tests, une correction, les exclusions et prétraitements, séparer confirmatoire et exploratoire, puis proposer un contrôle de robustesse, un partage compatible avec l’éthique et une réplication.",
+      "Relier voies afférentes et efférentes, composantes autonome et endocrine, temporalités et rétroactions aux mesures cardiaques et salivaires ; expliquer pourquoi aucun indicateur isolé ne mesure directement le stress, la motivation ou une branche autonome globale.",
+      "Construire une explication multiniveau comportant au moins comportement et tâche, cellules ou neuromodulation, circuits ou réseaux, organisme et contexte, développement et population. Pour chaque passage entre niveaux, distinguer observation, hypothèse et preuve manquante.",
+      "Évaluer les données lésionnelles : formuler au plus une conclusion de nécessité conditionnelle, examiner difficulté et fidélité des tâches, déconnexion, diaschisis, plasticité, variabilité des cas et protection contre la réidentification.",
+      "Auditer les affirmations sur plasticité, dopamine et localisation : distinguer changement de performance, mécanisme synaptique possible, signal BOLD, inférence inverse et résultat réellement mesuré.",
+      "Auditer héritabilité, score polygénique et comparaison d’âge en précisant population, contexte, ascendance, calibration, portabilité, rGE, G×E, variables confondantes et différence entre comparaison transversale et développement individuel.",
+      "Remplacer les six affirmations du communiqué par des conclusions proportionnées. N’établir aucun diagnostic individuel, destin génétique, centre cérébral, effet thérapeutique ou causalité non testé.",
+      "Citer précisément au moins huit ressources de l’étape, couvrant chacune des six leçons, et relier chaque citation à l’affirmation qu’elle soutient."
+    ],
+    "case": "Dossier entièrement fictif — CapChange. Un laboratoire veut étudier comment des personnes adaptent une réponse lorsque la règle d’un jeu change sans avertissement. À chaque essai, une forme apparaît ; la personne appuie à gauche ou à droite selon une règle apprise, puis la règle s’inverse au milieu du bloc. La mesure principale annoncée avant la collecte est le nombre d’essais nécessaires pour retrouver 80 % de réponses correctes après l’inversion. Quatre-vingts adultes de 18 à 35 ans réalisent deux sessions à sept jours d’intervalle. Le groupe « pratique » reçoit cinq blocs supplémentaires après la première session et le groupe contrôle une tâche visuelle de même durée ; l’assignation est aléatoire. Au second jour, le groupe pratique atteint le seuil en moyenne deux essais plus tôt que le contrôle, mais aucun test au-delà de sept jours ni dans une autre tâche n’est réalisé. L’équipe appelle ce résultat une « plasticité synaptique durable ». Pendant la seconde session, l’EEG est enregistré chez les 80 personnes. Une différence moyenne liée à l’événement apparaît 240 à 320 ms après le premier indice contredisant l’ancienne règle et covarie modestement avec la vitesse d’adaptation. Les fenêtres, électrodes et exclusions avaient été annoncées ; une carte exploratoire temps × électrodes × fréquences, non corrigée pour l’ensemble des tests, est néanmoins présentée comme découverte d’un « signal neuronal de flexibilité ». Une IRMf est aussi réalisée chez 24 volontaires sélectionnés selon leur disponibilité. Le contraste inversion moins maintien montre des différences BOLD dans plusieurs territoires frontaux, pariétaux et sous-corticaux. L’analyse confirmatoire de trois régions d’intérêt est négative ; une carte exploratoire seuillée après plusieurs choix de prétraitement met en avant une région frontale. Le communiqué la nomme « centre de l’adaptation » et affirme que son activité prouve une libération de dopamine, bien qu’aucun marqueur moléculaire ni TEP n’ait été mesuré. L’équipe hésite à ajouter une MEG ou une TEP lors d’une réplication, sans avoir encore formulé la question que cette méthode devrait résoudre. Fréquence cardiaque, conductance cutanée et cortisol salivaire sont mesurés. La fréquence cardiaque et la conductance augmentent pendant les premiers essais après inversion ; le cortisol n’est prélevé qu’une fois, quinze minutes après le bloc. Les auteurs décrivent ces trois résultats comme un « mode sympathique global causant la flexibilité », sans mesure de repos répétée, de respiration, d’heure habituelle de prélèvement, de médicaments ni d’autres rétroactions. Un dossier secondaire réunit trois adultes ayant subi des accidents vasculaires cérébraux différents avant leur inclusion. Ils sont testés à des délais distincts, deux prennent des traitements sédatifs et les lésions recouvrent plusieurs faisceaux. Deux cas sont plus lents après l’inversion mais réussissent la règle stable ; le troisième montre le profil inverse. Les fidélités des deux scores et les distributions de contrôle ne sont pas fournies. Une image non floutée et des détails professionnels rares figurent dans le brouillon de publication. Le laboratoire conclut à une double dissociation prouvant deux modules et à la nécessité de la région frontale mise en avant par l’IRMf. Une extension transversale compare 45 adolescents de 13 à 15 ans, 45 jeunes adultes et 45 adultes de 55 à 65 ans, recrutés dans des lieux différents. Les groupes diffèrent aussi par sommeil déclaré, familiarité avec les jeux et niveau d’études. Le score moyen d’adaptation varie entre groupes ; aucune personne n’est suivie dans le temps. Un score polygénique, construit dans une grande étude d’adultes majoritairement d’ascendance européenne sur un phénotype voisin mais non identique, explique 2 % de variance du score dans les adultes CapChange. Le sous-échantillon est trop petit pour une validation indépendante ou une analyse fiable par ascendance ; environnement familial, scolarité et corrélations gène-environnement ne sont pas mesurés. Le laboratoire affirme pourtant que l’adaptation est « génétique à 60 % », que le score révèle le potentiel de chaque adolescent et que l’entraînement compense les gènes défavorables. Il n’existe aucune donnée permettant un diagnostic, une décision scolaire ou une prédiction individuelle validée. Le communiqué final affirme : « CapChange reprogramme durablement les synapses ; la dopamine du centre frontal cause l’adaptation ; le corps passe dans un mode sympathique unique qui rend flexible ; les lésions prouvent deux modules indépendants ; le cerveau adolescent se développe moins vite ; notre test génétique prédit le potentiel individuel dans toutes les populations. » Toutes les personnes, données, images, institutions et affirmations de ce dossier sont fictives et servent uniquement à l’évaluation.",
+    "estimatedMinutes": 210,
+    "submissionFormat": "Dossier de 1 800 à 2 200 mots comprenant le tableau d’inférence, une matrice comparative des méthodes, un schéma multiniveau, un plan d’analyse et de réplication, un audit éthique et un communiqué révisé de 220 à 300 mots.",
+    "conceptSlugs": [
+      "excitabilite-transmission-neuronales",
+      "neuromodulation-situee",
+      "plasticite-multiechelle-inferences",
+      "organisation-snc-snp-voies",
+      "regulation-autonome-distribuee",
+      "coordination-neuroendocrine-retroaction",
+      "structures-niveaux-explication",
+      "reseaux-connectivites-cognition",
+      "lateralisation-variabilite-inference",
+      "inference-lesionnelle-necessite",
+      "dissociations-cas-series",
+      "reseaux-generalisation-ethique",
+      "signaux-methodes-resolutions",
+      "plans-causalite-inference-inverse",
+      "multiplicite-flexibilite-reproductibilite",
+      "heritabilite-variance-population",
+      "correlation-interaction-gene-environnement",
+      "gwas-scores-polygeniques-portabilite"
+    ],
+    "rubric": [
+      {
+        "criterion": "Définition fonctionnelle et chaîne d’inférence",
+        "weight": 15,
+        "requirements": [
+          "Vitesse, exactitude, maintien et adaptation sont définis par des mesures distinctes et reliés à des éléments précis de la tâche.",
+          "Le tableau distingue pour chaque résultat observation, niveau, inférence autorisée, au moins une alternative et un test discriminant.",
+          "Les améliorations à sept jours ne sont assimilées ni à un transfert, ni à une rétention durable, ni à un mécanisme synaptique démontré."
+        ]
+      },
+      {
+        "criterion": "Choix et comparaison des méthodes",
+        "weight": 15,
+        "requirements": [
+          "EEG/ERP, MEG, IRMf et TEP sont comparés par signal, résolution temporelle, résolution spatiale, caractère direct ou indirect, contrainte et question pertinente.",
+          "Une méthode principale et une méthode complémentaire sont justifiées pour chacune des trois questions demandées ; tout refus est également justifié par la question.",
+          "La carte BOLD, la composante ERP et une éventuelle mesure TEP ne sont jamais traitées comme des lectures directes d’un processus mental ou d’une libération de dopamine."
+        ]
+      },
+      {
+        "criterion": "Neurones, plasticité et explication en réseaux",
+        "weight": 15,
+        "requirements": [
+          "L’explication distingue transmission, neuromodulation et formes de plasticité, puis précise récepteur, cellule, circuit, état et contexte pour toute hypothèse dopaminergique.",
+          "Les territoires activés sont décrits comme des contributions possibles dans des réseaux et une tâche, sans centre unique ni inférence inverse catégorique.",
+          "Le schéma relie explicitement au moins six niveaux ou contextes et marque chaque passage comme observé, hypothétique ou non testé."
+        ]
+      },
+      {
+        "criterion": "SNC, SNP, régulation autonome et endocrine",
+        "weight": 15,
+        "requirements": [
+          "Une boucle fonctionnelle distingue signaux afférents, intégration dans le SNC, voies efférentes, effecteurs et retours corporels.",
+          "Fréquence cardiaque, conductance et cortisol sont interprétés selon organe, temporalité, contexte et rétroaction, sans score autonome global.",
+          "Le prélèvement unique et les variables manquantes sont reliés à des limites précises ; aucune mesure corporelle n’est présentée comme diagnostic ou cause suffisante de la flexibilité."
+        ]
+      },
+      {
+        "criterion": "Lésions, dissociations, généralisation et éthique",
+        "weight": 15,
+        "requirements": [
+          "La conclusion lésionnelle reste conditionnelle et tient compte de l’étiologie, du délai, des traitements, de la déconnexion, de la diaschisis et de la plasticité.",
+          "La double dissociation est évaluée avec difficulté, fidélité, distributions de contrôle, variabilité et besoin de réplication ; elle n’est pas convertie automatiquement en deux modules anatomiques.",
+          "L’image et les détails rares sont signalés comme risques de réidentification, et une version minimisée compatible avec consentement, confidentialité et utilité scientifique est proposée."
+        ]
+      },
+      {
+        "criterion": "Héritabilité, développement et prédiction génomique",
+        "weight": 15,
+        "requirements": [
+          "L’héritabilité est définie comme variance populationnelle conditionnelle ; le chiffre de 60 % et toute lecture individuelle ou immuable sont explicitement corrigés.",
+          "La comparaison transversale est distinguée d’un changement développemental individuel, et les différences de recrutement, sommeil, familiarité et études sont traitées comme explications concurrentes.",
+          "Le score polygénique est audité selon phénotype, échantillon, ascendance, calibration, portabilité, variance expliquée, rGE, G×E et équité, sans diagnostic ni destin individuel."
+        ]
+      },
+      {
+        "criterion": "Analyse, causalité, reproductibilité et traçabilité",
+        "weight": 10,
+        "requirements": [
+          "La famille de tests, la correction, les exclusions, le prétraitement et les analyses confirmatoires ou exploratoires sont définis avant l’interprétation.",
+          "Le plan proposé comprend contrôle de robustesse, partage proportionné, réplication et distinction entre l’effet causal borné de la pratique randomisée et les associations restantes.",
+          "Au moins huit ressources couvrant les six leçons sont citées au point d’usage, avec référence précise à l’affirmation soutenue."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre les notions associées puis soumettre uniquement les sections insuffisantes. Ajouter une matrice à sept colonnes — affirmation, donnée, signal, niveau, inférence permise, alternative, test nécessaire — et corriger au moins une conclusion dans chacun des domaines méthode, réseau, organisme, lésion et génétique. Toute section révisée doit citer la ressource de l’étape qui justifie la correction."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-03",
+    "referenceIds": [
+      "REF-022-OPENSTAX",
+      "REF-022-NCBI-SYNAPSES",
+      "REF-022-MARDER",
+      "REF-022-BARGMANN",
+      "REF-022-CITRI-MALENKA",
+      "REF-022-TURRIGIANO",
+      "REF-022-ZATORRE",
+      "REF-022-KRAKAUER",
+      "REF-023-OPENSTAX-3-3",
+      "REF-023-STATPEARLS-ANS",
+      "REF-023-KAREMAKER",
+      "REF-023-OPENSTAX-3-5",
+      "REF-023-NUSSEY-WHITEHEAD",
+      "REF-023-HERMAN-HPA",
+      "REF-023-HAU-GOYMANN",
+      "REF-024-OPENSTAX",
+      "REF-024-PESSOA",
+      "REF-024-BASSETT-SPORNS",
+      "REF-024-YEO",
+      "REF-024-PETERSEN-SPORNS",
+      "REF-024-NIELSEN",
+      "REF-024-VINGERHOETS",
+      "REF-024-GRATTON",
+      "REF-024-POLDRACK",
+      "REF-024-ZATORRE",
+      "REF-025-VAIDYA",
+      "REF-025-CASTLES",
+      "REF-025-MOORE",
+      "REF-025-MAH",
+      "REF-025-JOUTSA",
+      "REF-025-PRIGATANO",
+      "REF-025-POLDRACK",
+      "REF-025-WMA",
+      "REF-025-CARE",
+      "REF-026-OPENSTAX",
+      "REF-026-NIBIB",
+      "REF-026-EEG",
+      "REF-026-NICHOLS",
+      "REF-026-BOTVINIK",
+      "REF-026-POLDRACK",
+      "REF-026-LOGOTHETIS",
+      "REF-026-KEIL",
+      "REF-026-BAILLET",
+      "REF-026-ALBERTON",
+      "REF-026-CARP",
+      "REF-026-KRAKAUER",
+      "REF-027-OPENSTAX",
+      "REF-027-VISSCHER-H2",
+      "REF-027-PLOMIN",
+      "REF-027-HARDEN",
+      "REF-027-DICK",
+      "REF-027-LENROOT",
+      "REF-027-VISSCHER-GWAS",
+      "REF-027-KACHURI",
+      "REF-027-NASEM"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier CapChange, ses personnes, données, images, institutions et affirmations sont entièrement fictifs.",
+        "Revue humaine éditoriale et neuroscientifique requise avant publication, avec compétences en neurosciences cognitives, neuropsychologie, physiologie, génétique quantitative et méthodologie.",
+        "Validation technique obligatoire : l’étape bases-biologiques et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n’autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_022 à 027.",
+        "Les cinquante-cinq referenceIds correspondent exactement à l’union des références de PEDAGOGY_SPEC_022 à 027 ; liens, éditions et accessibilité doivent être revérifiés lors de la revue humaine.",
+        "Le cas n’autorise aucun diagnostic individuel, destin génétique, centre cérébral isolé, mécanisme moléculaire non mesuré, causalité indue ni généralisation au-delà des populations et tâches étudiées.",
+        "La publication reste bloquée jusqu’aux validations technique et neuroscientifique de l’ensemble de l’étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de l’étude de cas biologique intégratrice, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_and_neuroscience"
+      }
+    ]
+  }
+}

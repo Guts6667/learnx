@@ -36,6 +36,24 @@ function lessonResponse(isPublished = true) {
       exercises: [],
       id: 'lesson-1',
       isPublished,
+      module: {
+        id: 'module-1',
+        isPublished,
+        slug: 'premiers-pas',
+        stage: {
+          id: 'stage-1',
+          isPublished,
+          program: {
+            id: 'program-1',
+            slug: 'programme-test',
+            title: 'Programme test',
+          },
+          slug: 'introduction',
+          title: 'Introduction',
+        },
+        title: 'Premiers pas',
+      },
+      navigation: { nextLesson: null, previousLesson: null },
       objectives: [],
       position: 1,
       prerequisites: [],
@@ -193,6 +211,21 @@ describe('QuizPage', () => {
         name: 'Quiz de la leçon',
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Sommaire' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Leçon : Démarrer' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
+    expect(
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText('Question 1 sur 4')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));
@@ -225,6 +258,20 @@ describe('QuizPage', () => {
     expect(
       screen.getByRole('button', { name: 'Recommencer le quiz' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Continuer' }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
+    );
+    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
+    expect(
+      screen
+        .getByLabelText('Résultat de l’évaluation')
+        .compareDocumentPosition(
+          screen.getByRole('navigation', { name: 'Navigation pédagogique' }),
+        ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(fetchMock).toHaveBeenCalledWith(
       `/api/quizzes/${quizId}/attempts`,
       expect.objectContaining({ method: 'POST' }),

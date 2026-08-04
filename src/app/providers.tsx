@@ -15,6 +15,7 @@ export function AppProviders({ children }: AppProvidersProps) {
       new QueryClient({
         defaultOptions: {
           queries: {
+            networkMode: 'always',
             retry: false,
           },
         },

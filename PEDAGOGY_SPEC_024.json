@@ -1,0 +1,352 @@
+{
+  "specId": "PEDAGOGY_SPEC_024",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "organisation-systeme-nerveux",
+  "lesson": {
+    "title": "Grandes structures et réseaux fonctionnels",
+    "slug": "structures-reseaux-fonctionnels",
+    "summary": "Cette leçon utilise les grandes structures cérébrales comme repères anatomiques, puis passe à une explication en réseaux distribués. Elle distingue connectivité structurelle, fonctionnelle et effective, traite la latéralisation comme une asymétrie relative et variable, et apprend à résister aux cartes qui attribuent un geste, une émotion ou une personnalité à une zone isolée.",
+    "objectives": [
+      "Situer cortex, structures sous-corticales, cervelet et tronc cérébral sans leur attribuer une fonction psychologique unique.",
+      "Expliquer pourquoi une fonction cognitive résulte généralement d'interactions distribuées plutôt que d'un centre isolé.",
+      "Distinguer connectivités structurelle, fonctionnelle et effective et préciser ce que chacune permet d'inférer.",
+      "Interpréter une latéralisation comme une asymétrie dépendante de la fonction, de la tâche, de la mesure et de la personne.",
+      "Critiquer une carte cerveau–comportement en mobilisant niveaux d'explication, variabilité, plasticité et limites de l'inférence inverse."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité, opérationnalisation et niveau d'explication.",
+      "Connaître les principes généraux de communication neuronale, de plasticité, d'attention et de mémoire."
+    ],
+    "estimatedMinutes": 180,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Les grandes structures servent d'abord à s'orienter. Le cortex comprend des territoires frontaux, pariétaux, temporaux et occipitaux ; des structures sous-corticales comprennent notamment thalamus, hypothalamus, hippocampe, amygdale et noyaux gris centraux ; le cervelet et le tronc cérébral participent à des boucles avec le reste du système nerveux. Ces repères ont des spécialisations relatives, mais une étiquette comme « frontal = décision » ou « amygdale = peur » écrase la diversité des sous-régions, connexions, tâches et fonctions. Localiser une contribution n'équivaut pas à trouver un centre autonome.",
+          "sourceKeys": ["openstax-psychology-2e-3-4", "pessoa-brain-networks-2014"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Une région peut contribuer à plusieurs fonctions, et une même fonction mobilise plusieurs régions : la relation structure–fonction est souvent plusieurs-à-plusieurs. Un réseau est un ensemble de nœuds et de relations défini à une échelle et par une méthode. Ce vocabulaire ne supprime pas les spécialisations locales ; il oblige à demander avec quels partenaires, dans quelle tâche et à quel moment une région contribue. Les réseaux ne sont pas davantage des boîtes psychologiques : leur découpage dépend des données, de la résolution et de l'algorithme.",
+          "sourceKeys": ["pessoa-brain-networks-2014", "bassett-sporns-network-neuroscience-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "La connectivité structurelle décrit des voies anatomiques estimées par des méthodes comme le traçage ou l'imagerie de diffusion. La connectivité fonctionnelle décrit une dépendance statistique entre signaux, sans établir à elle seule un lien direct ni une causalité. La connectivité effective modélise des influences dirigées sous des hypothèses explicites. Des parcellations de connectivité intrinsèque mettent en évidence des organisations reproductibles à l'échelle de groupes, mais ni leurs frontières ni le nombre de réseaux ne constituent une anatomie définitive : un atlas est une estimation utile, pas la vérité d'un cerveau individuel.",
+          "sourceKeys": ["bassett-sporns-network-neuroscience-2017", "yeo-cortical-connectivity-2011", "gratton-network-variability-2018"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Lorsqu'une personne maintient une consigne en mémoire tout en recherchant une cible, les notions d'attention et de mémoire étudiées précédemment restent définies par la tâche et la performance. Plusieurs systèmes sensoriels, mnésiques et de contrôle peuvent coopérer ; leur couplage varie avec la demande. Observer l'activation d'un nœud frontal ne permet donc pas de conclure automatiquement « mémoire de travail » ou « contrôle » : il faut comparer des conditions, analyser le réseau et vérifier le comportement. Cet exemple illustre un raisonnement multiniveau, il ne propose pas un réseau unique pour toute cognition.",
+          "sourceKeys": ["petersen-sporns-cognitive-architectures-2015", "poldrack-reverse-inference-2006"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "La latéralisation désigne une asymétrie relative entre hémisphères pour une mesure ou une fonction. Certaines composantes du langage présentent souvent un biais gauche et certaines opérations visuospatiales un biais droit, mais les deux hémisphères communiquent et contribuent aux tâches. Le sens et l'ampleur varient selon la composante étudiée, la tâche, l'indice calculé et les individus. Les données ne soutiennent pas deux types de personnalité globaux, « cerveau gauche logique » et « cerveau droit créatif » ; elles ne permettent pas non plus de déduire la latéralisation d'une personne à partir de sa seule préférence manuelle.",
+          "sourceKeys": ["nielsen-left-right-hypothesis-2013", "vingerhoets-lateralisation-2019"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Structure et fonction se contraignent sans correspondance fixe. L'organisation des réseaux montre des régularités de groupe, des caractéristiques individuelles relativement stables et des modulations liées à la tâche ; développement, apprentissage et lésion peuvent aussi modifier les relations. Pour auditer une carte, identifier population, méthode, atlas, contraste, incertitude, comportement et alternatives. L'inférence allant d'une activité locale vers un état mental précis est d'autant plus faible que cette activité apparaît dans de nombreuses tâches. Une carte ne révèle donc ni un geste obligatoire, ni un trait de personnalité, ni la cause complète d'une conduite.",
+          "sourceKeys": ["gratton-network-variability-2018", "pessoa-brain-networks-2014", "zatorre-fields-johansenberg-2012", "poldrack-reverse-inference-2006"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-3-4",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 3.4 The Brain and Spinal Cord",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-4-the-brain-and-spinal-cord",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 3.4: The brain and spinal cord. OpenStax, Rice University.",
+        "description": "Lire les parties Forebrain Structures, Midbrain and Hindbrain Structures et Brain Imaging ; annoter une vue du cerveau puis remplacer chaque étiquette monofonctionnelle par une contribution délimitée.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "pessoa-brain-networks-2014",
+        "type": "article",
+        "title": "Understanding Brain Networks and Brain Organization",
+        "author": "Luiz Pessoa",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4157099/",
+        "citation": "Pessoa, L. (2014). Understanding brain networks and brain organization. Physics of Life Reviews, 11(3), 400–435. https://doi.org/10.1016/j.plrev.2014.03.005",
+        "description": "Lire le résumé, la figure 1 et la conclusion ; produire un exemple de relation un-à-plusieurs et un exemple de relation plusieurs-à-un entre régions et fonctions.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 2
+      },
+      {
+        "key": "bassett-sporns-network-neuroscience-2017",
+        "type": "article",
+        "title": "Network Neuroscience",
+        "author": "Danielle S. Bassett et Olaf Sporns",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5485642/",
+        "citation": "Bassett, D. S., & Sporns, O. (2017). Network neuroscience. Nature Neuroscience, 20(3), 353–364. https://doi.org/10.1038/nn.4502",
+        "description": "Lire le résumé et les sections introductives ; définir nœud, lien, réseau, structure et fonction en précisant l'échelle et la méthode de chaque terme.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "yeo-cortical-connectivity-2011",
+        "type": "article",
+        "title": "The Organization of the Human Cerebral Cortex Estimated by Intrinsic Functional Connectivity",
+        "author": "B. T. Thomas Yeo, Fenna M. Krienen, Jorge Sepulcre et collègues",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3174820/",
+        "citation": "Yeo, B. T. T., Krienen, F. M., Sepulcre, J., et al. (2011). The organization of the human cerebral cortex estimated by intrinsic functional connectivity. Journal of Neurophysiology, 106(3), 1125–1165. https://doi.org/10.1152/jn.00338.2011",
+        "description": "Lire le résumé et examiner les solutions à 7 et 17 réseaux ; relever ce qui est mesuré, ce qui est estimé et pourquoi deux résolutions peuvent être utiles.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 4
+      },
+      {
+        "key": "petersen-sporns-cognitive-architectures-2015",
+        "type": "article",
+        "title": "Brain Networks and Cognitive Architectures",
+        "author": "Steven E. Petersen et Olaf Sporns",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4598639/",
+        "citation": "Petersen, S. E., & Sporns, O. (2015). Brain networks and cognitive architectures. Neuron, 88(1), 207–219. https://doi.org/10.1016/j.neuron.2015.09.027",
+        "description": "Lire le résumé et la conclusion ; relier une fonction cognitive déjà étudiée à une architecture en réseau sans lui attribuer un module anatomique unique.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "nielsen-left-right-hypothesis-2013",
+        "type": "article",
+        "title": "An Evaluation of the Left-Brain vs. Right-Brain Hypothesis with Resting State Functional Connectivity Magnetic Resonance Imaging",
+        "author": "Jared A. Nielsen, Brandon A. Zielinski, Michael A. Ferguson, Janet E. Lainhart et Jeffrey S. Anderson",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0071275",
+        "citation": "Nielsen, J. A., Zielinski, B. A., Ferguson, M. A., Lainhart, J. E., & Anderson, J. S. (2013). An evaluation of the left-brain vs. right-brain hypothesis with resting state functional connectivity magnetic resonance imaging. PLOS ONE, 8(8), e71275. https://doi.org/10.1371/journal.pone.0071275",
+        "description": "Lire résumé, méthodes et discussion ; distinguer latéralisation locale d'une connexion et supposée dominance globale d'une personnalité.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "vingerhoets-lateralisation-2019",
+        "type": "article",
+        "title": "Phenotypes in Hemispheric Functional Segregation? Perspectives and Challenges",
+        "author": "Guy Vingerhoets",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31230893/",
+        "citation": "Vingerhoets, G. (2019). Phenotypes in hemispheric functional segregation? Perspectives and challenges. Physics of Life Reviews, 30, 1–18. https://doi.org/10.1016/j.plrev.2019.06.002",
+        "description": "Lire le résumé et relever les différences entre biais de population, profil individuel et hypothèse de phénotypes de latéralisation.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 7
+      },
+      {
+        "key": "gratton-network-variability-2018",
+        "type": "article",
+        "title": "Functional Brain Networks Are Dominated by Stable Group and Individual Factors, Not Cognitive or Daily Variation",
+        "author": "Caterina Gratton, Timothy O. Laumann, Ashley N. Nielsen et collègues",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5912345/",
+        "citation": "Gratton, C., Laumann, T. O., Nielsen, A. N., et al. (2018). Functional brain networks are dominated by stable group and individual factors, not cognitive or daily variation. Neuron, 98(2), 439–452.e5. https://doi.org/10.1016/j.neuron.2018.03.035",
+        "description": "Lire le résumé et la section Spanning from States to Stability ; classer les sources de variation entre groupe, individu, tâche et session sans les généraliser au-delà de l'échantillon.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 8
+      },
+      {
+        "key": "poldrack-reverse-inference-2006",
+        "type": "article",
+        "title": "Can Cognitive Processes Be Inferred from Neuroimaging Data?",
+        "author": "Russell A. Poldrack",
+        "url": "https://brainmapping.org/NITP/PNA/Readings/Poldrack2006.pdf",
+        "citation": "Poldrack, R. A. (2006). Can cognitive processes be inferred from neuroimaging data? Trends in Cognitive Sciences, 10(2), 59–63. https://doi.org/10.1016/j.tics.2005.12.004",
+        "description": "Lire l'article et transformer trois inférences inverses catégoriques en conclusions conditionnelles qui mentionnent sélectivité, taux de base, tâche et alternatives.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 9
+      },
+      {
+        "key": "zatorre-fields-johansenberg-2012",
+        "type": "article",
+        "title": "Plasticity in Gray and White: Neuroimaging Changes in Brain Structure during Learning",
+        "author": "Robert J. Zatorre, R. Douglas Fields et Heidi Johansen-Berg",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22426254/",
+        "citation": "Zatorre, R. J., Fields, R. D., & Johansen-Berg, H. (2012). Plasticity in gray and white: Neuroimaging changes in brain structure during learning. Nature Neuroscience, 15(4), 528–536. https://doi.org/10.1038/nn.3045",
+        "description": "Lire le résumé et distinguer le changement structurel mesuré pendant l'apprentissage, ses mécanismes cellulaires candidats et les limites d'une interprétation fonctionnelle directe.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 10
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Structures et niveaux d'explication",
+        "slug": "structures-niveaux-explication",
+        "description": "Les structures cérébrales sont des repères avec des spécialisations relatives ; leur contribution doit être reliée aux circuits, à la tâche, au comportement et au contexte.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-3-4", "pessoa-brain-networks-2014"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Structures et explication", "questionCount": 5}
+      },
+      {
+        "title": "Réseaux, connectivités et cognition",
+        "slug": "reseaux-connectivites-cognition",
+        "description": "Une architecture en réseau décrit des nœuds et leurs relations à une échelle donnée ; connectivités structurelle, fonctionnelle et effective répondent à des questions différentes.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["bassett-sporns-network-neuroscience-2017", "yeo-cortical-connectivity-2011", "petersen-sporns-cognitive-architectures-2015"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Réseaux et connectivités", "questionCount": 5}
+      },
+      {
+        "title": "Latéralisation, variabilité et inférence",
+        "slug": "lateralisation-variabilite-inference",
+        "description": "Les asymétries et réseaux présentent régularités et variabilité ; une carte de groupe ou une activation locale ne définit ni un profil individuel, ni une personnalité, ni un processus unique.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["nielsen-left-right-hypothesis-2013", "vingerhoets-lateralisation-2019", "gratton-network-variability-2018", "zatorre-fields-johansenberg-2012", "poldrack-reverse-inference-2006"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Latéralisation et inférence", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Corriger une carte phrénologique moderne",
+        "description": "Recevoir une carte fictive comportant douze étiquettes zone=geste, émotion ou trait ; pour six étiquettes, remplacer l'affirmation par structure, contribution possible, réseau, tâche, mesure et limite, puis justifier chaque révision.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Construire trois graphes de connectivité",
+        "description": "À partir d'un scénario d'attention et mémoire, proposer un graphe structurel, un graphe fonctionnel et une hypothèse de connectivité effective ; définir nœuds, liens, direction éventuelle et donnée nécessaire sans confondre corrélation et influence.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer un profil cerveau gauche–cerveau droit",
+        "description": "Rédiger 500 à 700 mots sur un profil fictif déduit d'une image cérébrale : distinguer asymétrie observée, tâche, groupe et individu, identifier l'inférence inverse et proposer les mesures comportementales, comparaisons et incertitudes nécessaires.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-024-OPENSTAX", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.4 The Brain and Spinal Cord", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-4-the-brain-and-spinal-cord", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Repères anatomiques introductifs ; les étiquettes fonctionnelles du manuel sont nuancées par les revues en réseaux."},
+      {"id": "REF-024-PESSOA", "type": "review_article", "authors": ["Pessoa, L."], "organization": "Elsevier", "title": "Understanding Brain Networks and Brain Organization", "year": 2014, "edition": null, "publication": "Physics of Life Reviews, 11(3), 400–435", "doi": "https://doi.org/10.1016/j.plrev.2014.03.005", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4157099/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert via PubMed Central ; droits Elsevier applicables", "status": "verified", "notes": "Revue centrale pour la relation plusieurs-à-plusieurs et la dynamique d'affiliation aux réseaux."},
+      {"id": "REF-024-BASSETT-SPORNS", "type": "review_article", "authors": ["Bassett, D. S.", "Sporns, O."], "organization": "Nature Portfolio", "title": "Network Neuroscience", "year": 2017, "edition": null, "publication": "Nature Neuroscience, 20(3), 353–364", "doi": "https://doi.org/10.1038/nn.4502", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5485642/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert via PubMed Central ; droits Nature Portfolio applicables", "status": "verified", "notes": "Synthèse des concepts et méthodes de la neuroscience des réseaux."},
+      {"id": "REF-024-YEO", "type": "primary_article", "authors": ["Yeo, B. T. T.", "Krienen, F. M.", "Sepulcre, J.", "et al."], "organization": "American Physiological Society", "title": "The Organization of the Human Cerebral Cortex Estimated by Intrinsic Functional Connectivity", "year": 2011, "edition": null, "publication": "Journal of Neurophysiology, 106(3), 1125–1165", "doi": "https://doi.org/10.1152/jn.00338.2011", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3174820/", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Texte intégral ouvert via PubMed Central ; droits APS applicables", "status": "verified", "notes": "Étude de parcellation de groupe utilisée comme exemple de carte estimée à plusieurs résolutions."},
+      {"id": "REF-024-PETERSEN-SPORNS", "type": "review_article", "authors": ["Petersen, S. E.", "Sporns, O."], "organization": "Cell Press", "title": "Brain Networks and Cognitive Architectures", "year": 2015, "edition": null, "publication": "Neuron, 88(1), 207–219", "doi": "https://doi.org/10.1016/j.neuron.2015.09.027", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4598639/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert via PubMed Central ; droits Cell Press applicables", "status": "verified", "notes": "Revue reliant architecture en réseaux et fonctions cognitives flexibles."},
+      {"id": "REF-024-NIELSEN", "type": "primary_article", "authors": ["Nielsen, J. A.", "Zielinski, B. A.", "Ferguson, M. A.", "Lainhart, J. E.", "Anderson, J. S."], "organization": "PLOS", "title": "An Evaluation of the Left-Brain vs. Right-Brain Hypothesis with Resting State Functional Connectivity Magnetic Resonance Imaging", "year": 2013, "edition": null, "publication": "PLOS ONE, 8(8), e71275", "doi": "https://doi.org/10.1371/journal.pone.0071275", "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0071275", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "CC BY", "status": "verified", "notes": "Étude primaire réfutant une dominance hémisphérique globale tout en conservant les asymétries locales."},
+      {"id": "REF-024-VINGERHOETS", "type": "review_article", "authors": ["Vingerhoets, G."], "organization": "Elsevier", "title": "Phenotypes in Hemispheric Functional Segregation? Perspectives and Challenges", "year": 2019, "edition": null, "publication": "Physics of Life Reviews, 30, 1–18", "doi": "https://doi.org/10.1016/j.plrev.2019.06.002", "url": "https://pubmed.ncbi.nlm.nih.gov/31230893/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Notice et résumé PubMed ouverts ; article soumis aux droits Elsevier", "status": "verified", "notes": "Revue sur biais populationnels, latéralisation atypique et hétérogénéité des profils."},
+      {"id": "REF-024-GRATTON", "type": "primary_article", "authors": ["Gratton, C.", "Laumann, T. O.", "Nielsen, A. N.", "et al."], "organization": "Cell Press", "title": "Functional Brain Networks Are Dominated by Stable Group and Individual Factors, Not Cognitive or Daily Variation", "year": 2018, "edition": null, "publication": "Neuron, 98(2), 439–452.e5", "doi": "https://doi.org/10.1016/j.neuron.2018.03.035", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5912345/", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert via PubMed Central ; droits Cell Press applicables", "status": "verified", "notes": "Étude intensive de neuf individus ; portée explicitement limitée à ce plan et aux signaux fMRI étudiés."},
+      {"id": "REF-024-POLDRACK", "type": "review_article", "authors": ["Poldrack, R. A."], "organization": "Elsevier", "title": "Can Cognitive Processes Be Inferred from Neuroimaging Data?", "year": 2006, "edition": null, "publication": "Trends in Cognitive Sciences, 10(2), 59–63", "doi": "https://doi.org/10.1016/j.tics.2005.12.004", "url": "https://brainmapping.org/NITP/PNA/Readings/Poldrack2006.pdf", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Copie auteur accessible ; article soumis aux droits Elsevier", "status": "verified", "notes": "Article méthodologique classique sur conditions et faiblesse possible de l'inférence inverse."},
+      {"id": "REF-024-ZATORRE", "type": "review_article", "authors": ["Zatorre, R. J.", "Fields, R. D.", "Johansen-Berg, H."], "organization": "Nature Portfolio", "title": "Plasticity in Gray and White: Neuroimaging Changes in Brain Structure during Learning", "year": 2012, "edition": null, "publication": "Nature Neuroscience, 15(4), 528–536", "doi": "https://doi.org/10.1038/nn.3045", "url": "https://pubmed.ncbi.nlm.nih.gov/22426254/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Notice, résumé et manuscrit PMC accessibles ; droits Nature Portfolio applicables", "status": "verified", "notes": "Revue utilisée pour relier apprentissage, plasticité structurelle et ambiguïté des marqueurs d'imagerie."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-024-OPENSTAX", "locator": "section 3.4, Forebrain Structures et Midbrain and Hindbrain Structures", "supports": "Repères corticaux, sous-corticaux, cérébelleux et du tronc cérébral."}, {"referenceId": "REF-024-PESSOA", "locator": "résumé, figure 1 et pp. 400–407", "supports": "Limites des étiquettes monofonctionnelles et relation plusieurs-à-plusieurs."}], "confidence": "high", "confidenceRationale": "Le manuel situe les structures et la revue empêche leur transformation en centres psychologiques isolés.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-024-PESSOA", "locator": "figure 1, sections Structure–function mapping et conclusion", "supports": "Relations un-à-plusieurs, plusieurs-à-un et caractère dynamique des affiliations."}, {"referenceId": "REF-024-BASSETT-SPORNS", "locator": "résumé et pp. 353–357", "supports": "Définition intégrative des éléments et interactions d'un réseau à plusieurs échelles."}], "confidence": "high", "confidenceRationale": "Deux revues reconnues convergent tout en rappelant qu'un réseau reste un modèle dépendant d'une définition.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-024-BASSETT-SPORNS", "locator": "pp. 353–364, structure, fonction, modèles et échelles", "supports": "Distinction des relations anatomiques, statistiques et modélisées dans une approche en réseau."}, {"referenceId": "REF-024-YEO", "locator": "résumé, méthodes et solutions à 7 et 17 réseaux, pp. 1125–1165", "supports": "Parcellations estimées à partir de connectivité fonctionnelle intrinsèque dans un échantillon de groupe."}, {"referenceId": "REF-024-GRATTON", "locator": "résumé et sections sur effets de groupe, individu, tâche et session", "supports": "Régularités communes et caractéristiques individuelles dans les réseaux fonctionnels mesurés."}], "confidence": "high", "confidenceRationale": "Revue et études primaires soutiennent les distinctions tout en justifiant la prudence envers un atlas unique.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-024-PETERSEN-SPORNS", "locator": "résumé et pp. 207–219", "supports": "Architecture cognitive comme réseau de réseaux, robuste et reconfigurable selon contexte, stimulus et tâche."}, {"referenceId": "REF-024-POLDRACK", "locator": "pp. 59–63, définition et analyse bayésienne de l'inférence inverse", "supports": "Une activation régionale ne suffit pas à identifier un processus cognitif sans sélectivité et taux de base."}], "confidence": "high", "confidenceRationale": "La leçon réactive attention et mémoire par la tâche sans attribuer une fonction unique à un nœud frontal.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-024-NIELSEN", "locator": "résumé, méthodes, résultats et discussion", "supports": "Latéralisations locales sans preuve d'une dominance fonctionnelle globale gauche ou droite chez les individus."}, {"referenceId": "REF-024-VINGERHOETS", "locator": "résumé et pp. 1–18", "supports": "Biais de population, variabilité et hypothèses de profils de ségrégation hémisphérique."}], "confidence": "high", "confidenceRationale": "Une étude ouverte et une revue spécialisée distinguent asymétries réelles et typologie populaire de personnalité.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-024-GRATTON", "locator": "résumé, résultats et section Spanning from States to Stability", "supports": "Combinaison de facteurs communs, individuels, liés à la tâche et à la session dans les réseaux fonctionnels."}, {"referenceId": "REF-024-PESSOA", "locator": "sections sur l'affiliation dynamique et conclusion", "supports": "Relation structure–fonction dynamique et plusieurs-à-plusieurs."}, {"referenceId": "REF-024-ZATORRE", "locator": "résumé et pp. 528–536", "supports": "Changements de matière grise et blanche associés à l'apprentissage et limites de leur interprétation cellulaire."}, {"referenceId": "REF-024-POLDRACK", "locator": "pp. 59–63", "supports": "Portée conditionnelle de l'inférence d'un processus mental depuis une activation."}], "confidence": "high", "confidenceRationale": "Les sources couvrent variabilité, plasticité, dynamique et logique d'inférence sans déduire personnalité ou causalité complète d'une carte.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-psychology-2e-3-4", "referenceIds": ["REF-024-OPENSTAX"], "pedagogicalRationale": "Repères anatomiques ouverts et illustrés pour débuter.", "learnerInstructions": "Lire les sections ciblées et annoter une vue en remplaçant les fonctions absolues par des contributions.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML mobile, navigation clavier et descriptions de figures.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Obligatoire ; les formulations simplifiées sont explicitement nuancées dans la leçon."},
+      {"resourceKey": "pessoa-brain-networks-2014", "referenceIds": ["REF-024-PESSOA"], "pedagogicalRationale": "Cadre principal contre la localisation univoque et pour les réseaux dynamiques.", "learnerInstructions": "Lire résumé, figure 1 et conclusion puis produire les deux mappings demandés.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central ; figures légendées.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "bassett-sporns-network-neuroscience-2017", "referenceIds": ["REF-024-BASSETT-SPORNS"], "pedagogicalRationale": "Définitions et méthodes de la neuroscience des réseaux.", "learnerInstructions": "Lire résumé et introduction puis définir les termes avec leur échelle et mesure.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central ; figures avec légendes.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "yeo-cortical-connectivity-2011", "referenceIds": ["REF-024-YEO"], "pedagogicalRationale": "Exemple concret d'une parcellation dépendante de la résolution et de l'analyse.", "learnerInstructions": "Comparer les solutions à 7 et 17 réseaux sans choisir une carte comme anatomie définitive.", "language": "en", "accessType": "open", "accessibilityNotes": "Texte HTML, PDF et figures via PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative spécialisée."},
+      {"resourceKey": "petersen-sporns-cognitive-architectures-2015", "referenceIds": ["REF-024-PETERSEN-SPORNS"], "pedagogicalRationale": "Pont direct entre cognition déjà étudiée et architecture distribuée.", "learnerInstructions": "Lire résumé et conclusion puis construire un exemple cognitif en réseau.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."},
+      {"resourceKey": "nielsen-left-right-hypothesis-2013", "referenceIds": ["REF-024-NIELSEN"], "pedagogicalRationale": "Teste directement la généralisation populaire cerveau gauche–cerveau droit.", "learnerInstructions": "Distinguer latéralisations locales et dominance globale en lisant méthodes et discussion.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML, PDF et données supplémentaires ouverts sous licence CC BY.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "vingerhoets-lateralisation-2019", "referenceIds": ["REF-024-VINGERHOETS"], "pedagogicalRationale": "Ajoute variabilité et hypothèses de profils à la réfutation d'une typologie globale.", "learnerInstructions": "Lire le résumé PubMed et distinguer population, personne et hypothèse de phénotype.", "language": "en", "accessType": "open", "accessibilityNotes": "Notice et résumé HTML ouverts ; texte intégral selon abonnement.", "alternativeResourceKey": "nielsen-left-right-hypothesis-2013", "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Facultative ; l'alternative ouverte couvre le socle."},
+      {"resourceKey": "gratton-network-variability-2018", "referenceIds": ["REF-024-GRATTON"], "pedagogicalRationale": "Montre simultanément régularités et sources de variabilité des réseaux mesurés.", "learnerInstructions": "Classer groupe, individu, tâche et session en conservant les limites du petit échantillon intensif.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML et PDF via PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative d'approfondissement."},
+      {"resourceKey": "poldrack-reverse-inference-2006", "referenceIds": ["REF-024-POLDRACK"], "pedagogicalRationale": "Outil méthodologique central pour critiquer les cartes cerveau=processus.", "learnerInstructions": "Lire l'article puis réviser trois inférences inverses en conclusions conditionnelles.", "language": "en", "accessType": "open", "accessibilityNotes": "PDF auteur textuel ; une lecture sur écran peut nécessiter zoom ou conversion texte.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource obligatoire ouverte."},
+      {"resourceKey": "zatorre-fields-johansenberg-2012", "referenceIds": ["REF-024-ZATORRE"], "pedagogicalRationale": "Réactive la plasticité en montrant des changements structurels liés à l'apprentissage et leurs limites d'interprétation.", "learnerInstructions": "Séparer changement d'imagerie, mécanismes candidats et conclusion fonctionnelle.", "language": "en", "accessType": "open", "accessibilityNotes": "Notice, résumé, figures et lien vers manuscrit PMC accessibles.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative de réactivation de la leçon sur la plasticité."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "structures-niveaux-explication",
+        "assessmentTitle": "Mini-évaluation — Structures et explication",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel usage d'une grande structure cérébrale est le plus rigoureux ?", "explanation": "Une structure sert de repère et sa contribution se précise par sous-régions, connexions, tâche et mesure.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Décrire une contribution située dans un réseau et une tâche", "isCorrect": true, "position": 1}, {"label": "Lui attribuer une personnalité complète", "isCorrect": false, "position": 2}, {"label": "La traiter comme un centre autonome", "isCorrect": false, "position": 3}, {"label": "Déduire un geste obligatoire de sa seule forme", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Pourquoi l'étiquette « amygdale = peur » est-elle insuffisante ?", "explanation": "Elle ignore sous-régions, réseaux, diversité des tâches et relation plusieurs-à-plusieurs.", "acceptedAnswers": [], "position": 2, "options": [{"label": "La structure comprend des sous-régions et connexions diverses", "isCorrect": true, "position": 1}, {"label": "Elle participe à plusieurs opérations", "isCorrect": true, "position": 2}, {"label": "La peur mobilise plusieurs systèmes et niveaux", "isCorrect": true, "position": 3}, {"label": "Une région ne peut jamais contribuer à aucune fonction", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Reconnaître une spécialisation locale oblige à considérer qu'une région agit seule.", "explanation": "Une spécialisation relative reste compatible avec des interactions distribuées et une dépendance au contexte.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Que signifie une relation structure–fonction plusieurs-à-plusieurs ?", "explanation": "Une région peut contribuer à plusieurs fonctions et une fonction peut recruter plusieurs régions.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Plusieurs régions contribuent à plusieurs fonctions selon leurs interactions", "isCorrect": true, "position": 1}, {"label": "Chaque fonction possède une seule case anatomique", "isCorrect": false, "position": 2}, {"label": "La structure n'impose aucune contrainte", "isCorrect": false, "position": 3}, {"label": "Toutes les régions sont interchangeables", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne une explication qui réduit abusivement une conduite complexe à une seule région cérébrale ?", "explanation": "Il s'agit d'un réductionnisme, ici souvent associé à une localisation simpliste.", "acceptedAnswers": ["réductionnisme", "reductionnisme", "réductionnisme neural", "localisation simpliste"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "reseaux-connectivites-cognition",
+        "assessmentTitle": "Mini-évaluation — Réseaux et connectivités",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que décrit d'abord la connectivité structurelle ?", "explanation": "Elle porte sur des voies ou relations anatomiques estimées par une méthode donnée.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Des relations anatomiques entre éléments", "isCorrect": true, "position": 1}, {"label": "Une corrélation temporelle qui prouve la causalité", "isCorrect": false, "position": 2}, {"label": "Un état mental précis", "isCorrect": false, "position": 3}, {"label": "Une influence dirigée sans modèle", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Que permet d'abord de conclure une connectivité fonctionnelle élevée entre deux signaux ?", "explanation": "Elle indique une dépendance statistique dans les conditions de mesure, sans prouver une connexion directe ou une cause.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Les signaux covarient dans les conditions mesurées", "isCorrect": true, "position": 1}, {"label": "Une région commande nécessairement l'autre", "isCorrect": false, "position": 2}, {"label": "Une fibre anatomique directe existe sûrement", "isCorrect": false, "position": 3}, {"label": "Les deux régions ont une fonction identique", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Pourquoi deux parcellations à 7 et 17 réseaux peuvent-elles toutes deux être utiles ?", "explanation": "Un découpage dépend de la résolution, des données et du but ; il offre une représentation, non une frontière définitive.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Elles décrivent des niveaux de granularité différents", "isCorrect": true, "position": 1}, {"label": "Le choix dépend de la question", "isCorrect": true, "position": 2}, {"label": "Les frontières sont estimées par une méthode", "isCorrect": true, "position": 3}, {"label": "Le cerveau contient exactement 7 et exactement 17 réseaux séparés", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Passer d'une approche par régions à une approche en réseaux élimine toute ambiguïté entre cerveau et cognition.", "explanation": "Les réseaux restent des modèles, et leur relation aux fonctions demeure dépendante des données, tâches et niveaux.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que faut-il définir lorsqu'on construit un graphe cérébral ?", "explanation": "Nœuds, liens, méthode, échelle et direction éventuelle déterminent ce que représente le graphe.", "acceptedAnswers": [], "position": 5, "options": [{"label": "Les nœuds", "isCorrect": true, "position": 1}, {"label": "Les liens et leur mesure", "isCorrect": true, "position": 2}, {"label": "L'échelle et les hypothèses", "isCorrect": true, "position": 3}, {"label": "Une personnalité associée à chaque couleur", "isCorrect": false, "position": 4}]}
+        ]
+      },
+      {
+        "conceptSlug": "lateralisation-variabilite-inference",
+        "assessmentTitle": "Mini-évaluation — Latéralisation et inférence",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que désigne une latéralisation fonctionnelle ?", "explanation": "Elle décrit une asymétrie relative pour une fonction et une mesure, pas une séparation absolue des hémisphères.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Une asymétrie relative dépendante de la fonction et de la mesure", "isCorrect": true, "position": 1}, {"label": "Deux personnalités logées dans deux hémisphères", "isCorrect": false, "position": 2}, {"label": "L'absence de communication interhémisphérique", "isCorrect": false, "position": 3}, {"label": "Une dominance identique pour toutes les tâches", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Les données sur les asymétries locales valident l'idée que chaque personne est globalement cerveau gauche ou cerveau droit.", "explanation": "Des asymétries locales existent, mais elles ne forment pas une dominance globale correspondant à une personnalité.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles sources de variation faut-il considérer pour une carte fonctionnelle ?", "explanation": "Groupe, individu, tâche, session, méthode et atlas peuvent tous influencer la carte.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Les différences individuelles", "isCorrect": true, "position": 1}, {"label": "La tâche et la session", "isCorrect": true, "position": 2}, {"label": "La méthode et l'atlas", "isCorrect": true, "position": 3}, {"label": "Seulement la couleur de l'hémisphère", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Une zone s'active pendant une tâche de mémoire. Quelle conclusion est la plus prudente ?", "explanation": "Il faut établir la sélectivité, le contraste et les alternatives avant d'inférer un processus précis.", "acceptedAnswers": [], "position": 4, "options": [{"label": "La zone contribue dans ce contraste ; le processus exact nécessite d'autres preuves", "isCorrect": true, "position": 1}, {"label": "La zone stocke tous les souvenirs", "isCorrect": false, "position": 2}, {"label": "L'activation prouve la cause complète de la réussite", "isCorrect": false, "position": 3}, {"label": "Le comportement n'a plus besoin d'être mesuré", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Que doit contenir l'audit d'une carte cerveau–personnalité ?", "explanation": "L'audit distingue population, mesure, tâche, incertitude, comportement, alternatives et inférences.", "acceptedAnswers": [], "position": 5, "options": [{"label": "La population et la tâche", "isCorrect": true, "position": 1}, {"label": "La méthode, l'atlas et l'incertitude", "isCorrect": true, "position": 2}, {"label": "Les mesures comportementales et explications alternatives", "isCorrect": true, "position": 3}, {"label": "Une attribution catégorique à partir d'une image", "isCorrect": false, "position": 4}]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine par une personne compétente en neurosciences cognitives requise avant publication ou validation scientifique.",
+        "L'étape bases-biologiques, le module organisation-systeme-nerveux et la leçon cible sont planifiés dans CURRICULUM_BLUEPRINT.md mais absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration : cette spécification n'autorise aucun ajout au seed et l'évaluation finale de l'étape n'existe pas encore dans le seed.",
+        "Les cartes de structures et réseaux sont présentées comme des modèles dépendants d'une méthode ; aucune zone n'est assimilée à un geste, une émotion ou une personnalité.",
+        "La latéralisation est décrite comme relative et variable ; le mythe d'une personnalité cerveau gauche–cerveau droit est explicitement réfuté.",
+        "Les ressources obligatoires sont ouvertes et les travaux spécialisés facultatifs disposent d'un résumé ou d'un manuscrit accessible."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de dix ressources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}
+    ]
+  }
+}

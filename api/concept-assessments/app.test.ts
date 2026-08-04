@@ -440,10 +440,38 @@ describe('concept assessment persistence', () => {
     );
   });
 
-  function createTransactionClient() {
+  function createTransactionClient(currentProgress: object | null = null) {
+    const moduleRun = {
+      id: 'd0575bf7-b4f7-4ab4-86db-5720d7a63885',
+      moduleId: 'ac7cae6f-1888-4698-a049-925c21c23720',
+      sequence: 1,
+      startedAt: submittedAt,
+      userId,
+    };
     const reviewUpsert = vi.fn(async () => ({ id: 'review-1' }));
     const reviewUpdateMany = vi.fn(async () => ({ count: 1 }));
+    const progressUpsert = vi.fn(async (input: unknown) => {
+      const typedInput = input as {
+        create: {
+          bestScore: number;
+          lastAttemptAt: Date;
+          status: ConceptProgressStatus;
+          validatedAt: Date | null;
+        };
+        update: {
+          bestScore: number;
+          status: ConceptProgressStatus;
+          validatedAt: Date | null;
+        };
+      };
+
+      return currentProgress ? typedInput.update : typedInput.create;
+    });
     const transaction = {
+      lesson: {
+        findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
+      },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
       conceptAssessmentAttempt: {
         create: vi.fn(async () => ({
           answers: [],
@@ -454,21 +482,8 @@ describe('concept assessment persistence', () => {
         })),
       },
       conceptProgress: {
-        findUnique: vi.fn(async () => null),
-        upsert: vi.fn(async (input: unknown) => {
-          const data = (
-            input as {
-              create: {
-                bestScore: number;
-                lastAttemptAt: Date;
-                status: ConceptProgressStatus;
-                validatedAt: Date | null;
-              };
-            }
-          ).create;
-
-          return data;
-        }),
+        findUnique: vi.fn(async () => currentProgress),
+        upsert: progressUpsert,
       },
       reviewItem: {
         updateMany: reviewUpdateMany,
@@ -480,7 +495,7 @@ describe('concept assessment persistence', () => {
         callback(transaction),
     } as unknown as PrismaClient;
 
-    return { client, reviewUpdateMany, reviewUpsert };
+    return { client, progressUpsert, reviewUpdateMany, reviewUpsert };
   }
 
   function recordInput(passed: boolean) {
@@ -501,7 +516,10 @@ describe('concept assessment persistence', () => {
   it('crée une révision après échec', async () => {
     const { client, reviewUpsert } = createTransactionClient();
 
-    await createPrismaRepository(client).recordAttempt(recordInput(false));
+    await createPrismaRepository(
+      client,
+      async () => ({}) as never,
+    ).recordAttempt(recordInput(false));
 
     expect(reviewUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -517,7 +535,10 @@ describe('concept assessment persistence', () => {
     const { client, reviewUpdateMany, reviewUpsert } =
       createTransactionClient();
 
-    await createPrismaRepository(client).recordAttempt(recordInput(true));
+    await createPrismaRepository(
+      client,
+      async () => ({}) as never,
+    ).recordAttempt(recordInput(true));
 
     expect(reviewUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -525,5 +546,29 @@ describe('concept assessment persistence', () => {
       }),
     );
     expect(reviewUpsert).not.toHaveBeenCalled();
+  });
+
+  it('ne régresse jamais une notion déjà validée après un nouvel échec', async () => {
+    const validatedAt = new Date('2026-08-02T08:00:00.000Z');
+    const { client, progressUpsert } = createTransactionClient({
+      bestScore: 100,
+      status: ConceptProgressStatus.VALIDATED,
+      validatedAt,
+    });
+
+    await createPrismaRepository(
+      client,
+      async () => ({}) as never,
+    ).recordAttempt(recordInput(false));
+
+    expect(progressUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({
+          bestScore: 100,
+          status: ConceptProgressStatus.VALIDATED,
+          validatedAt,
+        }),
+      }),
+    );
   });
 });

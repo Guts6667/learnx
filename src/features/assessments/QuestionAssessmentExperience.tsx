@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Textarea } from '@/components/ui/Textarea';
 
@@ -25,6 +26,7 @@ export interface AssessmentAttempt {
   passed: boolean;
   score: number;
   submittedAt: string;
+  runSequence?: number;
 }
 
 export interface SubmittedAssessmentAnswer {
@@ -114,6 +116,7 @@ function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
                     Score : {Math.round(attempt.score)} %
                   </p>
                   <p class="mt-1 text-sm text-slate-400">
+                    Reprise {attempt.runSequence ?? 1} ·{' '}
                     {formatAttemptDate(attempt.submittedAt)}
                   </p>
                 </div>
@@ -299,12 +302,9 @@ export function QuestionAssessmentExperience({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-            href={backHref}
-          >
-            Retour à la leçon
-          </a>
+          <NavigationAction href={backHref} variant="secondary">
+            Ouvrir la leçon
+          </NavigationAction>
         }
         description={labels.emptyDescription}
         title={labels.emptyTitle}

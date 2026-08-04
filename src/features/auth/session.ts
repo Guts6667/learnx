@@ -1,8 +1,9 @@
-import { QueryObserver } from '@tanstack/query-core';
+import { QueryObserver, type QueryClient } from '@tanstack/query-core';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
+import { purgePrivateBrowserStorage } from '@/lib/private-browser-storage';
 
 export interface SessionUser {
   displayName: string;
@@ -22,6 +23,17 @@ interface LoginInput {
 
 const sessionQueryKey = ['session'] as const;
 
+export function replacePrivateSessionCache(
+  queryClient: QueryClient,
+  session: SessionResponse,
+): void {
+  queryClient.removeQueries({
+    predicate: (query) => query.queryKey[0] !== sessionQueryKey[0],
+  });
+  purgePrivateBrowserStorage();
+  queryClient.setQueryData(sessionQueryKey, session);
+}
+
 export function getSession(): Promise<SessionResponse> {
   return apiRequest<SessionResponse>('/api/auth/session');
 }
@@ -33,6 +45,7 @@ export function useSessionQuery() {
       new QueryObserver(queryClient, {
         queryKey: sessionQueryKey,
         queryFn: getSession,
+        networkMode: 'always',
         staleTime: 0,
       }),
     [queryClient],
@@ -47,9 +60,14 @@ export function useSessionQuery() {
     return unsubscribe;
   }, [observer]);
 
+  const refetch = useCallback(() => observer.refetch(), [observer]);
+
   return {
     data: result.data,
+    error: result.error,
+    isFetching: result.isFetching,
     isPending: result.isPending,
+    refetch,
   };
 }
 
@@ -70,7 +88,7 @@ export function useLoginMutation() {
           body: JSON.stringify(input),
         });
 
-        queryClient.setQueryData(sessionQueryKey, session);
+        replacePrivateSessionCache(queryClient, session);
         return session;
       } catch (requestError) {
         setError(requestError);
@@ -94,7 +112,7 @@ export function useLogoutMutation() {
 
     try {
       await apiRequest<undefined>('/api/auth/logout', { method: 'POST' });
-      queryClient.setQueryData<SessionResponse>(sessionQueryKey, {
+      replacePrivateSessionCache(queryClient, {
         user: null,
       });
     } finally {

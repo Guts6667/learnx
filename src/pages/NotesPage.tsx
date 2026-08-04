@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -24,7 +28,14 @@ function formatUpdatedAt(value: string): string {
 }
 
 function getExcerpt(markdown: string): string {
-  const normalized = markdown.replace(/\s+/g, ' ').trim();
+  const normalized = markdown
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,3}\s+/gm, '')
+    .replace(/^(?:[-+*]|\d+\.)\s+/gm, '')
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   if (!normalized) return 'Note vide';
 
@@ -53,12 +64,12 @@ function NoteCard({ note }: { note: NoteDetail }) {
         <p class="text-xs text-slate-400">
           Modifiée le {formatUpdatedAt(note.updatedAt)}
         </p>
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
+        <NavigationAction
           href={`/notes/${encodeURIComponent(note.id)}`}
+          variant="secondary"
         >
           Modifier la note
-        </a>
+        </NavigationAction>
       </Card>
     </li>
   );
@@ -86,40 +97,36 @@ export function NotesPage() {
   }
 
   return (
-    <section aria-labelledby="notes-title" class="space-y-6">
-      <header class="space-y-3">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Espace personnel
-        </p>
-        <h1 class="text-3xl font-bold tracking-tight" id="notes-title">
-          Notes
-        </h1>
-        <p class="leading-7 text-slate-300">
-          Conservez vos idées libres ou rattachez-les à une leçon.
-        </p>
-      </header>
-
-      <Button
-        class="w-full"
-        isLoading={mutation.isPending}
-        onClick={() => void createNote()}
-        size="lg"
-      >
-        Nouvelle note
-      </Button>
-
-      <TextField
-        label="Rechercher dans les notes"
-        onInput={(event) => setSearch(event.currentTarget.value)}
-        placeholder="Titre ou contenu"
-        type="search"
-        value={search}
+    <section aria-labelledby="notes-title" class="page-shell">
+      <PageHeader
+        description="Conservez vos idées libres ou rattachez-les à une leçon."
+        eyebrow="Espace personnel"
+        id="notes-title"
+        title="Notes"
       />
+
+      <div class="grid items-end gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
+        <TextField
+          label="Rechercher dans les notes"
+          onInput={(event) => setSearch(event.currentTarget.value)}
+          placeholder="Titre ou contenu"
+          type="search"
+          value={search}
+        />
+        <Button
+          class="w-full md:w-auto"
+          isLoading={mutation.isPending}
+          onClick={() => void createNote()}
+          size="lg"
+        >
+          Nouvelle note
+        </Button>
+      </div>
 
       {mutation.error ? (
         <ErrorState description="La note n’a pas pu être créée." />
       ) : null}
-      {query.isPending ? <Spinner label="Chargement des notes" /> : null}
+      {query.isPending ? <Skeleton label="Chargement des notes" /> : null}
       {query.error ? (
         <ErrorState description="Les notes n’ont pas pu être chargées." />
       ) : null}
@@ -134,7 +141,7 @@ export function NotesPage() {
         />
       ) : null}
       {query.data?.notes.length ? (
-        <ul class="space-y-3">
+        <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {query.data.notes.map((note) => (
             <NoteCard key={note.id} note={note} />
           ))}
@@ -155,10 +162,13 @@ function getAutosaveLabel(status: AutosaveStatus, hasTitle: boolean): string {
 }
 
 function NoteEditor({ note }: { note: NoteDetail }) {
-  const { isPending, save } = useNoteMutation();
+  const { error, isPending, remove, save } = useNoteMutation();
   const [title, setTitle] = useState(note.title);
   const [markdown, setMarkdown] = useState(note.markdown);
+  const [mode, setMode] = useState<'preview' | 'write'>('write');
   const [status, setStatus] = useState<AutosaveStatus>('saved');
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
 
   function markDirty() {
@@ -182,6 +192,21 @@ function NoteEditor({ note }: { note: NoteDetail }) {
     return () => window.clearTimeout(timeout);
   }, [isPending, markdown, note.id, save, status, title]);
 
+  useEffect(() => {
+    if (!isConfirmingDelete) return;
+
+    window.requestAnimationFrame(() => cancelDeleteRef.current?.focus());
+  }, [isConfirmingDelete]);
+
+  async function deleteNote() {
+    try {
+      await remove(note.id);
+      void route('/notes');
+    } catch {
+      // L’erreur normalisée est affichée dans la zone de confirmation.
+    }
+  }
+
   return (
     <div class="space-y-5">
       <TextField
@@ -194,16 +219,93 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         }}
         value={title}
       />
-      <Textarea
-        description="Vous pouvez utiliser la syntaxe Markdown. Le texte est sauvegardé automatiquement."
-        label="Contenu de la note"
-        maxLength={100_000}
-        onInput={(event) => {
-          setMarkdown(event.currentTarget.value);
-          markDirty();
-        }}
-        value={markdown}
-      />
+      <div class="space-y-3">
+        <p class="text-sm leading-6 text-slate-300">
+          Markdown pris en charge : <code># Titre</code>,{' '}
+          <code>## Sous-titre</code>, listes, emphase et liens. Un titre
+          commence sur une nouvelle ligne avec un espace après les #.
+        </p>
+        <div
+          aria-label="Mode d’édition de la note"
+          class="inline-flex rounded-xl bg-slate-900 p-1"
+          onKeyDown={(event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            event.preventDefault();
+            const nextMode = mode === 'write' ? 'preview' : 'write';
+            setMode(nextMode);
+            window.requestAnimationFrame(() => {
+              document
+                .querySelector<HTMLButtonElement>(
+                  `[data-note-mode="${nextMode}"]`,
+                )
+                ?.focus();
+            });
+          }}
+          role="tablist"
+        >
+          <button
+            aria-controls="note-write-panel"
+            aria-selected={mode === 'write'}
+            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              mode === 'write' ? 'bg-cyan-400 text-slate-950' : 'text-slate-300'
+            }`}
+            data-note-mode="write"
+            id="note-write-tab"
+            onClick={() => setMode('write')}
+            role="tab"
+            type="button"
+          >
+            Écrire
+          </button>
+          <button
+            aria-controls="note-preview-panel"
+            aria-selected={mode === 'preview'}
+            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              mode === 'preview'
+                ? 'bg-cyan-400 text-slate-950'
+                : 'text-slate-300'
+            }`}
+            data-note-mode="preview"
+            id="note-preview-tab"
+            onClick={() => setMode('preview')}
+            role="tab"
+            type="button"
+          >
+            Aperçu
+          </button>
+        </div>
+        {mode === 'write' ? (
+          <div
+            aria-labelledby="note-write-tab"
+            id="note-write-panel"
+            role="tabpanel"
+          >
+            <Textarea
+              description="Le texte est sauvegardé automatiquement."
+              label="Contenu de la note"
+              maxLength={100_000}
+              onInput={(event) => {
+                setMarkdown(event.currentTarget.value);
+                markDirty();
+              }}
+              value={markdown}
+            />
+          </div>
+        ) : (
+          <div
+            aria-labelledby="note-preview-tab"
+            class="min-h-32 rounded-xl border border-slate-800 bg-slate-950 p-4"
+            id="note-preview-panel"
+            role="tabpanel"
+          >
+            {markdown.trim() ? (
+              <SafeMarkdown content={markdown} />
+            ) : (
+              <p class="text-sm text-slate-400">La note est vide.</p>
+            )}
+          </div>
+        )}
+      </div>
       <p
         aria-live="polite"
         class={
@@ -220,17 +322,77 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             <p class="text-sm text-slate-400">{note.program.title}</p>
           ) : null}
           {note.program ? (
-            <a
-              class="inline-flex min-h-11 items-center text-cyan-300 underline"
+            <NavigationAction
               href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
+              variant="secondary"
             >
-              Retour à la leçon
-            </a>
+              Ouvrir la leçon
+            </NavigationAction>
           ) : null}
         </Card>
       ) : (
         <Badge tone="neutral">Note personnelle</Badge>
       )}
+      <Card class="space-y-4 border border-red-950/80">
+        {isConfirmingDelete ? (
+          <div
+            aria-describedby="delete-note-description"
+            aria-labelledby="delete-note-title"
+            class="space-y-4"
+            role="alertdialog"
+          >
+            <div>
+              <h2 class="font-semibold text-red-200" id="delete-note-title">
+                Supprimer définitivement cette note ?
+              </h2>
+              <p
+                class="mt-2 text-sm leading-6 text-slate-300"
+                id="delete-note-description"
+              >
+                « {note.title} » sera supprimée. Cette action est irréversible.
+              </p>
+            </div>
+            {error ? (
+              <ErrorState description="La note n’a pas pu être supprimée." />
+            ) : null}
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <Button
+                class="w-full sm:w-auto"
+                disabled={isPending}
+                elementRef={cancelDeleteRef}
+                onClick={() => setIsConfirmingDelete(false)}
+                variant="secondary"
+              >
+                Annuler
+              </Button>
+              <Button
+                class="w-full sm:w-auto"
+                isLoading={isPending}
+                onClick={() => void deleteNote()}
+                variant="danger"
+              >
+                Confirmer la suppression
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div class="space-y-3">
+            <div>
+              <h2 class="font-semibold">Supprimer la note</h2>
+              <p class="mt-2 text-sm leading-6 text-slate-300">
+                La suppression est définitive et nécessite une confirmation.
+              </p>
+            </div>
+            <Button
+              disabled={isPending}
+              onClick={() => setIsConfirmingDelete(true)}
+              variant="danger"
+            >
+              Supprimer la note
+            </Button>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }
@@ -246,12 +408,9 @@ export function NotePage({ noteId }: { noteId: string }) {
   return (
     <article aria-labelledby="note-title" class="space-y-6">
       <header class="space-y-3">
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href="/notes"
-        >
+        <NavigationAction href="/notes" variant="ghost">
           Retour aux notes
-        </a>
+        </NavigationAction>
         <h1 class="text-3xl font-bold tracking-tight" id="note-title">
           Modifier la note
         </h1>

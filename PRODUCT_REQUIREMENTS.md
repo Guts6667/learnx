@@ -317,6 +317,10 @@ Notion 3 — Biais cognitifs
 ### 9.4 Règles de progression
 
 - consulter une ressource ne valide pas une notion ;
+- une ressource est un support au point d'usage, jamais une activité autonome
+  ni une catégorie pondérée de progression ;
+- une intention pédagogique est comptée une seule fois : tâche légère ou
+  exercice avec production, jamais les deux ;
 - une notion est validée selon son activité d’évaluation ;
 - une étape reste `in_progress` tant que son évaluation finale n’est pas validée ;
 - les résultats insuffisants génèrent des éléments de révision ;

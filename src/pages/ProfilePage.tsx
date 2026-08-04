@@ -1,6 +1,9 @@
 import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { NavigationAction } from '@/components/ui/NavigationAction';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { useLogoutMutation, useSessionQuery } from '@/features/auth/session';
 
 export function ProfilePage() {
@@ -22,30 +25,48 @@ export function ProfilePage() {
   }
 
   return (
-    <section aria-labelledby="profile-title">
-      <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-        Compte
-      </p>
-      <h1 id="profile-title" class="mt-3 text-3xl font-bold tracking-tight">
-        {user.displayName}
-      </h1>
-      <p class="mt-4 text-base text-slate-300">{user.email}</p>
-      {user.role === 'ADMIN' ? (
-        <a
-          class="mt-6 inline-flex min-h-11 items-center text-cyan-300 underline"
-          href="/admin"
+    <section aria-labelledby="profile-title" class="page-shell">
+      <PageHeader
+        eyebrow="Compte"
+        id="profile-title"
+        title={user.displayName}
+      />
+      <Card class="max-w-2xl">
+        <div class="min-w-0">
+          <p class="text-sm text-slate-400">Adresse e-mail</p>
+          <p class="mt-1 break-all text-base text-slate-100">{user.email}</p>
+        </div>
+        <div
+          aria-labelledby="profile-actions-title"
+          class="mt-6 space-y-3 border-t border-slate-800 pt-5"
         >
-          Ouvrir l’administration
-        </a>
-      ) : null}
-      <Button
-        class="mt-8 block"
-        isLoading={logoutMutation.isPending}
-        onClick={handleLogout}
-        variant="secondary"
-      >
-        Se déconnecter
-      </Button>
+          <h2
+            class="text-sm font-semibold text-slate-300"
+            id="profile-actions-title"
+          >
+            Actions
+          </h2>
+          <div class="flex w-full min-w-0 flex-col gap-3">
+            {user.role === 'ADMIN' ? (
+              <NavigationAction
+                class="w-full min-w-0 text-center"
+                href="/admin"
+                variant="secondary"
+              >
+                Ouvrir l’administration
+              </NavigationAction>
+            ) : null}
+            <Button
+              class="w-full min-w-0"
+              isLoading={logoutMutation.isPending}
+              onClick={handleLogout}
+              variant="ghost"
+            >
+              Se déconnecter
+            </Button>
+          </div>
+        </div>
+      </Card>
     </section>
   );
 }

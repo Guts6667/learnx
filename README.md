@@ -43,6 +43,13 @@ Programme
 
 La structure reste indépendante des années et semestres, mais chaque programme et chaque étape peut avoir une durée indicative. Lorsqu’un utilisateur démarre un programme ou une étape, LearnX calcule une date de fin cible et compare la progression réelle à la progression attendue.
 
+Le parcours d’apprentissage utilise la leçon comme contexte permanent. La page
+compose les blocs, ressources, tâches, mini-évaluations, exercices et quiz dans
+une séquence déterministe et expose une seule action principale « Continuer ».
+Les routes profondes conservent le fil d’Ariane et le sommaire de la leçon ; la
+route canonique d’un exercice est
+`/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
+
 ## Démarrage avec Codex
 
 1. Créer un repository vide.
@@ -121,11 +128,38 @@ utiliser **Partager → Sur l’écran d’accueil**, lancer LearnX depuis l’i
 vérifier la navigation ainsi que la bannière hors ligne sur une page déjà
 consultée.
 
+La CI peut aussi fournir `DEPLOYMENT_CHECK_EMAIL` et
+`DEPLOYMENT_CHECK_PASSWORD` à un compte de contrôle dédié. La commande vérifie
+alors une connexion, la session, une lecture du curriculum puis la déconnexion,
+sans créer ni modifier de contenu métier.
+
+## Tests d’intégration réels
+
+`pnpm test:integration` construit l’application puis exécute Chromium desktop,
+Chromium mobile et WebKit mobile contre `api/index.ts`, Prisma et PostgreSQL,
+sans interception de `/api`. La commande refuse toute écriture tant que les
+variables suivantes ne désignent pas explicitement une branche Neon jetable :
+
+- `DATABASE_URL` et `DIRECT_URL` de la branche isolée ;
+- `NEON_BRANCH_ID` fourni lors de sa création ;
+- `LEARNX_INTEGRATION_DATABASE=ephemeral` ;
+- `LEARNX_INTEGRATION_RUN_ID`, unique pour l’exécution.
+
+Le workflow `integration.yml` crée une branche Neon par exécution, applique les
+migrations, injecte des fixtures dédiées via le parcours de test, puis supprime
+la branche avec une étape `always()`. GitHub doit contenir le secret
+`NEON_API_KEY` et la variable `NEON_PROJECT_ID`. Aucun identifiant ni URL de
+base n’est versionné. Le workflow `deployment-check.yml`, déclenché manuellement,
+utilise les secrets `LEARNX_DEPLOYMENT_EMAIL` et
+`LEARNX_DEPLOYMENT_PASSWORD`, ainsi que la variable
+`LEARNX_DEPLOYMENT_URL`.
+
 ## Authentification serveur
 
 Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :
 
-- `POST /api/auth/register`
+- `POST /api/auth/register` — développement et intégration uniquement ; refusé
+  par défaut en production en attendant le workflow d’accès V3
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
@@ -134,6 +168,10 @@ Les mots de passe sont hachés avec argon2id. Les sessions sont opaques, leur
 hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
 `HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
 n’est stocké dans `localStorage`.
+
+Les échecs de connexion sont limités à cinq par fenêtre de quinze minutes. Le
+compteur est partagé dans PostgreSQL entre les Functions serverless ; sa clé
+IP/e-mail est hachée avant stockage.
 
 ## API de parcours
 
@@ -158,9 +196,54 @@ l’utilisateur avant toute écriture :
 - `PATCH /api/tasks/:taskId`
 - `PATCH /api/resources/:resourceId/progress`
 
-La progression de leçon est calculée côté serveur à partir des tâches et des
-ressources obligatoires. Les catégories absentes voient leur poids redistribué.
-La consultation d’une ressource ne valide jamais une notion.
+La progression de leçon est calculée côté serveur à partir des tâches
+obligatoires (40 %), quiz obligatoires réussis (30 %), exercices obligatoires
+soumis (20 %) et ressources obligatoires terminées (10 %). Les catégories
+absentes voient leur poids redistribué. Les mini-évaluations ne sont pas
+comptées une seconde fois : toute notion obligatoire doit néanmoins être
+maîtrisée pour terminer la leçon. La consultation d’une ressource ne valide
+jamais une notion.
+
+Les mutations et leurs agrégats leçon, étape et programme sont persistés dans
+une transaction sérialisable. Pour contrôler puis réparer les progressions
+existantes sans mutation implicite :
+
+```bash
+pnpm progress:recalculate -- --user-id <uuid>
+pnpm progress:recalculate -- --user-id <uuid> --apply
+```
+
+Sans `--apply`, la commande reste en simulation. Un `--program-id` peut réduire
+le périmètre ; `--all` doit être fourni explicitement pour couvrir tous les
+programmes.
+
+## Publication administrateur
+
+La zone `/admin` charge la hiérarchie progressivement et conserve le niveau
+actif dans l’URL. Les lectures propriétaires sont séparées par niveau :
+
+- `GET /api/admin/programs` liste uniquement les programmes du compte admin ;
+- `GET /api/admin/programs/:programId` charge ses étapes immédiates ;
+- `GET /api/admin/stages/:stageId` charge ses modules immédiats ;
+- `GET /api/admin/modules/:moduleId` charge ses leçons immédiates ;
+- `GET /api/admin/lessons/:lessonId` charge la leçon et son fil d’Ariane.
+
+Chaque lecture vérifie le rôle administrateur et la propriété côté serveur. Les
+détails et actions du niveau actif s’ouvrent dans un tiroir accessible sans
+charger le reste de l’arbre.
+
+Les cascades programme, étape et module utilisent toujours deux requêtes :
+
+- `POST /api/admin/publication/preview` calcule les changements, avertissements,
+  préconditions manquantes et un `planId` sans modifier la base ;
+- `POST /api/admin/publication/apply` confirme exactement ce plan dans une
+  transaction sérialisable.
+
+Une confirmation obsolète est refusée. Répéter un plan déjà appliqué reste sans
+effet. La dépublication peut masquer uniquement le parent ou désactiver toute
+la branche ; dans les deux cas, progressions, tentatives, notes et soumissions
+sont conservées. Les contrôles portent seulement sur la complétude pédagogique
+et jamais sur une éventuelle validation scientifique.
 
 ## Documents
 

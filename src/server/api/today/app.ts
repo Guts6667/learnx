@@ -2,6 +2,7 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
+  CanonicalActivityKind,
   ConceptProgressStatus,
   LessonProgressStatus,
   ProgramStatus,
@@ -18,6 +19,7 @@ import {
 } from '../../../lib/recommendation.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { getCurrentModuleRun } from '../_lib/module-runs.js';
 
 interface ProgramRecord {
   id: string;
@@ -37,17 +39,31 @@ interface ReviewRecord {
     module: { title: string; stage: { title: string } };
   };
   program: { id: string; slug: string; title: string };
+  sourceId: string;
 }
 
 interface LessonRecord {
+  activityCompletionCarryovers: Array<{
+    activityKey: string;
+    kind: string;
+    moduleRunId: string;
+  }>;
   concepts: Array<{
-    assessments: Array<{ questions: Array<{ id: string }> }>;
+    assessments: Array<{ id: string; questions: Array<{ id: string }> }>;
+    id: string;
     progress: Array<{ status: string }>;
     title: string;
   }>;
   estimatedMinutes: number | null;
+  exercises: Array<{
+    id: string;
+    key: string;
+    submissions: Array<{ status: string }>;
+    title: string;
+  }>;
   id: string;
   module: {
+    id: string;
     position: number;
     slug: string;
     stage: {
@@ -65,10 +81,16 @@ interface LessonRecord {
     lastViewedAt: Date | null;
     status: string;
   }>;
+  quizzes: Array<{
+    attempts: Array<{ passed: boolean }>;
+    id: string;
+    title: string;
+  }>;
   slug: string;
   tasks: Array<{
     completions: Array<{ status: string }>;
     id: string;
+    key: string;
     title: string;
   }>;
   title: string;
@@ -80,8 +102,7 @@ interface FinalAssessmentRecord {
     id: string;
     modules: Array<{
       lessons: Array<{
-        concepts: Array<{ progress: Array<{ status: string }> }>;
-        tasks: Array<{ completions: Array<{ status: string }> }>;
+        progress: Array<{ status: string }>;
       }>;
     }>;
     position: number;
@@ -159,25 +180,10 @@ export function createPrismaTodayRepository(
                   lessons: {
                     where: { isPublished: true },
                     select: {
-                      concepts: {
-                        where: { isRequired: true },
-                        select: {
-                          progress: {
-                            where: { userId },
-                            take: 1,
-                            select: { status: true },
-                          },
-                        },
-                      },
-                      tasks: {
-                        where: { isRequired: true },
-                        select: {
-                          completions: {
-                            where: { userId },
-                            take: 1,
-                            select: { status: true },
-                          },
-                        },
+                      progress: {
+                        where: { userId },
+                        take: 1,
+                        select: { status: true },
                       },
                     },
                   },
@@ -211,7 +217,7 @@ export function createPrismaTodayRepository(
       });
     },
     async listLessons(userId) {
-      return client.lesson.findMany({
+      const lessons = await client.lesson.findMany({
         where: {
           isPublished: true,
           module: {
@@ -229,6 +235,10 @@ export function createPrismaTodayRepository(
           { position: 'asc' },
         ],
         select: {
+          activityCompletionCarryovers: {
+            where: { userId },
+            select: { activityKey: true, kind: true, moduleRunId: true },
+          },
           concepts: {
             where: { isRequired: true },
             orderBy: { position: 'asc' },
@@ -236,9 +246,11 @@ export function createPrismaTodayRepository(
               assessments: {
                 where: { isRequired: true },
                 select: {
+                  id: true,
                   questions: { take: 1, select: { id: true } },
                 },
               },
+              id: true,
               progress: {
                 where: { userId },
                 take: 1,
@@ -248,9 +260,24 @@ export function createPrismaTodayRepository(
             },
           },
           estimatedMinutes: true,
+          exercises: {
+            where: { isCanonical: true, isRequired: true },
+            orderBy: { position: 'asc' },
+            select: {
+              id: true,
+              key: true,
+              submissions: {
+                where: { userId },
+                take: 1,
+                select: { status: true },
+              },
+              title: true,
+            },
+          },
           id: true,
           module: {
             select: {
+              id: true,
               position: true,
               slug: true,
               stage: {
@@ -283,9 +310,23 @@ export function createPrismaTodayRepository(
             take: 1,
             select: { lastViewedAt: true, status: true },
           },
+          quizzes: {
+            where: { isRequired: true },
+            orderBy: { position: 'asc' },
+            select: {
+              attempts: {
+                where: { userId },
+                orderBy: { submittedAt: 'desc' },
+                select: { passed: true },
+                take: 1,
+              },
+              id: true,
+              title: true,
+            },
+          },
           slug: true,
           tasks: {
-            where: { isRequired: true },
+            where: { isCanonical: true, isRequired: true },
             orderBy: { position: 'asc' },
             select: {
               completions: {
@@ -294,12 +335,29 @@ export function createPrismaTodayRepository(
                 select: { status: true },
               },
               id: true,
+              key: true,
               title: true,
             },
           },
           title: true,
         },
       });
+      const moduleIds = [...new Set(lessons.map((lesson) => lesson.module.id))];
+      const currentRuns = await Promise.all(
+        moduleIds.map((moduleId) =>
+          getCurrentModuleRun(client, moduleId, userId),
+        ),
+      );
+      const currentRunIds = new Set(
+        currentRuns.flatMap((run) => (run ? [run.id] : [])),
+      );
+      return lessons.map((lesson) => ({
+        ...lesson,
+        activityCompletionCarryovers:
+          lesson.activityCompletionCarryovers.filter((carryover) =>
+            currentRunIds.has(carryover.moduleRunId),
+          ),
+      }));
     },
     async listPendingReviews(userId) {
       return client.reviewItem.findMany({
@@ -336,6 +394,7 @@ export function createPrismaTodayRepository(
             },
           },
           program: { select: { id: true, slug: true, title: true } },
+          sourceId: true,
         },
       });
     },
@@ -364,6 +423,17 @@ function lessonHref(programSlug: string, lessonSlug: string) {
   return `/program/${programSlug}/lesson/${lessonSlug}`;
 }
 
+function lessonActivityHref(
+  programSlug: string,
+  lessonSlug: string,
+  kind: string,
+  id: string,
+) {
+  const key = `${kind}:${id}`;
+  const encodedKey = encodeURIComponent(key);
+  return `${lessonHref(programSlug, lessonSlug)}?activity=${encodedKey}#activity-${encodedKey}`;
+}
+
 function lessonOrder(lesson: LessonRecord): number {
   return (
     lesson.module.stage.program.position * 1_000_000 +
@@ -385,7 +455,7 @@ function reviewCandidates(
     return [
       {
         estimatedMinutes: review.lesson.estimatedMinutes,
-        href: lessonHref(review.program.slug, review.lesson.slug),
+        href: `${lessonHref(review.program.slug, review.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(review.sourceId)}&activity=${encodeURIComponent(`concept_assessment:${review.sourceId}`)}`,
         kind,
         lessonTitle: review.lesson.title,
         moduleTitle: review.lesson.module.title,
@@ -414,12 +484,22 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
   if (!currentLesson) return [];
 
   return currentLesson.tasks
-    .filter((task) => task.completions[0]?.status !== TaskCompletionStatus.DONE)
+    .filter(
+      (task) =>
+        task.completions[0]?.status !== TaskCompletionStatus.DONE &&
+        !currentLesson.activityCompletionCarryovers.some(
+          (carryover) =>
+            carryover.kind === CanonicalActivityKind.TASK &&
+            carryover.activityKey === task.key,
+        ),
+    )
     .map((task) => ({
       estimatedMinutes: currentLesson.estimatedMinutes,
-      href: lessonHref(
+      href: lessonActivityHref(
         currentLesson.module.stage.program.slug,
         currentLesson.slug,
+        'task',
+        task.id,
       ),
       kind: 'INCOMPLETE_TASK' as const,
       lessonTitle: currentLesson.title,
@@ -433,14 +513,16 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
     }));
 }
 
-function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
+function conceptAssessmentCandidates(
+  lessons: LessonRecord[],
+): RecommendationCandidate[] {
   return lessons.flatMap((lesson) =>
     lesson.concepts.flatMap((concept) => {
-      const ready = concept.assessments.some(
+      const assessment = concept.assessments.find(
         (assessment) => assessment.questions.length > 0,
       );
       if (
-        !ready ||
+        !assessment ||
         concept.progress[0]?.status === ConceptProgressStatus.VALIDATED
       ) {
         return [];
@@ -449,7 +531,7 @@ function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
       return [
         {
           estimatedMinutes: lesson.estimatedMinutes,
-          href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz`,
+          href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}&activity=${encodeURIComponent(`concept_assessment:${assessment.id}`)}`,
           kind: 'REQUIRED_QUIZ' as const,
           lessonTitle: lesson.title,
           moduleTitle: lesson.module.title,
@@ -462,6 +544,56 @@ function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
         },
       ];
     }),
+  );
+}
+
+function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
+  return lessons.flatMap((lesson) =>
+    lesson.quizzes
+      .filter((quiz) => quiz.attempts[0]?.passed !== true)
+      .map((quiz) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz?quizId=${encodeURIComponent(quiz.id)}&activity=${encodeURIComponent(`quiz:${quiz.id}`)}`,
+        kind: 'REQUIRED_QUIZ' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonOrder(lesson),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: quiz.title,
+      })),
+  );
+}
+
+function exerciseCandidates(
+  lessons: LessonRecord[],
+): RecommendationCandidate[] {
+  return lessons.flatMap((lesson) =>
+    lesson.exercises
+      .filter(
+        (exercise) =>
+          exercise.submissions[0]?.status !== 'SUBMITTED' &&
+          !lesson.activityCompletionCarryovers.some(
+            (carryover) =>
+              carryover.kind === CanonicalActivityKind.EXERCISE &&
+              carryover.activityKey === exercise.key,
+          ),
+      )
+      .map((exercise) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/exercise/${encodeURIComponent(exercise.id)}?activity=${encodeURIComponent(`exercise:${exercise.id}`)}`,
+        kind: 'REQUIRED_EXERCISE' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonOrder(lesson),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: exercise.title,
+      })),
   );
 }
 
@@ -490,12 +622,10 @@ function navigationCandidate(
     : hasEarlierModule
       ? 'NEXT_MODULE'
       : 'NEXT_LESSON';
-  const href =
-    kind === 'NEXT_STAGE'
-      ? `/program/${nextLesson.module.stage.program.slug}/stage/${nextLesson.module.stage.slug}`
-      : kind === 'NEXT_MODULE'
-        ? `/program/${nextLesson.module.stage.program.slug}/module/${nextLesson.module.slug}`
-        : lessonHref(nextLesson.module.stage.program.slug, nextLesson.slug);
+  const href = lessonHref(
+    nextLesson.module.stage.program.slug,
+    nextLesson.slug,
+  );
   const title =
     kind === 'NEXT_STAGE'
       ? `Découvrir : ${nextLesson.module.stage.title}`
@@ -523,7 +653,9 @@ function lessonCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
 
   return [
     ...taskCandidates(lessons),
+    ...conceptAssessmentCandidates(lessons),
     ...quizCandidates(lessons),
+    ...exerciseCandidates(lessons),
     ...(navigation ? [navigation] : []),
   ];
 }
@@ -536,21 +668,13 @@ function finalAssessmentCandidates(
       const lessons = assessment.stage.modules.flatMap(
         (module) => module.lessons,
       );
-      const conceptsAreValidated = lessons
-        .flatMap((lesson) => lesson.concepts)
-        .every(
-          (concept) =>
-            concept.progress[0]?.status === ConceptProgressStatus.VALIDATED,
-        );
-      const tasksAreDone = lessons
-        .flatMap((lesson) => lesson.tasks)
-        .every(
-          (task) => task.completions[0]?.status === TaskCompletionStatus.DONE,
-        );
+      const lessonsAreCompleted = lessons.every(
+        (lesson) =>
+          lesson.progress[0]?.status === LessonProgressStatus.COMPLETED,
+      );
 
       return (
-        conceptsAreValidated &&
-        tasksAreDone &&
+        lessonsAreCompleted &&
         assessment.stage.progress[0]?.status !== StageProgressStatus.LOCKED &&
         assessment.submissions[0]?.status !==
           StageAssessmentSubmissionStatus.VALIDATED &&

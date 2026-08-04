@@ -1,5 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 
+import { expectNoSeriousA11yViolations } from './accessibility';
+
 const credentials = {
   displayName: 'Apprenant E2E',
   email: 'learner@example.com',
@@ -24,10 +26,19 @@ const timeline = {
 };
 
 const lessonSummary = {
+  activityCounts: {
+    concepts: 0,
+    exercises: 0,
+    quizzes: 1,
+    resources: 0,
+    tasks: 1,
+  },
   estimatedMinutes: 10,
   id: 'lesson-1',
+  isLocked: false,
   isPublished: true,
   position: 1,
+  progress: { percent: 0, status: 'AVAILABLE' },
   slug: 'lecon-critique',
   summary: 'Une leçon publiée pour valider le parcours critique.',
   title: 'Leçon critique',
@@ -76,6 +87,8 @@ function lessonProgress(state: JourneyState) {
 
   return {
     canComplete: state.quizPassed && state.taskDone,
+    conceptProgress: {},
+    exerciseSubmissions: {},
     lessonProgress: {
       completedAt: null,
       percent,
@@ -83,6 +96,7 @@ function lessonProgress(state: JourneyState) {
       status: state.started ? 'IN_PROGRESS' : 'AVAILABLE',
     },
     resourceProgress: {},
+    quizPassed: { 'quiz-1': state.quizPassed },
     taskCompletions: { 'task-1': state.taskDone ? 'DONE' : 'TODO' },
   };
 }
@@ -211,6 +225,17 @@ async function installJourneyApi(page: Page) {
           ...moduleSummary,
           description: 'Module du parcours critique.',
           estimatedMinutes: 10,
+          stage: {
+            id: 'stage-1',
+            isPublished: true,
+            program: {
+              id: 'program-1',
+              slug: 'programme-e2e',
+              title: 'Programme E2E',
+            },
+            slug: 'stage-e2e',
+            title: 'Étape E2E',
+          },
         },
       });
       return;
@@ -230,6 +255,24 @@ async function installJourneyApi(page: Page) {
             },
           ],
           exercises: [],
+          module: {
+            id: 'module-1',
+            isPublished: true,
+            slug: 'module-e2e',
+            stage: {
+              id: 'stage-1',
+              isPublished: true,
+              program: {
+                id: 'program-1',
+                slug: 'programme-e2e',
+                title: 'Programme E2E',
+              },
+              slug: 'stage-e2e',
+              title: 'Étape E2E',
+            },
+            title: 'Module E2E',
+          },
+          navigation: { nextLesson: null, previousLesson: null },
           objectives: ['Valider le parcours critique'],
           prerequisites: [],
           quizzes: [
@@ -371,18 +414,92 @@ async function openCriticalLesson(page: Page) {
     name: 'Navigation principale',
   });
 
-  await navigation.getByRole('link', { name: 'Programmes' }).click();
+  await navigation.getByRole('link', { name: 'Parcours' }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: 'Mes programmes' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Ouvrir le programme' }).click();
-  await page.getByRole('link', { name: 'Ouvrir l’étape' }).click();
-  await page.getByRole('link', { name: 'Ouvrir le module' }).click();
-  await page.getByRole('link', { name: 'Ouvrir la leçon' }).click();
+  await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: lessonSummary.title }),
   ).toBeVisible();
 }
+
+async function expectNoHorizontalOverflow(page: Page) {
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+}
+
+test('garde les cinq destinations lisibles et accessibles sur mobile et desktop', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+
+  const navigation = page.getByRole('navigation', {
+    name: 'Navigation principale',
+  });
+  const expectedLabels = ['Accueil', 'Parcours', 'Réviser', 'Notes', 'Profil'];
+
+  for (const viewport of [
+    { height: 700, width: 320 },
+    { height: 844, width: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await expectNoHorizontalOverflow(page);
+    await expect(navigation).toBeVisible();
+
+    for (const label of expectedLabels) {
+      const link = navigation.getByRole('link', { name: label });
+      await expect(link).toBeVisible();
+      await link.focus();
+      await expect(link).toBeFocused();
+    }
+
+    expect(
+      await navigation.evaluate(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    ).toBe(true);
+  }
+
+  const activeLink = navigation.getByRole('link', { name: 'Accueil' });
+  await expect(activeLink).toHaveAttribute('aria-current', 'page');
+  expect(
+    await activeLink.evaluate(
+      (element) => getComputedStyle(element).textDecorationLine,
+    ),
+  ).not.toContain('underline');
+
+  await page.setViewportSize({ height: 900, width: 1280 });
+  const desktopGeometry = await navigation.evaluate((element) => {
+    const links = Array.from(element.querySelectorAll('a'));
+    const rectangle = element.getBoundingClientRect();
+
+    return {
+      height: rectangle.height,
+      linkTops: links.map((link) => link.getBoundingClientRect().top),
+      width: rectangle.width,
+    };
+  });
+
+  expect(desktopGeometry.height).toBeGreaterThan(850);
+  expect(desktopGeometry.width).toBeLessThan(150);
+  expect(desktopGeometry.linkTops).toEqual(
+    [...desktopGeometry.linkTops].sort((left, right) => left - right),
+  );
+});
 
 test('préserve le parcours critique après inscription et reconnexion', async ({
   page,
@@ -411,20 +528,22 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(
     page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
   ).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
+  await expectNoHorizontalOverflow(page);
 
   await openCriticalLesson(page);
-  await page.getByRole('button', { name: 'Commencer la leçon' }).click();
-  await expect(page.getByText('Statut : En cours')).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
+  await page.getByRole('button', { name: 'Continuer' }).click();
 
-  await page.getByRole('button', { name: 'Marquer comme terminée' }).click();
+  await page.getByRole('button', { name: 'Marquer comme terminé' }).click();
   await expect(
     page.getByRole('button', { name: 'Marquer comme à faire' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '50');
 
-  await page.getByRole('link', { name: 'Commencer le quiz' }).click();
+  await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByLabel('Vrai').check();
   await page.getByRole('button', { name: 'Envoyer mes réponses' }).click();
   await expect(page.getByText('Quiz réussi')).toBeVisible();
@@ -434,7 +553,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
     .getByRole('button', { name: 'Revenir à la page précédente' })
     .click();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 
   await page
@@ -452,9 +571,143 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await openCriticalLesson(page);
 
   await expect(
-    page.getByRole('button', { name: 'Marquer comme à faire' }),
+    page.getByRole('heading', { level: 2, name: 'Contenu 1' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
+
+  await page.setViewportSize({ height: 700, width: 320 });
+  await expectNoHorizontalOverflow(page);
+});
+
+test('affiche le sommaire pédagogique en une colonne sans débordement', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/program/programme-e2e/lesson/lecon-critique');
+
+  const summaryTrigger = page.getByRole('button', { name: 'Sommaire' });
+  await summaryTrigger.click();
+  const dialog = page.getByRole('dialog', { name: 'Sommaire de la leçon' });
+  await expect(dialog).toBeVisible();
+  await expectNoSeriousA11yViolations(page);
+  await expect(
+    page.getByRole('button', { name: 'Fermer le panneau' }),
+  ).toBeFocused();
+  await expect(dialog.getByRole('listitem')).toHaveCount(4);
+  expect(
+    await dialog.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
+  expect(
+    await dialog.getByRole('listitem').evaluateAll((items) => {
+      const positions = items.map((item) => item.getBoundingClientRect());
+      return positions.every(
+        (position, index) =>
+          index === 0 ||
+          (Math.abs(position.left - positions[0].left) < 1 &&
+            position.top >= positions[index - 1].bottom),
+      );
+    }),
+  ).toBe(true);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(summaryTrigger).toBeFocused();
+
+  await page.setViewportSize({ height: 720, width: 320 });
+  await summaryTrigger.click();
+  await expectNoHorizontalOverflow(page);
+  expect(
+    await page
+      .getByRole('dialog', { name: 'Sommaire de la leçon' })
+      .evaluate((element) => element.scrollWidth <= element.clientWidth),
+  ).toBe(true);
+  await page.getByRole('button', { name: 'Fermer le panneau' }).click();
+
+  await page.setViewportSize({ height: 900, width: 1280 });
+  await summaryTrigger.click();
+  await expectNoHorizontalOverflow(page);
+  await expect(
+    page.getByRole('dialog', { name: 'Sommaire de la leçon' }),
+  ).toBeVisible();
+});
+
+test('reste utilisable avec texte agrandi et réduction des animations', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+  await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
+
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Navigation principale' })
+      .getByRole('link', { name: 'Parcours' }),
+  ).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await expectNoSeriousA11yViolations(page);
+
+  const animationDuration = await page.locator('body').evaluate((element) =>
+    getComputedStyle(element).animationDuration,
+  );
+  expect(Number.parseFloat(animationDuration || '0')).toBeLessThanOrEqual(
+    0.01,
+  );
+});
+
+test('conserve la route privée et reprend après reconnexion', async ({
+  context,
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+
+  await context.setOffline(true);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+  ).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/today');
+
+  await context.setOffline(false);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/today');
 });

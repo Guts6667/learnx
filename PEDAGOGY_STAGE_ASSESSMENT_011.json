@@ -1,0 +1,191 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_011",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "psychopathologie",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Comprendre la psychopathologie",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Auditer le dossier fictif « Repères au Point-Relais » en distinguant variation, souffrance, fonctionnement, classification, formulation, familles de manifestations et orientation générale, tout en recensant les informations manquantes et en refusant diagnostic amateur, checklist, stigmatisation ou conseil clinique individualisé.",
+    "instructions": [
+      "Construire un tableau pour chaque vignette séparant faits rapportés, source, durée, changement, souffrance, fonctionnement, sécurité, interprétation du rapport et informations manquantes. Ne retenir aucun diagnostic et ne compléter aucune lacune par supposition.",
+      "Auditer les usages du mot « normal » en distinguant fréquence statistique, attente sociale ou développementale, valeur et appréciation clinique. Cartographier fonctions, activités, participation, obstacles et soutiens selon une logique interactionnelle du handicap, puis intégrer le sens culturel sans stéréotyper.",
+      "Distinguer classification, diagnostic professionnel et formulation individualisée. Pour chaque usage proposé du code, préciser finalité, système et édition, population, exigences complètes, conséquences et compétence nécessaire ; rappeler qu'un code n'est ni une cause complète ni l'identité d'une personne.",
+      "Auditer le questionnaire et le seuil en séparant score, erreur, seuil, décision, fiabilité, validité et utilité. Expliquer hétérogénéité et comorbidité sans transformer deux scores proches en maladies indépendantes ni utiliser la catégorie comme entité naturelle certaine.",
+      "Construire pour deux vignettes une formulation biopsychosociale en interactions et dans le temps : vulnérabilités possibles, événements proches, mécanismes de maintien, protections, alternatives et données capables de réviser chaque hypothèse. Aucun niveau ne doit devenir cause unique ou source de blâme.",
+      "Comparer les trajectoires par équifinalité et multifinalité ; reformuler risque et protection comme probabilités conditionnelles. Décrire la résilience comme processus dynamique soutenu par des environnements, non comme invulnérabilité, mérite ou obligation de faire face seul.",
+      "Pour la vignette peur–intrusions–stress, distinguer peur, anxiété, inquiétude, évitement, obsession, compulsion et réponse à un événement difficile. Examiner durée, cycle, retentissement, développement, culture, santé, substances et alternatives sans checklist, récit traumatique imposé, exposition autonome ou interruption prescrite d'un rituel.",
+      "Pour la vignette d'humeur, construire une chronologie humeur–intérêt–énergie–sommeil–activité–retentissement–contexte. Distinguer variation ordinaire, profil dépressif possible, activation, manie et hypomanie comme familles à différencier par une évaluation qualifiée ; ne proposer ni médicament ni traitement.",
+      "Pour les expériences inhabituelles, distinguer manifestation psychotique possible, trouble précis et diagnostics différentiels. Examiner apparition, sommeil, substances, médicaments, santé, culture, fonctionnement et sécurité ; corriger les amalgames avec violence, double personnalité, incapacité ou absence de droits.",
+      "Pour les difficultés développementales et relationnelles, séparer trajectoire ancienne, variations entre lieux, aptitudes, besoins, environnement, fonctionnement de soi et relations, gravité et traits. Respecter neurodiversité et préférences de langage ; rejeter déficit global, guérison promise, mauvais caractère et personnalité immuable.",
+      "Réécrire les onze conclusions du rapport et produire un arbre d'orientation générale distinguant information, évaluation qualifiée non urgente et aide urgente locale à partir de faits observables. Citer au point d'usage au moins huit ressources, dont au moins une de chacune des six leçons ; ne diagnostiquer, évaluer le risque clinique, prescrire ou garantir aucun résultat."
+    ],
+    "case": "Dossier entièrement fictif — Repères au Point-Relais. Le Point-Relais est un espace municipal fictif d'aide aux études et aux démarches. Ses bénévoles ne sont ni cliniciens ni professionnels de santé. Après une courte formation au bien-être, la coordinatrice crée un « tableau de diagnostic précoce » à partir d'un questionnaire facultatif, de notes prises pendant les ateliers et de publications publiques sur les réseaux sociaux. Elle fixe seule un seuil de 10 : toute personne obtenant au moins 10 points reçoit un nom de trouble et un programme conseillé. Le questionnaire mélange tristesse, sommeil, inquiétude, concentration, expériences inhabituelles, conflits et difficultés sensorielles. Il n'a pas de manuel, de population de référence, d'étude de fidélité ou de validité, d'erreur de mesure ni de procédure de sécurité. Deux bénévoles ne sont d'accord que sur 9 des 20 mêmes réponses, mais le rapport affirme que la grille est objective parce qu'elle produit un nombre. Il assimile utilité administrative, validité clinique et cause biologique. Un score de 9 est déclaré normal, un score de 10 malade, sans examiner la proximité du seuil, l'incertitude ou les profils différents menant au même total. Lorsque deux sous-scores sont élevés, le tableau compte automatiquement deux maladies indépendantes. Les personnes n'ont pas consenti à une évaluation clinique et les notes nominatives sont accessibles à toute l'équipe. Le premier fragment concerne Nadir, 20 ans. Depuis trois semaines, il manque certains cours, dort moins et dit avoir « le cœur lourd » et des maux de tête. Il travaille tard pour payer son logement, a changé de ligne de transport et partage une chambre bruyante. Dans sa famille, la détresse est parfois décrite surtout par des sensations corporelles. Il dit que la salle calme et des horaires souples l'aident à étudier, mais l'escalier du centre aggrave une limitation motrice ancienne et réduit sa participation. Le rapport appelle ses expressions culturelles « anormales », déduit un trouble de la fréquence supposée de ses propos et affirme que son diagnostic explique seul son handicap. Il ne documente pas fonctionnement habituel, intensité, évolution, santé physique, médicaments, consommations, sécurité, soutiens, souhaits ou sens donné par Nadir. Le deuxième fragment concerne Elena, 29 ans. Après avoir oublié une casserole sur le feu sans dommage, elle vérifie parfois la cuisinière deux ou trois fois avant de sortir. Elle rapporte une pensée intrusive choquante qu'elle ne souhaite pas détailler, des palpitations après plusieurs boissons énergisantes et une appréhension dans les transports bondés. Elle a aussi été témoin d'un accident six semaines plus tôt, mais ne souhaite pas en faire le récit au groupe. Le rapport conclut simultanément à un trouble panique, un TOC et un TSPT en cochant « palpitations », « pensée » et « événement ». Il traite le contenu intrusif comme une intention, ne précise ni fréquence, durée, cycle, temps consommé, évitement, reviviscence, sentiment de menace, retentissement, santé somatique, sommeil, substance ou pratique culturelle. Il lui recommande de supprimer seule toutes ses vérifications et de raconter publiquement l'accident pour « s'exposer ». Le troisième fragment concerne Marc, 35 ans. Il décrit une tristesse, une fatigue et une baisse d'intérêt apparues après le décès d'un proche il y a trois semaines. Un an auparavant, lors d'une échéance professionnelle, il avait dormi quatre à cinq heures pendant quatre nuits, bu beaucoup de café, travaillé tard et dit se sentir très productif. Le dossier n'indique pas si cette période représentait un changement net et observable, si l'énergie ou l'activité étaient anormalement accrues, si le fonctionnement était altéré, s'il y avait décisions inhabituelles, substances, médicament, affection médicale, épisodes antérieurs ou informations consenties d'un proche. Le tableau additionne « tristesse » et « moins de sommeil » et annonce à distance un trouble dépressif et bipolaire. Un message ultérieur de Marc dit seulement : « Ce soir, je me sens dépassé et je ne suis pas certain de pouvoir rester en sécurité ». La procédure du centre impose pourtant d'attendre trente jours pour tout score sous le seuil et de garder le secret en toutes circonstances. Elle ne prévoit ni question factuelle de sécurité, ni orientation urgente locale, ni relais qualifié. Le quatrième fragment concerne Yara, 42 ans. Après le décès de sa grand-mère, elle raconte avoir entendu brièvement sa voix pendant un rituel familial et dit que cette expérience avait un sens partagé dans sa famille. Plusieurs mois plus tard, après trois nuits presque sans sommeil, un nouveau médicament et une consommation de cannabis, ses messages deviennent difficiles à suivre et elle manque un rendez-vous. On ignore chronologie précise, examen médical, confusion, autres perceptions ou convictions, capacité à répondre à ses besoins essentiels, danger immédiat, fonctionnement antérieur et point de vue actuel. Le rapport transforme la première expérience en preuve de schizophrénie, confirme la seconde depuis un message isolé et écrit que Yara est probablement violente et incapable de décider. Il confond psychose, schizophrénie et « double personnalité », sans considérer deuil, culture, sommeil, substances, médicament, affection médicale ou autres familles. Le cinquième fragment concerne Noé, 17 ans. Depuis l'enfance, Noé décrit une sensibilité au bruit, des intérêts très soutenus et des difficultés à organiser certains devoirs. Les enseignants rapportent des besoins variables selon la structure de la classe ; dans un atelier calme avec consignes écrites, Noé apprend vite et aide d'autres élèves. La famille et Noé n'utilisent pas toujours le même langage pour parler de ces expériences. Le rapport combine un questionnaire en ligne et deux vidéos pour annoncer autisme et TDAH, puis décrit Noé comme globalement déficient et incapable d'évoluer. Il ne recueille ni histoire développementale complète, ni observations dans plusieurs lieux, ni aptitudes, besoins, santé, sommeil, apprentissages, langue, culture, situations associées ou préférences de langage. Il propose de « guérir la neurodiversité » avant toute adaptation scolaire. Le sixième fragment concerne Solène, 38 ans. Une responsable la qualifie de manipulatrice après deux conflits récents sur des horaires imposés. Une collègue décrit au contraire des relations stables sur plusieurs années et note que les conflits ont commencé après une réorganisation. Le dossier ne documente pas fonctionnement de soi, relations dans différents contextes, durée, gravité, souffrance, retentissement, développement, culture, épisode aigu, substances ou autres explications. Le tableau traduit l'adjectif de la responsable en « trouble de la personnalité », l'assimile à un mauvais caractère et affirme que cette identité morale ne peut changer. En synthèse, la coordinatrice présente l'adversité financière comme cause certaine d'un futur trouble, les soutiens comme garantie de protection et la résilience comme volonté individuelle. Elle ignore qu'une issue ressemblante peut suivre des chemins différents et qu'une même condition initiale peut conduire à des issues diverses. Sa « formulation biopsychosociale » contient seulement trois cases indépendantes — gène, pensée négative, famille — sans mécanismes, temporalité, conditions matérielles, institutions, culture, protections, alternatives ou possibilité de révision. Les onze conclusions à auditer sont : « ce qui est rare est anormal et donc pathologique ; la souffrance ou un handicap prouve à lui seul un trouble ; le seuil et le code donnent un diagnostic parfaitement fiable, valide et causal ; deux scores élevés prouvent deux maladies indépendantes ; un risque annonce le destin et la résilience est une force personnelle ; palpitations, intrusion ou exposition difficile suffisent à diagnostiquer panique, TOC ou TSPT ; tristesse et quatre nuits courtes prouvent dépression et bipolarité ; une expérience inhabituelle prouve schizophrénie et dangerosité ; sensibilité et attention permettent de diagnostiquer autisme et TDAH et révèlent un déficit global ; deux conflits prouvent un mauvais trouble de la personnalité immuable ; les bénévoles peuvent diagnostiquer, prescrire et attendre le seuil même lorsqu'une personne ne se sent pas en sécurité ». Toutes les personnes, situations, scores et organisations sont fictifs. Le dossier ne permet aucun diagnostic, aucune estimation clinique du risque, aucun choix thérapeutique ni conseil médical individualisé.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier structuré de 1 500 à 1 900 mots comprenant un tableau faits–interprétations–informations manquantes, une carte fonctionnement–environnement, un audit classification–seuils, deux formulations biopsychosociales, des chronologies prudentes des familles, un audit anti-stigmatisation, un arbre d'orientation générale et les onze conclusions révisées.",
+    "conceptSlugs": [
+      "normalite-seuils-contexte",
+      "souffrance-fonctionnement-handicap",
+      "culture-limites-orientation",
+      "classification-diagnostic-formulation",
+      "fiabilite-validite-utilite",
+      "seuils-dimensions-comorbidite",
+      "niveaux-biopsychosociaux-formulation",
+      "risque-protection-incertitude",
+      "trajectoires-equifinalite-resilience",
+      "familles-anxieuses-differentiel",
+      "obsessions-compulsions-limites",
+      "stress-trauma-orientation",
+      "episode-depressif-differentiel",
+      "manie-hypomanie-trajectoire-bipolaire",
+      "securite-orientation-humeur",
+      "psychose-differentiel-stigmatisation",
+      "neurodeveloppement-diversite-contexte",
+      "personnalite-fonctionnement-dimensionalite"
+    ],
+    "rubric": [
+      {
+        "criterion": "Normalité, souffrance, fonctionnement, handicap et culture",
+        "weight": 15,
+        "requirements": [
+          "Fréquence, attente, valeur et appréciation clinique sont distinguées ; rareté, souffrance ou différence ne deviennent pas automatiquement pathologie.",
+          "Fonctions, activités, participation, obstacles et soutiens expliquent le handicap comme interaction, sans le déduire d'un code.",
+          "Le sens culturel, le développement, les rapports de pouvoir et les souhaits sont recherchés sans relativisme, stéréotype ou pathologisation."
+        ]
+      },
+      {
+        "criterion": "Classification, qualité, seuils et comorbidité",
+        "weight": 15,
+        "requirements": [
+          "Classification, diagnostic et formulation sont séparés selon finalité, acteur et conséquences ; un code n'est ni cause complète ni identité.",
+          "Fiabilité, validité et utilité sont auditées séparément pour la grille, avec population, édition, accord, erreur et usage.",
+          "Seuil, dimensions, proximité des scores, hétérogénéité et comorbidité sont interprétés sans entités certaines ni addition mécanique de maladies."
+        ]
+      },
+      {
+        "criterion": "Formulation biopsychosociale et trajectoires",
+        "weight": 15,
+        "requirements": [
+          "Les niveaux corporels, psychologiques, relationnels, matériels, institutionnels et culturels sont reliés par des mécanismes et une chronologie.",
+          "Vulnérabilités, événements proches, maintien et protections restent des hypothèses révisables avec alternatives et données discriminantes.",
+          "Risque, équifinalité, multifinalité et résilience décrivent des probabilités et processus ouverts, sans destin, blâme ou injonction individuelle."
+        ]
+      },
+      {
+        "criterion": "Anxiété, obsessions, compulsions et réponses au stress",
+        "weight": 15,
+        "requirements": [
+          "Peur, anxiété, inquiétude, évitement, obsession et compulsion sont distingués par profil, contexte, durée, cycle et retentissement.",
+          "Santé, sommeil, substances, développement, culture et autres familles restent dans le différentiel ; une manifestation isolée ne devient pas diagnostic.",
+          "L'événement difficile n'est ni diagnostic ni récit obligatoire ; aucune exposition autonome ou interruption de rituel n'est prescrite."
+        ]
+      },
+      {
+        "criterion": "Humeur, trajectoire et sécurité",
+        "weight": 15,
+        "requirements": [
+          "La chronologie distingue tristesse ordinaire, deuil, profil dépressif possible et autres explications sans checklist.",
+          "Activation, manie et hypomanie sont différenciées selon changement, énergie, activité, durée, gravité, retentissement et différentiel, non depuis de simples hauts et bas.",
+          "La phrase de sécurité déclenche une réponse générale immédiate et qualifiée sans diagnostic, secret absolu, estimation clinique amateur ou conseil thérapeutique."
+        ]
+      },
+      {
+        "criterion": "Psychose, neurodéveloppement et personnalité sans stigmatisation",
+        "weight": 15,
+        "requirements": [
+          "Expérience inhabituelle, manifestation psychotique et trouble précis sont séparés avec santé, sommeil, substances, médicament, culture, fonctionnement et sécurité.",
+          "Psychose n'est associée ni automatiquement à schizophrénie, violence, double personnalité ou incapacité ; autonomie et droits sont préservés.",
+          "Neurodéveloppement et personnalité sont situés dans trajectoire, lieux, aptitudes, besoins, environnement, gravité et préférences de langage, sans déficit global ni faute morale."
+        ]
+      },
+      {
+        "criterion": "Orientation générale, limites et éthique",
+        "weight": 5,
+        "requirements": [
+          "L'arbre distingue information, évaluation qualifiée non urgente et aide urgente locale à partir de faits observables et de sécurité.",
+          "Les bénévoles restent dans leur rôle ; consentement, confidentialité, accès aux notes et limites de compétence sont corrigés.",
+          "Aucun diagnostic, risque clinique individuel, traitement, médicament ou résultat thérapeutique n'est proposé."
+        ]
+      },
+      {
+        "criterion": "Communication sourcée et non diagnostique",
+        "weight": 5,
+        "requirements": [
+          "Les onze conclusions sont remplacées par des formulations proportionnées séparant observation, hypothèse, information manquante et orientation.",
+          "Au moins huit citations au point d'usage couvrent les six leçons et soutiennent précisément les propositions associées.",
+          "Le langage respecte les personnes, la culture et la neurodiversité et exclut étiquette morale, fatalité, checklist et stéréotype."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante au moyen d'une fiche à neuf colonnes : observation, source, durée, fonctionnement, contexte, sécurité, hypothèses ouvertes, information manquante, référence. Pour « Normalité », reclasser chaque emploi de normal, puis cartographier fonctions, activités, participation, obstacles, soutiens et sens culturel. Pour « Classification », séparer système, diagnostic et formulation ; reconstruire l'audit fiabilité–validité–utilité et montrer l'effet du seuil et de l'hétérogénéité. Pour « Biopsychosocial », relier au moins quatre niveaux par des mécanismes datés, ajouter une alternative et une donnée de révision à chaque hypothèse, puis produire un exemple d'équifinalité et de multifinalité. Pour « Anxiété–stress », reconstruire peur, inquiétude, intrusion, répétition, événement, durée et retentissement sans nommer de trouble ni prescrire d'exposition. Pour « Humeur », tracer sommeil, énergie, activité, humeur et fonctionnement, ajouter les différentiels et corriger immédiatement la procédure de sécurité générale. Pour « Psychose–neurodéveloppement–personnalité », produire trois tableaux séparés de chronologie, contexte, aptitudes, besoins et alternatives, puis retirer toute association à violence, déficit total ou faute morale. Pour « Orientation », classer chaque action en information, évaluation qualifiée ou aide urgente locale et supprimer diagnostic, secret absolu et conseil individualisé. Pour « Communication », réécrire les onze conclusions et ajouter au moins une référence par leçon. La resoumission contient les seules sections corrigées et un bref relevé des changements."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-052-WHO-CDDR",
+      "REF-052-WHO-ICF",
+      "REF-052-STEIN",
+      "REF-052-GUREJE",
+      "REF-052-WHO-WMHR",
+      "REF-053-WHO-CDDR",
+      "REF-053-CLARK",
+      "REF-053-KENDELL",
+      "REF-053-REGIER",
+      "REF-053-KRUEGER",
+      "REF-053-APA-DSM5TR-UPDATES",
+      "REF-054-ENGEL",
+      "REF-054-KENDLER",
+      "REF-054-ARANGO",
+      "REF-054-CICCHETTI",
+      "REF-054-MASTEN",
+      "REF-054-WHO-WMHR",
+      "REF-055-WHO-CDDR",
+      "REF-055-WHO-ANXIETY",
+      "REF-055-WHO-PTSD",
+      "REF-055-STEIN-OCD",
+      "REF-055-CRASKE-ANXIETY",
+      "REF-056-WHO-CDDR",
+      "REF-056-WHO-DEPRESSION",
+      "REF-056-WHO-BIPOLAR",
+      "REF-056-GOES-2023",
+      "REF-056-WHO-SUICIDE",
+      "REF-057-WHO-CDDR",
+      "REF-057-WHO-SCHIZOPHRENIA",
+      "REF-057-WHO-AUTISM",
+      "REF-057-FARAONE-2021",
+      "REF-057-MULDER-2021",
+      "REF-057-YOUN-2026"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Repères au Point-Relais, le centre, les personnes, questionnaires, scores, notes, situations et conclusions sont entièrement fictifs.",
+        "Revue humaine obligatoire avant publication, avec compétences en psychopathologie clinique et développementale, nosologie, psychométrie, handicap, culture, neurodiversité, prévention du suicide, droits et lutte contre la stigmatisation.",
+        "Validation technique obligatoire : l'étape psychopathologie et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n'autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_052 à 057.",
+        "Les trente-trois referenceIds correspondent exactement à l'union des références des PEDAGOGY_SPEC_052 à 057 ; liens, accès, éditions et messages d'orientation urgente doivent être revérifiés et localisés pendant la revue humaine.",
+        "Le cas interdit autodiagnostic, diagnostic d'autrui, checklist diagnostique, estimation clinique individuelle du risque, prescription, modification médicamenteuse, exposition autonome, conseil thérapeutique et promesse de résultat.",
+        "Les manifestations psychotiques ne sont pas assimilées à la violence ; la neurodiversité n'est pas un déficit global à guérir ; la personnalité n'est ni faute morale ni identité immuable.",
+        "Toute orientation demeure générale : une évaluation appartient à des professionnels qualifiés et une situation de danger immédiat ou d'impossibilité de rester en sécurité appelle une aide urgente locale.",
+        "La publication reste bloquée jusqu'aux validations technique, éditoriale, clinique, culturelle et éthique de l'ensemble de l'étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas intégratrice Repères au Point-Relais, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_clinical_psychopathology_nosology_neurodevelopment_culture_safety_rights_and_ethics"
+      }
+    ]
+  }
+}

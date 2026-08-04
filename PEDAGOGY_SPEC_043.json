@@ -1,0 +1,370 @@
+{
+  "specId": "PEDAGOGY_SPEC_043",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "moduleSlug": "mesure-interpretation-personnalite",
+  "lesson": {
+    "title": "Fidélité, validité et normes",
+    "slug": "fidelite-validite-normes",
+    "summary": "Interpréter un score de personnalité comme une mesure incertaine, étayée pour un usage précis et située par rapport à une population de référence.",
+    "objectives": [
+      "Distinguer fidélité, validité et normes sans réduire la personne à son score.",
+      "Évaluer si les preuves disponibles soutiennent une interprétation et un usage déterminés.",
+      "Repérer les limites de comparabilité liées aux normes, à la culture et à l’équité."
+    ],
+    "prerequisites": [
+      "Comprendre qu’un construit psychologique est une représentation théorique.",
+      "Savoir distinguer description, association et causalité."
+    ],
+    "estimatedMinutes": 95,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un score est le résultat d’une procédure appliquée dans des conditions données. Il ne révèle ni une essence ni une quantité parfaitement observable de personnalité. L’interprétation dépend du construit visé, des items, du contexte, de la population et de l’erreur de mesure. Deux scores différents peuvent donc refléter à la fois une différence entre personnes et une part d’incertitude. Toute conclusion doit préciser ce qui a été mesuré, comment et pour quel usage.",
+          "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "La fidélité décrit la cohérence ou la précision des scores dans un cadre défini : entre items, dans le temps, entre évaluateurs ou entre formes. Un coefficient élevé ne prouve ni l’unidimensionnalité, ni la validité, ni la stabilité absolue d’un trait. Le coefficient pertinent dépend de la source d’erreur et de la décision envisagée ; sa valeur doit être accompagnée du plan d’étude, de l’échantillon et, lorsque possible, d’un intervalle ou d’une erreur standard de mesure.",
+          "sourceKeys": ["revelle-condon-2019", "testing-standards-2014"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "La validité ne se résume pas à déclarer qu’un test est « valide ». Elle désigne un argument étayé par plusieurs familles de preuves pour interpréter les scores et les utiliser d’une certaine manière. Le contenu, les processus de réponse, la structure interne, les relations avec d’autres variables et les conséquences de l’usage peuvent contribuer à cet argument. Une preuve obtenue auprès d’étudiants anglophones pour la recherche ne suffit pas automatiquement à justifier une décision d’embauche en français.",
+          "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "La question utile est : « quelles preuves soutiennent cette interprétation de ces scores, dans cette population et pour cet usage ? » Une corrélation attendue ne suffit pas seule. Il faut aussi examiner les définitions du construit, les alternatives plausibles, la précision, les données manquantes, les conditions d’administration et les coûts d’une erreur. Plus la décision est importante pour une personne, plus l’argument de validité et le contrôle des conséquences doivent être exigeants.",
+          "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "Une norme situe un score dans la distribution d’un groupe de référence. Un percentile indique une position relative, pas un pourcentage de personnalité ni un seuil naturel. L’interprétation change si l’échantillon normatif est ancien, restreint, non représentatif ou différent de la personne évaluée. La taille, le recrutement, la langue, l’âge, le contexte et la date des normes doivent être documentés ; les catégories arbitraires ne doivent pas transformer une différence graduelle en identité fixe.",
+          "sourceKeys": ["testing-standards-2014", "itc-adaptation-2017"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Comparer des groupes ou transposer un test entre langues suppose que le construit et le fonctionnement de la mesure restent suffisamment comparables. L’invariance de mesure, l’adaptation culturelle, l’accessibilité et les effets différenciés font partie de l’équité ; traduire mot à mot ne suffit pas. En cas de preuves insuffisantes, la bonne conclusion est limitée et conditionnelle : on suspend la comparaison, on collecte des données adaptées ou on choisit une autre méthode, sans profiler ni diagnostiquer.",
+          "sourceKeys": ["putnick-bornstein-2016", "itc-adaptation-2017", "testing-standards-2014"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "testing-standards-2014",
+        "title": "Standards for Educational and Psychological Testing",
+        "type": "document",
+        "url": "https://www.testingstandards.net/uploads/7/6/6/4/76643089/standards_2014edition.pdf",
+        "author": "AERA, APA et NCME",
+        "citation": "American Educational Research Association, American Psychological Association, & National Council on Measurement in Education. (2014). Standards for Educational and Psychological Testing.",
+        "description": "Lire les chapitres 1 à 3 sur validité, fidélité/précision et équité ; relever une exigence liée à l’usage prévu.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "revelle-condon-2019",
+        "title": "Reliability from alpha to omega: A tutorial",
+        "type": "article",
+        "url": "https://personality-project.org/revelle/publications/rc.pa.19.pdf",
+        "author": "William Revelle et David M. Condon",
+        "citation": "Revelle, W., & Condon, D. M. (2019). Reliability from alpha to omega: A tutorial. Psychological Assessment, 31(12), 1395–1411. https://doi.org/10.1037/pas0000754",
+        "description": "Comparer alpha et omega et noter pourquoi aucun coefficient ne garantit à lui seul la qualité d’une interprétation.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "flake-pek-hehman-2017",
+        "title": "Construct Validation in Social and Personality Research",
+        "type": "article",
+        "url": "https://www2.psych.ubc.ca/~schaller/528Readings/FlakePekHeyman2017.pdf",
+        "author": "Jessica K. Flake, Jolynn Pek et Eric Hehman",
+        "citation": "Flake, J. K., Pek, J., & Hehman, E. (2017). Construct validation in social and personality research: Current practice and recommendations. Social Psychological and Personality Science, 8(4), 370–378. https://doi.org/10.1177/1948550617693063",
+        "description": "Identifier les étapes d’un argument de validation et les risques d’une mesure sous-définie.",
+        "isRequired": true,
+        "estimatedMinutes": 18,
+        "position": 3
+      },
+      {
+        "key": "putnick-bornstein-2016",
+        "title": "Measurement Invariance Conventions and Reporting",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5145197/",
+        "author": "Diane L. Putnick et Marc H. Bornstein",
+        "citation": "Putnick, D. L., & Bornstein, M. H. (2016). Measurement invariance conventions and reporting: The state of the art and future directions for psychological research. Developmental Review, 41, 71–90. https://doi.org/10.1016/j.dr.2016.06.004",
+        "description": "Lire l’introduction non technique et expliquer pourquoi une comparaison de moyennes exige une mesure comparable.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 4
+      },
+      {
+        "key": "itc-adaptation-2017",
+        "title": "ITC Guidelines for Translating and Adapting Tests",
+        "type": "document",
+        "url": "https://www.intestcom.org/files/guideline_test_adaptation_2ed.pdf",
+        "author": "International Test Commission",
+        "citation": "International Test Commission. (2017). The ITC Guidelines for Translating and Adapting Tests (Second edition).",
+        "description": "Utiliser la checklist pour distinguer traduction, adaptation, confirmation empirique et interprétation contextualisée.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Fidélité et précision des scores",
+        "slug": "fidelite-precision-scores",
+        "description": "La fidélité quantifie une cohérence pertinente pour certaines sources d’erreur, sans prouver la validité ni l’essence d’un trait.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["testing-standards-2014", "revelle-condon-2019"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Fidélité et précision", "questionCount": 5}
+      },
+      {
+        "title": "Validité d’une interprétation et d’un usage",
+        "slug": "validite-interpretation-usage",
+        "description": "La validité est un argument cumulatif concernant une interprétation et un usage déterminés dans un contexte défini.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Argument de validité", "questionCount": 5}
+      },
+      {
+        "title": "Normes, comparabilité et équité",
+        "slug": "normes-comparabilite-equite",
+        "description": "Les normes sont des références situées ; les comparaisons exigent une adaptation et une mesure suffisamment comparables.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["putnick-bornstein-2016", "itc-adaptation-2017", "testing-standards-2014"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Normes et équité", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Auditer une affirmation de fidélité",
+        "description": "À partir d’une fiche fictive vantant un alpha élevé, identifier la source d’erreur étudiée, les informations manquantes et les conclusions non justifiées.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Construire un argument de validité",
+        "description": "Pour un usage fictif à faible enjeu, définir l’interprétation visée puis organiser les preuves disponibles, les alternatives et les limites.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Critiquer un rapport normatif",
+        "description": "Réviser un rapport qui transforme des percentiles en types fixes : population de référence, actualité, langue, invariance, équité et formulation conditionnelle.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "status": "editorial_review",
+    "version": "1.0.0",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-043-STANDARDS-2014",
+        "type": "professional_standard",
+        "authors": [],
+        "organization": "AERA, APA et NCME",
+        "title": "Standards for Educational and Psychological Testing",
+        "year": 2014,
+        "edition": "2014 edition",
+        "publication": "American Educational Research Association",
+        "doi": null,
+        "url": "https://www.testingstandards.net/uploads/7/6/6/4/76643089/standards_2014edition.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "A",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open access; copyright holders",
+        "status": "verified",
+        "notes": "Standard professionnel conjoint ; édition 2014 actuellement ouverte."
+      },
+      {
+        "id": "REF-043-REVELLE-CONDON-2019",
+        "type": "journal_article",
+        "authors": ["Revelle, W.", "Condon, D. M."],
+        "organization": null,
+        "title": "Reliability from alpha to omega: A tutorial",
+        "year": 2019,
+        "edition": null,
+        "publication": "Psychological Assessment, 31(12), 1395–1411",
+        "doi": "10.1037/pas0000754",
+        "url": "https://personality-project.org/revelle/publications/rc.pa.19.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Author manuscript",
+        "status": "verified",
+        "notes": "Tutoriel méthodologique sur les estimations de fidélité."
+      },
+      {
+        "id": "REF-043-FLAKE-2017",
+        "type": "journal_article",
+        "authors": ["Flake, J. K.", "Pek, J.", "Hehman, E."],
+        "organization": null,
+        "title": "Construct Validation in Social and Personality Research: Current Practice and Recommendations",
+        "year": 2017,
+        "edition": null,
+        "publication": "Social Psychological and Personality Science, 8(4), 370–378",
+        "doi": "10.1177/1948550617693063",
+        "url": "https://www2.psych.ubc.ca/~schaller/528Readings/FlakePekHeyman2017.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Author-provided educational copy",
+        "status": "verified",
+        "notes": "Revue des pratiques et recommandations de validation des construits."
+      },
+      {
+        "id": "REF-043-PUTNICK-2016",
+        "type": "journal_article",
+        "authors": ["Putnick, D. L.", "Bornstein, M. H."],
+        "organization": "NIH",
+        "title": "Measurement Invariance Conventions and Reporting",
+        "year": 2016,
+        "edition": null,
+        "publication": "Developmental Review, 41, 71–90",
+        "doi": "10.1016/j.dr.2016.06.004",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5145197/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "PMC author manuscript",
+        "status": "verified",
+        "notes": "Présentation non technique et revue des pratiques d’invariance."
+      },
+      {
+        "id": "REF-043-ITC-ADAPT-2017",
+        "type": "professional_guideline",
+        "authors": [],
+        "organization": "International Test Commission",
+        "title": "ITC Guidelines for Translating and Adapting Tests",
+        "year": 2017,
+        "edition": "Second edition, version 2.4",
+        "publication": "International Test Commission",
+        "doi": null,
+        "url": "https://www.intestcom.org/files/guideline_test_adaptation_2ed.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Copyright ITC; consultation publique",
+        "status": "verified",
+        "notes": "18 recommandations d’adaptation et checklist."
+      }
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitre 1, validité", "supports": "Interprétation des scores liée à un usage."}, {"referenceId": "REF-043-FLAKE-2017", "locator": "cadre de validation des construits", "supports": "Un construit exige définition et preuves continues."}], "confidence": "high", "confidenceRationale": "Standard professionnel et revue méthodologique concordants.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-043-REVELLE-CONDON-2019", "locator": "définitions et sections alpha à omega", "supports": "Pluralité des notions et estimations de fidélité."}, {"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitre 2, reliability/precision", "supports": "Précision contextualisée des scores."}], "confidence": "high", "confidenceRationale": "Tutoriel spécialisé et standard professionnel.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitre 1, sources of validity evidence", "supports": "Familles de preuves de validité."}, {"referenceId": "REF-043-FLAKE-2017", "locator": "recommandations de validation", "supports": "Validation continue et dépendante du construit."}], "confidence": "high", "confidenceRationale": "Sources directement centrées sur la validité.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitres 1 et 3", "supports": "Usage, enjeux et conséquences."}, {"referenceId": "REF-043-FLAKE-2017", "locator": "construct validation framework", "supports": "Analyse des alternatives et documentation des preuves."}], "confidence": "high", "confidenceRationale": "Principes de validation convergents.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitre 5, scores, scales, norms", "supports": "Interprétation relative aux groupes normatifs."}, {"referenceId": "REF-043-ITC-ADAPT-2017", "locator": "guidelines on scoring and interpretation", "supports": "Normes pertinentes dans le contexte adapté."}], "confidence": "high", "confidenceRationale": "Standards explicites sur normes et interprétation.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-043-PUTNICK-2016", "locator": "abstract et introduction", "supports": "Comparaisons conditionnées par l’invariance."}, {"referenceId": "REF-043-ITC-ADAPT-2017", "locator": "pre-condition, confirmation and interpretation", "supports": "Adaptation culturelle au-delà de la traduction."}, {"referenceId": "REF-043-STANDARDS-2014", "locator": "chapitre 3, fairness in testing", "supports": "Équité comme exigence de validité et d’usage."}], "confidence": "high", "confidenceRationale": "Article empirico-méthodologique et standards professionnels complémentaires.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "testing-standards-2014", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-043-STANDARDS-2014"], "pedagogicalRationale": "Cadre transversal de validité, précision et équité.", "learnerInstructions": "Lire les chapitres 1 à 3 et relever une exigence liée à l’usage prévu.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte long ; table des matières et recherche intégrées.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "revelle-condon-2019", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-043-REVELLE-CONDON-2019"], "pedagogicalRationale": "Distingue les modèles de fidélité sans sacraliser alpha.", "learnerInstructions": "Comparer alpha et omega puis noter une limite commune.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte ; équations optionnelles pour l’objectif débutant.", "alternativeResourceKey": null, "notes": "Manuscrit auteur ouvert."},
+      {"resourceKey": "flake-pek-hehman-2017", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-043-FLAKE-2017"], "pedagogicalRationale": "Relie construit, mesure et preuves de validité en psychologie de la personnalité.", "learnerInstructions": "Identifier les étapes de validation et une pratique fragile.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte court.", "alternativeResourceKey": null, "notes": "Copie universitaire accessible."},
+      {"resourceKey": "putnick-bornstein-2016", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-043-PUTNICK-2016"], "pedagogicalRationale": "Explique la comparabilité des construits entre groupes et temps.", "learnerInstructions": "Lire résumé et introduction non technique ; formuler la prudence requise.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré et PDF disponibles sur PMC.", "alternativeResourceKey": null, "notes": "Accès ouvert NIH."},
+      {"resourceKey": "itc-adaptation-2017", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-043-ITC-ADAPT-2017"], "pedagogicalRationale": "Cadre opérationnel pour langue, culture et confirmation empirique.", "learnerInstructions": "Utiliser la checklist et classer quatre actions d’adaptation.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte avec checklist finale.", "alternativeResourceKey": null, "notes": "Accès public contrôlé."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "fidelite-precision-scores",
+        "assessmentTitle": "Mini-évaluation — Fidélité et précision",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que permet d’abord d’évaluer un coefficient de fidélité ?", "explanation": "Il renseigne une cohérence ou précision définie par un modèle et des conditions.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Une cohérence des scores dans des conditions définies", "isCorrect": true, "position": 1}, {"label": "L’essence de la personnalité", "isCorrect": false, "position": 2}, {"label": "La validité de tout usage", "isCorrect": false, "position": 3}, {"label": "Un diagnostic individuel", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un alpha élevé prouve qu’une échelle est unidimensionnelle et valide.", "explanation": "Alpha ne démontre ni unidimensionnalité ni validité.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles informations contextualisent utilement une estimation de fidélité ?", "explanation": "Population, conditions et source d’erreur étudiée conditionnent l’interprétation.", "acceptedAnswers": [], "position": 3, "options": [{"label": "L’échantillon", "isCorrect": true, "position": 1}, {"label": "La source d’erreur visée", "isCorrect": true, "position": 2}, {"label": "Les conditions d’administration", "isCorrect": true, "position": 3}, {"label": "Une étiquette de type humain", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Pour étudier la stabilité temporelle, quel indice est conceptuellement pertinent ?", "explanation": "La fidélité test–retest examine la cohérence entre occasions.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Une fidélité test–retest", "isCorrect": true, "position": 1}, {"label": "Un percentile unique", "isCorrect": false, "position": 2}, {"label": "La désirabilité sociale seule", "isCorrect": false, "position": 3}, {"label": "Le titre du test", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel mot désigne la cohérence ou précision des scores dans un cadre défini ?", "explanation": "Il s’agit de la fidélité.", "acceptedAnswers": ["fidélité", "fidelite", "reliability"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "validite-interpretation-usage",
+        "assessmentTitle": "Mini-évaluation — Argument de validité",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle formulation est la plus rigoureuse ?", "explanation": "La validité concerne une interprétation et un usage contextualisés.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Ces preuves soutiennent cette interprétation pour cet usage", "isCorrect": true, "position": 1}, {"label": "Ce test est valide pour toujours", "isCorrect": false, "position": 2}, {"label": "Le score révèle la vraie personne", "isCorrect": false, "position": 3}, {"label": "Une corrélation suffit à tout usage", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles familles peuvent contribuer à un argument de validité ?", "explanation": "Plusieurs familles de preuves convergentes sont examinées.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Le contenu", "isCorrect": true, "position": 1}, {"label": "La structure interne", "isCorrect": true, "position": 2}, {"label": "Les relations avec d’autres variables", "isCorrect": true, "position": 3}, {"label": "La seule apparence professionnelle", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une validation menée dans une population et pour un usage se transfère automatiquement à tous les autres.", "explanation": "La transposition exige des preuves adaptées au nouveau contexte.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Que faire si les preuves sont insuffisantes pour une décision à fort enjeu ?", "explanation": "Il faut limiter ou suspendre l’usage et rechercher des preuves ou méthodes adaptées.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Suspendre ou limiter l’usage", "isCorrect": true, "position": 1}, {"label": "Augmenter artificiellement le score", "isCorrect": false, "position": 2}, {"label": "Transformer le résultat en diagnostic", "isCorrect": false, "position": 3}, {"label": "Ignorer le contexte", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Complétez : la validité porte sur une interprétation et un ____ déterminé.", "explanation": "Le mot attendu est usage.", "acceptedAnswers": ["usage", "utilisation"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "normes-comparabilite-equite",
+        "assessmentTitle": "Mini-évaluation — Normes et équité",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que signifie un percentile ?", "explanation": "Il situe le score relativement à une distribution de référence.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Une position relative dans un groupe de référence", "isCorrect": true, "position": 1}, {"label": "Un pourcentage de personnalité", "isCorrect": false, "position": 2}, {"label": "Une identité fixe", "isCorrect": false, "position": 3}, {"label": "Une probabilité diagnostique universelle", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quels éléments faut-il vérifier dans des normes ?", "explanation": "Pertinence, recrutement, langue et actualité conditionnent la comparaison.", "acceptedAnswers": [], "position": 2, "options": [{"label": "La population de référence", "isCorrect": true, "position": 1}, {"label": "La date de collecte", "isCorrect": true, "position": 2}, {"label": "La langue et le contexte", "isCorrect": true, "position": 3}, {"label": "La couleur du logo", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Traduire littéralement les items suffit à garantir l’équivalence culturelle.", "explanation": "L’adaptation exige aussi analyses conceptuelles, empiriques et contextuelles.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Pourquoi tester l’invariance avant de comparer des moyennes ?", "explanation": "Il faut vérifier que la mesure représente suffisamment le même construit entre groupes.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Pour soutenir la comparabilité de la mesure", "isCorrect": true, "position": 1}, {"label": "Pour créer des types immuables", "isCorrect": false, "position": 2}, {"label": "Pour supprimer toute différence", "isCorrect": false, "position": 3}, {"label": "Pour poser un diagnostic", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne le groupe utilisé pour situer un score ?", "explanation": "Il s’agit du groupe de référence ou groupe normatif.", "acceptedAnswers": ["groupe de référence", "groupe normatif", "population de référence", "population normative"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychométrie, personnalité et équité des tests requise.",
+        "L’étape personnalite-differences-individuelles et le module mesure-interpretation-personnalite sont absents du seed actuel.",
+        "Validation technique obligatoire avant toute intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "La mesure est présentée comme contextualisée et incertaine, jamais comme essence, diagnostic ou profil définitif.",
+        "Validité, normes, culture et équité sont explicitement liées à l’usage prévu.",
+        "Toutes les ressources obligatoires sont accessibles sans authentification."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_and_fairness"}
+    ]
+  }
+}

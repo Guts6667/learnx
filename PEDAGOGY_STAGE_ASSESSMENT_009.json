@@ -1,0 +1,193 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_009",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Étudier la personnalité et les différences individuelles",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Auditer le dossier fictif « Horizon 360 » en distinguant traits, états, types et diagnostics, en évaluant les explications, mesures, normes, biais et variations observées, puis en proposant un usage professionnel proportionné, équitable, confidentiel et contestable sans profiler la personne ni formuler de conseil clinique.",
+    "instructions": [
+      "Construire une carte séparant données brutes, scores, observations, interprétations et décisions dans le dossier. Pour chaque passage de l'un à l'autre, indiquer l'inférence permise, l'incertitude et l'information manquante ; ne pas dresser le profil psychologique d'Amira.",
+      "Auditer le modèle du prestataire : distinguer état, trait continu, domaine, facette, profil descriptif, type et diagnostic ; expliquer ce que les Big Five permettent d'organiser sans les traiter comme des causes, des essences ou quatre catégories naturelles.",
+      "Comparer les explications biologique, sociale-cognitive et narrative mobilisées dans le rapport. Reformuler hérédité, apprentissage, transactions personne–situation et récit identitaire sans déterminisme biologique, social ou biographique et sans conclure sur une personne à partir d'un résultat de groupe.",
+      "Analyser les différences entre le premier questionnaire, le second et les observations : distinguer stabilité de rang, changement moyen, changement individuel et variation d'états selon les situations ; examiner erreur de mesure, régression vers la moyenne, sélection et événements de vie avant de conclure à une transformation.",
+      "Auditer la fidélité annoncée : préciser la source d'erreur concernée et ce que l'alpha fourni établit ou n'établit pas ; demander les éléments pertinents sur cohérence, stabilité temporelle et, pour les observations, accord entre évaluateurs, sans confondre précision des scores et validité de leur usage.",
+      "Construire un argument de validité pour l'interprétation et la décision envisagées : examiner contenu, structure, relations attendues, conséquences et population d'usage ; auditer les normes, le percentile, la traduction et la comparabilité culturelle, puis spécifier les études manquantes, dont l'invariance lorsque pertinente.",
+      "Reconstituer le processus de réponse d'Amira et proposer au moins quatre hypothèses concurrentes pour les réponses inhabituelles ou le drapeau automatique : compréhension, mémoire, jugement, format, désirabilité sociale, acquiescement, inattention, langue ou enjeu ; interdire toute assimilation automatique à un mensonge.",
+      "Évaluer séparément les observations de la responsable et de la collègue selon contexte, durée, relation, attentes, effet de halo et occasion d'observer. Proposer une triangulation proportionnée qui conserve les désaccords informatifs au lieu de désigner une source comme vérité définitive.",
+      "Réaliser un audit d'équité portant sur langue, accessibilité, références culturelles, échantillon normatif, fonctionnement des items, opportunités et conséquences différentielles. Définir des conditions d'arrêt si la comparabilité ou l'équité ne peuvent être suffisamment étayées.",
+      "Auditer l'usage professionnel complet : qualification des utilisateurs, finalité, nécessité du test, consentement libre, possibilité de refus, minimisation, accès, durée de conservation, rectification, suppression, restitution, supervision humaine et contestation. Décider ce qui doit être abandonné, suspendu ou redessiné avant toute mobilité, promotion ou décision automatisée.",
+      "Réécrire les dix affirmations finales en formulations proportionnées, non cliniques et non profilantes, puis produire une recommandation de gouvernance avec responsables et critères de révision. Citer au point d'usage au moins huit ressources, dont au moins une de chacune des six leçons ; ne fournir ni diagnostic, ni conseil clinique, ni avis juridique personnalisé."
+    ],
+    "case": "Dossier entièrement fictif — Horizon 360. Une entreprise de services souhaite expérimenter un questionnaire de personnalité pour accompagner la mobilité interne. Le prestataire PersonaMap propose 48 items traduits de l'anglais vers le français et cinq scores présentés comme des domaines Big Five. Son interface convertit ensuite les combinaisons de scores en quatre profils colorés — Explorateur, Pilote, Soutien et Analyste — et affirme que chaque personne possède un « type profond ». La brochure indique que les profils révèlent les « talents naturels », la capacité à diriger et la réaction future à la pression. Une note destinée aux responsables ajoute qu'un score faible de stabilité émotionnelle peut signaler une « fragilité psychologique ». Le prestataire ne décrit ni facettes, ni intervalles d'incertitude, ni seuils justifiant les quatre types. Il présente les Big Five comme cinq causes internes indépendantes du contexte et décrit la personnalité comme « biologique à 70 %, donc pratiquement immuable ». Aucune source ne permet de relier ce pourcentage à l'individu évalué. Dans une autre page, il promet pourtant que huit semaines de coaching « transformeront durablement le type ». L'entreprise envisage d'abord un usage volontaire de développement. Trois semaines plus tard, un message interne précise que le profil pourra éclairer les promotions vers des fonctions de coordination. Le refus reste possible sur le formulaire, mais les salariés sont informés que l'absence de profil rendra leur dossier « moins complet ». Amira, 31 ans, travaille dans l'entreprise depuis quatre ans et candidate à une mobilité. Elle parle français et arabe au quotidien. Elle remplit le questionnaire sur son téléphone pendant un trajet interrompu. Plusieurs formulations inversées lui paraissent ambiguës et deux expressions traduites ne lui sont pas familières. Sachant que sa responsable recevra une synthèse, elle hésite sur les items concernant le conflit, répond souvent au milieu de l'échelle et acquiesce à deux propositions presque opposées. L'algorithme affiche un drapeau « authenticité faible — réponses probablement malhonnêtes », sans montrer sa règle, son taux d'erreur ou les explications alternatives. Amira obtient notamment un percentile 82 en extraversion. Le rapport traduit ce résultat par « 82 % extravertie », la classe Pilote et conclut qu'elle est née pour encadrer. Pour un autre domaine, son score est proche de la moyenne normative, mais le rapport le présente comme une faiblesse stable. Le manuel ne fournit qu'un alpha de 0,91 calculé sur le score total, alors que cinq domaines sont interprétés. Il n'indique ni stabilité test–retest, ni erreur standard, ni accord entre observateurs. L'étude normative date de 2012 et porte sur 640 étudiants anglophones d'une université américaine. Aucun élément n'est fourni sur des adultes salariés en France, la traduction, le fonctionnement différentiel des items, l'invariance entre langues ou groupes culturels, l'accessibilité mobile, la validité pour une promotion ou les conséquences de l'usage. Le prestataire affirme que l'alpha élevé prouve à lui seul que le test est valide, universel et non discriminatoire. La responsable d'Amira l'a observée lors d'une unique présentation très cadrée devant la direction. Comme Amira parlait peu et suivait ses notes, elle la décrit comme « réellement introvertie » et juge le questionnaire incohérent. Une collègue qui travaille avec elle depuis deux ans rapporte au contraire qu'Amira prend souvent la parole dans les ateliers familiers et coordonne volontiers les échanges avec les clients. Elle note aussi qu'Amira est plus réservée lors de réunions fortement hiérarchisées. Le rapport tranche que la responsable détient la vérité parce qu'elle a un statut supérieur ; il ne documente ni contexte, ni durée, ni relation, ni occasions d'observer, ni accord entre évaluateurs. Huit semaines plus tard, Amira répond une seconde fois. Entre-temps, elle a changé d'équipe, préparé sa mobilité et accompagné un proche pendant une période exigeante. Certains scores varient, d'autres restent proches. Les conditions de passation diffèrent : ordinateur au calme, consignes clarifiées et enjeu perçu comme moindre. Aucun groupe comparable, aucune mesure répétée intermédiaire et aucun intervalle d'incertitude ne sont disponibles. Le prestataire conclut simultanément que le rang d'Amira prouve une personnalité immuable et que le coaching a causé une transformation profonde. Il confond évolution moyenne d'un groupe, position relative, variation individuelle et états exprimés selon les situations. Pour promouvoir l'outil, il compare ensuite 22 salariés promus et 31 non promus. Les personnes promues avaient déjà davantage d'ancienneté, avaient été présélectionnées par leur hiérarchie et ont reçu le coaching plus souvent. Les données ont été recueillies après plusieurs décisions. Le rapport attribue néanmoins la promotion au profil Pilote et recommande d'écarter automatiquement les autres profils des postes de coordination. Il ne mesure ni qualité du travail, ni opportunités antérieures, ni accessibilité, ni effets différentiels selon langue, handicap, âge ou origine. Les réponses détaillées sont transmises à la responsable, au service des ressources humaines et au prestataire. Le formulaire ne précise ni finalité secondaire, ni durée de conservation, ni lieu d'hébergement, ni droit d'accès, de rectification ou de suppression. Le prestataire conserve aussi les données pour entraîner un système de classement. Amira reçoit seulement sa couleur et une recommandation automatisée ; elle ne peut ni connaître la logique, ni ajouter le contexte, ni contester le drapeau d'authenticité. Le service des ressources humaines propose enfin de lui envoyer, à partir de son score, un programme présenté comme prévenant l'anxiété. Aucun professionnel qualifié n'a évalué l'outil ou cette recommandation. Les dix affirmations à auditer sont : « chacun appartient naturellement à l'un des quatre types ; le Big Five révèle les causes profondes du comportement ; la personnalité d'Amira est biologique à 70 % et ne dépend pas du contexte ; le coaching a transformé son type ; l'alpha de 0,91 prouve la validité pour une promotion ; le percentile 82 signifie qu'elle est extravertie à 82 % ; le drapeau prouve qu'elle a menti ; la responsable connaît sa vraie personnalité ; les normes américaines s'appliquent équitablement à tous ; l'algorithme peut décider de la promotion et recommander une prévention psychologique ». Toutes les personnes, organisations, outils, scores et données sont fictifs. Le dossier sert à évaluer des raisonnements et un dispositif, non à profiler Amira. Il ne permet aucun diagnostic, conseil clinique, avis juridique personnalisé ou décision professionnelle réelle.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier structuré de 1 500 à 1 900 mots comprenant une carte données–inférences–décisions, un audit traits–types, une analyse multiniveau, une chronologie stabilité–situations–changement, un tableau fidélité–validité–normes, une analyse des réponses et observations, un audit d'équité et de gouvernance, puis les dix affirmations révisées.",
+    "conceptSlugs": [
+      "traits-dimensions-profils",
+      "big-five-domaines-facettes",
+      "mesure-culture-limites-inference",
+      "biologie-heritabilite-non-determinisme",
+      "apprentissage-agence-contexte-social",
+      "identite-narrative-integration-niveaux",
+      "stabilite-rang-niveau-individus",
+      "etats-situations-distributions",
+      "transactions-mecanismes-changement",
+      "fidelite-precision-scores",
+      "validite-interpretation-usage",
+      "normes-comparabilite-equite",
+      "autoquestionnaire-rapport-situe",
+      "biais-qualite-reponses",
+      "observation-triangulation-perspectives",
+      "usage-adapte-qualification",
+      "consentement-confidentialite-restitution",
+      "equite-profilage-decision"
+    ],
+    "rubric": [
+      {
+        "criterion": "Traits, domaines, facettes et profils",
+        "weight": 15,
+        "requirements": [
+          "État, trait continu, domaine, facette, profil, type et diagnostic sont distingués sans essentialiser la personne.",
+          "Les Big Five organisent des régularités descriptives sans devenir des causes profondes, quatre catégories naturelles ou des prédictions certaines.",
+          "Les données, scores, interprétations et décisions sont séparés avec incertitudes et informations manquantes."
+        ]
+      },
+      {
+        "criterion": "Explications multiniveaux et non-déterminisme",
+        "weight": 10,
+        "requirements": [
+          "Biologie, apprentissage social, agence, situations et récit identitaire sont articulés comme niveaux complémentaires.",
+          "L'héritabilité reste un paramètre de population et de contexte, non une proportion individuelle ou un destin.",
+          "Les transactions personne–situation et l'évolution narrative sont appliquées au dossier sans causalité ou transformation attribuée sans preuve."
+        ]
+      },
+      {
+        "criterion": "Stabilité, changement et situations",
+        "weight": 15,
+        "requirements": [
+          "Stabilité de rang, évolution moyenne, changement individuel et variation d'états sont correctement séparés.",
+          "Les différences de contexte de passation et d'observation sont utilisées pour formuler des distributions et hypothèses situées, non une vraie personnalité cachée.",
+          "Erreur de mesure, régression vers la moyenne, sélection, événements de vie et absence de comparaison empêchent d'attribuer le changement au coaching."
+        ]
+      },
+      {
+        "criterion": "Fidélité, validité, normes et comparabilité",
+        "weight": 20,
+        "requirements": [
+          "L'alpha est relié à une source de précision limitée ; les preuves manquantes de stabilité et d'accord sont spécifiées sans confondre fidélité et validité.",
+          "La validité est argumentée pour l'interprétation, la population et l'usage de promotion à partir de plusieurs sources de preuves et de conséquences.",
+          "Percentile et norme sont interprétés correctement ; traduction, actualité, population, invariance et comparabilité culturelle sont auditées.",
+          "Les preuves supplémentaires et conditions d'arrêt sont assez précises pour empêcher un usage qui dépasse les données disponibles."
+        ]
+      },
+      {
+        "criterion": "Réponses, biais, observation et triangulation",
+        "weight": 15,
+        "requirements": [
+          "Le processus compréhension–mémoire–jugement–réponse et les conditions de passation soutiennent plusieurs hypothèses concurrentes.",
+          "Désirabilité, acquiescement, inattention, langue et enjeu ne sont ni ignorés ni assimilés automatiquement au mensonge.",
+          "Les deux observations sont situées selon contexte, relation, halo et occasions d'observer ; la triangulation conserve les désaccords et limites."
+        ]
+      },
+      {
+        "criterion": "Culture, accessibilité et équité",
+        "weight": 10,
+        "requirements": [
+          "Langue, expressions, support mobile, accessibilité, échantillon normatif et fonctionnement des items sont reliés à la comparabilité des scores.",
+          "Opportunités antérieures, présélection, ancienneté et conséquences différentielles sont intégrées à l'audit d'équité.",
+          "L'absence de preuve d'invariance ou d'équité conduit à limiter ou suspendre l'usage, et non à affirmer automatiquement l'universalité ou le biais."
+        ]
+      },
+      {
+        "criterion": "Éthique, confidentialité et usages professionnels",
+        "weight": 10,
+        "requirements": [
+          "La nécessité de tester, la qualification, la finalité et le consentement sont évalués ; le refus n'est pas présenté comme libre s'il pénalise la candidature.",
+          "Minimisation, accès, partage, conservation, rectification, suppression et restitution donnent lieu à des mesures et responsables précis.",
+          "La décision automatisée, le profilage et l'usage de promotion sont suspendus sans preuve adéquate, supervision humaine significative et voie de contestation."
+        ]
+      },
+      {
+        "criterion": "Communication sourcée, proportionnée et non clinique",
+        "weight": 5,
+        "requirements": [
+          "Les dix affirmations sont remplacées par des formulations qui distinguent constat, hypothèse et décision sans type définitif, diagnostic ou conseil clinique.",
+          "Au moins huit citations au point d'usage couvrent les six leçons et soutiennent précisément les affirmations associées.",
+          "La recommandation de gouvernance nomme responsables, critères de suivi, limites, condition de révision et orientation vers des professionnels qualifiés lorsque nécessaire."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante à l'aide d'une fiche à huit colonnes : élément du dossier, construit, donnée disponible, inférence maximale, incertitude, explication concurrente, donnée nécessaire, référence. Pour « Traits », reclasser chaque terme en état, trait, domaine, facette, profil, type ou diagnostic et supprimer les catégories ou causes non soutenues. Pour « Multiniveaux », corriger le pourcentage biologique individuel et produire une explication biologique–sociale-cognitive–narrative non déterministe. Pour « Stabilité », reconstruire la chronologie des deux passations et observations, puis séparer rang, moyenne, individu et situations. Pour « Psychométrie », produire deux tableaux distincts — fidélité et argument de validité — et corriger norme et percentile avant de préciser les études requises. Pour « Réponses et observation », formuler au moins quatre hypothèses concurrentes au drapeau, situer les deux observateurs et proposer une triangulation. Pour « Équité », documenter langue, accessibilité, invariance, sélection et conséquences, avec une condition explicite d'arrêt. Pour « Éthique », fournir un flux de données et décisions précisant consentement, accès, conservation, droits, supervision et contestation, puis classer chaque usage en abandon, suspension ou redesign. Pour « Communication », réécrire les dix affirmations et ajouter au moins une référence par leçon. La resoumission contient les seules sections corrigées et un bref relevé des changements."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-040-OPENSTAX-11-7",
+      "REF-040-JOHN",
+      "REF-040-SOTO",
+      "REF-040-OPENSTAX-11-9",
+      "REF-040-GURVEN",
+      "REF-040-OPENSTAX-11-8",
+      "REF-041-MCADAMS-PALS",
+      "REF-041-OPENSTAX-11-6",
+      "REF-041-VUKASOVIC",
+      "REF-041-OPENSTAX-11-4",
+      "REF-041-BANDURA",
+      "REF-041-MCADAMS-MCLEAN",
+      "REF-042-ROBERTS-DELVECCHIO",
+      "REF-042-ROBERTS-MEAN",
+      "REF-042-FLEESON-2001",
+      "REF-042-FLEESON-2015",
+      "REF-042-WRZUS",
+      "REF-042-ROBERTS-INTERVENTION",
+      "REF-043-STANDARDS-2014",
+      "REF-043-REVELLE-CONDON-2019",
+      "REF-043-FLAKE-2017",
+      "REF-043-PUTNICK-2016",
+      "REF-043-ITC-ADAPT-2017",
+      "REF-044-OPENSTAX-11-9",
+      "REF-044-SCHWARZ-1999",
+      "REF-044-TOURANGEAU-YAN-2007",
+      "REF-044-MEADE-CRAIG-2012",
+      "REF-044-VAZIRE-2010",
+      "REF-044-CONNELLY-ONES-2010",
+      "REF-044-OPENSTAX-2-2",
+      "REF-045-ITC-USE",
+      "REF-045-APA-ETHICS",
+      "REF-045-GDPR-CH3",
+      "REF-045-CNIL-PROFILAGE",
+      "REF-045-SIOP-AI-2023"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Horizon 360, Amira, l'entreprise, le prestataire, les outils, scores, comparaisons et affirmations sont entièrement fictifs.",
+        "Revue humaine obligatoire avant publication, avec compétences en psychologie de la personnalité, psychométrie, psychologie culturelle, méthodes, éthique professionnelle, équité et protection des données.",
+        "Validation technique obligatoire : l'étape personnalite-differences-individuelles et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n'autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_040 à 045.",
+        "Les trente-cinq referenceIds correspondent exactement à l'union des références des PEDAGOGY_SPEC_040 à 045 ; liens, accès et éditions doivent être revérifiés pendant la revue humaine.",
+        "Le cas interdit profil définitif, diagnostic, conseil clinique, déterminisme, interprétation individuelle de l'héritabilité, décision professionnelle automatisée, causalité indue et assimilation d'un indicateur de réponse au mensonge.",
+        "Les éléments relatifs à la protection des données et au profilage sont pédagogiques et ne constituent pas un avis juridique personnalisé.",
+        "La publication reste bloquée jusqu'aux validations technique, éditoriale et scientifique de l'ensemble de l'étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas intégratrice Horizon 360, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_personality_psychometrics_cultural_psychology_ethics_and_data_protection"
+      }
+    ]
+  }
+}

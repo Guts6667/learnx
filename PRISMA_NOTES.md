@@ -57,3 +57,5 @@ pnpm prisma:seed
 - Les migrations sont versionnées.
 - Le seed doit être idempotent.
 - Les accès utilisateurs doivent toujours inclure un filtre par `userId`.
+- Les limites d’authentification partagées utilisent `login_rate_limits` et une
+  incrémentation SQL atomique ; aucune clé IP/e-mail brute n’est persistée.

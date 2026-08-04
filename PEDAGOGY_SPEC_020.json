@@ -269,11 +269,7 @@
       {
         "id": "REF-020-OPENSTAX-5-1",
         "type": "textbook_chapter",
-        "authors": [
-          "Spielman, R. M.",
-          "Jenkins, W. J.",
-          "Lovett, M. D."
-        ],
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
         "organization": "OpenStax, Rice University",
         "title": "Psychology 2e — 5.1 Sensation versus Perception",
         "year": 2020,
@@ -292,9 +288,7 @@
       {
         "id": "REF-020-GREGORY-1980",
         "type": "theoretical_article",
-        "authors": [
-          "Gregory, R. L."
-        ],
+        "authors": ["Gregory, R. L."],
         "organization": "The Royal Society",
         "title": "Perceptions as hypotheses",
         "year": 1980,
@@ -313,10 +307,7 @@
       {
         "id": "REF-020-EGETH-YANTIS-1997",
         "type": "review_article",
-        "authors": [
-          "Egeth, H. E.",
-          "Yantis, S."
-        ],
+        "authors": ["Egeth, H. E.", "Yantis, S."],
         "organization": "Annual Reviews",
         "title": "Visual Attention: Control, Representation, and Time Course",
         "year": 1997,
@@ -335,10 +326,7 @@
       {
         "id": "REF-020-SIMONS-CHABRIS-1999",
         "type": "primary_article",
-        "authors": [
-          "Simons, D. J.",
-          "Chabris, C. F."
-        ],
+        "authors": ["Simons, D. J.", "Chabris, C. F."],
         "organization": "University of Illinois / Perception",
         "title": "Gorillas in Our Midst: Sustained Inattentional Blindness for Dynamic Events",
         "year": 1999,
@@ -357,10 +345,7 @@
       {
         "id": "REF-020-SIMONS-RENSINK-2005",
         "type": "review_article",
-        "authors": [
-          "Simons, D. J.",
-          "Rensink, R. A."
-        ],
+        "authors": ["Simons, D. J.", "Rensink, R. A."],
         "organization": "Trends in Cognitive Sciences / University of British Columbia",
         "title": "Change Blindness: Past, Present, and Future",
         "year": 2005,
@@ -379,9 +364,7 @@
       {
         "id": "REF-020-PASHLER-1994",
         "type": "review_article",
-        "authors": [
-          "Pashler, H."
-        ],
+        "authors": ["Pashler, H."],
         "organization": "American Psychological Association",
         "title": "Dual-task Interference in Simple Tasks: Data and Theory",
         "year": 1994,
@@ -400,11 +383,7 @@
       {
         "id": "REF-020-CHUN-2011",
         "type": "review_article",
-        "authors": [
-          "Chun, M. M.",
-          "Golomb, J. D.",
-          "Turk-Browne, N. B."
-        ],
+        "authors": ["Chun, M. M.", "Golomb, J. D.", "Turk-Browne, N. B."],
         "organization": "Annual Reviews",
         "title": "A Taxonomy of External and Internal Attention",
         "year": 2011,
@@ -539,9 +518,7 @@
     "resourceChecks": [
       {
         "resourceKey": "openstax-psychology-2e-5-1",
-        "referenceIds": [
-          "REF-020-OPENSTAX-5-1"
-        ],
+        "referenceIds": ["REF-020-OPENSTAX-5-1"],
         "pedagogicalRationale": "Introduction ouverte et progressive reliant sensation, perception, contexte et inattention.",
         "learnerInstructions": "Lire la section et construire un tableau sensation-perception-ascendant-descendant-attention.",
         "language": "en",
@@ -556,9 +533,7 @@
       },
       {
         "resourceKey": "gregory-perceptions-hypotheses-1980",
-        "referenceIds": [
-          "REF-020-GREGORY-1980"
-        ],
+        "referenceIds": ["REF-020-GREGORY-1980"],
         "pedagogicalRationale": "Fournit un cadre historique explicite pour comprendre la perception comme interprétation contrainte.",
         "learnerInstructions": "Lire le résumé et distinguer analogie théorique, observations et conclusion générale.",
         "language": "en",
@@ -573,9 +548,7 @@
       },
       {
         "resourceKey": "egeth-yantis-visual-attention-1997",
-        "referenceIds": [
-          "REF-020-EGETH-YANTIS-1997"
-        ],
+        "referenceIds": ["REF-020-EGETH-YANTIS-1997"],
         "pedagogicalRationale": "Revue de référence qui évite de réduire la sélection à un filtre unique.",
         "learnerInstructions": "Lire le résumé et relever les trois problèmes centraux étudiés par la revue.",
         "language": "en",
@@ -590,9 +563,7 @@
       },
       {
         "resourceKey": "simons-chabris-gorillas-1999",
-        "referenceIds": [
-          "REF-020-SIMONS-CHABRIS-1999"
-        ],
+        "referenceIds": ["REF-020-SIMONS-CHABRIS-1999"],
         "pedagogicalRationale": "Étude primaire classique permettant de relier tâche, objet inattendu, mesure et portée d'une conclusion.",
         "learnerInstructions": "Lire le résumé institutionnel et relever les facteurs qui modifient la détection.",
         "language": "en",
@@ -607,9 +578,7 @@
       },
       {
         "resourceKey": "simons-rensink-change-blindness-2005",
-        "referenceIds": [
-          "REF-020-SIMONS-RENSINK-2005"
-        ],
+        "referenceIds": ["REF-020-SIMONS-RENSINK-2005"],
         "pedagogicalRationale": "Définit le phénomène tout en discutant explicitement les inférences légitimes et excessives.",
         "learnerInstructions": "Lire le résumé puis la copie auteur liée et produire deux colonnes : soutenu / non soutenu.",
         "language": "en",
@@ -624,9 +593,7 @@
       },
       {
         "resourceKey": "pashler-dual-task-1994",
-        "referenceIds": [
-          "REF-020-PASHLER-1994"
-        ],
+        "referenceIds": ["REF-020-PASHLER-1994"],
         "pedagogicalRationale": "Revue classique des interférences de double tâche et des explications par goulot central.",
         "learnerInstructions": "Lire la notice et relever population, tâches simples, mesure et mécanisme proposé.",
         "language": "en",
@@ -641,9 +608,7 @@
       },
       {
         "resourceKey": "chun-golomb-turkbrowne-attention-2011",
-        "referenceIds": [
-          "REF-020-CHUN-2011"
-        ],
+        "referenceIds": ["REF-020-CHUN-2011"],
         "pedagogicalRationale": "Taxonomie de synthèse montrant la pluralité des sélections attentionnelles externes et internes.",
         "learnerInstructions": "Lire le résumé et dessiner les axes principaux de la taxonomie.",
         "language": "en",
@@ -669,10 +634,26 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "La sensation détecte et transduit ; la perception organise et interprète", "isCorrect": true, "position": 1},
-              {"label": "La sensation interprète ; la perception ne fait que mesurer", "isCorrect": false, "position": 2},
-              {"label": "Les deux termes désignent exactement la même opération", "isCorrect": false, "position": 3},
-              {"label": "La perception précède toujours tout signal sensoriel", "isCorrect": false, "position": 4}
+              {
+                "label": "La sensation détecte et transduit ; la perception organise et interprète",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La sensation interprète ; la perception ne fait que mesurer",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les deux termes désignent exactement la même opération",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La perception précède toujours tout signal sensoriel",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -682,8 +663,8 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -693,10 +674,22 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "Les caractéristiques sensorielles", "isCorrect": true, "position": 1},
-              {"label": "Le contexte", "isCorrect": true, "position": 2},
-              {"label": "Les connaissances et attentes", "isCorrect": true, "position": 3},
-              {"label": "Une interprétation indépendante de toute information", "isCorrect": false, "position": 4}
+              {
+                "label": "Les caractéristiques sensorielles",
+                "isCorrect": true,
+                "position": 1
+              },
+              { "label": "Le contexte", "isCorrect": true, "position": 2 },
+              {
+                "label": "Les connaissances et attentes",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une interprétation indépendante de toute information",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -706,20 +699,33 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "Les opérations et hypothèses qui guident l'interprétation", "isCorrect": true, "position": 1},
-              {"label": "Une lésion certaine chez chaque personne", "isCorrect": false, "position": 2},
-              {"label": "L'inutilité de toutes les sensations", "isCorrect": false, "position": 3},
-              {"label": "Une perception identique dans tous les contextes", "isCorrect": false, "position": 4}
+              {
+                "label": "Les opérations et hypothèses qui guident l'interprétation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une lésion certaine chez chaque personne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L'inutilité de toutes les sensations",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une perception identique dans tous les contextes",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
             "type": "short_answer",
             "prompt": "Comment nomme-t-on la conversion de l'énergie d'un stimulus en activité nerveuse ?",
             "explanation": "Cette conversion est la transduction.",
-            "acceptedAnswers": [
-              "transduction",
-              "la transduction"
-            ],
+            "acceptedAnswers": ["transduction", "la transduction"],
             "position": 5,
             "options": []
           }
@@ -736,10 +742,26 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "Un bruit soudain attire l'attention", "isCorrect": true, "position": 1},
-              {"label": "Chercher une clé jaune aux endroits habituels", "isCorrect": false, "position": 2},
-              {"label": "Interpréter un mot selon la phrase", "isCorrect": false, "position": 3},
-              {"label": "Prévoir la réponse avant le stimulus", "isCorrect": false, "position": 4}
+              {
+                "label": "Un bruit soudain attire l'attention",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Chercher une clé jaune aux endroits habituels",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Interpréter un mot selon la phrase",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Prévoir la réponse avant le stimulus",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -749,10 +771,26 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Chercher une clé jaune sur les surfaces où elle est habituellement posée", "isCorrect": true, "position": 1},
-              {"label": "Un flash intense active les récepteurs", "isCorrect": false, "position": 2},
-              {"label": "Une vibration atteint la peau", "isCorrect": false, "position": 3},
-              {"label": "Une molécule se lie à un récepteur", "isCorrect": false, "position": 4}
+              {
+                "label": "Chercher une clé jaune sur les surfaces où elle est habituellement posée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un flash intense active les récepteurs",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une vibration atteint la peau",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une molécule se lie à un récepteur",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -762,8 +800,8 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -773,10 +811,22 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "La saillance du stimulus", "isCorrect": true, "position": 1},
-              {"label": "Le but actuel", "isCorrect": true, "position": 2},
-              {"label": "Les attentes contextuelles", "isCorrect": true, "position": 3},
-              {"label": "Une séparation absolue entre signal et connaissance", "isCorrect": false, "position": 4}
+              {
+                "label": "La saillance du stimulus",
+                "isCorrect": true,
+                "position": 1
+              },
+              { "label": "Le but actuel", "isCorrect": true, "position": 2 },
+              {
+                "label": "Les attentes contextuelles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une séparation absolue entre signal et connaissance",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -786,10 +836,26 @@
             "acceptedAnswers": [],
             "position": 5,
             "options": [
-              {"label": "Le contexte peut contraindre l'interprétation perceptive", "isCorrect": true, "position": 1},
-              {"label": "Le signal acoustique a nécessairement changé", "isCorrect": false, "position": 2},
-              {"label": "La perception ignore toujours les signaux", "isCorrect": false, "position": 3},
-              {"label": "Une seule théorie explique toute perception", "isCorrect": false, "position": 4}
+              {
+                "label": "Le contexte peut contraindre l'interprétation perceptive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le signal acoustique a nécessairement changé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La perception ignore toujours les signaux",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une seule théorie explique toute perception",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           }
         ]
@@ -805,10 +871,26 @@
             "acceptedAnswers": [],
             "position": 1,
             "options": [
-              {"label": "Ne pas remarquer un événement inattendu en poursuivant une autre tâche", "isCorrect": true, "position": 1},
-              {"label": "Ne pas détecter une modification entre deux vues", "isCorrect": false, "position": 2},
-              {"label": "Perdre définitivement un sens", "isCorrect": false, "position": 3},
-              {"label": "Oublier une information apprise la veille", "isCorrect": false, "position": 4}
+              {
+                "label": "Ne pas remarquer un événement inattendu en poursuivant une autre tâche",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ne pas détecter une modification entre deux vues",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Perdre définitivement un sens",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Oublier une information apprise la veille",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -818,10 +900,26 @@
             "acceptedAnswers": [],
             "position": 2,
             "options": [
-              {"label": "Ne pas détecter une modification entre deux états d'une scène", "isCorrect": true, "position": 1},
-              {"label": "Ne jamais percevoir un objet immobile", "isCorrect": false, "position": 2},
-              {"label": "Choisir volontairement une seule tâche", "isCorrect": false, "position": 3},
-              {"label": "Confondre moyenne et médiane", "isCorrect": false, "position": 4}
+              {
+                "label": "Ne pas détecter une modification entre deux états d'une scène",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ne jamais percevoir un objet immobile",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Choisir volontairement une seule tâche",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Confondre moyenne et médiane",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -831,10 +929,26 @@
             "acceptedAnswers": [],
             "position": 3,
             "options": [
-              {"label": "Le chevauchement des opérations", "isCorrect": true, "position": 1},
-              {"label": "Le moment des réponses", "isCorrect": true, "position": 2},
-              {"label": "La difficulté et la pratique", "isCorrect": true, "position": 3},
-              {"label": "Une incapacité identique dans toute situation", "isCorrect": false, "position": 4}
+              {
+                "label": "Le chevauchement des opérations",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le moment des réponses",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La difficulté et la pratique",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une incapacité identique dans toute situation",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           },
           {
@@ -844,8 +958,8 @@
             "acceptedAnswers": [],
             "position": 4,
             "options": [
-              {"label": "Vrai", "isCorrect": false, "position": 1},
-              {"label": "Faux", "isCorrect": true, "position": 2}
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
             ]
           },
           {
@@ -855,10 +969,26 @@
             "acceptedAnswers": [],
             "position": 5,
             "options": [
-              {"label": "Les tâches et instructions", "isCorrect": true, "position": 1},
-              {"label": "La mesure de détection ou de performance", "isCorrect": true, "position": 2},
-              {"label": "Les conditions et limites de généralisation", "isCorrect": true, "position": 3},
-              {"label": "Un slogan universel sans données supplémentaires", "isCorrect": false, "position": 4}
+              {
+                "label": "Les tâches et instructions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La mesure de détection ou de performance",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les conditions et limites de généralisation",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un slogan universel sans données supplémentaires",
+                "isCorrect": false,
+                "position": 4
+              }
             ]
           }
         ]

@@ -40,6 +40,7 @@ interface UpdateNoteInput {
 
 export interface NotesRepository {
   create(input: CreateNoteInput): Promise<NoteRecord>;
+  deleteOwned(noteId: string, userId: string): Promise<boolean>;
   findLessonForUser(
     lessonId: string,
     userId: string,
@@ -123,6 +124,13 @@ export function createPrismaNotesRepository(
   return {
     async create(input) {
       return client.note.create({ data: input, select: noteSelect });
+    },
+    async deleteOwned(noteId, userId) {
+      const result = await client.note.deleteMany({
+        where: { id: noteId, userId },
+      });
+
+      return result.count === 1;
     },
     async findLessonForUser(lessonId, userId) {
       const lesson = await client.lesson.findFirst({
@@ -278,6 +286,17 @@ export function createNotesApp(options: NotesAppOptions = {}) {
     const updatedNote = await repository.update({ id: noteId, ...parsed.data });
 
     return context.json({ note: serializeNote(updatedNote) });
+  });
+
+  app.delete('/api/notes/:noteId', async (context) => {
+    const noteId = parseIdentifier(context.req.param('noteId'));
+    const deleted = await (
+      await getRepository()
+    ).deleteOwned(noteId, context.get('user').id);
+
+    if (!deleted) throw notFound();
+
+    return context.body(null, 204);
   });
 
   return app;
