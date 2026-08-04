@@ -1,0 +1,898 @@
+{
+  "schemaVersion": 1,
+  "specId": "PEDAGOGY_SPEC_018",
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "comprendre-cognition",
+  "moduleSlug": "cognition-apprentissage",
+  "lesson": {
+    "title": "Apprentissage",
+    "slug": "apprentissage",
+    "summary": "Apprendre ne se réduit ni à réussir pendant l'entraînement ni à recevoir un renforcement : un changement durable se juge par la rétention et le transfert, peut passer par l'observation et dépend des ressemblances pertinentes entre situations.",
+    "position": 1,
+    "estimatedMinutes": 150,
+    "prerequisites": [
+      "Distinguer conditionnement classique, conditionnement opérant et apprentissage social.",
+      "Décrire une observation sans confondre description, mécanisme et causalité."
+    ],
+    "objectives": [
+      "Distinguer apprentissage durable, performance immédiate et autres causes possibles d'un changement observé.",
+      "Analyser un apprentissage observationnel à partir de l'attention, de la rétention, de la reproduction et de la motivation.",
+      "Distinguer discrimination, généralisation et transfert proche ou lointain.",
+      "Concevoir une pratique et une évaluation qui testent la rétention et le transfert sans les présumer."
+    ],
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "En psychologie, l'apprentissage désigne un changement relativement durable de connaissances ou de conduites attribuable à l'expérience. Cette définition exclut un réflexe inné et invite à écarter, avant de conclure, des explications comme la fatigue, l'échauffement, la maturation ou un changement ponctuel de motivation. Une réussite isolée pendant l'exercice est un indice de performance, pas encore la preuve d'un apprentissage durable.",
+          "sourceKeys": ["openstax-learning-6-1", "soderstrom-bjork-2015"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "La performance est ce qui est observable pendant ou juste après la pratique ; l'apprentissage est une modification plus stable que l'on infère. Les deux peuvent diverger : des aides fréquentes améliorent l'exécution immédiate sans garantir l'autonomie ultérieure, tandis qu'une pratique exigeante peut produire davantage d'erreurs sur le moment mais une meilleure rétention. Pour tester l'apprentissage, on prévoit une mesure différée, réalisée sans les aides d'entraînement, et si possible une tâche nouvelle. Même alors, la conclusion reste une inférence dépendante du plan et des mesures.",
+          "sourceKeys": ["soderstrom-bjork-2015"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "L'apprentissage observationnel ajoute des médiations cognitives et sociales à l'expérience directe. Le modèle de Bandura distingue quatre conditions : prêter attention à l'action pertinente, en conserver une représentation, pouvoir la reproduire et être motivé à l'exécuter. Voir un comportement ne garantit donc ni sa mémorisation ni son imitation. Les conséquences observées chez le modèle peuvent modifier la motivation, mais une imitation constatée ne révèle pas à elle seule quel processus a été décisif.",
+          "sourceKeys": ["openstax-observation-6-4"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La discrimination consiste à répondre différemment à des indices proches ; la généralisation étend une réponse apprise à des stimuli ressemblants. Le transfert pose une question plus large : une connaissance ou une compétence acquise dans une tâche améliore-t-elle une autre tâche ou un autre contexte ? Un transfert proche conserve beaucoup d'éléments ; un transfert lointain en partage moins. Aucun seuil universel ne les sépare et la proximité doit être décrite. Le transfert est une donnée à mesurer, non une propriété que l'on peut déduire du seul fait d'avoir appris.",
+          "sourceKeys": ["openstax-generalisation-6-2", "pan-rickard-2018"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "Pour viser une acquisition durable, on espace les séances, on demande des récupérations actives avec retour correctif et on varie progressivement les exemples en rendant leur structure commune explicite. La pratique distribuée améliore généralement la rétention verbale par rapport à une pratique massée, et les tests d'entraînement peuvent favoriser certains transferts. Ces résultats ne justifient toutefois ni une recette identique pour toutes les tâches ni la promesse d'un transfert lointain automatique : l'intervalle, le contenu, le critère final et la similarité entre entraînement et test modèrent les effets.",
+          "sourceKeys": [
+            "cepeda-et-al-2006",
+            "pan-rickard-2018",
+            "soderstrom-bjork-2015"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-learning-6-1",
+        "type": "book_chapter",
+        "title": "6.1 What Is Learning?",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/6-1-what-is-learning",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.1 What Is Learning? In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-1-what-is-learning",
+        "description": "Lire la définition de l'apprentissage et repérer ce qui le distingue des comportements innés et d'une simple réaction.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "soderstrom-bjork-2015",
+        "type": "article",
+        "title": "Learning Versus Performance: An Integrative Review",
+        "author": "Nicholas C. Soderstrom et Robert A. Bjork",
+        "url": "https://doi.org/10.1177/1745691615569000",
+        "citation": "Soderstrom, N. C., & Bjork, R. A. (2015). Learning versus performance: An integrative review. Perspectives on Psychological Science, 10(2), 176–199. https://doi.org/10.1177/1745691615569000",
+        "description": "Lire le résumé et les sections introductives pour expliquer pourquoi la performance pendant l'entraînement peut mal renseigner sur la rétention et le transfert.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "openstax-observation-6-4",
+        "type": "book_chapter",
+        "title": "6.4 Observational Learning (Modeling)",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.4 Observational Learning (Modeling). In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling",
+        "description": "Lire les quatre étapes du modelage puis les appliquer à une démonstration réelle ou filmée.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "openstax-generalisation-6-2",
+        "type": "book_chapter",
+        "title": "6.2 Classical Conditioning — General Processes",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 6.2 Classical Conditioning. In Psychology 2e. OpenStax. https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+        "description": "Relire uniquement les passages sur la discrimination et la généralisation afin de les comparer au transfert entre tâches.",
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 4
+      },
+      {
+        "key": "cepeda-et-al-2006",
+        "type": "article",
+        "title": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis",
+        "author": "Nicholas J. Cepeda, Harold Pashler, Edward Vul, John T. Wixted et Doug Rohrer",
+        "url": "https://doi.org/10.1037/0033-2909.132.3.354",
+        "citation": "Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. Psychological Bulletin, 132(3), 354–380. https://doi.org/10.1037/0033-2909.132.3.354",
+        "description": "Consulter le résumé et noter la différence entre pratique massée et distribuée ainsi que le rôle de l'intervalle de rétention.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "pan-rickard-2018",
+        "type": "article",
+        "title": "Transfer of Test-Enhanced Learning: Meta-Analytic Review and Synthesis",
+        "author": "Steven C. Pan et Timothy C. Rickard",
+        "url": "https://doi.org/10.1037/bul0000151",
+        "citation": "Pan, S. C., & Rickard, T. C. (2018). Transfer of test-enhanced learning: Meta-analytic review and synthesis. Psychological Bulletin, 144(7), 710–756. https://doi.org/10.1037/bul0000151",
+        "description": "Lire le résumé pour identifier pourquoi la nature du test initial, du matériel et du test de transfert interdit de promettre un transfert uniforme.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Apprentissage durable et performance",
+        "slug": "apprentissage-performance",
+        "description": "L'apprentissage est un changement durable inféré à partir de mesures de rétention ou de transfert ; la performance immédiate est un indice utile mais insuffisant.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-learning-6-1", "soderstrom-bjork-2015"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Apprentissage et performance",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Apprentissage observationnel",
+        "slug": "apprentissage-observationnel",
+        "description": "Observer un modèle peut soutenir un apprentissage si attention, rétention, capacité de reproduction et motivation sont réunies, sans rendre l'imitation automatique.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-observation-6-4"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Apprentissage observationnel",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Généralisation, transfert et pratique durable",
+        "slug": "generalisation-transfert",
+        "description": "La généralisation et le transfert doivent être testés dans des situations décrites ; espacement, récupération et variation peuvent soutenir la durabilité sans garantir un transfert lointain.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-generalisation-6-2",
+          "cepeda-et-al-2006",
+          "pan-rickard-2018",
+          "soderstrom-bjork-2015"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Généralisation et transfert",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Prouver plutôt que présumer l'apprentissage",
+        "description": "À partir d'un entraînement fictif dont les scores progressent en séance, proposer deux explications concurrentes, puis concevoir une mesure différée sans aide et préciser quel résultat soutiendrait prudemment l'hypothèse d'un apprentissage durable.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Diagnostiquer une démonstration",
+        "description": "Choisir une compétence quotidienne montrée par un modèle et construire une grille séparant attention, rétention, reproduction et motivation ; ajouter un contrôle pour vérifier l'acquisition sans déduire le mécanisme d'une seule réussite.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Planifier rétention et transfert",
+        "description": "Élaborer sur sept jours un plan d'apprentissage d'un concept psychologique avec rappels espacés, récupération avec feedback, exemples variés, test différé, test proche et test plus lointain ; expliciter les ressemblances attendues et les limites d'interprétation.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "assessmentBanks": [
+      {
+        "conceptSlug": "apprentissage-performance",
+        "assessmentTitle": "Mini-évaluation — Apprentissage et performance",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel résultat constitue le meilleur indice d'un apprentissage durable ?",
+            "explanation": "Une performance différée et autonome renseigne mieux sur la persistance du changement qu'une réussite accompagnée pendant l'entraînement.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une réussite différée sans les aides utilisées à l'entraînement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une réussite immédiate avec correction pas à pas",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une impression de facilité pendant la lecture",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une forte motivation déclarée avant l'exercice",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une amélioration au fil d'une séance suffit à établir qu'un apprentissage durable a eu lieu.",
+            "explanation": "Elle peut refléter un apprentissage, mais aussi des aides, un échauffement ou un changement temporaire ; une mesure différée est nécessaire.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles explications faut-il considérer avant d'attribuer une meilleure performance à l'apprentissage ?",
+            "explanation": "Fatigue, maturation et aides contextuelles peuvent modifier la performance sans correspondre au changement durable visé.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "La disparition d'une aide présente pendant l'entraînement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La fatigue ou l'échauffement",
+                "isCorrect": true,
+                "position": 2
+              },
+              { "label": "La maturation", "isCorrect": true, "position": 3 },
+              {
+                "label": "Le seul numéro de la séance",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi une pratique plus difficile peut-elle être utile malgré davantage d'erreurs immédiates ?",
+            "explanation": "La difficulté pendant l'entraînement et la rétention ultérieure ne varient pas nécessairement dans le même sens.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Elle peut soutenir une meilleure rétention ultérieure",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute erreur prouve automatiquement un apprentissage",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La performance immédiate n'a jamais aucune valeur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La difficulté remplace le besoin d'évaluer",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Même un test différé ne permet qu'une inférence sur l'apprentissage, dépendante du plan et de la mesure.",
+            "explanation": "L'apprentissage n'est pas observé directement ; la solidité de l'inférence dépend du délai, des aides, de la tâche et des explications concurrentes.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              { "label": "Vrai", "isCorrect": true, "position": 1 },
+              { "label": "Faux", "isCorrect": false, "position": 2 }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "apprentissage-observationnel",
+        "assessmentTitle": "Mini-évaluation — Apprentissage observationnel",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une personne regarde attentivement une démonstration mais ne peut plus décrire les étapes le lendemain. Quelle condition a probablement manqué ?",
+            "explanation": "L'attention a eu lieu, mais les informations n'ont pas été suffisamment conservées pour guider la reproduction.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              { "label": "La rétention", "isCorrect": true, "position": 1 },
+              { "label": "L'attention", "isCorrect": false, "position": 2 },
+              { "label": "La reproduction", "isCorrect": false, "position": 3 },
+              {
+                "label": "La généralisation",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles conditions appartiennent au processus de modelage présenté dans la leçon ?",
+            "explanation": "Le modèle distingue attention, rétention, reproduction et motivation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Attention", "isCorrect": true, "position": 1 },
+              { "label": "Rétention", "isCorrect": true, "position": 2 },
+              { "label": "Reproduction", "isCorrect": true, "position": 3 },
+              { "label": "Motivation", "isCorrect": true, "position": 4 },
+              { "label": "Maturation", "isCorrect": false, "position": 5 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le fait d'observer un comportement implique que la personne le reproduira.",
+            "explanation": "L'observation ne garantit ni conservation, ni capacité d'exécution, ni motivation à agir.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que désigne un renforcement vicariant ?",
+            "explanation": "La conséquence positive observée chez le modèle peut accroître la motivation de l'observateur à reproduire le comportement.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Observer qu'un modèle reçoit une conséquence positive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Recevoir soi-même une récompense avant toute observation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Oublier les étapes d'une démonstration",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Répéter un réflexe inné",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une imitation est observée après une vidéo. Quelle conclusion est la plus prudente ?",
+            "explanation": "L'imitation est compatible avec un apprentissage observationnel, mais ne permet pas d'isoler à elle seule le processus causal décisif.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "La vidéo a pu contribuer, mais le mécanisme précis reste à tester",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La motivation est nécessairement l'unique cause",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Toute expérience directe est exclue",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le comportement sera reproduit dans tous les contextes",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "generalisation-transfert",
+        "assessmentTitle": "Mini-évaluation — Généralisation et transfert",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Réagir de la même manière à un son appris et à un son très proche illustre surtout quoi ?",
+            "explanation": "Une réponse apprise s'étend ici à un stimulus semblable : c'est une généralisation de stimulus.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La généralisation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La discrimination",
+                "isCorrect": false,
+                "position": 2
+              },
+              { "label": "La maturation", "isCorrect": false, "position": 3 },
+              { "label": "L'extinction", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle situation constitue le test de transfert le plus proche ?",
+            "explanation": "Le contexte change peu et la structure de la tâche reste presque identique.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Appliquer la même règle à un nouvel exemple de même format",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réciter la règle dans le même exercice",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Résoudre un problème d'un domaine sans ressemblance décrite",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Relire la correction",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles pratiques peuvent soutenir une rétention durable selon les sources de la leçon ?",
+            "explanation": "L'espacement, la récupération avec feedback et des exemples variés sont utiles, à condition d'être alignés avec la tâche finale.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Espacer les séances",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Récupérer activement puis recevoir un feedback",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Varier progressivement les exemples",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Se fier uniquement à la facilité ressentie",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une amélioration sur le matériel entraîné garantit un transfert lointain.",
+            "explanation": "Le transfert dépend notamment des relations entre matériel, entraînement et test ; le transfert lointain doit être démontré séparément.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi faut-il décrire la ressemblance entre entraînement et test ?",
+            "explanation": "Proche et lointain sont des catégories graduelles ; décrire ce qui est partagé rend l'affirmation de transfert évaluable.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Pour qualifier et interpréter le transfert observé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour rendre tout transfert automatique",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter toute mesure différée",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour transformer une corrélation en causalité",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "REF-018-OPENSTAX-6-1",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 6.1 What Is Learning?",
+        "year": 2020,
+        "edition": "2e",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/6-1-what-is-learning",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Auteurs, édition, date, section et licence vérifiés sur OpenStax."
+      },
+      {
+        "id": "REF-018-SODERSTROM-2015",
+        "type": "peer_reviewed_review",
+        "authors": ["Soderstrom, N. C.", "Bjork, R. A."],
+        "organization": null,
+        "title": "Learning Versus Performance: An Integrative Review",
+        "year": 2015,
+        "edition": null,
+        "publication": "Perspectives on Psychological Science, 10(2), 176–199",
+        "doi": "https://doi.org/10.1177/1745691615569000",
+        "url": "https://doi.org/10.1177/1745691615569000",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Consultation via l'éditeur ; droits SAGE",
+        "status": "verified",
+        "notes": "DOI, auteurs, volume, numéro et pages vérifiés sur la page de la revue et PubMed."
+      },
+      {
+        "id": "REF-018-OPENSTAX-6-4",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 6.4 Observational Learning (Modeling)",
+        "year": 2020,
+        "edition": "2e",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/6-4-observational-learning-modeling",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Section et quatre étapes du modelage vérifiées sur OpenStax."
+      },
+      {
+        "id": "REF-018-OPENSTAX-6-2",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 6.2 Classical Conditioning",
+        "year": 2020,
+        "edition": "2e",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Définitions de discrimination et généralisation vérifiées dans la section General Processes."
+      },
+      {
+        "id": "REF-018-CEPEDA-2006",
+        "type": "meta_analysis",
+        "authors": [
+          "Cepeda, N. J.",
+          "Pashler, H.",
+          "Vul, E.",
+          "Wixted, J. T.",
+          "Rohrer, D."
+        ],
+        "organization": null,
+        "title": "Distributed Practice in Verbal Recall Tasks: A Review and Quantitative Synthesis",
+        "year": 2006,
+        "edition": null,
+        "publication": "Psychological Bulletin, 132(3), 354–380",
+        "doi": "https://doi.org/10.1037/0033-2909.132.3.354",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert sur PubMed ; droits APA",
+        "status": "verified",
+        "notes": "Titre, auteurs, DOI, volume, pages et portée sur le rappel verbal vérifiés sur PubMed."
+      },
+      {
+        "id": "REF-018-PAN-2018",
+        "type": "meta_analysis",
+        "authors": ["Pan, S. C.", "Rickard, T. C."],
+        "organization": null,
+        "title": "Transfer of Test-Enhanced Learning: Meta-Analytic Review and Synthesis",
+        "year": 2018,
+        "edition": null,
+        "publication": "Psychological Bulletin, 144(7), 710–756",
+        "doi": "https://doi.org/10.1037/bul0000151",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29733621/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert sur PubMed ; droits APA",
+        "status": "verified",
+        "notes": "Titre, auteurs, DOI, volume, pages et portée sur le transfert après tests d'entraînement vérifiés sur PubMed."
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-learning-6-1",
+        "referenceIds": ["REF-018-OPENSTAX-6-1"],
+        "pedagogicalRationale": "Définition introductive accessible qui réactive les acquis sans refaire la leçon behavioriste.",
+        "learnerInstructions": "Lire la définition puis proposer un changement qui ne serait pas un apprentissage.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, texte sélectionnable et version PDF disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Lien public ouvert et contenu contrôlé."
+      },
+      {
+        "resourceKey": "soderstrom-bjork-2015",
+        "referenceIds": ["REF-018-SODERSTROM-2015"],
+        "pedagogicalRationale": "Revue intégrative directement centrée sur la distinction structurante entre performance et apprentissage.",
+        "learnerInstructions": "Lire le résumé et relever deux cas où performance et apprentissage divergent.",
+        "language": "en",
+        "accessType": "mixed",
+        "accessibilityNotes": "Résumé public ; texte éditeur potentiellement soumis aux conditions d'accès institutionnel.",
+        "alternativeResourceKey": "openstax-learning-6-1",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "DOI vérifié ; l'accès intégral devra être revérifié avant publication."
+      },
+      {
+        "resourceKey": "openstax-observation-6-4",
+        "referenceIds": ["REF-018-OPENSTAX-6-4"],
+        "pedagogicalRationale": "Présentation claire des quatre conditions du modelage avec exemples concrets.",
+        "learnerInstructions": "Associer chaque étape du modelage à un risque d'échec dans une démonstration choisie.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, texte sélectionnable et version PDF disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Lien public ouvert et contenu contrôlé."
+      },
+      {
+        "resourceKey": "openstax-generalisation-6-2",
+        "referenceIds": ["REF-018-OPENSTAX-6-2"],
+        "pedagogicalRationale": "Rappel ciblé permettant de ne pas confondre généralisation de stimulus et transfert entre tâches.",
+        "learnerInstructions": "Lire seulement les paragraphes sur discrimination et généralisation, puis écrire un exemple de chaque.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, texte sélectionnable et version PDF disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Lien public ouvert et passage contrôlé."
+      },
+      {
+        "resourceKey": "cepeda-et-al-2006",
+        "referenceIds": ["REF-018-CEPEDA-2006"],
+        "pedagogicalRationale": "Synthèse quantitative de référence qui étaye l'espacement tout en délimitant la portée au rappel verbal.",
+        "learnerInstructions": "Lire le résumé et identifier les deux intervalles qui conditionnent l'effet d'espacement.",
+        "language": "en",
+        "accessType": "mixed",
+        "accessibilityNotes": "Résumé HTML public sur PubMed ; accès au texte intégral dépendant de l'éditeur.",
+        "alternativeResourceKey": "soderstrom-bjork-2015",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Notice PubMed et DOI vérifiés."
+      },
+      {
+        "resourceKey": "pan-rickard-2018",
+        "referenceIds": ["REF-018-PAN-2018"],
+        "pedagogicalRationale": "Méta-analyse utile pour enseigner le transfert comme résultat conditionnel plutôt que promesse générale.",
+        "learnerInstructions": "Lire le résumé et noter les dimensions qui font varier le transfert après récupération.",
+        "language": "en",
+        "accessType": "mixed",
+        "accessibilityNotes": "Résumé HTML public sur PubMed ; accès au texte intégral dépendant de l'éditeur.",
+        "alternativeResourceKey": "openstax-generalisation-6-2",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Notice PubMed et DOI vérifiés."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-018-OPENSTAX-6-1",
+            "locator": "section 6.1, définition de learning",
+            "supports": "Définition de l'apprentissage comme changement relativement durable dû à l'expérience et distinction avec l'inné."
+          },
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "abstract et pp. 176–179",
+            "supports": "Distinction entre performance observable pendant l'acquisition et apprentissage durable."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Manuel universitaire et revue intégrative convergent sur la définition et la distinction centrale.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "abstract et sections Learning versus performance et implications",
+            "supports": "Dissociation possible entre performance d'entraînement, rétention et transfert, et nécessité de tests différés."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La revue couvre plusieurs domaines mais les conditions précises varient selon tâches et délais, ce que le bloc explicite.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-018-OPENSTAX-6-4",
+            "locator": "section Steps in the Modeling Process",
+            "supports": "Attention, rétention, reproduction, motivation et conséquences vicariantes dans le modelage."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La source soutient les quatre composantes ; le texte évite d'en faire un diagnostic causal suffisant.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-018-OPENSTAX-6-2",
+            "locator": "section General Processes in Classical Conditioning",
+            "supports": "Définitions contrastées de discrimination et généralisation de stimulus."
+          },
+          {
+            "referenceId": "REF-018-PAN-2018",
+            "locator": "abstract et cadre de synthèse du transfert",
+            "supports": "Le transfert après récupération varie avec les relations entre entraînement, matériel et test."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les notions sont étayées ; proche et lointain restent des qualifications relatives, explicitement présentées comme telles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-018-CEPEDA-2006",
+            "locator": "abstract et quantitative synthesis, pp. 354–380",
+            "supports": "Avantage général de la pratique distribuée sur la pratique massée en rappel verbal et rôle des intervalles."
+          },
+          {
+            "referenceId": "REF-018-PAN-2018",
+            "locator": "abstract et three-factor framework",
+            "supports": "Bénéfices conditionnels de la récupération sur des tâches de transfert et facteurs modérateurs."
+          },
+          {
+            "referenceId": "REF-018-SODERSTROM-2015",
+            "locator": "sections sur les conditions d'acquisition et la rétention",
+            "supports": "Certaines conditions qui dégradent la performance immédiate peuvent soutenir l'apprentissage ultérieur."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux synthèses quantitatives et une revue intégrative soutiennent les principes, avec une portée volontairement bornée par le texte.",
+        "notApplicableReason": null
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie cognitive et sciences de l'apprentissage requise avant publication.",
+        "Le rappel du conditionnement est limité à discrimination et généralisation afin de ne pas dupliquer l'Étape 2.",
+        "La leçon sépare explicitement performance, rétention et transfert et ne promet pas de transfert lointain automatique.",
+        "Les DOI et notices PubMed ont été vérifiés ; l'accès intégral aux articles doit être contrôlé dans une session non authentifiée avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, de six ressources vérifiées, de trois exercices et de quinze questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

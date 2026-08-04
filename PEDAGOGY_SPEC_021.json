@@ -1,0 +1,835 @@
+{
+  "specId": "PEDAGOGY_SPEC_021",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "comprendre-cognition",
+  "moduleSlug": "cognition-apprentissage",
+  "lesson": {
+    "title": "Métacognition",
+    "slug": "metacognition",
+    "summary": "La métacognition relie ce qu'une personne estime savoir aux décisions qu'elle prend pour apprendre. Cette leçon distingue surveillance et contrôle, mesure la calibration plutôt que la seule confiance, puis construit une boucle d'autorégulation fondée sur récupération, feedback et vérification différée.",
+    "objectives": [
+      "Distinguer monitoring métacognitif et contrôle de l'étude dans une situation concrète.",
+      "Comparer confiance annoncée et performance observée afin de repérer surconfiance et sous-confiance.",
+      "Identifier les indices de familiarité ou de fluidité qui peuvent créer une illusion de maîtrise.",
+      "Choisir une action d'étude à partir d'une tentative de récupération, d'un feedback et d'une échéance explicite.",
+      "Construire un plan autorégulé comportant objectifs, décisions, espacement et mesure différée."
+    ],
+    "prerequisites": [
+      "Distinguer rappel libre, reconnaissance et relecture.",
+      "Comprendre que performance immédiate et rétention différée peuvent diverger."
+    ],
+    "estimatedMinutes": 150,
+    "position": 4,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La métacognition appliquée à l'apprentissage comporte au moins deux fonctions liées. Le monitoring produit un jugement sur son état cognitif : « pourrai-je rappeler cette notion demain ? », « cette réponse est-elle probablement correcte ? ». Le contrôle transforme ce jugement en décision : poursuivre, changer de stratégie, rechercher une explication, se tester, espacer une reprise ou arrêter. Un bon jugement sans action appropriée n'améliore pas l'étude ; une bonne technique mal choisie ou appliquée au mauvais contenu peut aussi échouer.",
+          "sourceKeys": ["metcalfe-metacognitive-judgments-2009"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "La calibration décrit l'accord entre jugements et performances. Pour l'observer, on peut annoncer une probabilité de réussite avant chaque réponse, puis regrouper les items : parmi ceux jugés à 80 %, environ 80 % sont-ils réellement réussis ? Une forte confiance moyenne n'est pas une bonne calibration si elle accompagne beaucoup d'erreurs ; une personne peut aussi être systématiquement sous-confiante. La calibration dépend de la tâche, du délai, du type de test et des indices disponibles : ce n'est pas un trait global fixé une fois pour toutes.",
+          "sourceKeys": [
+            "metcalfe-metacognitive-judgments-2009",
+            "roediger-karpicke-test-enhanced-2006"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Après trois relectures, un texte paraît fluide et familier. Cette facilité peut être utilisée à tort comme preuve que le contenu sera rappelé plus tard. Dans les expériences de Roediger et Karpicke, la répétition de l'étude augmentait la confiance déclarée alors que des tests de récupération favorisaient davantage la rétention après deux jours ou une semaine. Le résultat porte sur les textes, conditions et délais étudiés ; il illustre surtout pourquoi une prédiction doit être confrontée à une performance différée plutôt qu'à un sentiment pendant la lecture.",
+          "sourceKeys": ["roediger-karpicke-test-enhanced-2006"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Le contrôle métacognitif alloue un temps limité. Metcalfe propose que l'apprenant écarte provisoirement ce qui est déjà maîtrisé et travaille ensuite des éléments accessibles mais pas encore acquis, sa « région proximale d'apprentissage », avant d'aborder des éléments plus difficiles. Cette heuristique exige des jugements suffisamment exacts et une mise en œuvre réelle. Elle ne signifie pas qu'il faut éviter définitivement les notions très difficiles, ni réviser seulement ce qui semble agréable : objectifs, importance, prérequis et échéance modifient la décision.",
+          "sourceKeys": ["metcalfe-metacognitive-judgments-2009"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Une stratégie d'étude ne devient pas efficace parce qu'elle est dite « active ». La synthèse de Dunlosky et collègues évalue les techniques selon leurs effets, leur généralisation, les tâches et les conditions. La pratique de test et la pratique distribuée reçoivent un soutien élevé dans cette revue, tandis que surlignage et relecture seule offrent une base plus limitée pour une rétention durable. Cela n'interdit pas de relire pour comprendre : la décision pertinente combine compréhension initiale, récupération sans support, feedback, reprise des erreurs et espacement.",
+          "sourceKeys": [
+            "dunlosky-effective-techniques-2013",
+            "openstax-psychology-2e-8-4",
+            "roediger-karpicke-test-enhanced-2006"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Boucle d'autorégulation : définir un résultat observable et une date ; tenter de récupérer ou d'appliquer sans support ; annoncer sa confiance avant le feedback ; comparer réponse, confiance et critère ; choisir l'action suivante ; planifier une nouvelle tentative espacée ; enfin mesurer la rétention après un délai. Le plan est révisé avec les données obtenues. Une seule réussite immédiate ne suffit pas pour déclarer une notion maîtrisée, et un échec informatif sert à sélectionner l'explication ou la pratique suivante.",
+          "sourceKeys": [
+            "metcalfe-metacognitive-judgments-2009",
+            "dunlosky-effective-techniques-2013",
+            "roediger-karpicke-test-enhanced-2006"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "metcalfe-metacognitive-judgments-2009",
+        "type": "article",
+        "title": "Metacognitive Judgments and Control of Study",
+        "author": "Janet Metcalfe",
+        "url": "https://www.columbia.edu/cu/psychology/metcalfe/PDFs/Metcalfe2009.pdf",
+        "citation": "Metcalfe, J. (2009). Metacognitive judgments and control of study. Current Directions in Psychological Science, 18(3), 159–163. https://doi.org/10.1111/j.1467-8721.2009.01628.x",
+        "description": "Lire l'article et produire deux colonnes : jugements de monitoring et décisions de contrôle ; expliquer ensuite les conditions de la région proximale d'apprentissage.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1
+      },
+      {
+        "key": "dunlosky-effective-techniques-2013",
+        "type": "article",
+        "title": "Improving Students’ Learning With Effective Learning Techniques",
+        "author": "John Dunlosky, Katherine A. Rawson, Elizabeth J. Marsh, Mitchell J. Nathan et Daniel T. Willingham",
+        "url": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html",
+        "citation": "Dunlosky, J., Rawson, K. A., Marsh, E. J., Nathan, M. J., & Willingham, D. T. (2013). Improving students’ learning with effective learning techniques: Promising directions from cognitive and educational psychology. Psychological Science in the Public Interest, 14(1), 4–58. https://doi.org/10.1177/1529100612453266",
+        "description": "Lire la présentation ouverte de la revue et comparer les raisons données pour la pratique de test, la pratique distribuée, la relecture et le surlignage.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "roediger-karpicke-test-enhanced-2006",
+        "type": "article",
+        "title": "Test-enhanced learning: Taking memory tests improves long-term retention",
+        "author": "Henry L. Roediger III et Jeffrey D. Karpicke",
+        "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "citation": "Roediger, H. L., III, & Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. Psychological Science, 17(3), 249–255. https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "description": "Lire le résumé et comparer performance, délai et confiance dans les conditions de relecture et de récupération ; relever deux limites de généralisation.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "openstax-psychology-2e-8-4",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 8.4 Ways to Enhance Memory",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 8.4. OpenStax.",
+        "description": "Lire les stratégies d'étude, puis transformer une session de relecture en cycle comprenant récupération, vérification et reprise espacée.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Monitoring et contrôle métacognitifs",
+        "slug": "monitoring-controle-metacognitifs",
+        "description": "Le monitoring estime l'état de l'apprentissage ; le contrôle utilise ces jugements avec les objectifs et contraintes pour choisir l'action suivante.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["metcalfe-metacognitive-judgments-2009"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Monitoring et contrôle",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Calibration et illusions de maîtrise",
+        "slug": "calibration-illusions-maitrise",
+        "description": "La calibration compare confiance et réussite observée ; familiarité et fluidité peuvent produire une surconfiance que seule une mesure pertinente permet de détecter.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "metcalfe-metacognitive-judgments-2009",
+          "roediger-karpicke-test-enhanced-2006"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Calibration et illusions",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Autorégulation fondée sur les preuves",
+        "slug": "autoregulation-fondee-preuves",
+        "description": "Une boucle autorégulée définit un objectif, recueille une performance avec feedback, sélectionne une stratégie soutenue et vérifie la rétention après un délai.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "dunlosky-effective-techniques-2013",
+          "openstax-psychology-2e-8-4",
+          "roediger-karpicke-test-enhanced-2006"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Autorégulation",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Mesurer sa calibration",
+        "description": "Répondre à dix questions sans support, annoncer avant feedback une confiance de 0 à 100 % pour chaque réponse, puis comparer confiance et exactitude par tranche et identifier une zone de surconfiance ou sous-confiance.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Remplacer une illusion de fluidité",
+        "description": "À partir d'un scénario de trois relectures, concevoir une tentative de rappel, un critère de correction, un feedback et une vérification deux jours plus tard ; expliquer quelles données remplacent le sentiment de familiarité.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Construire un plan autorégulé",
+        "description": "Pour douze notions à maîtriser en quatorze jours, définir résultats observables, diagnostic initial, priorités, quatre séances espacées, format de récupération, feedback, règle de reprise et test différé ; justifier les décisions en 400 à 600 mots.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-021-METCALFE",
+        "type": "review_article",
+        "authors": ["Metcalfe, J."],
+        "organization": "Association for Psychological Science",
+        "title": "Metacognitive Judgments and Control of Study",
+        "year": 2009,
+        "edition": null,
+        "publication": "Current Directions in Psychological Science, 18(3), 159–163",
+        "doi": "https://doi.org/10.1111/j.1467-8721.2009.01628.x",
+        "url": "https://www.columbia.edu/cu/psychology/metcalfe/PDFs/Metcalfe2009.pdf",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Copie auteur accessible via Columbia University ; article soumis aux droits de l'éditeur",
+        "status": "verified",
+        "notes": "Revue théorique utilisée pour monitoring, contrôle de l'étude et région proximale d'apprentissage."
+      },
+      {
+        "id": "REF-021-DUNLOSKY",
+        "type": "systematic_review",
+        "authors": [
+          "Dunlosky, J.",
+          "Rawson, K. A.",
+          "Marsh, E. J.",
+          "Nathan, M. J.",
+          "Willingham, D. T."
+        ],
+        "organization": "Association for Psychological Science",
+        "title": "Improving Students’ Learning With Effective Learning Techniques",
+        "year": 2013,
+        "edition": null,
+        "publication": "Psychological Science in the Public Interest, 14(1), 4–58",
+        "doi": "https://doi.org/10.1177/1529100612453266",
+        "url": "https://www.psychologicalscience.org/publications/journals/pspi/learning-techniques.html",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Présentation APS ouverte ; article soumis aux conditions de l'éditeur",
+        "status": "verified",
+        "notes": "Revue étendue de dix techniques ; les évaluations dépendent des contextes, matériels, tâches et délais."
+      },
+      {
+        "id": "REF-021-ROEDIGER-KARPICKE",
+        "type": "primary_article",
+        "authors": ["Roediger, H. L., III", "Karpicke, J. D."],
+        "organization": "Association for Psychological Science",
+        "title": "Test-enhanced learning: Taking memory tests improves long-term retention",
+        "year": 2006,
+        "edition": null,
+        "publication": "Psychological Science, 17(3), 249–255",
+        "doi": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "url": "https://doi.org/10.1111/j.1467-9280.2006.01693.x",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Page et résumé ouverts ; texte intégral soumis aux droits de l'éditeur",
+        "status": "verified",
+        "notes": "Études primaires utilisées pour dissocier confiance après relecture, performance immédiate et rétention différée."
+      },
+      {
+        "id": "REF-021-OPENSTAX",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 8.4 Ways to Enhance Memory",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/8-4-ways-to-enhance-memory",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Manuel ouvert utilisé pour la mise en œuvre des stratégies de mémoire dans un plan débutant."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-METCALFE",
+            "locator": "pp. 159–160, introduction et relation judgments–control",
+            "supports": "Distinction entre jugements métacognitifs et décisions de contrôle de l'étude."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Article de synthèse directement centré sur les deux fonctions et leurs conditions d'efficacité.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-METCALFE",
+            "locator": "pp. 159–163, exactitude des jugements et choix d'étude",
+            "supports": "Nécessité de jugements suffisamment exacts pour guider le contrôle."
+          },
+          {
+            "referenceId": "REF-021-ROEDIGER-KARPICKE",
+            "locator": "expériences 1 et 2, prédictions de performance et tests différés",
+            "supports": "Écart possible entre confiance et rétention observée selon la condition."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse métacognitive et étude primaire convergent sur la nécessité de confronter jugement et performance.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-ROEDIGER-KARPICKE",
+            "locator": "expérience 2, prédictions et tests à 5 minutes, 2 jours et 1 semaine",
+            "supports": "Confiance accrue après étude répétée et avantage différé du test dans les conditions expérimentales."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Exemple pédagogique fidèle au plan et aux délais de l'étude, avec portée explicitement limitée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-METCALFE",
+            "locator": "pp. 160–162, region of proximal learning framework",
+            "supports": "Ordre de sélection des items, rôle de l'exactitude et de la mise en œuvre du contrôle."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La formulation conserve le statut d'heuristique et ajoute les contraintes réelles de décision.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-DUNLOSKY",
+            "locator": "résumé et sections Practice testing, Distributed practice, Rereading et Highlighting",
+            "supports": "Évaluation comparative des techniques et conditions de généralisation."
+          },
+          {
+            "referenceId": "REF-021-OPENSTAX",
+            "locator": "section 8.4, Study Strategies",
+            "supports": "Mise en œuvre introductive de stratégies de mémoire."
+          },
+          {
+            "referenceId": "REF-021-ROEDIGER-KARPICKE",
+            "locator": "expériences 1 et 2",
+            "supports": "Comparaison de la pratique de récupération et de l'étude répétée selon le délai."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Revue, manuel et étude primaire convergent ; la leçon évite une opposition absolue entre comprendre, relire et récupérer.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-021-METCALFE",
+            "locator": "ensemble de l'article, jugement, sélection et contrôle",
+            "supports": "Boucle entre évaluation de l'état et choix d'étude."
+          },
+          {
+            "referenceId": "REF-021-DUNLOSKY",
+            "locator": "cadre d'évaluation et sections sur pratique de test et distribution",
+            "supports": "Sélection de stratégies d'après leurs preuves et conditions."
+          },
+          {
+            "referenceId": "REF-021-ROEDIGER-KARPICKE",
+            "locator": "mesures différées et prédictions",
+            "supports": "Nécessité d'une vérification différée distincte du sentiment immédiat."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse opérationnelle de sources complémentaires, sans seuil de maîtrise universel inventé.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "metcalfe-metacognitive-judgments-2009",
+        "referenceIds": ["REF-021-METCALFE"],
+        "pedagogicalRationale": "Source courte et directement centrée sur monitoring, contrôle et allocation du temps.",
+        "learnerInstructions": "Distinguer jugement, décision, condition d'exactitude et mise en œuvre.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF auteur ouvert hébergé par Columbia University ; texte selectable.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dunlosky-effective-techniques-2013",
+        "referenceIds": ["REF-021-DUNLOSKY"],
+        "pedagogicalRationale": "Vue comparative des preuves pour plusieurs techniques courantes.",
+        "learnerInstructions": "Comparer utilité, généralisation et limites plutôt que chercher une technique unique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Présentation APS HTML ouverte ; lien bibliographique vers l'article complet.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La consigne obligatoire porte sur la présentation ouverte, pas sur le texte intégral éditeur."
+      },
+      {
+        "resourceKey": "roediger-karpicke-test-enhanced-2006",
+        "referenceIds": ["REF-021-ROEDIGER-KARPICKE"],
+        "pedagogicalRationale": "Étude primaire permettant de confronter confiance, performance immédiate et rétention différée.",
+        "learnerInstructions": "Identifier conditions, délais, mesures et limites avant de généraliser.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Résumé et page DOI ouverts ; texte intégral soumis à l'accès éditeur, ressource facultative.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-8-4",
+        "referenceIds": ["REF-021-OPENSTAX"],
+        "pedagogicalRationale": "Ressource ouverte pour traduire les principes en actions accessibles au débutant.",
+        "learnerInstructions": "Transformer une stratégie passive en cycle observable avec feedback.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec descriptions de figures.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "monitoring-controle-metacognitifs",
+        "assessmentTitle": "Mini-évaluation — Monitoring et contrôle",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle action relève d'abord du monitoring métacognitif ?",
+            "explanation": "Estimer sa probabilité de rappel produit un jugement sur l'état de l'apprentissage.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Estimer à 60 % sa chance de rappeler une définition demain",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Planifier une nouvelle séance demain",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Choisir de demander une explication",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Retirer une notion du planning",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle action relève d'abord du contrôle métacognitif ?",
+            "explanation": "Choisir une nouvelle tentative à partir d'un jugement transforme l'information en décision d'étude.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Décider de refaire une question après une erreur confiante",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Évaluer sa confiance à 80 %",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Constater qu'une réponse est familière",
+                "isCorrect": false,
+                "position": 3
+              },
+              { "label": "Prédire un score", "isCorrect": false, "position": 4 }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un jugement métacognitif exact améliore automatiquement l'apprentissage, même si aucune décision ne change.",
+            "explanation": "Le jugement doit être relié à un contrôle approprié et effectivement mis en œuvre.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels facteurs peuvent entrer dans une décision de contrôle ?",
+            "explanation": "Le jugement de maîtrise ne suffit pas ; importance, échéance et prérequis orientent aussi l'allocation du temps.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Le jugement de maîtrise",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L'importance de la notion",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L'échéance et les prérequis",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le seul plaisir immédiat",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on la fonction qui choisit l'action d'étude à partir des jugements et objectifs ?",
+            "explanation": "Il s'agit du contrôle métacognitif.",
+            "acceptedAnswers": [
+              "contrôle métacognitif",
+              "controle metacognitif",
+              "contrôle",
+              "controle"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "calibration-illusions-maitrise",
+        "assessmentTitle": "Mini-évaluation — Calibration et illusions",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une personne annonce 90 % de confiance pour dix réponses et n'en réussit que cinq. Quel constat est le plus juste ?",
+            "explanation": "Sa confiance dépasse nettement sa réussite observée : elle est surconfiante sur cet ensemble.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Elle présente une surconfiance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Elle est parfaitement calibrée",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Elle est nécessairement sous-confiante",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La performance ne peut pas être comparée à la confiance",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une forte confiance moyenne suffit à démontrer une bonne calibration.",
+            "explanation": "La calibration exige de comparer les jugements aux performances observées.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels indices peuvent nourrir une illusion de maîtrise après relecture ?",
+            "explanation": "La familiarité, la fluidité et la reconnaissance avec support peuvent être confondues avec un rappel futur sans support.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "La familiarité", "isCorrect": true, "position": 1 },
+              {
+                "label": "La fluidité de lecture",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La reconnaissance avec le texte visible",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une réussite différée sans support",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle mesure teste le mieux la prédiction « je saurai l'expliquer demain » ?",
+            "explanation": "La mesure correspond à la tâche et au délai annoncés.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Une explication sans support le lendemain",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une quatrième relecture immédiate",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le temps passé à surligner",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le sentiment de facilité aujourd'hui",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on l'accord entre la confiance annoncée et la performance observée ?",
+            "explanation": "Il s'agit de la calibration.",
+            "acceptedAnswers": ["calibration", "la calibration"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "autoregulation-fondee-preuves",
+        "assessmentTitle": "Mini-évaluation — Autorégulation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel enchaînement décrit le mieux une boucle autorégulée ?",
+            "explanation": "L'objectif guide une tentative mesurable, le feedback informe la décision suivante et un contrôle différé vérifie la rétention.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Objectif → tentative → feedback → décision → vérification différée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Relecture → sentiment de facilité → arrêt définitif",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Confiance → maîtrise automatique",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Temps passé → note garantie",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles stratégies reçoivent un soutien élevé dans la revue de Dunlosky et collègues ?",
+            "explanation": "La pratique de test et la pratique distribuée sont évaluées comme largement utiles dans la revue.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Pratique de test", "isCorrect": true, "position": 1 },
+              {
+                "label": "Pratique distribuée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Relecture seule comme unique mesure de maîtrise",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Surlignage sans vérification",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La relecture est toujours inutile et doit être interdite dans tout plan d'apprentissage.",
+            "explanation": "Elle peut soutenir une compréhension initiale ; le problème est d'en faire la seule stratégie et la seule preuve de maîtrise.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Après une erreur commise avec 95 % de confiance, quelle action est la plus informative ?",
+            "explanation": "Il faut comprendre l'erreur, corriger puis vérifier ultérieurement que la correction peut être récupérée.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Analyser la cause, consulter le feedback et retester plus tard",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ignorer l'erreur car la confiance était forte",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Relire une fois puis déclarer la maîtrise",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Supprimer la notion du programme",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel élément fournit l'information correcte après une tentative et permet d'ajuster l'étude ?",
+            "explanation": "Il s'agit du feedback, ou retour correctif.",
+            "acceptedAnswers": [
+              "feedback",
+              "retour correctif",
+              "correction",
+              "rétroaction",
+              "retroaction"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie cognitive, métacognition et sciences de l'apprentissage requise avant publication.",
+        "Les jugements métacognitifs sont traités comme dépendants des tâches et indices, non comme un trait fixe global.",
+        "Les stratégies sont recommandées avec leurs conditions ; aucune technique ni durée d'espacement universelle n'est présentée.",
+        "Les DOI de Metcalfe (2009), Dunlosky et al. (2013) et Roediger et Karpicke (2006) ont été vérifiés."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

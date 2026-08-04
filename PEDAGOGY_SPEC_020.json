@@ -1,0 +1,1022 @@
+{
+  "specId": "PEDAGOGY_SPEC_020",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "comprendre-cognition",
+  "moduleSlug": "cognition-apprentissage",
+  "lesson": {
+    "title": "Attention et perception",
+    "slug": "attention-perception",
+    "summary": "Percevoir ne consiste pas à enregistrer passivement le monde : les signaux sensoriels sont organisés et interprétés selon le contexte, les attentes et les buts, tandis que l'attention sélectionne certaines informations au prix de limites dont la portée doit être interprétée avec prudence.",
+    "objectives": [
+      "Distinguer sensation, perception et interprétation perceptive.",
+      "Expliquer comment traitements ascendant et descendant interagissent avec le contexte.",
+      "Distinguer attention sélective, attention divisée, inattention et cécité au changement.",
+      "Formuler une conclusion prudente à partir d'une tâche expérimentale sur l'attention ou la perception."
+    ],
+    "prerequisites": [
+      "Distinguer stimulus, réponse et définition opérationnelle.",
+      "Connaître les fonctions générales de la mémoire de travail et de la récupération."
+    ],
+    "estimatedMinutes": 150,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La sensation commence lorsque des récepteurs répondent à une énergie ou à une substance et que cette information est transduite en activité nerveuse. La perception désigne l'organisation, l'interprétation et l'expérience consciente de l'information sensorielle. La présence d'un signal détectable ne garantit donc pas qu'il sera consciemment identifié, et une même entrée peut recevoir des interprétations différentes selon les informations disponibles.",
+          "sourceKeys": [
+            "openstax-psychology-2e-5-1",
+            "gregory-perceptions-hypotheses-1980"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Le traitement ascendant part des caractéristiques du stimulus et de leur combinaison progressive. Le traitement descendant mobilise notamment connaissances, attentes, buts et hypothèses pour orienter la recherche et interpréter une entrée parfois ambiguë. Ces expressions décrivent des influences complémentaires, non deux systèmes toujours séparés : un élément saillant peut attirer l'attention alors qu'un but détermine simultanément ce que l'on cherche et les endroits jugés plausibles.",
+          "sourceKeys": [
+            "openstax-psychology-2e-5-1",
+            "egeth-yantis-visual-attention-1997"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Un même fragment sonore incomplet peut être compris différemment selon la phrase qui le précède. Les propriétés acoustiques constituent l'information ascendante ; le vocabulaire attendu et le sens de la phrase fournissent un contexte descendant. Une erreur perceptive n'implique pas automatiquement une défaillance des récepteurs : elle peut révéler que le système a privilégié une interprétation plausible mais incorrecte dans ce contexte. Cet exemple est illustratif et ne permet pas, à lui seul, d'identifier un mécanisme unique pour toute perception.",
+          "sourceKeys": [
+            "gregory-perceptions-hypotheses-1980",
+            "openstax-psychology-2e-5-1"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "L'attention sélective priorise une source, un emplacement, un objet ou une propriété en fonction des buts et des caractéristiques du stimulus. Cette priorité améliore certains traitements sans signifier que toute information non sélectionnée est nécessairement supprimée. Dans une tâche d'inattention, une personne peut ne pas rapporter un objet inattendu visible lorsque son attention est fortement engagée ailleurs. La probabilité de le remarquer dépend toutefois de la tâche, de sa difficulté et des relations entre l'objet inattendu et les éléments suivis ; le phénomène ne démontre ni une cécité générale ni l'absence totale de traitement.",
+          "sourceKeys": [
+            "egeth-yantis-visual-attention-1997",
+            "simons-chabris-gorillas-1999",
+            "openstax-psychology-2e-5-1"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "L'inattention et la cécité au changement ne sont pas synonymes. L'inattention correspond au défaut de détection d'un événement inattendu pendant que l'attention est engagée ailleurs. La cécité au changement correspond au défaut de détection d'une modification entre deux états d'une scène, souvent lorsque le signal transitoire localisant la modification est masqué ou interrompu. Ces paradigmes renseignent sur la sélection, la comparaison et la représentation visuelles, mais leurs auteurs mettent en garde contre les conclusions extrêmes sur la pauvreté supposée de toute expérience consciente.",
+          "sourceKeys": [
+            "simons-chabris-gorillas-1999",
+            "simons-rensink-change-blindness-2005"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Diviser l'attention entre deux tâches peut ralentir les réponses ou augmenter les erreurs lorsque les tâches sollicitent au même moment des opérations qui interfèrent, notamment certaines sélections de réponse. L'ampleur de ce coût varie avec le chevauchement des tâches, leur timing, leur difficulté, la pratique et la mesure choisie. Une étude de double tâche soutient donc une conclusion sur ces tâches et ces conditions ; elle ne justifie pas le slogan universel « le cerveau ne peut jamais faire deux choses à la fois ». Une interprétation prudente décrit le contraste, l'effet observé, les alternatives et les limites de généralisation.",
+          "sourceKeys": [
+            "pashler-dual-task-1994",
+            "chun-golomb-turkbrowne-attention-2011"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-5-1",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 5.1 Sensation versus Perception",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/5-1-sensation-versus-perception",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 5.1: Sensation versus perception. OpenStax, Rice University.",
+        "description": "Lire la section sur sensation, perception, traitements ascendant et descendant, puis relever ce que l'exemple d'inattention permet et ne permet pas de conclure.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "gregory-perceptions-hypotheses-1980",
+        "type": "article",
+        "title": "Perceptions as hypotheses",
+        "author": "Richard L. Gregory",
+        "url": "https://doi.org/10.1098/rstb.1980.0090",
+        "citation": "Gregory, R. L. (1980). Perceptions as hypotheses. Philosophical Transactions of the Royal Society of London. B, Biological Sciences, 290(1038), 181–197. https://doi.org/10.1098/rstb.1980.0090",
+        "description": "Lire le résumé et les passages d'ouverture ; expliquer pourquoi l'analogie de l'hypothèse perceptive est un cadre théorique et non la preuve qu'une seule inférence explique toute perception.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "egeth-yantis-visual-attention-1997",
+        "type": "article",
+        "title": "Visual Attention: Control, Representation, and Time Course",
+        "author": "Howard E. Egeth et Steven Yantis",
+        "url": "https://doi.org/10.1146/annurev.psych.48.1.269",
+        "citation": "Egeth, H. E., & Yantis, S. (1997). Visual attention: Control, representation, and time course. Annual Review of Psychology, 48, 269–297. https://doi.org/10.1146/annurev.psych.48.1.269",
+        "description": "Lire le résumé de la revue et distinguer contrôle dirigé par les buts, contrôle dirigé par le stimulus et bases spatiale ou objectuelle de la sélection.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "simons-chabris-gorillas-1999",
+        "type": "article",
+        "title": "Gorillas in Our Midst: Sustained Inattentional Blindness for Dynamic Events",
+        "author": "Daniel J. Simons et Christopher F. Chabris",
+        "url": "https://experts.illinois.edu/en/publications/gorillas-in-our-midst-sustained-inattentional-blindness-for-dynam/",
+        "citation": "Simons, D. J., & Chabris, C. F. (1999). Gorillas in our midst: Sustained inattentional blindness for dynamic events. Perception, 28(9), 1059–1074. https://doi.org/10.1068/p281059",
+        "description": "Lire le résumé institutionnel, identifier tâche principale, événement inattendu et variables qui modifient la détection, puis formuler une conclusion limitée au paradigme.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "simons-rensink-change-blindness-2005",
+        "type": "article",
+        "title": "Change Blindness: Past, Present, and Future",
+        "author": "Daniel J. Simons et Ronald A. Rensink",
+        "url": "https://www.cs.ubc.ca/~rensink/publications/abs.05.0.html",
+        "citation": "Simons, D. J., & Rensink, R. A. (2005). Change blindness: Past, present, and future. Trends in Cognitive Sciences, 9(1), 16–20. https://doi.org/10.1016/j.tics.2004.11.006",
+        "description": "Lire le résumé et la copie auteur liée ; relever une inférence légitime et une extrapolation extrême rejetée par les auteurs.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      },
+      {
+        "key": "pashler-dual-task-1994",
+        "type": "article",
+        "title": "Dual-task Interference in Simple Tasks: Data and Theory",
+        "author": "Harold Pashler",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/7972591/",
+        "citation": "Pashler, H. (1994). Dual-task interference in simple tasks: Data and theory. Psychological Bulletin, 116(2), 220–244. https://doi.org/10.1037/0033-2909.116.2.220",
+        "description": "Lire la notice et le résumé de la revue ; distinguer interférence observée, goulot de sélection de réponse proposé et portée limitée aux tâches examinées.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 6
+      },
+      {
+        "key": "chun-golomb-turkbrowne-attention-2011",
+        "type": "article",
+        "title": "A Taxonomy of External and Internal Attention",
+        "author": "Marvin M. Chun, Julie D. Golomb et Nicholas B. Turk-Browne",
+        "url": "https://doi.org/10.1146/annurev.psych.093008.100427",
+        "citation": "Chun, M. M., Golomb, J. D., & Turk-Browne, N. B. (2011). A taxonomy of external and internal attention. Annual Review of Psychology, 62, 73–101. https://doi.org/10.1146/annurev.psych.093008.100427",
+        "description": "Lire le résumé et utiliser la taxonomie pour montrer que l'attention peut sélectionner des informations perceptives ou des représentations internes selon plusieurs dimensions.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 7
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Sensation, perception et inférence",
+        "slug": "sensation-perception-inference",
+        "description": "La sensation transduit l'information physique, tandis que la perception l'organise et l'interprète ; les erreurs perceptives éclairent ces opérations sans prouver un mécanisme unique.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-5-1",
+          "gregory-perceptions-hypotheses-1980"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Sensation et perception",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Traitements ascendant, descendant et contexte",
+        "slug": "traitements-ascendant-descendant-contexte",
+        "description": "La perception combine des informations issues du stimulus avec des influences liées aux attentes, aux connaissances, aux buts et au contexte.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-5-1",
+          "egeth-yantis-visual-attention-1997"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Traitements et contexte",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Sélection attentionnelle et limites",
+        "slug": "selection-attentionnelle-limites",
+        "description": "L'attention priorise certaines informations ; inattention, cécité au changement et interférence en double tâche décrivent des limites distinctes dont l'ampleur dépend du paradigme.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "simons-chabris-gorillas-1999",
+          "simons-rensink-change-blindness-2005",
+          "pashler-dual-task-1994"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Attention et limites",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Séparer signal et interprétation",
+        "description": "Pour six situations fictives, identifier le signal sensoriel, l'information ascendante, l'attente ou le contexte descendant et la perception rapportée ; signaler les informations manquantes sans diagnostiquer une erreur du système sensoriel.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Distinguer trois limites attentionnelles",
+        "description": "Classer neuf scénarios fictifs entre inattention, cécité au changement, interférence en double tâche ou information insuffisante ; justifier chaque classement par la tâche, le moment de l'événement et la mesure de détection.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer un slogan sur le multitâche",
+        "description": "Une étude fictive compare une tâche de choix seule ou accompagnée d'une seconde réponse et observe un ralentissement. Rédiger 300 à 400 mots distinguant résultat, mécanisme possible, explications alternatives, conditions de généralisation et reformulation prudente du slogan « le cerveau ne peut pas multitâcher ».",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {
+        "id": "REF-020-OPENSTAX-5-1",
+        "type": "textbook_chapter",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax, Rice University",
+        "title": "Psychology 2e — 5.1 Sensation versus Perception",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/5-1-sensation-versus-perception",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Section consultée pour sensation, perception, traitements ascendant et descendant, attention et inattention."
+      },
+      {
+        "id": "REF-020-GREGORY-1980",
+        "type": "theoretical_article",
+        "authors": ["Gregory, R. L."],
+        "organization": "The Royal Society",
+        "title": "Perceptions as hypotheses",
+        "year": 1980,
+        "edition": null,
+        "publication": "Philosophical Transactions of the Royal Society of London. B, Biological Sciences, 290(1038), 181–197",
+        "doi": "https://doi.org/10.1098/rstb.1980.0090",
+        "url": "https://doi.org/10.1098/rstb.1980.0090",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Consultation de la notice et du résumé ; droits de la Royal Society",
+        "status": "verified",
+        "notes": "Article théorique historique utilisé comme cadre d'inférence, non comme consensus exclusif sur la perception."
+      },
+      {
+        "id": "REF-020-EGETH-YANTIS-1997",
+        "type": "review_article",
+        "authors": ["Egeth, H. E.", "Yantis, S."],
+        "organization": "Annual Reviews",
+        "title": "Visual Attention: Control, Representation, and Time Course",
+        "year": 1997,
+        "edition": null,
+        "publication": "Annual Review of Psychology, 48, 269–297",
+        "doi": "https://doi.org/10.1146/annurev.psych.48.1.269",
+        "url": "https://doi.org/10.1146/annurev.psych.48.1.269",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert ; texte intégral sur abonnement",
+        "status": "verified",
+        "notes": "Revue reconnue sur contrôle dirigé par les buts ou le stimulus, bases de sélection et décours temporel."
+      },
+      {
+        "id": "REF-020-SIMONS-CHABRIS-1999",
+        "type": "primary_article",
+        "authors": ["Simons, D. J.", "Chabris, C. F."],
+        "organization": "University of Illinois / Perception",
+        "title": "Gorillas in Our Midst: Sustained Inattentional Blindness for Dynamic Events",
+        "year": 1999,
+        "edition": null,
+        "publication": "Perception, 28(9), 1059–1074",
+        "doi": "https://doi.org/10.1068/p281059",
+        "url": "https://experts.illinois.edu/en/publications/gorillas-in-our-midst-sustained-inattentional-blindness-for-dynam/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Notice et résumé institutionnels ouverts ; droits SAGE",
+        "status": "verified",
+        "notes": "Métadonnées, DOI, résumé et facteurs expérimentaux vérifiés sur le portail institutionnel de l'université."
+      },
+      {
+        "id": "REF-020-SIMONS-RENSINK-2005",
+        "type": "review_article",
+        "authors": ["Simons, D. J.", "Rensink, R. A."],
+        "organization": "Trends in Cognitive Sciences / University of British Columbia",
+        "title": "Change Blindness: Past, Present, and Future",
+        "year": 2005,
+        "edition": null,
+        "publication": "Trends in Cognitive Sciences, 9(1), 16–20",
+        "doi": "https://doi.org/10.1016/j.tics.2004.11.006",
+        "url": "https://www.cs.ubc.ca/~rensink/publications/abs.05.0.html",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé et copie auteur accessibles ; droits Elsevier",
+        "status": "verified",
+        "notes": "Revue choisie notamment parce qu'elle distingue les inférences légitimes des affirmations extrêmes."
+      },
+      {
+        "id": "REF-020-PASHLER-1994",
+        "type": "review_article",
+        "authors": ["Pashler, H."],
+        "organization": "American Psychological Association",
+        "title": "Dual-task Interference in Simple Tasks: Data and Theory",
+        "year": 1994,
+        "edition": null,
+        "publication": "Psychological Bulletin, 116(2), 220–244",
+        "doi": "https://doi.org/10.1037/0033-2909.116.2.220",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/7972591/",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Notice PubMed ouverte ; texte intégral selon accès APA",
+        "status": "verified",
+        "notes": "Revue portant sur des tâches simples en laboratoire ; aucune généralisation universelle au multitâche quotidien n'est faite."
+      },
+      {
+        "id": "REF-020-CHUN-2011",
+        "type": "review_article",
+        "authors": ["Chun, M. M.", "Golomb, J. D.", "Turk-Browne, N. B."],
+        "organization": "Annual Reviews",
+        "title": "A Taxonomy of External and Internal Attention",
+        "year": 2011,
+        "edition": null,
+        "publication": "Annual Review of Psychology, 62, 73–101",
+        "doi": "https://doi.org/10.1146/annurev.psych.093008.100427",
+        "url": "https://doi.org/10.1146/annurev.psych.093008.100427",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert ; texte intégral selon accès Annual Reviews",
+        "status": "verified",
+        "notes": "Taxonomie utilisée pour éviter de réduire l'attention à un filtre visuel unique."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-OPENSTAX-5-1",
+            "locator": "section 5.1, sous-sections Sensation et Perception",
+            "supports": "Transduction, distinction sensation-perception et rôle de l'interprétation."
+          },
+          {
+            "referenceId": "REF-020-GREGORY-1980",
+            "locator": "résumé et pp. 181–184",
+            "supports": "Cadre de la perception comme traitement de signaux guidé par des hypothèses."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Manuel universitaire et article théorique convergent sur la distinction signal-interprétation, sans imposer un modèle exclusif.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-OPENSTAX-5-1",
+            "locator": "section 5.1, paragraphes et figure 5.2 sur bottom-up et top-down",
+            "supports": "Définitions des influences ascendantes et descendantes."
+          },
+          {
+            "referenceId": "REF-020-EGETH-YANTIS-1997",
+            "locator": "résumé et pp. 269–273",
+            "supports": "Contrôle de l'attention par les buts et par le stimulus, représentation et décours."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le manuel introduit les termes et la revue précise leurs interactions dans l'attention visuelle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-GREGORY-1980",
+            "locator": "résumé et discussion des erreurs perceptives comme indices, pp. 181–197",
+            "supports": "Interprétations plausibles et erreurs comme outils pour étudier le traitement perceptif."
+          },
+          {
+            "referenceId": "REF-020-OPENSTAX-5-1",
+            "locator": "section 5.1, exemples contextuels de traitement descendant",
+            "supports": "Influence de l'expérience, des attentes et du contexte sur l'interprétation."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "L'exemple sonore est fictif et illustre un cadre général ; aucun mécanisme auditif précis n'est attribué sans données.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-EGETH-YANTIS-1997",
+            "locator": "résumé et sections sur contrôle et base de la sélection, pp. 269–297",
+            "supports": "Priorisation dirigée par buts ou stimulus et sélection spatiale ou objectuelle."
+          },
+          {
+            "referenceId": "REF-020-SIMONS-CHABRIS-1999",
+            "locator": "résumé institutionnel et article, pp. 1059–1074",
+            "supports": "Paradigme d'inattention dynamique et variation de détection selon similarité et difficulté de tâche."
+          },
+          {
+            "referenceId": "REF-020-OPENSTAX-5-1",
+            "locator": "section 5.1, paragraphes 61–68 sur attention et inattention",
+            "supports": "Introduction pédagogique au rôle de l'attention dans la perception."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Étude primaire, revue et manuel convergent ; les modérateurs rapportés empêchent une généralisation absolue.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-SIMONS-CHABRIS-1999",
+            "locator": "introduction et paradigme d'inattention, pp. 1059–1074",
+            "supports": "Défaut de détection d'un événement inattendu lorsque l'attention est engagée."
+          },
+          {
+            "referenceId": "REF-020-SIMONS-RENSINK-2005",
+            "locator": "résumé et article, pp. 16–20",
+            "supports": "Définition de la cécité au changement et limites des inférences extrêmes."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Les deux publications distinguent directement les phénomènes et la revue traite explicitement les surinterprétations.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-020-PASHLER-1994",
+            "locator": "résumé et synthèse des paradigmes de double tâche, pp. 220–244",
+            "supports": "Interférences et goulot de sélection de réponse dans des tâches simples."
+          },
+          {
+            "referenceId": "REF-020-CHUN-2011",
+            "locator": "résumé et taxonomie, pp. 73–101",
+            "supports": "Pluralité des formes et objets de l'attention, externes ou internes."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux revues reconnues soutiennent les limites de capacité tout en justifiant une formulation dépendante des tâches.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-5-1",
+        "referenceIds": ["REF-020-OPENSTAX-5-1"],
+        "pedagogicalRationale": "Introduction ouverte et progressive reliant sensation, perception, contexte et inattention.",
+        "learnerInstructions": "Lire la section et construire un tableau sensation-perception-ascendant-descendant-attention.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML compatible mobile, figures accompagnées de descriptions textuelles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "gregory-perceptions-hypotheses-1980",
+        "referenceIds": ["REF-020-GREGORY-1980"],
+        "pedagogicalRationale": "Fournit un cadre historique explicite pour comprendre la perception comme interprétation contrainte.",
+        "learnerInstructions": "Lire le résumé et distinguer analogie théorique, observations et conclusion générale.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Notice et résumé PubMed ouverts ; texte intégral soumis aux conditions de la Royal Society.",
+        "alternativeResourceKey": "openstax-psychology-2e-5-1",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; l'alternative ouverte couvre le socle introductif."
+      },
+      {
+        "resourceKey": "egeth-yantis-visual-attention-1997",
+        "referenceIds": ["REF-020-EGETH-YANTIS-1997"],
+        "pedagogicalRationale": "Revue de référence qui évite de réduire la sélection à un filtre unique.",
+        "learnerInstructions": "Lire le résumé et relever les trois problèmes centraux étudiés par la revue.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Résumé HTML ouvert ; texte intégral sur abonnement Annual Reviews.",
+        "alternativeResourceKey": "openstax-psychology-2e-5-1",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; consigne limitée au résumé ouvert."
+      },
+      {
+        "resourceKey": "simons-chabris-gorillas-1999",
+        "referenceIds": ["REF-020-SIMONS-CHABRIS-1999"],
+        "pedagogicalRationale": "Étude primaire classique permettant de relier tâche, objet inattendu, mesure et portée d'une conclusion.",
+        "learnerInstructions": "Lire le résumé institutionnel et relever les facteurs qui modifient la détection.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page institutionnelle HTML avec résumé et métadonnées ; aucun visionnage n'est requis.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La consigne ne dépend pas de l'accès au texte éditeur."
+      },
+      {
+        "resourceKey": "simons-rensink-change-blindness-2005",
+        "referenceIds": ["REF-020-SIMONS-RENSINK-2005"],
+        "pedagogicalRationale": "Définit le phénomène tout en discutant explicitement les inférences légitimes et excessives.",
+        "learnerInstructions": "Lire le résumé puis la copie auteur liée et produire deux colonnes : soutenu / non soutenu.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Résumé HTML et PDF auteur liés depuis une page universitaire.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "pashler-dual-task-1994",
+        "referenceIds": ["REF-020-PASHLER-1994"],
+        "pedagogicalRationale": "Revue classique des interférences de double tâche et des explications par goulot central.",
+        "learnerInstructions": "Lire la notice et relever population, tâches simples, mesure et mécanisme proposé.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Notice PubMed ouverte ; texte APA selon abonnement.",
+        "alternativeResourceKey": "simons-rensink-change-blindness-2005",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; l'alternative est ouverte mais traite une autre limite attentionnelle."
+      },
+      {
+        "resourceKey": "chun-golomb-turkbrowne-attention-2011",
+        "referenceIds": ["REF-020-CHUN-2011"],
+        "pedagogicalRationale": "Taxonomie de synthèse montrant la pluralité des sélections attentionnelles externes et internes.",
+        "learnerInstructions": "Lire le résumé et dessiner les axes principaux de la taxonomie.",
+        "language": "en",
+        "accessType": "paid",
+        "accessibilityNotes": "Résumé ouvert ; texte intégral selon accès Annual Reviews.",
+        "alternativeResourceKey": "openstax-psychology-2e-5-1",
+        "checkedAt": "2026-08-03",
+        "urlStatus": "redirect",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative d'approfondissement."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "sensation-perception-inference",
+        "assessmentTitle": "Mini-évaluation — Sensation et perception",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle proposition distingue correctement sensation et perception ?",
+            "explanation": "La sensation concerne la détection et la transduction ; la perception organise et interprète l'information.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La sensation détecte et transduit ; la perception organise et interprète",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La sensation interprète ; la perception ne fait que mesurer",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les deux termes désignent exactement la même opération",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La perception précède toujours tout signal sensoriel",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un stimulus physiquement présent et détectable est nécessairement identifié consciemment.",
+            "explanation": "La sélection attentionnelle et d'autres opérations peuvent empêcher son rapport conscient malgré sa présence.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations peuvent contribuer à une perception ?",
+            "explanation": "Signaux, contexte, connaissances et attentes peuvent conjointement contraindre l'interprétation.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Les caractéristiques sensorielles",
+                "isCorrect": true,
+                "position": 1
+              },
+              { "label": "Le contexte", "isCorrect": true, "position": 2 },
+              {
+                "label": "Les connaissances et attentes",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une interprétation indépendante de toute information",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que permet d'abord d'étudier une erreur perceptive systématique ?",
+            "explanation": "Elle peut révéler les contraintes et hypothèses utilisées, sans prouver une défaillance sensorielle universelle.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Les opérations et hypothèses qui guident l'interprétation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une lésion certaine chez chaque personne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L'inutilité de toutes les sensations",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une perception identique dans tous les contextes",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Comment nomme-t-on la conversion de l'énergie d'un stimulus en activité nerveuse ?",
+            "explanation": "Cette conversion est la transduction.",
+            "acceptedAnswers": ["transduction", "la transduction"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "traitements-ascendant-descendant-contexte",
+        "assessmentTitle": "Mini-évaluation — Traitements et contexte",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel exemple illustre surtout une influence ascendante ?",
+            "explanation": "Un signal soudain et saillant provenant de l'environnement peut capter l'attention à partir de ses propriétés.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un bruit soudain attire l'attention",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Chercher une clé jaune aux endroits habituels",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Interpréter un mot selon la phrase",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Prévoir la réponse avant le stimulus",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel exemple illustre surtout une influence descendante ?",
+            "explanation": "Le but, la connaissance de l'objet et les emplacements plausibles orientent la recherche.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Chercher une clé jaune sur les surfaces où elle est habituellement posée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un flash intense active les récepteurs",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une vibration atteint la peau",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une molécule se lie à un récepteur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Traitements ascendant et descendant doivent toujours intervenir séparément et ne peuvent pas interagir.",
+            "explanation": "Les informations du stimulus et les buts ou attentes peuvent agir conjointement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles influences peuvent orienter une recherche visuelle ?",
+            "explanation": "Saillance, objectif et contexte peuvent tous modifier la priorité donnée aux informations.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "La saillance du stimulus",
+                "isCorrect": true,
+                "position": 1
+              },
+              { "label": "Le but actuel", "isCorrect": true, "position": 2 },
+              {
+                "label": "Les attentes contextuelles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une séparation absolue entre signal et connaissance",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Un fragment sonore identique est compris comme deux mots différents selon la phrase. Quelle conclusion est la plus prudente ?",
+            "explanation": "Le contexte a modifié l'interprétation d'une entrée ambiguë ; l'exemple seul ne désigne pas un mécanisme universel.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Le contexte peut contraindre l'interprétation perceptive",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le signal acoustique a nécessairement changé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La perception ignore toujours les signaux",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une seule théorie explique toute perception",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "selection-attentionnelle-limites",
+        "assessmentTitle": "Mini-évaluation — Attention et limites",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qu'est-ce que l'inattention dans les paradigmes étudiés ?",
+            "explanation": "Il s'agit de ne pas rapporter un événement inattendu visible pendant que l'attention est engagée ailleurs.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Ne pas remarquer un événement inattendu en poursuivant une autre tâche",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ne pas détecter une modification entre deux vues",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Perdre définitivement un sens",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Oublier une information apprise la veille",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qu'est-ce que la cécité au changement ?",
+            "explanation": "Elle désigne l'échec à détecter une modification entre états d'une scène, souvent lorsque le transitoire est masqué.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Ne pas détecter une modification entre deux états d'une scène",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ne jamais percevoir un objet immobile",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Choisir volontairement une seule tâche",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Confondre moyenne et médiane",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "De quoi peut dépendre l'interférence entre deux tâches ?",
+            "explanation": "Chevauchement, timing, difficulté et pratique modifient la concurrence entre opérations.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Le chevauchement des opérations",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le moment des réponses",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La difficulté et la pratique",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une incapacité identique dans toute situation",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L'expérience du gorille invisible prouve que toute personne manque toujours la moitié de ce qui se trouve devant elle.",
+            "explanation": "Le résultat dépend du paradigme, de la tâche, de sa difficulté et des propriétés de l'événement inattendu.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              { "label": "Vrai", "isCorrect": false, "position": 1 },
+              { "label": "Faux", "isCorrect": true, "position": 2 }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit préciser une conclusion tirée d'une tâche attentionnelle ?",
+            "explanation": "Une conclusion valable décrit les tâches, le contraste, la mesure et les limites de généralisation.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Les tâches et instructions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La mesure de détection ou de performance",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les conditions et limites de généralisation",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un slogan universel sans données supplémentaires",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie cognitive requise avant publication.",
+        "La leçon distingue explicitement inattention, cécité au changement et interférence en double tâche.",
+        "Les résultats expérimentaux sont rattachés à leurs tâches et ne sont pas extrapolés à toute perception ou à tout multitâche quotidien.",
+        "Les ressources payantes sont facultatives et leurs consignes restent réalisables à partir d'un résumé ouvert ou d'une alternative."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-03",
+        "author": "LearnX",
+        "change": "Création de la leçon, des sources, des trois exercices et de quinze questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
