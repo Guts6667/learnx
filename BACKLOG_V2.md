@@ -520,6 +520,9 @@ comptes attendus deviennent **8 tâches** et **202 exercices**, sans supprimer l
   et complétions historiques.
 - Documenter et exécuter une synchronisation idempotente des données existantes
   avant de supprimer ou archiver un miroir devenu non canonique.
+- Mettre à jour `EDITORIAL_GUIDELINES.md` et `PEDAGOGY_AUTHORING_GUIDE.md` : une
+  lecture obligatoire n’est pas dupliquée par une ressource obligatoire, et
+  toute production attendue est décrite comme un exercice.
 
 ### Migration et décision préalable obligatoire
 
@@ -545,6 +548,31 @@ explicitement les miroirs historiques et les états reportés. Elle doit rester
 dans ce ticket autonome, après validation de son schéma et de son plan de
 backfill. Il est interdit de simuler le résultat côté frontend, de créer une
 `ExerciseSubmission` factice ou de supprimer silencieusement l’historique.
+
+Le plus petit modèle proposé avant validation est le suivant :
+
+- ajouter une clé éditoriale stable et obligatoire à chaque entrée de
+  `lesson.tasks`, persistée sur `Task` ou `Exercise` ; ne pas utiliser le titre
+  comme identité ;
+- ajouter `isCanonical` sur `Task` et `Exercise` afin de conserver en lecture
+  historique les anciens miroirs sans les exposer ni les compter ;
+- ajouter `TaskResource(taskId, resourceId)` et `task.resourceKeys` au contrat
+  éditorial pour relier explicitement une tâche passive à ses supports ;
+- backfiller les couples historiques selon l’identité seed actuelle
+  `(lessonId, position)`, enregistrer leur même clé éditoriale, puis choisir le
+  membre canonique selon `TaskType` ; ce rapprochement est limité au script de
+  migration audité et n’est jamais refait à partir d’un titre ;
+- pour le calcul d’un état hérité, agréger le membre canonique et son miroir
+  non canonique portant la même clé : `TaskCompletion.DONE` ou
+  `ExerciseSubmission.SUBMITTED` suffit à conserver l’acquis, tandis que les
+  tentatives et productions originales restent attachées à leur ligne
+  historique ; aucune soumission synthétique n’est créée ;
+- sur une base neuve, créer uniquement le membre canonique. Sur une base
+  existante, le pruning archive les miroirs et ne les supprime qu’au terme
+  d’une politique de rétention ultérieure explicitement validée.
+
+Ce plan requiert donc une migration Prisma et un backfill transactionnel. Il
+doit être approuvé avant toute modification du schéma, du seed ou des données.
 
 ### Hors périmètre
 
