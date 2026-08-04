@@ -1,0 +1,341 @@
+{
+  "specId": "PEDAGOGY_SPEC_027",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "etudier-cerveau-comportement",
+  "lesson": {
+    "title": "Gènes, environnement et développement",
+    "slug": "genes-environnement-developpement",
+    "summary": "Les différences psychologiques se construisent au cours du développement par des transactions entre variations génétiques et environnements. Cette leçon distingue héritabilité populationnelle, interaction et corrélation gène-environnement, devis de jumeaux et d'adoption, GWAS et scores polygéniques, puis encadre causalité, ascendance, portabilité et communication sans déterminisme.",
+    "objectives": [
+      "Définir l'héritabilité comme une proportion de variance dans une population, un contexte, une période et un modèle donnés, sans l'appliquer à un individu.",
+      "Comparer les apports et hypothèses des études de jumeaux, d'adoption et des analyses génomiques pour l'étude des différences individuelles.",
+      "Distinguer corrélation gène-environnement, interaction gène-environnement et effet causal d'un environnement.",
+      "Expliquer ce qu'établissent une GWAS et un score polygénique, ainsi que ce qu'ils ne prouvent pas sur les mécanismes et le destin d'une personne.",
+      "Auditer la validité et l'équité d'une prédiction génétique en examinant échantillons, ascendance, portabilité, calibration, incertitude et contexte social."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité, variable confondante, validité interne et validité externe.",
+      "Comprendre qu'un phénotype est une caractéristique mesurée et qu'une variation statistique entre personnes n'est pas une propriété isolée d'une personne."
+    ],
+    "estimatedMinutes": 180,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Opposer nature et culture comme deux causes séparées est trompeur. Un phénotype psychologique se développe dans un organisme qui reçoit des variantes génétiques, mais aussi des milieux physiques, familiaux, scolaires, sociaux et historiques. Les effets possibles dépendent du moment, de la durée et de la mesure de ces environnements ; les comportements peuvent à leur tour modifier les environnements rencontrés. Pour les traits complexes, parler d'un « gène de l'intelligence », de l'impulsivité ou de la dépression confond une association statistique avec un mécanisme unique. La plasticité signifie qu'une trajectoire peut répondre aux expériences ; elle ne promet ni changement illimité ni résultat identique pour tous.",
+          "sourceKeys": ["openstax-human-genetics-2020", "harden-behavior-genetics-2021", "lenroot-developmental-gxe-2011"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "L'héritabilité estime, selon un modèle, la part de la variance observée d'un phénotype qui est associée à des différences génétiques dans une population, un environnement et une période définis. Elle ne dit pas quel pourcentage du trait d'une personne est « génétique », ne mesure pas la valeur d'un trait et ne garantit ni stabilité ni universalité. Une forte héritabilité reste compatible avec un effet environnemental important sur le niveau moyen ou avec une intervention efficace. Si la diversité génétique ou environnementale change, l'estimation peut changer. Comparer mécaniquement des héritabilités obtenues dans des populations ou à des âges différents est donc invalide.",
+          "sourceKeys": ["visscher-heritability-2008", "harden-behavior-genetics-2021", "plomin-replicated-findings-2016"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Les études de jumeaux comparent notamment la ressemblance de jumeaux monozygotes et dizygotes ; les études d'adoption comparent des personnes qui partagent différemment apparentement génétique et milieu d'éducation. Elles permettent de modéliser des composantes de variance, mais aucune famille ne constitue une expérience parfaite. Les estimations dépendent de la représentativité, de la fidélité des mesures, de l'appariement assortatif, de l'hypothèse d'environnements pertinents comparables entre types de jumeaux et, pour l'adoption, du placement sélectif et de la restriction des milieux. Ces devis renseignent la variance d'une population ; ils n'identifient pas automatiquement les gènes, les environnements ni les mécanismes causaux concernés.",
+          "sourceKeys": ["plomin-replicated-findings-2016", "harden-behavior-genetics-2021", "visscher-heritability-2008"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Une corrélation gène-environnement, ou rGE, signifie que des différences génétiques sont statistiquement liées aux environnements rencontrés. Elle peut être passive lorsque les parents transmettent des variantes et organisent le milieu, évocative lorsque des comportements influencés en partie génétiquement suscitent des réponses, ou active lorsque la personne sélectionne des activités et relations. Une interaction gène-environnement, ou G×E, signifie que l'association d'un facteur avec le phénotype varie selon l'environnement, ou réciproquement. L'échelle choisie, la mesure de l'exposition, la puissance et la réplication peuvent changer l'interaction observée. rGE et G×E décrivent des structures statistiques : elles ne démontrent pas seules une chaîne moléculaire causale. Leur expression peut évoluer avec l'âge et les possibilités de choisir son milieu.",
+          "sourceKeys": ["dick-gxe-2011", "lenroot-developmental-gxe-2011", "harden-behavior-genetics-2021"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 5,
+        "content": {
+          "text": "Une étude d'association pangénomique, ou GWAS, teste de très nombreux variants pour repérer leurs associations avec un phénotype dans un échantillon. Pour les traits complexes, les effets associés sont généralement distribués entre de nombreux variants et chacun explique peu. Un locus associé peut baliser une région liée à un variant causal sans être lui-même le mécanisme. Structure de population, déséquilibre de liaison, phénotype mal défini, effets sociaux indirects et autres confusions compliquent l'interprétation. Les grands échantillons, réplications et analyses familiales ou fonctionnelles renforcent l'enquête, mais association génomique ne signifie toujours ni causalité biologique directe ni détermination individuelle.",
+          "sourceKeys": ["visscher-gwas-2017", "harden-behavior-genetics-2021", "plomin-replicated-findings-2016"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Un score polygénique additionne des allèles pondérés par les associations estimées dans une GWAS. Il produit une prédiction probabiliste relative aux données, au phénotype et au modèle utilisés ; ce n'est ni un diagnostic, ni une cause, ni un destin. Avant de l'appliquer, il faut documenter échantillon d'apprentissage et de validation, ascendance génétique, âge, contexte, définition du résultat, performance, calibration, valeur ajoutée au-delà des prédicteurs usuels et incertitude. La précision diminue souvent lorsque la cible diffère de l'échantillon d'apprentissage, notamment le long du continuum d'ascendance, en raison des fréquences alléliques, du déséquilibre de liaison, des effets et des contextes. Race et ethnicité ne sont pas des substituts précis à l'ascendance génétique. Une décision responsable exige validation externe, langage non essentialiste, analyse des conséquences et convergence avec les méthodes causales et développementales des étapes 3 et 7.",
+          "sourceKeys": ["kachuri-prs-transfer-2024", "nasem-population-descriptors-2023", "harden-behavior-genetics-2021"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-human-genetics-2020",
+        "type": "book",
+        "title": "Psychology 2e — 3.1 Human Genetics",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-1-human-genetics",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 3.1 Human Genetics. In Psychology 2e. OpenStax, Rice University.",
+        "description": "Lire les parties sur interaction et corrélation gène-environnement ; relever les exemples utiles puis reformuler leurs limites sans supposer une plage génétique fixe.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "visscher-heritability-2008",
+        "type": "article",
+        "title": "Heritability in the genomics era — concepts and misconceptions",
+        "author": "Peter M. Visscher, William G. Hill et Naomi R. Wray",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18319743/",
+        "citation": "Visscher, P. M., Hill, W. G., & Wray, N. R. (2008). Heritability in the genomics era—concepts and misconceptions. Nature Reviews Genetics, 9, 255–266. https://doi.org/10.1038/nrg2322",
+        "description": "Lire le résumé et les encadrés conceptuels ; produire une définition qui précise population, variance, contexte et hypothèses, puis réfuter quatre contresens.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "plomin-replicated-findings-2016",
+        "type": "article",
+        "title": "Top 10 Replicated Findings From Behavioral Genetics",
+        "author": "Robert Plomin, John C. DeFries, Valerie S. Knopik et Jenae M. Neiderhiser",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4739500/",
+        "citation": "Plomin, R., DeFries, J. C., Knopik, V. S., & Neiderhiser, J. M. (2016). Top 10 replicated findings from behavioral genetics. Perspectives on Psychological Science, 11(1), 3–23. https://doi.org/10.1177/1745691615617439",
+        "description": "Lire les résultats 1 à 3 et 5 à 9 ainsi que leurs réserves ; distinguer résultats agrégés, exceptions, méthodes familiales et absence de déterminisme.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 3
+      },
+      {
+        "key": "harden-behavior-genetics-2021",
+        "type": "article",
+        "title": "Reports of My Death Were Greatly Exaggerated: Behavior Genetics in the Postgenomic Era",
+        "author": "K. Paige Harden",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10372814/",
+        "citation": "Harden, K. P. (2021). “Reports of my death were greatly exaggerated”: Behavior genetics in the postgenomic era. Annual Review of Psychology, 72, 37–60. https://doi.org/10.1146/annurev-psych-052220-103822",
+        "description": "Lire les sections sur héritabilité, GWAS, scores polygéniques et interaction ; cartographier les confusions entre variance, causalité, prédiction et déterminisme.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 4
+      },
+      {
+        "key": "dick-gxe-2011",
+        "type": "article",
+        "title": "Gene-Environment Interaction in Psychological Traits and Disorders",
+        "author": "Danielle M. Dick",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3647367/",
+        "citation": "Dick, D. M. (2011). Gene-environment interaction in psychological traits and disorders. Annual Review of Clinical Psychology, 7, 383–409. https://doi.org/10.1146/annurev-clinpsy-032210-104518",
+        "description": "Lire l'introduction et les défis conceptuels ; distinguer interaction latente et génotype mesuré, puis relever puissance, échelle, mesure et réplication.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "lenroot-developmental-gxe-2011",
+        "type": "article",
+        "title": "Annual Research Review: Developmental considerations of gene by environment interactions",
+        "author": "Rhoshel K. Lenroot et Jay N. Giedd",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3268527/",
+        "citation": "Lenroot, R. K., & Giedd, J. N. (2011). Annual research review: Developmental considerations of gene by environment interactions. Journal of Child Psychology and Psychiatry, 52(4), 429–441. https://doi.org/10.1111/j.1469-7610.2011.02381.x",
+        "description": "Lire les sections sur développement, plasticité et rGE ; construire une ligne du temps montrant pourquoi âge, exposition et possibilité de choisir son milieu importent.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "visscher-gwas-2017",
+        "type": "article",
+        "title": "10 Years of GWAS Discovery: Biology, Function, and Translation",
+        "author": "Peter M. Visscher et al.",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5501872/",
+        "citation": "Visscher, P. M., Wray, N. R., Zhang, Q., et al. (2017). 10 years of GWAS discovery: Biology, function, and translation. American Journal of Human Genetics, 101(1), 5–22. https://doi.org/10.1016/j.ajhg.2017.06.005",
+        "description": "Lire le résumé et les sections de principes ; suivre le chemin association-locus-variant-fonction et noter à chaque transition ce qui reste à démontrer.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 7
+      },
+      {
+        "key": "kachuri-prs-transfer-2024",
+        "type": "article",
+        "title": "Principles and methods for transferring polygenic risk scores across global populations",
+        "author": "Linda Kachuri et al.",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10961971/",
+        "citation": "Kachuri, L., Chatterjee, N., Hirbo, J., et al. (2024). Principles and methods for transferring polygenic risk scores across global populations. Nature Reviews Genetics, 25, 8–25. https://doi.org/10.1038/s41576-023-00637-2",
+        "description": "Lire les figures sur le continuum d'ascendance et les sections sur performance, calibration et transfert ; établir une checklist de validation externe.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 8
+      },
+      {
+        "key": "nasem-population-descriptors-2023",
+        "type": "document",
+        "title": "Using Population Descriptors in Genetics and Genomics Research: A New Framework for an Evolving Field",
+        "author": "National Academies of Sciences, Engineering, and Medicine",
+        "url": "https://nap.nationalacademies.org/catalog/26902/using-population-descriptors-in-genetics-and-genomics-research-a-new",
+        "citation": "National Academies of Sciences, Engineering, and Medicine. (2023). Using Population Descriptors in Genetics and Genomics Research: A New Framework for an Evolving Field. The National Academies Press. https://doi.org/10.17226/26902",
+        "description": "Lire le résumé et les recommandations ; remplacer les catégories vagues par des descripteurs justifiés par la question et distinguer race, ethnicité et ascendance génétique.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 9
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Héritabilité et variance populationnelle",
+        "slug": "heritabilite-variance-population",
+        "description": "L'héritabilité est une estimation conditionnelle de variance entre personnes ; elle ne partage pas un individu en parts génétique et environnementale et ne fixe pas l'immutabilité d'un trait.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-human-genetics-2020", "visscher-heritability-2008", "plomin-replicated-findings-2016", "harden-behavior-genetics-2021"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Héritabilité", "questionCount": 5}
+      },
+      {
+        "title": "Corrélation et interaction gène-environnement",
+        "slug": "correlation-interaction-gene-environnement",
+        "description": "La rGE décrit une exposition environnementale non aléatoire liée aux différences génétiques ; la G×E décrit une association conditionnelle. Toutes deux évoluent avec les contextes et ne prouvent pas seules un mécanisme causal.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["dick-gxe-2011", "lenroot-developmental-gxe-2011", "harden-behavior-genetics-2021"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Transactions gènes-environnements", "questionCount": 5}
+      },
+      {
+        "title": "GWAS, scores polygéniques et portabilité",
+        "slug": "gwas-scores-polygeniques-portabilite",
+        "description": "GWAS et scores polygéniques quantifient des associations et des prédictions dépendantes des données ; causalité, calibration, ascendance, contexte et équité doivent être évalués avant toute interprétation individuelle.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["visscher-gwas-2017", "harden-behavior-genetics-2021", "kachuri-prs-transfer-2024", "nasem-population-descriptors-2023"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — GWAS et prédiction polygénique", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Réviser une manchette sur l'héritabilité",
+        "description": "Une manchette affirme : « L'intelligence est génétique à 70 %, donc l'école ne peut rien changer. » Identifier au moins cinq erreurs, préciser population, variance, contexte, estimation et niveau moyen, puis proposer un titre et un paragraphe corrigés sans nier les différences génétiques.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Séparer rGE, G×E et causalité",
+        "description": "Classer six scénarios fictifs en rGE passive, évocative ou active, G×E, confusion ou effet causal non établi. Choisir un scénario et proposer un suivi longitudinal avec mesures répétées, temporalité, variables confondantes et comparaison permettant de départager deux explications.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer une offre de score polygénique",
+        "description": "Un prestataire promet de prédire la réussite scolaire de tout adolescent à partir d'un score construit dans un échantillon adulte d'une seule ascendance. Produire une grille exigeant phénotype, population d'apprentissage, validation indépendante, ascendance, performance, calibration, incertitude, prédicteurs de référence, effets indirects, conséquences et gouvernance ; conclure par une décision motivée.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-027-OPENSTAX", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.1 Human Genetics", "year": 2020, "edition": "2e", "publication": "Psychology 2e", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-1-human-genetics", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Ressource d'introduction ouverte ; ses exemples sont encadrés par les revues spécialisées et aucune plage génétique fixe n'est reprise."},
+      {"id": "REF-027-VISSCHER-H2", "type": "review_article", "authors": ["Visscher, P. M.", "Hill, W. G.", "Wray, N. R."], "organization": "Nature Reviews Genetics", "title": "Heritability in the genomics era — concepts and misconceptions", "year": 2008, "edition": null, "publication": "Nature Reviews Genetics, 9, 255–266", "doi": "https://doi.org/10.1038/nrg2322", "url": "https://pubmed.ncbi.nlm.nih.gov/18319743/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Résumé ouvert sur PubMed ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Source conceptuelle canonique ; ressource facultative car le texte intégral n'est pas garanti ouvert."},
+      {"id": "REF-027-PLOMIN", "type": "review_article", "authors": ["Plomin, R.", "DeFries, J. C.", "Knopik, V. S.", "Neiderhiser, J. M."], "organization": "Perspectives on Psychological Science / PubMed Central", "title": "Top 10 Replicated Findings From Behavioral Genetics", "year": 2016, "edition": null, "publication": "Perspectives on Psychological Science, 11(1), 3–23", "doi": "https://doi.org/10.1177/1745691615617439", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4739500/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue narrative d'auteurs du champ ; utilisée pour les régularités générales avec exceptions et limites, non comme autorité unique."},
+      {"id": "REF-027-HARDEN", "type": "review_article", "authors": ["Harden, K. P."], "organization": "Annual Review of Psychology / PubMed Central", "title": "Reports of My Death Were Greatly Exaggerated: Behavior Genetics in the Postgenomic Era", "year": 2021, "edition": null, "publication": "Annual Review of Psychology, 72, 37–60", "doi": "https://doi.org/10.1146/annurev-psych-052220-103822", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10372814/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Synthèse postgénomique centrale sur héritabilité, GWAS, scores, confusions et déterminisme."},
+      {"id": "REF-027-DICK", "type": "review_article", "authors": ["Dick, D. M."], "organization": "Annual Review of Clinical Psychology / PubMed Central", "title": "Gene-Environment Interaction in Psychological Traits and Disorders", "year": 2011, "edition": null, "publication": "Annual Review of Clinical Psychology, 7, 383–409", "doi": "https://doi.org/10.1146/annurev-clinpsy-032210-104518", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3647367/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; copyright Annual Reviews", "status": "verified", "notes": "Revue méthodologique utilisée pour définitions, devis et fragilité des interactions à l'échelle et à la mesure."},
+      {"id": "REF-027-LENROOT", "type": "review_article", "authors": ["Lenroot, R. K.", "Giedd, J. N."], "organization": "Journal of Child Psychology and Psychiatry / PubMed Central", "title": "Annual Research Review: Developmental considerations of gene by environment interactions", "year": 2011, "edition": null, "publication": "Journal of Child Psychology and Psychiatry, 52(4), 429–441", "doi": "https://doi.org/10.1111/j.1469-7610.2011.02381.x", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3268527/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue développementale utilisée pour temporalité, plasticité et évolution de la corrélation gène-environnement."},
+      {"id": "REF-027-VISSCHER-GWAS", "type": "review_article", "authors": ["Visscher, P. M.", "Wray, N. R.", "Zhang, Q.", "Sklar, P.", "McCarthy, M. I.", "Brown, M. A.", "Yang, J."], "organization": "American Journal of Human Genetics / PubMed Central", "title": "10 Years of GWAS Discovery: Biology, Function, and Translation", "year": 2017, "edition": null, "publication": "American Journal of Human Genetics, 101(1), 5–22", "doi": "https://doi.org/10.1016/j.ajhg.2017.06.005", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5501872/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Revue générale ouverte sur découverte, architecture polygénique et passage non automatique du locus à la fonction."},
+      {"id": "REF-027-KACHURI", "type": "review_article", "authors": ["Kachuri, L.", "Chatterjee, N.", "Hirbo, J.", "Schaid, D. J.", "Martin, I.", "Kullo, I. J.", "Kenny, E. E.", "Pasaniuc, B.", "Witte, J. S.", "Ge, T."], "organization": "Nature Reviews Genetics / PubMed Central", "title": "Principles and methods for transferring polygenic risk scores across global populations", "year": 2024, "edition": null, "publication": "Nature Reviews Genetics, 25, 8–25", "doi": "https://doi.org/10.1038/s41576-023-00637-2", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10961971/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert sur PubMed Central ; article soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue récente centrale sur continuum d'ascendance, transfert, calibration, facteurs génétiques et sociaux et équité."},
+      {"id": "REF-027-NASEM", "type": "official_guideline", "authors": ["National Academies of Sciences, Engineering, and Medicine"], "organization": "National Academies of Sciences, Engineering, and Medicine", "title": "Using Population Descriptors in Genetics and Genomics Research: A New Framework for an Evolving Field", "year": 2023, "edition": "Consensus Study Report", "publication": "The National Academies Press", "doi": "https://doi.org/10.17226/26902", "url": "https://nap.nationalacademies.org/catalog/26902/using-population-descriptors-in-genetics-and-genomics-research-a-new", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Rapport de consensus consultable gratuitement en ligne ; droits National Academies", "status": "verified", "notes": "Rapport de consensus officiel utilisé pour distinguer descripteurs sociaux et ascendance génétique et éviter les catégories essentialistes."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-027-OPENSTAX", "locator": "section 3.1, Gene-Environment Interactions et Genetic Environmental Correlation", "supports": "Introduction aux transactions entre héritage et environnements et aux différents environnements rencontrés."}, {"referenceId": "REF-027-HARDEN", "locator": "Introduction, sections Behavior Genetics in the Postgenomic Era et Gene–Environment Interplay", "supports": "Rejet du déterminisme, architecture polygénique et importance persistante du contexte social."}, {"referenceId": "REF-027-LENROOT", "locator": "Abstract, Introduction et Developmental considerations", "supports": "Rôle du moment développemental, de la plasticité et des processus dynamiques non linéaires."}], "confidence": "high", "confidenceRationale": "Une ressource introductive et deux revues spécialisées convergent ; la plasticité est formulée sans promesse d'illimitation.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-027-VISSCHER-H2", "locator": "Abstract et sections What is heritability? et Misconceptions", "supports": "Définition populationnelle, dépendance à la variance et erreurs d'interprétation de l'héritabilité."}, {"referenceId": "REF-027-HARDEN", "locator": "section Heritability et glossaire", "supports": "Proportion de variation populationnelle et distinction avec déterminisme ou causalité individuelle."}, {"referenceId": "REF-027-PLOMIN", "locator": "Preliminary issues et Findings 1, 2 et 5", "supports": "Variabilité des estimations, effets génétiques et environnementaux et changements au cours du développement."}], "confidence": "high", "confidenceRationale": "Les trois revues convergent sur la définition ; aucune estimation chiffrée n'est transférée hors de sa population.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-027-PLOMIN", "locator": "Introduction, Findings 1, 2, 7, 8 et 9", "supports": "Logique des comparaisons familiales, composantes de variance et apports environnementaux des devis génétiquement informatifs."}, {"referenceId": "REF-027-HARDEN", "locator": "section Behavior Genetics in the Postgenomic Era, twin and family designs", "supports": "Interprétation moderne des devis de jumeaux et limites des paramètres d'héritabilité."}, {"referenceId": "REF-027-VISSCHER-H2", "locator": "sections Estimation et Assumptions", "supports": "Dépendance des estimations aux modèles, apparentements, environnements et populations."}], "confidence": "high", "confidenceRationale": "Les sources donnent les principes et réserves générales ; la revue humaine doit vérifier la formulation précise des hypothèses de jumeaux et d'adoption.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-027-DICK", "locator": "Abstract, Introduction et Challenges in the study of gene-environment interaction", "supports": "Définition de la G×E, distinction des devis latents et mesurés, puissance, échelle, mesure et réplication."}, {"referenceId": "REF-027-LENROOT", "locator": "Introduction et sections Gene-environment correlation et Developmental considerations", "supports": "rGE passive, active et évocative et modification des transactions avec l'âge."}, {"referenceId": "REF-027-HARDEN", "locator": "section Gene–Environment Interplay", "supports": "Besoin de contextes exogènes et de méthodes familiales pour renforcer l'interprétation causale."}], "confidence": "high", "confidenceRationale": "Deux revues dédiées et une synthèse récente distinguent clairement corrélation, interaction et causalité.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-027-VISSCHER-GWAS", "locator": "Introduction, From Association to Causality et sections sur complex traits", "supports": "Principe d'une GWAS, architecture polygénique et étapes nécessaires du locus à la fonction."}, {"referenceId": "REF-027-HARDEN", "locator": "sections Genome-Wide Association Studies et Polygenic Scores", "supports": "Petits effets, structure de population, effets indirects et limites causales dans les phénotypes psychologiques."}, {"referenceId": "REF-027-PLOMIN", "locator": "Finding 3, Heritability is caused by many genes of small effect", "supports": "Distribution de nombreux effets faibles pour les traits complexes."}], "confidence": "high", "confidenceRationale": "Les revues convergent sur le caractère associatif et polygénique ; aucune variante particulière n'est présentée comme causale.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-027-KACHURI", "locator": "Abstract, Figure 1, sections Determinants of PRS transferability et Conclusions", "supports": "Définition des scores, continuum d'ascendance, baisse de performance, calibration, incertitude, validation et facteurs sociaux."}, {"referenceId": "REF-027-NASEM", "locator": "Summary et recommandations pour l'usage des population descriptors", "supports": "Distinction entre race, ethnicité et ascendance génétique et choix de descripteurs adaptés à la question."}, {"referenceId": "REF-027-HARDEN", "locator": "sections Polygenic Scores, Population Stratification et Conclusion", "supports": "Prédiction non déterministe, confusion, effets sociaux indirects et importance de méthodes convergentes."}], "confidence": "high", "confidenceRationale": "Revue méthodologique récente, consensus officiel et synthèse psychologique convergent ; toute application demeure conditionnelle à une validation externe.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-human-genetics-2020", "referenceIds": ["REF-027-OPENSTAX"], "pedagogicalRationale": "Entrée en matière ouverte, lisible et illustrée pour un public débutant.", "learnerInstructions": "Relever interaction et corrélation, puis corriger toute formulation qui suggère une limite génétique fixe.", "language": "en", "accessType": "open", "accessibilityNotes": "Chapitre HTML responsive et manuel PDF librement accessibles.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "visscher-heritability-2008", "referenceIds": ["REF-027-VISSCHER-H2"], "pedagogicalRationale": "Référence conceptuelle canonique pour éviter les contresens sur l'héritabilité.", "learnerInstructions": "Utiliser le résumé et les éléments accessibles ; la leçon et les ressources ouvertes requises suffisent à l'évaluation.", "language": "en", "accessType": "abstract", "accessibilityNotes": "Résumé et métadonnées ouverts sur PubMed ; texte intégral non requis.", "alternativeResourceKey": "harden-behavior-genetics-2021", "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; alternative intégralement ouverte fournie."},
+      {"resourceKey": "plomin-replicated-findings-2016", "referenceIds": ["REF-027-PLOMIN"], "pedagogicalRationale": "Synthèse ouverte de résultats récurrents et du rôle des devis familiaux.", "learnerInstructions": "Distinguer régularité agrégée, exception et interprétation ; ne transformer aucun résultat en loi déterministe.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "harden-behavior-genetics-2021", "referenceIds": ["REF-027-HARDEN"], "pedagogicalRationale": "Synthèse ouverte reliant génétique comportementale historique, génomique et enjeux d'interprétation sociale.", "learnerInstructions": "Construire un tableau variance-association-prédiction-causalité et y classer chaque conclusion rencontrée.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "dick-gxe-2011", "referenceIds": ["REF-027-DICK"], "pedagogicalRationale": "Revue méthodologique ouverte pour ne pas confondre interaction plausible et résultat robuste.", "learnerInstructions": "Relever pour chaque exemple devis, mesure de G, mesure de E, échelle, puissance et statut de réplication.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "lenroot-developmental-gxe-2011", "referenceIds": ["REF-027-LENROOT"], "pedagogicalRationale": "Complément ouvert pour replacer G×E et rGE dans le temps développemental.", "learnerInstructions": "Lire seulement les sections ciblées et traiter les exemples biologiques comme illustrations, non comme mécanismes établis pour tout trait.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative."},
+      {"resourceKey": "visscher-gwas-2017", "referenceIds": ["REF-027-VISSCHER-GWAS"], "pedagogicalRationale": "Revue ouverte de référence pour le passage entre association génomique et biologie fonctionnelle.", "learnerInstructions": "À chaque flèche entre variant associé et mécanisme, écrire la preuve supplémentaire requise.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "kachuri-prs-transfer-2024", "referenceIds": ["REF-027-KACHURI"], "pedagogicalRationale": "Revue récente et ouverte pour évaluer portabilité et équité des scores.", "learnerInstructions": "Utiliser la figure du continuum d'ascendance et produire une checklist performance-calibration-incertitude-validation.", "language": "en", "accessType": "open", "accessibilityNotes": "Manuscrit HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "nasem-population-descriptors-2023", "referenceIds": ["REF-027-NASEM"], "pedagogicalRationale": "Consensus officiel pour employer des descripteurs de population précis et non essentialistes.", "learnerInstructions": "Lire le résumé et appliquer les recommandations à trois formulations utilisant race, ethnicité ou ascendance comme synonymes.", "language": "en", "accessType": "open", "accessibilityNotes": "Rapport consultable en ligne, résumé et PDF de points clés accessibles sans compte.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "heritabilite-variance-population",
+        "assessmentTitle": "Mini-évaluation — Héritabilité",
+        "questions": [
+          {"type": "single_choice", "prompt": "Une étude estime une héritabilité de 0,60 pour un score dans une population donnée. Quelle interprétation est correcte ?", "explanation": "L'estimation concerne la proportion de variance entre personnes associée aux différences génétiques dans cette population, ce contexte et ce modèle.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Environ 60 % de la variance observée est attribuée aux différences génétiques selon le modèle", "isCorrect": true, "position": 1}, {"label": "Chaque personne possède 60 % de score génétique", "isCorrect": false, "position": 2}, {"label": "Le score est immuable à 60 %", "isCorrect": false, "position": 3}, {"label": "60 % de l'écart entre deux groupes a une cause génétique", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une forte héritabilité empêche qu'une intervention environnementale modifie le niveau moyen d'un trait.", "explanation": "Variance entre personnes et possibilité de modifier un niveau moyen sont des questions distinctes.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels changements peuvent modifier une estimation d'héritabilité ?", "explanation": "L'estimation dépend de la population, des variances présentes, de la mesure et de la période.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La diversité des environnements", "isCorrect": true, "position": 1}, {"label": "La composition génétique de la population", "isCorrect": true, "position": 2}, {"label": "L'âge et la mesure du phénotype", "isCorrect": true, "position": 3}, {"label": "Le fait qu'un individu lise le résultat", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel énoncé décrit le mieux l'apport d'une étude de jumeaux ?", "explanation": "Elle compare des degrés de ressemblance sous des hypothèses pour estimer des composantes de variance, sans identifier automatiquement un mécanisme.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Elle estime des composantes de variance à partir de ressemblances et d'hypothèses", "isCorrect": true, "position": 1}, {"label": "Elle isole expérimentalement les gènes chez l'humain", "isCorrect": false, "position": 2}, {"label": "Elle révèle le gène unique de chaque trait", "isCorrect": false, "position": 3}, {"label": "Elle supprime tous les environnements partagés", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel mot désigne la proportion conditionnelle de variance phénotypique associée aux différences génétiques dans une population ?", "explanation": "Il s'agit de l'héritabilité, toujours définie relativement à une population et à un modèle.", "acceptedAnswers": ["héritabilité", "heritabilite", "l'héritabilité", "l'heritabilite"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "correlation-interaction-gene-environnement",
+        "assessmentTitle": "Mini-évaluation — Transactions gènes-environnements",
+        "questions": [
+          {"type": "single_choice", "prompt": "Des parents transmettent des variantes liées à leurs intérêts et offrent aussi davantage de livres. Quel processus est illustré ?", "explanation": "Les parents fournissent à la fois l'apparentement génétique et un environnement corrélé : c'est une rGE passive.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Corrélation gène-environnement passive", "isCorrect": true, "position": 1}, {"label": "Interaction gène-environnement", "isCorrect": false, "position": 2}, {"label": "Randomisation", "isCorrect": false, "position": 3}, {"label": "Mutation provoquée par la lecture", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Une disposition partiellement influencée génétiquement conduit une personne à choisir un club correspondant à ses intérêts. De quel processus s'agit-il ?", "explanation": "La sélection d'un milieu compatible avec des dispositions illustre une rGE active.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Corrélation gène-environnement active", "isCorrect": true, "position": 1}, {"label": "Corrélation passive", "isCorrect": false, "position": 2}, {"label": "Effet causal démontré du club", "isCorrect": false, "position": 3}, {"label": "Héritabilité individuelle", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quand parle-t-on d'interaction gène-environnement ?", "explanation": "Une interaction correspond à une relation conditionnelle : l'association d'un facteur varie selon le niveau de l'autre.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Lorsque l'association d'un facteur avec le phénotype varie selon l'environnement ou le génotype", "isCorrect": true, "position": 1}, {"label": "Dès qu'un gène et un environnement sont mesurés", "isCorrect": false, "position": 2}, {"label": "Lorsque deux variables sont seulement corrélées", "isCorrect": false, "position": 3}, {"label": "Quand l'environnement ne joue aucun rôle", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quels contrôles renforcent une étude de G×E ?", "explanation": "Puissance, mesure fiable, échelle explicite, réplication et plan d'analyse réduisent les interactions fortuites ou dépendantes d'un choix analytique.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Une puissance statistique suffisante", "isCorrect": true, "position": 1}, {"label": "Des mesures fiables de l'exposition et du phénotype", "isCorrect": true, "position": 2}, {"label": "Une échelle et un modèle préspécifiés", "isCorrect": true, "position": 3}, {"label": "Une seule analyse exploratoire non répliquée", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Observer une rGE prouve que l'environnement corrélé n'a aucun effet causal.", "explanation": "La corrélation montre une exposition non aléatoire ; l'environnement peut avoir un effet, ne pas en avoir, ou partager plusieurs causes. Un devis supplémentaire est nécessaire.", "acceptedAnswers": [], "position": 5, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]}
+        ]
+      },
+      {
+        "conceptSlug": "gwas-scores-polygeniques-portabilite",
+        "assessmentTitle": "Mini-évaluation — GWAS et prédiction polygénique",
+        "questions": [
+          {"type": "single_choice", "prompt": "Que montre directement un variant significatif dans une GWAS bien conduite ?", "explanation": "Il est associé au phénotype dans les données et le modèle ; le variant causal et le mécanisme restent à établir.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Une association statistique avec le phénotype dans l'échantillon analysé", "isCorrect": true, "position": 1}, {"label": "Un mécanisme biologique causal entièrement démontré", "isCorrect": false, "position": 2}, {"label": "Le destin des porteurs", "isCorrect": false, "position": 3}, {"label": "L'absence de toute confusion", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Un score polygénique élevé constitue à lui seul un diagnostic individuel.", "explanation": "Le score est une prédiction probabiliste relative à un modèle et à une population ; il ne remplace pas une évaluation diagnostique validée.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que faut-il vérifier avant de transférer un score polygénique à une nouvelle population ?", "explanation": "Performance, calibration, ascendance, phénotype et contexte de validation déterminent la portée de la prédiction.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La performance et la calibration externes", "isCorrect": true, "position": 1}, {"label": "La correspondance des phénotypes et âges", "isCorrect": true, "position": 2}, {"label": "La composition et l'ascendance des échantillons", "isCorrect": true, "position": 3}, {"label": "Uniquement le nom commercial du test", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Pourquoi un score peut-il perdre en précision quand l'ascendance de la cible s'éloigne de celle de l'échantillon d'apprentissage ?", "explanation": "Fréquences alléliques, déséquilibre de liaison, effets estimés et contextes peuvent différer, ce qui dégrade le transfert.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Les associations et structures de liaison ne se transfèrent pas automatiquement", "isCorrect": true, "position": 1}, {"label": "Les personnes appartiennent à des races biologiques discrètes", "isCorrect": false, "position": 2}, {"label": "Le génome change après la lecture du score", "isCorrect": false, "position": 3}, {"label": "Toute prédiction est identique dans toutes les populations", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Comment nomme-t-on la capacité d'un score à conserver une performance valide dans une autre population ou un autre contexte ?", "explanation": "Il s'agit de sa portabilité, à vérifier par validation externe et calibration.", "acceptedAnswers": ["portabilité", "portabilite", "transférabilité", "transferabilite", "transportabilité", "transportabilite"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en génétique quantitative et comportementale, statistiques génomiques, développement et éthique requise avant publication.",
+        "Validation technique requise : l'étape bases-biologiques et le module etudier-cerveau-comportement ne sont pas encore présents dans le seed.",
+        "L'évaluation finale de l'étape 6 doit être créée et validée avant toute publication de l'étape.",
+        "L'héritabilité est strictement présentée comme variance populationnelle conditionnelle, jamais comme pourcentage individuel, immutabilité ou explication d'un écart entre groupes.",
+        "Les hypothèses et limites des devis de jumeaux et d'adoption doivent être vérifiées ligne à ligne par la revue spécialisée.",
+        "rGE, G×E, association génomique, prédiction et causalité sont séparées ; aucun exemple de gène candidat n'est présenté comme résultat établi.",
+        "Race, ethnicité et ascendance génétique ne sont pas traitées comme synonymes ni comme catégories biologiques discrètes.",
+        "Les ressources obligatoires sont ouvertes ; la seule ressource à accès limité est facultative et possède une alternative ouverte.",
+        "Les DOI, pages PubMed Central, chapitre OpenStax et rapport National Academies ont été vérifiés le 3 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_scientific_and_ethics"}
+    ]
+  }
+}

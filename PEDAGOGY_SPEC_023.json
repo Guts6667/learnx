@@ -1,0 +1,311 @@
+{
+  "specId": "PEDAGOGY_SPEC_023",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "bases-biologiques",
+  "moduleSlug": "organisation-systeme-nerveux",
+  "lesson": {
+    "title": "Systèmes nerveux central, périphérique et endocrinien",
+    "slug": "systemes-nerveux-endocrinien",
+    "summary": "Le système nerveux et le système endocrinien coordonnent l'organisme par des voies distribuées, des temporalités différentes et des boucles de rétroaction. Cette leçon relie SNC, SNP, voies somatiques et autonomes, régulation sympathique et parasympathique et axes neuroendocriniens sans réduire un comportement à une branche nerveuse ou à une hormone.",
+    "objectives": [
+      "Distinguer système nerveux central et périphérique, puis situer les voies afférentes et efférentes dans une boucle fonctionnelle.",
+      "Comparer voies somatiques et autonomes sans les réduire à l'opposition volontaire-involontaire.",
+      "Expliquer pourquoi les branches sympathique et parasympathique peuvent s'opposer, se compléter ou agir différemment selon l'organe et le moment.",
+      "Décrire la coordination entre hypothalamus, hypophyse, glande périphérique et tissu cible dans un axe neuroendocrinien.",
+      "Interpréter une variation hormonale à partir des récepteurs, de la temporalité, du contexte et des boucles de rétroaction plutôt que comme une cause suffisante d'un comportement."
+    ],
+    "prerequisites": [
+      "Distinguer neurone, synapse, neurotransmetteur et plasticité.",
+      "Distinguer description, corrélation, mécanisme proposé et conclusion causale."
+    ],
+    "estimatedMinutes": 180,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Le système nerveux central (SNC) comprend l'encéphale et la moelle épinière. Le système nerveux périphérique (SNP) comprend les nerfs et ganglions qui relient le SNC aux récepteurs sensoriels, muscles, glandes et organes. Cette distinction est anatomique, pas une séparation entre un centre qui commanderait seul et une périphérie passive : des voies afférentes transportent des informations vers le SNC, des voies efférentes modifient l'activité des effecteurs, et des circuits périphériques participent aussi à la régulation. Un comportement résulte donc de boucles de circulation de l'information plutôt que d'une chaîne uniquement descendante.",
+          "sourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Dans les voies efférentes du SNP, la division somatique innerve principalement les muscles squelettiques, tandis que la division autonome régule notamment les muscles lisses, le muscle cardiaque et les glandes. L'étiquette « volontaire » aide à introduire le somatique, mais elle n'est pas absolue : une voie somatique comprend aussi des réflexes et des afférences sensorielles, tandis que « autonome » désigne surtout la régulation des viscères, du cœur et des glandes. Le système autonome comprend des voies sympathiques, parasympathiques et entériques, avec des entrées sensorielles viscérales qui participent aux réflexes.",
+          "sourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "« Sympathique = stress » et « parasympathique = repos » sont des raccourcis, pas deux états globaux qui s'allument l'un après l'autre. Les deux branches possèdent une activité tonique et des variations phasiques. Elles peuvent exercer des effets opposés sur une fonction, agir surtout par une seule branche sur une autre, ou coopérer dans une séquence. Leur organisation et leurs effets diffèrent selon les organes, récepteurs et moments. Une fréquence cardiaque seule ne mesure donc ni un prétendu niveau sympathique général ni l'état complet du système autonome.",
+          "sourceKeys": ["statpearls-autonomic-anatomy-2025", "karemaker-autonomic-function-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La communication endocrine repose sur des hormones libérées dans la circulation et reconnues par des récepteurs de cellules cibles. Elle est coordonnée avec le système nerveux, notamment par l'hypothalamus et l'hypophyse. Comparées à une transmission synaptique locale, de nombreuses réponses endocrines commencent plus lentement et durent plus longtemps, mais il ne s'agit pas de deux horloges uniformes : la synthèse, la libération pulsatile, le transport, la demi-vie, le type de récepteur et les cascades intracellulaires modifient le délai et la durée de chaque effet.",
+          "sourceKeys": ["openstax-psychology-2e-3-5", "ncbi-principles-endocrinology"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "Dans l'axe hypothalamo-hypophyso-surrénalien, certains stresseurs activent des neurones hypothalamiques qui libèrent la CRH ; celle-ci favorise la libération d'ACTH par l'hypophyse antérieure ; l'ACTH stimule ensuite la production de glucocorticoïdes par le cortex surrénalien. Chez l'humain, le cortisol contribue à mobiliser des ressources et agit aussi sur des récepteurs cérébraux et périphériques. Son augmentation est retardée par rapport à certaines réponses nerveuses rapides, puis des rétroactions contribuent à limiter l'activité de l'axe. Le profil dépend du type, de l'intensité, de la durée et de l'anticipation du stresseur : mesurer le cortisol à un instant ne résume ni tout l'axe ni tout l'état psychologique.",
+          "sourceKeys": ["herman-hpa-regulation-2016"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Pour analyser une affirmation du type « cette hormone provoque ce comportement », vérifier au minimum la population et le contexte, le moment du prélèvement, la dynamique plutôt qu'une valeur isolée, les tissus et récepteurs concernés, les autres signaux de la boucle, la direction causale et les explications concurrentes. Une hormone peut moduler la probabilité ou l'intensité d'une réponse sans déterminer à elle seule une conduite. Le comportement et le contexte peuvent en retour modifier l'activité endocrine : l'explication attendue est multiniveau et bidirectionnelle, non « hormone = destin ».",
+          "sourceKeys": ["ncbi-principles-endocrinology", "hau-goymann-endocrine-plasticity-2015", "herman-hpa-regulation-2016"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-3-3",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 3.3 Parts of the Nervous System",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-3-parts-of-the-nervous-system",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 3.3. OpenStax.",
+        "description": "Lire la section 3.3 et reconstruire sous forme de boucle les relations SNC-SNP, afférences-efférences et divisions somatique-autonome ; noter deux limites du vocabulaire volontaire-involontaire.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1
+      },
+      {
+        "key": "statpearls-autonomic-anatomy-2025",
+        "type": "book_chapter",
+        "title": "Anatomy, Autonomic Nervous System",
+        "author": "Joshua A. Waxenbaum, Vamsi Reddy et Joe M. Das",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK539845/",
+        "citation": "Waxenbaum, J. A., Reddy, V., & Das, J. M. (2025). Anatomy, Autonomic Nervous System. In StatPearls. StatPearls Publishing.",
+        "description": "Lire l'introduction et les sections Structure and Function sur les voies sympathiques, parasympathiques et entériques ; relever entrées afférentes, sorties efférentes et variations selon les organes.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 2
+      },
+      {
+        "key": "karemaker-autonomic-function-2017",
+        "type": "article",
+        "title": "An introduction into autonomic nervous function",
+        "author": "John M. Karemaker",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28304283/",
+        "citation": "Karemaker, J. M. (2017). An introduction into autonomic nervous function. Physiological Measurement, 38(5), R89–R118. https://doi.org/10.1088/1361-6579/aa6782",
+        "description": "Lire le résumé et repérer pourquoi une balance sympatho-vagale unique et une commande exclusivement descendante simplifient excessivement la variabilité autonome.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "openstax-psychology-2e-3-5",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 3.5 The Endocrine System",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/3-5-the-endocrine-system",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 3.5. OpenStax.",
+        "description": "Lire les principes de signalisation hormonale et l'articulation hypothalamus-hypophyse ; comparer portée et temporalité avec une transmission synaptique sans transformer la comparaison en règle absolue.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "ncbi-principles-endocrinology",
+        "type": "book_chapter",
+        "title": "Endocrinology: An Integrated Approach — Chapter 1, Principles of endocrinology",
+        "author": "Stephen Nussey et Saffron Whitehead",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK20/",
+        "citation": "Nussey, S., & Whitehead, S. (2001). Principles of endocrinology. In Endocrinology: An Integrated Approach. BIOS Scientific Publishers.",
+        "description": "Lire Functions of hormones and their regulation, Hormone receptor regulation et Neuroendocrine interactions ; tracer une boucle et expliquer pourquoi concentration hormonale et effet ne sont pas interchangeables.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "herman-hpa-regulation-2016",
+        "type": "article",
+        "title": "Regulation of the Hypothalamic-Pituitary-Adrenocortical Stress Response",
+        "author": "James P. Herman, Jessica M. McKlveen, Sriparna Ghosal et collègues",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4867107/",
+        "citation": "Herman, J. P., McKlveen, J. M., Ghosal, S., Kopp, B., Wulsin, A., Makinson, R., Scheimann, J., & Myers, B. (2016). Regulation of the hypothalamic-pituitary-adrenocortical stress response. Comprehensive Physiology, 6(2), 603–621. https://doi.org/10.1002/cphy.c150015",
+        "description": "Lire le résumé, la figure 1 et la section Dynamics of the HPA Axis Stress Response ; relever la séquence CRH-ACTH-glucocorticoïdes, les délais et les mécanismes de rétroaction.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "hau-goymann-endocrine-plasticity-2015",
+        "type": "article",
+        "title": "Endocrine mechanisms, behavioral phenotypes and plasticity: known relationships and open questions",
+        "author": "Michaela Hau et Wolfgang Goymann",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4722346/",
+        "citation": "Hau, M., & Goymann, W. (2015). Endocrine mechanisms, behavioral phenotypes and plasticity: Known relationships and open questions. Frontiers in Zoology, 12(Suppl 1), S7. https://doi.org/10.1186/1742-9994-12-S1-S7",
+        "description": "Lire les sections sur les relations hormones-comportement et repérer les effets probabilistes, le rôle du contexte et la rétroaction possible du comportement ; limiter l'extrapolation aux humains car la synthèse porte surtout sur des vertébrés non humains.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 7
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Organisation SNC-SNP et voies fonctionnelles",
+        "slug": "organisation-snc-snp-voies",
+        "description": "Le SNC et le SNP se distinguent anatomiquement, tandis que les voies afférentes et efférentes, somatiques et autonomes, forment des boucles fonctionnelles avec leurs effecteurs et retours sensoriels.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Organisation SNC-SNP", "questionCount": 5}
+      },
+      {
+        "title": "Régulation autonome distribuée",
+        "slug": "regulation-autonome-distribuee",
+        "description": "Les composantes sympathique, parasympathique et entérique contribuent à une régulation continue et spécifique des organes ; elles ne se résument pas à deux états globaux, toujours opposés.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["statpearls-autonomic-anatomy-2025", "karemaker-autonomic-function-2017"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Régulation autonome", "questionCount": 5}
+      },
+      {
+        "title": "Coordination neuroendocrine et rétroaction",
+        "slug": "coordination-neuroendocrine-retroaction",
+        "description": "Un axe neuroendocrinien coordonne signaux nerveux, hormones, récepteurs cibles et rétroactions sur plusieurs temporalités ; une hormone module des fonctions sans déterminer seule un comportement.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-3-5", "ncbi-principles-endocrinology", "herman-hpa-regulation-2016", "hau-goymann-endocrine-plasticity-2015"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Coordination neuroendocrine", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Tracer une boucle SNC-SNP",
+        "description": "À partir du retrait de la main d'une surface très chaude puis de la décision de refroidir la zone, produire un schéma distinguant récepteur, voie afférente, moelle, encéphale, voies efférentes somatique et autonome et effecteurs ; indiquer pour chaque flèche le sens de circulation de l'information.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Démonter une balance autonome unique",
+        "description": "Pour trois profils fictifs combinant fréquence cardiaque, diamètre pupillaire, salivation et motilité digestive, expliquer pourquoi aucun indicateur isolé ne fournit un score sympathique ou parasympathique global ; proposer au moins deux mesures et un contexte nécessaires à une interprétation plus prudente.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Analyser une affirmation hormone-comportement",
+        "description": "Une application affirme qu'un prélèvement unique de cortisol à 18 h mesure le stress et prédit la motivation. Rédiger une critique de 500 à 700 mots : reconstruire l'axe HPA, distinguer temporalités nerveuse et endocrine, identifier au moins six informations manquantes et proposer une conclusion multiniveau proportionnée aux données.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-03",
+    "nextReviewAt": "2027-08-03",
+    "references": [
+      {"id": "REF-023-OPENSTAX-3-3", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 3.3 Parts of the Nervous System", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-3-parts-of-the-nervous-system", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel introductif ouvert pour l'organisation générale ; les limites des oppositions simplifiées sont complétées par des revues spécialisées."},
+      {"id": "REF-023-STATPEARLS-ANS", "type": "review_article", "authors": ["Waxenbaum, J. A.", "Reddy, V.", "Das, J. M."], "organization": "NCBI Bookshelf / StatPearls", "title": "Anatomy, Autonomic Nervous System", "year": 2025, "edition": "mise à jour du 1er décembre 2025", "publication": "StatPearls Publishing", "doi": null, "url": "https://www.ncbi.nlm.nih.gov/books/NBK539845/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Consultation ouverte NCBI Bookshelf ; droits StatPearls", "status": "verified", "notes": "Synthèse anatomique spécialisée ; les sections cliniques ne sont pas mobilisées."},
+      {"id": "REF-023-KAREMAKER", "type": "review_article", "authors": ["Karemaker, J. M."], "organization": "IOP Publishing", "title": "An introduction into autonomic nervous function", "year": 2017, "edition": null, "publication": "Physiological Measurement, 38(5), R89–R118", "doi": "https://doi.org/10.1088/1361-6579/aa6782", "url": "https://pubmed.ncbi.nlm.nih.gov/28304283/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Notice et résumé PubMed ouverts ; texte intégral soumis aux droits de l'éditeur", "status": "verified", "notes": "Revue spécialisée qui discute innervation parallèle, variabilité et limites d'une balance sympatho-vagale unique ; l'auteur signale explicitement les interprétations discutables."},
+      {"id": "REF-023-OPENSTAX-3-5", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 3.5 The Endocrine System", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-5-the-endocrine-system", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Source introductive ouverte pour hormones, récepteurs et interface hypothalamus-hypophyse."},
+      {"id": "REF-023-NUSSEY-WHITEHEAD", "type": "textbook", "authors": ["Nussey, S.", "Whitehead, S."], "organization": "NCBI Bookshelf", "title": "Endocrinology: An Integrated Approach — Chapter 1, Principles of endocrinology", "year": 2001, "edition": "1re éd.", "publication": "BIOS Scientific Publishers", "doi": null, "url": "https://www.ncbi.nlm.nih.gov/books/NBK20/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Consultation ouverte NCBI Bookshelf ; copyright BIOS Scientific Publishers", "status": "verified", "notes": "Source ancienne mais limitée à des principes endocriniens établis : récepteurs, concentration, rétroaction et intégration neuroendocrine ; complétée par une revue spécialisée plus récente de l'axe HPA."},
+      {"id": "REF-023-HERMAN-HPA", "type": "review_article", "authors": ["Herman, J. P.", "McKlveen, J. M.", "Ghosal, S.", "Kopp, B.", "Wulsin, A.", "Makinson, R.", "Scheimann, J.", "Myers, B."], "organization": "Wiley / PubMed Central", "title": "Regulation of the Hypothalamic-Pituitary-Adrenocortical Stress Response", "year": 2016, "edition": null, "publication": "Comprehensive Physiology, 6(2), 603–621", "doi": "https://doi.org/10.1002/cphy.c150015", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4867107/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Article intégral accessible sur PubMed Central ; copyright Wiley", "status": "verified", "notes": "Revue spécialisée pour séquence, temporalité, rétroaction et dépendance au contexte de l'axe HPA."},
+      {"id": "REF-023-HAU-GOYMANN", "type": "review_article", "authors": ["Hau, M.", "Goymann, W."], "organization": "Frontiers in Zoology / PubMed Central", "title": "Endocrine mechanisms, behavioral phenotypes and plasticity: known relationships and open questions", "year": 2015, "edition": null, "publication": "Frontiers in Zoology, 12(Suppl 1), S7", "doi": "https://doi.org/10.1186/1742-9994-12-S1-S7", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4722346/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Revue surtout fondée sur des vertébrés non humains ; utilisée uniquement pour les principes de contexte, plasticité et bidirectionnalité, avec limite d'extrapolation explicite."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-023-OPENSTAX-3-3", "locator": "section 3.3, Central and Peripheral Nervous Systems", "supports": "Définition anatomique du SNC et du SNP et distinction voies afférentes-efférentes."}, {"referenceId": "REF-023-STATPEARLS-ANS", "locator": "Introduction, paragraphes sur afférences, efférences et système entérique", "supports": "Organisation distribuée des voies autonomes et capacité de circuits périphériques."}], "confidence": "high", "confidenceRationale": "Manuel universitaire et synthèse anatomique récente convergent ; la formulation évite une commande centrale exclusivement descendante.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-023-OPENSTAX-3-3", "locator": "section 3.3, Somatic Nervous System et Autonomic Nervous System", "supports": "Distinction introductive somatique-autonome et branches autonomes."}, {"referenceId": "REF-023-STATPEARLS-ANS", "locator": "Introduction et Structure and Function", "supports": "Afférences viscérales, effecteurs, divisions sympathique, parasympathique et entérique."}], "confidence": "high", "confidenceRationale": "Deux synthèses compatibles ; les limites du couple volontaire-involontaire sont explicitées sans nier la distinction anatomofonctionnelle.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-023-STATPEARLS-ANS", "locator": "Introduction et sections Sympathetic, Parasympathetic et Enteric Nervous Systems", "supports": "Innervations, fonctions et différences selon les organes."}, {"referenceId": "REF-023-KAREMAKER", "locator": "résumé et parties 1 à 3 décrites dans l'abstract", "supports": "Innervation parallèle, variabilité, limites d'une balance globale et articulation top-down/bottom-up."}], "confidence": "high", "confidenceRationale": "Synthèses spécialisées convergentes ; le modèle binaire est conservé comme repère partiel, non comme état global.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-023-OPENSTAX-3-5", "locator": "section 3.5, paragraphes d'introduction et Major Glands", "supports": "Hormones circulantes, récepteurs et articulation hypothalamus-hypophyse."}, {"referenceId": "REF-023-NUSSEY-WHITEHEAD", "locator": "Functions of hormones and their regulation, Hormone receptor regulation et Neuroendocrine interactions", "supports": "Sécrétion, concentration, récepteurs, rétroaction et conversion de signaux nerveux en signaux hormonaux."}], "confidence": "high", "confidenceRationale": "Les principes généraux convergent ; les différences de temporalité sont présentées comme tendances dépendantes des mécanismes.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-023-HERMAN-HPA", "locator": "résumé, figure 1 et section Dynamics of the HPA Axis Stress Response", "supports": "Séquence CRH-ACTH-glucocorticoïdes, décalage temporel, rétroaction et dépendance au stresseur."}], "confidence": "high", "confidenceRationale": "Revue spécialisée directement centrée sur la régulation de l'axe HPA ; les généralisations individuelles sont exclues.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-023-NUSSEY-WHITEHEAD", "locator": "Hormone receptor regulation, Neuroendocrine interactions et Clinical evaluation of endocrine disorders", "supports": "Dépendance de l'effet aux récepteurs, concentrations, autres éléments de boucle et contexte d'interprétation."}, {"referenceId": "REF-023-HAU-GOYMANN", "locator": "sections Hormones and behavioral plasticity et Individual variation in hormone-behavior relationships", "supports": "Effets probabilistes et contextuels et rétroaction possible du comportement sur les concentrations hormonales."}, {"referenceId": "REF-023-HERMAN-HPA", "locator": "résumé et sections Acute stress et Dynamics of the HPA Axis", "supports": "Dépendance au type, à l'intensité, à la durée et au contexte du stresseur."}], "confidence": "high", "confidenceRationale": "Sources de physiologie et de comportement convergent sur une interprétation conditionnelle ; la portée animale de Hau et Goymann est signalée.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-psychology-2e-3-3", "referenceIds": ["REF-023-OPENSTAX-3-3"], "pedagogicalRationale": "Introduction ouverte et structurée aux divisions du système nerveux.", "learnerInstructions": "Transformer les catégories en boucle afférente-efférente et noter les limites des dichotomies.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible et PDF ouvert ; figures accompagnées de descriptions.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "statpearls-autonomic-anatomy-2025", "referenceIds": ["REF-023-STATPEARLS-ANS"], "pedagogicalRationale": "Synthèse spécialisée ouverte qui détaille afférences, efférences et variabilité anatomique des branches autonomes.", "learnerInstructions": "Lire uniquement les sections indiquées et comparer les branches organe par organe.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML NCBI Bookshelf lisible au clavier ; version imprimable disponible.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Les sections cliniques sont hors consigne."},
+      {"resourceKey": "karemaker-autonomic-function-2017", "referenceIds": ["REF-023-KAREMAKER"], "pedagogicalRationale": "Revue ciblée sur la variabilité et les limites des représentations globales de l'activité autonome.", "learnerInstructions": "Lire le résumé ouvert et distinguer constats de synthèse et interprétations explicitement discutées par l'auteur.", "language": "en", "accessType": "paid", "accessibilityNotes": "Notice et résumé PubMed ouverts ; texte intégral éditeur potentiellement payant.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative ; aucune activité obligatoire ne nécessite le texte intégral."},
+      {"resourceKey": "openstax-psychology-2e-3-5", "referenceIds": ["REF-023-OPENSTAX-3-5"], "pedagogicalRationale": "Présentation introductive ouverte du système endocrinien et de son articulation avec l'hypothalamus.", "learnerInstructions": "Comparer signal endocrinien et transmission synaptique puis identifier les limites de la comparaison.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML accessible et PDF ouvert ; figures accompagnées de descriptions.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "ncbi-principles-endocrinology", "referenceIds": ["REF-023-NUSSEY-WHITEHEAD"], "pedagogicalRationale": "Chapitre ouvert qui relie signalisation, récepteurs, rétroactions et intégration neuroendocrine.", "learnerInstructions": "Lire les trois sections ciblées et produire un schéma comportant signal, récepteur, effet et retour.", "language": "en", "accessType": "open", "accessibilityNotes": "HTML NCBI Bookshelf et figures avec légendes ; ouvrage ancien, sections ciblées explicitement.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Les principes retenus sont complétés par Herman et al. (2016)."},
+      {"resourceKey": "herman-hpa-regulation-2016", "referenceIds": ["REF-023-HERMAN-HPA"], "pedagogicalRationale": "Revue spécialisée ouverte permettant d'étudier un axe complet, ses temporalités et sa rétroaction.", "learnerInstructions": "Tracer la séquence CRH-ACTH-cortisol, puis annoter délais, tissus cibles, rétroactions et facteurs contextuels.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central ; figures légendées.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": null},
+      {"resourceKey": "hau-goymann-endocrine-plasticity-2015", "referenceIds": ["REF-023-HAU-GOYMANN"], "pedagogicalRationale": "Revue ouverte utile pour questionner déterminisme, contexte et bidirectionnalité dans les relations hormone-comportement.", "learnerInstructions": "Extraire les principes sans généraliser directement les exemples animaux à l'humain.", "language": "en", "accessType": "open", "accessibilityNotes": "Article HTML et PDF ouverts sur PubMed Central.", "alternativeResourceKey": null, "checkedAt": "2026-08-03", "urlStatus": "ok", "mediaSegment": null, "transcriptAvailable": null, "notes": "Ressource facultative en raison de sa portée principalement comparée et animale."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "organisation-snc-snp-voies",
+        "assessmentTitle": "Mini-évaluation — Organisation SNC-SNP",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel ensemble appartient au système nerveux central ?", "explanation": "Le SNC comprend l'encéphale et la moelle épinière.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Encéphale et moelle épinière", "isCorrect": true, "position": 1}, {"label": "Nerfs et ganglions périphériques", "isCorrect": false, "position": 2}, {"label": "Muscles et glandes", "isCorrect": false, "position": 3}, {"label": "Hypophyse et glandes surrénales uniquement", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Une voie transmet l'étirement d'un muscle vers la moelle épinière. Comment la qualifier ?", "explanation": "Elle transporte une information sensorielle de la périphérie vers le SNC : elle est afférente.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Afférente", "isCorrect": true, "position": 1}, {"label": "Efférente", "isCorrect": false, "position": 2}, {"label": "Endocrine", "isCorrect": false, "position": 3}, {"label": "Exclusivement parasympathique", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "La division autonome ne comporte que des sorties motrices et aucune information sensorielle viscérale.", "explanation": "Des afférences viscérales transmettent des informations qui participent aux réflexes et à la régulation autonomes.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels éléments doivent apparaître dans une boucle fonctionnelle SNC-SNP complète ?", "explanation": "Une boucle minimale relie entrée sensorielle, traitement central, sortie efférente et effecteur avec un retour observable.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Une voie afférente", "isCorrect": true, "position": 1}, {"label": "Un traitement central", "isCorrect": true, "position": 2}, {"label": "Une voie efférente et un effecteur", "isCorrect": true, "position": 3}, {"label": "Une commande uniquement descendante sans retour", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel sigle désigne l'ensemble des nerfs et ganglions situés hors de l'encéphale et de la moelle épinière ?", "explanation": "Il s'agit du système nerveux périphérique, abrégé SNP.", "acceptedAnswers": ["SNP", "système nerveux périphérique", "systeme nerveux peripherique"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "regulation-autonome-distribuee",
+        "assessmentTitle": "Mini-évaluation — Régulation autonome",
+        "questions": [
+          {"type": "true_false", "prompt": "Les branches sympathique et parasympathique produisent toujours des effets strictement opposés sur tous les organes.", "explanation": "Leur contribution dépend de l'organe et du moment ; elles peuvent s'opposer, se compléter ou ne pas innerver symétriquement une fonction.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "single_choice", "prompt": "Pourquoi une fréquence cardiaque élevée ne suffit-elle pas à établir un « niveau sympathique général » ?", "explanation": "L'activité autonome varie selon les organes, les signaux et le contexte ; un indicateur isolé ne résume pas tout le système.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Parce que la régulation est spécifique des organes et dépend du contexte", "isCorrect": true, "position": 1}, {"label": "Parce que le cœur n'a aucune innervation autonome", "isCorrect": false, "position": 2}, {"label": "Parce que seule l'hypophyse modifie le cœur", "isCorrect": false, "position": 3}, {"label": "Parce que le parasympathique est toujours absent pendant l'activité", "isCorrect": false, "position": 4}]},
+          {"type": "multiple_choice", "prompt": "Quelles propositions décrivent correctement le système autonome ?", "explanation": "Il comprend des voies afférentes et efférentes, une régulation continue et des circuits entériques partiellement autonomes mais connectés.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Il traite des informations viscérales afférentes", "isCorrect": true, "position": 1}, {"label": "Ses branches ont une activité tonique et phasique", "isCorrect": true, "position": 2}, {"label": "Le système entérique peut produire des circuits réflexes locaux", "isCorrect": true, "position": 3}, {"label": "Il alterne seulement entre deux états globaux exclusifs", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quelle interprétation d'un ralentissement cardiaque pendant une expiration est la plus prudente ?", "explanation": "Une mesure ponctuelle informe une fonction dans un contexte ; elle ne permet pas d'inférer un état autonome global ou psychologique complet.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Il faut le relier au cycle respiratoire, aux autres mesures et au contexte", "isCorrect": true, "position": 1}, {"label": "Il prouve que tout le sympathique est éteint", "isCorrect": false, "position": 2}, {"label": "Il démontre une relaxation psychologique", "isCorrect": false, "position": 3}, {"label": "Il mesure directement une hormone", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel système nerveux périphérique forme des circuits locaux importants dans le tube digestif ?", "explanation": "Il s'agit du système nerveux entérique.", "acceptedAnswers": ["système nerveux entérique", "systeme nerveux enterique", "système entérique", "systeme enterique", "entérique", "enterique"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "coordination-neuroendocrine-retroaction",
+        "assessmentTitle": "Mini-évaluation — Coordination neuroendocrine",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel ordre décrit correctement l'axe HPA simplifié chez l'humain ?", "explanation": "L'hypothalamus libère la CRH, l'hypophyse antérieure libère l'ACTH, puis le cortex surrénalien libère notamment du cortisol.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Hypothalamus/CRH → hypophyse/ACTH → cortex surrénalien/cortisol", "isCorrect": true, "position": 1}, {"label": "Cortex surrénalien/ACTH → hypothalamus/CRH → hypophyse/cortisol", "isCorrect": false, "position": 2}, {"label": "Hypophyse/cortisol → moelle/CRH → muscle/ACTH", "isCorrect": false, "position": 3}, {"label": "SNP/cortisol → SNC/ACTH sans glande périphérique", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Toute réponse hormonale commence toujours plus lentement que toute réponse nerveuse et dure toujours plus longtemps.", "explanation": "Ce sont des tendances fréquentes, pas une loi universelle ; synthèse, libération, récepteurs et cascades produisent plusieurs temporalités.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels éléments modifient l'effet possible d'une hormone ?", "explanation": "L'effet dépend du signal et de sa dynamique, mais aussi des récepteurs du tissu cible et du contexte physiologique et comportemental.", "acceptedAnswers": [], "position": 3, "options": [{"label": "La concentration et le profil temporel", "isCorrect": true, "position": 1}, {"label": "Les récepteurs et la sensibilité du tissu cible", "isCorrect": true, "position": 2}, {"label": "Le contexte et les autres signaux de la boucle", "isCorrect": true, "position": 3}, {"label": "Le seul nom de l'hormone", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Que désigne une rétroaction négative dans un axe endocrinien ?", "explanation": "Le produit en aval contribue à réduire l'activité des éléments qui favorisent sa production, ce qui régule la dynamique sans nécessairement l'annuler.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Un signal en aval limite les signaux qui stimulent sa production", "isCorrect": true, "position": 1}, {"label": "Toute hormone produit un comportement négatif", "isCorrect": false, "position": 2}, {"label": "L'axe cesse définitivement après une activation", "isCorrect": false, "position": 3}, {"label": "Le SNP interdit toute sécrétion hormonale", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quelle hormone hypophysaire stimule le cortex surrénalien dans l'axe HPA ?", "explanation": "Il s'agit de l'ACTH, ou hormone adrénocorticotrope.", "acceptedAnswers": ["ACTH", "hormone adrénocorticotrope", "hormone adrenocorticotrope", "corticotrophine"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en neurosciences, physiologie autonome et neuroendocrinologie requise avant publication.",
+        "Validation technique requise : l'étape bases-biologiques et le module organisation-systeme-nerveux ne sont pas encore présents dans le seed.",
+        "L'évaluation finale de l'étape 6 doit être créée et validée avant toute publication de l'étape.",
+        "Les branches sympathique et parasympathique sont présentées comme des voies distribuées et spécifiques des organes, non comme deux états globaux exclusifs.",
+        "La leçon distingue modulation hormonale, causalité et déterminisme ; aucun dosage isolé n'est présenté comme mesure d'un état psychologique.",
+        "Les ressources obligatoires sont ouvertes ; la ressource Karemaker (2017), potentiellement payante en texte intégral, est facultative et sa consigne porte sur le résumé PubMed ouvert.",
+        "Les DOI de Karemaker (2017), Herman et al. (2016) et Hau et Goymann (2015), ainsi que les éditions et mises à jour NCBI/OpenStax, ont été vérifiés le 3 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_and_subject"}
+    ]
+  }
+}
