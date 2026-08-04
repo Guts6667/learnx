@@ -1,0 +1,196 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_008",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "motivation-emotion-stress",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Expliquer motivation, émotion et stress",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser le cas fictif « Parcours de Nora » en articulant besoins, incitations, buts, qualité de la motivation, autorégulation, composantes et modèles de l’émotion, flexibilité régulatrice, stress, coping et santé, puis corriger des conclusions causales et individualisantes que les données ne soutiennent pas.",
+    "instructions": [
+      "Construire une carte besoins–incitations–buts distinguant les trois niveaux : identifier ce que la certification, l’intérêt, la prime de 300 euros, le classement, le volume demandé et les responsabilités familiales peuvent orienter, sans les transformer en causes certaines.",
+      "Analyser la coexistence des motivations intrinsèque et extrinsèque et la qualité des régulations. Examiner autonomie, compétence et appartenance, puis formuler des hypothèses concurrentes sur les effets de la prime et du classement selon contingence, information, contrôle, expérience antérieure et contexte.",
+      "Auditer l’objectif de volume : distinguer quantité produite, apprentissage et qualité, relever les effets secondaires, puis proposer un but révisé et des indicateurs qui empêchent l’optimisation d’un seul chiffre au détriment de la finalité.",
+      "Reconstituer la boucle d’autorégulation de Nora — but, suivi, écart, stratégie, retour — avant et après l’aménagement. Séparer intention, plan si–alors, indice, routine, automaticité et persistance ; expliquer pourquoi volonté et durée fixe ne suffisent pas.",
+      "Décomposer l’épisode avant la présentation en expérience, évaluation, physiologie, expression et tendance à l’action. Comparer les prédictions d’au moins deux modèles de l’émotion et proposer une mesure discriminante sans lire la peur depuis le visage ou la fréquence cardiaque.",
+      "Analyser successivement suppression expressive, discussion, réévaluation et demande de délai selon but, moment, contrôlabilité, coût, relation et contexte culturel. Évaluer la flexibilité du répertoire sans prescrire une stratégie toujours supérieure ni une injonction au contrôle.",
+      "Construire une chronologie stresseurs–évaluations–réponses–récupération pour horaires, aide au parent, sommeil et présentation. Distinguer stress aigu et exposition chronique, puis préciser ce que mesurent et ne mesurent pas cortisol unique, fréquence cardiaque, stress perçu mensuel et montre de sommeil.",
+      "Auditer séparément les causalités « prime améliore la performance » et « stress chronique cause une maladie » : définir comparaison, sélection, temporalité, variables confondantes, causalité inverse, comparabilité des mesures et données nécessaires. Proposer un plan plus informatif sans promettre une causalité parfaite.",
+      "Construire un plan d’adaptation à trois niveaux — individuel, interpersonnel et organisationnel — comportant options, responsable, ressource, critère de suivi, effets indésirables et condition de révision. Ne pas faire porter à Nora seule des horaires imprévisibles, du temps rémunéré inégal ou des responsabilités de soin.",
+      "Réécrire les neuf conclusions du rapport en formulations proportionnées, non cliniques et non culpabilisantes. Aucun score, biomarqueur, comportement ou application ne doit servir de diagnostic, de pronostic de maladie, de lecture mentale ou de promesse thérapeutique.",
+      "Citer précisément au moins huit ressources de l’étape, avec au moins une référence issue de chacune des six leçons, et relier chaque citation à l’affirmation qu’elle soutient."
+    ],
+    "case": "Dossier entièrement fictif — Parcours de Nora. Nora a 34 ans et s’inscrit volontairement à une certification professionnelle proposée par son employeur. Elle s’intéresse au domaine et souhaite mieux comprendre son travail. L’entreprise annonce aussi une prime de 300 euros pour toute réussite et affiche chaque semaine un classement selon le nombre d’exercices terminés. La responsable de programme fixe un objectif de volume élevé : finir 25 activités par semaine. Nora accélère, relit moins ses erreurs et termine davantage d’activités, mais ses réponses à des problèmes nouveaux deviennent moins précises. Le rapport interne affirme que « les objectifs chiffrés motivent toujours et prouvent l’apprentissage ». Les motivations de Nora sont décrites comme soit intrinsèques, soit extrinsèques, comme si intérêt, valeur professionnelle, prime, reconnaissance et pression ne pouvaient pas coexister ou changer. Son équipe est répartie en deux groupes non randomisés. Le groupe avec prime comprend davantage de personnes expérimentées et bénéficie en moyenne de deux heures rémunérées par semaine pour étudier ; le groupe sans prime a moins d’expérience et étudie surtout hors temps de travail. Le premier groupe réussit plus souvent l’examen. Aucune mesure de motivation avant l’annonce, aucune analyse du temps disponible et aucun ajustement pour l’expérience ne sont fournis. La direction conclut que « la prime cause la réussite » et que le classement convient à tout le monde. Pendant plusieurs semaines, Nora reçoit ses horaires tardivement et aide régulièrement un parent dans des démarches et déplacements. Elle dort moins, reporte certaines séances et manque deux objectifs hebdomadaires. Un message automatique lui reproche un « manque de volonté ». Nora tente d’abord de se forcer à travailler chaque soir à heure fixe, malgré des horaires variables. Elle aménage ensuite son environnement : matériel préparé dans un sac, créneaux courts associés au premier trajet disponible, blocage des notifications, plan si–alors pour reprendre après une interruption et bilan hebdomadaire portant sur les erreurs comprises plutôt que sur le seul volume. Elle demande aussi à un collègue un point de suivi. La régularité augmente pendant quatre semaines, sans preuve que l’habitude soit devenue automatique ni qu’un nombre universel de jours explique le changement. Avant une présentation évaluée, Nora rapporte simultanément de l’inquiétude et de l’enthousiasme. Sa fréquence cardiaque augmente. Une application analyse une image de son visage et affiche « peur : 82 % », sans indiquer population d’entraînement, contexte, consentement secondaire, taux d’erreur, catégories proposées ni validation culturelle. Le rapport traite ce score comme une lecture directe de son état et présente la fréquence cardiaque comme un marqueur spécifique de peur. Pendant la première partie, Nora réduit volontairement ses expressions visibles tout en continuant à se sentir activée. Après une discussion avec une collègue, elle reformule la présentation comme une occasion de recevoir des retours, puis demande un délai pour une section devenue irréalisable après une modification tardive du cahier des charges. Elle dit se sentir mieux préparée, mais aucune mesure expérimentale ne permet d’attribuer le changement à une stratégie unique. La direction affirme néanmoins que « supprimer ses émotions est malsain », que « penser positivement élimine le stress » et que demander un délai montre une faible autorégulation. Un rapport de bien-être rassemble quatre sources. Un prélèvement salivaire de cortisol est effectué une seule fois à 18 h 10, après que Nora a fait du vélo et bu un café ; heure habituelle, niveau de base, médicaments, cycle, alimentation et récupération ne sont pas documentés. Sa fréquence cardiaque est enregistrée pendant la présentation, sans repos comparable ni mesure respiratoire. Nora remplit une fois par mois une échelle de stress perçu portant sur les semaines précédentes. Une montre grand public estime son sommeil, mais l’algorithme, la fidélité et les nuits manquantes ne sont pas décrits. Le rapport fusionne ces mesures en un « indice biologique de stress chronique », conclut que Nora développera une maladie et recommande la pensée positive comme prévention. Aucun diagnostic, événement de santé, suivi médical, mesure multisystémique ni plan longitudinal comparable n’est disponible. Le dossier ne mesure pas non plus précarité des horaires, charge de soin, pouvoir de négociation, soutien, conditions matérielles ou accès aux services. Les neuf conclusions à auditer sont : « les besoins suivent une hiérarchie rigide ; la prime cause la réussite ; intérêt et récompense s’excluent ; manquer un objectif révèle un manque de volonté ; une routine devient une habitude après une durée fixe ; l’application lit une peur certaine ; supprimer une expression supprime ou abîme forcément l’émotion ; l’indice prouve un stress chronique et une future maladie ; penser positivement suffit et Nora doit seule mieux s’adapter ». Toutes les personnes, entreprises, mesures et données sont fictives et servent uniquement à l’évaluation. Le cas ne permet aucun diagnostic, pronostic individuel, conseil médical ou promesse d’intervention.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier structuré de 1 500 à 1 900 mots comprenant une carte motivationnelle, une boucle d’autorégulation avant–après, une matrice des composantes et théories de l’émotion, une chronologie stress–mesures, deux audits causaux, un plan à trois niveaux et les neuf conclusions révisées.",
+    "conceptSlugs": [
+      "besoins-modeles-situes",
+      "incitations-valeur-contexte",
+      "buts-engagement-effets-secondaires",
+      "motivation-intrinseque-extrinseque-regulations",
+      "autonomie-competence-appartenance",
+      "recompenses-qualite-motivation-contexte",
+      "boucle-autoregulation-intention-action",
+      "habitudes-indices-automaticite",
+      "persistance-flexible-contexte",
+      "composantes-mesures-emotionnelles",
+      "modeles-predictions-emotion",
+      "expression-culture-inference-emotion",
+      "processus-buts-temporalite-regulation",
+      "strategies-effets-regulation",
+      "flexibilite-culture-contexte-regulation",
+      "stresseurs-reponses-temporalites",
+      "coping-ressources-contextes",
+      "stress-sante-inegalites-inferences"
+    ],
+    "rubric": [
+      {
+        "criterion": "Besoins, incitations et buts",
+        "weight": 15,
+        "requirements": [
+          "Besoins, incitations et buts sont distingués et reliés à des observations sans hiérarchie rigide ni cause unique.",
+          "L’objectif de volume est audité selon engagement, feedback, difficulté, ressources et effets secondaires sur apprentissage et qualité.",
+          "Un but révisé comporte résultat pertinent, indicateurs multiples, condition de révision et protection contre l’optimisation du seul volume."
+        ]
+      },
+      {
+        "criterion": "Qualité et sources de la motivation",
+        "weight": 10,
+        "requirements": [
+          "Intérêt, valeur endossée, prime, classement et pression peuvent coexister et évoluer ; intrinsèque et extrinsèque ne sont pas traitées comme exclusives.",
+          "Autonomie, compétence et appartenance sont appliquées à des éléments précis sans en faire des besoins hiérarchiques ou universellement satisfaits.",
+          "Les effets de récompense sont conditionnés par contingence, contrôle, information, tâche et contexte, sans loi générale."
+        ]
+      },
+      {
+        "criterion": "Autorégulation, habitudes et persistance",
+        "weight": 15,
+        "requirements": [
+          "La boucle but–suivi–écart–stratégie–retour distingue l’échec initial et les modifications ultérieures de l’environnement.",
+          "Intention, plan si–alors, indice, routine et automaticité sont séparés ; quatre semaines ne prouvent ni habitude complète ni durée universelle.",
+          "La persistance reste flexible : sommeil, horaires, soin, tâche et coût justifient adaptation ou révision sans accusation de manque de volonté."
+        ]
+      },
+      {
+        "criterion": "Composantes et théories de l’émotion",
+        "weight": 15,
+        "requirements": [
+          "Expérience, évaluation, physiologie, expression et tendance à l’action sont distinguées pour l’épisode de présentation.",
+          "Deux modèles produisent des prédictions comparables et au moins une mesure ou manipulation susceptible de les départager.",
+          "Le score facial et la fréquence cardiaque restent des indices situés et non spécifiques ; culture, contexte, vérité terrain et erreurs sont examinés."
+        ]
+      },
+      {
+        "criterion": "Régulation, flexibilité et culture",
+        "weight": 10,
+        "requirements": [
+          "Suppression, discussion, réévaluation et demande de délai sont distinguées par cible, moment et effets possibles sur plusieurs composantes.",
+          "L’évaluation considère but, contrôlabilité, relation, pouvoir, sécurité, coût, horizon et normes culturelles sans stratégie toujours bonne ou mauvaise.",
+          "Régulation n’est assimilée ni au calme, ni à la suppression, ni à une obligation morale de contrôle."
+        ]
+      },
+      {
+        "criterion": "Stress, coping et qualité des mesures",
+        "weight": 20,
+        "requirements": [
+          "Stresseurs, évaluations, réponses et récupération sont ordonnés ; aigu, répété et chronique ne sont pas confondus.",
+          "Pour cortisol, fréquence cardiaque, stress perçu et sommeil, le dossier précise construit, temporalité, niveau de base, facteurs concurrents, fidélité et inférence maximale.",
+          "Le coping combine actions sur problème, émotion, sens, soutien et organisation selon contrôlabilité et ressources, sans positivité imposée.",
+          "Le plan à trois niveaux associe chaque action à un responsable, une ressource, un indicateur, un risque et une condition de révision."
+        ]
+      },
+      {
+        "criterion": "Causalité, santé, inégalités et victim-blaming",
+        "weight": 10,
+        "requirements": [
+          "La comparaison prime–sans prime traite non-randomisation, expérience, temps rémunéré, sélection et mesure initiale ; un plan plus informatif est proposé.",
+          "Le lien stress–santé traite temporalité, confusion, causalité inverse, attrition, taille d’effet et absence de diagnostic ou pronostic individuel.",
+          "Horaires, charge de soin, pouvoir, soutien et conditions matérielles empêchent de reporter toute responsabilité sur Nora ; des changements organisationnels sont inclus."
+        ]
+      },
+      {
+        "criterion": "Communication sourcée et non clinique",
+        "weight": 5,
+        "requirements": [
+          "Les neuf conclusions sont remplacées par des formulations proportionnées excluant lecture mentale, diagnostic, déterminisme, promesse thérapeutique et blâme.",
+          "Au moins huit citations au point d’usage couvrent les six leçons et soutiennent précisément les propositions associées.",
+          "La synthèse distingue résultats moyens et personne et oriente une préoccupation de santé vers des professionnels qualifiés sans conseil clinique."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante avec une fiche à sept colonnes : affirmation initiale, donnée ou mesure, construit, inférence permise, alternative, donnée discriminante, référence. Pour « Besoins » ou « Motivation », séparer besoin–incitation–but et intrinsèque–extrinsèque–régulation, puis corriger l’effet universel de la prime ou du classement. Pour « Autorégulation », reconstruire la boucle et nommer au moins trois modifications de situation avant d’évoquer la volonté. Pour « Émotion », distinguer les cinq composantes, confronter deux modèles et supprimer toute lecture depuis le visage ou le cœur. Pour « Régulation », réévaluer chaque stratégie selon but, moment et contexte. Pour « Stress », reconstruire la chronologie et la fiche des quatre mesures. Pour « Causalité », produire un diagramme des confusions de chaque comparaison et ajouter un niveau organisationnel. Pour « Communication », réécrire les neuf conclusions et ajouter au moins une référence par leçon. La resoumission contient les seules sections corrigées et une liste brève des changements."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-034-OPENSTAX",
+      "REF-034-MASLOW",
+      "REF-034-BRIDGMAN",
+      "REF-034-TAY",
+      "REF-034-LOCKE",
+      "REF-034-ORDONEZ",
+      "REF-035-RD2000",
+      "REF-035-RD2020",
+      "REF-035-VANSTEENKISTE",
+      "REF-035-DECI",
+      "REF-035-CERASOLI",
+      "REF-035-CHIRKOV",
+      "REF-035-OPENSTAX",
+      "REF-036-INZLICHT",
+      "REF-036-SHEERAN",
+      "REF-036-GOLLWITZER",
+      "REF-036-WOOD",
+      "REF-036-LALLY",
+      "REF-036-CREDE",
+      "REF-036-HAGGER",
+      "REF-036-MILYAVSKAYA",
+      "REF-037-OPENSTAX",
+      "REF-037-SCHERER",
+      "REF-037-MOORS",
+      "REF-037-BARRETT",
+      "REF-037-LINDQUIST",
+      "REF-037-COWEN",
+      "REF-038-OPENSTAX",
+      "REF-038-GROSS",
+      "REF-038-CUTULI",
+      "REF-038-KOBYLINSKA",
+      "REF-038-MARTINEZ-PRIEGO",
+      "REF-039-OPENSTAX-14-1",
+      "REF-039-OPENSTAX-14-3",
+      "REF-039-OPENSTAX-14-4",
+      "REF-039-JUSTER",
+      "REF-039-FOLKMAN",
+      "REF-039-DOWD",
+      "REF-039-WHO"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Parcours de Nora, la personne, l’entreprise, les mesures, groupes, données et affirmations sont entièrement fictifs.",
+        "Revue humaine obligatoire avant publication, avec compétences en motivation, autorégulation, science affective, psychophysiologie du stress, psychologie de la santé, méthodes causales et inégalités sociales.",
+        "Validation technique obligatoire : l’étape motivation-emotion-stress et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n’autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_034 à 039.",
+        "Les trente-neuf referenceIds correspondent exactement à l’union des références des PEDAGOGY_SPEC_034 à 039 ; liens, accès et éditions doivent être revérifiés pendant la revue humaine.",
+        "Le cas interdit diagnostic, pronostic de maladie, lecture mentale automatisée, promesse thérapeutique, hiérarchie universelle des besoins ou stratégies, causalité indue et victim-blaming.",
+        "La publication reste bloquée jusqu’aux validations technique, éditoriale et scientifique de l’ensemble de l’étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l’étude de cas intégratrice Parcours de Nora, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_affective_science_health_psychology_and_methods"
+      }
+    ]
+  }
+}

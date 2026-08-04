@@ -210,9 +210,9 @@ describe('sample program seed', () => {
     const sampleProgram = await readSampleProgram();
 
     expect(sampleProgram.slug).toBe('fondamentaux-psychologie');
-    expect(sampleProgram.stages).toHaveLength(7);
+    expect(sampleProgram.stages).toHaveLength(8);
     expect(sampleProgram.stages.flatMap((stage) => stage.modules)).toHaveLength(
-      10,
+      12,
     );
   });
 
@@ -671,6 +671,115 @@ describe('sample program seed', () => {
     ).toBe(100);
   });
 
+  it('lit les six leçons et les dix-huit banques de la huitième étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stage = sampleSeed.program.stages.find(
+      (item) => item.slug === 'motivation-emotion-stress',
+    );
+    const lessons = stage?.modules.flatMap((module) => module.lessons) ?? [];
+    const assessmentGroups = sampleSeed.conceptAssessmentBanks.filter(
+      (group) => group.stageSlug === 'motivation-emotion-stress',
+    );
+
+    expect(stage?.modules.map((module) => module.slug)).toEqual([
+      'motivation-action',
+      'emotion-adaptation',
+    ]);
+    expect(lessons.map((lesson) => lesson.slug)).toEqual([
+      'besoins-incitations-buts',
+      'motivation-intrinseque-extrinseque',
+      'autoregulation-habitudes-persistance',
+      'composantes-theories-emotion',
+      'regulation-emotionnelle',
+      'stress-coping-sante',
+    ]);
+    expect(lessons.every((lesson) => lesson.contentBlocks.length === 6)).toBe(
+      true,
+    );
+    expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
+    expect(assessmentGroups).toHaveLength(6);
+    expect(
+      assessmentGroups.flatMap((group) => group.assessmentBanks),
+    ).toHaveLength(18);
+    expect(
+      assessmentGroups
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(90);
+
+    for (const lesson of lessons) {
+      const resourceKeys = new Set(
+        lesson.resources.map((resource) => resource.key),
+      );
+
+      expect(
+        lesson.contentBlocks.every(
+          (block) =>
+            block.content.sourceKeys.length > 0 &&
+            block.content.sourceKeys.every((key) => resourceKeys.has(key)),
+        ),
+      ).toBe(true);
+    }
+
+    expect(stage?.assessment).toMatchObject({
+      description: expect.stringContaining('cas fictif'),
+      instructions: expect.stringContaining('## Cas Parcours de Nora'),
+      rubric: expect.any(Array),
+    });
+    expect(
+      stage?.assessment.rubric?.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+  });
+
+  it('respecte les comptes et relations du lot éditorial des étapes 5 à 8', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stages = sampleSeed.program.stages;
+    const modules = stages.flatMap((stage) => stage.modules);
+    const lessons = modules.flatMap((module) => module.lessons);
+    const concepts = lessons.flatMap((lesson) => lesson.concepts);
+    const groups = sampleSeed.conceptAssessmentBanks;
+    const banks = groups.flatMap((group) => group.assessmentBanks);
+
+    expect(stages).toHaveLength(8);
+    expect(modules).toHaveLength(12);
+    expect(lessons).toHaveLength(39);
+    expect(stages.every((stage) => stage.assessment)).toBe(true);
+    expect(concepts).toHaveLength(117);
+    expect(concepts.filter((concept) => concept.assessment)).toHaveLength(117);
+    expect(groups).toHaveLength(39);
+    expect(banks).toHaveLength(117);
+    expect(banks.flatMap((bank) => bank.questions)).toHaveLength(585);
+    expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(217);
+    expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(231);
+    expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(117);
+
+    for (const group of groups) {
+      const stage = stages.find((item) => item.slug === group.stageSlug);
+      const module = stage?.modules.find(
+        (item) => item.slug === group.moduleSlug,
+      );
+      const lesson = module?.lessons.find(
+        (item) => item.slug === group.lessonSlug,
+      );
+
+      expect(lesson).toBeDefined();
+      for (const bank of group.assessmentBanks) {
+        const concept = lesson?.concepts.find(
+          (item) => item.slug === bank.conceptSlug,
+        );
+
+        expect(concept?.assessment).toMatchObject({
+          questionCount: bank.questions.length,
+          title: bank.assessmentTitle,
+        });
+      }
+    }
+  });
+
   it('refuse une source de bloc absente des ressources de la leçon', async () => {
     const sampleSeed = await readSampleSeed();
     const lesson = sampleSeed.program.stages[0].modules[0].lessons[1];
@@ -723,23 +832,23 @@ describe('sample program seed', () => {
     );
 
     expect(programs).toHaveLength(1);
-    expect(stages).toHaveLength(7);
-    expect(stageAssessments).toHaveLength(7);
-    expect(modules).toHaveLength(10);
-    expect(lessons).toHaveLength(33);
-    expect(concepts).toHaveLength(99);
-    expect(assessments).toHaveLength(99);
-    expect(assessmentQuestions).toHaveLength(99);
+    expect(stages).toHaveLength(8);
+    expect(stageAssessments).toHaveLength(8);
+    expect(modules).toHaveLength(12);
+    expect(lessons).toHaveLength(39);
+    expect(concepts).toHaveLength(117);
+    expect(assessments).toHaveLength(117);
+    expect(assessmentQuestions).toHaveLength(117);
     expect(
       [...assessmentQuestions.values()].reduce(
         (total, questions) => total + questions.length,
         0,
       ),
-    ).toBe(495);
-    expect(contentBlocks).toHaveLength(181);
-    expect(resources).toHaveLength(192);
-    expect(tasks).toHaveLength(99);
-    expect(exercises).toHaveLength(99);
+    ).toBe(585);
+    expect(contentBlocks).toHaveLength(217);
+    expect(resources).toHaveLength(231);
+    expect(tasks).toHaveLength(117);
+    expect(exercises).toHaveLength(117);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,

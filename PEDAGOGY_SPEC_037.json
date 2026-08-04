@@ -1,0 +1,1013 @@
+{
+  "specId": "PEDAGOGY_SPEC_037",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "motivation-emotion-stress",
+  "moduleSlug": "emotion-adaptation",
+  "lesson": {
+    "title": "Composantes et théories de l’émotion",
+    "slug": "composantes-theories-emotion",
+    "summary": "Une émotion est un épisode coordonnant expérience, évaluation, expression, physiologie et tendances à l’action sans correspondance simple entre ces composantes. La leçon compare plusieurs familles de modèles et encadre les inférences culturelles, corporelles et cérébrales.",
+    "objectives": [
+      "Distinguer cinq composantes d’un épisode émotionnel et leurs mesures.",
+      "Comparer les prédictions de modèles corporels, d’évaluation, d’émotions discrètes et constructionnistes.",
+      "Interpréter expression, catégorie et activation physiologique sans lecture mentale automatique.",
+      "Formuler une hypothèse testable qui distingue au moins deux modèles."
+    ],
+    "prerequisites": [
+      "Distinguer construit, mesure et inférence.",
+      "Distinguer corrélation et causalité.",
+      "Connaître les limites de l’inférence inverse."
+    ],
+    "estimatedMinutes": 150,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une émotion est un épisode situé qui peut articuler ressenti subjectif, évaluation de la situation, modifications physiologiques, expression et tendance à l’action. Ces composantes peuvent covarier sans être identiques ni parfaitement synchrones. Une humeur est généralement plus diffuse et durable ; un affect décrit plus largement valence et activation. Mesurer un visage, un rythme cardiaque ou un mot ne donne donc accès qu’à une composante dans une tâche donnée.",
+          "sourceKeys": [
+            "openstax-emotion-10-4",
+            "scherer-component-process-2009"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Les modèles classiques ordonnent différemment perception, changements corporels, expérience et interprétation. James–Lange met l’accent sur la perception des changements corporels ; Cannon–Bard conteste une séquence corporelle unique ; les modèles à deux facteurs combinent activation et interprétation. Ces schémas simplifient des propositions historiques et ne sont pas quatre lois mutuellement exclusives. Une expérience utile doit préciser temporalité, manipulation et indicateurs capables de différencier leurs prédictions.",
+          "sourceKeys": [
+            "openstax-emotion-10-4",
+            "scherer-component-process-2009"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Les théories de l’évaluation proposent que pertinence pour les buts, contrôle, nouveauté, responsabilité ou compatibilité avec des normes contribuent à différencier les épisodes. Une même accélération cardiaque avant une prise de parole peut accompagner peur, enthousiasme ou effort selon la situation et l’évaluation. L’évaluation n’est pas nécessairement une réflexion verbale consciente ; elle constitue un processus hypothétique dont les dimensions doivent être opérationnalisées.",
+          "sourceKeys": [
+            "moors-appraisal-2013",
+            "scherer-component-process-2009"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Les approches d’émotions discrètes recherchent des régularités dans des catégories comme peur ou colère ; les approches dimensionnelles décrivent notamment valence et activation ; les approches constructionnistes étudient comment affect, concepts, langage et contexte produisent des instances variables. Chacune organise certaines données et rencontre des limites. Le nombre de catégories dépend aussi de la méthode et du vocabulaire proposés : une taxonomie issue d’autoévaluations n’est ni universelle ni une liste naturelle définitive.",
+          "sourceKeys": [
+            "openstax-emotion-10-4",
+            "cowen-keltner-2017",
+            "lindquist-brain-emotion-2012"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Un mouvement facial n’est pas un lecteur fiable d’une émotion unique. Production et reconnaissance varient avec contexte, consigne, expressions posées ou spontanées, culture, langue, personne et information corporelle. Certaines configurations se retrouvent au-delà d’un groupe, mais leur présence n’est ni nécessaire ni suffisante pour inférer un état interne. Les systèmes automatisés d’inférence émotionnelle héritent de ces limites et exigent validation locale, consentement et examen des erreurs.",
+          "sourceKeys": [
+            "barrett-expressions-2019"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "La physiologie et le cerveau participent aux émotions dans des réseaux distribués qui soutiennent plusieurs opérations. Une activation moyenne ne prouve ni catégorie ressentie ni centre émotionnel. Une conclusion proportionnée triangule autoévaluation, comportement, contexte et mesures physiologiques, vérifie leur temporalité et leurs divergences, puis limite l’inférence à la population, à la tâche et au modèle étudiés.",
+          "sourceKeys": [
+            "lindquist-brain-emotion-2012",
+            "scherer-component-process-2009"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-emotion-10-4",
+        "title": "Psychology 2e — 10.4 Emotion",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/10-4-emotion",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 10.4 Emotion. OpenStax.",
+        "description": "Lire les composantes et comparer les schémas des théories ; relever pour chacune une prédiction et une limite.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "scherer-component-process-2009",
+        "title": "The Dynamic Architecture of Emotion: Evidence for the Component Process Model",
+        "type": "article",
+        "url": "https://doi.org/10.1080/02699930902928969",
+        "author": "Klaus R. Scherer",
+        "citation": "Scherer, K. R. (2009). The dynamic architecture of emotion: Evidence for the component process model. Cognition and Emotion, 23(7), 1307–1351. https://doi.org/10.1080/02699930902928969",
+        "description": "Consulter le résumé et le schéma du modèle ; identifier les composantes et leur synchronisation proposée.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "moors-appraisal-2013",
+        "title": "Appraisal Theories of Emotion: State of the Art and Future Development",
+        "type": "article",
+        "url": "https://biblio.ugent.be/publication/2958617",
+        "author": "Agnes Moors et al.",
+        "citation": "Moors, A., Ellsworth, P. C., Scherer, K. R., & Frijda, N. H. (2013). Appraisal theories of emotion: State of the art and future development. Emotion Review, 5(2), 119–124. https://doi.org/10.1177/1754073912468165",
+        "description": "Lire le texte ouvert et distinguer dimensions d’évaluation, automaticité et prédictions.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "barrett-expressions-2019",
+        "title": "Emotional Expressions Reconsidered: Challenges to Inferring Emotion From Human Facial Movements",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6640856/",
+        "author": "Lisa Feldman Barrett et al.",
+        "citation": "Barrett, L. F., Adolphs, R., Marsella, S., Martinez, A. M., & Pollak, S. D. (2019). Emotional expressions reconsidered: Challenges to inferring emotion from human facial movements. Psychological Science in the Public Interest, 20(1), 1–68. https://doi.org/10.1177/1529100619832930",
+        "description": "Lire le résumé, les conclusions et les recommandations ; dresser quatre limites à l’inférence depuis le visage.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 4
+      },
+      {
+        "key": "lindquist-brain-emotion-2012",
+        "title": "The Brain Basis of Emotion: A Meta-Analytic Review",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4329228/",
+        "author": "Kristen A. Lindquist et al.",
+        "citation": "Lindquist, K. A., Wager, T. D., Kober, H., Bliss-Moreau, E., & Barrett, L. F. (2012). The brain basis of emotion. Behavioral and Brain Sciences, 35(3), 121–143. https://doi.org/10.1017/S0140525X11000446",
+        "description": "Lire le résumé et les conclusions ; expliquer pourquoi région active et émotion unique ne sont pas équivalentes.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      },
+      {
+        "key": "cowen-keltner-2017",
+        "title": "Self-Report Captures 27 Distinct Categories of Emotion",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5617253/",
+        "author": "Alan S. Cowen et Dacher Keltner",
+        "citation": "Cowen, A. S., & Keltner, D. (2017). Self-report captures 27 distinct categories of emotion. PNAS, 114(38), E7900–E7909. https://doi.org/10.1073/pnas.1702247114",
+        "description": "Examiner méthode, échantillon et gradients ; relever pourquoi 27 n’est pas un inventaire universel.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Composantes et mesures émotionnelles",
+        "slug": "composantes-mesures-emotionnelles",
+        "description": "Expérience, évaluation, physiologie, expression et action sont des composantes liées mais non interchangeables.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-emotion-10-4",
+          "scherer-component-process-2009"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Composantes émotionnelles",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Modèles et prédictions partielles",
+        "slug": "modeles-predictions-emotion",
+        "description": "Les familles de théories ordonnent et expliquent différemment les composantes ; leur valeur dépend de prédictions testables.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-emotion-10-4",
+          "moors-appraisal-2013",
+          "lindquist-brain-emotion-2012"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Théories de l’émotion",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Expression, culture et inférence",
+        "slug": "expression-culture-inference-emotion",
+        "description": "Expression et catégories présentent régularités et variations ; aucun indice isolé ne lit automatiquement un état interne.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "barrett-expressions-2019",
+          "cowen-keltner-2017"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Expression et culture",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Décomposer trois épisodes",
+        "description": "Pour trois vignettes fictives, produire une matrice expérience–évaluation–physiologie–expression–action, signaler les données absentes et interdire toute inférence depuis un indice unique.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Comparer deux modèles",
+        "description": "Choisir un épisode, formuler les prédictions distinctes de deux modèles sur la temporalité des composantes et concevoir une mesure capable de les départager.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Auditer un détecteur d’émotions",
+        "description": "Évaluer un système fictif fondé sur le visage : population, tâche, vérité terrain, contexte, culture, erreurs, consentement et conclusion autorisée dans une note de 600 mots.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-037-OPENSTAX",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 10.4 Emotion",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/10-4-emotion",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Introduction ; les formulations universalistes sont corrigées par les synthèses spécialisées."
+      },
+      {
+        "id": "REF-037-SCHERER",
+        "type": "review_article",
+        "authors": [
+          "Scherer, K. R."
+        ],
+        "organization": "Taylor & Francis",
+        "title": "The Dynamic Architecture of Emotion: Evidence for the Component Process Model",
+        "year": 2009,
+        "edition": null,
+        "publication": "Cognition and Emotion, 23(7), 1307–1351",
+        "doi": "https://doi.org/10.1080/02699930902928969",
+        "url": "https://doi.org/10.1080/02699930902928969",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert ; droits éditeur",
+        "status": "verified",
+        "notes": "Modèle des processus composants ; texte intégral facultatif."
+      },
+      {
+        "id": "REF-037-MOORS",
+        "type": "review_article",
+        "authors": [
+          "Moors, A.",
+          "Ellsworth, P. C.",
+          "Scherer, K. R.",
+          "Frijda, N. H."
+        ],
+        "organization": "SAGE",
+        "title": "Appraisal Theories of Emotion: State of the Art and Future Development",
+        "year": 2013,
+        "edition": null,
+        "publication": "Emotion Review, 5(2), 119–124",
+        "doi": "https://doi.org/10.1177/1754073912468165",
+        "url": "https://biblio.ugent.be/publication/2958617",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur ouvert",
+        "status": "verified",
+        "notes": "Synthèse concise des théories de l’évaluation."
+      },
+      {
+        "id": "REF-037-BARRETT",
+        "type": "review_article",
+        "authors": [
+          "Barrett, L. F.",
+          "Adolphs, R.",
+          "Marsella, S.",
+          "Martinez, A. M.",
+          "Pollak, S. D."
+        ],
+        "organization": "Association for Psychological Science",
+        "title": "Emotional Expressions Reconsidered: Challenges to Inferring Emotion From Human Facial Movements",
+        "year": 2019,
+        "edition": "corrigée 2019",
+        "publication": "Psychological Science in the Public Interest, 20(1), 1–68",
+        "doi": "https://doi.org/10.1177/1529100619832930",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6640856/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Texte ouvert via PubMed Central ; droits SAGE applicables",
+        "status": "verified",
+        "notes": "Revue de référence et corrigendum contrôlé."
+      },
+      {
+        "id": "REF-037-LINDQUIST",
+        "type": "meta_analysis",
+        "authors": [
+          "Lindquist, K. A.",
+          "Wager, T. D.",
+          "Kober, H.",
+          "Bliss-Moreau, E.",
+          "Barrett, L. F."
+        ],
+        "organization": "Cambridge University Press",
+        "title": "The Brain Basis of Emotion",
+        "year": 2012,
+        "edition": null,
+        "publication": "Behavioral and Brain Sciences, 35(3), 121–143",
+        "doi": "https://doi.org/10.1017/S0140525X11000446",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4329228/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Manuscrit auteur ouvert via PMC",
+        "status": "verified",
+        "notes": "Méta-analyse, utilisée contre la localisation catégorique."
+      },
+      {
+        "id": "REF-037-COWEN",
+        "type": "primary_article",
+        "authors": [
+          "Cowen, A. S.",
+          "Keltner, D."
+        ],
+        "organization": "National Academy of Sciences",
+        "title": "Self-Report Captures 27 Distinct Categories of Emotion",
+        "year": 2017,
+        "edition": null,
+        "publication": "PNAS, 114(38), E7900–E7909",
+        "doi": "https://doi.org/10.1073/pnas.1702247114",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5617253/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Texte ouvert via PMC",
+        "status": "verified",
+        "notes": "Résultat méthodologiquement circonscrit, non taxonomie universelle."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-OPENSTAX",
+            "locator": "section d’ouverture, composantes de l’émotion",
+            "supports": "Introduction aux composantes subjectives, physiologiques et expressives."
+          },
+          {
+            "referenceId": "REF-037-SCHERER",
+            "locator": "modèle des processus composants",
+            "supports": "Coordination dynamique sans identité des mesures."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux synthèses convergent sur plusieurs composantes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-OPENSTAX",
+            "locator": "Theories of Emotion",
+            "supports": "Schémas et propositions classiques."
+          },
+          {
+            "referenceId": "REF-037-SCHERER",
+            "locator": "comparaison du modèle des processus composants avec les modèles concurrents",
+            "supports": "Ordonnancement des composantes et prédictions temporelles testables."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Schémas didactiques explicitement présentés comme simplifications.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-MOORS",
+            "locator": "pp. 119–124",
+            "supports": "Dimensions et automaticité de l’évaluation."
+          },
+          {
+            "referenceId": "REF-037-SCHERER",
+            "locator": "appraisal checks and response synchronization",
+            "supports": "Évaluation de la pertinence et coordination dynamique des réponses."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse spécialisée directement pertinente.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-OPENSTAX",
+            "locator": "Theories of Emotion et rôle du contexte culturel",
+            "supports": "Introduction aux approches catégorielles et dimensionnelles et à leurs contextes."
+          },
+          {
+            "referenceId": "REF-037-COWEN",
+            "locator": "résumé, méthode et discussion",
+            "supports": "Catégories et gradients dépendant de la méthode."
+          },
+          {
+            "referenceId": "REF-037-LINDQUIST",
+            "locator": "résumé et conclusions",
+            "supports": "Approche constructionniste et réseaux distribués."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Familles théoriques concurrentes présentées sans arbitrage excessif.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-BARRETT",
+            "locator": "résumé, conclusions et recommandations",
+            "supports": "Variabilité des expressions et limites d’inférence."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Revue étendue et corrigée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-037-LINDQUIST",
+            "locator": "méta-analyse et discussion",
+            "supports": "Réseaux distribués et limites de localisation."
+          },
+          {
+            "referenceId": "REF-037-SCHERER",
+            "locator": "synchronisation des systèmes de réponse",
+            "supports": "Coordination partielle et temporelle de plusieurs composantes physiologiques et expressives."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse quantitative directement pertinente.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-emotion-10-4",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-OPENSTAX"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire les composantes et comparer les schémas des théories ; relever pour chacune une prédiction et une limite.",
+        "learnerInstructions": "Lire les composantes et comparer les schémas des théories ; relever pour chacune une prédiction et une limite.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré et imprimable.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "scherer-component-process-2009",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "redirect",
+        "accessType": "institutional",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-SCHERER"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Consulter le résumé et le schéma du modèle ; identifier les composantes et leur synchronisation proposée.",
+        "learnerInstructions": "Consulter le résumé et le schéma du modèle ; identifier les composantes et leur synchronisation proposée.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Résumé ouvert ; texte intégral non requis.",
+        "alternativeResourceKey": "openstax-emotion-10-4",
+        "notes": "Accès limité signalé ; une alternative ouverte est fournie."
+      },
+      {
+        "resourceKey": "moors-appraisal-2013",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-MOORS"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire le texte ouvert et distinguer dimensions d’évaluation, automaticité et prédictions.",
+        "learnerInstructions": "Lire le texte ouvert et distinguer dimensions d’évaluation, automaticité et prédictions.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Notice et PDF auteur ouverts.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "barrett-expressions-2019",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-BARRETT"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire le résumé, les conclusions et les recommandations ; dresser quatre limites à l’inférence depuis le visage.",
+        "learnerInstructions": "Lire le résumé, les conclusions et les recommandations ; dresser quatre limites à l’inférence depuis le visage.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte HTML et PDF ouverts via PubMed Central.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "lindquist-brain-emotion-2012",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-LINDQUIST"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire le résumé et les conclusions ; expliquer pourquoi région active et émotion unique ne sont pas équivalentes.",
+        "learnerInstructions": "Lire le résumé et les conclusions ; expliquer pourquoi région active et émotion unique ne sont pas équivalentes.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte intégral PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "cowen-keltner-2017",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-037-COWEN"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Examiner méthode, échantillon et gradients ; relever pourquoi 27 n’est pas un inventaire universel.",
+        "learnerInstructions": "Examiner méthode, échantillon et gradients ; relever pourquoi 27 n’est pas un inventaire universel.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte intégral PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "composantes-mesures-emotionnelles",
+        "assessmentTitle": "Mini-évaluation — Composantes émotionnelles",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que mesure directement une autoévaluation d’intensité ?",
+            "explanation": "Elle renseigne le ressenti rapporté dans ce contexte.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le ressenti déclaré",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute la physiologie",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une action future certaine",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une expression universelle",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Expression et expérience sont toujours parfaitement synchrones.",
+            "explanation": "Les composantes peuvent diverger.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions peuvent appartenir à un épisode émotionnel ?",
+            "explanation": "Les cinq sont distinguées sans être isolées.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Évaluation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Physiologie",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Tendance à l’action",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Signe facial obligatoire",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi une fréquence cardiaque élevée ne suffit-elle pas à identifier la peur ?",
+            "explanation": "Plusieurs états et activités produisent une activation similaire.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "L’indice est non spécifique et contextuel",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le cœur ne change jamais",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La peur n’a aucune composante corporelle",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Tout ressenti est faux",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel processus estime notamment pertinence, contrôle ou compatibilité avec les buts ?",
+            "explanation": "Il s’agit de l’évaluation cognitive ou appraisal.",
+            "acceptedAnswers": [
+              "évaluation",
+              "evaluation",
+              "évaluation cognitive",
+              "appraisal"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "modeles-predictions-emotion",
+        "assessmentTitle": "Mini-évaluation — Théories de l’émotion",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Comment comparer utilement deux théories ?",
+            "explanation": "Une comparaison exige des prédictions différenciables.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Formuler une mesure qui distingue leurs prédictions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choisir la plus ancienne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Compter leurs mots",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Les déclarer toutes identiques",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les schémas classiques sont des lois exhaustives de tout épisode.",
+            "explanation": "Ce sont des modèles partiels et simplifiés.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit préciser une prédiction théorique ?",
+            "explanation": "Temporalité, manipulation et indicateur rendent le test interprétable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Temporalité",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Manipulation",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Indicateur",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Conclusion certaine d’avance",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que montre l’activation d’une région dans une tâche ?",
+            "explanation": "Elle indique une contribution possible dans cette tâche, pas un centre unique.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Une contribution située à examiner",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une émotion unique lue directement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une cause suffisante",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un diagnostic",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme désigne une représentation simplifiée produisant des prédictions testables ?",
+            "explanation": "C’est un modèle.",
+            "acceptedAnswers": [
+              "modèle",
+              "modele",
+              "un modèle",
+              "un modele"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "expression-culture-inference-emotion",
+        "assessmentTitle": "Mini-évaluation — Expression et culture",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle conclusion tirer d’un sourire isolé ?",
+            "explanation": "Le mouvement doit être interprété avec contexte et autres indices.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une expression observée, sans émotion certaine",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une joie certaine",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une personnalité stable",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un mensonge",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une catégorie trouvée dans un échantillon est automatiquement universelle.",
+            "explanation": "Méthode, langue et population limitent la généralisation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il documenter pour étudier une expression ?",
+            "explanation": "Ces paramètres influencent production et reconnaissance.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Culture et langue",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Contexte",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Expression posée ou spontanée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une vérité terrain supposée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel risque pose un détecteur facial entraîné sur un seul groupe ?",
+            "explanation": "Ses erreurs peuvent varier hors population d’entraînement.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Généralisation non validée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Précision universelle",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Absence de biais garantie",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Diagnostic automatique",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel mot désigne le cadre situationnel nécessaire à l’interprétation ?",
+            "explanation": "Il s’agit du contexte.",
+            "acceptedAnswers": [
+              "contexte",
+              "le contexte"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en science affective et psychologie culturelle requise.",
+        "L’étape motivation-emotion-stress et le module emotion-adaptation sont absents du seed actuel.",
+        "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n’est autorisée.",
+        "Les théories restent des modèles partiels ; aucune expression, catégorie ou région n’est universalisée.",
+        "Les ressources obligatoires sont ouvertes et les accès ont été contrôlés le 2026-08-04."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de la leçon, de ses sources, activités et banques d’évaluation.",
+        "reviewRequired": "technical_editorial_and_affective_science"
+      }
+    ]
+  }
+}

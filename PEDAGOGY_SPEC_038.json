@@ -1,0 +1,954 @@
+{
+  "specId": "PEDAGOGY_SPEC_038",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "motivation-emotion-stress",
+  "moduleSlug": "emotion-adaptation",
+  "lesson": {
+    "title": "Régulation émotionnelle",
+    "slug": "regulation-emotionnelle",
+    "summary": "Réguler une émotion consiste à influencer sa trajectoire au service d’un but, non à supprimer tout ressenti. La pertinence d’une stratégie dépend de la situation, du moment, des ressources, des relations et des normes culturelles.",
+    "objectives": [
+      "Définir régulation, but et temporalité sans les réduire au contrôle.",
+      "Distinguer sélection, modification, attention, réévaluation et modulation de réponse.",
+      "Comparer stratégies selon contexte, coût et flexibilité.",
+      "Évaluer une affirmation de santé sans diagnostic ni promesse."
+    ],
+    "prerequisites": [
+      "Distinguer les composantes émotionnelles.",
+      "Distinguer mesure d’état et habitude auto-déclarée.",
+      "Distinguer association et effet causal."
+    ],
+    "estimatedMinutes": 145,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La régulation émotionnelle regroupe les processus qui influencent quelles émotions surviennent, quand elles surviennent et comment elles sont vécues ou exprimées. Elle peut augmenter, maintenir ou diminuer une composante selon un but ; elle n’est donc ni synonyme de calme, ni suppression, ni maîtrise morale. Une stratégie peut être délibérée ou relativement automatique, individuelle ou interpersonnelle.",
+          "sourceKeys": [
+            "gross-status-2015",
+            "openstax-emotion-10-4"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Le modèle processuel situe des familles d’actions à différents moments : choisir ou modifier une situation, orienter l’attention, changer l’interprétation, puis moduler une réponse déjà engagée. Cette séquence est un outil d’analyse, pas une ordonnance. Éviter une situation peut protéger à court terme ou réduire des occasions importantes ; exprimer, accepter, distraire, résoudre le problème ou rechercher du soutien répondent à des buts différents.",
+          "sourceKeys": [
+            "gross-status-2015",
+            "cutuli-reappraisal-suppression-2014"
+          ]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "La réévaluation modifie le sens attribué à une situation ; la suppression expressive réduit un comportement visible sans garantir la disparition du ressenti ou de la physiologie. Des moyennes expérimentales et associations habituelles favorisent souvent la réévaluation, mais elles ne prouvent pas qu’elle est toujours possible ou souhaitable. Lorsque la situation peut être changée, agir sur elle peut être plus pertinent ; face à une intensité élevée, détourner temporairement l’attention peut servir un autre but.",
+          "sourceKeys": [
+            "cutuli-reappraisal-suppression-2014",
+            "flexible-regulation-2019"
+          ]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La flexibilité implique de disposer d’un répertoire, de lire les exigences et possibilités de la situation, de choisir une stratégie puis d’en surveiller les effets. Son étude exige de préciser buts, contrôlabilité, intensité, temporalité et critères de réussite. Changer de stratégie n’est pas toujours meilleur, et un questionnaire d’habitudes ne décrit pas chaque épisode. Les conclusions doivent séparer choix, mise en œuvre, efficacité immédiate et conséquences différées.",
+          "sourceKeys": [
+            "flexible-regulation-2019",
+            "regulation-systematic-2024"
+          ]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Les normes d’expression et les conséquences sociales varient selon relations, pouvoir, sécurité et culture. La retenue peut soutenir une coordination dans un contexte et produire un coût dans un autre. Demander à une personne discriminée de mieux gérer ses émotions peut déplacer la responsabilité du stresseur vers elle. Une analyse inclut soutien disponible, possibilité réelle d’agir, risques de l’expression et changements collectifs ou institutionnels.",
+          "sourceKeys": [
+            "flexible-regulation-2019",
+            "gross-status-2015"
+          ]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Une association entre stratégie habituelle et bien-être ne suffit ni à diagnostiquer une dysrégulation, ni à promettre qu’un entraînement améliorera la santé. Auto-sélection, mesure commune, contexte et causalité inverse restent possibles. Une recommandation responsable décrit la population, le but, l’horizon, les effets indésirables et les alternatives, et oriente une détresse persistante vers un professionnel sans transformer la leçon en traitement.",
+          "sourceKeys": [
+            "regulation-systematic-2024",
+            "cutuli-reappraisal-suppression-2014"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-emotion-10-4",
+        "title": "Psychology 2e — 10.4 Emotion",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/10-4-emotion",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 10.4 Emotion. OpenStax.",
+        "description": "Relire les composantes puis repérer ce qu’une stratégie peut modifier.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "gross-status-2015",
+        "title": "Emotion Regulation: Current Status and Future Prospects",
+        "type": "article",
+        "url": "https://doi.org/10.1080/1047840X.2014.940781",
+        "author": "James J. Gross",
+        "citation": "Gross, J. J. (2015). Emotion regulation: Current status and future prospects. Psychological Inquiry, 26(1), 1–26. https://doi.org/10.1080/1047840X.2014.940781",
+        "description": "Consulter le résumé et le modèle processuel ; cartographier buts, étapes et stratégies.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "cutuli-reappraisal-suppression-2014",
+        "title": "Cognitive Reappraisal and Expressive Suppression",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4168764/",
+        "author": "Debora Cutuli",
+        "citation": "Cutuli, D. (2014). Cognitive reappraisal and expressive suppression strategies role in emotion regulation. Frontiers in Systems Neuroscience, 8, 175. https://doi.org/10.3389/fnsys.2014.00175",
+        "description": "Lire définitions, temporalité et limites ; comparer effets sur expérience, expression et physiologie.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "flexible-regulation-2019",
+        "title": "Flexible Emotion Regulation",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6367256/",
+        "author": "Agnieszka Kobylińska et Dariusz Kusev",
+        "citation": "Kobylińska, D., & Kusev, P. (2019). Flexible emotion regulation. Frontiers in Psychology, 10, 72. https://doi.org/10.3389/fpsyg.2019.00072",
+        "description": "Lire les sections sur demandes situationnelles ; construire deux cas où une même stratégie change de valeur.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "regulation-systematic-2024",
+        "title": "Strategies and Goals in Emotion Regulation Models",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11479914/",
+        "author": "Consuelo Martínez-Priego et al.",
+        "citation": "Martínez-Priego, C., Poveda García-Noblejas, B., & Roca, P. (2024). Strategies and goals in emotion regulation models: A systematic review. Frontiers in Psychology, 15, 1425465. https://doi.org/10.3389/fpsyg.2024.1425465",
+        "description": "Lire le résumé et la discussion critique ; relier chaque stratégie à un but et un contexte.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Processus, buts et temporalité",
+        "slug": "processus-buts-temporalite-regulation",
+        "description": "La régulation influence une trajectoire émotionnelle à différents moments au service de buts situés.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-emotion-10-4",
+          "gross-status-2015"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Processus de régulation",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Stratégies et effets différenciés",
+        "slug": "strategies-effets-regulation",
+        "description": "Les stratégies affectent différemment situation, attention, sens, expression, expérience et physiologie.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cutuli-reappraisal-suppression-2014",
+          "gross-status-2015"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Stratégies de régulation",
+          "questionCount": 5
+        }
+      },
+      {
+        "title": "Flexibilité, culture et contexte",
+        "slug": "flexibilite-culture-contexte-regulation",
+        "description": "La qualité d’une stratégie dépend du but, de la contrôlabilité, du contexte social et des possibilités réelles.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "flexible-regulation-2019",
+          "regulation-systematic-2024"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Mini-évaluation — Flexibilité et contexte",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Cartographier une séquence",
+        "description": "Sur une vignette fictive, placer cinq familles de stratégies dans le temps et prédire séparément leurs effets possibles sur expérience, expression et action.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Comparer suppression et réévaluation",
+        "description": "Réviser un tableau affirmant que l’une est toujours mauvaise et l’autre toujours bonne en ajoutant but, contrôlabilité, intensité, relation et horizon.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Concevoir un répertoire situé",
+        "description": "Pour trois contextes fictifs, proposer plusieurs options individuelles, interpersonnelles et structurelles, critères de suivi, limites et signes justifiant une aide professionnelle.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-038-OPENSTAX",
+        "type": "textbook_chapter",
+        "authors": [
+          "Spielman, R. M.",
+          "Jenkins, W. J.",
+          "Lovett, M. D."
+        ],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 10.4 Emotion",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/10-4-emotion",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY 4.0",
+        "status": "verified",
+        "notes": "Introduction ouverte."
+      },
+      {
+        "id": "REF-038-GROSS",
+        "type": "review_article",
+        "authors": [
+          "Gross, J. J."
+        ],
+        "organization": "Taylor & Francis",
+        "title": "Emotion Regulation: Current Status and Future Prospects",
+        "year": 2015,
+        "edition": null,
+        "publication": "Psychological Inquiry, 26(1), 1–26",
+        "doi": "https://doi.org/10.1080/1047840X.2014.940781",
+        "url": "https://doi.org/10.1080/1047840X.2014.940781",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé ouvert ; droits éditeur",
+        "status": "verified",
+        "notes": "Source du modèle processuel, facultative au texte intégral."
+      },
+      {
+        "id": "REF-038-CUTULI",
+        "type": "review_article",
+        "authors": [
+          "Cutuli, D."
+        ],
+        "organization": "Frontiers",
+        "title": "Cognitive Reappraisal and Expressive Suppression Strategies Role in Emotion Regulation",
+        "year": 2014,
+        "edition": null,
+        "publication": "Frontiers in Systems Neuroscience, 8, 175",
+        "doi": "https://doi.org/10.3389/fnsys.2014.00175",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4168764/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY",
+        "status": "verified",
+        "notes": "Revue ouverte, interprétée sans hiérarchie universelle."
+      },
+      {
+        "id": "REF-038-KOBYLINSKA",
+        "type": "review_article",
+        "authors": [
+          "Kobylińska, D.",
+          "Kusev, P."
+        ],
+        "organization": "Frontiers",
+        "title": "Flexible Emotion Regulation",
+        "year": 2019,
+        "edition": null,
+        "publication": "Frontiers in Psychology, 10, 72",
+        "doi": "https://doi.org/10.3389/fpsyg.2019.00072",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6367256/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY",
+        "status": "verified",
+        "notes": "Synthèse de la flexibilité situationnelle."
+      },
+      {
+        "id": "REF-038-MARTINEZ-PRIEGO",
+        "type": "systematic_review",
+        "authors": [
+          "Martínez-Priego, C.",
+          "Poveda García-Noblejas, B.",
+          "Roca, P."
+        ],
+        "organization": "Frontiers",
+        "title": "Strategies and Goals in Emotion Regulation Models",
+        "year": 2024,
+        "edition": null,
+        "publication": "Frontiers in Psychology, 15",
+        "doi": "https://doi.org/10.3389/fpsyg.2024.1425465",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11479914/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "A",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY",
+        "status": "verified",
+        "notes": "Revue systématique récente des modèles, buts et stratégies."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-OPENSTAX",
+            "locator": "10.4 Emotion, composantes de l’émotion",
+            "supports": "Plusieurs composantes émotionnelles peuvent être modulées différemment."
+          },
+          {
+            "referenceId": "REF-038-GROSS",
+            "locator": "définition et cadre étendu",
+            "supports": "Définition, buts et temporalité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse théorique de référence.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-GROSS",
+            "locator": "process model",
+            "supports": "Familles de stratégies selon le moment."
+          },
+          {
+            "referenceId": "REF-038-CUTULI",
+            "locator": "antecedent-focused and response-focused regulation",
+            "supports": "Temporalité différente de la réévaluation et de la modulation de réponse."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Modèle explicite et testable.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-CUTULI",
+            "locator": "définitions et comparaison",
+            "supports": "Effets différenciés de réévaluation et suppression."
+          },
+          {
+            "referenceId": "REF-038-KOBYLINSKA",
+            "locator": "situational demands and regulatory flexibility",
+            "supports": "La valeur d’une stratégie dépend de la situation, de l’intensité et du but."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Synthèse ouverte nuancée par les travaux sur la flexibilité.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-KOBYLINSKA",
+            "locator": "Effectiveness et Context",
+            "supports": "Répertoire et demandes situationnelles."
+          },
+          {
+            "referenceId": "REF-038-MARTINEZ-PRIEGO",
+            "locator": "résultats et discussion",
+            "supports": "Buts et absence de stratégie universellement adaptative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux revues convergentes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-KOBYLINSKA",
+            "locator": "situational demands",
+            "supports": "Influence des relations et contextes."
+          },
+          {
+            "referenceId": "REF-038-GROSS",
+            "locator": "valuation systems and social context",
+            "supports": "La régulation dépend des buts, du contexte social et des conséquences de l’expression."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Les implications sociales sont formulées comme cadre d’analyse.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-038-MARTINEZ-PRIEGO",
+            "locator": "limites méthodologiques",
+            "supports": "Distinction association, efficacité et santé."
+          },
+          {
+            "referenceId": "REF-038-CUTULI",
+            "locator": "associations, mécanismes proposés et limites",
+            "supports": "Les effets moyens des stratégies ne fondent ni diagnostic individuel ni promesse d’intervention."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Revue systématique récente.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-emotion-10-4",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-038-OPENSTAX"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Relire les composantes puis repérer ce qu’une stratégie peut modifier.",
+        "learnerInstructions": "Relire les composantes puis repérer ce qu’une stratégie peut modifier.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "HTML structuré.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "gross-status-2015",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "redirect",
+        "accessType": "institutional",
+        "language": "en",
+        "referenceIds": [
+          "REF-038-GROSS"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Consulter le résumé et le modèle processuel ; cartographier buts, étapes et stratégies.",
+        "learnerInstructions": "Consulter le résumé et le modèle processuel ; cartographier buts, étapes et stratégies.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Résumé ouvert, ressource facultative.",
+        "alternativeResourceKey": "regulation-systematic-2024",
+        "notes": "Accès limité signalé ; une alternative ouverte est fournie."
+      },
+      {
+        "resourceKey": "cutuli-reappraisal-suppression-2014",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-038-CUTULI"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire définitions, temporalité et limites ; comparer effets sur expérience, expression et physiologie.",
+        "learnerInstructions": "Lire définitions, temporalité et limites ; comparer effets sur expérience, expression et physiologie.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "flexible-regulation-2019",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-038-KOBYLINSKA"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire les sections sur demandes situationnelles ; construire deux cas où une même stratégie change de valeur.",
+        "learnerInstructions": "Lire les sections sur demandes situationnelles ; construire deux cas où une même stratégie change de valeur.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      },
+      {
+        "resourceKey": "regulation-systematic-2024",
+        "checkedAt": "2026-08-04",
+        "urlStatus": "ok",
+        "accessType": "open",
+        "language": "en",
+        "referenceIds": [
+          "REF-038-MARTINEZ-PRIEGO"
+        ],
+        "pedagogicalRationale": "Cette ressource soutient l’activité demandée : Lire le résumé et la discussion critique ; relier chaque stratégie à un but et un contexte.",
+        "learnerInstructions": "Lire le résumé et la discussion critique ; relier chaque stratégie à un but et un contexte.",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "accessibilityNotes": "Texte PMC.",
+        "alternativeResourceKey": null,
+        "notes": "Accès ouvert contrôlé sans authentification."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "processus-buts-temporalite-regulation",
+        "assessmentTitle": "Mini-évaluation — Processus de régulation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Réguler une émotion signifie nécessairement…",
+            "explanation": "La régulation peut augmenter, maintenir ou diminuer selon le but.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Influencer sa trajectoire selon un but",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ne plus rien ressentir",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Toujours la cacher",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La diagnostiquer",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Toute régulation est consciente et solitaire.",
+            "explanation": "Elle peut être automatique ou interpersonnelle.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments définissent l’analyse d’une stratégie ?",
+            "explanation": "But, moment et composante sont essentiels.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "But",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Moment",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Composante ciblée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Valeur morale fixe",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Modifier directement un conflit relève de…",
+            "explanation": "La modification de situation agit sur l’antécédent.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "La modification de situation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La lecture mentale",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un diagnostic",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La physiologie seule",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme désigne le résultat recherché par la régulation ?",
+            "explanation": "Il s’agit du but.",
+            "acceptedAnswers": [
+              "but",
+              "objectif",
+              "le but"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "strategies-effets-regulation",
+        "assessmentTitle": "Mini-évaluation — Stratégies de régulation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que cible directement la suppression expressive ?",
+            "explanation": "Elle cible l’expression en cours.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le comportement expressif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute expérience intérieure",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le stresseur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un diagnostic",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La réévaluation est toujours la meilleure stratégie.",
+            "explanation": "Sa valeur dépend du contexte et du but.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles options peuvent réguler une émotion ?",
+            "explanation": "Plusieurs points d’intervention existent.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Modifier la situation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Orienter l’attention",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Réévaluer",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Nier toute émotion",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi séparer expression et ressenti ?",
+            "explanation": "Une expression réduite ne garantit pas un ressenti réduit.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Leurs effets peuvent diverger",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ils sont toujours opposés",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le ressenti est inexistant",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’expression est un diagnostic",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quelle stratégie change le sens attribué à la situation ?",
+            "explanation": "C’est la réévaluation.",
+            "acceptedAnswers": [
+              "réévaluation",
+              "reevaluation",
+              "réévaluation cognitive",
+              "reappraisal"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "flexibilite-culture-contexte-regulation",
+        "assessmentTitle": "Mini-évaluation — Flexibilité et contexte",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qu’est-ce que la flexibilité régulatrice ?",
+            "explanation": "Elle ajuste répertoire et stratégie aux demandes et buts.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Adapter le choix et le suivi au contexte",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Changer au hasard",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Toujours supprimer",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Rester calme en permanence",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un questionnaire d’habitudes décrit parfaitement chaque épisode.",
+            "explanation": "Trait et état ne sont pas interchangeables.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il considérer avant de conseiller une stratégie ?",
+            "explanation": "Ces facteurs déterminent possibilités et coûts.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Contrôlabilité",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pouvoir et sécurité",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "But et horizon",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une norme culturelle unique",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi l’injonction au contrôle peut-elle blâmer ?",
+            "explanation": "Elle peut masquer le stresseur et les contraintes structurelles.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Elle déplace toute responsabilité sur la personne",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Elle mesure mieux le contexte",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Elle supprime les inégalités",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Elle prouve une causalité",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Quel terme désigne l’ensemble des stratégies disponibles ?",
+            "explanation": "Il s’agit du répertoire.",
+            "acceptedAnswers": [
+              "répertoire",
+              "repertoire",
+              "répertoire de stratégies",
+              "repertoire de strategies"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en science affective, régulation et psychologie culturelle requise.",
+        "L’étape motivation-emotion-stress et le module emotion-adaptation sont absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "La régulation n’est ni suppression ni injonction au contrôle ; aucune promesse thérapeutique ou diagnostic.",
+        "Toutes les ressources obligatoires sont ouvertes."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de la leçon et de ses évaluations.",
+        "reviewRequired": "technical_editorial_and_affective_science"
+      }
+    ]
+  }
+}
