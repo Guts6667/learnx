@@ -20,6 +20,8 @@ import {
 import { getCurrentModuleRun } from './module-runs.js';
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
+const PROGRESS_TRANSACTION_MAX_WAIT_MS = 5_000;
+const PROGRESS_TRANSACTION_TIMEOUT_MS = 15_000;
 
 export interface LessonProgressSnapshot {
   canComplete: boolean;
@@ -60,6 +62,8 @@ export async function runSerializableProgressTransaction<T>(
     try {
       return await prisma.$transaction(operation, {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        maxWait: PROGRESS_TRANSACTION_MAX_WAIT_MS,
+        timeout: PROGRESS_TRANSACTION_TIMEOUT_MS,
       });
     } catch (error) {
       if (
@@ -309,6 +313,7 @@ export async function refreshStageAndProgram(
   programId: string,
   userId: string,
   now: Date,
+  knownLessonSnapshots: ReadonlyMap<string, LessonProgressSnapshot> = new Map(),
 ) {
   const stage = await transaction.stage.findUnique({
     where: { id: stageId },
@@ -376,20 +381,20 @@ export async function refreshStageAndProgram(
 
   if (!stage) return;
 
-  const lessonSnapshots = new Map<string, LessonProgressSnapshot>();
-  await Promise.all(
-    stage.modules.flatMap((module) =>
-      module.lessons.map(async (lesson) => {
-        const state = await readLessonState(
-          transaction,
-          lesson.id,
-          userId,
-          false,
-        );
-        if (state) lessonSnapshots.set(lesson.id, toLessonSnapshot(state));
-      }),
-    ),
-  );
+  const lessonSnapshots = new Map(knownLessonSnapshots);
+  for (const module of stage.modules) {
+    for (const lesson of module.lessons) {
+      if (lessonSnapshots.has(lesson.id)) continue;
+
+      const state = await readLessonState(
+        transaction,
+        lesson.id,
+        userId,
+        false,
+      );
+      if (state) lessonSnapshots.set(lesson.id, toLessonSnapshot(state));
+    }
+  }
 
   const stageProgress = stage.progress[0];
   const concepts = stage.modules.flatMap((module) =>
@@ -576,6 +581,11 @@ export async function recalculateLessonProgress(
       status,
     },
   });
+  const persistedSnapshot = {
+    ...snapshot,
+    lessonProgress,
+    percent: persistedPercent,
+  };
 
   if (
     lesson.isPublished &&
@@ -588,8 +598,9 @@ export async function recalculateLessonProgress(
       lesson.module.stage.programId,
       userId,
       now,
+      new Map([[lessonId, persistedSnapshot]]),
     );
   }
 
-  return { ...snapshot, lessonProgress, percent: persistedPercent };
+  return persistedSnapshot;
 }

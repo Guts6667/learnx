@@ -99,6 +99,7 @@ function stageState(percent: number) {
       {
         lessons: [
           {
+            id: lessonId,
             concepts: [
               {
                 id: 'concept-1',
@@ -246,6 +247,7 @@ describe('progress recalculation', () => {
         create: expect.objectContaining({ percent: 100 }),
       }),
     );
+    expect(transaction.lesson.findFirst).toHaveBeenCalledTimes(2);
   });
 
   it('réessaie un conflit sérialisable puis réussit sans écriture partielle', async () => {
@@ -260,6 +262,11 @@ describe('progress recalculation', () => {
       runSerializableProgressTransaction(prisma, async () => 'ok'),
     ).resolves.toBe('ok');
     expect(transaction).toHaveBeenCalledTimes(2);
+    expect(transaction).toHaveBeenCalledWith(expect.any(Function), {
+      isolationLevel: 'Serializable',
+      maxWait: 5_000,
+      timeout: 15_000,
+    });
   });
 
   it('limite les reprises de conflit concurrent', async () => {

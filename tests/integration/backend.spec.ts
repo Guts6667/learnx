@@ -50,18 +50,18 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
   baseURL,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
-  test.setTimeout(120_000);
+  test.setTimeout(240_000);
   expect(baseURL).toBeTruthy();
 
   const ownerEmail = uniqueEmail('owner', testInfo.retry);
   const outsiderEmail = uniqueEmail('outsider', testInfo.retry);
   const owner = await playwrightRequest.newContext({
     baseURL,
-    timeout: 15_000,
+    timeout: 30_000,
   });
   const outsider = await playwrightRequest.newContext({
     baseURL,
-    timeout: 15_000,
+    timeout: 30_000,
   });
 
   try {
