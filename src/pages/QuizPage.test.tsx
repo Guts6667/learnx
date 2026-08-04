@@ -244,6 +244,12 @@ describe('QuizPage', () => {
     expect(
       screen.getByRole('button', { name: 'Recommencer le quiz' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Activité suivante' }),
+    ).toHaveAttribute(
+      'href',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
+    );
     expect(fetchMock).toHaveBeenCalledWith(
       `/api/quizzes/${quizId}/attempts`,
       expect.objectContaining({ method: 'POST' }),

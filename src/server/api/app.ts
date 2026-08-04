@@ -6,6 +6,7 @@ import { authApp } from './auth/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
 import { conceptsApp } from './concepts/app.js';
 import { exercisesApp } from './exercises/app.js';
+import { moduleRunsApp } from './module-runs/app.js';
 import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
 import { progressApp } from './progress/app.js';
@@ -43,6 +44,7 @@ export function createApiApp() {
   app.route('/', conceptAssessmentsApp);
   app.route('/', quizzesApp);
   app.route('/', exercisesApp);
+  app.route('/', moduleRunsApp);
   app.route('/', stageAssessmentsApp);
   app.route('/', notesApp);
   app.route('/', reviewsApp);

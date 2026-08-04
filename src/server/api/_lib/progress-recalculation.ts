@@ -16,6 +16,7 @@ import {
   calculateProgramPercent,
   calculateStagePercent,
 } from './timeline-progress.js';
+import { getCurrentModuleRun } from './module-runs.js';
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
 
@@ -79,6 +80,31 @@ async function readLessonState(
   requirePublished: boolean,
 ) {
   const publicationFilter = requirePublished ? { isPublished: true } : {};
+  const lessonContext = await prisma.lesson.findFirst({
+    where: {
+      id: lessonId,
+      ...publicationFilter,
+      module: {
+        ...publicationFilter,
+        stage: {
+          ...publicationFilter,
+          program: { ownerId: userId },
+        },
+      },
+    },
+    select: { moduleId: true },
+  });
+
+  if (!lessonContext) return null;
+
+  const currentRun = await getCurrentModuleRun(
+    prisma,
+    lessonContext.moduleId,
+    userId,
+  );
+  const currentRunFilter = currentRun
+    ? { moduleRunId: currentRun.id }
+    : { moduleRunId: { equals: '00000000-0000-0000-0000-000000000000' } };
 
   return prisma.lesson.findFirst({
     where: {
@@ -116,7 +142,7 @@ async function readLessonState(
         select: {
           id: true,
           submissions: {
-            where: { userId },
+            where: { ...currentRunFilter, userId },
             take: 1,
             select: { status: true },
           },
@@ -141,9 +167,11 @@ async function readLessonState(
         where: { isRequired: true },
         select: {
           id: true,
-          _count: { select: { attempts: { where: { userId } } } },
+          _count: {
+            select: { attempts: { where: { ...currentRunFilter, userId } } },
+          },
           attempts: {
-            where: { passed: true, userId },
+            where: { ...currentRunFilter, passed: true, userId },
             take: 1,
             select: { id: true },
           },
@@ -248,7 +276,7 @@ export async function getLessonProgressSnapshot(
   return lesson ? toLessonSnapshot(lesson) : null;
 }
 
-async function refreshStageAndProgram(
+export async function refreshStageAndProgram(
   transaction: Prisma.TransactionClient,
   stageId: string,
   programId: string,

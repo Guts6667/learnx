@@ -196,6 +196,7 @@ model User {
   stageAssessmentSubmissions StageAssessmentSubmission[]
   reviewItems                ReviewItem[]
   notes                      Note[]
+  moduleRuns                 ModuleRun[]
 
   @@map("users")
 }
@@ -301,22 +302,43 @@ model StageAssessmentSubmission {
 }
 
 model Module {
-  id               String   @id @default(uuid()) @db.Uuid
-  stageId          String   @map("stage_id") @db.Uuid
+  id               String      @id @default(uuid()) @db.Uuid
+  stageId          String      @map("stage_id") @db.Uuid
   title            String
   slug             String
   description      String
-  position         Int      @default(0)
-  estimatedMinutes Int?     @map("estimated_minutes")
-  isPublished      Boolean  @default(false) @map("is_published")
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  stage            Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  position         Int         @default(0)
+  estimatedMinutes Int?        @map("estimated_minutes")
+  isPublished      Boolean     @default(false) @map("is_published")
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  stage            Stage       @relation(fields: [stageId], references: [id], onDelete: Cascade)
   lessons          Lesson[]
+  runs             ModuleRun[]
 
   @@unique([stageId, slug])
   @@index([stageId, position])
   @@map("modules")
+}
+
+model ModuleRun {
+  id                  String                     @id @default(uuid()) @db.Uuid
+  userId              String                     @map("user_id") @db.Uuid
+  moduleId            String                     @map("module_id") @db.Uuid
+  sequence            Int
+  startedAt           DateTime                   @default(now()) @map("started_at")
+  restartKey          String?                    @map("restart_key") @db.Uuid
+  createdAt           DateTime                   @default(now()) @map("created_at")
+  user                User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module              Module                     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quizAttempts        QuizAttempt[]
+  conceptAttempts     ConceptAssessmentAttempt[]
+  exerciseSubmissions ExerciseSubmission[]
+
+  @@unique([userId, moduleId, sequence])
+  @@unique([userId, moduleId, restartKey])
+  @@index([userId, moduleId, startedAt])
+  @@map("module_runs")
 }
 
 model Lesson {
@@ -525,17 +547,19 @@ model QuestionOption {
 }
 
 model QuizAttempt {
-  id          String   @id @default(uuid()) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  quizId      String   @map("quiz_id") @db.Uuid
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  quizId      String    @map("quiz_id") @db.Uuid
+  moduleRunId String    @map("module_run_id") @db.Uuid
   score       Float
   passed      Boolean
-  answers     Json     @map("answers_json")
-  submittedAt DateTime @default(now()) @map("submitted_at")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  answers     Json      @map("answers_json")
+  submittedAt DateTime  @default(now()) @map("submitted_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  moduleRun   ModuleRun @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@index([userId, quizId, submittedAt], map: "quiz_attempts_user_quiz_submitted_idx")
+  @@index([userId, quizId, moduleRunId, submittedAt], map: "quiz_attempts_user_quiz_run_submitted_idx")
   @@map("quiz_attempts")
 }
 
@@ -559,6 +583,7 @@ model ExerciseSubmission {
   id              String                   @id @default(uuid()) @db.Uuid
   userId          String                   @map("user_id") @db.Uuid
   exerciseId      String                   @map("exercise_id") @db.Uuid
+  moduleRunId     String                   @map("module_run_id") @db.Uuid
   contentMarkdown String                   @default("") @map("content_markdown")
   status          ExerciseSubmissionStatus @default(DRAFT)
   submittedAt     DateTime?                @map("submitted_at")
@@ -566,8 +591,9 @@ model ExerciseSubmission {
   updatedAt       DateTime                 @updatedAt @map("updated_at")
   user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   exercise        Exercise                 @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  moduleRun       ModuleRun                @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, exerciseId])
+  @@unique([userId, exerciseId, moduleRunId])
   @@index([exerciseId, status])
   @@map("exercise_submissions")
 }
@@ -670,14 +696,16 @@ model ConceptAssessmentAttempt {
   id           String            @id @default(uuid()) @db.Uuid
   userId       String            @map("user_id") @db.Uuid
   assessmentId String            @map("assessment_id") @db.Uuid
+  moduleRunId  String            @map("module_run_id") @db.Uuid
   answers      Json              @map("answers_json")
   score        Float
   passed       Boolean
   submittedAt  DateTime          @default(now()) @map("submitted_at")
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   assessment   ConceptAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  moduleRun    ModuleRun         @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
 
-  @@index([userId, assessmentId, submittedAt], map: "concept_assessment_attempts_user_assessment_submitted_idx")
+  @@index([userId, assessmentId, moduleRunId, submittedAt], map: "concept_assessment_attempts_user_assessment_run_submitted_idx")
   @@map("concept_assessment_attempts")
 }
 

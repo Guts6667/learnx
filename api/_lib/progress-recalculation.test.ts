@@ -15,13 +15,22 @@ import {
 } from '../../src/server/api/_lib/progress-recalculation';
 
 const lessonId = '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8';
+const moduleId = 'ac7cae6f-1888-4698-a049-925c21c23720';
+const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
+const moduleRun = {
+  id: 'd0575bf7-b4f7-4ab4-86db-5720d7a63885',
+  moduleId,
+  sequence: 1,
+  startedAt: new Date('2026-08-03T08:00:00.000Z'),
+  userId,
+};
 const programId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const stageId = '97476e0e-2103-40c0-8185-f7601a8d2fd2';
-const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const now = new Date('2026-08-03T10:00:00.000Z');
 
 function lessonState(options: { conceptValidated?: boolean } = {}) {
   return {
+    moduleId,
     concepts: [
       {
         progress: [
@@ -117,6 +126,7 @@ describe('progress recalculation', () => {
   it('calcule les quatre catégories requises et ignore les éléments facultatifs', async () => {
     const prisma = {
       lesson: { findFirst: vi.fn(async () => lessonState()) },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
     } as unknown as PrismaClient;
 
     await expect(
@@ -143,6 +153,7 @@ describe('progress recalculation', () => {
         findFirst: vi.fn(async () => lessonState({ conceptValidated: false })),
       },
       lessonProgress: { upsert: vi.fn() },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
     };
 
     const snapshot = await recalculateLessonProgress(
@@ -167,6 +178,7 @@ describe('progress recalculation', () => {
     const transaction = {
       lesson: { findFirst: vi.fn(async () => inactiveLesson) },
       lessonProgress: { upsert: vi.fn() },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
     };
 
     await recalculateLessonProgress(
@@ -197,6 +209,7 @@ describe('progress recalculation', () => {
     const transaction = {
       lesson: { findFirst: vi.fn(async () => lessonState()) },
       lessonProgress: { upsert: lessonProgressUpsert },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
       program: {
         findUnique: vi.fn(async () => ({
           stages: [stageState(persistedPercent)],

@@ -4,6 +4,7 @@ import {
   LessonContextHeader,
   LessonActivitySummary,
   lessonHref,
+  nextLessonActivityHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -132,6 +133,7 @@ export function QuizPage({
           restart: 'Recommencer le quiz',
           success: 'Quiz réussi',
         }}
+        nextHref={nextLessonActivityHref(lesson, key)}
         onSubmit={mutation.submit}
       />
     </article>

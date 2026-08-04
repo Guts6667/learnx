@@ -441,6 +441,13 @@ describe('concept assessment persistence', () => {
   });
 
   function createTransactionClient(currentProgress: object | null = null) {
+    const moduleRun = {
+      id: 'd0575bf7-b4f7-4ab4-86db-5720d7a63885',
+      moduleId: 'ac7cae6f-1888-4698-a049-925c21c23720',
+      sequence: 1,
+      startedAt: submittedAt,
+      userId,
+    };
     const reviewUpsert = vi.fn(async () => ({ id: 'review-1' }));
     const reviewUpdateMany = vi.fn(async () => ({ count: 1 }));
     const progressUpsert = vi.fn(async (input: unknown) => {
@@ -461,6 +468,10 @@ describe('concept assessment persistence', () => {
       return currentProgress ? typedInput.update : typedInput.create;
     });
     const transaction = {
+      lesson: {
+        findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
+      },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
       conceptAssessmentAttempt: {
         create: vi.fn(async () => ({
           answers: [],

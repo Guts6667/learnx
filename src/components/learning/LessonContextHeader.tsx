@@ -1,13 +1,44 @@
+import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { LessonDetail } from '@/features/curriculum/queries';
-import {
-  activityKey,
-  buildLessonActivitySequence,
-} from '@/lib/lesson-activity-sequence';
+import { buildLessonActivitySequence } from '@/lib/lesson-activity-sequence';
 
 export function lessonHref(lesson: LessonDetail): string {
   return `/program/${encodeURIComponent(lesson.module.stage.program.slug)}/lesson/${encodeURIComponent(lesson.slug)}`;
+}
+
+export function lessonActivitySequence(
+  lesson: LessonDetail,
+  currentKey?: string,
+) {
+  return buildLessonActivitySequence(
+    {
+      concepts: lesson.concepts,
+      contentBlocks: lesson.contentBlocks,
+      exercises: lesson.exercises,
+      isPublished: lesson.isPublished,
+      lessonSlug: lesson.slug,
+      nextLesson: lesson.navigation.nextLesson,
+      programSlug: lesson.module.stage.program.slug,
+      quizzes: lesson.quizzes,
+      resources: lesson.resources,
+      tasks: lesson.tasks,
+    },
+    currentKey,
+  );
+}
+
+export function nextLessonActivityHref(
+  lesson: LessonDetail,
+  currentKey: string,
+): string | null {
+  const activities = lessonActivitySequence(lesson).activities;
+  const currentIndex = activities.findIndex(
+    (activity) =>
+      `${activity.kind.toLowerCase()}:${activity.id}` === currentKey,
+  );
+  return currentIndex < 0 ? null : (activities[currentIndex + 1]?.href ?? null);
 }
 
 export function LessonContextHeader({
@@ -28,7 +59,10 @@ export function LessonContextHeader({
       <nav aria-label="Fil d’Ariane de la leçon">
         <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
           <li>
-            <a class="text-cyan-300 underline" href={`/program/${program.slug}`}>
+            <a
+              class="text-cyan-300 underline"
+              href={`/program/${program.slug}`}
+            >
               {program.title}
             </a>
           </li>
@@ -95,45 +129,15 @@ export function LessonActivitySummary({
   currentKey: string;
   lesson: LessonDetail;
 }) {
-  const sequence = buildLessonActivitySequence(
-    {
-      concepts: lesson.concepts,
-      contentBlocks: lesson.contentBlocks,
-      exercises: lesson.exercises,
-      isPublished: lesson.isPublished,
-      lessonSlug: lesson.slug,
-      nextLesson: lesson.navigation.nextLesson,
-      programSlug: lesson.module.stage.program.slug,
-      quizzes: lesson.quizzes,
-      resources: lesson.resources,
-      tasks: lesson.tasks,
-    },
-    currentKey,
-  );
+  const sequence = lessonActivitySequence(lesson, currentKey);
 
   return (
-    <details class="rounded-xl border border-slate-800 px-4 py-3">
-      <summary class="min-h-11 cursor-pointer py-2 font-semibold text-slate-200">
-        Sommaire de la leçon
-      </summary>
-      <nav aria-label="Sommaire contextuel de la leçon">
-        <ol class="space-y-2 pb-2">
-          {sequence.activities.map((activity) => {
-            const key = activityKey(activity.kind, activity.id);
-            return (
-              <li key={key}>
-                <a
-                  aria-current={key === currentKey ? 'step' : undefined}
-                  class="inline-flex min-h-11 items-center text-sm text-cyan-300 underline"
-                  href={activity.href}
-                >
-                  {activity.title}
-                </a>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    </details>
+    <PedagogicalNavigation
+      activities={sequence.activities}
+      currentKey={currentKey}
+      lessonHref={lessonHref(lesson)}
+      lessonTitle={lesson.title}
+      moduleTitle={lesson.module.title}
+    />
   );
 }

@@ -21,7 +21,15 @@ function formatSubmissionDate(value: string): string {
   }).format(new Date(value));
 }
 
-function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
+function ExerciseEditor({
+  backHref,
+  exercise,
+  nextHref,
+}: {
+  backHref?: string;
+  exercise: ExerciseDetail;
+  nextHref?: string | null;
+}) {
   const mutation = useExerciseMutation(exercise.id);
   const submission = exercise.submission;
   const [contentMarkdown, setContentMarkdown] = useState(
@@ -52,6 +60,24 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         <pre class="whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-3 font-sans text-sm leading-6 text-slate-300">
           {submission.contentMarkdown}
         </pre>
+        {backHref ? (
+          <nav aria-label="Suite de la leçon" class="flex flex-wrap gap-3">
+            <a
+              class="inline-flex min-h-11 items-center rounded-xl bg-slate-800 px-4 text-sm font-semibold"
+              href={backHref}
+            >
+              Retour à la leçon
+            </a>
+            {nextHref ? (
+              <a
+                class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 text-sm font-semibold text-slate-950"
+                href={nextHref}
+              >
+                Activité suivante
+              </a>
+            ) : null}
+          </nav>
+        ) : null}
       </div>
     );
   }
@@ -102,7 +128,15 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
   );
 }
 
-function PublishedExerciseCard({ exerciseId }: { exerciseId: string }) {
+function PublishedExerciseCard({
+  backHref,
+  exerciseId,
+  nextHref,
+}: {
+  backHref?: string;
+  exerciseId: string;
+  nextHref?: string | null;
+}) {
   const query = useExerciseQuery(exerciseId);
 
   if (query.isPending) {
@@ -113,15 +147,25 @@ function PublishedExerciseCard({ exerciseId }: { exerciseId: string }) {
     return <ErrorState description="L’exercice est indisponible." />;
   }
 
-  return <ExerciseEditor exercise={query.data.exercise} />;
+  return (
+    <ExerciseEditor
+      backHref={backHref}
+      exercise={query.data.exercise}
+      nextHref={nextHref}
+    />
+  );
 }
 
 export function ExerciseCard({
   exercise,
   isLessonPublished,
+  backHref,
+  nextHref,
 }: {
+  backHref?: string;
   exercise: LessonExerciseSummary;
   isLessonPublished: boolean;
+  nextHref?: string | null;
 }) {
   return (
     <Card class="space-y-4">
@@ -133,7 +177,11 @@ export function ExerciseCard({
       </div>
       <SafeMarkdown content={exercise.instructions} />
       {isLessonPublished ? (
-        <PublishedExerciseCard exerciseId={exercise.id} />
+        <PublishedExerciseCard
+          backHref={backHref}
+          exerciseId={exercise.id}
+          nextHref={nextHref}
+        />
       ) : (
         <div class="space-y-2">
           <Badge tone="warning">Brouillon</Badge>

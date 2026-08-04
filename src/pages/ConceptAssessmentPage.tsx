@@ -4,6 +4,7 @@ import {
   LessonContextHeader,
   LessonActivitySummary,
   lessonHref,
+  nextLessonActivityHref,
 } from '@/components/learning/LessonContextHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -148,6 +149,7 @@ export function ConceptAssessmentPage({
           restart: 'Recommencer la mini-évaluation',
           success: 'Notion maîtrisée',
         }}
+        nextHref={nextLessonActivityHref(lesson, key)}
         onSubmit={mutation.submit}
       />
     </article>

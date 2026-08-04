@@ -330,6 +330,13 @@ describe('quiz persistence filters', () => {
   });
 
   it('recalcule la progression dans la transaction de tentative', async () => {
+    const moduleRun = {
+      id: 'd0575bf7-b4f7-4ab4-86db-5720d7a63885',
+      moduleId: 'ac7cae6f-1888-4698-a049-925c21c23720',
+      sequence: 1,
+      startedAt: submittedAt,
+      userId,
+    };
     const create = vi.fn(async () => ({
       answers: [],
       id: 'attempt-1',
@@ -337,7 +344,13 @@ describe('quiz persistence filters', () => {
       score: 100,
       submittedAt,
     }));
-    const transaction = { quizAttempt: { create } };
+    const transaction = {
+      lesson: {
+        findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
+      },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
+      quizAttempt: { create },
+    };
     const client = {
       $transaction: vi.fn(
         async (callback: (value: typeof transaction) => unknown) =>

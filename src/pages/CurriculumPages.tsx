@@ -1,4 +1,7 @@
+import { route } from 'preact-router';
+
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -10,6 +13,7 @@ import {
   type LessonSummary,
   type StageValidation,
   useModuleQuery,
+  useModuleRestart,
   useProgramQuery,
   useProgramsQuery,
   useStageQuery,
@@ -402,6 +406,7 @@ export function ModulePage({
   programSlug: string;
 }) {
   const query = useModuleQuery(moduleSlug);
+  const restart = useModuleRestart(query.data?.module.id ?? '');
   const state = getQueryState(query.error, query.isPending);
 
   if (state) {
@@ -451,6 +456,77 @@ export function ModulePage({
           ))}
         </div>
       )}
+      {module.isPublished && module.stage.isPublished ? (
+        <Card class="space-y-4 border border-red-950/80">
+          <div>
+            <h2 class="font-semibold">Reprendre ce module depuis le début</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-300">
+              Cette action crée une nouvelle reprise. L’historique reste
+              conservé.
+            </p>
+          </div>
+          {restart.preview ? (
+            <div
+              class="space-y-4"
+              role="alertdialog"
+              aria-labelledby="restart-title"
+            >
+              <h3 class="font-semibold text-red-200" id="restart-title">
+                Confirmer la reprise du module
+              </h3>
+              <p class="text-sm leading-6 text-slate-300">
+                Seront remis à zéro : {restart.preview.reset.lessons} leçons,{' '}
+                {restart.preview.reset.tasks} tâches,{' '}
+                {restart.preview.reset.resources} ressources,{' '}
+                {restart.preview.reset.concepts} notions,{' '}
+                {restart.preview.reset.quizzes} quiz réussis et{' '}
+                {restart.preview.reset.exercises} exercices de la reprise
+                courante.
+              </p>
+              <p class="text-sm leading-6 text-slate-300">
+                Seront conservés : {restart.preview.preserved.notes} notes,{' '}
+                {restart.preview.preserved.quizAttempts} tentatives de quiz,{' '}
+                {restart.preview.preserved.conceptAttempts} tentatives de
+                mini-évaluation et{' '}
+                {restart.preview.preserved.exerciseSubmissions} soumissions
+                d’exercice.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <Button
+                  isLoading={restart.isPending}
+                  onClick={() => {
+                    void restart.restart().then((result) => {
+                      if (!result.firstLesson) return;
+                      void route(
+                        `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(result.firstLesson.slug)}`,
+                      );
+                    });
+                  }}
+                  variant="danger"
+                >
+                  Oui, recommencer ce module
+                </Button>
+                <Button onClick={restart.cancel} variant="secondary">
+                  Annuler
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Button
+              isLoading={restart.isPending}
+              onClick={() => void restart.loadPreview()}
+              variant="danger"
+            >
+              Recommencer ce module
+            </Button>
+          )}
+          {restart.error ? (
+            <p class="text-sm text-red-300" role="alert">
+              La reprise du module n’a pas pu être effectuée.
+            </p>
+          ) : null}
+        </Card>
+      ) : null}
     </section>
   );
 }

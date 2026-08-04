@@ -115,6 +115,32 @@ export interface ModuleDetail extends ModuleSummary {
   };
 }
 
+export interface ModuleRestartPreview {
+  currentRunSequence: number;
+  firstLesson: { slug: string; title: string } | null;
+  moduleId: string;
+  moduleTitle: string;
+  preserved: {
+    conceptAttempts: number;
+    exerciseSubmissions: number;
+    notes: number;
+    quizAttempts: number;
+  };
+  reset: {
+    concepts: number;
+    exercises: number;
+    lessons: number;
+    quizzes: number;
+    resources: number;
+    tasks: number;
+  };
+}
+
+export interface ModuleRestartResult extends ModuleRestartPreview {
+  idempotent: boolean;
+  runId: string;
+}
+
 export type ContentBlockType =
   | 'CALLOUT'
   | 'DEFINITION'
@@ -191,8 +217,10 @@ export interface LessonConceptSummary {
   title: string;
 }
 
-export interface LessonDetail
-  extends Omit<LessonSummary, 'activityCounts' | 'progress'> {
+export interface LessonDetail extends Omit<
+  LessonSummary,
+  'activityCounts' | 'progress'
+> {
   concepts: LessonConceptSummary[];
   contentBlocks: LessonContentBlock[];
   exercises: LessonExerciseSummary[];
@@ -301,6 +329,63 @@ export function useModuleQuery(moduleSlug: string) {
     ['module', moduleSlug, 'preview'],
     `/api/modules/${encodeURIComponent(moduleSlug)}?preview=true`,
   );
+}
+
+export function useModuleRestart(moduleId: string) {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+  const [preview, setPreview] = useState<ModuleRestartPreview>();
+  const [restartKey, setRestartKey] = useState<string>();
+
+  const loadPreview = useCallback(async () => {
+    setError(undefined);
+    setIsPending(true);
+    try {
+      const response = await apiRequest<{ preview: ModuleRestartPreview }>(
+        `/api/modules/${encodeURIComponent(moduleId)}/restart-preview`,
+      );
+      setPreview(response.preview);
+      setRestartKey(crypto.randomUUID());
+      return response.preview;
+    } catch (requestError) {
+      setError(requestError);
+      throw requestError;
+    } finally {
+      setIsPending(false);
+    }
+  }, [moduleId]);
+
+  const restart = useCallback(async () => {
+    if (!restartKey) throw new Error('Restart confirmation is required.');
+    setError(undefined);
+    setIsPending(true);
+    try {
+      const response = await apiRequest<{ result: ModuleRestartResult }>(
+        `/api/modules/${encodeURIComponent(moduleId)}/restart`,
+        {
+          body: JSON.stringify({ restartKey }),
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+        },
+      );
+      await queryClient.invalidateQueries();
+      return response.result;
+    } catch (requestError) {
+      setError(requestError);
+      throw requestError;
+    } finally {
+      setIsPending(false);
+    }
+  }, [moduleId, queryClient, restartKey]);
+
+  const cancel = useCallback(() => {
+    setError(undefined);
+    setPreview(undefined);
+    setRestartKey(undefined);
+  }, []);
+
+  return { cancel, error, isPending, loadPreview, preview, restart };
 }
 
 export function useLessonQuery(lessonSlug: string) {

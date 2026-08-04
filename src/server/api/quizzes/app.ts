@@ -18,6 +18,7 @@ import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
 } from '../_lib/progress-recalculation.js';
+import { ensureCurrentModuleRunForLesson } from '../_lib/module-runs.js';
 
 interface QuizQuestionReadModel {
   acceptedAnswers: string[];
@@ -51,6 +52,7 @@ interface QuizAttemptReadModel {
   passed: boolean;
   score: number;
   submittedAt: Date;
+  runSequence?: number;
 }
 
 interface RecordQuizAttemptInput {
@@ -170,6 +172,7 @@ function serializeAttempt(attempt: QuizAttemptReadModel) {
     passed: attempt.passed,
     score: attempt.score,
     submittedAt: attempt.submittedAt,
+    runSequence: attempt.runSequence ?? 1,
   };
 }
 
@@ -220,16 +223,28 @@ export function createPrismaRepository(
       };
     },
     async listAttempts(quizId, userId) {
-      return client.quizAttempt.findMany({
+      const attempts = await client.quizAttempt.findMany({
         where: { quizId, userId },
         orderBy: { submittedAt: 'desc' },
+        include: { moduleRun: { select: { sequence: true } } },
       });
+      return attempts.map(({ moduleRun, ...attempt }) => ({
+        ...attempt,
+        runSequence: moduleRun.sequence,
+      }));
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
+        const moduleRun = await ensureCurrentModuleRunForLesson(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+        );
         const attempt = await transaction.quizAttempt.create({
           data: {
             answers: input.answers,
+            moduleRunId: moduleRun.id,
             passed: input.passed,
             quizId: input.quizId,
             score: input.score,
@@ -248,7 +263,7 @@ export function createPrismaRepository(
 
         if (!progress) throw notFound();
 
-        return attempt;
+        return { ...attempt, runSequence: moduleRun.sequence };
       });
     },
   };

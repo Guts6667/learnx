@@ -1,11 +1,11 @@
 import { route } from 'preact-router';
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo } from 'preact/hooks';
 
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
+import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
@@ -214,47 +214,6 @@ function SecondaryActivity({ activity }: { activity: LessonActivity }) {
   );
 }
 
-function ActivitySummary({
-  activities,
-  current,
-  onNavigate,
-}: {
-  activities: LessonActivity[];
-  current: LessonActivity | null;
-  onNavigate?: () => void;
-}) {
-  return (
-    <nav aria-label="Sommaire de la leçon">
-      <ol class="space-y-2">
-        {activities.map((activity) => {
-          const key = activityKey(activity.kind, activity.id);
-          const isCurrent =
-            current?.id === activity.id && current.kind === activity.kind;
-          return (
-            <li key={key}>
-              <a
-                aria-current={isCurrent ? 'step' : undefined}
-                class={`flex min-h-11 items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm ${
-                  isCurrent
-                    ? 'bg-cyan-950 text-cyan-200'
-                    : 'text-slate-300 hover:bg-slate-900'
-                }`}
-                href={activity.href}
-                onClick={onNavigate}
-              >
-                <span>{activity.title}</span>
-                <span class="text-xs text-slate-400">
-                  {activity.status === 'COMPLETED' ? 'Terminé' : activity.label}
-                </span>
-              </a>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-}
-
 function sequenceInput(
   lesson: LessonDetail,
   progress: LessonProgressResponse | undefined,
@@ -295,8 +254,6 @@ function LessonWorkspace({
   const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
   const mutation = useLessonProgressMutation(lesson.id);
   const noteMutation = useNoteMutation();
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
-  const summaryTriggerRef = useRef<HTMLButtonElement>(null);
   const currentKey =
     new URLSearchParams(window.location.search).get('activity') ??
     readRememberedActivity(lesson.id);
@@ -413,18 +370,16 @@ function LessonWorkspace({
         </Card>
       )}
       <p class="leading-7 text-slate-300">{lesson.summary}</p>
-      <div class="flex flex-wrap gap-3 lg:hidden">
-        <Button
-          aria-expanded={isSummaryOpen}
-          aria-haspopup="dialog"
-          onClick={() => setIsSummaryOpen(true)}
-          elementRef={summaryTriggerRef}
-          variant="secondary"
-        >
-          Ouvrir le sommaire
-        </Button>
-      </div>
-      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      {current ? (
+        <PedagogicalNavigation
+          activities={sequence.activities}
+          currentKey={activityKey(current.kind, current.id)}
+          lessonHref={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
+          lessonTitle={lesson.title}
+          moduleTitle={lesson.module.title}
+        />
+      ) : null}
+      <div class="grid gap-6">
         <section class="space-y-4" aria-labelledby="current-activity-title">
           {current ? (
             <div
@@ -507,28 +462,7 @@ function LessonWorkspace({
             Prendre une note liée
           </Button>
         </section>
-        <aside class="hidden lg:block">
-          <div class="sticky top-4 rounded-2xl border border-slate-800 p-4">
-            <h2 class="mb-3 font-semibold">Sommaire</h2>
-            <ActivitySummary
-              activities={sequence.activities}
-              current={current}
-            />
-          </div>
-        </aside>
       </div>
-      <Drawer
-        isOpen={isSummaryOpen}
-        onDismiss={() => setIsSummaryOpen(false)}
-        returnFocusElement={summaryTriggerRef.current}
-        title="Sommaire de la leçon"
-      >
-        <ActivitySummary
-          activities={sequence.activities}
-          current={current}
-          onNavigate={() => setIsSummaryOpen(false)}
-        />
-      </Drawer>
     </article>
   );
 }

@@ -25,6 +25,7 @@ export interface AssessmentAttempt {
   passed: boolean;
   score: number;
   submittedAt: string;
+  runSequence?: number;
 }
 
 export interface SubmittedAssessmentAnswer {
@@ -114,6 +115,7 @@ function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
                     Score : {Math.round(attempt.score)} %
                   </p>
                   <p class="mt-1 text-sm text-slate-400">
+                    Reprise {attempt.runSequence ?? 1} ·{' '}
                     {formatAttemptDate(attempt.submittedAt)}
                   </p>
                 </div>
@@ -266,6 +268,7 @@ export function QuestionAssessmentExperience({
   error,
   isPending,
   labels,
+  nextHref,
   onSubmit,
 }: {
   assessment: QuestionAssessment;
@@ -274,6 +277,7 @@ export function QuestionAssessmentExperience({
   error: unknown;
   isPending: boolean;
   labels: ExperienceLabels;
+  nextHref?: string | null;
   onSubmit: (
     answers: SubmittedAssessmentAnswer[],
   ) => Promise<AssessmentAttemptResponse>;
@@ -359,6 +363,25 @@ export function QuestionAssessmentExperience({
           onRestart={restart}
           result={result}
         />
+        <nav
+          aria-label="Suite de la leçon"
+          class="flex flex-wrap gap-3 rounded-xl border border-slate-800 p-4"
+        >
+          <a
+            class="inline-flex min-h-11 items-center rounded-xl bg-slate-800 px-4 text-sm font-semibold text-slate-100"
+            href={backHref}
+          >
+            Retour à la leçon
+          </a>
+          {nextHref ? (
+            <a
+              class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 text-sm font-semibold text-slate-950"
+              href={nextHref}
+            >
+              Activité suivante
+            </a>
+          ) : null}
+        </nav>
         <AttemptHistory attempts={historyAttempts} />
       </div>
     );

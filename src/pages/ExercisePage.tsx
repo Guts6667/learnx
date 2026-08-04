@@ -2,6 +2,7 @@ import {
   LessonActivitySummary,
   LessonContextHeader,
   lessonHref,
+  nextLessonActivityHref,
 } from '@/components/learning/LessonContextHeader';
 import { useEffect } from 'preact/hooks';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -51,15 +52,11 @@ export function ExercisePage({
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
       <ExerciseCard
+        backHref={backHref}
         exercise={exercise}
         isLessonPublished={lesson.isPublished}
+        nextHref={nextLessonActivityHref(lesson, key)}
       />
-      <a
-        class="inline-flex min-h-11 items-center text-cyan-300 underline"
-        href={backHref}
-      >
-        Retour à la leçon
-      </a>
     </article>
   );
 }

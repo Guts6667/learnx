@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 import type { ComponentChildren } from 'preact';
 
 import { AppProviders } from '@/app/providers';
@@ -195,18 +195,16 @@ describe('CurriculumPages', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const programView = renderPage(<ProgramPage programSlug="bases" />);
-    expect(await screen.findByRole('link', { name: 'Prévisualiser' })).toHaveAttribute(
-      'href',
-      '/program/bases/lesson/demarrer',
-    );
+    expect(
+      await screen.findByRole('link', { name: 'Prévisualiser' }),
+    ).toHaveAttribute('href', '/program/bases/lesson/demarrer');
     expect(screen.getByText('10 min · 6 activités')).toBeInTheDocument();
     expect(
       screen.getByText('Prochaine activité : Reprendre l’activité en cours'),
     ).toBeInTheDocument();
-    expect(screen.getByRole('progressbar', { name: 'Progression — 25 %' })).toHaveAttribute(
-      'aria-valuenow',
-      '25',
-    );
+    expect(
+      screen.getByRole('progressbar', { name: 'Progression — 25 %' }),
+    ).toHaveAttribute('aria-valuenow', '25');
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
 
     programView.unmount();
@@ -236,5 +234,122 @@ describe('CurriculumPages', () => {
       await screen.findByRole('heading', { level: 3, name: 'Démarrer' }),
     ).toBeInTheDocument();
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
+  });
+
+  it('détaille et confirme la reprise d’un module publié', async () => {
+    const moduleId = '22222222-2222-4222-8222-222222222222';
+    const lesson = {
+      activityCounts: {
+        concepts: 1,
+        exercises: 1,
+        quizzes: 1,
+        resources: 1,
+        tasks: 1,
+      },
+      estimatedMinutes: 10,
+      id: 'lesson-1',
+      isLocked: false,
+      isPublished: true,
+      position: 1,
+      progress: { percent: 75, status: 'IN_PROGRESS' },
+      slug: 'demarrer',
+      summary: 'Les notions essentielles.',
+      title: 'Démarrer',
+    };
+    const preview = {
+      currentRunSequence: 1,
+      firstLesson: { slug: lesson.slug, title: lesson.title },
+      moduleId,
+      moduleTitle: 'Premiers pas',
+      preserved: {
+        conceptAttempts: 4,
+        exerciseSubmissions: 2,
+        notes: 3,
+        quizAttempts: 5,
+      },
+      reset: {
+        concepts: 3,
+        exercises: 1,
+        lessons: 2,
+        quizzes: 1,
+        resources: 4,
+        tasks: 3,
+      },
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/modules/premiers-pas?preview=true') {
+        return Promise.resolve(
+          jsonResponse({
+            module: {
+              description: 'La première leçon.',
+              estimatedMinutes: 20,
+              id: moduleId,
+              isPublished: true,
+              lessons: [lesson],
+              position: 1,
+              slug: 'premiers-pas',
+              stage: {
+                id: 'stage-1',
+                isPublished: true,
+                program: { id: 'program-1', slug: 'bases', title: 'Les bases' },
+                slug: 'introduction',
+                title: 'Introduction',
+              },
+              title: 'Premiers pas',
+            },
+          }),
+        );
+      }
+      if (path === `/api/modules/${moduleId}/restart-preview`) {
+        return Promise.resolve(jsonResponse({ preview }));
+      }
+      if (
+        path === `/api/modules/${moduleId}/restart` &&
+        init?.method === 'POST'
+      ) {
+        return Promise.resolve(
+          jsonResponse({
+            result: {
+              ...preview,
+              currentRunSequence: 2,
+              idempotent: false,
+              runId: 'run-2',
+            },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    vi.stubGlobal('crypto', {
+      randomUUID: () => '33333333-3333-4333-8333-333333333333',
+    });
+
+    renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Recommencer ce module' }),
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Confirmer la reprise du module',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/2 leçons, 3 tâches, 4 ressources/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/3 notes, 5 tentatives de quiz/),
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Oui, recommencer ce module' }),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/modules/${moduleId}/restart`,
+        expect.objectContaining({ method: 'POST' }),
+      ),
+    );
   });
 });

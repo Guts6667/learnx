@@ -21,6 +21,7 @@ import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
 } from '../_lib/progress-recalculation.js';
+import { ensureCurrentModuleRunForLesson } from '../_lib/module-runs.js';
 
 interface AssessmentQuestionReadModel {
   acceptedAnswers: string[];
@@ -59,6 +60,7 @@ interface AttemptReadModel {
   passed: boolean;
   score: number;
   submittedAt: Date;
+  runSequence?: number;
 }
 
 interface RecordedAttempt {
@@ -208,6 +210,7 @@ function serializeAttempt(attempt: AttemptReadModel) {
     passed: attempt.passed,
     score: attempt.score,
     submittedAt: attempt.submittedAt,
+    runSequence: attempt.runSequence ?? 1,
   };
 }
 
@@ -281,13 +284,24 @@ export function createPrismaRepository(
       };
     },
     async listAttempts(assessmentId, userId) {
-      return client.conceptAssessmentAttempt.findMany({
+      const attempts = await client.conceptAssessmentAttempt.findMany({
         where: { assessmentId, userId },
         orderBy: { submittedAt: 'desc' },
+        include: { moduleRun: { select: { sequence: true } } },
       });
+      return attempts.map(({ moduleRun, ...attempt }) => ({
+        ...attempt,
+        runSequence: moduleRun.sequence,
+      }));
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
+        const moduleRun = await ensureCurrentModuleRunForLesson(
+          transaction,
+          input.lessonId,
+          input.userId,
+          input.submittedAt,
+        );
         const currentProgress = await transaction.conceptProgress.findUnique({
           where: {
             userId_conceptId: {
@@ -314,6 +328,7 @@ export function createPrismaRepository(
             data: {
               answers: input.answers,
               assessmentId: input.assessmentId,
+              moduleRunId: moduleRun.id,
               passed: input.passed,
               score: input.score,
               submittedAt: input.submittedAt,
@@ -392,7 +407,10 @@ export function createPrismaRepository(
 
         if (!lessonProgress) throw notFound();
 
-        return { attempt, progress };
+        return {
+          attempt: { ...attempt, runSequence: moduleRun.sequence },
+          progress,
+        };
       });
     },
   };
