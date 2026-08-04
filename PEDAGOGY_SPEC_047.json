@@ -1,0 +1,423 @@
+{
+  "specId": "PEDAGOGY_SPEC_047",
+  "schemaVersion": "1.0.0",
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "psychologie-sociale",
+  "moduleSlug": "percevoir-influencer",
+  "lesson": {
+    "title": "Persuasion, conformité et obéissance",
+    "slug": "persuasion-conformite-obeissance",
+    "summary": "Distinguer les formes d’influence sociale, analyser leurs conditions et relire les expériences classiques sans transformer leurs résultats en lois universelles.",
+    "objectives": [
+      "Distinguer persuasion, conformité, complaisance et obéissance.",
+      "Analyser une tentative de persuasion à partir de la source, du message, du public et du contexte.",
+      "Expliquer comment normes, unanimité, autorité et possibilités de résistance modulent les conduites.",
+      "Évaluer les limites éthiques, méthodologiques et historiques d’une étude classique d’influence."
+    ],
+    "prerequisites": [
+      "Décrire une attitude sans en déduire un comportement certain.",
+      "Distinguer observation, interprétation et attribution."
+    ],
+    "estimatedMinutes": 210,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L’influence sociale recouvre plusieurs relations distinctes. La persuasion vise un changement d’attitude par une communication ; la conformité désigne un ajustement à une norme ou à un groupe ; la complaisance répond à une demande ; l’obéissance répond à un ordre émis dans une relation d’autorité. Ces catégories décrivent une situation et une conduite observée : elles ne révèlent ni une personnalité soumise ni une absence durable d’autonomie.",
+          "sourceKeys": ["openstax-influence-12-4", "wood-2000"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Une communication persuasive agit selon les propriétés de la source, du message, du public et du contexte de réception. Motivation, connaissances, attention, répétition et possibilité de vérifier modifient le traitement. Un changement déclaré peut être bref, ambivalent ou sans traduction comportementale. On évalue donc la taille, la durée et les conditions d’un effet au lieu de parler de technique qui « marche » sur tout le monde.",
+          "sourceKeys": ["wood-2000", "openstax-persuasion-12-3"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Pour auditer une campagne, séparer la thèse, les preuves et le dispositif social. Demander qui parle, avec quelle expertise et quels intérêts ; quel cadrage, quelles omissions et quel appel émotionnel sont employés ; qui peut comparer les sources, refuser ou différer sa réponse. La transparence, le consentement et l’absence de pression constituent des critères éthiques, pas seulement des variables d’efficacité.",
+          "sourceKeys": ["wood-2000", "openstax-persuasion-12-3"]
+        }
+      },
+      {
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "Dans la tâche perceptive d’Asch, certains participants ont repris une réponse majoritaire manifestement erronée, mais d’autres sont restés indépendants et la présence d’un allié réduisait la conformité. Le résultat montre l’importance de l’unanimité, de la réponse publique et de la situation expérimentale. Il ne mesure pas une tendance humaine fixe : échantillon, époque, tâche artificielle et interprétation des motifs en limitent la portée.",
+          "sourceKeys": ["asch-1956", "openstax-influence-12-4"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Les expériences de Milgram ont produit des conduites troublantes dans un dispositif d’autorité précis et sous tromperie. Leur enseignement n’est pas que chacun obéira nécessairement. Burger a proposé une réplication partielle arrêtée à 150 volts, avec sélection et protections accrues ; elle ne reproduit donc pas toute la procédure. D’autres analyses insistent sur l’identification au projet scientifique plutôt que sur une obéissance mécanique. Toute conclusion doit mentionner détresse, tromperie, demandes expérimentales, époque, échantillons, variantes et débats d’interprétation.",
+          "sourceKeys": ["burger-2009", "reicher-haslam-smith-2012", "openstax-influence-12-4"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Résister n’est pas un trait héroïque isolé. Les procédures peuvent rendre le désaccord plus praticable : fournir une information indépendante, permettre une réponse privée, donner du temps, rendre le refus explicite, protéger les dissidents et limiter l’autorité. Pour analyser une influence, documenter la norme, la dépendance, les alternatives, les coûts du refus et les variations entre conditions ; ne jamais utiliser une expérience classique pour excuser une pression ou une conduite dommageable.",
+          "sourceKeys": ["asch-1956", "burger-2009", "reicher-haslam-smith-2012"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-persuasion-12-3",
+        "title": "Psychology 2e — 12.3 Attitudes and Persuasion",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/12-3-attitudes-and-persuasion",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 12.3 Attitudes and Persuasion. OpenStax.",
+        "description": "Lire les facteurs de persuasion ; auditer un message sans confondre exposition, attitude et comportement.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "wood-2000",
+        "title": "Attitude Change: Persuasion and Social Influence",
+        "type": "article",
+        "url": "https://www.psych.purdue.edu/~willia55/392F-%2706/Wood-Influence.pdf",
+        "author": "Wendy Wood",
+        "citation": "Wood, W. (2000). Attitude change: Persuasion and social influence. Annual Review of Psychology, 51, 539–570. https://doi.org/10.1146/annurev.psych.51.1.539",
+        "description": "Lire la synthèse ; construire une grille source-message-public-contexte et noter les modérateurs.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 2
+      },
+      {
+        "key": "openstax-influence-12-4",
+        "title": "Psychology 2e — 12.4 Conformity, Compliance, and Obedience",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 12.4 Conformity, Compliance, and Obedience. OpenStax.",
+        "description": "Comparer les formes d’influence et relever les variations de situation présentées pour Asch et Milgram.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "asch-1956",
+        "title": "Studies of Independence and Conformity: I. A Minority of One Against a Unanimous Majority",
+        "type": "article",
+        "url": "https://psyc604.stasson.org/Asch1956.pdf",
+        "author": "Solomon E. Asch",
+        "citation": "Asch, S. E. (1956). Studies of independence and conformity: I. A minority of one against a unanimous majority. Psychological Monographs, 70(9), 1–70. https://doi.org/10.1037/h0093718",
+        "description": "Lire méthode, variantes et discussion ; relever conformité, indépendance et limites de généralisation.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 4
+      },
+      {
+        "key": "burger-2009",
+        "title": "Replicating Milgram: Would People Still Obey Today?",
+        "type": "article",
+        "url": "https://www.psychologywizard.net/uploads/2/6/6/4/26640833/burger_2009.pdf",
+        "author": "Jerry M. Burger",
+        "citation": "Burger, J. M. (2009). Replicating Milgram: Would people still obey today? American Psychologist, 64(1), 1–11. https://doi.org/10.1037/a0010932",
+        "description": "Comparer la procédure à celle de Milgram ; expliquer l’arrêt à 150 volts et les protections éthiques.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "reicher-haslam-smith-2012",
+        "title": "Working Toward the Experimenter: Reconceptualizing Obedience Within the Milgram Paradigm as Identification-Based Followership",
+        "type": "article",
+        "url": "https://journals.sagepub.com/doi/10.1177/1745691612448482",
+        "author": "Stephen D. Reicher, S. Alexander Haslam et Joanne R. Smith",
+        "citation": "Reicher, S. D., Haslam, S. A., & Smith, J. R. (2012). Working toward the experimenter: Reconceptualizing obedience within the Milgram paradigm as identification-based followership. Perspectives on Psychological Science, 7(4), 315–324. https://doi.org/10.1177/1745691612448482",
+        "description": "Lire le résumé de la réinterprétation ; comparer obéissance aveugle et identification au projet de l’autorité.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Persuasion, traitement et résistance",
+        "slug": "persuasion-traitement-resistance",
+        "description": "L’effet d’un message dépend de la source, du contenu, du public, du contexte et des possibilités de vérification ou de refus.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-persuasion-12-3", "wood-2000"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Persuasion", "questionCount": 5}
+      },
+      {
+        "title": "Conformité normative et informationnelle",
+        "slug": "conformite-normative-informationnelle",
+        "description": "Une conduite peut suivre le groupe pour préserver une relation ou parce que celui-ci paraît fournir une information pertinente.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-influence-12-4", "asch-1956"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Conformité", "questionCount": 5}
+      },
+      {
+        "title": "Obéissance, autorité et résistance",
+        "slug": "obeissance-autorite-resistance",
+        "description": "L’obéissance varie avec la relation d’autorité, le dispositif, l’identification, les alternatives et les protections offertes au refus.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-influence-12-4", "burger-2009", "reicher-haslam-smith-2012"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Obéissance", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Auditer un message persuasif",
+        "description": "Choisir un message public, distinguer thèse, preuves et cadrage, puis analyser source, public, contexte, possibilités de vérification et enjeux éthiques.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Reconstruire les conditions d’Asch",
+        "description": "Créer un tableau comparant majorité unanime, présence d’un allié et réponse publique ; séparer résultats, interprétations et limites de portée.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Comparer Milgram et Burger",
+        "description": "Comparer question, procédure, arrêt, échantillon et protections ; proposer un protocole contemporain non trompeur pour étudier le refus d’un ordre bénin.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr-FR",
+    "audience": "Adulte débutant en psychologie",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-047-OPENSTAX-12-3",
+        "type": "textbook_chapter",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 12.3 Attitudes and Persuasion",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/12-3-attitudes-and-persuasion",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Introduction structurée aux facteurs de persuasion."
+      },
+      {
+        "id": "REF-047-WOOD",
+        "type": "review_article",
+        "authors": ["Wood, W."],
+        "organization": null,
+        "title": "Attitude Change: Persuasion and Social Influence",
+        "year": 2000,
+        "edition": null,
+        "publication": "Annual Review of Psychology, 51, 539–570",
+        "doi": "10.1146/annurev.psych.51.1.539",
+        "url": "https://www.psych.purdue.edu/~willia55/392F-%2706/Wood-Influence.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Consultation pédagogique",
+        "status": "verified",
+        "notes": "Revue des mécanismes et modérateurs de persuasion et d’influence."
+      },
+      {
+        "id": "REF-047-OPENSTAX-12-4",
+        "type": "textbook_chapter",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 12.4 Conformity, Compliance, and Obedience",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "Psychology 2e",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/12-4-conformity-compliance-and-obedience",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Synthèse introductive des formes d’influence et des études classiques."
+      },
+      {
+        "id": "REF-047-ASCH",
+        "type": "primary_article",
+        "authors": ["Asch, S. E."],
+        "organization": null,
+        "title": "Studies of Independence and Conformity: I. A Minority of One Against a Unanimous Majority",
+        "year": 1956,
+        "edition": null,
+        "publication": "Psychological Monographs, 70(9), 1–70",
+        "doi": "10.1037/h0093718",
+        "url": "https://psyc604.stasson.org/Asch1956.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Consultation pédagogique",
+        "status": "verified",
+        "notes": "Étude classique à contextualiser par tâche, échantillon, variantes et époque."
+      },
+      {
+        "id": "REF-047-BURGER",
+        "type": "primary_article",
+        "authors": ["Burger, J. M."],
+        "organization": null,
+        "title": "Replicating Milgram: Would People Still Obey Today?",
+        "year": 2009,
+        "edition": null,
+        "publication": "American Psychologist, 64(1), 1–11",
+        "doi": "10.1037/a0010932",
+        "url": "https://www.psychologywizard.net/uploads/2/6/6/4/26640833/burger_2009.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Consultation pédagogique",
+        "status": "verified",
+        "notes": "Réplication partielle avec arrêt à 150 volts et protections renforcées."
+      },
+      {
+        "id": "REF-047-REICHER",
+        "type": "review_article",
+        "authors": ["Reicher, S. D.", "Haslam, S. A.", "Smith, J. R."],
+        "organization": null,
+        "title": "Working Toward the Experimenter: Reconceptualizing Obedience Within the Milgram Paradigm as Identification-Based Followership",
+        "year": 2012,
+        "edition": null,
+        "publication": "Perspectives on Psychological Science, 7(4), 315–324",
+        "doi": "10.1177/1745691612448482",
+        "url": "https://journals.sagepub.com/doi/10.1177/1745691612448482",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Résumé public ; texte intégral restreint",
+        "status": "verified",
+        "notes": "Réinterprétation en termes d’identification au projet de l’autorité."
+      }
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [
+        {"referenceId": "REF-047-OPENSTAX-12-4", "locator": "conformity, compliance and obedience", "supports": "Distinction introductive des formes d’influence."},
+        {"referenceId": "REF-047-WOOD", "locator": "social influence overview", "supports": "Influence comme relation contextualisée."}
+      ], "confidence": "high", "confidenceRationale": "Manuel et revue convergents.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [
+        {"referenceId": "REF-047-WOOD", "locator": "message processing and moderators", "supports": "Facteurs et modérateurs de la persuasion."},
+        {"referenceId": "REF-047-OPENSTAX-12-3", "locator": "persuasion model", "supports": "Rôle de la source, du message et du public."}
+      ], "confidence": "high", "confidenceRationale": "Revue de synthèse et manuel.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [
+        {"referenceId": "REF-047-WOOD", "locator": "communication and audience factors", "supports": "Grille d’audit d’une communication persuasive."},
+        {"referenceId": "REF-047-OPENSTAX-12-3", "locator": "routes and persuasion factors", "supports": "Facteurs de réception et de traitement."}
+      ], "confidence": "moderate", "confidenceRationale": "La grille éthique est une application pédagogique des modèles.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [
+        {"referenceId": "REF-047-ASCH", "locator": "experimental variations and discussion", "supports": "Conformité, indépendance et rôle de l’unanimité."},
+        {"referenceId": "REF-047-OPENSTAX-12-4", "locator": "Asch effect", "supports": "Présentation pédagogique contextualisée."}
+      ], "confidence": "high", "confidenceRationale": "Article primaire complété par un manuel.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [
+        {"referenceId": "REF-047-BURGER", "locator": "150-volt procedure and safeguards", "supports": "Portée et limites de la réplication partielle."},
+        {"referenceId": "REF-047-REICHER", "locator": "engaged followership account", "supports": "Alternative à l’obéissance mécanique."},
+        {"referenceId": "REF-047-OPENSTAX-12-4", "locator": "Milgram study and variations", "supports": "Contexte introductif de l’expérience classique."}
+      ], "confidence": "moderate", "confidenceRationale": "Résultats établis mais portée et interprétation débattues.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [
+        {"referenceId": "REF-047-ASCH", "locator": "partner and independence variations", "supports": "Effet des conditions permettant le désaccord."},
+        {"referenceId": "REF-047-BURGER", "locator": "procedural safeguards", "supports": "Protection des participants et limites de procédure."},
+        {"referenceId": "REF-047-REICHER", "locator": "identification and refusal", "supports": "Rôle du sens donné à l’autorité et à son projet."}
+      ], "confidence": "moderate", "confidenceRationale": "Recommandations procédurales déduites de plusieurs résultats contextualisés.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "openstax-persuasion-12-3", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-047-OPENSTAX-12-3"], "pedagogicalRationale": "Introduction lisible aux facteurs de persuasion.", "learnerInstructions": "Lire les facteurs de persuasion ; auditer un message sans confondre exposition, attitude et comportement.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "wood-2000", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-047-WOOD"], "pedagogicalRationale": "Synthèse scientifique des mécanismes et modérateurs.", "learnerInstructions": "Lire la synthèse ; construire une grille source-message-public-contexte et noter les modérateurs.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte en anglais.", "alternativeResourceKey": null, "notes": "Copie institutionnelle ouverte contrôlée."},
+      {"resourceKey": "openstax-influence-12-4", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-047-OPENSTAX-12-4"], "pedagogicalRationale": "Compare les formes d’influence et introduit les études classiques.", "learnerInstructions": "Comparer les formes d’influence et relever les variations de situation présentées pour Asch et Milgram.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "HTML structuré.", "alternativeResourceKey": null, "notes": "Accès ouvert contrôlé."},
+      {"resourceKey": "asch-1956", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-047-ASCH"], "pedagogicalRationale": "Permet de lire la méthode et les variations dans la source primaire.", "learnerInstructions": "Lire méthode, variantes et discussion ; relever conformité, indépendance et limites de généralisation.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF numérisé lisible ; anglais.", "alternativeResourceKey": "openstax-influence-12-4", "notes": "Accès ouvert contrôlé ; manuel disponible en alternative."},
+      {"resourceKey": "burger-2009", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-047-BURGER"], "pedagogicalRationale": "Rend visibles les compromis d’une réplication éthiquement encadrée.", "learnerInstructions": "Comparer la procédure à celle de Milgram ; expliquer l’arrêt à 150 volts et les protections éthiques.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF texte en anglais.", "alternativeResourceKey": "openstax-influence-12-4", "notes": "Copie publique contrôlée."},
+      {"resourceKey": "reicher-haslam-smith-2012", "checkedAt": "2026-08-04", "urlStatus": "restricted", "accessType": "paid", "language": "en", "referenceIds": ["REF-047-REICHER"], "pedagogicalRationale": "Évite une lecture unique et mécaniste de Milgram.", "learnerInstructions": "Lire le résumé de la réinterprétation ; comparer obéissance aveugle et identification au projet de l’autorité.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Résumé HTML structuré en anglais ; texte intégral restreint.", "alternativeResourceKey": "openstax-influence-12-4", "notes": "Page éditeur contrôlée ; ressource facultative en raison de l’accès intégral restreint."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "persuasion-traitement-resistance",
+        "assessmentTitle": "Mini-évaluation — Persuasion",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quelle analyse d’un message est la plus complète ?", "explanation": "Une persuasion dépend de la source, du message, du public et du contexte.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Source, message, public et contexte", "isCorrect": true, "position": 1}, {"label": "Le slogan seulement", "isCorrect": false, "position": 2}, {"label": "La personnalité du public seulement", "isCorrect": false, "position": 3}, {"label": "Le nombre de mots seulement", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une technique persuasive efficace produit toujours le même comportement.", "explanation": "Effet, durée et traduction comportementale dépendent des conditions.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles conditions peuvent soutenir un examen critique ?", "explanation": "Temps, sources comparables et possibilité de différer réduisent la pression immédiate.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Du temps pour vérifier", "isCorrect": true, "position": 1}, {"label": "Des sources comparables", "isCorrect": true, "position": 2}, {"label": "La possibilité de différer", "isCorrect": true, "position": 3}, {"label": "Une urgence artificielle", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel critère est éthique plutôt que seulement efficace ?", "explanation": "La possibilité réelle de refuser protège l’autonomie.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Pouvoir refuser sans sanction", "isCorrect": true, "position": 1}, {"label": "Multiplier les répétitions", "isCorrect": false, "position": 2}, {"label": "Cacher les intérêts", "isCorrect": false, "position": 3}, {"label": "Empêcher la comparaison", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne une communication visant à modifier une attitude ?", "explanation": "Il s’agit de la persuasion.", "acceptedAnswers": ["persuasion"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "conformite-normative-informationnelle",
+        "assessmentTitle": "Mini-évaluation — Conformité",
+        "questions": [
+          {"type": "single_choice", "prompt": "La conformité normative vise surtout à…", "explanation": "Elle répond au souci d’acceptation ou d’évitement du rejet.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Préserver l’acceptation sociale", "isCorrect": true, "position": 1}, {"label": "Obtenir une information exacte", "isCorrect": false, "position": 2}, {"label": "Exécuter un ordre formel", "isCorrect": false, "position": 3}, {"label": "Modifier une loi", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Dans les études d’Asch, tous les participants se conformaient toujours.", "explanation": "L’indépendance coexistait avec la conformité et variait selon les conditions.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quelles limites faut-il rappeler à propos d’Asch ?", "explanation": "Tâche, échantillon et époque limitent la généralisation.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Une tâche artificielle", "isCorrect": true, "position": 1}, {"label": "Un échantillon situé", "isCorrect": true, "position": 2}, {"label": "Une époque donnée", "isCorrect": true, "position": 3}, {"label": "Une loi universelle démontrée", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quelle modification réduisait typiquement la conformité dans la tâche d’Asch ?", "explanation": "Un allié rompait l’unanimité de la majorité.", "acceptedAnswers": [], "position": 4, "options": [{"label": "La présence d’un allié", "isCorrect": true, "position": 1}, {"label": "Une majorité unanime", "isCorrect": false, "position": 2}, {"label": "Une réponse plus publique", "isCorrect": false, "position": 3}, {"label": "La suppression de toute alternative", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel terme désigne l’ajustement à une norme de groupe ?", "explanation": "Il s’agit de la conformité.", "acceptedAnswers": ["conformité", "conformite"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "obeissance-autorite-resistance",
+        "assessmentTitle": "Mini-évaluation — Obéissance",
+        "questions": [
+          {"type": "single_choice", "prompt": "Qu’est-ce qui distingue l’obéissance de la conformité ?", "explanation": "L’obéissance implique un ordre dans une relation d’autorité.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Un ordre d’une autorité", "isCorrect": true, "position": 1}, {"label": "Toute discussion", "isCorrect": false, "position": 2}, {"label": "Toute ressemblance", "isCorrect": false, "position": 3}, {"label": "Toute persuasion", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Burger a reproduit intégralement la procédure de Milgram.", "explanation": "La procédure s’arrêtait à 150 volts et comportait des protections renforcées.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que doit inclure une lecture critique de Milgram ?", "explanation": "Éthique, variations et interprétations concurrentes sont indispensables.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Les enjeux de tromperie et de détresse", "isCorrect": true, "position": 1}, {"label": "Les variations de situation", "isCorrect": true, "position": 2}, {"label": "Les interprétations concurrentes", "isCorrect": true, "position": 3}, {"label": "Une nature humaine immuable", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quelle conclusion est la plus prudente ?", "explanation": "Les conduites observées dépendent d’un dispositif et ne sont pas inévitables.", "acceptedAnswers": [], "position": 4, "options": [{"label": "L’autorité peut influencer selon les conditions", "isCorrect": true, "position": 1}, {"label": "Tout le monde obéit toujours", "isCorrect": false, "position": 2}, {"label": "Personne ne peut résister", "isCorrect": false, "position": 3}, {"label": "L’éthique ne compte pas", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "À quel niveau Burger arrêtait-il sa procédure partielle ?", "explanation": "La procédure était arrêtée à 150 volts.", "acceptedAnswers": ["150 volts", "150 V", "150"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie sociale, influence et éthique de la recherche requise.",
+        "L’étape psychologie-sociale et le module percevoir-influencer sont planifiés mais absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "Persuasion, conformité et obéissance sont contextualisées et jamais présentées comme inévitables.",
+        "Les études classiques incluent limites éthiques, méthodologiques, historiques et interprétatives.",
+        "Toutes les ressources obligatoires sont ouvertes ; l’article de réinterprétation de Reicher et collaborateurs est facultatif et son texte intégral est restreint."
+      ]
+    },
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_and_research_ethics"}
+    ]
+  }
+}

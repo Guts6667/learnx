@@ -1,0 +1,189 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_010",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "psychologie-sociale",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Comprendre les conduites sociales",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyser le dossier de terrain fictif « Maison des Passerelles », documenté par des observations, messages, questionnaires, comptes rendus et données de procédure, afin de distinguer descriptions, mécanismes sociaux possibles, qualité des preuves et implications éthiques sans profiler les personnes ni transformer les études classiques en lois universelles.",
+    "instructions": [
+      "Construire un registre des preuves distinguant pour chaque document : observation, mesure, population, temporalité, interprétation, explication concurrente et information manquante. Classer la solidité de chaque affirmation sans présenter le dossier fictif comme une recherche réelle ni inventer de données.",
+      "Analyser la faible participation initiale et les jugements sur les habitants en séparant cognition sociale, schémas, attribution dispositionnelle et contraintes situationnelles. Distinguer attitudes, normes, contrôle, intentions et comportements, puis préciser pourquoi le questionnaire général ne prédit pas chaque présence.",
+      "Auditer la campagne persuasive selon source, message, public, contexte, traitement, vérifiabilité et possibilité de refus. Comparer au moins deux mécanismes ou effets plausibles et proposer une évaluation qui ne confonde pas exposition, changement d'attitude, intention et conduite.",
+      "Distinguer conformité normative, influence informationnelle, complaisance et obéissance dans la réunion et les consignes hiérarchiques. Utiliser Asch, Milgram, Burger et leurs réinterprétations avec leurs tâches, échantillons, variantes, époque, limites éthiques et méthodologiques ; ne déduire aucun taux universel d'obéissance.",
+      "Auditer la décision du comité : cartographier tâche, expertise, informations partagées ou uniques, ordre de parole, préférences initiales, statut, règle d'agrégation et critère de succès. Évaluer groupthink et polarisation comme hypothèses conditionnelles, puis concevoir une procédure indépendante, contradictoire, traçable et révisable.",
+      "Cartographier les identités sociales rendues saillantes dans au moins trois contextes et leurs recouvrements possibles. Examiner catégorisation, endogroupe, exogroupe et favoritisme sans essentialiser les quartiers, sans attribuer automatiquement hostilité ou conduite, et sans généraliser les groupes minimaux à tout conflit réel.",
+      "Séparer dans le dossier stéréotypes, préjugés et discriminations en indiquant pour chacun la donnée requise. Auditer l'usage des mesures explicites et implicites, leur incertitude et leur portée, puis supprimer tout diagnostic moral ou décision individuelle fondée sur un score implicite.",
+      "Réaliser un audit multiniveau de la procédure d'accès : interactions, règles institutionnelles, infrastructures et histoire. Tester plusieurs mécanismes expliquant les écarts observés, documenter sélection et dénominateurs, puis proposer des indicateurs d'effets différentiels, recours et corrections sans réduire la discrimination aux intentions individuelles.",
+      "Analyser la collecte et la distribution des contributions comme un problème d'interdépendance : coûts, bénéfices, information, répétition, réciprocité, réputation, réseau, sanctions et contestation. Décrire les actes d'aide sans prétendre connaître leurs motifs et situer les normes de coopération sans classer les groupes ou cultures moralement.",
+      "Concevoir une réponse au conflit et une coopération intergroupe comportant objectif commun concret, pouvoir et ressources partagés, soutien institutionnel, sécurité, consentement, retrait, médiation et recours. Évaluer participation, équité, comportements, effets durables et coûts déplacés ; ne pas prescrire un contact forcé ni promettre qu'il réduira les préjugés.",
+      "Réécrire les onze conclusions du rapport en formulations proportionnées et proposer un plan d'action avec responsables, indicateurs, risques et seuils de révision. Citer au point d'usage au moins huit ressources, dont au moins une de chacune des six leçons, et signaler les limites éthiques de toute collecte, persuasion, intervention ou généralisation."
+    ],
+    "case": "Dossier entièrement fictif — Maison des Passerelles. La ville fictive de Valmorne prévoit d'ouvrir un lieu associatif partagé entre deux quartiers voisins, les Rives et les Hauteurs. Le site doit accueillir aide administrative, ateliers, réunions et distribution de matériel lors des épisodes de chaleur. Le dossier comporte des comptes rendus de réunions, des messages de campagne, un questionnaire anonyme, des données de participation et une carte d'accès. Ces documents sont simulés pour l'évaluation : aucune ville, personne, association ou donnée n'est réelle. Avant la première réunion, 412 habitants répondent en ligne à une question générale : « Êtes-vous favorable aux projets qui rapprochent les quartiers ? » Soixante-dix-huit pour cent répondent favorablement et 64 % déclarent avoir l'intention de participer à au moins une activité. Trois mois plus tard, 73 personnes ont participé. Le rapport affirme que les absents « n'aiment pas coopérer » et que les répondants ont menti. Il ne relie pas les réponses individuelles aux présences et ne mesure ni horaires de travail, ni garde d'enfants, ni mobilité, ni accessibilité numérique, ni connaissance des activités. Deux réunions se tenaient à 18 heures aux Hauteurs, à quarante minutes de bus de certaines zones des Rives ; aucune interprétation ni garde n'était proposée. Une chargée de projet, Léa, arrive en retard à une séance après la suppression d'une ligne de bus. Le président du comité écrit qu'elle manque de sérieux et que ce trait explique ses réserves sur le site. Aucun élément n'est fourni sur ses conduites antérieures ou les contraintes du trajet. Pour promouvoir le projet, une agence diffuse une vidéo montrant le maire, une infirmière et des enfants devant des images de canicule. Le slogan annonce : « Les bons voisins disent oui ». Les habitants ne peuvent consulter ni budget, ni critères de choix du site depuis la vidéo. L'agence compare le nombre de clics de la semaine suivante à celui du mois précédent et conclut que l'autorité du maire et l'émotion ont causé un changement durable d'attitude. Public visé, exposition, autres annonces, attitudes après diffusion et comportements ne sont pas mesurés. Le comité de neuf personnes doit choisir entre le site A aux Hauteurs et le site B près de la frontière des quartiers. Avant la réunion, chaque membre reçoit des informations communes sur le loyer et la surface. Trois membres disposent séparément d'informations uniques : le site A nécessite des escaliers, sa desserte du soir sera réduite et son bail interdit le stockage du matériel d'urgence. Le président annonce d'emblée préférer A et demande un vote public. Les responsables les plus anciens parlent en premier ; deux membres juniors renoncent à présenter leurs documents. Une habitante vote A après avoir vu huit mains levées et dit ensuite qu'elle croyait que les autres connaissaient mieux le dossier et qu'elle ne voulait pas ralentir le groupe. Le rapport traite ce seul vote comme preuve d'une conformité irrationnelle. Une agente reçoit ensuite de sa directrice l'ordre de retirer du compte rendu les objections sur l'accessibilité « pour préserver l'unité ». Elle demande une confirmation écrite et refuse finalement. Le rapport invoque Milgram pour annoncer que « 65 % des humains obéissent aveuglément à toute autorité » et présente son refus comme statistiquement impossible. Il ne distingue ni dispositif, ni identification au projet, ni alternatives, ni protections, ni contexte historique. Il propose de reproduire l'expérience complète auprès des agents, avec tromperie et stress, sans justification éthique. Le site A est adopté à huit voix contre une. Aucun jugement indépendant n'a été recueilli avant discussion, les indices uniques ne figurent pas dans le tableau final et la décision n'a pas de seuil de révision. Après une critique publique, le président diagnostique un groupthink certain parce que le groupe était cohésif. Une note affirme aussi que la discussion a polarisé les opinions, mais aucune position avant–après ni dispersion n'a été mesurée. Une consultation ouverte ultérieure affiche en temps réel la moyenne des réponses précédentes ; les estimations se rapprochent et la confiance déclarée augmente, tandis que l'exactitude par rapport aux coûts réels reste inconnue. Le rapport appelle cela « la sagesse garantie des foules ». Pendant le débat, les étiquettes « gens des Rives » et « gens des Hauteurs » deviennent fréquentes. Samir est à la fois habitant des Rives, commerçant aux Hauteurs, parent d'élève et bénévole du projet ; selon la réunion, l'une de ces appartenances devient plus pertinente que les autres. Le rapport l'assigne pourtant définitivement au groupe des Rives. Il cite les expériences de groupes minimaux pour conclure que toute catégorisation produit fatalement hostilité et conflit. Or certains bénévoles privilégient d'abord leur réseau de quartier sans dénigrer l'autre, tandis que d'autres forment des coalitions autour de l'accessibilité indépendamment du lieu de résidence. Des messages publics qualifient les habitants des Rives d'« assistés » et ceux des Hauteurs d'« égoïstes ». Un membre déclare ne pas vouloir travailler avec « ces gens-là ». Séparément, la procédure d'inscription exige une adresse stable, un formulaire uniquement en français, une connexion internet et une disponibilité en journée. Sur 180 demandes, 72 viennent des Hauteurs et 108 des Rives ; le dossier indique seulement 54 admissions aux Hauteurs et 43 aux Rives, sans décrire les demandes incomplètes, critères appliqués, profils comparables, décisions par étape ou recours. Le rapport mélange les messages, les attitudes et les décisions sous le mot « préjugé », attribue tout écart à quelques personnes mal intentionnées et exclut les règles ou infrastructures de l'analyse. Douze agents municipaux passent une fois une tâche d'association implicite sur un ordinateur partagé. Le prestataire transforme chaque score relatif en pourcentage de racisme, nomme trois agents et conseille de les exclure du projet. Il ne fournit ni fidélité, ni incertitude, ni validité pour cette décision, ni consentement, ni comparaison pertinente. Il prétend également qu'une tâche implicite prédit avec certitude chaque traitement futur. Pour financer le matériel, les associations reçoivent des jetons fictifs et peuvent contribuer à une caisse commune. Les contributions et le nom des participants sont affichés publiquement. Les associations disposant du budget le plus faible contribuent moins ; le comité les qualifie de non coopératives et propose une sanction identique pour tous. Il ne documente pas les ressources, les attentes de réciprocité, la confiance, le coût relatif, les réseaux ou la possibilité de contester la règle. Une bénévole apporte spontanément de l'eau à une réunion. Le rapport affirme que ce geste prouve un altruisme pur, sans considérer empathie, norme, réciprocité, réputation ou objectif commun. Un autre document compare ce jeu à des résultats obtenus dans plusieurs sociétés et classe les cultures de la plus généreuse à la moins morale, sans examiner les significations locales du partage ni les limites de la tâche. Pour résoudre le conflit, la mairie propose une « journée de contact obligatoire » réunissant les deux quartiers dans une compétition sportive. Les organisateurs ne prévoient ni objectif commun, ni pouvoir partagé, ni protection contre les insultes, ni retrait, ni médiation ou recours. Les associations des Rives doivent fournir les bénévoles, tandis que la mairie conserve budget et décisions. Le rapport promet que le simple contact supprimera les préjugés en une journée. Une alternative soumise au comité propose un projet commun d'accessibilité : équipes volontaires mixtes, diagnostic partagé, budget codécidé, soutien institutionnel, médiation indépendante, possibilité de retrait, journal des incidents et suivi des accès pendant six mois. Elle prévoit aussi de distinguer hausse de coopération interne, baisse d'hostilité et égalité réelle d'accès. Les onze conclusions à auditer sont : « les absents sont naturellement non coopératifs ; une attitude favorable garantit la présence ; la vidéo du maire a causé un changement durable ; Asch prouve que toute majorité rend irrationnel ; 65 % des humains obéissent aveuglément ; la cohésion prouve le groupthink et toute discussion polarise ; toute identité de groupe produit fatalement l'hostilité ; stéréotype, préjugé et discrimination sont la même chose ; le score implicite diagnostique et prédit chaque agent ; les écarts d'admission ne peuvent venir que d'intentions individuelles ; le contact obligatoire supprimera les préjugés et l'aide observée prouve l'altruisme pur ». Le dossier permet l'analyse d'une situation sociale de terrain documentée par des traces simulées, mais aucune conclusion sur une personne ou une population réelle.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier structuré de 1 500 à 1 900 mots comprenant un registre des preuves, une carte cognition–attribution–attitude–conduite, un audit de l'influence et des études classiques, une reconstruction de la décision collective, une carte des identités, un audit discrimination–équité, un modèle de coopération, une intervention intergroupe et les onze conclusions révisées.",
+    "conceptSlugs": [
+      "cognition-sociale-schemas-biais",
+      "attribution-personne-situation",
+      "attitudes-intentions-comportements",
+      "persuasion-traitement-resistance",
+      "conformite-normative-informationnelle",
+      "obeissance-autorite-resistance",
+      "gains-pertes-information-partagee",
+      "groupthink-polarisation-limites",
+      "procedures-decision-collective",
+      "identite-sociale-categorisation-contextuelle",
+      "endogroupe-exogroupe-favoritisme",
+      "identites-multiples-relations-intergroupes",
+      "stereotype-prejuge-discrimination",
+      "mesures-explicites-implicites-limites",
+      "discrimination-niveaux-structurels",
+      "cooperation-dilemmes-interdependance",
+      "prosocialite-motifs-normes-culture",
+      "conflit-contact-cooperation-intergroupes"
+    ],
+    "rubric": [
+      {
+        "criterion": "Preuves, cognition sociale, attribution et attitudes",
+        "weight": 15,
+        "requirements": [
+          "Le registre distingue traces, mesures, populations, temporalité, interprétations et données manquantes sans inventer de résultats.",
+          "Les jugements sur participation et retard sont reformulés avec hypothèses dispositionnelles et situationnelles, critères et alternatives.",
+          "Attitude, norme, contrôle, intention et comportement sont séparés ; la discordance agrégée ne prouve ni mensonge ni trait."
+        ]
+      },
+      {
+        "criterion": "Persuasion, conformité, obéissance et études classiques",
+        "weight": 15,
+        "requirements": [
+          "Source, message, public, contexte, traitement, exposition, vérification et refus structurent l'audit causal de la campagne.",
+          "Conformité normative, informationnelle, complaisance et obéissance sont distinguées dans les épisodes correspondants.",
+          "Asch, Milgram et Burger sont interprétés avec tâches, variantes, échantillons, contexte, réinterprétations et limites éthiques, sans taux humain universel."
+        ]
+      },
+      {
+        "criterion": "Décision collective et procédure",
+        "weight": 15,
+        "requirements": [
+          "Tâche, expertise, indices partagés ou uniques, préférences, statuts, ordre de parole, agrégation et critère de succès sont cartographiés.",
+          "Groupthink, polarisation et sagesse des foules restent des hypothèses conditionnelles testées par les données pertinentes, dont mesures avant–après, diversité et exactitude.",
+          "La procédure proposée protège indépendance initiale, information unique, désaccord argumenté, revue externe, journal de décision et révision."
+        ]
+      },
+      {
+        "criterion": "Identités et relations intergroupes",
+        "weight": 10,
+        "requirements": [
+          "Les appartenances de Samir et d'autres acteurs sont multiples, recouvrantes et rendues saillantes selon les contextes, non essentielles.",
+          "Endogroupe, exogroupe et favoritisme sont distingués de l'hostilité et reliés à des observations précises.",
+          "Les groupes minimaux éclairent une possibilité sous conditions sans expliquer exhaustivement ou fatalement le conflit de terrain."
+        ]
+      },
+      {
+        "criterion": "Stéréotypes, mesures et discrimination multiniveau",
+        "weight": 15,
+        "requirements": [
+          "Stéréotype, préjugé et discrimination sont classés selon croyance, attitude et traitement, sans chaîne automatique.",
+          "La tâche implicite est décrite comme indicateur relatif et incertain ; tout diagnostic moral, profil nominatif ou usage individuel à fort enjeu est rejeté.",
+          "Interactions, règles institutionnelles, infrastructures et histoire sont examinées avec dénominateurs, sélection, mécanismes concurrents, effets différentiels et recours."
+        ]
+      },
+      {
+        "criterion": "Coopération, prosocialité, conflit et contact",
+        "weight": 15,
+        "requirements": [
+          "Le dilemme de contribution est analysé selon ressources, coûts relatifs, attentes, répétition, réciprocité, réputation, réseau, sanction et contestation.",
+          "L'aide observée est séparée de ses motifs possibles et les comparaisons culturelles restent situées, sans classement moral.",
+          "L'intervention intergroupe articule objectif commun, pouvoir, ressources, soutien, sécurité, consentement, retrait, médiation, recours et indicateurs durables sans contact forcé."
+        ]
+      },
+      {
+        "criterion": "Éthique, causalité et plan d'action",
+        "weight": 10,
+        "requirements": [
+          "Les inférences causales sont bornées par comparaison, temporalité, confusion, sélection, qualité des mesures et alternatives.",
+          "Collecte, persuasion, expérience, publication nominative et intervention sont examinées selon nécessité, consentement, risque, confidentialité, retrait et réparation.",
+          "Le plan attribue responsabilités, ressources, indicateurs de processus et résultat, risques, seuils d'arrêt et conditions de révision."
+        ]
+      },
+      {
+        "criterion": "Communication sourcée et non profilante",
+        "weight": 5,
+        "requirements": [
+          "Les onze conclusions sont remplacées par des formulations proportionnées distinguant résultat, mécanisme possible, portée et incertitude.",
+          "Au moins huit citations au point d'usage couvrent les six leçons et soutiennent précisément les affirmations associées.",
+          "Aucune personne, quartier ou culture n'est diagnostiqué, essentialisé, classé moralement ou soumis à une prédiction certaine."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante avec une fiche à huit colonnes : trace du dossier, construit, population et moment, inférence permise, explication concurrente, donnée discriminante, risque éthique, référence. Pour « Preuves et cognition », reclasser chaque énoncé en observation, attribution, attitude, intention ou conduite et ajouter au moins deux contraintes situationnelles. Pour « Influence », distinguer les quatre formes d'influence, reconstruire l'audit de la vidéo et remplacer chaque généralisation d'Asch ou Milgram par tâche, variante, limite et interprétation alternative. Pour « Décision », refaire le profil caché, ajouter positions indépendantes avant discussion et préciser agrégation, désaccord, journal et seuil de révision. Pour « Identités », cartographier trois contextes et au moins quatre appartenances recouvrantes, puis séparer favoritisme et hostilité. Pour « Discrimination », classer croyance–attitude–traitement, retirer tout diagnostic implicite et produire un entonnoir demandes–éligibilité–décisions–recours avec mécanismes interpersonnels, institutionnels et structurels. Pour « Coopération », reconstruire coûts, incitations, réseaux et motifs possibles, puis redessiner le contact avec pouvoir partagé, consentement, sécurité et évaluation durable. Pour « Éthique », ajouter pour chaque action responsable, base probante, consentement, risque, indicateur et condition d'arrêt. Pour « Communication », réécrire les onze conclusions et ajouter au moins une référence par leçon. La resoumission contient les seules sections corrigées et un relevé bref des modifications."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-046-OPENSTAX-12-1",
+      "REF-046-GILBERT",
+      "REF-046-OPENSTAX-12-3",
+      "REF-046-AJZEN",
+      "REF-046-GLASMAN",
+      "REF-047-OPENSTAX-12-3",
+      "REF-047-WOOD",
+      "REF-047-OPENSTAX-12-4",
+      "REF-047-ASCH",
+      "REF-047-BURGER",
+      "REF-047-REICHER",
+      "REF-048-OPENSTAX-12-4",
+      "REF-048-BANG-FRITH",
+      "REF-048-KERR-TINDALE",
+      "REF-048-ESSER",
+      "REF-048-LORENZ",
+      "REF-049-OPENSTAX-125",
+      "REF-049-TAJFEL-1971",
+      "REF-049-TAJFEL-1979",
+      "REF-049-ROCCAS-2002",
+      "REF-049-OPENSTAX-121",
+      "REF-050-OPENSTAX-125",
+      "REF-050-KURDI-2019",
+      "REF-050-OSWALD-2013",
+      "REF-050-JONES-2000",
+      "REF-050-PAGER-2008",
+      "REF-051-OPENSTAX-127",
+      "REF-051-PENNER-2005",
+      "REF-051-RAND-2011",
+      "REF-051-HENRICH-2005",
+      "REF-051-PETTIGREW-2006",
+      "REF-051-BALLIET-2014"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Maison des Passerelles, la ville, les quartiers, personnes, organisations, documents, mesures et données sont entièrement fictifs ; ils simulent les traces documentaires d'une situation sociale de terrain.",
+        "Revue humaine obligatoire avant publication, avec compétences en psychologie sociale, influence, décision collective, relations intergroupes, discrimination, coopération, méthodes et éthique de la recherche.",
+        "Validation technique obligatoire : l'étape psychologie-sociale et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n'autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_046 à 051.",
+        "Les trente-deux referenceIds correspondent exactement à l'union des références des PEDAGOGY_SPEC_046 à 051 ; liens, accès et éditions doivent être revérifiés pendant la revue humaine.",
+        "Les études classiques d'Asch, Milgram, Burger et des groupes minimaux sont mobilisées avec limites méthodologiques, historiques, interprétatives et éthiques, jamais comme lois universelles.",
+        "Le cas interdit profilage individuel ou collectif, diagnostic moral, prédiction certaine depuis une attitude ou une mesure implicite, classement des cultures, contact forcé, causalité indue et réduction de la discrimination aux seules intentions.",
+        "La publication reste bloquée jusqu'aux validations technique, éditoriale et scientifique de l'ensemble de l'étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas intégratrice Maison des Passerelles, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_social_psychology_intergroup_relations_discrimination_cooperation_methods_and_ethics"
+      }
+    ]
+  }
+}
