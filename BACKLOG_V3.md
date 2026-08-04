@@ -143,6 +143,8 @@ dépendances sont satisfaites et que chaque ticket garde un diff autonome.
 
 **Priorité : P0. Dépendances : V2 clôturée à `ba3c352`.**
 
+**Statut : livré par `ADR_001_MULTI_USER_ACCESS.md`.**
+
 ### Périmètre
 
 - Réauditer schéma, migrations, routes, sessions, propriété, progression,
