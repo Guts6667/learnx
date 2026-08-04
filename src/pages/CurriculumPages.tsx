@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -97,8 +98,7 @@ function LessonSummaryCard({
           <li>{counts.quizzes} quiz</li>
         </ul>
       </details>
-      <a
-        class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+      <NavigationAction
         href={
           lesson.isLocked
             ? `/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stageSlug)}`
@@ -110,7 +110,7 @@ function LessonSummaryCard({
           : lesson.isPublished
             ? actionLabel
             : 'Prévisualiser'}
-      </a>
+      </NavigationAction>
     </Card>
   );
 }
@@ -234,12 +234,12 @@ export function ProgramsPage() {
               </p>
             </div>
             <ProgressPlaceholder />
-            <a
-              class="mt-auto inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950"
+            <NavigationAction
+              class="mt-auto"
               href={`/program/${program.slug}`}
             >
               Ouvrir le programme
-            </a>
+            </NavigationAction>
           </Card>
         ))}
       </div>
@@ -298,12 +298,13 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
                 <section class="space-y-3" key={module.id}>
                   <div class="flex flex-wrap items-center justify-between gap-3">
                     <h3 class="font-semibold text-slate-200">{module.title}</h3>
-                    <a
-                      class="inline-flex min-h-11 items-center text-sm text-cyan-300 underline"
+                    <NavigationAction
                       href={`/program/${program.slug}/module/${module.slug}`}
+                      size="sm"
+                      variant="ghost"
                     >
                       Voir le module
-                    </a>
+                    </NavigationAction>
                   </div>
                   {module.lessons.map((lesson) => (
                     <LessonSummaryCard
@@ -376,12 +377,13 @@ export function StagePage({
                 <h2 class="text-lg font-semibold">{module.title}</h2>
                 {module.isPublished ? null : <DraftBadge />}
               </div>
-              <a
-                class="mt-3 inline-flex min-h-11 items-center text-cyan-300 underline"
+              <NavigationAction
+                class="mt-3"
                 href={`/program/${programSlug}/module/${module.slug}`}
+                variant="secondary"
               >
                 Ouvrir le module
-              </a>
+              </NavigationAction>
               {module.lessons.map((lesson) => (
                 <LessonSummaryCard
                   key={lesson.id}

@@ -2,6 +2,7 @@ import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useLogoutMutation, useSessionQuery } from '@/features/auth/session';
 
@@ -47,12 +48,13 @@ export function ProfilePage() {
           </h2>
           <div class="flex w-full min-w-0 flex-col gap-3">
             {user.role === 'ADMIN' ? (
-              <a
-                class="inline-flex min-h-11 w-full min-w-0 items-center justify-center rounded-xl bg-slate-800 px-4 py-2.5 text-center text-sm font-semibold text-slate-100 transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+              <NavigationAction
+                class="w-full min-w-0 text-center"
                 href="/admin"
+                variant="secondary"
               >
                 Ouvrir l’administration
-              </a>
+              </NavigationAction>
             ) : null}
             <Button
               class="w-full min-w-0"

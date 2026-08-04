@@ -217,6 +217,9 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveAttribute('href', 'https://example.com/article');
+    expect(
+      screen.getByRole('link', { name: 'Ouvrir la source' }),
+    ).toHaveClass('underline');
     expect(screen.getAllByText(/Source non sûre/)).toHaveLength(2);
     expect(
       screen.getAllByRole('link', { name: 'Ouvrir la source' }),

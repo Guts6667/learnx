@@ -21,13 +21,7 @@ function formatSubmissionDate(value: string): string {
   }).format(new Date(value));
 }
 
-function ExerciseEditor({
-  exercise,
-  nextHref,
-}: {
-  exercise: ExerciseDetail;
-  nextHref?: string | null;
-}) {
+function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
   const mutation = useExerciseMutation(exercise.id);
   const submission = exercise.submission;
   const [contentMarkdown, setContentMarkdown] = useState(
@@ -58,16 +52,6 @@ function ExerciseEditor({
         <pre class="whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-3 font-sans text-sm leading-6 text-slate-300">
           {submission.contentMarkdown}
         </pre>
-        {nextHref ? (
-          <nav aria-label="Suite de la leçon" class="flex flex-wrap gap-3">
-            <a
-              class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 text-sm font-semibold text-slate-950"
-              href={nextHref}
-            >
-              Activité suivante
-            </a>
-          </nav>
-        ) : null}
       </div>
     );
   }
@@ -118,13 +102,7 @@ function ExerciseEditor({
   );
 }
 
-function PublishedExerciseCard({
-  exerciseId,
-  nextHref,
-}: {
-  exerciseId: string;
-  nextHref?: string | null;
-}) {
+function PublishedExerciseCard({ exerciseId }: { exerciseId: string }) {
   const query = useExerciseQuery(exerciseId);
 
   if (query.isPending) {
@@ -135,17 +113,15 @@ function PublishedExerciseCard({
     return <ErrorState description="L’exercice est indisponible." />;
   }
 
-  return <ExerciseEditor exercise={query.data.exercise} nextHref={nextHref} />;
+  return <ExerciseEditor exercise={query.data.exercise} />;
 }
 
 export function ExerciseCard({
   exercise,
   isLessonPublished,
-  nextHref,
 }: {
   exercise: LessonExerciseSummary;
   isLessonPublished: boolean;
-  nextHref?: string | null;
 }) {
   return (
     <Card class="space-y-4">
@@ -157,7 +133,7 @@ export function ExerciseCard({
       </div>
       <SafeMarkdown content={exercise.instructions} />
       {isLessonPublished ? (
-        <PublishedExerciseCard exerciseId={exercise.id} nextHref={nextHref} />
+        <PublishedExerciseCard exerciseId={exercise.id} />
       ) : (
         <div class="space-y-2">
           <Badge tone="warning">Brouillon</Badge>

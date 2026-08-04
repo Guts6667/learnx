@@ -259,11 +259,19 @@ describe('QuizPage', () => {
       screen.getByRole('button', { name: 'Recommencer le quiz' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Activité suivante' }),
+      screen.getByRole('link', { name: 'Continuer' }),
     ).toHaveAttribute(
       'href',
       '/program/programme-test/lesson/demarrer?activity=complete%3Alesson#activity-complete%3Alesson',
     );
+    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
+    expect(
+      screen
+        .getByLabelText('Résultat de l’évaluation')
+        .compareDocumentPosition(
+          screen.getByRole('navigation', { name: 'Navigation pédagogique' }),
+        ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(fetchMock).toHaveBeenCalledWith(
       `/api/quizzes/${quizId}/attempts`,
       expect.objectContaining({ method: 'POST' }),

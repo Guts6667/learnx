@@ -1,6 +1,7 @@
 import { useRef, useState } from 'preact/hooks';
 
 import { Drawer } from '@/components/ui/Drawer';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';
 import { activityKey } from '@/lib/lesson-activity-sequence';
 
@@ -83,12 +84,14 @@ export function PedagogicalNavigation({
         </div>
         <div class="mt-3 flex min-w-0 items-end justify-between gap-3 border-t border-slate-800 pt-3">
           {previous ? (
-            <a
-              class="inline-flex min-h-11 min-w-0 items-center rounded-xl bg-slate-800 px-3 text-sm font-semibold"
+            <NavigationAction
+              class="min-w-0"
               href={previous.href}
+              size="sm"
+              variant="secondary"
             >
               Précédent
-            </a>
+            </NavigationAction>
           ) : (
             <span
               aria-disabled="true"
@@ -108,12 +111,9 @@ export function PedagogicalNavigation({
               {isContinuePending ? 'Chargement…' : continueLabel}
             </button>
           ) : next ? (
-            <a
-              class="inline-flex min-h-11 min-w-0 items-center rounded-xl bg-cyan-400 px-3 text-sm font-semibold text-slate-950"
-              href={next.href}
-            >
+            <NavigationAction class="min-w-0" href={next.href} size="sm">
               {continueLabel}
-            </a>
+            </NavigationAction>
           ) : (
             <span
               aria-disabled="true"

@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -533,12 +534,9 @@ function EntityCard({
           </div>
           {status}
         </div>
-        <a
-          class="inline-flex min-h-11 items-center rounded-xl bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-100 hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-          href={href}
-        >
+        <NavigationAction href={href} variant="secondary">
           Ouvrir
-        </a>
+        </NavigationAction>
       </Card>
     </li>
   );

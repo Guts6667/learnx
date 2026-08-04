@@ -118,9 +118,18 @@ describe('ExercisePage', () => {
       screen.getByRole('link', { name: /Analyse appliquée/ }),
     ).toHaveAttribute('aria-current', 'step');
     fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
+    const startExercise = await screen.findByRole('button', {
+      name: 'Commencer l’exercice',
+    });
+    const pedagogicalNavigation = screen.getByRole('navigation', {
+      name: 'Navigation pédagogique',
+    });
+    expect(startExercise).toBeInTheDocument();
     expect(
-      await screen.findByRole('button', { name: 'Commencer l’exercice' }),
-    ).toBeInTheDocument();
+      startExercise.compareDocumentPosition(pedagogicalNavigation) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
     expect(window.localStorage.getItem('learnx:lesson-activity:lesson-1')).toBe(
       `exercise:${exerciseId}`,
     );

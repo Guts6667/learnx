@@ -1,7 +1,6 @@
 import {
   LessonActivitySummary,
   LessonContextHeader,
-  nextLessonActivityHref,
 } from '@/components/learning/LessonContextHeader';
 import { useEffect } from 'preact/hooks';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -47,12 +46,11 @@ export function ExercisePage({
   return (
     <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
-      <LessonActivitySummary currentKey={key} lesson={lesson} />
       <ExerciseCard
         exercise={exercise}
         isLessonPublished={lesson.isPublished}
-        nextHref={nextLessonActivityHref(lesson, key)}
       />
+      <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>
   );
 }

@@ -195,8 +195,9 @@ describe('ConceptAssessmentPage', () => {
       await screen.findByText('Les données sont indispensables.'),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Activité suivante' }),
+      screen.getByRole('link', { name: 'Continuer' }),
     ).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
     expect(fetchMock).toHaveBeenCalledWith(
       `${basePath}/attempts?preview=true`,
       expect.objectContaining({ method: 'POST' }),

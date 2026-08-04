@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import {
@@ -99,12 +100,9 @@ function ReviewCard({
           </div>
         ) : null}
         <div class="grid gap-3 sm:grid-cols-2">
-          <a
-            class="inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-100"
-            href={assessmentHref}
-          >
+          <NavigationAction href={assessmentHref} variant="secondary">
             Refaire l’évaluation
-          </a>
+          </NavigationAction>
           <Button
             isLoading={pendingId === item.id}
             onClick={() => void onComplete(item.id)}

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Textarea } from '@/components/ui/Textarea';
 
@@ -268,7 +269,6 @@ export function QuestionAssessmentExperience({
   error,
   isPending,
   labels,
-  nextHref,
   onSubmit,
 }: {
   assessment: QuestionAssessment;
@@ -277,7 +277,6 @@ export function QuestionAssessmentExperience({
   error: unknown;
   isPending: boolean;
   labels: ExperienceLabels;
-  nextHref?: string | null;
   onSubmit: (
     answers: SubmittedAssessmentAnswer[],
   ) => Promise<AssessmentAttemptResponse>;
@@ -303,12 +302,9 @@ export function QuestionAssessmentExperience({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-            href={backHref}
-          >
+          <NavigationAction href={backHref} variant="secondary">
             Ouvrir la leçon
-          </a>
+          </NavigationAction>
         }
         description={labels.emptyDescription}
         title={labels.emptyTitle}
@@ -363,19 +359,6 @@ export function QuestionAssessmentExperience({
           onRestart={restart}
           result={result}
         />
-        <nav
-          aria-label="Suite de la leçon"
-          class="flex flex-wrap gap-3 rounded-xl border border-slate-800 p-4"
-        >
-          {nextHref ? (
-            <a
-              class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 text-sm font-semibold text-slate-950"
-              href={nextHref}
-            >
-              Activité suivante
-            </a>
-          ) : null}
-        </nav>
         <AttemptHistory attempts={historyAttempts} />
       </div>
     );

@@ -46,12 +46,10 @@ export function NotFoundPage(routeProps: NotFoundPageProps) {
       <p class="mt-4 text-base leading-7 text-slate-300">
         L’adresse demandée ne correspond à aucune page LearnX.
       </p>
-      <a
-        class="mt-6 inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950 transition hover:bg-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-        href="/today"
-      >
+      <NavigationAction class="mt-6" href="/today">
         Retour à Aujourd’hui
-      </a>
+      </NavigationAction>
     </section>
   );
 }
+import { NavigationAction } from '@/components/ui/NavigationAction';

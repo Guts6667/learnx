@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Spinner } from '@/components/ui/Spinner';
 import {
@@ -486,12 +487,12 @@ export function LessonPage({
     return (
       <EmptyState
         action={
-          <a
-            class="inline-flex min-h-11 items-center text-cyan-300 underline"
+          <NavigationAction
             href={`/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`}
+            variant="secondary"
           >
             Voir les prérequis
-          </a>
+          </NavigationAction>
         }
         description="Terminez les prérequis de l’étape précédente avant de commencer cette leçon."
         title="Leçon verrouillée"

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -63,12 +64,12 @@ function NoteCard({ note }: { note: NoteDetail }) {
         <p class="text-xs text-slate-400">
           Modifiée le {formatUpdatedAt(note.updatedAt)}
         </p>
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
+        <NavigationAction
           href={`/notes/${encodeURIComponent(note.id)}`}
+          variant="secondary"
         >
           Modifier la note
-        </a>
+        </NavigationAction>
       </Card>
     </li>
   );
@@ -304,12 +305,12 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             <p class="text-sm text-slate-400">{note.program.title}</p>
           ) : null}
           {note.program ? (
-            <a
-              class="inline-flex min-h-11 items-center text-cyan-300 underline"
+            <NavigationAction
               href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
+              variant="secondary"
             >
               Ouvrir la leçon
-            </a>
+            </NavigationAction>
           ) : null}
         </Card>
       ) : (
@@ -330,12 +331,9 @@ export function NotePage({ noteId }: { noteId: string }) {
   return (
     <article aria-labelledby="note-title" class="space-y-6">
       <header class="space-y-3">
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href="/notes"
-        >
+        <NavigationAction href="/notes" variant="ghost">
           Retour aux notes
-        </a>
+        </NavigationAction>
         <h1 class="text-3xl font-bold tracking-tight" id="note-title">
           Modifier la note
         </h1>
