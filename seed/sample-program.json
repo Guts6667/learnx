@@ -14361,6 +14361,1488 @@
             ]
           }
         ]
+      },
+      {
+        "title": "Évaluer les interventions et les applications",
+        "slug": "interventions-applications",
+        "position": 12,
+        "assessment": {
+          "title": "Évaluation finale — Évaluer les interventions et les applications",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Comparer les propositions fictives « NeuroCap » et « Milieux & Choix » pour un campus de formation professionnelle selon leurs objectifs, mécanismes, preuves, mise en œuvre, accessibilité, effets indésirables, équité et gouvernance, sans choisir de traitement pour une personne ni confondre santé, éducation et management.",
+          "instructions": "## Consignes\n1. Construire une matrice comparative séparant pour chaque proposition : problème visé, population, niveau d'action, composantes, mécanismes supposés, résultats, comparateur, durée, ressources, données manquantes et décision possible. Ne pas agréger santé, apprentissage et performance en un score unique.\n2. Auditer le parcours d'évaluation et de décision : distinguer mesure, évaluation, diagnostic éventuel et formulation ; proposer une collecte multiméthode proportionnée et une formulation collaborative, contextualisée et révisable. Décrire comment options, incertitudes, préférences, refus, proches ou interprète et révision entrent dans une décision partagée sans prescrire une option.\n3. Cartographier les familles cognitives, comportementales, de troisième vague, psychodynamiques, humanistes, systémiques et interpersonnelles évoquées. Relier chaque famille à des hypothèses et pratiques possibles, signaler les recouvrements, puis corriger à la fois le palmarès universel de NeuroCap et l'équivalence universelle affirmée par Milieux & Choix.\n4. Auditer les preuves comparatives en distinguant efficacité expérimentale et effectivité : population, intervention, comparateur, résultats, ampleur et incertitude, importance pratique, suivi, données manquantes, attrition, analyse des personnes assignées ou ayant terminé et transférabilité au campus.\n5. Construire un plan de sécurité et de suivi couvrant non-réponse, détérioration, nouvelles difficultés, charge, abandon et autres effets indésirables. Évaluer le monitoring et l'alliance comme aides à la discussion, non comme algorithmes ou causes uniques ; préciser confidentialité, retour aux participants et règles de révision sans conseiller de poursuivre ou d'arrêter un soin.\n6. Auditer adaptation culturelle et accessibilité financière, géographique, linguistique, sensorielle, cognitive et numérique. Remplacer l'assignation par origine ou style par une co-construction fondée sur significations, préférences, besoins et obstacles ; examiner qui est exclu, qui abandonne et comment les effets se distribuent.\n7. Distinguer promotion de la santé, prévention universelle, sélective ou indiquée et soin individuel dans les deux offres. Construire une théorie de programme reliant déterminants sociaux, conditions matérielles, participation et ressources aux effets attendus, sans culpabiliser les personnes ni transformer une action populationnelle en traitement.\n8. Concevoir l'évaluation de mise en œuvre : portée, adoption, fidélité et adaptations, mécanismes, contexte, coûts, effets utiles, effets indésirables et équité. Comparer des alternatives crédibles, définir des seuils d'arrêt et documenter les groupes non atteints au lieu de conclure depuis la seule moyenne des utilisateurs.\n9. Auditer le volet éducatif : distinguer préférences, aptitudes, accessibilité et prétendus styles VAK ; relever les neuromythes et exiger la preuve pertinente. Redessiner un pilote avec objectif disciplinaire, représentations utiles, récupération à faible enjeu, espacement, feedback, guidage métacognitif, apprentissage différé et effets par groupe.\n10. Auditer le volet travail : cartographier activité réelle, outils, horaires, charge, coordination, variabilité et risques psychosociaux ; prioriser les modifications organisationnelles. Évaluer surveillance et sélection selon nécessité, proportionnalité, validité, minimisation, accès, durée, proxies, effets par groupe, contrôle humain, explication, contestation et réparation.\n11. Formuler une recommandation conditionnelle — adopter, piloter, modifier, suspendre ou rejeter chaque composante — avec responsables, ressources, indicateurs et critères de révision. Réécrire les onze affirmations finales et citer au point d'usage au moins huit ressources, dont au moins une de chacune des six leçons ; ne fournir aucun conseil médical, psychothérapeutique, éducatif ou professionnel individuel.\n\n## Cas Campus Horizon\nDossier entièrement fictif — Campus Horizon. Le Campus Horizon réunit un centre de formation professionnelle, un service municipal de prévention et un atelier logistique employant 480 salariés, dont 210 apprentis. Après une hausse des absences, des erreurs en atelier et des abandons de formation, sa direction compare deux offres. Elle souhaite « améliorer simultanément santé mentale, apprentissage et productivité » en six mois, mais n'a pas défini de résultat principal, de population prioritaire ni de limite entre prévention, soin, pédagogie et management. Les horaires ont été modifiés trois fois en quatre mois ; certains postes imposent une cadence élevée, le bruit gêne plusieurs cours, deux bâtiments ne sont accessibles que par escalier, 18 % des apprenants disposent d'un accès numérique irrégulier et les contrats courts limitent le contrôle sur les horaires. Les personnes concernées n'ont pas participé à la rédaction de l'appel d'offres. La première offre, NeuroCap, est une application commerciale obligatoire sur téléphone personnel. À l'inscription, un questionnaire unique mélange stress, préférences d'apprentissage, personnalité et performance. Il classe chaque personne « cerveau visuel droit », « auditif gauche » ou « kinesthésique équilibré », puis promet un contenu apparié. Les publicités annoncent que l'on utilise seulement 10 % du cerveau et qu'une stimulation quotidienne « recâble définitivement l'apprentissage ». Les apprentis visuels reçoivent des vidéos, les auditifs des podcasts et les kinesthésiques des tâches manuelles, même lorsque le contenu exige d'autres représentations. Le score détermine aussi un module présenté comme « TCC, pleine conscience et coaching humaniste intégrés par intelligence artificielle ». Le fournisseur affirme que la TCC est toujours la meilleure famille, que la pleine conscience convient à tous et que l'algorithme remplace formulation, discussion des options et professionnel qualifié. Il ne distingue pas méthodes comportementales, cognitives, troisième vague ou autres approches et décrit psychodynamique comme « parler du passé », humanisme comme « écouter sans méthode » et systémique comme « traiter toute la famille ». L'étude commerciale de NeuroCap porte sur 120 volontaires recrutés en ligne et assignés à l'application ou à une liste d'attente pendant huit semaines. Le résumé annonce 92 % d'efficacité, calculés parmi les 35 utilisateurs de l'application ayant terminé sur 60 assignés. Le groupe liste d'attente n'a accès à aucune activité comparable. Le résultat principal a été choisi après analyse parmi neuf questionnaires et porte sur le stress auto-rapporté à huit semaines ; aucune estimation d'incertitude, importance pratique, analyse selon l'assignation, correction des comparaisons, résultat différé ou réplication n'est fournie. Le campus diffère de l'échantillon par âge, langues, métiers, horaires et accès numérique. Le fournisseur appelle néanmoins ce test une preuve d'effectivité au travail et de prévention des troubles. Les abandons sont classés comme manque de motivation. Non-réponse, détérioration, honte, pression, nouvelles difficultés et événements indésirables ne sont pas recherchés. Un score hebdomadaire déclenche automatiquement la poursuite ou le remplacement d'un module. L'application demande si l'utilisateur apprécie le chatbot et appelle ce score « alliance thérapeutique » ; sa corrélation avec l'amélioration est présentée comme cause unique. Toute baisse de score est transmise au manager, sans espace de discussion avec la personne. L'adaptation culturelle assigne un scénario selon le pays de naissance, sans demander langue, significations, valeurs, spiritualité, discriminations ou préférences. Il n'existe ni version facile à lire, ni sous-titres complets, ni navigation au clavier, ni alternative hors ligne. La seconde offre, Milieux & Choix, est un programme à composantes multiples. Elle propose d'abord des observations du travail réel avec des salariés volontaires, puis des changements de cadence, pauses, éclairage, acoustique, accessibilité, coordination et prévisibilité des horaires. Pour les cours, elle remplace le test VAK par des objectifs précis, des représentations adaptées au contenu, des questions de récupération à faible enjeu, des reprises espacées et un guidage métacognitif. Un service facultatif assuré par des professionnels qualifiés clarifie la demande, les destinataires et la confidentialité, croise entretien, observations et mesures pertinentes, construit avec la personne une formulation provisoire et présente plusieurs options raisonnables, y compris attendre lorsque cela est sûr. Le programme annonce cependant que toutes les psychothérapies sont équivalentes pour toute difficulté et ne précise pas encore comment seront comparés bénéfices, risques, contraintes, preuves, préférences et accessibilité. Le projet Milieux & Choix a été testé pendant douze semaines dans deux des huit sites d'une organisation fictive. Les sites se sont portés volontaires, disposaient déjà de davantage de personnel et avaient moins d'absences au départ. Les six autres sites servent de comparaison sans assignation aléatoire. Les absences baissent de 8 % dans les sites pilotes et de 3 % ailleurs ; les erreurs baissent dans un seul site. Aucune incertitude n'est donnée. Les adaptations diffèrent : un site modifie les horaires, l'autre déploie seulement les ateliers individuels. La portée est de 61 % des salariés permanents mais de 19 % des intérimaires. Les résultats d'apprentissage sont mesurés juste après la formation, sans mesure différée. Coûts, fidélité, effets indésirables, déplacements de charge, langues, handicap et distribution des effets restent incomplets. L'équipe conclut pourtant que le programme est causalement efficace partout. Sur le volet santé, NeuroCap qualifie son questionnaire de diagnostic et cible automatiquement les scores élevés, tandis que Milieux & Choix appelle toutes ses activités « promotion universelle ». Ni l'une ni l'autre offre ne sépare clairement promotion, prévention universelle, sélective ou indiquée et soin. NeuroCap envoie des notifications disant : « Votre stress vient de mauvaises habitudes : soyez résilient ». Milieux & Choix mentionne logement, revenu, discrimination, sécurité, services et horaires, mais n'explique pas comment les personnes concernées participeront ni comment ces déterminants entreront dans la théorie de programme. Aucune offre ne mesure explicitement stigmatisation, faux positifs, retard d'aide, non-recours ou déplacement de ressources. Pour le volet éducatif, NeuroCap compare la satisfaction des apprenants recevant leur format préféré à celle d'un groupe sans app et conclut que l'appariement VAK augmente l'apprentissage. Aucun test de l'interaction style supposé–méthode, aucune mesure de connaissance, aucun transfert et aucun suivi différé ne sont fournis. Milieux & Choix prévoit récupération et espacement, mais ne précise pas le contenu, le calendrier, le feedback, le guidage, la charge ni l'accès. Il suppose que davantage de tests produit toujours davantage d'apprentissage. Pour le travail, NeuroCap recueille frappes, localisation, rythme, messages, activité nocturne et fréquence cardiaque. Le fournisseur prétend inférer stress, loyauté et risque d'absence, conserve les données sans durée définie et les réutilise pour sélectionner les apprentis. Un modèle entraîné sur les promotions passées affiche 84 % de précision globale ; analyse du poste, construit, validité pour la décision, fiabilité, accessibilité, proxies, erreurs et résultats par groupe ne sont pas communiqués. Une candidature rejetée ne peut obtenir d'explication ou contester. Les managers voient les données de santé et d'apprentissage. L'accord est recueilli après l'annonce que le refus réduira les possibilités de planning. Milieux & Choix limite davantage les données, mais son protocole ne précise pas encore séparation des accès, conservation, recours, contrôle humain ou droit applicable. Le comité de direction demande un choix binaire immédiat entre les deux offres. Une représentante des apprentis propose plutôt de comparer les composantes, d'écarter celles qui ne franchissent pas des conditions minimales, puis de piloter de manière révisable les éléments plausibles. Elle demande des objectifs séparés, une théorie de programme, des jugements indépendants avant délibération, des participants concernés dans la gouvernance, des alternatives moins intrusives et un suivi de la portée, des effets, des dommages et de l'équité. Les onze affirmations à auditer sont : « un test unique suffit à formuler et choisir l'intervention ; la meilleure école de thérapie gagne toujours et toutes les autres sont équivalentes entre elles ; 92 % des utilisateurs seront aidés dans la pratique ; l'abandon et la baisse de score prouvent un manque de motivation et le chatbot décide du module ; adapter culturellement consiste à assigner par pays de naissance ; une application de stress diagnostique, prévient et soigne à la fois ; informer et rendre résilient suffit malgré les conditions de vie ; styles VAK, cerveau droit et 10 % du cerveau valident la pédagogie ; récupération et espacement fonctionnent toujours quel que soit le contenu ; les erreurs viennent des salariés plutôt que du système de travail ; une précision globale autorise surveillance, sélection automatique et partage des données ». Toutes les organisations, personnes, offres, études, chiffres et données sont fictifs. Le dossier permet une comparaison méthodologique et éthique, mais aucun diagnostic, choix de psychothérapie, conseil de santé, adaptation scolaire individuelle ou décision professionnelle réelle.\n\n## Format de soumission\nDossier comparatif structuré de 1 500 à 1 900 mots comprenant une matrice objectifs–preuves–limites, un audit évaluation–décision, une carte des familles, une lecture efficacité–effectivité–sécurité, une théorie de programme de prévention, un pilote éducatif, un audit ergonomie–données–équité et les onze affirmations révisées.\n\n## Remédiation\nPour tout critère sous 70 %, reprendre uniquement la section correspondante avec une fiche à neuf colonnes : objectif, population, composante, mécanisme, comparaison, résultat, limite ou dommage, équité, référence. Pour « Évaluation », séparer test–évaluation–formulation–décision et écrire deux hypothèses révisables ainsi qu'un dialogue présentant plusieurs options. Pour « Familles », corriger chaque caricature et comparer les approches uniquement pour une question, une population et un résultat définis. Pour « Efficacité », recalculer les dénominateurs, distinguer assignés et terminants, ajouter attrition, suivi, non-réponse, effets indésirables, monitoring, alliance et accessibilité. Pour « Santé », classer chaque composante par niveau de prévention ou soin et compléter une théorie de programme avec déterminants, portée, mise en œuvre et effets distribués. Pour « Éducation », retirer VAK et neuromythes, puis spécifier contenu, espacement, récupération, feedback, métacognition, mesure différée et accessibilité. Pour « Travail », reconstruire le système de travail et l'audit nécessité–proportionnalité–validité–données–équité–recours avant toute surveillance ou sélection. Pour « Gouvernance », classer chaque composante en adoption, pilote, modification, suspension ou rejet avec responsable, seuil d'arrêt et alternative moins intrusive. Pour « Communication », réécrire les onze affirmations et ajouter au moins une référence par leçon. La resoumission contient uniquement les sections corrigées et un bref relevé des modifications.",
+          "rubric": [
+            {
+              "criterion": "Évaluation, formulation et décision partagée",
+              "weight": 15,
+              "requirements": [
+                "Mesure, évaluation, diagnostic éventuel et formulation sont distingués ; la collecte est multiméthode, proportionnée et reliée à une question.",
+                "La formulation relie difficultés, ressources, contexte, pouvoir et hypothèses concurrentes et précise ce qui déclencherait sa révision.",
+                "Les options, bénéfices, risques, contraintes, incertitudes, préférences, refus et révision structurent la décision sans abandon ni contrainte."
+              ]
+            },
+            {
+              "criterion": "Familles de psychothérapies sans hiérarchie simpliste",
+              "weight": 10,
+              "requirements": [
+                "Les principales familles sont décrites par hypothèses, méthodes et formats sans caricature ni boîte étanche.",
+                "Recouvrements, intégration cohérente, compétences et formulation sont explicités sans assemblage arbitraire.",
+                "Palmarès global et équivalence universelle sont tous deux rejetés au profit d'une comparaison par indication, population, comparateur et résultat."
+              ]
+            },
+            {
+              "criterion": "Efficacité, effectivité, sécurité, alliance et adaptation",
+              "weight": 20,
+              "requirements": [
+                "Les deux études sont auditées selon population, comparateur, résultats, incertitude, suivi, attrition, analyse et transférabilité.",
+                "Moyenne, importance pratique, non-réponse, détérioration, effets indésirables, charge et abandon sont distingués sans promesse individuelle.",
+                "Monitoring et alliance soutiennent une discussion dans le temps sans décision automatisée ni causalité unique.",
+                "L'adaptation culturelle et l'accessibilité sont co-construites et suivies sans assignation par origine, stéréotype ou exclusion numérique."
+              ]
+            },
+            {
+              "criterion": "Santé, prévention, déterminants et mise en œuvre",
+              "weight": 15,
+              "requirements": [
+                "Promotion, prévention universelle, sélective ou indiquée et soin sont classés par finalité et population sans diagnostic automatique.",
+                "La théorie de programme relie mécanismes, contexte, ressources et déterminants sociaux sans culpabilisation individuelle.",
+                "Portée, adoption, fidélité, adaptations, coûts, effets, dommages, équité et participation soutiennent une décision révisable."
+              ]
+            },
+            {
+              "criterion": "Éducation, apprentissage et équité",
+              "weight": 10,
+              "requirements": [
+                "Préférences, aptitudes, accessibilité et styles VAK sont distingués ; cerveau droit, 10 % et vocabulaire neuronal ne valent pas preuve.",
+                "Espacement, récupération et métacognition sont reliés à un contenu, un calendrier, du feedback, du guidage et des résultats différés.",
+                "Le pilote compare apprentissage, mise en œuvre, charge, participation, accessibilité et effets par groupe avec critères d'arrêt."
+              ]
+            },
+            {
+              "criterion": "Travail, ergonomie, surveillance et sélection",
+              "weight": 15,
+              "requirements": [
+                "L'activité réelle, les outils, horaires, charge, coordination, variabilité et risques psychosociaux conduisent à des modifications du système avec les travailleurs.",
+                "Santé, accompagnement et management sont séparés ; participation, volontariat, confidentialité et accès aux données tiennent compte du pouvoir.",
+                "Surveillance et sélection sont auditées selon nécessité, proportionnalité, construit, validité, accessibilité, proxies, groupes, contrôle humain, explication, recours et suivi."
+              ]
+            },
+            {
+              "criterion": "Comparaison, accessibilité, éthique et gouvernance",
+              "weight": 10,
+              "requirements": [
+                "Les objectifs et niveaux d'action sont séparés, les composantes comparées individuellement et les alternatives moins intrusives considérées.",
+                "La recommandation adopte, pilote, modifie, suspend ou rejette sous conditions avec responsables, ressources, risques et critères de révision.",
+                "Les personnes concernées participent à la gouvernance ; confidentialité, équité, contestation et réparation sont opérationnelles."
+              ]
+            },
+            {
+              "criterion": "Communication sourcée et non prescriptive",
+              "weight": 5,
+              "requirements": [
+                "Les onze affirmations sont remplacées par des conclusions proportionnées distinguant preuve, portée, incertitude et limite.",
+                "Au moins huit citations au point d'usage couvrent les six leçons et soutiennent précisément les propositions associées.",
+                "Aucun diagnostic, traitement, choix de psychothérapie, adaptation éducative individuelle ou décision professionnelle réelle n'est recommandé."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Interventions psychologiques",
+            "slug": "interventions-psychologiques",
+            "position": 19,
+            "lessons": [
+              {
+                "title": "Évaluation, formulation et décision partagée",
+                "slug": "evaluation-formulation-decision-partagee",
+                "summary": "Comprendre comment une évaluation multiméthode nourrit une formulation collaborative et révisable, puis une décision partagée respectueuse de l’autonomie.",
+                "position": 1,
+                "estimatedMinutes": 110,
+                "objectives": [
+                  "Distinguer mesure, évaluation, diagnostic éventuel et formulation psychologique.",
+                  "Construire une formulation provisoire reliant difficultés, ressources, contexte et hypothèses concurrentes.",
+                  "Décrire une décision partagée qui explicite options, incertitudes, préférences et possibilité de réviser le choix."
+                ],
+                "prerequisites": [
+                  "Distinguer observation, mesure et interprétation.",
+                  "Connaître les limites d’un diagnostic et d’un score isolé."
+                ],
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Une évaluation psychologique est un processus orienté par une question, pas l’administration d’un test unique. Elle peut combiner entretien, observations, histoire développementale et sociale, mesures standardisées, informations consenties de tiers et données médicales pertinentes. Chaque source a des limites ; leur convergence, leurs divergences et les conditions de recueil doivent être examinées. Un score décrit une performance dans un cadre donné : il ne résume ni la personne ni, à lui seul, un diagnostic ou une décision.",
+                      "sourceKeys": [
+                        "bps-assessment-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Avant de mesurer, on clarifie avec la personne la demande, les destinataires, les usages possibles, la confidentialité et ses limites. On choisit des outils adaptés à l’objectif, à la langue, à l’âge, au handicap, au contexte culturel et à leurs qualités psychométriques. On recherche aussi les forces, soutiens, contraintes matérielles et explications concurrentes. L’évaluation reste proportionnée : recueillir davantage de données n’est pas toujours plus juste, surtout si elles ne peuvent pas modifier la compréhension ou la décision.",
+                      "sourceKeys": [
+                        "bps-assessment-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 3,
+                    "content": {
+                      "text": "La formulation est une mise en sens provisoire : elle organise ce qui prédispose, précipite, maintient ou protège, en s’appuyant sur le récit de la personne, la théorie et les données disponibles. Elle n’est ni une vérité cachée ni un synonyme de diagnostic. Elle doit être collaborative, compréhensible, attentive aux relations de pouvoir et ouverte à la révision lorsque de nouvelles informations, un autre contexte ou la réponse à une intervention contredisent l’hypothèse initiale.",
+                      "sourceKeys": [
+                        "bps-formulation-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 4,
+                    "content": {
+                      "text": "Une baisse de participation au travail peut être reliée à plusieurs hypothèses : humeur dépressive, anxiété, épuisement, conflit, discrimination, maladie, contraintes familiales ou environnement inaccessible. Une formulation prudente sépare faits, significations et inconnues, inclut ressources et préférences, puis indique ce qui permettrait de départager les hypothèses. Elle évite de transformer une réaction contextuelle en trait fixe et peut conclure qu’une autre évaluation ou une action sociale est prioritaire.",
+                      "sourceKeys": [
+                        "bps-assessment-2025",
+                        "bps-formulation-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "La décision partagée ne consiste ni à imposer l’option du professionnel ni à transférer seul le poids du choix à la personne. Elle rend visible qu’un choix existe, présente les options raisonnables — y compris attendre ou ne pas intervenir lorsqu’elles sont sûres —, compare bénéfices, risques, contraintes et incertitudes, puis explore ce qui compte pour la personne. Son souhait d’impliquer un proche ou un interprète se demande ; son refus ou sa préférence doivent être entendus dans les limites du cadre légal et de la sécurité.",
+                      "sourceKeys": [
+                        "nice-sdm-2021",
+                        "elwyn-sdm-2012"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Évaluation, formulation et décision forment une boucle : définir la question, recueillir des informations proportionnées, proposer une compréhension, choisir ensemble un objectif et vérifier ce qui change. Une décision peut être différée ou révisée ; une mesure de suivi soutient le dialogue sans remplacer l’expérience de la personne. Cette leçon n’autorise ni auto-évaluation clinique, ni diagnostic d’autrui, ni choix d’une psychothérapie ou d’un traitement individualisé ; ces décisions demandent un professionnel qualifié et le contexte réel.",
+                      "sourceKeys": [
+                        "bps-formulation-2025",
+                        "nice-sdm-2021"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "bps-assessment-2025",
+                    "title": "Assessment — Assessment, formulation, and diagnosis guidelines (adults)",
+                    "type": "document",
+                    "url": "https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.5",
+                    "author": "British Psychological Society",
+                    "citation": "British Psychological Society. (2025). Assessment. In Assessment, formulation, and diagnosis guidelines (adults). https://doi.org/10.53841/bpsrep.2025.rep188.5",
+                    "description": "Lire les principes d’une évaluation proportionnée, contextualisée et multiméthode.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "bps-formulation-2025",
+                    "title": "Formulation — Assessment, formulation, and diagnosis guidelines (adults)",
+                    "type": "document",
+                    "url": "https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.6",
+                    "author": "British Psychological Society",
+                    "citation": "British Psychological Society. (2025). Formulation. In Assessment, formulation, and diagnosis guidelines (adults). https://doi.org/10.53841/bpsrep.2025.rep188.6",
+                    "description": "Repérer collaboration, forces, contexte, pouvoir et caractère révisable de la formulation.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 2
+                  },
+                  {
+                    "key": "nice-sdm-2021",
+                    "title": "Shared decision making",
+                    "type": "document",
+                    "url": "https://www.nice.org.uk/guidance/ng197",
+                    "author": "National Institute for Health and Care Excellence",
+                    "citation": "NICE. (2021). Shared decision making (NG197).",
+                    "description": "Étudier les recommandations sur options, risques, préférences, accessibilité et implication choisie des proches.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  },
+                  {
+                    "key": "elwyn-sdm-2012",
+                    "title": "Shared Decision Making: A Model for Clinical Practice",
+                    "type": "article",
+                    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3445676/",
+                    "author": "Glyn Elwyn et collaborateurs",
+                    "citation": "Elwyn, G., et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6",
+                    "description": "Lire le modèle conversationnel choix-options-décision et ses limites.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Évaluation multiméthode et proportionnée",
+                    "slug": "evaluation-multimethode-proportionnee",
+                    "description": "Une évaluation répond à une question en croisant des données dont les limites restent visibles.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "bps-assessment-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Évaluer sans réduire",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Formulation collaborative et révisable",
+                    "slug": "formulation-collaborative-revisable",
+                    "description": "Une formulation organise des hypothèses contextualisées avec la personne et reste ouverte à la contradiction.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "bps-formulation-2025",
+                      "bps-assessment-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Formuler sans figer",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Décision partagée et autonomie",
+                    "slug": "decision-partagee-autonomie",
+                    "description": "La décision partagée articule données, options, incertitudes et préférences sans abandon ni contrainte.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "nice-sdm-2021",
+                      "elwyn-sdm-2012"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Choisir ensemble",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Auditer une évaluation par test unique",
+                    "description": "Repérer ce qu’un score permet et ne permet pas de conclure, puis proposer des sources d’information complémentaires proportionnées.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Construire une formulation provisoire",
+                    "description": "À partir d’une vignette, séparer faits, significations, hypothèses, ressources, contexte et informations manquantes sans poser de diagnostic.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Simuler une conversation de décision partagée",
+                    "description": "Présenter plusieurs options avec bénéfices, risques, contraintes et incertitudes, puis faire expliciter préférences et conditions de révision.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              },
+              {
+                "title": "Grandes familles de psychothérapies",
+                "slug": "familles-psychotherapies",
+                "summary": "Cartographier les principales familles de psychothérapies par leurs cibles et méthodes, sans palmarès global ni affirmation qu’elles seraient toutes équivalentes.",
+                "position": 2,
+                "estimatedMinutes": 115,
+                "objectives": [
+                  "Distinguer plusieurs familles par leurs hypothèses de changement et leurs pratiques typiques.",
+                  "Expliquer pourquoi les frontières entre écoles sont poreuses et les formats variés.",
+                  "Comparer les preuves pour une question, une population, un comparateur et un contexte précis plutôt que classer globalement les écoles."
+                ],
+                "prerequisites": [
+                  "Comprendre évaluation, formulation et décision partagée.",
+                  "Distinguer mécanisme supposé, procédure et résultat observé."
+                ],
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Une psychothérapie est une intervention relationnelle et structurée qui mobilise des méthodes psychologiques avec un objectif discuté. Il existe de nombreuses écoles, mais leurs noms ne suffisent pas à décrire une séance : format individuel, familial ou groupal, durée, population, compétences du praticien, cible et contexte comptent. Une même étiquette recouvre des variantes, et un professionnel peut intégrer plusieurs méthodes. La carte qui suit sert à comparer, non à choisir un traitement pour soi ou autrui.",
+                      "sourceKeys": [
+                        "nimh-psychotherapies",
+                        "apa-approaches"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Les approches comportementales examinent les apprentissages, les situations et les conséquences qui entretiennent une conduite ; elles utilisent notamment exposition graduée, activation ou entraînement. Les approches cognitives étudient les liens entre interprétations, émotions et actions ; les thérapies cognitivo-comportementales combinent souvent ces niveaux avec objectifs, exercices et observation des changements. Les approches dites de troisième vague ajoutent selon les modèles acceptation, pleine conscience, valeurs ou rapport aux pensées. Ces termes ne désignent ni une technique unique ni une indication universelle.",
+                      "sourceKeys": [
+                        "nimh-psychotherapies",
+                        "cuijpers-15-therapies-2020"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 3,
+                    "content": {
+                      "text": "Les approches psychodynamiques explorent les configurations relationnelles, affects, défenses, conflits et significations parfois peu accessibles, y compris dans la relation thérapeutique. Les approches humanistes et centrées sur la personne mettent l’accent sur l’expérience vécue, l’empathie, l’authenticité, les capacités de choix et les conditions facilitant le développement. Elles ne se réduisent respectivement ni à « parler du passé » ni à « écouter sans méthode » ; leurs variantes, cadres et niveaux de structuration diffèrent.",
+                      "sourceKeys": [
+                        "apa-approaches"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Les approches systémiques et familiales considèrent les interactions, règles, rôles, transitions et contextes plutôt qu’un individu isolé ; la présence de plusieurs personnes n’est pas toujours requise. Les thérapies interpersonnelles ciblent des liens entre symptômes et deuil, conflits, transitions de rôle ou isolement. Les formats de couple, famille ou groupe peuvent redistribuer qui participe, ce qui est observé et quels objectifs sont négociés. Leur pertinence et leurs preuves varient selon le problème et la population.",
+                      "sourceKeys": [
+                        "carr-systemic-2019",
+                        "cuijpers-15-therapies-2020"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Les familles ne sont pas des boîtes étanches. Deux thérapies peuvent partager exposition, résolution de problèmes, attention aux émotions, récit, relation ou exercices tout en les justifiant différemment. « Intégratif » ne signifie pas assemblage arbitraire : il faut expliciter comment les éléments choisis s’articulent, et leur emploi dépend notamment de la formation du professionnel, du problème travaillé et des besoins de la personne. Une étiquette d’école ou de manuel ne suffit donc pas à établir la pertinence d’une méthode pour une question précise.",
+                      "sourceKeys": [
+                        "nimh-psychotherapies",
+                        "apa-approaches"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Aucun palmarès général ne permet d’affirmer qu’une famille gagne pour toute personne et tout problème ; affirmer que toutes sont toujours équivalentes serait tout aussi trompeur. Une comparaison valable précise la difficulté ciblée, la population, le format, la dose, le comparateur, les résultats et le suivi, puis examine qualité des études, attrition, accessibilité et préférences. Cette leçon présente des repères : elle ne recommande aucune approche ni aucun praticien à une personne précise.",
+                      "sourceKeys": [
+                        "cuijpers-15-therapies-2020",
+                        "carr-systemic-2019",
+                        "nimh-psychotherapies"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "nimh-psychotherapies",
+                    "title": "Psychotherapies",
+                    "type": "website",
+                    "url": "https://www.nimh.nih.gov/health/topics/psychotherapies",
+                    "author": "National Institute of Mental Health",
+                    "citation": "National Institute of Mental Health. (2024). Psychotherapies. Last reviewed February 2024.",
+                    "description": "Lire la présentation générale des formats, éléments et choix contextualisés.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 1
+                  },
+                  {
+                    "key": "apa-approaches",
+                    "title": "Different approaches to psychotherapy",
+                    "type": "website",
+                    "url": "https://www.apa.org/topics/psychotherapy/approaches",
+                    "author": "American Psychological Association",
+                    "citation": "American Psychological Association. (2009). Different approaches to psychotherapy.",
+                    "description": "Comparer les grandes catégories historiques sans les transformer en indications cliniques.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 2
+                  },
+                  {
+                    "key": "cuijpers-15-therapies-2020",
+                    "title": "The effects of fifteen evidence-supported therapies for adult depression: A meta-analytic review",
+                    "type": "article",
+                    "url": "https://www.tandfonline.com/doi/full/10.1080/10503307.2019.1649732",
+                    "author": "Pim Cuijpers et collaborateurs",
+                    "citation": "Cuijpers, P., Karyotaki, E., de Wit, L., & Ebert, D. D. (2020). The effects of fifteen evidence-supported therapies for adult depression: A meta-analytic review. Psychotherapy Research, 30(3), 279–293. https://doi.org/10.1080/10503307.2019.1649732",
+                    "description": "Observer comment plusieurs thérapies sont comparées pour une indication précise et avec quelles limites.",
+                    "isRequired": true,
+                    "estimatedMinutes": 22,
+                    "position": 3
+                  },
+                  {
+                    "key": "carr-systemic-2019",
+                    "title": "Couple therapy, family therapy and systemic interventions for adult-focused problems: the current evidence base",
+                    "type": "article",
+                    "url": "https://onlinelibrary.wiley.com/doi/10.1111/1467-6427.12225",
+                    "author": "Alan Carr",
+                    "citation": "Carr, A. (2019). Couple therapy, family therapy and systemic interventions for adult-focused problems: the current evidence base. Journal of Family Therapy, 41, 492–536. https://doi.org/10.1111/1467-6427.12225",
+                    "description": "Lire le résumé et repérer la variation des résultats selon les problèmes ciblés.",
+                    "isRequired": false,
+                    "estimatedMinutes": 18,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Cognitif, comportemental et troisième vague",
+                    "slug": "familles-cognitives-comportementales",
+                    "description": "Ces approches articulent apprentissages, interprétations, actions et, selon les modèles, acceptation ou valeurs.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "nimh-psychotherapies",
+                      "cuijpers-15-therapies-2020"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Méthodes et cibles",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Psychodynamique, humaniste et systémique",
+                    "slug": "familles-relationnelles-contextuelles",
+                    "description": "Ces familles diffèrent par leurs cadres tout en partageant parfois travail relationnel, sens et contexte.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "apa-approaches",
+                      "carr-systemic-2019"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Cartographier sans caricaturer",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Comparer sans palmarès global",
+                    "slug": "comparaison-contextualisee-psychotherapies",
+                    "description": "Une preuve répond à une indication, un comparateur, une population et des résultats définis.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "cuijpers-15-therapies-2020",
+                      "carr-systemic-2019",
+                      "nimh-psychotherapies"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Lire les comparaisons",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Construire une carte comparée",
+                    "description": "Pour six familles, relier hypothèse de changement, méthodes typiques, formats possibles et limites sans attribuer d’indication individuelle.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Corriger quatre caricatures",
+                    "description": "Réécrire des affirmations réduisant TCC, psychodynamique, humanisme ou systémique à un slogan.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Auditer un classement de thérapies",
+                    "description": "Repérer indication, population, comparateur, résultats, suivi et attrition manquants dans un faux palmarès.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              },
+              {
+                "title": "Efficacité, effets indésirables, alliance et adaptation",
+                "slug": "efficacite-effets-indesirables-alliance-adaptation",
+                "summary": "Lire les résultats des psychothérapies avec leurs comparateurs, attritions et limites, puis intégrer sécurité, alliance, suivi, culture et accès sans promesse individuelle.",
+                "position": 3,
+                "estimatedMinutes": 120,
+                "objectives": [
+                  "Distinguer efficacité en conditions contrôlées et effectivité en conditions usuelles.",
+                  "Interpréter comparateur, attrition, non-réponse, détérioration et effets indésirables.",
+                  "Situer alliance, monitoring et adaptation culturelle comme processus contextualisés plutôt que garanties de résultat."
+                ],
+                "prerequisites": [
+                  "Savoir lire une comparaison et une taille d’effet.",
+                  "Connaître les grandes familles de psychothérapies sans palmarès global."
+                ],
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "L’efficacité expérimentale demande si une intervention produit un bénéfice dans des conditions relativement contrôlées ; l’effectivité demande ce qu’elle produit dans des conditions plus proches de la pratique. Il s’agit d’un continuum, pas de deux boîtes. Pour interpréter une étude, on précise population, intervention, comparateur, résultats, durée et contexte. Être supérieur à une liste d’attente, aux soins usuels ou à une autre thérapie ne répond pas à la même question.",
+                      "sourceKeys": [
+                        "singal-efficacy-effectiveness-2014"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Une moyenne de groupe ne prédit pas le parcours d’une personne. Il faut examiner ampleur et incertitude de l’effet, importance clinique, maintien dans le temps, données manquantes et attrition. L’acceptabilité ne se confond pas avec l’efficacité : abandon, refus, charge temporelle, coût et accessibilité peuvent modifier l’usage réel. Les analyses selon les personnes ayant terminé et celles selon l’assignation initiale répondent aussi à des questions différentes.",
+                      "sourceKeys": [
+                        "singal-efficacy-effectiveness-2014",
+                        "honkalampi-negative-effects-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Une psychothérapie peut s’accompagner d’une absence d’amélioration, d’une détérioration, d’événements indésirables ou d’un retrait précoce. Ces catégories ne sont pas interchangeables : l’attrition n’est pas à elle seule une preuve de dommage, et un événement survenant pendant une thérapie n’est pas automatiquement causé par elle. Inversement, l’absence de mesure n’est pas une preuve d’absence de risque. Les essais rapportent encore insuffisamment ces effets ; les définir à l’avance, les rechercher systématiquement et documenter leur temporalité et leur gravité relève de la sécurité.",
+                      "sourceKeys": [
+                        "honkalampi-negative-effects-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 4,
+                    "content": {
+                      "text": "Le monitoring de routine recueille périodiquement des informations sur objectifs, fonctionnement, symptômes, qualité de vie, alliance ou effets indésirables, puis les restitue pour soutenir la discussion. Il peut aider à repérer stagnation ou détérioration, mais un score n’ordonne pas automatiquement de poursuivre, changer ou arrêter. La finalité, la fréquence, la confidentialité, la charge et l’interprétation doivent être expliquées ; retour de la personne et observation clinique restent nécessaires.",
+                      "sourceKeys": [
+                        "barkham-rom-2023",
+                        "honkalampi-negative-effects-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 5,
+                    "content": {
+                      "text": "L’alliance de travail renvoie notamment à un accord sur les objectifs et tâches et à un lien permettant la coopération. Les études montrent une association moyenne positive avec les résultats, mais une corrélation ne prouve pas une cause unique : amélioration précoce, attentes, compétences du thérapeute, caractéristiques de la personne et contexte peuvent interagir. L’alliance varie dans le temps ; les désaccords et ruptures doivent pouvoir être nommés et réparés, non utilisés pour attribuer l’échec à la personne.",
+                      "sourceKeys": [
+                        "fluckiger-alliance-2018",
+                        "barkham-rom-2023"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Adapter culturellement ne consiste pas à assigner une technique à une origine supposée. Cela implique de demander significations, langue, valeurs, spiritualité éventuelle, préférences, discriminations, ressources et contraintes, tout en vérifiant les données pour la population concernée. Accessibilité financière, géographique, sensorielle, cognitive et numérique conditionne l’équité. Une adaptation se co-construit, se surveille et se révise. Ces repères n’indiquent pas quelle thérapie une personne devrait entreprendre, poursuivre ou interrompre.",
+                      "sourceKeys": [
+                        "benish-cultural-adaptation-2011",
+                        "bps-assessment-culture-2025"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "singal-efficacy-effectiveness-2014",
+                    "title": "A Primer on Effectiveness and Efficacy Trials",
+                    "type": "article",
+                    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3912314/",
+                    "author": "Amit G. Singal, Peter D. R. Higgins et Akbar K. Waljee",
+                    "citation": "Singal, A. G., Higgins, P. D. R., & Waljee, A. K. (2014). A primer on effectiveness and efficacy trials. Clinical and Translational Gastroenterology, 5, e45. https://doi.org/10.1038/ctg.2013.13",
+                    "description": "Distinguer conditions contrôlées, conditions usuelles et continuum pragmatique.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 1
+                  },
+                  {
+                    "key": "honkalampi-negative-effects-2025",
+                    "title": "Negative effects in randomized controlled trials of psychotherapies and psychological interventions: A systematic review",
+                    "type": "article",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/38266653/",
+                    "author": "Kirsi Honkalampi, Henna-Riikka Urhonen et Marianna Virtanen",
+                    "citation": "Honkalampi, K., Urhonen, H.-R., & Virtanen, M. (2025). Negative effects in randomized controlled trials of psychotherapies and psychological interventions: A systematic review. Psychotherapy Research, 35(1), 100–111. https://doi.org/10.1080/10503307.2024.2301972",
+                    "description": "Observer la sous-déclaration des résultats négatifs et la nécessité d’un monitoring explicite.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 2
+                  },
+                  {
+                    "key": "barkham-rom-2023",
+                    "title": "Routine Outcome Monitoring (ROM) and Feedback: Research Review and Recommendations",
+                    "type": "article",
+                    "url": "https://www.tandfonline.com/doi/full/10.1080/10503307.2023.2181114",
+                    "author": "Michael Barkham et collaborateurs",
+                    "citation": "Barkham, M., De Jong, K., Delgadillo, J., & Lutz, W. (2023). Routine outcome monitoring (ROM) and feedback: Research review and recommendations. Psychotherapy Research, 33(7), 841–855. https://doi.org/10.1080/10503307.2023.2181114",
+                    "description": "Lire collecte, feedback, adaptation et limites du suivi standardisé.",
+                    "isRequired": true,
+                    "estimatedMinutes": 22,
+                    "position": 3
+                  },
+                  {
+                    "key": "fluckiger-alliance-2018",
+                    "title": "The alliance in adult psychotherapy: A meta-analytic synthesis",
+                    "type": "article",
+                    "url": "https://societyforpsychotherapy.org/wp-content/uploads/2018/10/Fluckiger-et-al-2018.pdf",
+                    "author": "Christoph Flückiger et collaborateurs",
+                    "citation": "Flückiger, C., Del Re, A. C., Wampold, B. E., & Horvath, A. O. (2018). The alliance in adult psychotherapy: A meta-analytic synthesis. Psychotherapy, 55(4), 316–340. https://doi.org/10.1037/pst0000172",
+                    "description": "Interpréter l’association alliance-résultat avec hétérogénéité et prudence causale.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 4
+                  },
+                  {
+                    "key": "benish-cultural-adaptation-2011",
+                    "title": "Culturally adapted psychotherapy and the legitimacy of myth: a direct-comparison meta-analysis",
+                    "type": "article",
+                    "url": "https://pubmed.ncbi.nlm.nih.gov/21604860/",
+                    "author": "Steven G. Benish, Stephen Quintana et Bruce E. Wampold",
+                    "citation": "Benish, S. G., Quintana, S., & Wampold, B. E. (2011). Culturally adapted psychotherapy and the legitimacy of myth: A direct-comparison meta-analysis. Journal of Counseling Psychology, 58(3), 279–289. https://doi.org/10.1037/a0023626",
+                    "description": "Examiner l’adaptation culturelle comme processus de congruence, sans assignation identitaire.",
+                    "isRequired": false,
+                    "estimatedMinutes": 16,
+                    "position": 5
+                  },
+                  {
+                    "key": "bps-assessment-culture-2025",
+                    "title": "Assessment — Assessment, formulation, and diagnosis guidelines (adults)",
+                    "type": "document",
+                    "url": "https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.5",
+                    "author": "British Psychological Society",
+                    "citation": "British Psychological Society. (2025). Assessment. In Assessment, formulation, and diagnosis guidelines (adults). https://doi.org/10.53841/bpsrep.2025.rep188.5",
+                    "description": "Relier culture, langue, handicap, pouvoir et accessibilité à une pratique individualisée.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 6
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Efficacité, effectivité et comparateurs",
+                    "slug": "efficacite-effectivite-comparateurs",
+                    "description": "La portée d’un résultat dépend des conditions, du comparateur, des résultats et de l’attrition.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "singal-efficacy-effectiveness-2014",
+                      "honkalampi-negative-effects-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Lire une efficacité",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Sécurité, monitoring et alliance",
+                    "slug": "securite-monitoring-alliance",
+                    "description": "Suivi et alliance soutiennent l’ajustement sans devenir algorithmes ni causes uniques.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "honkalampi-negative-effects-2025",
+                      "barkham-rom-2023",
+                      "fluckiger-alliance-2018"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Suivre sans automatiser",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Adaptation culturelle, accès et équité",
+                    "slug": "adaptation-culturelle-acces-equite",
+                    "description": "L’adaptation se co-construit à partir de la personne et de ses contraintes, sans stéréotype.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "benish-cultural-adaptation-2011",
+                      "bps-assessment-culture-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Adapter sans assigner",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Déplier une affirmation d’efficacité",
+                    "description": "Pour un résumé d’étude, préciser population, intervention, comparateur, résultats, suivi, attrition et limites de généralisation.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Créer un tableau de monitoring prudent",
+                    "description": "Proposer objectifs, fonctionnement, expérience négative et alliance avec règles de discussion, confidentialité et révision, sans seuil automatisé de traitement.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Auditer une adaptation culturelle",
+                    "description": "Transformer un protocole stéréotypé en questions ouvertes sur langue, significations, accès, discriminations, préférences et feedback.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Psychologie appliquée",
+            "slug": "psychologie-appliquee",
+            "position": 20,
+            "lessons": [
+              {
+                "title": "Santé et prévention",
+                "slug": "sante-prevention",
+                "summary": "Distinguer promotion de la santé, prévention populationnelle et soin individuel, puis évaluer une action sans culpabiliser ni transformer des résultats moyens en conseil médical.",
+                "objectives": [
+                  "Distinguer promotion de la santé, prévention universelle, sélective ou indiquée et traitement.",
+                  "Relier les actions aux déterminants sociaux, aux environnements et aux inégalités de santé.",
+                  "Construire une évaluation proportionnée portant sur effets, mise en œuvre, équité et effets indésirables."
+                ],
+                "prerequisites": [
+                  "Distinguer association, causalité et généralisation.",
+                  "Savoir qu’un résultat populationnel ne prédit pas le cas individuel."
+                ],
+                "estimatedMinutes": 110,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La promotion de la santé vise à renforcer la capacité des personnes et des collectivités à agir sur leur santé et ses déterminants ; elle ne se limite pas à éviter une maladie. La prévention cherche à réduire la probabilité, l’apparition ou les conséquences d’un problème défini. Le traitement et le soin répondent à une situation clinique individuelle. Ces finalités peuvent se compléter, mais une campagne, une politique ou un atelier populationnel ne devient pas une consultation médicale et ne permet pas de choisir un traitement pour une personne.",
+                      "sourceKeys": [
+                        "who-health-promotion-glossary-2021",
+                        "who-world-mental-health-report-2022"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Une action universelle s’adresse à toute une population ou un milieu ; une action sélective à un groupe exposé à une probabilité plus élevée ; une action indiquée à des personnes présentant des signes précoces ou un risque accru sans que cela équivaille nécessairement à un diagnostic. Le ciblage doit reposer sur une finalité explicite, des données proportionnées, des règles transparentes et un accès équitable. Il peut produire stigmatisation, faux positifs, exclusion ou déplacement de ressources : ces conséquences doivent être anticipées et mesurées.",
+                      "sourceKeys": [
+                        "who-hat-guideline-2020",
+                        "who-world-mental-health-report-2022"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Les comportements de santé se développent dans des conditions matérielles, relationnelles, culturelles et institutionnelles : revenu, logement, éducation, discrimination, sécurité, travail, services disponibles et politiques publiques comptent. Informer peut être utile, mais ne crée ni temps, ni revenu, ni accessibilité. Une prévention responsable agit aussi sur les environnements et ne présente jamais maladie, détresse ou non-participation comme une faute personnelle. Les personnes concernées participent à la définition des besoins et des solutions.",
+                      "sourceKeys": [
+                        "who-world-mental-health-report-2022",
+                        "who-health-promotion-glossary-2021"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 4,
+                    "content": {
+                      "text": "Évaluer une intervention complexe commence par une théorie de programme : pour qui, par quels mécanismes, dans quel contexte et avec quelles ressources un changement est-il attendu ? L’évaluation distingue faisabilité, portée réelle, fidélité et adaptations, effets utiles, effets indésirables, coûts et distribution des effets. Elle compare des alternatives crédibles et documente l’incertitude. Un effet moyen ne suffit pas si l’action n’atteint pas les groupes visés, aggrave une inégalité ou dépend d’un contexte absent ailleurs.",
+                      "sourceKeys": [
+                        "skivington-complex-interventions-2021",
+                        "who-world-mental-health-report-2022"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 5,
+                    "content": {
+                      "text": "Une ville propose une application gratuite de gestion du stress et annonce qu’elle « prévient les troubles mentaux ». Avant de conclure, il faut préciser l’objectif, la population, la comparaison et la durée ; mesurer inscription, usage, abandon, bien-être et recours à l’aide ; vérifier accessibilité numérique, langues, confidentialité et effets par groupe ; rechercher pression à participer, culpabilisation ou retard de soins. Une amélioration chez les utilisateurs volontaires ne prouve ni efficacité populationnelle ni prévention d’un diagnostic.",
+                      "sourceKeys": [
+                        "skivington-complex-interventions-2021",
+                        "who-hat-guideline-2020"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Une recommandation populationnelle décrit une action, un public, un niveau de preuve et des limites ; elle n’ordonne pas à une personne de commencer, arrêter ou remplacer un soin. Devant une difficulté personnelle persistante ou un retentissement important, l’orientation prudente est de solliciter un professionnel qualifié ou un service local adapté. En cas de danger immédiat ou d’impossibilité de rester en sécurité, contacter sans attendre les urgences locales ou une aide de crise appropriée. Cette leçon ne fournit aucun conseil médical individualisé.",
+                      "sourceKeys": [
+                        "who-world-mental-health-report-2022",
+                        "who-hat-guideline-2020"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "who-health-promotion-glossary-2021",
+                    "title": "Health Promotion Glossary of Terms 2021",
+                    "type": "document",
+                    "url": "https://www.who.int/publications/i/item/9789240038349",
+                    "author": "Organisation mondiale de la Santé",
+                    "citation": "World Health Organization. (2021). Health Promotion Glossary of Terms 2021.",
+                    "description": "Lire les entrées health promotion, empowerment, determinants et equity ; distinguer concepts et conseils individuels.",
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "who-world-mental-health-report-2022",
+                    "title": "World mental health report: Transforming mental health for all",
+                    "type": "document",
+                    "url": "https://www.who.int/publications/i/item/9789240049338",
+                    "author": "Organisation mondiale de la Santé",
+                    "citation": "World Health Organization. (2022). World mental health report: Transforming mental health for all.",
+                    "description": "Lire le résumé et les sections sur déterminants et environnements ; relever les actions structurelles proposées.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 2
+                  },
+                  {
+                    "key": "who-hat-guideline-2020",
+                    "title": "Guidelines on mental health promotive and preventive interventions for adolescents: Helping Adolescents Thrive",
+                    "type": "document",
+                    "url": "https://www.who.int/europe/publications/i/item/9789240011854",
+                    "author": "Organisation mondiale de la Santé",
+                    "citation": "World Health Organization. (2020). Guidelines on mental health promotive and preventive interventions for adolescents: Helping adolescents thrive.",
+                    "description": "Comparer interventions universelles et sélectives, qualité des preuves, équité, acceptabilité et effets indésirables sans extrapoler aux soins individuels.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 3
+                  },
+                  {
+                    "key": "skivington-complex-interventions-2021",
+                    "title": "A new framework for developing and evaluating complex interventions: update of Medical Research Council guidance",
+                    "type": "article",
+                    "url": "https://www.bmj.com/content/374/bmj.n2061",
+                    "author": "Kathryn Skivington et collaborateurs",
+                    "citation": "Skivington, K., Matthews, L., Simpson, S. A., et al. (2021). A new framework for developing and evaluating complex interventions. BMJ, 374, n2061. https://doi.org/10.1136/bmj.n2061",
+                    "description": "Lire le cadre et relever contexte, théorie de programme, parties prenantes, incertitudes et perspective système.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 4
+                  },
+                  {
+                    "key": "who-unicef-hat-toolkit-2021",
+                    "title": "Helping Adolescents Thrive Toolkit",
+                    "type": "document",
+                    "url": "https://www.who.int/westernpacific/publications/i/item/9789240025554",
+                    "author": "Organisation mondiale de la Santé et UNICEF",
+                    "citation": "World Health Organization & UNICEF. (2021). Helping Adolescents Thrive Toolkit.",
+                    "description": "Consulter les stratégies sur lois, environnements et participation ; identifier une condition de mise en œuvre et une limite de transfert.",
+                    "isRequired": false,
+                    "estimatedMinutes": 18,
+                    "position": 5
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Promotion, prévention et soin",
+                    "slug": "promotion-prevention-soin",
+                    "description": "Les niveaux d’action diffèrent par finalité, population et décision ; une intervention populationnelle n’est pas un traitement individuel.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "who-health-promotion-glossary-2021",
+                      "who-hat-guideline-2020"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Niveaux d’action",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Déterminants sociaux et équité",
+                    "slug": "determinants-sociaux-equite-sante",
+                    "description": "Conditions de vie, pouvoir et accès façonnent les possibilités de santé ; la prévention ne doit ni blâmer ni exclure.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "who-world-mental-health-report-2022",
+                      "who-unicef-hat-toolkit-2021"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Prévenir sans culpabiliser",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Évaluation et mise en œuvre",
+                    "slug": "evaluation-mise-en-oeuvre-prevention",
+                    "description": "Effets, portée, mécanismes, contexte, coûts, équité et dommages possibles doivent être examinés ensemble.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "skivington-complex-interventions-2021",
+                      "who-hat-guideline-2020"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Évaluer une action",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Classer des actions de santé",
+                    "description": "Classer douze situations fictives comme promotion, prévention universelle, sélective ou indiquée, soin ou combinaison, puis justifier la population et la finalité.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Réaliser un audit d’équité",
+                    "description": "Pour une campagne fictive, cartographier obstacles matériels, accès, stigmatisation, participation et effets possibles par groupe sans attribuer de faute individuelle.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Concevoir une évaluation prudente",
+                    "description": "Définir théorie de programme, comparaison, portée, mise en œuvre, résultats, effets indésirables et critères d’équité d’une intervention fictive.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              },
+              {
+                "title": "Éducation et apprentissage",
+                "slug": "education-apprentissage",
+                "summary": "Mobiliser des principes psychologiques pour concevoir et évaluer l’enseignement sans styles d’apprentissage, neuromythes ni recettes séparées du contenu, du contexte et de l’équité.",
+                "objectives": [
+                  "Distinguer préférences, aptitudes, besoins d’accessibilité et prétendus styles d’apprentissage.",
+                  "Expliquer l’intérêt et les limites de l’espacement, de la récupération et de la métacognition.",
+                  "Évaluer une pratique éducative selon objectifs, contexte, mise en œuvre, équité et données d’apprentissage."
+                ],
+                "prerequisites": [
+                  "Distinguer apprentissage durable et performance immédiate.",
+                  "Savoir lire un effet moyen et ses limites de généralisation."
+                ],
+                "estimatedMinutes": 115,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Appliquer la psychologie à l’éducation consiste à formuler un objectif d’apprentissage, choisir des observations pertinentes, mobiliser des mécanismes plausibles puis vérifier les effets dans un contexte réel. Un principe de recherche n’est pas une recette universelle : son utilité dépend du contenu, de l’âge, des connaissances antérieures, du temps, de l’accompagnement, de la langue, de l’accessibilité et du type de résultat mesuré. Une pratique doit rester révisable et ne transforme pas une difficulté en aptitude fixe.",
+                      "sourceKeys": [
+                        "carpenter-spacing-retrieval-2022",
+                        "eef-metacognition-2025",
+                        "unesco-gem-technology-2023"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 2,
+                    "content": {
+                      "text": "Les personnes ont des préférences et des profils variés, mais l’hypothèse selon laquelle chacun apprendrait mieux si l’enseignement était apparié à un style visuel, auditif ou kinesthésique n’est pas étayée par les tests appropriés. Un questionnaire de préférence ne doit donc ni étiqueter un élève ni limiter les tâches proposées. Présenter une notion de plusieurs façons peut servir le contenu, la compréhension et l’accessibilité ; ce n’est pas la preuve d’un « style » stable ni une raison de créer trois versions appariées.",
+                      "sourceKeys": [
+                        "pashler-learning-styles-2008",
+                        "newton-salvi-learning-styles-2020"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "Un neuromythe emprunte un vocabulaire cérébral à une affirmation éducative insuffisamment étayée. Les slogans « cerveau gauche ou droit », « seulement 10 % du cerveau » ou « période unique après laquelle on ne peut plus apprendre » simplifient abusivement des résultats. Le mot neurosciences, une image cérébrale ou une explication biologique ne démontre pas l’efficacité pédagogique. Il faut demander quelle intervention, quelle comparaison, quel apprentissage, quelle population, quelle durée et quelles réplications soutiennent la conclusion.",
+                      "sourceKeys": [
+                        "howard-jones-neuromyths-2014",
+                        "newton-salvi-learning-styles-2020"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 4,
+                    "content": {
+                      "text": "La récupération active consiste à tenter de rappeler ou utiliser une connaissance ; l’espacement répartit les occasions d’apprentissage dans le temps. Ces pratiques peuvent soutenir la rétention et le transfert, surtout avec un retour informatif et plusieurs occasions de réussite. Elles ne signifient ni tester en permanence à fort enjeu, ni laisser l’élève échouer sans aide. La métacognition et l’autorégulation se développent lorsque l’enseignant explicite, modèle et guide la planification, le suivi et l’évaluation d’une stratégie dans une tâche disciplinaire précise.",
+                      "sourceKeys": [
+                        "carpenter-spacing-retrieval-2022",
+                        "eef-metacognition-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 5,
+                    "content": {
+                      "text": "Pour enseigner un concept scientifique, une équipe remplace le test de « style » par un objectif observable, des explications verbales et schémas utiles au contenu, une démonstration accessible, des questions de récupération à faible enjeu, des reprises espacées et une réflexion guidée sur les erreurs. Elle prévoit alternatives pour handicap, langue et accès numérique, puis compare apprentissage différé, participation et charge selon les groupes. L’adaptation porte sur les besoins et les obstacles, pas sur une catégorie VAK.",
+                      "sourceKeys": [
+                        "carpenter-spacing-retrieval-2022",
+                        "eef-metacognition-2025",
+                        "unesco-gem-technology-2023",
+                        "pashler-learning-styles-2008"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "objective",
+                    "position": 6,
+                    "content": {
+                      "text": "Avant d’adopter une méthode, préciser le problème éducatif, l’objectif, la preuve disponible, les coûts, la formation requise et les conséquences possibles ; tester à petite échelle ; recueillir la voix des apprenants ; mesurer mise en œuvre, apprentissage différé, effets par groupe et effets indésirables. Une technologie ou un score prédictif ne doit pas remplacer le jugement pédagogique, accroître la surveillance ou enfermer un élève dans un profil. Cette leçon ne permet ni diagnostic d’apprentissage ni décision individuelle à fort enjeu.",
+                      "sourceKeys": [
+                        "unesco-gem-technology-2023",
+                        "eef-metacognition-2025"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "pashler-learning-styles-2008",
+                    "title": "Learning Styles: Concepts and Evidence",
+                    "type": "article",
+                    "url": "https://journals.sagepub.com/doi/pdf/10.1111/j.1539-6053.2009.01038.x",
+                    "author": "Harold Pashler, Mark McDaniel, Doug Rohrer et Robert Bjork",
+                    "citation": "Pashler, H., McDaniel, M., Rohrer, D., & Bjork, R. (2008). Learning styles: Concepts and evidence. Psychological Science in the Public Interest, 9(3), 105–119. https://doi.org/10.1111/j.1539-6053.2009.01038.x",
+                    "description": "Lire la définition de l’hypothèse d’appariement et le type de plan nécessaire pour la tester.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 1
+                  },
+                  {
+                    "key": "newton-salvi-learning-styles-2020",
+                    "title": "How Common Is Belief in the Learning Styles Neuromyth, and Does It Matter? A Pragmatic Systematic Review",
+                    "type": "article",
+                    "url": "https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2020.602451/full",
+                    "author": "Philip M. Newton et Atharva Salvi",
+                    "citation": "Newton, P. M., & Salvi, A. (2020). How common is belief in the learning styles neuromyth, and does it matter? Frontiers in Education, 5, 602451. https://doi.org/10.3389/feduc.2020.602451",
+                    "description": "Lire méthodes et limites ; distinguer prévalence d’une croyance, preuve d’efficacité et effets possibles.",
+                    "isRequired": true,
+                    "estimatedMinutes": 22,
+                    "position": 2
+                  },
+                  {
+                    "key": "howard-jones-neuromyths-2014",
+                    "title": "Neuroscience and education: myths and messages",
+                    "type": "article",
+                    "url": "https://www.nature.com/articles/nrn3817",
+                    "author": "Paul A. Howard-Jones",
+                    "citation": "Howard-Jones, P. A. (2014). Neuroscience and education: myths and messages. Nature Reviews Neuroscience, 15, 817–824. https://doi.org/10.1038/nrn3817",
+                    "description": "Identifier les mécanismes de formation des neuromythes et les limites d’un transfert direct du cerveau à la classe.",
+                    "isRequired": true,
+                    "estimatedMinutes": 22,
+                    "position": 3
+                  },
+                  {
+                    "key": "carpenter-spacing-retrieval-2022",
+                    "title": "The science of effective learning with spacing and retrieval practice",
+                    "type": "article",
+                    "url": "https://www.nature.com/articles/s44159-022-00089-1",
+                    "author": "Shana K. Carpenter, Steven C. Pan et Andrew C. Butler",
+                    "citation": "Carpenter, S. K., Pan, S. C., & Butler, A. C. (2022). The science of effective learning with spacing and retrieval practice. Nature Reviews Psychology, 1, 496–511. https://doi.org/10.1038/s44159-022-00089-1",
+                    "description": "Lire mécanismes, résultats, conditions, transfert et questions ouvertes ; éviter la recette uniforme.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 4
+                  },
+                  {
+                    "key": "eef-metacognition-2025",
+                    "title": "Metacognition and Self-Regulated Learning — Guidance Report, Second Edition",
+                    "type": "document",
+                    "url": "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/metacognition",
+                    "author": "Education Endowment Foundation",
+                    "citation": "Education Endowment Foundation. (2025). Metacognition and Self-Regulated Learning: Guidance Report (2nd ed.).",
+                    "description": "Comparer les recommandations, le modelage et le guidage ; replacer la guidance britannique dans son contexte scolaire.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 5
+                  },
+                  {
+                    "key": "unesco-gem-technology-2023",
+                    "title": "Global Education Monitoring Report 2023: Technology in education — A tool on whose terms?",
+                    "type": "document",
+                    "url": "https://gem-report-2023.unesco.org/technology-in-education/",
+                    "author": "UNESCO Global Education Monitoring Report Team",
+                    "citation": "UNESCO. (2023). Global Education Monitoring Report 2023: Technology in education — A tool on whose terms?",
+                    "description": "Lire les sections preuve, contexte, équité et inclusion ; examiner qui bénéficie, qui est exclu et quelles données sont collectées.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 6
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Styles d’apprentissage et neuromythes",
+                    "slug": "styles-apprentissage-neuromythes",
+                    "description": "Préférences et différences existent, mais ni appariement VAK ni vocabulaire cérébral ne valident une méthode.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "pashler-learning-styles-2008",
+                      "newton-salvi-learning-styles-2020",
+                      "howard-jones-neuromyths-2014"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Déjouer les neuromythes",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Espacement, récupération et métacognition",
+                    "slug": "espacement-recuperation-metacognition",
+                    "description": "Des principes soutenus par la recherche doivent être conçus avec objectif, contenu, retour, guidage et mesure différée.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "carpenter-spacing-retrieval-2022",
+                      "eef-metacognition-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Pratiques fondées et limites",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Contexte, évaluation et équité éducative",
+                    "slug": "contexte-evaluation-equite-educative",
+                    "description": "Une pratique vaut par son adéquation au problème, sa mise en œuvre et ses effets distribués, pas par sa nouveauté.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "unesco-gem-technology-2023",
+                      "eef-metacognition-2025"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Adapter sans enfermer",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Auditer une affirmation éducative",
+                    "description": "Pour huit slogans, distinguer préférence, mécanisme, résultat de recherche, neuromythe et affirmation commerciale ; préciser la preuve nécessaire.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Transformer une séquence VAK",
+                    "description": "Réécrire une séquence fondée sur les styles en objectifs, représentations utiles au contenu, accessibilité, récupération, espacement et guidage métacognitif.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Préparer un pilote équitable",
+                    "description": "Concevoir le pilote d’une pratique éducative avec comparaison, apprentissage différé, mise en œuvre, participation, accessibilité, sous-groupes et critères d’arrêt.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              },
+              {
+                "title": "Travail, ergonomie et organisations",
+                "slug": "travail-ergonomie-organisations",
+                "summary": "Analyser le travail comme un système à concevoir, prévenir les risques organisationnels et encadrer données, surveillance et sélection sans blâme ni diagnostic des salariés.",
+                "objectives": [
+                  "Expliquer l’ergonomie comme conception des interactions entre personnes, tâches, outils, environnement et organisation.",
+                  "Prioriser la prévention organisationnelle des risques physiques et psychosociaux sur le blâme individuel.",
+                  "Évaluer surveillance et sélection algorithmique selon finalité, validité, confidentialité, équité et contrôle humain."
+                ],
+                "prerequisites": [
+                  "Distinguer corrélation, causalité, validité et utilité.",
+                  "Savoir qu’un score ne résume ni une personne ni son contexte."
+                ],
+                "estimatedMinutes": 120,
+                "position": 3,
+                "contentBlocks": [
+                  {
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "L’ergonomie, ou facteurs humains, étudie les interactions entre les personnes et les autres éléments d’un système, puis applique connaissances et méthodes à la conception pour soutenir bien-être humain et performance globale. Elle ne consiste pas à apprendre au travailleur à supporter un système mal conçu. L’analyse relie activité réelle, objectifs, variabilité, outils, interfaces, espace, horaires, coordination, compétences et contraintes ; une amélioration locale doit être vérifiée à l’échelle du système pour éviter de déplacer le risque.",
+                      "sourceKeys": [
+                        "iea-ergonomics-definition",
+                        "who-mental-health-work-guideline-2022"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "callout",
+                    "position": 2,
+                    "content": {
+                      "text": "Charge excessive, faible contrôle, horaires imprévisibles, insécurité, violence, discrimination, manque de soutien et conflits de rôle sont des risques liés à l’organisation du travail. La prévention commence par les évaluer avec les travailleurs puis modifier, réduire ou supprimer les conditions dangereuses. Formation au stress, sensibilisation ou soutien individuel peuvent compléter cette action ; ils ne doivent pas servir à rendre l’individu responsable d’un risque créé par la charge, les ressources, le management ou la politique de l’organisation.",
+                      "sourceKeys": [
+                        "who-mental-health-work-guideline-2022",
+                        "who-ilo-mental-health-work-2022"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "Un responsable peut écouter, décrire les exigences du travail, orienter vers les dispositifs disponibles et discuter d’aménagements, mais il ne diagnostique pas un salarié. Les informations de santé et d’accompagnement sont limitées à une finalité légitime, accessibles aux seules personnes autorisées et séparées des décisions ordinaires de management lorsque la confidentialité l’exige. Consentement, volontariat et possibilité de retrait doivent être examinés avec le rapport de pouvoir : accepter sous menace explicite ou implicite n’est pas un choix libre.",
+                      "sourceKeys": [
+                        "who-ilo-mental-health-work-2022",
+                        "ilo-worker-personal-data-1997"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "definition",
+                    "position": 4,
+                    "content": {
+                      "text": "La surveillance numérique et la gestion algorithmique peuvent suivre temps, activité, localisation, communications, rythme ou signaux physiologiques. Une finalité annoncée ne suffit pas : il faut établir nécessité et proportionnalité, rechercher une solution moins intrusive, informer avant la collecte, minimiser données et durée, sécuriser les accès, empêcher les usages secondaires et prévoir explication, contestation et réparation. Un outil ne doit pas inférer émotion, santé mentale, loyauté ou personnalité à partir de signaux non validés, ni transformer une mesure de sécurité en contrôle permanent.",
+                      "sourceKeys": [
+                        "ilo-worker-personal-data-1997",
+                        "oecd-algorithmic-management-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 5,
+                    "content": {
+                      "text": "Une procédure de sélection, humaine ou algorithmique, doit partir d’une analyse du travail et d’un construit pertinent, démontrer une validité adaptée au poste, à la décision et à la population, puis suivre fiabilité, accessibilité et résultats par groupe. Des données historiques peuvent reproduire des exclusions ; une variable apparemment neutre peut agir comme proxy ; plusieurs définitions de l’équité peuvent entrer en tension. Une promesse fournisseur ou une précision globale ne remplace ni documentation, audit indépendant, comparaison avec une alternative, contrôle humain compétent, droit de recours et surveillance après déploiement.",
+                      "sourceKeys": [
+                        "siop-ai-selection-2023",
+                        "raghavan-algorithmic-hiring-2020",
+                        "oecd-algorithmic-management-2025"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "example",
+                    "position": 6,
+                    "content": {
+                      "text": "Dans un entrepôt où les erreurs et douleurs augmentent, conclure à un manque de motivation serait prématuré. L’équipe observe le travail réel avec les opérateurs, puis examine cadence, objectifs incompatibles, interface, éclairage, manutention, pauses, effectifs, formation et coordination. Elle protège les signalements, teste plusieurs modifications et mesure sécurité, qualité, charge, incidents et effets par équipe. Les données individuelles ne servent pas à diagnostiquer ou sanctionner sans base valide ; si un algorithme alloue les tâches, ses règles, erreurs et possibilités de contestation entrent dans l’analyse.",
+                      "sourceKeys": [
+                        "iea-ergonomics-definition",
+                        "who-mental-health-work-guideline-2022",
+                        "oecd-algorithmic-management-2025"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "iea-ergonomics-definition",
+                    "title": "What Is Ergonomics (HFE)?",
+                    "type": "website",
+                    "url": "https://iea.cc/about/what-is-ergonomics/",
+                    "author": "International Ergonomics Association",
+                    "citation": "International Ergonomics Association. (2000). What is ergonomics (HFE)? Definition and applications.",
+                    "description": "Lire définition, approche système et domaines ; construire un exemple où une optimisation locale déplace un risque.",
+                    "isRequired": true,
+                    "estimatedMinutes": 18,
+                    "position": 1
+                  },
+                  {
+                    "key": "who-mental-health-work-guideline-2022",
+                    "title": "Guidelines on mental health at work",
+                    "type": "document",
+                    "url": "https://www.who.int/publications/i/item/9789240053052",
+                    "author": "Organisation mondiale de la Santé",
+                    "citation": "World Health Organization. (2022). Guidelines on mental health at work.",
+                    "description": "Lire les recommandations organisationnelles et leur certitude ; distinguer transformation du travail et intervention individuelle.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 2
+                  },
+                  {
+                    "key": "who-ilo-mental-health-work-2022",
+                    "title": "Mental health at work: policy brief",
+                    "type": "document",
+                    "url": "https://www.ilo.org/publications/mental-health-work",
+                    "author": "Organisation mondiale de la Santé et Organisation internationale du Travail",
+                    "citation": "World Health Organization & International Labour Organization. (2022). Mental health at work: Policy brief.",
+                    "description": "Repérer responsabilités des acteurs, participation des travailleurs, prévention des risques et soutien sans diagnostic managérial.",
+                    "isRequired": true,
+                    "estimatedMinutes": 22,
+                    "position": 3
+                  },
+                  {
+                    "key": "ilo-worker-personal-data-1997",
+                    "title": "Protection of workers’ personal data",
+                    "type": "document",
+                    "url": "https://www.ilo.org/publications/protection-workers%E2%80%99-personal-data-ilo-code-practice",
+                    "author": "Organisation internationale du Travail",
+                    "citation": "International Labour Organization. (1997). Protection of workers’ personal data: An ILO code of practice.",
+                    "description": "Lire finalité, information, surveillance, sécurité et confidentialité médicale ; vérifier en plus le droit national applicable.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 4
+                  },
+                  {
+                    "key": "oecd-algorithmic-management-2025",
+                    "title": "Algorithmic management in the workplace: New evidence from an OECD employer survey",
+                    "type": "document",
+                    "url": "https://www.oecd.org/en/publications/algorithmic-management-in-the-workplace_287c13c4-en.html",
+                    "author": "Anna Milanez, Annikka Lemmens et Carla Ruggiu",
+                    "citation": "Milanez, A., Lemmens, A., & Ruggiu, C. (2025). Algorithmic management in the workplace: New evidence from an OECD employer survey. OECD Artificial Intelligence Papers, 31. https://doi.org/10.1787/287c13c4-en",
+                    "description": "Lire définitions, usages, limites de l’enquête et préoccupations de gouvernance ; ne pas généraliser les fréquences au monde entier.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 5
+                  },
+                  {
+                    "key": "siop-ai-selection-2023",
+                    "title": "Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection",
+                    "type": "document",
+                    "url": "https://www.siop.org/wp-content/uploads/legacy/SIOP%20Considerations%20and%20Recommendations%20for%20the%20Validation%20and%20Use%20of%20AI-Based%20Assessments%20for%20Employee%20Selection%20010323.pdf",
+                    "author": "Society for Industrial and Organizational Psychology",
+                    "citation": "Society for Industrial and Organizational Psychology. (2023). Considerations and recommendations for the validation and use of AI-based assessments for employee selection.",
+                    "description": "Relever les exigences de construit, données, validité, équité, documentation et suivi pour les évaluations fondées sur l’IA.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 6
+                  },
+                  {
+                    "key": "raghavan-algorithmic-hiring-2020",
+                    "title": "Mitigating Bias in Algorithmic Hiring: Evaluating Claims and Practices",
+                    "type": "article",
+                    "url": "https://arxiv.org/abs/1906.09208",
+                    "author": "Manish Raghavan, Solon Barocas, Jon Kleinberg et Karen Levy",
+                    "citation": "Raghavan, M., Barocas, S., Kleinberg, J., & Levy, K. (2020). Mitigating bias in algorithmic hiring: Evaluating claims and practices. Proceedings of FAT* ’20, 469–481. https://doi.org/10.1145/3351095.3372828",
+                    "description": "Lire les choix de cibles, données et mesures d’équité ; distinguer revendication commerciale et preuve documentée.",
+                    "isRequired": false,
+                    "estimatedMinutes": 22,
+                    "position": 7
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Ergonomie et conception du système",
+                    "slug": "ergonomie-conception-systeme",
+                    "description": "Le travail est conçu à partir de l’activité réelle, des interactions et de la variabilité plutôt qu’en corrigeant le salarié.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "iea-ergonomics-definition",
+                      "who-mental-health-work-guideline-2022"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Concevoir le travail",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Risques psychosociaux, participation et confidentialité",
+                    "slug": "risques-psychosociaux-participation-confidentialite",
+                    "description": "La prévention transforme l’organisation avec les travailleurs et protège strictement santé, volontariat et données.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "who-mental-health-work-guideline-2022",
+                      "who-ilo-mental-health-work-2022",
+                      "ilo-worker-personal-data-1997"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Prévenir sans blâmer",
+                      "questionCount": 5
+                    }
+                  },
+                  {
+                    "title": "Surveillance, sélection et équité algorithmique",
+                    "slug": "surveillance-selection-equite-algorithmique",
+                    "description": "Les outils de management et sélection exigent nécessité, validité, minimisation, audit, contrôle humain et recours.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "oecd-algorithmic-management-2025",
+                      "siop-ai-selection-2023",
+                      "raghavan-algorithmic-hiring-2020"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Gouverner les outils",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Cartographier un système de travail",
+                    "description": "Pour un cas fictif, relier tâche réelle, outils, espace, rythme, coordination, variabilité et effets ; proposer trois modifications sans blâme individuel.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1
+                  },
+                  {
+                    "title": "Réaliser une analyse de confidentialité",
+                    "description": "Auditer une surveillance fictive selon finalité, nécessité, proportionnalité, information, consentement, minimisation, accès, durée, contestation et droit local.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2
+                  },
+                  {
+                    "title": "Auditer une sélection algorithmique",
+                    "description": "Construire une grille couvrant analyse du poste, construit, validité, population, accessibilité, groupes, proxies, explicabilité, audit, recours et suivi.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 3
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
     "estimatedDurationDays": 120
@@ -36515,6 +37997,2283 @@
                 "modèle dimensionnel",
                 "modele dimensionnel",
                 "dimensionalité"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "interventions-psychologiques",
+      "lessonSlug": "evaluation-formulation-decision-partagee",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "evaluation-multimethode-proportionnee",
+          "assessmentTitle": "Mini-évaluation — Évaluer sans réduire",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi un test unique ne constitue-t-il pas une évaluation complète ?",
+              "explanation": "Une évaluation répond à une question en croisant plusieurs sources et leurs limites.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Il ne fournit qu’une information située",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Il révèle toute la personne",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Il remplace l’entretien",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Il impose le diagnostic",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que faut-il clarifier avant le recueil ?",
+              "explanation": "Finalité, destinataires et cadre de confidentialité structurent l’évaluation.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "La question posée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les usages et destinataires",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La confidentialité et ses limites",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Le diagnostic à confirmer d’avance",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Accumuler plus de données améliore toujours l’évaluation.",
+              "explanation": "Le recueil doit être pertinent et proportionné à la décision.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que représente d’abord un score ?",
+              "explanation": "Il décrit une performance dans les conditions et normes de l’outil.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Une information contextualisée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une identité",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un traitement",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une décision automatique",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel principe limite le recueil aux informations utiles à la question ?",
+              "explanation": "Il s’agit de la proportionnalité.",
+              "acceptedAnswers": [
+                "proportionnalité",
+                "proportionnalite",
+                "évaluation proportionnée",
+                "evaluation proportionnee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "formulation-collaborative-revisable",
+          "assessmentTitle": "Mini-évaluation — Formuler sans figer",
+          "questions": [
+            {
+              "type": "true_false",
+              "prompt": "Une formulation est une vérité définitive sur la personne.",
+              "explanation": "C’est une hypothèse partagée et révisable.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que peut intégrer une formulation prudente ?",
+              "explanation": "Difficultés, ressources, contexte et hypothèses concurrentes sont articulés.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Les ressources",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le contexte social et culturel",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les inconnues et hypothèses concurrentes",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un trait moral fixe",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quand réviser une formulation ?",
+              "explanation": "Toute donnée contradictoire ou évolution pertinente peut conduire à la réviser.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Quand de nouvelles informations la contredisent",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Jamais",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Seulement après un test",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour préserver l’hypothèse initiale",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle relation au diagnostic est correcte ?",
+              "explanation": "Diagnostic et formulation répondent à des questions différentes et peuvent s’articuler.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "La formulation n’est pas un synonyme du diagnostic",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ils sont toujours identiques",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La formulation supprime toute classification",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le diagnostic explique tout",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel mot indique qu’une formulation se construit avec la personne ?",
+              "explanation": "Elle est collaborative.",
+              "acceptedAnswers": [
+                "collaborative",
+                "collaboration",
+                "co-construction",
+                "coconstruction"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "decision-partagee-autonomie",
+          "assessmentTitle": "Mini-évaluation — Choisir ensemble",
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "Que comporte une décision partagée ?",
+              "explanation": "Elle relie options, données, incertitudes et préférences.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Les options raisonnables",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les bénéfices, risques et contraintes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Ce qui compte pour la personne",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une option imposée",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Respecter l’autonomie revient à laisser la personne décider sans information ni soutien.",
+              "explanation": "L’autonomie exige une information accessible et un soutien sans contrainte.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Qui décide d’impliquer un proche lorsque le cadre le permet ?",
+              "explanation": "Le souhait de la personne doit être demandé.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La personne concernée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le proche automatiquement",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le test",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L’application",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que faire face à une incertitude importante ?",
+              "explanation": "On l’explicite et on prévoit les conditions de suivi ou de révision.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "La rendre visible et prévoir une révision",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La cacher",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Promettre un résultat",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Choisir au hasard",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne la prise en compte conjointe des données et préférences ?",
+              "explanation": "Il s’agit de la décision partagée.",
+              "acceptedAnswers": [
+                "décision partagée",
+                "decision partagee",
+                "prise de décision partagée",
+                "prise de decision partagee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "interventions-psychologiques",
+      "lessonSlug": "familles-psychotherapies",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "familles-cognitives-comportementales",
+          "assessmentTitle": "Mini-évaluation — Méthodes et cibles",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que ciblent typiquement les approches comportementales ?",
+              "explanation": "Elles analysent apprentissages, situations et conséquences.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Les apprentissages et conduites en contexte",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une essence morale",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un test unique",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le passé uniquement",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments peuvent appartenir à une TCC ?",
+              "explanation": "Une TCC peut combiner observation, exercices cognitifs et comportementaux.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Exposition ou activation",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Examen des interprétations",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Exercices entre séances",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Lecture de pensée",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "La troisième vague désigne une technique unique.",
+              "explanation": "Elle regroupe plusieurs modèles et méthodes.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que signifie une étiquette de famille ?",
+              "explanation": "Elle donne un repère mais ne décrit pas toute la pratique.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Un cadre général à préciser",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une séance identique partout",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une indication universelle",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une garantie de résultat",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quelle méthode confronte progressivement une peur dans un cadre soutenant ?",
+              "explanation": "Il s’agit de l’exposition.",
+              "acceptedAnswers": [
+                "exposition",
+                "exposition graduée",
+                "exposition graduee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "familles-relationnelles-contextuelles",
+          "assessmentTitle": "Mini-évaluation — Cartographier sans caricaturer",
+          "questions": [
+            {
+              "type": "true_false",
+              "prompt": "Une thérapie psychodynamique consiste seulement à parler du passé.",
+              "explanation": "Elle examine aussi affects, relations, significations et processus présents.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel accent est typique des approches humanistes ?",
+              "explanation": "Elles valorisent expérience, empathie et capacité de choix.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "L’expérience vécue et les conditions facilitantes",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "L’obéissance au thérapeute",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le score seul",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La sanction",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que peuvent examiner les approches systémiques ?",
+              "explanation": "Interactions, rôles et contextes sont centraux.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Les interactions",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les rôles et transitions",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les contextes sociaux",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un individu hors contexte",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une thérapie systémique exige-t-elle toujours toute la famille en séance ?",
+              "explanation": "Le cadre systémique peut être mobilisé avec des formats variés.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Non, le format dépend du cadre et de l’objectif",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Oui, sans exception",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Seulement un test",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Jamais plusieurs personnes",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quelle famille cible notamment rôles, transitions, conflits et deuil ?",
+              "explanation": "Il s’agit des thérapies interpersonnelles.",
+              "acceptedAnswers": [
+                "thérapie interpersonnelle",
+                "therapie interpersonnelle",
+                "thérapies interpersonnelles",
+                "therapies interpersonnelles"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "comparaison-contextualisee-psychotherapies",
+          "assessmentTitle": "Mini-évaluation — Lire les comparaisons",
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "Que préciser avant de comparer deux psychothérapies ?",
+              "explanation": "La comparaison dépend de la cible, du groupe, du contrôle et des résultats.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La population et la difficulté",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le comparateur",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les résultats et le suivi",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La popularité sur les réseaux",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Toutes les psychothérapies sont toujours équivalentes.",
+              "explanation": "Les résultats varient selon indication, comparateur et contexte.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une famille peut être déclarée meilleure pour tout problème et toute personne.",
+              "explanation": "Aucun palmarès universel n’est justifié.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que signifie intégratif ?",
+              "explanation": "L’intégration reste raisonnée et cohérente avec formulation, preuve et compétence.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Combiner de façon argumentée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Additionner au hasard",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Ignorer les données",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Garantir le résultat",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel élément compte les personnes qui interrompent ou quittent l’étude ?",
+              "explanation": "Il s’agit de l’attrition.",
+              "acceptedAnswers": [
+                "attrition",
+                "taux d’attrition",
+                "abandons",
+                "sorties d’étude"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "interventions-psychologiques",
+      "lessonSlug": "efficacite-effets-indesirables-alliance-adaptation",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "efficacite-effectivite-comparateurs",
+          "assessmentTitle": "Mini-évaluation — Lire une efficacité",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que désigne surtout l’efficacité expérimentale ?",
+              "explanation": "Elle concerne des conditions relativement contrôlées.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Le résultat dans des conditions contrôlées",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une garantie individuelle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La popularité",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le coût seul",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Efficacité et effectivité forment une opposition absolue.",
+              "explanation": "Les plans d’étude se situent sur un continuum.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que préciser pour interpréter une comparaison ?",
+              "explanation": "Population, comparateur et résultats définissent la question.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La population",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le comparateur",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les résultats et le suivi",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Le prestige du nom",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi l’attrition compte-t-elle ?",
+              "explanation": "Les sorties peuvent modifier interprétation, acceptabilité et généralisation.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Elle renseigne sur les sorties et données manquantes",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elle garantit le succès",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Elle remplace l’effet",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Elle est toujours sans importance",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme décrit la performance en conditions usuelles ?",
+              "explanation": "Il s’agit de l’effectivité.",
+              "acceptedAnswers": [
+                "effectivité",
+                "effectivite",
+                "efficacité en conditions réelles",
+                "efficacite en conditions reelles"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "securite-monitoring-alliance",
+          "assessmentTitle": "Mini-évaluation — Suivre sans automatiser",
+          "questions": [
+            {
+              "type": "true_false",
+              "prompt": "L’absence de signalement d’un effet indésirable prouve son absence.",
+              "explanation": "Un effet non recherché ou non demandé peut rester invisible.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que peut suivre un monitoring prudent ?",
+              "explanation": "Il peut croiser progrès, fonctionnement, alliance et expériences négatives.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Objectifs et fonctionnement",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Effets négatifs",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Alliance et préférences",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un score secret",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que doit déclencher un score préoccupant ?",
+              "explanation": "Il soutient une discussion et une évaluation contextualisée.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Une discussion et des vérifications",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Un arrêt automatique",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un diagnostic automatique",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une sanction",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L’association alliance-résultat prouve que l’alliance est l’unique cause du résultat.",
+              "explanation": "Corrélation, réciprocité et facteurs tiers doivent être considérés.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne une aggravation fiable au cours du suivi ?",
+              "explanation": "On parle de détérioration.",
+              "acceptedAnswers": [
+                "détérioration",
+                "deterioration",
+                "aggravation"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "adaptation-culturelle-acces-equite",
+          "assessmentTitle": "Mini-évaluation — Adapter sans assigner",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle première démarche évite le stéréotype culturel ?",
+              "explanation": "On demande à la personne ses significations et préférences.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Poser des questions ouvertes à la personne",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Déduire d’une origine",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Appliquer une règle de groupe",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Ignorer la culture",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles barrières concernent l’équité d’accès ?",
+              "explanation": "Coût, géographie, accessibilité et numérique peuvent conditionner l’accès réel.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Le coût",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La distance et les horaires",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les obstacles sensoriels, cognitifs ou numériques",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La préférence du chercheur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une adaptation culturelle est définitive dès la première séance.",
+              "explanation": "Elle se co-construit, se suit et se révise.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que faut-il vérifier avant de généraliser une étude ?",
+              "explanation": "La représentation de la population et le contexte d’étude comptent.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Population et contexte étudiés",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le titre seul",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une moyenne sans intervalle",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Un témoignage isolé",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel principe vise un accès juste malgré des obstacles différents ?",
+              "explanation": "Il s’agit de l’équité.",
+              "acceptedAnswers": [
+                "équité",
+                "equite",
+                "équité d’accès",
+                "equite d'acces"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "psychologie-appliquee",
+      "lessonSlug": "sante-prevention",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "promotion-prevention-soin",
+          "assessmentTitle": "Mini-évaluation — Niveaux d’action",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle action relève d’abord de la promotion de la santé ?",
+              "explanation": "La promotion renforce les capacités d’agir sur la santé et ses déterminants.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Améliorer collectivement les conditions favorables à la santé",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Prescrire un médicament à une personne",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Poser un diagnostic en ligne",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Remplacer une consultation",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une campagne populationnelle constitue un conseil médical individualisé.",
+              "explanation": "Ses résultats et recommandations ne décident pas du soin d’une personne.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit préciser une prévention ciblée ?",
+              "explanation": "Finalité, population et conséquences du ciblage doivent être explicites.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La population concernée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La finalité et les données utilisées",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les risques de stigmatisation ou d’exclusion",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Un diagnostic supposé pour chacun",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Une action indiquée équivaut-elle toujours à un traitement ?",
+              "explanation": "Elle peut viser des signes précoces sans constituer un soin diagnostique.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Non, finalité et statut clinique doivent être distingués",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Oui, automatiquement",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Oui, si elle est numérique",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Oui, si elle est universelle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne une action proposée à toute une population ?",
+              "explanation": "Il s’agit d’une action universelle.",
+              "acceptedAnswers": [
+                "universelle",
+                "prévention universelle",
+                "prevention universelle",
+                "action universelle"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "determinants-sociaux-equite-sante",
+          "assessmentTitle": "Mini-évaluation — Prévenir sans culpabiliser",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi l’information seule peut-elle être insuffisante ?",
+              "explanation": "Elle ne supprime pas les contraintes matérielles ou d’accès.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Elle ne crée pas automatiquement ressources et accessibilité",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les comportements sont immuables",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La santé dépend d’une faute",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Les environnements ne comptent pas",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Ne pas participer à une intervention prouve un manque de volonté.",
+              "explanation": "Accès, contraintes, confiance et pertinence peuvent expliquer la non-participation.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels déterminants collectifs examiner ?",
+              "explanation": "Conditions matérielles, discrimination et services façonnent les possibilités.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Logement et revenu",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Discrimination et sécurité",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Accessibilité des services",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une valeur morale individuelle",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle démarche soutient l’équité ?",
+              "explanation": "La participation aide à définir besoins, obstacles et effets pertinents.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Associer les personnes concernées à la conception",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Supposer leurs besoins",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Mesurer seulement la moyenne",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Exclure les non-utilisateurs",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne la distribution juste des possibilités de santé ?",
+              "explanation": "Il s’agit de l’équité en santé.",
+              "acceptedAnswers": [
+                "équité en santé",
+                "equite en sante",
+                "équité",
+                "equite"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "evaluation-mise-en-oeuvre-prevention",
+          "assessmentTitle": "Mini-évaluation — Évaluer une action",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que décrit une théorie de programme ?",
+              "explanation": "Elle explicite comment et dans quelles conditions le changement est attendu.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Public, mécanismes, contexte et résultats attendus",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une garantie d’efficacité",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un diagnostic individuel",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une publicité",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un effet moyen positif suffit même si l’inégalité augmente.",
+              "explanation": "La distribution des effets fait partie de l’évaluation.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que mesurer en plus du résultat principal ?",
+              "explanation": "Portée, mise en œuvre et dommages expliquent la valeur réelle.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La portée et l’abandon",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La mise en œuvre et les adaptations",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Les effets indésirables et l’équité",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Seulement les témoignages favorables",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que prouve une amélioration chez des volontaires ?",
+              "explanation": "Sans comparaison et analyse de sélection, la portée causale reste limitée.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Une observation à interpréter avec le plan et la sélection",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une efficacité universelle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La prévention d’un diagnostic",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L’absence de biais",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne le nombre et le profil des personnes effectivement touchées ?",
+              "explanation": "Il s’agit de la portée.",
+              "acceptedAnswers": [
+                "portée",
+                "portee",
+                "reach",
+                "couverture"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "psychologie-appliquee",
+      "lessonSlug": "education-apprentissage",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "styles-apprentissage-neuromythes",
+          "assessmentTitle": "Mini-évaluation — Déjouer les neuromythes",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que faudrait-il démontrer pour valider l’appariement à un style ?",
+              "explanation": "Il faut une interaction croisée entre style attribué et méthode d’enseignement.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Un avantage spécifique quand style et méthode sont appariés",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une préférence déclarée",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un questionnaire populaire",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Plusieurs formats dans un cours",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une préférence visuelle prouve qu’une personne apprend moins bien par d’autres modalités.",
+              "explanation": "Préférence et efficacité d’apprentissage ne sont pas équivalentes.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Qu’est-ce qui ne prouve pas une efficacité pédagogique ?",
+              "explanation": "Le vocabulaire cérébral et la popularité ne remplacent pas une comparaison d’apprentissage.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Une image cérébrale seule",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le mot neurosciences",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Une forte popularité",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une étude comparative répliquée",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi utiliser plusieurs représentations ?",
+              "explanation": "Elles doivent servir le contenu et l’accessibilité, non une étiquette VAK.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Pour soutenir compréhension et accessibilité selon la tâche",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour diagnostiquer un style",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour limiter les élèves à un format",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour prouver une dominance cérébrale",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel nom porte l’idée d’apparier l’enseignement à un style supposé ?",
+              "explanation": "Il s’agit de l’hypothèse d’appariement.",
+              "acceptedAnswers": [
+                "hypothèse d’appariement",
+                "hypothese d'appariement",
+                "meshing hypothesis",
+                "appariement"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "espacement-recuperation-metacognition",
+          "assessmentTitle": "Mini-évaluation — Pratiques fondées et limites",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Qu’est-ce que la récupération active ?",
+              "explanation": "Elle demande de rappeler ou d’utiliser une connaissance.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Tenter de rappeler ou appliquer sans relire immédiatement",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Relire passivement sans objectif",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Passer uniquement un examen final",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Choisir un style VAK",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L’espacement impose le même calendrier pour tous les contenus et publics.",
+              "explanation": "La planification dépend de la tâche, de l’intervalle et de l’objectif.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles conditions rendent la récupération plus éducative ?",
+              "explanation": "Faible enjeu, retour et reprises favorisent apprentissage et sécurité.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Un faible enjeu",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Un retour informatif",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Plusieurs occasions de réussite",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une sanction à chaque erreur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Comment enseigner la métacognition ?",
+              "explanation": "Elle se construit dans une tâche par explicitation, modelage et guidage.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Modéliser et guider une stratégie dans le contenu",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Donner seulement un slogan",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Attribuer un profil fixe",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Retirer tout soutien",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne des reprises réparties dans le temps ?",
+              "explanation": "Il s’agit de l’espacement.",
+              "acceptedAnswers": [
+                "espacement",
+                "pratique espacée",
+                "pratique espacee",
+                "répétition espacée",
+                "repetition espacee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "contexte-evaluation-equite-educative",
+          "assessmentTitle": "Mini-évaluation — Adapter sans enfermer",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel est le premier repère avant une technologie éducative ?",
+              "explanation": "Le problème et l’objectif éducatif précèdent l’outil.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Définir le problème et l’objectif d’apprentissage",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Acheter l’outil le plus récent",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Supposer un effet pour tous",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Classer les élèves",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un effet moyen permet d’ignorer les élèves non atteints par l’intervention.",
+              "explanation": "Accès et distribution des effets sont essentiels à l’équité.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que documenter dans un pilote ?",
+              "explanation": "Apprentissage, mise en œuvre et effets distribués doivent être examinés.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "L’apprentissage différé",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La mise en œuvre réelle",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Accessibilité et effets par groupe",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Seulement la satisfaction du fournisseur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle adaptation est prudente ?",
+              "explanation": "Elle répond à un obstacle observé sans inférer une capacité fixe.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Proposer une alternative accessible liée au besoin",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Étiqueter l’élève pour toujours",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Supprimer les tâches exigeantes",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Diagnostiquer depuis un score",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel type de mesure vérifie ce qui reste après un délai ?",
+              "explanation": "Une mesure d’apprentissage différé.",
+              "acceptedAnswers": [
+                "apprentissage différé",
+                "apprentissage differe",
+                "test différé",
+                "test differe",
+                "rétention différée",
+                "retention differee"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "fondamentaux-psychologie",
+      "stageSlug": "interventions-applications",
+      "moduleSlug": "psychologie-appliquee",
+      "lessonSlug": "travail-ergonomie-organisations",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "ergonomie-conception-systeme",
+          "assessmentTitle": "Mini-évaluation — Concevoir le travail",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel est l’objet principal de l’ergonomie ?",
+              "explanation": "Elle conçoit les interactions d’un système pour le bien-être et la performance globale.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Les interactions entre personnes et système de travail",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La motivation supposée du salarié",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un siège seulement",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le diagnostic des équipes",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Former à mieux supporter une cadence suffit à corriger un système mal conçu.",
+              "explanation": "Il faut d’abord examiner et modifier la source organisationnelle du risque.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que comprend l’analyse de l’activité réelle ?",
+              "explanation": "Outils, variabilité et coordination dépassent la fiche de poste.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Les outils et interfaces",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La variabilité et les contraintes",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La coordination et les objectifs",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Une faute de caractère",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi vérifier l’effet à l’échelle du système ?",
+              "explanation": "Une optimisation locale peut déplacer charge ou risque ailleurs.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Pour détecter un déplacement du risque",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour attribuer un blâme",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour supprimer la participation",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour diagnostiquer une équipe",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne l’étude du travail effectivement accompli ?",
+              "explanation": "Il s’agit de l’activité réelle.",
+              "acceptedAnswers": [
+                "activité réelle",
+                "activite reelle",
+                "travail réel",
+                "travail reel"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "risques-psychosociaux-participation-confidentialite",
+          "assessmentTitle": "Mini-évaluation — Prévenir sans blâmer",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle action vient d’abord face à une surcharge collective ?",
+              "explanation": "La prévention cible la condition de travail à l’origine du risque.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Évaluer et modifier charge, ressources et organisation",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Diagnostiquer les salariés",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Imposer une application de méditation",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Blâmer le manque de résilience",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un manager peut diagnostiquer un trouble à partir de la performance.",
+              "explanation": "Il peut soutenir et orienter, jamais poser un diagnostic amateur.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels principes protègent des données de santé au travail ?",
+              "explanation": "Finalité, accès limité et séparation protègent la confidentialité.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Finalité explicite et minimisation",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Accès aux seules personnes autorisées",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Séparation des dossiers ordinaires si nécessaire",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Diffusion à toute l’équipe",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi le consentement au travail demande-t-il une vigilance particulière ?",
+              "explanation": "Le rapport de pouvoir peut rendre un refus coûteux ou impossible.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Une pression hiérarchique peut limiter le choix réel",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Tout consentement est impossible",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La confidentialité ne compte pas",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Un employeur devient clinicien",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel niveau d’intervention modifie directement les conditions de travail ?",
+              "explanation": "Il s’agit du niveau organisationnel.",
+              "acceptedAnswers": [
+                "organisationnel",
+                "intervention organisationnelle",
+                "niveau organisationnel"
+              ],
+              "position": 5,
+              "options": []
+            }
+          ]
+        },
+        {
+          "conceptSlug": "surveillance-selection-equite-algorithmique",
+          "assessmentTitle": "Mini-évaluation — Gouverner les outils",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel test précède une surveillance intrusive ?",
+              "explanation": "La nécessité, la proportionnalité et les alternatives moins intrusives doivent être établies.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Nécessité, proportionnalité et solution moins intrusive",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Popularité du logiciel",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Promesse du fournisseur",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Curiosité du manager",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une précision globale suffit à établir l’équité d’un algorithme de sélection.",
+              "explanation": "Il faut validité, résultats par groupe, accessibilité et conséquences de la décision.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que vérifier pour une sélection algorithmique ?",
+              "explanation": "Le construit, la population et les écarts par groupe sont centraux.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "La pertinence pour le poste",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La validité dans la population cible",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "L’accessibilité et les résultats par groupe",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "La couleur de l’interface",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi maintenir un recours humain compétent ?",
+              "explanation": "Une décision contestable exige explication, examen du contexte et correction possible.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Pour permettre contestation et correction motivée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour cacher le modèle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour diagnostiquer un candidat",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour supprimer les audits",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "short_answer",
+              "prompt": "Quel terme désigne une variable apparemment neutre qui représente indirectement un attribut sensible ?",
+              "explanation": "Il s’agit d’un proxy.",
+              "acceptedAnswers": [
+                "proxy",
+                "variable proxy",
+                "variable de substitution"
               ],
               "position": 5,
               "options": []

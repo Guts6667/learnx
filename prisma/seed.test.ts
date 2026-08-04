@@ -212,9 +212,9 @@ describe('sample program seed', () => {
     const sampleProgram = await readSampleProgram();
 
     expect(sampleProgram.slug).toBe('fondamentaux-psychologie');
-    expect(sampleProgram.stages).toHaveLength(11);
+    expect(sampleProgram.stages).toHaveLength(12);
     expect(sampleProgram.stages.flatMap((stage) => stage.modules)).toHaveLength(
-      18,
+      20,
     );
   });
 
@@ -878,6 +878,53 @@ describe('sample program seed', () => {
     ).toBe(100);
   });
 
+  it('lit les six leçons et les dix-huit banques de la douzième étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stage = sampleSeed.program.stages.find(
+      (item) => item.slug === 'interventions-applications',
+    );
+    const lessons = stage?.modules.flatMap((module) => module.lessons) ?? [];
+    const groups = sampleSeed.conceptAssessmentBanks.filter(
+      (group) => group.stageSlug === stage?.slug,
+    );
+
+    expect(stage?.modules.map((module) => module.slug)).toEqual([
+      'interventions-psychologiques',
+      'psychologie-appliquee',
+    ]);
+    expect(lessons.map((lesson) => lesson.slug)).toEqual([
+      'evaluation-formulation-decision-partagee',
+      'familles-psychotherapies',
+      'efficacite-effets-indesirables-alliance-adaptation',
+      'sante-prevention',
+      'education-apprentissage',
+      'travail-ergonomie-organisations',
+    ]);
+    expect(lessons.every((lesson) => lesson.contentBlocks.length === 6)).toBe(
+      true,
+    );
+    expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
+    expect(groups).toHaveLength(6);
+    expect(groups.flatMap((group) => group.assessmentBanks)).toHaveLength(18);
+    expect(
+      groups.flatMap((group) =>
+        group.assessmentBanks.flatMap((bank) => bank.questions),
+      ),
+    ).toHaveLength(90);
+    expect(stage?.assessment).toMatchObject({
+      instructions: expect.stringContaining('## Cas Campus Horizon'),
+      rubric: expect.any(Array),
+      type: 'case_study',
+    });
+    expect(
+      stage?.assessment.rubric?.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+  });
+
   it('synchronise les preuves éditoriales corrigées des étapes initiales', async () => {
     type LessonSidecar = {
       editorial: {
@@ -933,18 +980,18 @@ describe('sample program seed', () => {
     const groups = sampleSeed.conceptAssessmentBanks;
     const banks = groups.flatMap((group) => group.assessmentBanks);
 
-    expect(stages).toHaveLength(11);
-    expect(modules).toHaveLength(18);
-    expect(lessons).toHaveLength(57);
+    expect(stages).toHaveLength(12);
+    expect(modules).toHaveLength(20);
+    expect(lessons).toHaveLength(63);
     expect(stages.every((stage) => stage.assessment)).toBe(true);
-    expect(concepts).toHaveLength(171);
-    expect(concepts.filter((concept) => concept.assessment)).toHaveLength(171);
-    expect(groups).toHaveLength(57);
-    expect(banks).toHaveLength(171);
-    expect(banks.flatMap((bank) => bank.questions)).toHaveLength(855);
-    expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(325);
-    expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(331);
-    expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(171);
+    expect(concepts).toHaveLength(189);
+    expect(concepts.filter((concept) => concept.assessment)).toHaveLength(189);
+    expect(groups).toHaveLength(63);
+    expect(banks).toHaveLength(189);
+    expect(banks.flatMap((bank) => bank.questions)).toHaveLength(945);
+    expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(361);
+    expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(363);
+    expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(189);
 
     for (const group of groups) {
       const stage = stages.find((item) => item.slug === group.stageSlug);
@@ -1021,23 +1068,23 @@ describe('sample program seed', () => {
     );
 
     expect(programs).toHaveLength(1);
-    expect(stages).toHaveLength(11);
-    expect(stageAssessments).toHaveLength(11);
-    expect(modules).toHaveLength(18);
-    expect(lessons).toHaveLength(57);
-    expect(concepts).toHaveLength(171);
-    expect(assessments).toHaveLength(171);
-    expect(assessmentQuestions).toHaveLength(171);
+    expect(stages).toHaveLength(12);
+    expect(stageAssessments).toHaveLength(12);
+    expect(modules).toHaveLength(20);
+    expect(lessons).toHaveLength(63);
+    expect(concepts).toHaveLength(189);
+    expect(assessments).toHaveLength(189);
+    expect(assessmentQuestions).toHaveLength(189);
     expect(
       [...assessmentQuestions.values()].reduce(
         (total, questions) => total + questions.length,
         0,
       ),
-    ).toBe(855);
-    expect(contentBlocks).toHaveLength(325);
-    expect(resources).toHaveLength(331);
-    expect(tasks).toHaveLength(171);
-    expect(exercises).toHaveLength(171);
+    ).toBe(945);
+    expect(contentBlocks).toHaveLength(361);
+    expect(resources).toHaveLength(363);
+    expect(tasks).toHaveLength(189);
+    expect(exercises).toHaveLength(189);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,

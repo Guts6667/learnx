@@ -1,0 +1,190 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_012",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "interventions-applications",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Évaluer les interventions et les applications",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Comparer les propositions fictives « NeuroCap » et « Milieux & Choix » pour un campus de formation professionnelle selon leurs objectifs, mécanismes, preuves, mise en œuvre, accessibilité, effets indésirables, équité et gouvernance, sans choisir de traitement pour une personne ni confondre santé, éducation et management.",
+    "instructions": [
+      "Construire une matrice comparative séparant pour chaque proposition : problème visé, population, niveau d'action, composantes, mécanismes supposés, résultats, comparateur, durée, ressources, données manquantes et décision possible. Ne pas agréger santé, apprentissage et performance en un score unique.",
+      "Auditer le parcours d'évaluation et de décision : distinguer mesure, évaluation, diagnostic éventuel et formulation ; proposer une collecte multiméthode proportionnée et une formulation collaborative, contextualisée et révisable. Décrire comment options, incertitudes, préférences, refus, proches ou interprète et révision entrent dans une décision partagée sans prescrire une option.",
+      "Cartographier les familles cognitives, comportementales, de troisième vague, psychodynamiques, humanistes, systémiques et interpersonnelles évoquées. Relier chaque famille à des hypothèses et pratiques possibles, signaler les recouvrements, puis corriger à la fois le palmarès universel de NeuroCap et l'équivalence universelle affirmée par Milieux & Choix.",
+      "Auditer les preuves comparatives en distinguant efficacité expérimentale et effectivité : population, intervention, comparateur, résultats, ampleur et incertitude, importance pratique, suivi, données manquantes, attrition, analyse des personnes assignées ou ayant terminé et transférabilité au campus.",
+      "Construire un plan de sécurité et de suivi couvrant non-réponse, détérioration, nouvelles difficultés, charge, abandon et autres effets indésirables. Évaluer le monitoring et l'alliance comme aides à la discussion, non comme algorithmes ou causes uniques ; préciser confidentialité, retour aux participants et règles de révision sans conseiller de poursuivre ou d'arrêter un soin.",
+      "Auditer adaptation culturelle et accessibilité financière, géographique, linguistique, sensorielle, cognitive et numérique. Remplacer l'assignation par origine ou style par une co-construction fondée sur significations, préférences, besoins et obstacles ; examiner qui est exclu, qui abandonne et comment les effets se distribuent.",
+      "Distinguer promotion de la santé, prévention universelle, sélective ou indiquée et soin individuel dans les deux offres. Construire une théorie de programme reliant déterminants sociaux, conditions matérielles, participation et ressources aux effets attendus, sans culpabiliser les personnes ni transformer une action populationnelle en traitement.",
+      "Concevoir l'évaluation de mise en œuvre : portée, adoption, fidélité et adaptations, mécanismes, contexte, coûts, effets utiles, effets indésirables et équité. Comparer des alternatives crédibles, définir des seuils d'arrêt et documenter les groupes non atteints au lieu de conclure depuis la seule moyenne des utilisateurs.",
+      "Auditer le volet éducatif : distinguer préférences, aptitudes, accessibilité et prétendus styles VAK ; relever les neuromythes et exiger la preuve pertinente. Redessiner un pilote avec objectif disciplinaire, représentations utiles, récupération à faible enjeu, espacement, feedback, guidage métacognitif, apprentissage différé et effets par groupe.",
+      "Auditer le volet travail : cartographier activité réelle, outils, horaires, charge, coordination, variabilité et risques psychosociaux ; prioriser les modifications organisationnelles. Évaluer surveillance et sélection selon nécessité, proportionnalité, validité, minimisation, accès, durée, proxies, effets par groupe, contrôle humain, explication, contestation et réparation.",
+      "Formuler une recommandation conditionnelle — adopter, piloter, modifier, suspendre ou rejeter chaque composante — avec responsables, ressources, indicateurs et critères de révision. Réécrire les onze affirmations finales et citer au point d'usage au moins huit ressources, dont au moins une de chacune des six leçons ; ne fournir aucun conseil médical, psychothérapeutique, éducatif ou professionnel individuel."
+    ],
+    "case": "Dossier entièrement fictif — Campus Horizon. Le Campus Horizon réunit un centre de formation professionnelle, un service municipal de prévention et un atelier logistique employant 480 salariés, dont 210 apprentis. Après une hausse des absences, des erreurs en atelier et des abandons de formation, sa direction compare deux offres. Elle souhaite « améliorer simultanément santé mentale, apprentissage et productivité » en six mois, mais n'a pas défini de résultat principal, de population prioritaire ni de limite entre prévention, soin, pédagogie et management. Les horaires ont été modifiés trois fois en quatre mois ; certains postes imposent une cadence élevée, le bruit gêne plusieurs cours, deux bâtiments ne sont accessibles que par escalier, 18 % des apprenants disposent d'un accès numérique irrégulier et les contrats courts limitent le contrôle sur les horaires. Les personnes concernées n'ont pas participé à la rédaction de l'appel d'offres. La première offre, NeuroCap, est une application commerciale obligatoire sur téléphone personnel. À l'inscription, un questionnaire unique mélange stress, préférences d'apprentissage, personnalité et performance. Il classe chaque personne « cerveau visuel droit », « auditif gauche » ou « kinesthésique équilibré », puis promet un contenu apparié. Les publicités annoncent que l'on utilise seulement 10 % du cerveau et qu'une stimulation quotidienne « recâble définitivement l'apprentissage ». Les apprentis visuels reçoivent des vidéos, les auditifs des podcasts et les kinesthésiques des tâches manuelles, même lorsque le contenu exige d'autres représentations. Le score détermine aussi un module présenté comme « TCC, pleine conscience et coaching humaniste intégrés par intelligence artificielle ». Le fournisseur affirme que la TCC est toujours la meilleure famille, que la pleine conscience convient à tous et que l'algorithme remplace formulation, discussion des options et professionnel qualifié. Il ne distingue pas méthodes comportementales, cognitives, troisième vague ou autres approches et décrit psychodynamique comme « parler du passé », humanisme comme « écouter sans méthode » et systémique comme « traiter toute la famille ». L'étude commerciale de NeuroCap porte sur 120 volontaires recrutés en ligne et assignés à l'application ou à une liste d'attente pendant huit semaines. Le résumé annonce 92 % d'efficacité, calculés parmi les 35 utilisateurs de l'application ayant terminé sur 60 assignés. Le groupe liste d'attente n'a accès à aucune activité comparable. Le résultat principal a été choisi après analyse parmi neuf questionnaires et porte sur le stress auto-rapporté à huit semaines ; aucune estimation d'incertitude, importance pratique, analyse selon l'assignation, correction des comparaisons, résultat différé ou réplication n'est fournie. Le campus diffère de l'échantillon par âge, langues, métiers, horaires et accès numérique. Le fournisseur appelle néanmoins ce test une preuve d'effectivité au travail et de prévention des troubles. Les abandons sont classés comme manque de motivation. Non-réponse, détérioration, honte, pression, nouvelles difficultés et événements indésirables ne sont pas recherchés. Un score hebdomadaire déclenche automatiquement la poursuite ou le remplacement d'un module. L'application demande si l'utilisateur apprécie le chatbot et appelle ce score « alliance thérapeutique » ; sa corrélation avec l'amélioration est présentée comme cause unique. Toute baisse de score est transmise au manager, sans espace de discussion avec la personne. L'adaptation culturelle assigne un scénario selon le pays de naissance, sans demander langue, significations, valeurs, spiritualité, discriminations ou préférences. Il n'existe ni version facile à lire, ni sous-titres complets, ni navigation au clavier, ni alternative hors ligne. La seconde offre, Milieux & Choix, est un programme à composantes multiples. Elle propose d'abord des observations du travail réel avec des salariés volontaires, puis des changements de cadence, pauses, éclairage, acoustique, accessibilité, coordination et prévisibilité des horaires. Pour les cours, elle remplace le test VAK par des objectifs précis, des représentations adaptées au contenu, des questions de récupération à faible enjeu, des reprises espacées et un guidage métacognitif. Un service facultatif assuré par des professionnels qualifiés clarifie la demande, les destinataires et la confidentialité, croise entretien, observations et mesures pertinentes, construit avec la personne une formulation provisoire et présente plusieurs options raisonnables, y compris attendre lorsque cela est sûr. Le programme annonce cependant que toutes les psychothérapies sont équivalentes pour toute difficulté et ne précise pas encore comment seront comparés bénéfices, risques, contraintes, preuves, préférences et accessibilité. Le projet Milieux & Choix a été testé pendant douze semaines dans deux des huit sites d'une organisation fictive. Les sites se sont portés volontaires, disposaient déjà de davantage de personnel et avaient moins d'absences au départ. Les six autres sites servent de comparaison sans assignation aléatoire. Les absences baissent de 8 % dans les sites pilotes et de 3 % ailleurs ; les erreurs baissent dans un seul site. Aucune incertitude n'est donnée. Les adaptations diffèrent : un site modifie les horaires, l'autre déploie seulement les ateliers individuels. La portée est de 61 % des salariés permanents mais de 19 % des intérimaires. Les résultats d'apprentissage sont mesurés juste après la formation, sans mesure différée. Coûts, fidélité, effets indésirables, déplacements de charge, langues, handicap et distribution des effets restent incomplets. L'équipe conclut pourtant que le programme est causalement efficace partout. Sur le volet santé, NeuroCap qualifie son questionnaire de diagnostic et cible automatiquement les scores élevés, tandis que Milieux & Choix appelle toutes ses activités « promotion universelle ». Ni l'une ni l'autre offre ne sépare clairement promotion, prévention universelle, sélective ou indiquée et soin. NeuroCap envoie des notifications disant : « Votre stress vient de mauvaises habitudes : soyez résilient ». Milieux & Choix mentionne logement, revenu, discrimination, sécurité, services et horaires, mais n'explique pas comment les personnes concernées participeront ni comment ces déterminants entreront dans la théorie de programme. Aucune offre ne mesure explicitement stigmatisation, faux positifs, retard d'aide, non-recours ou déplacement de ressources. Pour le volet éducatif, NeuroCap compare la satisfaction des apprenants recevant leur format préféré à celle d'un groupe sans app et conclut que l'appariement VAK augmente l'apprentissage. Aucun test de l'interaction style supposé–méthode, aucune mesure de connaissance, aucun transfert et aucun suivi différé ne sont fournis. Milieux & Choix prévoit récupération et espacement, mais ne précise pas le contenu, le calendrier, le feedback, le guidage, la charge ni l'accès. Il suppose que davantage de tests produit toujours davantage d'apprentissage. Pour le travail, NeuroCap recueille frappes, localisation, rythme, messages, activité nocturne et fréquence cardiaque. Le fournisseur prétend inférer stress, loyauté et risque d'absence, conserve les données sans durée définie et les réutilise pour sélectionner les apprentis. Un modèle entraîné sur les promotions passées affiche 84 % de précision globale ; analyse du poste, construit, validité pour la décision, fiabilité, accessibilité, proxies, erreurs et résultats par groupe ne sont pas communiqués. Une candidature rejetée ne peut obtenir d'explication ou contester. Les managers voient les données de santé et d'apprentissage. L'accord est recueilli après l'annonce que le refus réduira les possibilités de planning. Milieux & Choix limite davantage les données, mais son protocole ne précise pas encore séparation des accès, conservation, recours, contrôle humain ou droit applicable. Le comité de direction demande un choix binaire immédiat entre les deux offres. Une représentante des apprentis propose plutôt de comparer les composantes, d'écarter celles qui ne franchissent pas des conditions minimales, puis de piloter de manière révisable les éléments plausibles. Elle demande des objectifs séparés, une théorie de programme, des jugements indépendants avant délibération, des participants concernés dans la gouvernance, des alternatives moins intrusives et un suivi de la portée, des effets, des dommages et de l'équité. Les onze affirmations à auditer sont : « un test unique suffit à formuler et choisir l'intervention ; la meilleure école de thérapie gagne toujours et toutes les autres sont équivalentes entre elles ; 92 % des utilisateurs seront aidés dans la pratique ; l'abandon et la baisse de score prouvent un manque de motivation et le chatbot décide du module ; adapter culturellement consiste à assigner par pays de naissance ; une application de stress diagnostique, prévient et soigne à la fois ; informer et rendre résilient suffit malgré les conditions de vie ; styles VAK, cerveau droit et 10 % du cerveau valident la pédagogie ; récupération et espacement fonctionnent toujours quel que soit le contenu ; les erreurs viennent des salariés plutôt que du système de travail ; une précision globale autorise surveillance, sélection automatique et partage des données ». Toutes les organisations, personnes, offres, études, chiffres et données sont fictifs. Le dossier permet une comparaison méthodologique et éthique, mais aucun diagnostic, choix de psychothérapie, conseil de santé, adaptation scolaire individuelle ou décision professionnelle réelle.",
+    "estimatedMinutes": 150,
+    "submissionFormat": "Dossier comparatif structuré de 1 500 à 1 900 mots comprenant une matrice objectifs–preuves–limites, un audit évaluation–décision, une carte des familles, une lecture efficacité–effectivité–sécurité, une théorie de programme de prévention, un pilote éducatif, un audit ergonomie–données–équité et les onze affirmations révisées.",
+    "conceptSlugs": [
+      "evaluation-multimethode-proportionnee",
+      "formulation-collaborative-revisable",
+      "decision-partagee-autonomie",
+      "familles-cognitives-comportementales",
+      "familles-relationnelles-contextuelles",
+      "comparaison-contextualisee-psychotherapies",
+      "efficacite-effectivite-comparateurs",
+      "securite-monitoring-alliance",
+      "adaptation-culturelle-acces-equite",
+      "promotion-prevention-soin",
+      "determinants-sociaux-equite-sante",
+      "evaluation-mise-en-oeuvre-prevention",
+      "styles-apprentissage-neuromythes",
+      "espacement-recuperation-metacognition",
+      "contexte-evaluation-equite-educative",
+      "ergonomie-conception-systeme",
+      "risques-psychosociaux-participation-confidentialite",
+      "surveillance-selection-equite-algorithmique"
+    ],
+    "rubric": [
+      {
+        "criterion": "Évaluation, formulation et décision partagée",
+        "weight": 15,
+        "requirements": [
+          "Mesure, évaluation, diagnostic éventuel et formulation sont distingués ; la collecte est multiméthode, proportionnée et reliée à une question.",
+          "La formulation relie difficultés, ressources, contexte, pouvoir et hypothèses concurrentes et précise ce qui déclencherait sa révision.",
+          "Les options, bénéfices, risques, contraintes, incertitudes, préférences, refus et révision structurent la décision sans abandon ni contrainte."
+        ]
+      },
+      {
+        "criterion": "Familles de psychothérapies sans hiérarchie simpliste",
+        "weight": 10,
+        "requirements": [
+          "Les principales familles sont décrites par hypothèses, méthodes et formats sans caricature ni boîte étanche.",
+          "Recouvrements, intégration cohérente, compétences et formulation sont explicités sans assemblage arbitraire.",
+          "Palmarès global et équivalence universelle sont tous deux rejetés au profit d'une comparaison par indication, population, comparateur et résultat."
+        ]
+      },
+      {
+        "criterion": "Efficacité, effectivité, sécurité, alliance et adaptation",
+        "weight": 20,
+        "requirements": [
+          "Les deux études sont auditées selon population, comparateur, résultats, incertitude, suivi, attrition, analyse et transférabilité.",
+          "Moyenne, importance pratique, non-réponse, détérioration, effets indésirables, charge et abandon sont distingués sans promesse individuelle.",
+          "Monitoring et alliance soutiennent une discussion dans le temps sans décision automatisée ni causalité unique.",
+          "L'adaptation culturelle et l'accessibilité sont co-construites et suivies sans assignation par origine, stéréotype ou exclusion numérique."
+        ]
+      },
+      {
+        "criterion": "Santé, prévention, déterminants et mise en œuvre",
+        "weight": 15,
+        "requirements": [
+          "Promotion, prévention universelle, sélective ou indiquée et soin sont classés par finalité et population sans diagnostic automatique.",
+          "La théorie de programme relie mécanismes, contexte, ressources et déterminants sociaux sans culpabilisation individuelle.",
+          "Portée, adoption, fidélité, adaptations, coûts, effets, dommages, équité et participation soutiennent une décision révisable."
+        ]
+      },
+      {
+        "criterion": "Éducation, apprentissage et équité",
+        "weight": 10,
+        "requirements": [
+          "Préférences, aptitudes, accessibilité et styles VAK sont distingués ; cerveau droit, 10 % et vocabulaire neuronal ne valent pas preuve.",
+          "Espacement, récupération et métacognition sont reliés à un contenu, un calendrier, du feedback, du guidage et des résultats différés.",
+          "Le pilote compare apprentissage, mise en œuvre, charge, participation, accessibilité et effets par groupe avec critères d'arrêt."
+        ]
+      },
+      {
+        "criterion": "Travail, ergonomie, surveillance et sélection",
+        "weight": 15,
+        "requirements": [
+          "L'activité réelle, les outils, horaires, charge, coordination, variabilité et risques psychosociaux conduisent à des modifications du système avec les travailleurs.",
+          "Santé, accompagnement et management sont séparés ; participation, volontariat, confidentialité et accès aux données tiennent compte du pouvoir.",
+          "Surveillance et sélection sont auditées selon nécessité, proportionnalité, construit, validité, accessibilité, proxies, groupes, contrôle humain, explication, recours et suivi."
+        ]
+      },
+      {
+        "criterion": "Comparaison, accessibilité, éthique et gouvernance",
+        "weight": 10,
+        "requirements": [
+          "Les objectifs et niveaux d'action sont séparés, les composantes comparées individuellement et les alternatives moins intrusives considérées.",
+          "La recommandation adopte, pilote, modifie, suspend ou rejette sous conditions avec responsables, ressources, risques et critères de révision.",
+          "Les personnes concernées participent à la gouvernance ; confidentialité, équité, contestation et réparation sont opérationnelles."
+        ]
+      },
+      {
+        "criterion": "Communication sourcée et non prescriptive",
+        "weight": 5,
+        "requirements": [
+          "Les onze affirmations sont remplacées par des conclusions proportionnées distinguant preuve, portée, incertitude et limite.",
+          "Au moins huit citations au point d'usage couvrent les six leçons et soutiennent précisément les propositions associées.",
+          "Aucun diagnostic, traitement, choix de psychothérapie, adaptation éducative individuelle ou décision professionnelle réelle n'est recommandé."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement la section correspondante avec une fiche à neuf colonnes : objectif, population, composante, mécanisme, comparaison, résultat, limite ou dommage, équité, référence. Pour « Évaluation », séparer test–évaluation–formulation–décision et écrire deux hypothèses révisables ainsi qu'un dialogue présentant plusieurs options. Pour « Familles », corriger chaque caricature et comparer les approches uniquement pour une question, une population et un résultat définis. Pour « Efficacité », recalculer les dénominateurs, distinguer assignés et terminants, ajouter attrition, suivi, non-réponse, effets indésirables, monitoring, alliance et accessibilité. Pour « Santé », classer chaque composante par niveau de prévention ou soin et compléter une théorie de programme avec déterminants, portée, mise en œuvre et effets distribués. Pour « Éducation », retirer VAK et neuromythes, puis spécifier contenu, espacement, récupération, feedback, métacognition, mesure différée et accessibilité. Pour « Travail », reconstruire le système de travail et l'audit nécessité–proportionnalité–validité–données–équité–recours avant toute surveillance ou sélection. Pour « Gouvernance », classer chaque composante en adoption, pilote, modification, suspension ou rejet avec responsable, seuil d'arrêt et alternative moins intrusive. Pour « Communication », réécrire les onze affirmations et ajouter au moins une référence par leçon. La resoumission contient uniquement les sections corrigées et un bref relevé des modifications."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-04",
+    "referenceIds": [
+      "REF-058-BPS-ASSESSMENT",
+      "REF-058-BPS-FORMULATION",
+      "REF-058-NICE-SDM",
+      "REF-058-ELWYN-2012",
+      "REF-059-NIMH",
+      "REF-059-APA-APPROACHES",
+      "REF-059-CUIJPERS-2020",
+      "REF-059-CARR-2019",
+      "REF-060-SINGAL-2014",
+      "REF-060-HONKALAMPI-2025",
+      "REF-060-BARKHAM-2023",
+      "REF-060-FLUCKIGER-2018",
+      "REF-060-BENISH-2011",
+      "REF-060-BPS-CULTURE",
+      "REF-061-WHO-GLOSSARY",
+      "REF-061-WHO-WMHR",
+      "REF-061-WHO-HAT",
+      "REF-061-SKIVINGTON",
+      "REF-061-WHO-UNICEF-HAT",
+      "REF-062-PASHLER",
+      "REF-062-NEWTON-SALVI",
+      "REF-062-HOWARD-JONES",
+      "REF-062-CARPENTER",
+      "REF-062-EEF",
+      "REF-062-UNESCO-GEM",
+      "REF-063-IEA",
+      "REF-063-WHO-GUIDELINE",
+      "REF-063-WHO-ILO-BRIEF",
+      "REF-063-ILO-DATA",
+      "REF-063-OECD",
+      "REF-063-SIOP",
+      "REF-063-RAGHAVAN"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le dossier Campus Horizon, le campus, les offres NeuroCap et Milieux & Choix, les personnes, études, chiffres et données sont entièrement fictifs.",
+        "Revue humaine obligatoire avant publication, avec compétences en psychothérapies, évaluation des interventions, décision partagée, santé publique, sciences de l'éducation, ergonomie, psychologie du travail, accessibilité, protection des données et équité algorithmique.",
+        "Validation technique obligatoire : l'étape interventions-applications et cette évaluation sont absentes du seed actuel ; seedCompatibility est false et ce document n'autorise aucune modification technique.",
+        "Les dix-huit conceptSlugs correspondent exactement aux trois notions de chacune des PEDAGOGY_SPEC_058 à 063.",
+        "Les trente-deux referenceIds correspondent exactement à l'union des références des PEDAGOGY_SPEC_058 à 063 ; liens, accès, éditions et cadres juridiques locaux doivent être revérifiés pendant la revue humaine.",
+        "Le cas interdit palmarès universel de thérapies, équivalence universelle, promesse individuelle d'efficacité, décision automatique depuis le monitoring, styles VAK, neuromythes et responsabilisation individuelle d'un risque organisationnel.",
+        "Le cas interdit également diagnostic par application ou manager, conseil médical ou psychothérapeutique individuel, surveillance disproportionnée, sélection non validée, partage non nécessaire et adaptation culturelle stéréotypée.",
+        "La publication reste bloquée jusqu'aux validations technique, éditoriale, scientifique, éthique, d'accessibilité et de protection des données de l'ensemble de l'étape."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-04",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas comparative Campus Horizon, de sa grille observable sur 100 points et de sa remédiation, sans modification du seed.",
+        "reviewRequired": "technical_editorial_psychotherapy_outcomes_public_health_education_ergonomics_workplace_data_accessibility_and_ethics"
+      }
+    ]
+  }
+}
