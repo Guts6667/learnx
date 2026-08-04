@@ -196,20 +196,30 @@ describe('LessonPage', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
     expect(screen.getByText('Sources de ce bloc')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Ouvrir la source' })).toHaveAttribute(
-      'href',
-      'https://example.com/article',
-    );
-    expect(screen.getByText('Source non sûre')).toBeInTheDocument();
-    expect(screen.getAllByRole('link', { name: 'Ouvrir la source' })).toHaveLength(1);
-    expect(screen.getByText('Prévisualisation en lecture seule')).toBeInTheDocument();
-    expect(screen.getByRole('navigation', { name: 'Sommaire de la leçon' })).toHaveTextContent(
-      'Synthétiser',
-    );
-    expect(screen.getByRole('link', { name: 'Programme test' })).toHaveAttribute(
-      'href',
-      '/program/programme-test',
-    );
+    expect(
+      screen.getByRole('link', { name: 'Ouvrir la source' }),
+    ).toHaveAttribute('href', 'https://example.com/article');
+    expect(screen.getByText(/Source non sûre/)).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('link', { name: 'Ouvrir la source' }),
+    ).toHaveLength(1);
+    expect(
+      screen.getByText('Prévisualisation en lecture seule'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('navigation', { name: 'Navigation pédagogique' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Retour à la leçon' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
+    expect(
+      await screen.findByRole('dialog', { name: 'Sommaire de la leçon' }),
+    ).toHaveTextContent('Synthétiser');
+    fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
+    expect(
+      screen.getByRole('link', { name: 'Programme test' }),
+    ).toHaveAttribute('href', '/program/programme-test');
     expect(fetchMock).not.toHaveBeenCalledWith(
       '/api/lessons/lesson-1/progress',
       expect.anything(),
@@ -218,12 +228,17 @@ describe('LessonPage', () => {
       screen.getByRole('button', { name: 'Continuer la prévisualisation' }),
     ).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Prendre une note liée' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Prendre une note liée' }),
+    );
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
         '/api/notes',
         expect.objectContaining({
-          body: JSON.stringify({ lessonId: 'lesson-1', title: 'Notes — Démarrer' }),
+          body: JSON.stringify({
+            lessonId: 'lesson-1',
+            title: 'Notes — Démarrer',
+          }),
           method: 'POST',
         }),
       ),
@@ -256,8 +271,12 @@ describe('LessonPage', () => {
       </AppProviders>,
     );
 
-    expect(await screen.findByRole('heading', { name: 'Synthétiser' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Marquer comme terminée' }));
+    expect(
+      await screen.findByRole('heading', { name: 'Synthétiser' }),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Marquer comme terminée' }),
+    );
 
     expect(
       await screen.findByRole('button', { name: 'Marquer comme à faire' }),
@@ -269,6 +288,7 @@ describe('LessonPage', () => {
         method: 'PATCH',
       }),
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
     expect(
       screen.getByRole('link', { name: /Mini-évaluation — Comprendre/ }),
     ).toHaveAttribute(
@@ -292,10 +312,9 @@ describe('LessonPage', () => {
     expect(
       await screen.findByRole('heading', { name: 'Leçon verrouillée' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Voir les prérequis' })).toHaveAttribute(
-      'href',
-      '/program/programme-test/stage/introduction',
-    );
+    expect(
+      screen.getByRole('link', { name: 'Voir les prérequis' }),
+    ).toHaveAttribute('href', '/program/programme-test/stage/introduction');
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
@@ -320,8 +339,12 @@ describe('LessonPage', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'Leçon indisponible hors ligne' }),
+      await screen.findByRole('heading', {
+        name: 'Leçon indisponible hors ligne',
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Aucune progression n’a été simulée/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Aucune progression n’a été simulée/),
+    ).toBeInTheDocument();
   });
 });

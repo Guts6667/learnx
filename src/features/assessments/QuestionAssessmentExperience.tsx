@@ -307,7 +307,7 @@ export function QuestionAssessmentExperience({
             class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
             href={backHref}
           >
-            Retour à la leçon
+            Ouvrir la leçon
           </a>
         }
         description={labels.emptyDescription}
@@ -367,12 +367,6 @@ export function QuestionAssessmentExperience({
           aria-label="Suite de la leçon"
           class="flex flex-wrap gap-3 rounded-xl border border-slate-800 p-4"
         >
-          <a
-            class="inline-flex min-h-11 items-center rounded-xl bg-slate-800 px-4 text-sm font-semibold text-slate-100"
-            href={backHref}
-          >
-            Retour à la leçon
-          </a>
           {nextHref ? (
             <a
               class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 text-sm font-semibold text-slate-950"

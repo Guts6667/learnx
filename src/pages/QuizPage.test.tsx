@@ -211,7 +211,9 @@ describe('QuizPage', () => {
         name: 'Quiz de la leçon',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Sommaire de la leçon')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Sommaire' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('Question 1 sur 4')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));

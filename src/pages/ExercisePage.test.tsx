@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen } from '@testing-library/preact';
 
 import { AppProviders } from '@/app/providers';
 import { ExercisePage } from '@/pages/ExercisePage';
@@ -93,28 +93,37 @@ describe('ExercisePage', () => {
     );
 
     expect(
-      await screen.findByRole('heading', { level: 1, name: 'Analyse appliquée' }),
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Analyse appliquée',
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Programme test' })).toHaveAttribute(
-      'href',
-      '/program/programme-test',
-    );
-    expect(screen.getByRole('link', { name: 'Retour à la leçon' })).toHaveAttribute(
-      'href',
-      `/program/programme-test/lesson/demarrer?activity=exercise%3A${exerciseId}`,
-    );
-    expect(screen.getByText('Sommaire de la leçon')).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Analyse appliquée' }),
+      screen.getByRole('link', { name: 'Programme test' }),
+    ).toHaveAttribute('href', '/program/programme-test');
+    expect(
+      screen.queryByRole('link', { name: 'Retour à la leçon' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
+    expect(
+      await screen.findByRole('dialog', { name: 'Sommaire de la leçon' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Analyse appliquée/ }),
     ).toHaveAttribute('aria-current', 'step');
-    expect(await screen.findByRole('button', { name: 'Commencer l’exercice' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
+    expect(
+      await screen.findByRole('button', { name: 'Commencer l’exercice' }),
+    ).toBeInTheDocument();
     expect(window.localStorage.getItem('learnx:lesson-activity:lesson-1')).toBe(
       `exercise:${exerciseId}`,
     );
   });
 
   it('ne charge pas un exercice absent de la leçon accessible', async () => {
-    const fetchMock = vi.fn(() => Promise.resolve(jsonResponse(lessonResponse())));
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(jsonResponse(lessonResponse())),
+    );
     vi.stubGlobal('fetch', fetchMock);
 
     render(

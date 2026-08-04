@@ -374,7 +374,6 @@ function LessonWorkspace({
         <PedagogicalNavigation
           activities={sequence.activities}
           currentKey={activityKey(current.kind, current.id)}
-          lessonHref={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
           lessonTitle={lesson.title}
           moduleTitle={lesson.module.title}
         />

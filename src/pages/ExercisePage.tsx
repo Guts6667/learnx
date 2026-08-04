@@ -1,7 +1,6 @@
 import {
   LessonActivitySummary,
   LessonContextHeader,
-  lessonHref,
   nextLessonActivityHref,
 } from '@/components/learning/LessonContextHeader';
 import { useEffect } from 'preact/hooks';
@@ -45,14 +44,11 @@ export function ExercisePage({
   }
 
   const key = activityKey('EXERCISE', exercise.id);
-  const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
-
   return (
     <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
       <ExerciseCard
-        backHref={backHref}
         exercise={exercise}
         isLessonPublished={lesson.isPublished}
         nextHref={nextLessonActivityHref(lesson, key)}

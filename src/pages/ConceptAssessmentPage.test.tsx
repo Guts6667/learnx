@@ -166,7 +166,9 @@ describe('ConceptAssessmentPage', () => {
         name: 'Mini-évaluation — Démarche empirique',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Sommaire de la leçon')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Sommaire' }),
+    ).toBeInTheDocument();
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
     expect(
       screen.queryByText('Les données sont indispensables.'),

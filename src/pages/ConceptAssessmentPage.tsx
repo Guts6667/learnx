@@ -77,7 +77,7 @@ export function ConceptAssessmentPage({
             class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
             href={fallbackLessonHref}
           >
-            Retour à la leçon
+            Ouvrir la leçon
           </a>
         }
         description="Aucune mini-évaluation correspondante n’est disponible pour cette leçon."

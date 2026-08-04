@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
@@ -26,7 +27,14 @@ function formatUpdatedAt(value: string): string {
 }
 
 function getExcerpt(markdown: string): string {
-  const normalized = markdown.replace(/\s+/g, ' ').trim();
+  const normalized = markdown
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^#{1,3}\s+/gm, '')
+    .replace(/^(?:[-+*]|\d+\.)\s+/gm, '')
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   if (!normalized) return 'Note vide';
 
@@ -156,6 +164,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
   const { isPending, save } = useNoteMutation();
   const [title, setTitle] = useState(note.title);
   const [markdown, setMarkdown] = useState(note.markdown);
+  const [mode, setMode] = useState<'preview' | 'write'>('write');
   const [status, setStatus] = useState<AutosaveStatus>('saved');
   const revision = useRef(0);
 
@@ -192,16 +201,93 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         }}
         value={title}
       />
-      <Textarea
-        description="Vous pouvez utiliser la syntaxe Markdown. Le texte est sauvegardé automatiquement."
-        label="Contenu de la note"
-        maxLength={100_000}
-        onInput={(event) => {
-          setMarkdown(event.currentTarget.value);
-          markDirty();
-        }}
-        value={markdown}
-      />
+      <div class="space-y-3">
+        <p class="text-sm leading-6 text-slate-300">
+          Markdown pris en charge : <code># Titre</code>,{' '}
+          <code>## Sous-titre</code>, listes, emphase et liens. Un titre
+          commence sur une nouvelle ligne avec un espace après les #.
+        </p>
+        <div
+          aria-label="Mode d’édition de la note"
+          class="inline-flex rounded-xl bg-slate-900 p-1"
+          onKeyDown={(event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+            event.preventDefault();
+            const nextMode = mode === 'write' ? 'preview' : 'write';
+            setMode(nextMode);
+            window.requestAnimationFrame(() => {
+              document
+                .querySelector<HTMLButtonElement>(
+                  `[data-note-mode="${nextMode}"]`,
+                )
+                ?.focus();
+            });
+          }}
+          role="tablist"
+        >
+          <button
+            aria-controls="note-write-panel"
+            aria-selected={mode === 'write'}
+            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              mode === 'write' ? 'bg-cyan-400 text-slate-950' : 'text-slate-300'
+            }`}
+            data-note-mode="write"
+            id="note-write-tab"
+            onClick={() => setMode('write')}
+            role="tab"
+            type="button"
+          >
+            Écrire
+          </button>
+          <button
+            aria-controls="note-preview-panel"
+            aria-selected={mode === 'preview'}
+            class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
+              mode === 'preview'
+                ? 'bg-cyan-400 text-slate-950'
+                : 'text-slate-300'
+            }`}
+            data-note-mode="preview"
+            id="note-preview-tab"
+            onClick={() => setMode('preview')}
+            role="tab"
+            type="button"
+          >
+            Aperçu
+          </button>
+        </div>
+        {mode === 'write' ? (
+          <div
+            aria-labelledby="note-write-tab"
+            id="note-write-panel"
+            role="tabpanel"
+          >
+            <Textarea
+              description="Le texte est sauvegardé automatiquement."
+              label="Contenu de la note"
+              maxLength={100_000}
+              onInput={(event) => {
+                setMarkdown(event.currentTarget.value);
+                markDirty();
+              }}
+              value={markdown}
+            />
+          </div>
+        ) : (
+          <div
+            aria-labelledby="note-preview-tab"
+            class="min-h-32 rounded-xl border border-slate-800 bg-slate-950 p-4"
+            id="note-preview-panel"
+            role="tabpanel"
+          >
+            {markdown.trim() ? (
+              <SafeMarkdown content={markdown} />
+            ) : (
+              <p class="text-sm text-slate-400">La note est vide.</p>
+            )}
+          </div>
+        )}
+      </div>
       <p
         aria-live="polite"
         class={
@@ -222,7 +308,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
               class="inline-flex min-h-11 items-center text-cyan-300 underline"
               href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
             >
-              Retour à la leçon
+              Ouvrir la leçon
             </a>
           ) : null}
         </Card>

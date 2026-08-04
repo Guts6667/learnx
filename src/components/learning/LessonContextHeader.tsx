@@ -135,7 +135,6 @@ export function LessonActivitySummary({
     <PedagogicalNavigation
       activities={sequence.activities}
       currentKey={currentKey}
-      lessonHref={lessonHref(lesson)}
       lessonTitle={lesson.title}
       moduleTitle={lesson.module.title}
     />

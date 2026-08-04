@@ -508,3 +508,66 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await page.setViewportSize({ height: 700, width: 320 });
   await expectNoHorizontalOverflow(page);
 });
+
+test('affiche le sommaire pédagogique en une colonne sans débordement', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/program/programme-e2e/lesson/lecon-critique');
+
+  const summaryTrigger = page.getByRole('button', { name: 'Sommaire' });
+  await summaryTrigger.click();
+  const dialog = page.getByRole('dialog', { name: 'Sommaire de la leçon' });
+  await expect(dialog).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Fermer le panneau' }),
+  ).toBeFocused();
+  await expect(dialog.getByRole('listitem')).toHaveCount(4);
+  expect(
+    await dialog.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
+  expect(
+    await dialog.getByRole('listitem').evaluateAll((items) => {
+      const positions = items.map((item) => item.getBoundingClientRect());
+      return positions.every(
+        (position, index) =>
+          index === 0 ||
+          (Math.abs(position.left - positions[0].left) < 1 &&
+            position.top >= positions[index - 1].bottom),
+      );
+    }),
+  ).toBe(true);
+  await expectNoHorizontalOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(summaryTrigger).toBeFocused();
+
+  await page.setViewportSize({ height: 720, width: 320 });
+  await summaryTrigger.click();
+  await expectNoHorizontalOverflow(page);
+  expect(
+    await page
+      .getByRole('dialog', { name: 'Sommaire de la leçon' })
+      .evaluate((element) => element.scrollWidth <= element.clientWidth),
+  ).toBe(true);
+  await page.getByRole('button', { name: 'Fermer le panneau' }).click();
+
+  await page.setViewportSize({ height: 900, width: 1280 });
+  await summaryTrigger.click();
+  await expectNoHorizontalOverflow(page);
+  await expect(
+    page.getByRole('dialog', { name: 'Sommaire de la leçon' }),
+  ).toBeVisible();
+});

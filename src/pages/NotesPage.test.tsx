@@ -92,6 +92,35 @@ describe('NotesPage', () => {
       expect.objectContaining({ body: '{}', method: 'POST' }),
     );
   });
+
+  it('affiche un extrait texte sans marqueurs Markdown', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            notes: [
+              noteResponse({
+                markdown:
+                  '# Titre\n- Élément **important**\n[Documentation](https://example.com)',
+              }).note,
+            ],
+          }),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <NotesPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByText('Titre Élément important Documentation'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/# Titre/)).not.toBeInTheDocument();
+  });
 });
 
 describe('NotePage', () => {
@@ -149,6 +178,50 @@ describe('NotePage', () => {
     ).toBeInTheDocument();
   });
 
+  it('bascule au clavier vers un aperçu Markdown sûr', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse(
+            noteResponse({
+              markdown:
+                '# Titre valide\n\n###Test\n\n[Danger](javascript:alert(1))',
+            }),
+          ),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders>
+        <NotePage noteId={noteId} />
+      </AppProviders>,
+    );
+
+    const writeTab = await screen.findByRole('tab', { name: 'Écrire' });
+    writeTab.focus();
+    fireEvent.keyDown(writeTab, { key: 'ArrowRight' });
+
+    const previewTab = screen.getByRole('tab', { name: 'Aperçu' });
+    expect(previewTab).toHaveAttribute('aria-selected', 'true');
+    expect(
+      await screen.findByRole('heading', { name: 'Titre valide' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('###Test')).toBeInTheDocument();
+    expect(screen.getByText('Danger')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /Danger/ }),
+    ).not.toBeInTheDocument();
+    await act(
+      () =>
+        new Promise<void>((resolve) =>
+          window.requestAnimationFrame(() => resolve()),
+        ),
+    );
+    expect(previewTab).toHaveFocus();
+  });
+
   it('affiche le contexte d’une note liée sans rendre le Markdown', async () => {
     vi.stubGlobal(
       'fetch',
@@ -181,7 +254,7 @@ describe('NotePage', () => {
     );
     expect(document.querySelector('script')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Retour à la leçon' }),
+      screen.getByRole('link', { name: 'Ouvrir la leçon' }),
     ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
   });
 });

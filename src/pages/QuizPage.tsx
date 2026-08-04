@@ -62,7 +62,7 @@ export function QuizPage({
             class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
             href={fallbackLessonHref}
           >
-            Retour à la leçon
+            Ouvrir la leçon
           </a>
         }
         description="Les quiz d’une leçon brouillon sont disponibles uniquement après publication."
@@ -79,7 +79,7 @@ export function QuizPage({
             class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
             href={fallbackLessonHref}
           >
-            Retour à la leçon
+            Ouvrir la leçon
           </a>
         }
         description="Aucun quiz correspondant n’est disponible pour cette leçon."

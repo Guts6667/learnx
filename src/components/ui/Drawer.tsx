@@ -1,4 +1,5 @@
 import type { ComponentChildren, JSX } from 'preact';
+import { createPortal } from 'preact/compat';
 import { useEffect, useId, useRef } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
@@ -28,6 +29,7 @@ export function Drawer({
   title,
 }: DrawerProps) {
   const titleId = useId();
+  const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
 
@@ -48,12 +50,30 @@ export function Drawer({
         : expandedTrigger);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    const backgroundElements = Array.from(document.body.children).filter(
+      (element): element is HTMLElement =>
+        element instanceof HTMLElement && element !== overlayRef.current,
+    );
+    const backgroundState = backgroundElements.map((element) => ({
+      ariaHidden: element.getAttribute('aria-hidden'),
+      element,
+      inert: element.inert,
+    }));
+    backgroundElements.forEach((element) => {
+      element.inert = true;
+      element.setAttribute('aria-hidden', 'true');
+    });
     panelRef.current
       ?.querySelector<HTMLElement>('[data-drawer-close]')
       ?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      backgroundState.forEach(({ ariaHidden, element, inert }) => {
+        element.inert = inert;
+        if (ariaHidden === null) element.removeAttribute('aria-hidden');
+        else element.setAttribute('aria-hidden', ariaHidden);
+      });
       const returnTarget = returnFocusRef.current;
       window.requestAnimationFrame(() => {
         if (returnTarget?.isConnected) returnTarget.focus();
@@ -103,22 +123,23 @@ export function Drawer({
     }
   }
 
-  return (
+  return createPortal(
     <div
-      class="fixed inset-0 z-50 flex justify-end bg-slate-950/80"
+      class="fixed inset-0 z-50 flex min-w-0 items-end bg-slate-950/80 md:items-stretch md:justify-end"
       onClick={(event) => {
         if (event.currentTarget === event.target) dismiss();
       }}
       onKeyDown={handleKeyDown}
+      ref={overlayRef}
     >
       <div
         aria-labelledby={titleId}
         aria-modal="true"
-        class="app-safe-main h-full w-full max-w-md overflow-y-auto border-l border-slate-700 bg-slate-950 px-5 py-6 shadow-2xl"
+        class="min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto rounded-t-2xl border-t border-slate-700 bg-slate-950 px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl md:h-full md:max-h-none md:max-w-md md:rounded-none md:border-t-0 md:border-l md:px-5 md:py-6"
         ref={panelRef}
         role="dialog"
       >
-        <div class="mb-6 flex items-start justify-between gap-4">
+        <div class="sticky top-0 z-10 mb-4 flex min-w-0 items-start justify-between gap-4 border-b border-slate-800 bg-slate-950 py-3 md:mb-6 md:pt-0">
           <h2 class="text-xl font-bold" id={titleId}>
             {title}
           </h2>
@@ -134,6 +155,7 @@ export function Drawer({
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
