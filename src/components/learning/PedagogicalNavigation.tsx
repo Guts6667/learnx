@@ -6,9 +6,14 @@ import { activityKey } from '@/lib/lesson-activity-sequence';
 
 interface PedagogicalNavigationProps {
   activities: LessonActivity[];
+  continueActivity?: LessonActivity | null;
+  continueLabel?: string;
   currentKey: string;
+  isContinueDisabled?: boolean;
+  isContinuePending?: boolean;
   lessonTitle: string;
   moduleTitle: string;
+  onContinue?: () => void;
 }
 
 const statusLabels: Record<LessonActivity['status'], string> = {
@@ -20,9 +25,14 @@ const statusLabels: Record<LessonActivity['status'], string> = {
 
 export function PedagogicalNavigation({
   activities,
+  continueActivity,
+  continueLabel = 'Continuer',
   currentKey,
+  isContinueDisabled = false,
+  isContinuePending = false,
   lessonTitle,
   moduleTitle,
+  onContinue,
 }: PedagogicalNavigationProps) {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const summaryTriggerRef = useRef<HTMLButtonElement>(null);
@@ -33,7 +43,10 @@ export function PedagogicalNavigation({
     ),
   );
   const previous = activities[currentIndex - 1] ?? null;
-  const next = activities[currentIndex + 1] ?? null;
+  const next =
+    continueActivity === undefined
+      ? (activities[currentIndex + 1] ?? null)
+      : continueActivity;
 
   return (
     <>
@@ -84,19 +97,29 @@ export function PedagogicalNavigation({
               Précédent
             </span>
           )}
-          {next ? (
+          {onContinue ? (
+            <button
+              aria-busy={isContinuePending || undefined}
+              class="inline-flex min-h-11 min-w-0 items-center rounded-xl bg-cyan-400 px-3 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-500"
+              disabled={isContinueDisabled || isContinuePending}
+              onClick={onContinue}
+              type="button"
+            >
+              {isContinuePending ? 'Chargement…' : continueLabel}
+            </button>
+          ) : next ? (
             <a
               class="inline-flex min-h-11 min-w-0 items-center rounded-xl bg-cyan-400 px-3 text-sm font-semibold text-slate-950"
               href={next.href}
             >
-              Continuer
+              {continueLabel}
             </a>
           ) : (
             <span
               aria-disabled="true"
               class="inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-3 text-sm text-slate-500"
             >
-              Continuer
+              {continueLabel}
             </span>
           )}
         </div>

@@ -224,9 +224,31 @@ describe('LessonPage', () => {
       '/api/lessons/lesson-1/progress',
       expect.anything(),
     );
+    const content = screen.getByText('Le contenu pédagogique.');
+    const navigation = screen.getByRole('navigation', {
+      name: 'Navigation pédagogique',
+    });
+    const noteButton = screen.getByRole('button', {
+      name: 'Prendre une note liée',
+    });
+    const previous = screen.getByText('Précédent');
+    const continueButton = screen.getByRole('button', { name: 'Continuer' });
+
+    expect(content.compareDocumentPosition(navigation)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(noteButton.compareDocumentPosition(navigation)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(screen.getAllByText('Continuer')).toHaveLength(1);
     expect(
-      screen.getByRole('button', { name: 'Continuer la prévisualisation' }),
-    ).toBeInTheDocument();
+      screen.queryByRole('link', { name: 'Continuer' }),
+    ).not.toBeInTheDocument();
+    expect(previous.parentElement).toBe(continueButton.parentElement);
+    expect(previous.parentElement).toHaveClass('justify-between');
+    expect(previous.compareDocumentPosition(continueButton)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
 
     fireEvent.click(
       screen.getByRole('button', { name: 'Prendre une note liée' }),

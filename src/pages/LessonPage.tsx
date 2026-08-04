@@ -316,6 +316,13 @@ function LessonWorkspace({
   async function continueLearning() {
     if (!current) return;
     if (current.kind === 'COMPLETE') {
+      if (progress?.lessonProgress.status === 'COMPLETED') {
+        void route(
+          sequence.next?.href ??
+            `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(lesson.module.slug)}`,
+        );
+        return;
+      }
       if (progress?.canComplete) {
         await mutation.mutateAsync(
           `/api/lessons/${encodeURIComponent(lesson.id)}/complete`,
@@ -349,6 +356,18 @@ function LessonWorkspace({
   const block = lesson.contentBlocks.find((item) => item.id === current?.id);
   const resource = lesson.resources.find((item) => item.id === current?.id);
   const task = lesson.tasks.find((item) => item.id === current?.id);
+  const isCompletionActivity = current?.kind === 'COMPLETE';
+  const isLessonCompleted = progress?.lessonProgress.status === 'COMPLETED';
+  const continueLabel = isCompletionActivity
+    ? isLessonCompleted && !sequence.next
+      ? 'Retour au module'
+      : isLessonCompleted
+        ? 'Continuer'
+        : 'Terminer la leçon'
+    : 'Continuer';
+  const isContinueDisabled = isCompletionActivity
+    ? !lesson.isPublished || (!isLessonCompleted && !progress?.canComplete)
+    : !sequence.next;
 
   return (
     <article
@@ -370,14 +389,6 @@ function LessonWorkspace({
         </Card>
       )}
       <p class="leading-7 text-slate-300">{lesson.summary}</p>
-      {current ? (
-        <PedagogicalNavigation
-          activities={sequence.activities}
-          currentKey={activityKey(current.kind, current.id)}
-          lessonTitle={lesson.title}
-          moduleTitle={lesson.module.title}
-        />
-      ) : null}
       <div class="grid gap-6">
         <section class="space-y-4" aria-labelledby="current-activity-title">
           {current ? (
@@ -438,21 +449,6 @@ function LessonWorkspace({
           {mutation.error ? (
             <ErrorState description="La progression n’a pas pu être mise à jour." />
           ) : null}
-          {current ? (
-            <Button
-              disabled={
-                !lesson.isPublished && current.kind === 'COMPLETE'
-                  ? true
-                  : current.kind === 'COMPLETE' && !progress?.canComplete
-              }
-              isLoading={mutation.isPending}
-              onClick={() => void continueLearning()}
-            >
-              {lesson.isPublished
-                ? 'Continuer'
-                : 'Continuer la prévisualisation'}
-            </Button>
-          ) : null}
           <Button
             isLoading={noteMutation.isPending}
             onClick={() => void createNote()}
@@ -462,6 +458,19 @@ function LessonWorkspace({
           </Button>
         </section>
       </div>
+      {current ? (
+        <PedagogicalNavigation
+          activities={sequence.activities}
+          continueActivity={sequence.next}
+          continueLabel={continueLabel}
+          currentKey={activityKey(current.kind, current.id)}
+          isContinueDisabled={isContinueDisabled}
+          isContinuePending={mutation.isPending}
+          lessonTitle={lesson.title}
+          moduleTitle={lesson.module.title}
+          onContinue={() => void continueLearning()}
+        />
+      ) : null}
     </article>
   );
 }
