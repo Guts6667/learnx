@@ -33,7 +33,7 @@ l’atomicité de progression, la publication en cascade, le parcours centré su
 la leçon, la navigation responsive et la politique hors ligne ont des preuves
 locales solides.
 
-Les quatre bloqueurs initiaux sont levés : le workflow `Integration` #22 est
+Les quatre bloqueurs initiaux sont levés : le workflow `Integration` #24 est
 vert, axe est exécuté sur les vues critiques, le texte à 200 % et la réduction
 de mouvement sont couverts, le rate limit de connexion est partagé en base et
 l'inscription publique est désactivée en production. Hono a également été mis
@@ -65,7 +65,7 @@ ci-dessous.
 
 | Catégorie | Sévérité | État et preuve | Action restante |
 | --- | --- | --- | --- |
-| Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#23 verts ; timeout du seed complet corrigé dans `9ce64a8` | aucune |
+| Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#24 verts ; timeout du seed complet corrigé dans `9ce64a8` | aucune |
 | Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; commit `3d360f2`, validation de cohérence et Integration Neon complètes | valider le SHA d'intégration |
 | Configuration propriétaire | P1 opérationnelle | `build:vercel` lance `prisma migrate deploy`; l'isolation des valeurs Vercel Preview n'a pas pu être prouvée car elles sont masquées | Rayan confirme Preview sur une branche Neon dédiée et prépare le point de restauration Production |
 | Contrôle manuel | P2 | axe/WebKit/texte 200 % verts ; VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge |
@@ -248,7 +248,7 @@ release sur l'environnement final.
 | `pnpm exec prisma validate` | succès |
 | migration réelle | succès; 16 migrations vérifiées sur branche Neon éphémère |
 | `pnpm test:integration` sur le commit de fusion | succès; 4 tests passés, 2 scénarios backend volontairement ignorés hors projet desktop |
-| GitHub `Integration` | succès; run #22, Functions + navigateurs réels |
+| GitHub `Integration` | succès; run #24 sur `9ce64a8`, Functions + navigateurs réels |
 | `pnpm deployment:check -- https://learnx-eight.vercel.app` | succès anonyme |
 | `pnpm audit --prod` | succès; aucune vulnérabilité connue |
 | `git diff --check` | succès |
@@ -338,7 +338,7 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 | lint, typecheck, 290 tests, build | branche `dev` et worktree d'intégration | GO |
 | seed ciblé et cohérence 13 étapes | 21 tests seed + contrôle croisé JSON + deux seeds réels sur clone | GO |
 | Playwright desktop/320/390/WebKit/axe | 24/24 sur `dev` et branche d'intégration | GO |
-| Integration Neon | runs #22/#23 sur `dev`, puis commit `3d360f2` validé sur `br-damp-hill-ase0imqf`; migrations/Functions/navigateurs verts, branche supprimée | GO |
+| Integration Neon | run #24 vert sur `dev`, puis commit `3d360f2` validé sur `br-damp-hill-ase0imqf`; migrations/Functions/navigateurs verts, branche supprimée | GO |
 | V2-012 | axe sans sérieux/critique, clavier/focus, 200 %, mouvement réduit | GO automatisé |
 | VoiceOver matériel | non rejoué sur le déploiement final | post-merge requis |
 | dépendances | Hono 4.13.0, `pnpm audit --prod` sans vulnérabilité connue | GO |
@@ -445,7 +445,7 @@ Aucun seed Production n'est autorisé par le présent GO technique.
 ## Porte de sortie GO
 
 Les contrôles locaux, la matrice navigateur, l'audit de dépendances et
-`Integration` #22 sont verts. La prochaine action autorisée est la préparation
+`Integration` #24 sont verts. La prochaine action autorisée est la préparation
 non destructive du merge, suivie du merge uniquement après confirmation
 explicite du propriétaire.
 
