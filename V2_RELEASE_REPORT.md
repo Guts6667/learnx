@@ -11,10 +11,13 @@ HEAD de code audité : `b378611`
 Référence distante intégrée : `origin/dev = ec306e6`
 (`docs(release): mark V2 candidate ready to merge`)
 
+Commit de fusion préparé : `3d360f2b89a6ff20f831b90f531263d9a6e8b05f`
+(`merge(release): prepare V2 integration into main`), local et non poussé.
+
 Production/main observée : `origin/main = 760103d`
-Écart observé : `dev` possède 39 commits propres et `main` un commit propre ;
-le diff de la base commune vers `dev` couvre 211 fichiers, 70 526 insertions et
-4 797 suppressions.
+Écart observé : `dev` possède 40 commits propres et `main` un commit propre ;
+le diff de la base commune vers `dev` couvre 213 fichiers, 70 524 insertions et
+4 800 suppressions.
 
 ## Synthèse exécutive
 
@@ -35,9 +38,11 @@ l'inscription publique est désactivée en production. Hono a également été m
 
 Le GO a permis de préparer le merge sans toucher à `main`. Les six conflits
 réels sont résolus sur la branche d'intégration locale, puis validés par les
-tests seed, la suite complète et Playwright. Ce résultat ne constitue pas encore
-le merge ni la clôture de production, qui restent soumis à l'autorisation
-explicite du propriétaire et aux contrôles d'environnement ci-dessous.
+tests seed, la suite complète, Playwright et une exécution des Functions contre
+une branche Neon isolée créée depuis Production puis supprimée. Ce résultat ne
+constitue pas encore le merge ni la clôture de production, qui restent soumis à
+l'autorisation explicite du propriétaire et aux contrôles d'environnement
+ci-dessous.
 
 ## Périmètre et état Git
 
@@ -58,7 +63,7 @@ explicite du propriétaire et aux contrôles d'environnement ci-dessous.
 | Catégorie | Sévérité | État et preuve | Action restante |
 | --- | --- | --- | --- |
 | Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#23 verts | aucune |
-| Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; validation de cohérence complète | valider le SHA d'intégration |
+| Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; commit `3d360f2`, validation de cohérence et Integration Neon complètes | valider le SHA d'intégration |
 | Configuration propriétaire | P1 opérationnelle | `build:vercel` lance `prisma migrate deploy`; l'isolation des valeurs Vercel Preview n'a pas pu être prouvée car elles sont masquées | Rayan confirme Preview sur une branche Neon dédiée et prépare le point de restauration Production |
 | Contrôle manuel | P2 | axe/WebKit/texte 200 % verts ; VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge |
 | Publication de contenu | P1 opérationnelle | `build:vercel` ne lance jamais `prisma:seed` | audit lecture seule puis seed séparé uniquement après sauvegarde et autorisation |
@@ -238,8 +243,8 @@ release sur l'environnement final.
 | couverture progression ciblée | succès; `progress/app.ts` 96,15 % branches |
 | `pnpm prisma:generate` | succès, Prisma Client 7.9.1 |
 | `pnpm exec prisma validate` | succès |
-| migration réelle | succès; 16 migrations sur branche Neon éphémère |
-| `pnpm test:integration` local | bloqué volontairement sans base éphémère |
+| migration réelle | succès; 16 migrations vérifiées sur branche Neon éphémère |
+| `pnpm test:integration` sur le commit de fusion | succès; 4 tests passés, 2 scénarios backend volontairement ignorés hors projet desktop |
 | GitHub `Integration` | succès; run #22, Functions + navigateurs réels |
 | `pnpm deployment:check -- https://learnx-eight.vercel.app` | succès anonyme |
 | `pnpm audit --prod` | succès; aucune vulnérabilité connue |
@@ -329,7 +334,7 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 | lint, typecheck, 289 tests, build | branche `dev` et worktree d'intégration | GO |
 | seed ciblé et cohérence 13 étapes | 20 tests seed + contrôle croisé JSON | GO |
 | Playwright desktop/320/390/WebKit/axe | 24/24 sur `dev` et branche d'intégration | GO |
-| Integration Neon | runs #22 et #23, migrations/Functions/navigateurs, branche supprimée | GO |
+| Integration Neon | runs #22/#23 sur `dev`, puis commit `3d360f2` validé sur `br-damp-hill-ase0imqf`; migrations/Functions/navigateurs verts, branche supprimée | GO |
 | V2-012 | axe sans sérieux/critique, clavier/focus, 200 %, mouvement réduit | GO automatisé |
 | VoiceOver matériel | non rejoué sur le déploiement final | post-merge requis |
 | dépendances | Hono 4.13.0, `pnpm audit --prod` sans vulnérabilité connue | GO |
@@ -340,7 +345,7 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 
 ## Commits candidats au merge
 
-La plage candidate comprend les 39 commits propres à `dev` jusqu'à `b378611`. Elle comprend le
+La plage candidate comprend les 40 commits propres à `dev` jusqu'à `ec306e6`. Elle comprend le
 cadrage V2, V2-001 à V2-011, les migrations V2-008A/B, les contenus des étapes
 5 à 13, les correctifs UX, la suppression de note et le retrait de `.DS_Store`.
 La liste exacte est obtenue par :
