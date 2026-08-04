@@ -55,8 +55,14 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
 
   const ownerEmail = uniqueEmail('owner', testInfo.retry);
   const outsiderEmail = uniqueEmail('outsider', testInfo.retry);
-  const owner = await playwrightRequest.newContext({ baseURL });
-  const outsider = await playwrightRequest.newContext({ baseURL });
+  const owner = await playwrightRequest.newContext({
+    baseURL,
+    timeout: 15_000,
+  });
+  const outsider = await playwrightRequest.newContext({
+    baseURL,
+    timeout: 15_000,
+  });
 
   try {
     await register(owner, ownerEmail);

@@ -46,6 +46,7 @@ async function handleApi(
     `http://${incoming.headers.host ?? `127.0.0.1:${port}`}`,
   );
   const method = incoming.method ?? 'GET';
+  const startedAt = Date.now();
   const hasBody = method !== 'GET' && method !== 'HEAD';
   const init: RequestInit & { duplex?: 'half' } = {
     headers: requestHeaders(incoming),
@@ -58,6 +59,9 @@ async function handleApi(
   }
 
   const response = await api.fetch(new Request(requestUrl, init));
+  console.log(
+    `[integration:request] ${method} ${requestUrl.pathname} ${response.status} ${Date.now() - startedAt}ms`,
+  );
   outgoing.statusCode = response.status;
 
   response.headers.forEach((value, name) => {

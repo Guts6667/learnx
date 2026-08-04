@@ -121,6 +121,18 @@ progressApp.onError((error, context) => {
     return context.json(toApiErrorBody(error), error.status);
   }
 
+  if (process.env.LEARNX_INTEGRATION_DATABASE === 'ephemeral') {
+    const code =
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      typeof error.code === 'string'
+        ? error.code
+        : 'UNKNOWN';
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error(`[integration:progress] ${code}: ${message}`);
+  }
+
   return context.json(
     toApiErrorBody(
       new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500),
