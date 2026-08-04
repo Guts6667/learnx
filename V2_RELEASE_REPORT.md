@@ -67,7 +67,7 @@ ci-dessous.
 | --- | --- | --- | --- |
 | Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#24 verts ; timeout du seed complet corrigé dans `9ce64a8` | aucune |
 | Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; commit `3d360f2`, validation de cohérence et Integration Neon complètes | valider le SHA d'intégration |
-| Configuration propriétaire | P1 opérationnelle | `build:vercel` lance `prisma migrate deploy`; l'isolation des valeurs Vercel Preview n'a pas pu être prouvée car elles sont masquées | Rayan confirme Preview sur une branche Neon dédiée et prépare le point de restauration Production |
+| Configuration propriétaire | P1 opérationnelle | le clone Production contient déjà les 16 migrations V2 alors que `main` porte l'ancien code ; l'isolation Vercel Preview n'a pas pu être prouvée | Rayan configure Preview sur une branche Neon dédiée et prépare le point de restauration Production |
 | Contrôle manuel | P2 | axe/WebKit/texte 200 % verts ; VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge |
 | Publication de contenu | P1 opérationnelle | Production contient 5 étapes/21 leçons ; dry-run deux fois sur clone validé sans modification des données personnelles | seed Production séparé uniquement après sauvegarde et autorisation |
 | Dette V3 | P2 | en-têtes, pagination, fréquence de `lastUsedAt`, redaction des logs | ne bloque pas le merge V2 |
@@ -379,6 +379,14 @@ Le code N-1 `760103d` insère encore tentatives et soumissions sans
 `module_run_id`. Il est donc **incompatible avec le schéma V2 migré**. Après
 migration, redéployer seulement l'ancien code n'est pas un rollback sûr.
 
+La vérification sur un clone créé depuis la branche Neon Production a trouvé
+les 16 migrations déjà appliquées, sans migration en attente. Cette
+incompatibilité N-1 existe donc déjà dans l'environnement courant : `main`
+reste à `760103d`, mais la base est au schéma V2. La cause exacte n'est pas
+attribuée sans logs historiques ; une Preview partageant Production est une
+hypothèse à vérifier, pas un fait établi. Déployer le code V2 réaligne le code
+avec le schéma existant ; revenir au seul code `760103d` reste interdit.
+
 Avant Production :
 
 1. ouvrir une fenêtre de maintenance courte et relever les comptes utilisateurs,
@@ -406,7 +414,9 @@ masquée par l'outil et leur séparation de Production n'a pas pu être prouvée
 En conséquence, la branche d'intégration n'est pas poussée et aucun Preview
 Vercel n'est déclenché. Rayan doit d'abord vérifier que les deux URL Preview
 visent une branche Neon dédiée ; une Preview partageant Production est un
-NO-GO absolu pour les nouvelles migrations.
+NO-GO absolu pour les nouvelles migrations. Le fait que Production possède déjà
+les migrations V2 renforce ce contrôle, sans suffire à prouver quel déploiement
+les a appliquées.
 
 ## Merge et publication du contenu sont distincts
 
