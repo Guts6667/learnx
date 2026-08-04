@@ -87,9 +87,11 @@ de la V2 constitue le jalon « polish du parcours ». Aucune capacité V3 ne doi
 retarder ces deux jalons.
 
 Dans le jalon polish, l’ordre de navigation est explicite : `V2-006` →
-`V2-007` → `V2-008` → `V2-008A` → `V2-009` → `V2-010`. Le redémarrage de
-module de `V2-008A` reste conditionné à la validation préalable de son modèle
-serveur ; ce point ne doit pas être contourné par une simulation frontend.
+`V2-007` → `V2-008` → `V2-008A` → `V2-008B` → `V2-009` → `V2-010`. Le
+redémarrage de module de `V2-008A` et la synchronisation historique de
+`V2-008B` restent conditionnés à la validation préalable de leur modèle
+serveur ; ces points ne doivent pas être contournés par une simulation
+frontend ou une suppression silencieuse de données.
 
 ## V2-001 — Supprimer le cache privé du service worker
 
@@ -482,9 +484,110 @@ matérialiser une nouvelle reprise — borne temporelle, run de module ou
 la validation de l’utilisateur. Aucun code de redémarrage ni migration ne doit
 être écrit avant cette décision.
 
+## V2-008B — Unifier les activités pédagogiques canoniques
+
+**Priorité : P1. Dépendances : V2-003, V2-007, V2-008A.**
+
+### Décision produit
+
+Une intention pédagogique correspond à une seule activité dans la progression :
+
+- une `Resource` est un support consultable depuis les blocs, sources et
+  activités, jamais une activité autonome de la séquence linéaire ;
+- `reading`, `watching`, `listening` et `checklist` deviennent exclusivement des
+  `Task`, validables sans production ;
+- `writing`, `practice`, `reflection` et `project` deviennent exclusivement des
+  `Exercise`, avec réponse ou production ;
+- quiz et mini-évaluations de notion restent des activités distinctes.
+
+Le seed actuel contient 210 entrées éditoriales projetées simultanément en 210
+`Task` et 210 `Exercise`. Avec le routage canonique des données actuelles, les
+comptes attendus deviennent **8 tâches** et **202 exercices**, sans supprimer les
+231 ressources ni leurs relations aux contenus et notions.
+
+### Périmètre
+
+- Retirer `RESOURCE` de `LessonActivityKind` et de la séquence linéaire, tout en
+  conservant les cartes, citations et liens de ressources dans le contenu et le
+  sommaire documentaire adapté.
+- Router chaque entrée `tasks` du sidecar vers un seul modèle dans le seed selon
+  son type, sans créer de couple `Task`/`Exercise` miroir.
+- Écarter des réponses API et de l’interface le membre non canonique d’un ancien
+  couple miroir ; ne jamais compter simultanément les deux états.
+- Adapter Aujourd’hui, reprise exacte, préconditions, progression de leçon,
+  validation d’étape, admin et révisions aux activités canoniques.
+- Conserver l’accès aux ressources et l’intégralité des tentatives, soumissions
+  et complétions historiques.
+- Documenter et exécuter une synchronisation idempotente des données existantes
+  avant de supprimer ou archiver un miroir devenu non canonique.
+
+### Migration et décision préalable obligatoire
+
+La déduplication d’affichage (`RESOURCE` hors séquence et un seul membre visible
+par couple existant) est sûre si les deux enregistrements historiques restent
+intacts. La modification du seed ne l’est pas seule : ses opérations de prune
+peuvent supprimer un `Task` ou un `Exercise` et entraîner en cascade ses
+complétions ou soumissions.
+
+Avant implémentation, Codex doit présenter puis faire valider le plus petit
+modèle serveur qui :
+
+1. identifie durablement l’activité canonique et son éventuel miroir historique,
+   sans déduire cette relation du seul titre ;
+2. reporte une ancienne complétion vers l’activité canonique sans fabriquer une
+   réponse utilisateur ni une tentative pédagogique ;
+3. conserve les enregistrements historiques dans un état archivé et exclu des
+   séquences/calculs, ou les rattache à une trace de migration équivalente ;
+4. permet un rollback et une relance idempotente sur une base sauvegardée.
+
+Une migration Prisma dédiée est probablement nécessaire pour distinguer
+explicitement les miroirs historiques et les états reportés. Elle doit rester
+dans ce ticket autonome, après validation de son schéma et de son plan de
+backfill. Il est interdit de simuler le résultat côté frontend, de créer une
+`ExerciseSubmission` factice ou de supprimer silencieusement l’historique.
+
+### Hors périmètre
+
+- Modification des contenus pédagogiques ou des sources.
+- Fusion d’un quiz avec une mini-évaluation.
+- Nouvel ordre éditorial arbitraire entre types.
+- Refonte de la navigation globale de `V2-010`.
+- Reset de progression ou suppression de notes.
+
+### Critères d’acceptation
+
+- Aucune activité `RESOURCE` n’apparaît dans la séquence, mais chaque ressource
+  et citation reste accessible depuis sa leçon.
+- Une entrée éditoriale produit exactement une `Task` ou un `Exercise` selon la
+  table de routage ; aucun couple miroir n’est exposé ou compté deux fois.
+- `Lire la définition universitaire de la psychologie` est une seule tâche avec
+  son lien et l’action `Marquer comme terminé` ; `Formuler sa propre définition`
+  est uniquement un exercice avec production.
+- Les anciens états terminés restent reconnus par l’activité canonique, sans
+  perte d’historique ni réussite artificielle.
+- Les pourcentages, préconditions, Aujourd’hui, reprise, validation d’étape et
+  timeline utilisent tous la même collection canonique côté serveur.
+- La synchronisation est transactionnelle, idempotente, vérifiable avant
+  écriture et réversible depuis une sauvegarde.
+- Aucun doublon, débordement ou action masquée n’apparaît à 320/390 px.
+
+### Tests et risques
+
+- Tests unitaires de la table de routage pour les huit `TaskType`, de la
+  séquence sans `RESOURCE` et de l’absence de miroir.
+- Tests seed sur base vide et base héritée : 8 tâches, 202 exercices, 210
+  intentions, 231 ressources conservées et deux exécutions idempotentes.
+- Tests d’intégration de report de progression dans les deux directions,
+  historique conservé, transaction/rollback, concurrence et autorisation.
+- Tests Aujourd’hui, progression, validation d’étape, reprise de module,
+  révisions et admin ; tests composants et Playwright à 320/390 px.
+- Risque critique : les contraintes uniques actuelles par position et les
+  cascades de suppression peuvent détruire des preuves d’activité si le
+  backfill et l’archivage ne précèdent pas le nouveau prune du seed.
+
 ## V2-009 — Clarifier liens et actions
 
-**Priorité : P1. Dépendances : V2-008, V2-008A.**
+**Priorité : P1. Dépendances : V2-008, V2-008A, V2-008B.**
 
 ### Périmètre
 
