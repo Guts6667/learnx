@@ -9,8 +9,11 @@ function uniqueValue(label: string): string {
   return `${label}-${runId}-${randomUUID()}`.toLowerCase();
 }
 
-test('contraintes réelles du cycle accès et compatibilité des comptes V2', async (_fixtures, testInfo) => {
+test('contraintes réelles du cycle accès et compatibilité des comptes V2', async ({
+  baseURL,
+}, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
 
   const email = `${uniqueValue('access-cycle')}@example.test`;
   const reviewerEmail = `${uniqueValue('reviewer')}@example.test`;
