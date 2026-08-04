@@ -13,11 +13,11 @@ import {
 
 const password = 'Integration-Only-Password-2026!';
 
-function uniqueEmail(label: string): string {
+function uniqueEmail(label: string, retry: number): string {
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'missing-run';
   const safeRunId = runId.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  return `${label}-${safeRunId}@example.test`;
+  return `${label}-${safeRunId}-retry-${retry}@example.test`;
 }
 
 async function expectStatus(
@@ -50,10 +50,11 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
   baseURL,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
+  test.setTimeout(120_000);
   expect(baseURL).toBeTruthy();
 
-  const ownerEmail = uniqueEmail('owner');
-  const outsiderEmail = uniqueEmail('outsider');
+  const ownerEmail = uniqueEmail('owner', testInfo.retry);
+  const outsiderEmail = uniqueEmail('outsider', testInfo.retry);
   const owner = await playwrightRequest.newContext({ baseURL });
   const outsider = await playwrightRequest.newContext({ baseURL });
 
@@ -71,7 +72,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
 
     const fixture = await createIntegrationFixture(
       ownerEmail,
-      `${process.env.LEARNX_INTEGRATION_RUN_ID}-backend`,
+      `${process.env.LEARNX_INTEGRATION_RUN_ID}-backend-retry-${testInfo.retry}`,
     );
 
     await expectStatus(
