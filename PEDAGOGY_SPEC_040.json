@@ -1,0 +1,269 @@
+{
+  "specId": "PEDAGOGY_SPEC_040",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "moduleSlug": "modeles-personnalite",
+  "lesson": {
+    "title": "Approches par traits et Big Five",
+    "slug": "approches-traits-big-five",
+    "summary": "Les approches par traits décrivent des différences graduelles et relativement durables. Le Big Five organise ces descriptions en domaines et facettes, sans créer des types, expliquer à lui seul les conduites ni établir un diagnostic.",
+    "objectives": [
+      "Distinguer trait continu, état momentané, type et diagnostic.",
+      "Présenter les cinq grands domaines et leur organisation en facettes.",
+      "Interpréter un score comme une estimation relative et incertaine.",
+      "Évaluer validité, contexte culturel et limites d’usage d’un inventaire."
+    ],
+    "prerequisites": [
+      "Distinguer description, explication et prédiction.",
+      "Connaître fiabilité, validité et échantillonnage.",
+      "Savoir qu’une corrélation ne démontre pas une cause."
+    ],
+    "estimatedMinutes": 165,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un trait est une dimension sur laquelle les personnes diffèrent en moyenne : il résume une tendance probabiliste, pas une conduite constante. Un état est une expression momentanée qui dépend aussi de la situation. Classer une personne plus haut ou plus bas sur un continuum ne la transforme ni en type naturel, ni en essence, ni en cas clinique. Deux profils proches peuvent produire des conduites différentes selon les buts, les rôles et les contextes.",
+          "sourceKeys": ["openstax-traits-11-7", "john-big-five-2008"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Le Big Five est une taxonomie descriptive issue notamment d’analyses du langage et de structures de covariance. Il regroupe ouverture à l’expérience, conscienciosité, extraversion, agréabilité et neuroticisme — parfois formulé comme faible stabilité émotionnelle. Les pôles ne sont pas bons ou mauvais en soi. Le modèle condense des régularités entre adjectifs et réponses ; il ne fournit pas cinq causes indépendantes cachées dans l’individu.",
+          "sourceKeys": ["openstax-traits-11-7", "john-big-five-2008"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Les domaines larges se décomposent en facettes. Le BFI-2, par exemple, mesure trois facettes par domaine afin de conserver une vue d’ensemble tout en distinguant des nuances. Un score élevé d’extraversion peut ainsi masquer des niveaux différents de sociabilité, d’assurance et d’énergie. Un profil multidimensionnel reste plus fidèle qu’une étiquette unique, mais il ne raconte ni l’histoire de vie ni les compétences d’une personne.",
+          "sourceKeys": ["soto-john-bfi2-2017", "john-big-five-2008"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Un score dépend des items, de la consigne, du moment, de la langue, du groupe normatif et du mode de réponse. Les autoquestionnaires sont exposés à l’acquiescement, à la désirabilité sociale et aux différences d’interprétation ; des évaluations par proches ou des observations peuvent compléter, non abolir, ces limites. Fiabilité, validité et incertitude doivent être documentées pour l’usage précis. Une mesure non clinique ne doit pas être lue comme diagnostic.",
+          "sourceKeys": ["openstax-assessment-11-9", "soto-john-bfi2-2017"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "Retrouver cinq facteurs dans certains échantillons ne garantit pas la même structure, les mêmes significations ni la même comparabilité partout. Traduction, familiarité avec les questionnaires, niveau de scolarisation, modes de vie et catégories locales influencent les réponses. Chez les Tsimané de Bolivie, la structure à cinq facteurs s’est mal reproduite malgré plusieurs vérifications. Une comparaison culturelle exige donc adaptation, invariance de mesure et approches locales, pas l’hypothèse d’universalité par défaut.",
+          "sourceKeys": ["gurven-tsimane-2013", "openstax-culture-11-8"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Une interprétation responsable formule des tendances conditionnelles : « dans cet instrument et ce groupe de référence, ce score suggère… ». Elle évite « vous êtes ce type », « ce trait explique tout » et toute décision automatique d’orientation, d’embauche ou de soin. Elle indique population, normes, précision, validité, finalité, droits de la personne et données complémentaires. Le Big Five décrit utilement ; il ne diagnostique pas et ne dispense jamais d’examiner le contexte.",
+          "sourceKeys": ["soto-john-bfi2-2017", "openstax-assessment-11-9", "gurven-tsimane-2013"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-traits-11-7",
+        "title": "Psychology 2e — 11.7 Trait Theorists",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-7-trait-theorists",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.7 Trait Theorists. OpenStax.",
+        "description": "Lire les sections sur les facteurs et reformuler chaque domaine comme continuum, sans type.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "john-big-five-2008",
+        "title": "Paradigm Shift to the Integrative Big Five Trait Taxonomy: History, Measurement, and Conceptual Issues",
+        "type": "book_chapter",
+        "url": "https://www.elaborer.org/cours/psy7124/lectures/John2008.pdf",
+        "author": "Oliver P. John, Laura P. Naumann et Christopher J. Soto",
+        "citation": "John, O. P., Naumann, L. P., & Soto, C. J. (2008). Paradigm shift to the integrative Big Five trait taxonomy: History, measurement, and conceptual issues. In O. P. John, R. W. Robins, & L. A. Pervin (Eds.), Handbook of Personality: Theory and Research (3rd ed., pp. 114–158). Guilford Press.",
+        "description": "Lire l’histoire et la hiérarchie de la taxonomie ; séparer construction descriptive et mécanisme causal.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 2
+      },
+      {
+        "key": "soto-john-bfi2-2017",
+        "title": "The Next Big Five Inventory (BFI-2): Developing and Assessing a Hierarchical Model With 15 Facets to Enhance Bandwidth, Fidelity, and Predictive Power",
+        "type": "article",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27055049/",
+        "author": "Christopher J. Soto et Oliver P. John",
+        "citation": "Soto, C. J., & John, O. P. (2017). The next Big Five Inventory (BFI-2): Developing and assessing a hierarchical model with 15 facets to enhance bandwidth, fidelity, and predictive power. Journal of Personality and Social Psychology, 113(1), 117–143. https://doi.org/10.1037/pspp0000096",
+        "description": "Examiner domaines, facettes et indices psychométriques ; noter ce qu’un score ne permet pas d’inférer.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 3
+      },
+      {
+        "key": "openstax-assessment-11-9",
+        "title": "Psychology 2e — 11.9 Personality Assessment",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-9-personality-assessment",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.9 Personality Assessment. OpenStax.",
+        "description": "Repérer biais d’autoévaluation, validité et effets du contexte avant d’interpréter un inventaire.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "gurven-tsimane-2013",
+        "title": "How Universal Is the Big Five? Testing the Five-Factor Model of Personality Variation Among Forager-Farmers in the Bolivian Amazon",
+        "type": "article",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4104167/",
+        "author": "Michael Gurven et al.",
+        "citation": "Gurven, M., von Rueden, C., Massenkoff, M., Kaplan, H., & Lero Vie, M. (2013). How universal is the Big Five? Testing the five-factor model of personality variation among forager-farmers in the Bolivian Amazon. Journal of Personality and Social Psychology, 104(2), 354–370. https://doi.org/10.1037/a0030841",
+        "description": "Lire méthodes et discussion ; relever pourquoi une structure non reproduite ne se réduit pas à une erreur des participants.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "openstax-culture-11-8",
+        "title": "Psychology 2e — 11.8 Cultural Understandings of Personality",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-8-cultural-understandings-of-personality",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.8 Cultural Understandings of Personality. OpenStax.",
+        "description": "Comparer approches comparative, indigène et combinée pour préparer une adaptation culturelle.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Traits, dimensions et profils",
+        "slug": "traits-dimensions-profils",
+        "description": "Un trait résume une tendance continue et probabiliste ; un profil ne constitue ni type ni diagnostic.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-traits-11-7", "john-big-five-2008"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Traits et profils", "questionCount": 5}
+      },
+      {
+        "title": "Big Five, domaines et facettes",
+        "slug": "big-five-domaines-facettes",
+        "description": "La taxonomie organise cinq domaines larges et des facettes sans transformer les scores en catégories naturelles.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["john-big-five-2008", "soto-john-bfi2-2017"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Domaines et facettes", "questionCount": 5}
+      },
+      {
+        "title": "Mesure, culture et limites d’inférence",
+        "slug": "mesure-culture-limites-inference",
+        "description": "Interpréter exige normes, précision, validité d’usage et examen de la comparabilité culturelle.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-assessment-11-9", "gurven-tsimane-2013", "openstax-culture-11-8"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Mesure et culture", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {"title": "Démonter une typologie", "description": "Transformer six étiquettes de type en hypothèses dimensionnelles, situées et falsifiables, puis indiquer les informations manquantes.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
+      {"title": "Lire un profil avec prudence", "description": "Interpréter un profil fictif domaine–facettes en mentionnant norme, erreur, contexte, convergences et trois inférences interdites.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
+      {"title": "Auditer un inventaire interculturel", "description": "Évaluer traduction, échantillon, invariance, finalité, équité et données complémentaires avant tout usage dans une nouvelle population.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id":"REF-040-OPENSTAX-11-7","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.7 Trait Theorists","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-7-trait-theorists","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Introduction ouverte aux traits continus et au Big Five."},
+      {"id":"REF-040-JOHN","type":"handbook_chapter","authors":["John, O. P.","Naumann, L. P.","Soto, C. J."],"organization":"Guilford Press","title":"Paradigm Shift to the Integrative Big Five Trait Taxonomy: History, Measurement, and Conceptual Issues","year":2008,"edition":"3e éd.","publication":"Handbook of Personality: Theory and Research, 114–158","doi":null,"url":"https://www.elaborer.org/cours/psy7124/lectures/John2008.pdf","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Copie académique ouverte","status":"verified","notes":"Histoire, structure et portée descriptive."},
+      {"id":"REF-040-SOTO","type":"primary_research_article","authors":["Soto, C. J.","John, O. P."],"organization":"American Psychological Association","title":"The Next Big Five Inventory (BFI-2): Developing and Assessing a Hierarchical Model With 15 Facets to Enhance Bandwidth, Fidelity, and Predictive Power","year":2017,"edition":null,"publication":"Journal of Personality and Social Psychology, 113(1), 117–143","doi":"https://doi.org/10.1037/pspp0000096","url":"https://pubmed.ncbi.nlm.nih.gov/27055049/","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Article signalé en accès libre via PubMed","status":"verified","notes":"Développement et validation du BFI-2 complet ; correction bibliographique intégrée."},
+      {"id":"REF-040-OPENSTAX-11-9","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.9 Personality Assessment","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-9-personality-assessment","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Biais d’autoquestionnaire et validité."},
+      {"id":"REF-040-GURVEN","type":"primary_research_article","authors":["Gurven, M.","von Rueden, C.","Massenkoff, M.","Kaplan, H.","Lero Vie, M."],"organization":"American Psychological Association","title":"How Universal Is the Big Five? Testing the Five-Factor Model of Personality Variation Among Forager-Farmers in the Bolivian Amazon","year":2013,"edition":null,"publication":"Journal of Personality and Social Psychology, 104(2), 354–370","doi":"https://doi.org/10.1037/a0030841","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4104167/","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Texte ouvert via PMC","status":"verified","notes":"Test interculturel chez les Tsimané et non-réplication de la structure."},
+      {"id":"REF-040-OPENSTAX-11-8","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.8 Cultural Understandings of Personality","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-8-cultural-understandings-of-personality","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Approches comparatives et indigènes."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition":1,"referenceLinks":[{"referenceId":"REF-040-OPENSTAX-11-7","locator":"Five Factor Model","supports":"Traits comme facteurs continus."},{"referenceId":"REF-040-JOHN","locator":"trait concepts and taxonomy","supports":"Portée descriptive et hiérarchie des traits."}],"confidence":"high","confidenceRationale":"Manuel et chapitre de synthèse convergents.","notApplicableReason":null},
+      {"contentBlockPosition":2,"referenceLinks":[{"referenceId":"REF-040-JOHN","locator":"lexical tradition and Big Five taxonomy","supports":"Origines lexicales et structure descriptive."},{"referenceId":"REF-040-OPENSTAX-11-7","locator":"Five Factor Model","supports":"Noms et continuité des cinq domaines."}],"confidence":"high","confidenceRationale":"Taxonomie bien documentée.","notApplicableReason":null},
+      {"contentBlockPosition":3,"referenceLinks":[{"referenceId":"REF-040-SOTO","locator":"hierarchical model and 15 facets","supports":"Organisation domaines–facettes du BFI-2."},{"referenceId":"REF-040-JOHN","locator":"hierarchical structure","supports":"Niveaux larges et spécifiques."}],"confidence":"high","confidenceRationale":"Article psychométrique primaire et synthèse.","notApplicableReason":null},
+      {"contentBlockPosition":4,"referenceLinks":[{"referenceId":"REF-040-OPENSTAX-11-9","locator":"Self-Report Inventories","supports":"Biais de réponse et enjeux de validité."},{"referenceId":"REF-040-SOTO","locator":"reliability and validity analyses","supports":"Qualité psychométrique dépendante de l’instrument et de l’usage."}],"confidence":"high","confidenceRationale":"Sources adaptées aux limites de mesure.","notApplicableReason":null},
+      {"contentBlockPosition":5,"referenceLinks":[{"referenceId":"REF-040-GURVEN","locator":"results and discussion","supports":"Non-réplication d’une structure Big Five dans un contexte culturel particulier."},{"referenceId":"REF-040-OPENSTAX-11-8","locator":"cultural-comparative, indigenous and combined approaches","supports":"Nécessité d’approches culturellement situées."}],"confidence":"high","confidenceRationale":"Étude primaire et cadre pédagogique complémentaires.","notApplicableReason":null},
+      {"contentBlockPosition":6,"referenceLinks":[{"referenceId":"REF-040-SOTO","locator":"measurement model and intended interpretation","supports":"Scores dimensionnels et incertitude de mesure."},{"referenceId":"REF-040-OPENSTAX-11-9","locator":"uses and limits of personality assessment","supports":"Finalité et prudence d’interprétation."},{"referenceId":"REF-040-GURVEN","locator":"discussion","supports":"Limites de généralisation culturelle."}],"confidence":"high","confidenceRationale":"Convergences psychométriques et interculturelles.","notApplicableReason":null}
+    ],
+    "resourceChecks": [
+      {"resourceKey":"openstax-traits-11-7","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-OPENSTAX-11-7"],"pedagogicalRationale":"Introduit les traits comme facteurs continus.","learnerInstructions":"Lire les sections sur les facteurs et reformuler chaque domaine comme continuum, sans type.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML structuré.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."},
+      {"resourceKey":"john-big-five-2008","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-JOHN"],"pedagogicalRationale":"Situe l’histoire, la structure et la portée de la taxonomie.","learnerInstructions":"Lire l’histoire et la hiérarchie de la taxonomie ; séparer construction descriptive et mécanisme causal.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"PDF textuel.","alternativeResourceKey":null,"notes":"Copie académique ouverte vérifiée."},
+      {"resourceKey":"soto-john-bfi2-2017","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-SOTO"],"pedagogicalRationale":"Donne un exemple précis de modèle hiérarchique et de validation.","learnerInstructions":"Examiner domaines, facettes et indices psychométriques ; noter ce qu’un score ne permet pas d’inférer.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"Résumé HTML structuré sur PubMed avec lien vers l’article libre.","alternativeResourceKey":null,"notes":"Notice PubMed de l’article BFI-2 complet vérifiée."},
+      {"resourceKey":"openstax-assessment-11-9","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-OPENSTAX-11-9"],"pedagogicalRationale":"Rend visibles biais de réponse et exigences de validité.","learnerInstructions":"Repérer biais d’autoévaluation, validité et effets du contexte avant d’interpréter un inventaire.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML structuré.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."},
+      {"resourceKey":"gurven-tsimane-2013","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-GURVEN"],"pedagogicalRationale":"Fournit un cas empirique contre l’universalité supposée.","learnerInstructions":"Lire méthodes et discussion ; relever pourquoi une structure non reproduite ne se réduit pas à une erreur des participants.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML PMC et PDF.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."},
+      {"resourceKey":"openstax-culture-11-8","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-040-OPENSTAX-11-8"],"pedagogicalRationale":"Présente plusieurs stratégies d’étude culturelle.","learnerInstructions":"Comparer approches comparative, indigène et combinée pour préparer une adaptation culturelle.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML structuré.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug":"traits-dimensions-profils","assessmentTitle":"Mini-évaluation — Traits et profils","questions":[
+          {"type":"single_choice","prompt":"Que résume un trait ?","explanation":"Il décrit une tendance moyenne probabiliste.","acceptedAnswers":[],"position":1,"options":[{"label":"Une tendance moyenne sur un continuum","isCorrect":true,"position":1},{"label":"Une conduite constante","isCorrect":false,"position":2},{"label":"Un diagnostic","isCorrect":false,"position":3},{"label":"Une essence fixe","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un score élevé transforme une personne en type naturel.","explanation":"Les scores sont continus et ne créent pas de catégories naturelles.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Qu’est-ce qui peut modifier l’expression d’un trait ?","explanation":"Les états varient avec plusieurs conditions.","acceptedAnswers":[],"position":3,"options":[{"label":"La situation","isCorrect":true,"position":1},{"label":"Les buts","isCorrect":true,"position":2},{"label":"Les rôles","isCorrect":true,"position":3},{"label":"Une étiquette seule","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quelle phrase est la plus prudente ?","explanation":"Elle conserve la dimension et le contexte de mesure.","acceptedAnswers":[],"position":4,"options":[{"label":"Ce score suggère une tendance dans cet instrument","isCorrect":true,"position":1},{"label":"Vous êtes ce type","isCorrect":false,"position":2},{"label":"Vous agirez toujours ainsi","isCorrect":false,"position":3},{"label":"Ce test vous diagnostique","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Comment appelle-t-on une expression momentanée d’un trait ?","explanation":"Il s’agit d’un état.","acceptedAnswers":["état","etat","état de personnalité","etat de personnalite"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug":"big-five-domaines-facettes","assessmentTitle":"Mini-évaluation — Domaines et facettes","questions":[
+          {"type":"single_choice","prompt":"Le Big Five est d’abord quoi ?","explanation":"C’est une taxonomie descriptive de différences individuelles.","acceptedAnswers":[],"position":1,"options":[{"label":"Une taxonomie descriptive","isCorrect":true,"position":1},{"label":"Un diagnostic clinique","isCorrect":false,"position":2},{"label":"Cinq causes biologiques","isCorrect":false,"position":3},{"label":"Cinq types exclusifs","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un domaine large peut masquer des facettes différentes.","explanation":"Les facettes ajoutent une information plus spécifique.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":true,"position":1},{"label":"Faux","isCorrect":false,"position":2}]},
+          {"type":"multiple_choice","prompt":"Quels éléments appartiennent au Big Five ?","explanation":"Ce sont trois des cinq domaines.","acceptedAnswers":[],"position":3,"options":[{"label":"Extraversion","isCorrect":true,"position":1},{"label":"Agréabilité","isCorrect":true,"position":2},{"label":"Conscienciosité","isCorrect":true,"position":3},{"label":"Intelligence générale","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Pourquoi utiliser des facettes ?","explanation":"Elles distinguent des nuances au sein d’un domaine.","acceptedAnswers":[],"position":4,"options":[{"label":"Pour préciser un profil","isCorrect":true,"position":1},{"label":"Pour créer un diagnostic","isCorrect":false,"position":2},{"label":"Pour éliminer l’erreur","isCorrect":false,"position":3},{"label":"Pour garantir une conduite","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel mot désigne une subdivision plus spécifique d’un domaine ?","explanation":"Il s’agit d’une facette.","acceptedAnswers":["facette","une facette"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug":"mesure-culture-limites-inference","assessmentTitle":"Mini-évaluation — Mesure et culture","questions":[
+          {"type":"single_choice","prompt":"À quoi un score est-il normalement comparé ?","explanation":"Son sens dépend d’un groupe normatif documenté.","acceptedAnswers":[],"position":1,"options":[{"label":"À un groupe de référence pertinent","isCorrect":true,"position":1},{"label":"À une essence humaine","isCorrect":false,"position":2},{"label":"À un diagnostic automatique","isCorrect":false,"position":3},{"label":"À une règle universelle","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Une structure retrouvée dans un pays garantit sa comparabilité partout.","explanation":"La comparabilité doit être testée dans chaque contexte.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Que faut-il examiner avant une comparaison culturelle ?","explanation":"Ces éléments conditionnent la validité de la comparaison.","acceptedAnswers":[],"position":3,"options":[{"label":"Traduction","isCorrect":true,"position":1},{"label":"Invariance de mesure","isCorrect":true,"position":2},{"label":"Catégories locales","isCorrect":true,"position":3},{"label":"Universalité supposée","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quel biais menace un autoquestionnaire ?","explanation":"La présentation favorable de soi peut déplacer les réponses.","acceptedAnswers":[],"position":4,"options":[{"label":"Désirabilité sociale","isCorrect":true,"position":1},{"label":"Causalité garantie","isCorrect":false,"position":2},{"label":"Diagnostic certain","isCorrect":false,"position":3},{"label":"Absence de contexte","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne l’égalité de fonctionnement d’une mesure entre groupes ?","explanation":"Il s’agit de l’invariance de mesure.","acceptedAnswers":["invariance de mesure","invariance","measurement invariance"],"position":5,"options":[]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie de la personnalité et psychométrie requise.",
+        "L’étape personnalite-differences-individuelles et le module modeles-personnalite sont planifiés mais absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "Le Big Five est présenté comme taxonomie dimensionnelle, jamais comme typologie ou diagnostic.",
+        "La comparabilité interculturelle n’est jamais présumée.",
+        "Toutes les ressources obligatoires sont ouvertes."
+      ]
+    },
+    "changeLog": [
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_psychology_and_psychometrics"}
+    ]
+  }
+}

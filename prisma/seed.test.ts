@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import {
   readSampleProgram,
   readSampleSeed,
@@ -210,9 +212,9 @@ describe('sample program seed', () => {
     const sampleProgram = await readSampleProgram();
 
     expect(sampleProgram.slug).toBe('fondamentaux-psychologie');
-    expect(sampleProgram.stages).toHaveLength(8);
+    expect(sampleProgram.stages).toHaveLength(9);
     expect(sampleProgram.stages.flatMap((stage) => stage.modules)).toHaveLength(
-      12,
+      14,
     );
   });
 
@@ -735,7 +737,100 @@ describe('sample program seed', () => {
     ).toBe(100);
   });
 
-  it('respecte les comptes et relations du lot éditorial des étapes 5 à 8', async () => {
+  it('lit les six leçons et les dix-huit banques de la neuvième étape', async () => {
+    const sampleSeed = await readSampleSeed();
+    const stage = sampleSeed.program.stages.find(
+      (item) => item.slug === 'personnalite-differences-individuelles',
+    );
+    const lessons = stage?.modules.flatMap((module) => module.lessons) ?? [];
+    const groups = sampleSeed.conceptAssessmentBanks.filter(
+      (group) => group.stageSlug === stage?.slug,
+    );
+
+    expect(stage?.modules.map((module) => module.slug)).toEqual([
+      'modeles-personnalite',
+      'mesure-interpretation-personnalite',
+    ]);
+    expect(lessons.map((lesson) => lesson.slug)).toEqual([
+      'approches-traits-big-five',
+      'perspectives-biologiques-sociales-narratives',
+      'stabilite-changement-situations',
+      'fidelite-validite-normes',
+      'autoquestionnaires-observation-biais-reponse',
+      'usages-limites-ethique-tests',
+    ]);
+    expect(lessons.every((lesson) => lesson.contentBlocks.length === 6)).toBe(
+      true,
+    );
+    expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
+    expect(groups).toHaveLength(6);
+    expect(groups.flatMap((group) => group.assessmentBanks)).toHaveLength(18);
+    expect(
+      groups.flatMap((group) =>
+        group.assessmentBanks.flatMap((bank) => bank.questions),
+      ),
+    ).toHaveLength(90);
+    expect(stage?.assessment).toMatchObject({
+      instructions: expect.stringContaining('## Cas Horizon 360'),
+      rubric: expect.any(Array),
+      type: 'case_study',
+    });
+    expect(
+      stage?.assessment.rubric?.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+  });
+
+  it('synchronise les preuves éditoriales corrigées des étapes initiales', async () => {
+    type LessonSidecar = {
+      editorial: {
+        review: { scientificAccuracy: boolean; subjectReviewer: string | null };
+      };
+      lesson: {
+        contentBlocks: Array<{ content: { sourceKeys: string[] } }>;
+      };
+    };
+    type AssessmentSidecar = {
+      editorial: {
+        referenceIds: string[];
+        review: { subjectReviewer: string | null };
+      };
+    };
+    const [domains, professions, assessment] = await Promise.all([
+      readFile('PEDAGOGY_SPEC_002.json', 'utf8'),
+      readFile('PEDAGOGY_SPEC_003.json', 'utf8'),
+      readFile('PEDAGOGY_STAGE_ASSESSMENT_002.json', 'utf8'),
+    ]);
+    const lessonSidecars = [domains, professions].map(
+      (source) => JSON.parse(source) as LessonSidecar,
+    );
+    const assessmentSidecar = JSON.parse(assessment) as AssessmentSidecar;
+
+    expect(
+      lessonSidecars.flatMap((sidecar) => sidecar.lesson.contentBlocks),
+    ).toHaveLength(10);
+    expect(
+      lessonSidecars
+        .flatMap((sidecar) => sidecar.lesson.contentBlocks)
+        .every((block) => block.content.sourceKeys.length > 0),
+    ).toBe(true);
+    expect(
+      lessonSidecars.every(
+        (sidecar) =>
+          sidecar.editorial.review.scientificAccuracy === false &&
+          sidecar.editorial.review.subjectReviewer === null,
+      ),
+    ).toBe(true);
+    expect(assessmentSidecar.editorial.review.subjectReviewer).toBeNull();
+    expect(assessmentSidecar.editorial.referenceIds).toContain(
+      'REF-004-WOZNIAK',
+    );
+  });
+
+  it('respecte les comptes et relations du lot éditorial intégré', async () => {
     const sampleSeed = await readSampleSeed();
     const stages = sampleSeed.program.stages;
     const modules = stages.flatMap((stage) => stage.modules);
@@ -744,18 +839,18 @@ describe('sample program seed', () => {
     const groups = sampleSeed.conceptAssessmentBanks;
     const banks = groups.flatMap((group) => group.assessmentBanks);
 
-    expect(stages).toHaveLength(8);
-    expect(modules).toHaveLength(12);
-    expect(lessons).toHaveLength(39);
+    expect(stages).toHaveLength(9);
+    expect(modules).toHaveLength(14);
+    expect(lessons).toHaveLength(45);
     expect(stages.every((stage) => stage.assessment)).toBe(true);
-    expect(concepts).toHaveLength(117);
-    expect(concepts.filter((concept) => concept.assessment)).toHaveLength(117);
-    expect(groups).toHaveLength(39);
-    expect(banks).toHaveLength(117);
-    expect(banks.flatMap((bank) => bank.questions)).toHaveLength(585);
-    expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(217);
-    expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(231);
-    expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(117);
+    expect(concepts).toHaveLength(135);
+    expect(concepts.filter((concept) => concept.assessment)).toHaveLength(135);
+    expect(groups).toHaveLength(45);
+    expect(banks).toHaveLength(135);
+    expect(banks.flatMap((bank) => bank.questions)).toHaveLength(675);
+    expect(lessons.flatMap((lesson) => lesson.contentBlocks)).toHaveLength(253);
+    expect(lessons.flatMap((lesson) => lesson.resources)).toHaveLength(266);
+    expect(lessons.flatMap((lesson) => lesson.tasks)).toHaveLength(135);
 
     for (const group of groups) {
       const stage = stages.find((item) => item.slug === group.stageSlug);
@@ -832,23 +927,23 @@ describe('sample program seed', () => {
     );
 
     expect(programs).toHaveLength(1);
-    expect(stages).toHaveLength(8);
-    expect(stageAssessments).toHaveLength(8);
-    expect(modules).toHaveLength(12);
-    expect(lessons).toHaveLength(39);
-    expect(concepts).toHaveLength(117);
-    expect(assessments).toHaveLength(117);
-    expect(assessmentQuestions).toHaveLength(117);
+    expect(stages).toHaveLength(9);
+    expect(stageAssessments).toHaveLength(9);
+    expect(modules).toHaveLength(14);
+    expect(lessons).toHaveLength(45);
+    expect(concepts).toHaveLength(135);
+    expect(assessments).toHaveLength(135);
+    expect(assessmentQuestions).toHaveLength(135);
     expect(
       [...assessmentQuestions.values()].reduce(
         (total, questions) => total + questions.length,
         0,
       ),
-    ).toBe(585);
-    expect(contentBlocks).toHaveLength(217);
-    expect(resources).toHaveLength(231);
-    expect(tasks).toHaveLength(117);
-    expect(exercises).toHaveLength(117);
+    ).toBe(675);
+    expect(contentBlocks).toHaveLength(253);
+    expect(resources).toHaveLength(266);
+    expect(tasks).toHaveLength(135);
+    expect(exercises).toHaveLength(135);
     expect(
       [...conceptResources.values()].reduce(
         (total, resourceIds) => total + resourceIds.length,

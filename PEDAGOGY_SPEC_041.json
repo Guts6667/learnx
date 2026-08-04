@@ -1,0 +1,269 @@
+{
+  "specId": "PEDAGOGY_SPEC_041",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "personnalite-differences-individuelles",
+  "moduleSlug": "modeles-personnalite",
+  "lesson": {
+    "title": "Perspectives biologiques, sociales et narratives",
+    "slug": "perspectives-biologiques-sociales-narratives",
+    "summary": "La personnalité peut être étudiée à plusieurs niveaux complémentaires : dispositions biologiques, apprentissages et contextes sociaux, buts et récits de soi. Aucun niveau ne suffit seul et aucune influence biologique n’établit un destin.",
+    "objectives": [
+      "Interpréter tempérament et héritabilité sans déterminisme biologique.",
+      "Expliquer les influences réciproques entre personne, conduite et environnement.",
+      "Décrire l’identité narrative comme construction évolutive et culturellement située.",
+      "Combiner plusieurs niveaux sans les confondre ni attribuer une cause unique."
+    ],
+    "prerequisites": [
+      "Distinguer trait, état, type et diagnostic.",
+      "Distinguer association, mécanisme et causalité.",
+      "Connaître les notions de population et d’environnement."
+    ],
+    "estimatedMinutes": 170,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une explication de la personnalité peut porter sur des dispositions générales, des adaptations caractéristiques comme buts et valeurs, ou une identité narrative. Elle peut aussi examiner systèmes biologiques, apprentissages, relations, institutions et culture. Ces niveaux posent des questions différentes. Une corrélation biologique ne remplace pas une histoire sociale ; un récit de soi ne remplace pas la mesure des conduites. Les articuler est plus informatif que chercher une cause souveraine.",
+          "sourceKeys": ["mcadams-pals-2006", "openstax-biology-11-6", "openstax-learning-11-4"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "L’héritabilité estime, dans une population et des environnements donnés, une part de variation statistiquement associée à des différences génétiques. Elle ne dit pas quelle proportion de la personnalité d’un individu est « génétique », ne mesure pas l’inchangeabilité et peut varier lorsque les environnements changent. Les études de jumeaux et d’adoption reposent sur des hypothèses ; corrélations et interactions gènes–environnements rendent toute opposition nature/culture trop simple.",
+          "sourceKeys": ["vukasovic-heritability-2015", "openstax-biology-11-6"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Tempérament, réactivité physiologique, réseaux cérébraux et hormones peuvent covarier avec des tendances comportementales, mais les résultats sont distribués, modestes et dépendants des méthodes. Un marqueur n’est ni un « gène de la personnalité » ni une cause suffisante. Le développement biologique se déroule dans des environnements qui sélectionnent, renforcent ou contraignent les expériences. Parler de prédisposition signifie modifier des probabilités, pas programmer un résultat.",
+          "sourceKeys": ["openstax-biology-11-6", "vukasovic-heritability-2015"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Dans une perspective sociale-cognitive, personne, conduite et environnement s’influencent réciproquement. Une étudiante évite de prendre la parole après des expériences de sanction ; cette conduite réduit les occasions de réussite et confirme ses attentes. Un groupe sécurisant, un modèle proche et des réussites progressives peuvent modifier attentes et sentiment d’efficacité. L’agence existe sous formes directe, collective ou déléguée, mais elle s’exerce toujours avec des ressources et contraintes sociales.",
+          "sourceKeys": ["openstax-learning-11-4", "bandura-agentic-2001"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "L’identité narrative est l’histoire de vie intériorisée et évolutive qui relie un passé reconstruit à un futur imaginé pour produire unité et sens. Elle sélectionne, ordonne et interprète des épisodes ; elle n’est donc ni archive exhaustive ni vérité clinique cachée. Les récits changent avec le moment, le public, les rôles et les répertoires culturels. Un même événement peut recevoir plusieurs significations plausibles sans que l’une révèle à elle seule la personnalité entière.",
+          "sourceKeys": ["mcadams-mclean-2013", "mcadams-pals-2006"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 6,
+        "content": {
+          "text": "Une formulation intégrative distingue ce qui est observé, le niveau auquel chaque hypothèse s’applique et les données qui la testeraient. Elle peut combiner tendance générale, apprentissage, rôle social, ressources, situation et récit, sans transformer vulnérabilité en destin ni difficulté en faute individuelle. Elle formule des influences probabilistes et bidirectionnelles, reconnaît les structures sociales et refuse tout diagnostic à partir d’un gène, d’un cerveau, d’un trait ou d’une histoire racontée.",
+          "sourceKeys": ["mcadams-pals-2006", "bandura-agentic-2001", "mcadams-mclean-2013"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "mcadams-pals-2006",
+        "title": "A New Big Five: Fundamental Principles for an Integrative Science of Personality",
+        "type": "article",
+        "url": "https://www.elaborer.org/cours/psy7124/lectures/McAdams2006.pdf",
+        "author": "Dan P. McAdams et Jennifer L. Pals",
+        "citation": "McAdams, D. P., & Pals, J. L. (2006). A new Big Five: Fundamental principles for an integrative science of personality. American Psychologist, 61(3), 204–217. https://doi.org/10.1037/0003-066X.61.3.204",
+        "description": "Lire les principes intégrateurs ; classer traits, adaptations et récits sans les réduire les uns aux autres.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1
+      },
+      {
+        "key": "openstax-biology-11-6",
+        "title": "Psychology 2e — 11.6 Biological Approaches",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-6-biological-approaches",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.6 Biological Approaches. OpenStax.",
+        "description": "Identifier les niveaux biologiques puis réécrire trois formulations déterministes en probabilités conditionnelles.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 2
+      },
+      {
+        "key": "vukasovic-heritability-2015",
+        "title": "Heritability of Personality: A Meta-Analysis of Behavior Genetic Studies",
+        "type": "article",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25961374/",
+        "author": "Tena Vukasović et Denis Bratko",
+        "citation": "Vukasović, T., & Bratko, D. (2015). Heritability of personality: A meta-analysis of behavior genetic studies. Psychological Bulletin, 141(4), 769–785. https://doi.org/10.1037/bul0000017",
+        "description": "Consulter résumé et méthode ; expliquer pourquoi une estimation populationnelle n’est pas un pourcentage individuel.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "openstax-learning-11-4",
+        "title": "Psychology 2e — 11.4 Learning Approaches",
+        "type": "book_chapter",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-4-learning-approaches",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, 11.4 Learning Approaches. OpenStax.",
+        "description": "Tracer une boucle personne–conduite–environnement et y placer attentes, modèles et conséquences.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 4
+      },
+      {
+        "key": "bandura-agentic-2001",
+        "title": "Social Cognitive Theory: An Agentic Perspective",
+        "type": "article",
+        "url": "https://www.annualreviews.org/content/journals/10.1146/annurev.psych.52.1.1",
+        "author": "Albert Bandura",
+        "citation": "Bandura, A. (2001). Social cognitive theory: An agentic perspective. Annual Review of Psychology, 52, 1–26. https://doi.org/10.1146/annurev.psych.52.1.1",
+        "description": "Consulter résumé et notions d’agence ; relever les dimensions sociales et structurelles qui bornent l’action.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 5
+      },
+      {
+        "key": "mcadams-mclean-2013",
+        "title": "Narrative Identity",
+        "type": "article",
+        "url": "https://www.researchgate.net/publication/269603657_Narrative_Identity",
+        "author": "Dan P. McAdams et Kate C. McLean",
+        "citation": "McAdams, D. P., & McLean, K. C. (2013). Narrative identity. Current Directions in Psychological Science, 22(3), 233–238. https://doi.org/10.1177/0963721413475622",
+        "description": "Lire définition et processus ; distinguer récit évolutif, mémoire reconstruite et dossier factuel.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Biologie, héritabilité et non-déterminisme",
+        "slug": "biologie-heritabilite-non-determinisme",
+        "description": "Les influences biologiques modifient des distributions de probabilité ; l’héritabilité décrit une population située.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-biology-11-6", "vukasovic-heritability-2015"],
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Biologie sans déterminisme","questionCount":5}
+      },
+      {
+        "title": "Apprentissage, agence et contexte social",
+        "slug": "apprentissage-agence-contexte-social",
+        "description": "Personne, conduite et environnement s’influencent en boucle sous des possibilités et contraintes sociales.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-learning-11-4", "bandura-agentic-2001"],
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Agence et contexte","questionCount":5}
+      },
+      {
+        "title": "Identité narrative et niveaux d’analyse",
+        "slug": "identite-narrative-integration-niveaux",
+        "description": "Le récit de soi produit sens et continuité parmi d’autres niveaux explicatifs, dans un contexte culturel.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["mcadams-pals-2006", "mcadams-mclean-2013"],
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Récits et intégration","questionCount":5}
+      }
+    ],
+    "tasks": [
+      {"title":"Corriger un titre sur l’héritabilité","description":"Réécrire un article affirmant « la personnalité est génétique » en précisant unité, population, environnements, hypothèses et limites individuelles.","type":"writing","isRequired":true,"weight":1,"position":1},
+      {"title":"Cartographier une boucle sociale-cognitive","description":"À partir d’un cas fictif, représenter attentes, conduite, conséquences, modèles, ressources et contraintes, puis proposer deux observations testables.","type":"practice","isRequired":true,"weight":1,"position":2},
+      {"title":"Construire une formulation multiniveau","description":"Comparer deux récits plausibles d’un même événement et produire une formulation séparant traits, apprentissages, rôles, contexte et identité narrative.","type":"project","isRequired":true,"weight":2,"position":3}
+    ]
+  },
+  "editorial": {
+    "version":"1.0.0",
+    "status":"editorial_review",
+    "language":"fr",
+    "audience":"Adulte débutant sans prérequis universitaire",
+    "owner":"LearnX",
+    "createdAt":"2026-08-04",
+    "lastReviewedAt":"2026-08-04",
+    "nextReviewAt":"2027-08-04",
+    "references":[
+      {"id":"REF-041-MCADAMS-PALS","type":"theoretical_article","authors":["McAdams, D. P.","Pals, J. L."],"organization":"American Psychological Association","title":"A New Big Five: Fundamental Principles for an Integrative Science of Personality","year":2006,"edition":null,"publication":"American Psychologist, 61(3), 204–217","doi":"https://doi.org/10.1037/0003-066X.61.3.204","url":"https://www.elaborer.org/cours/psy7124/lectures/McAdams2006.pdf","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Copie académique ouverte","status":"verified","notes":"Cadre intégratif des niveaux de personnalité."},
+      {"id":"REF-041-OPENSTAX-11-6","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.6 Biological Approaches","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-6-biological-approaches","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Introduction aux approches biologiques."},
+      {"id":"REF-041-VUKASOVIC","type":"meta_analysis","authors":["Vukasović, T.","Bratko, D."],"organization":"American Psychological Association","title":"Heritability of Personality: A Meta-Analysis of Behavior Genetic Studies","year":2015,"edition":null,"publication":"Psychological Bulletin, 141(4), 769–785","doi":"https://doi.org/10.1037/bul0000017","url":"https://pubmed.ncbi.nlm.nih.gov/25961374/","accessedAt":"2026-08-04","evidenceLevel":"A","peerReviewed":true,"language":"en","license":"Résumé PubMed ouvert","status":"verified","notes":"Méta-analyse ; ressource facultative au texte intégral."},
+      {"id":"REF-041-OPENSTAX-11-4","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.4 Learning Approaches","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-4-learning-approaches","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Apprentissage social, efficacité et déterminisme réciproque."},
+      {"id":"REF-041-BANDURA","type":"review_article","authors":["Bandura, A."],"organization":"Annual Reviews","title":"Social Cognitive Theory: An Agentic Perspective","year":2001,"edition":null,"publication":"Annual Review of Psychology, 52, 1–26","doi":"https://doi.org/10.1146/annurev.psych.52.1.1","url":"https://www.annualreviews.org/content/journals/10.1146/annurev.psych.52.1.1","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Résumé éditeur ouvert","status":"verified","notes":"Revue théorique ; texte intégral facultatif."},
+      {"id":"REF-041-MCADAMS-MCLEAN","type":"review_article","authors":["McAdams, D. P.","McLean, K. C."],"organization":"Association for Psychological Science","title":"Narrative Identity","year":2013,"edition":null,"publication":"Current Directions in Psychological Science, 22(3), 233–238","doi":"https://doi.org/10.1177/0963721413475622","url":"https://www.researchgate.net/publication/269603657_Narrative_Identity","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Texte auteur publiquement consultable","status":"verified","notes":"Définition et synthèse de l’identité narrative."}
+    ],
+    "contentBlockSources":[
+      {"contentBlockPosition":1,"referenceLinks":[{"referenceId":"REF-041-MCADAMS-PALS","locator":"five principles and three personality levels","supports":"Articulation traits, adaptations et récits dans une science intégrative."},{"referenceId":"REF-041-OPENSTAX-11-6","locator":"biological approaches","supports":"Niveau biologique."},{"referenceId":"REF-041-OPENSTAX-11-4","locator":"learning approaches","supports":"Niveau social-cognitif."}],"confidence":"high","confidenceRationale":"Cadre intégratif et sources introductives complémentaires.","notApplicableReason":null},
+      {"contentBlockPosition":2,"referenceLinks":[{"referenceId":"REF-041-VUKASOVIC","locator":"abstract and methods","supports":"Estimations populationnelles issues d’études de génétique comportementale."},{"referenceId":"REF-041-OPENSTAX-11-6","locator":"behavioral genetics","supports":"Rôle conjoint de génétique et environnement."}],"confidence":"high","confidenceRationale":"Méta-analyse spécialisée nuancée par une ressource pédagogique ouverte.","notApplicableReason":null},
+      {"contentBlockPosition":3,"referenceLinks":[{"referenceId":"REF-041-OPENSTAX-11-6","locator":"temperament and biological perspectives","supports":"Corrélats biologiques et tempérament."},{"referenceId":"REF-041-VUKASOVIC","locator":"discussion","supports":"Variance génétique populationnelle sans déterminisme individuel."}],"confidence":"high","confidenceRationale":"Les sources bornent explicitement l’inférence biologique.","notApplicableReason":null},
+      {"contentBlockPosition":4,"referenceLinks":[{"referenceId":"REF-041-OPENSTAX-11-4","locator":"reciprocal determinism and self-efficacy","supports":"Boucle personne–conduite–environnement."},{"referenceId":"REF-041-BANDURA","locator":"abstract and agentic perspective","supports":"Agences directe, déléguée et collective sous influences sociostructurelles."}],"confidence":"high","confidenceRationale":"Présentation pédagogique et synthèse théorique convergentes.","notApplicableReason":null},
+      {"contentBlockPosition":5,"referenceLinks":[{"referenceId":"REF-041-MCADAMS-MCLEAN","locator":"definition and development of narrative identity","supports":"Récit évolutif reliant passé reconstruit et futur imaginé."},{"referenceId":"REF-041-MCADAMS-PALS","locator":"narrative identity principle","supports":"Niveau narratif culturellement situé."}],"confidence":"high","confidenceRationale":"Deux synthèses majeures du même cadre.","notApplicableReason":null},
+      {"contentBlockPosition":6,"referenceLinks":[{"referenceId":"REF-041-MCADAMS-PALS","locator":"integrative principles","supports":"Combinaison non réductrice des niveaux."},{"referenceId":"REF-041-BANDURA","locator":"agentic perspective","supports":"Influences bidirectionnelles et contraintes sociales."},{"referenceId":"REF-041-MCADAMS-MCLEAN","locator":"narrative identity","supports":"Récit comme niveau partiel et évolutif."}],"confidence":"high","confidenceRationale":"Cadres complémentaires sans prétention diagnostique.","notApplicableReason":null}
+    ],
+    "resourceChecks":[
+      {"resourceKey":"mcadams-pals-2006","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-041-MCADAMS-PALS"],"pedagogicalRationale":"Structure explicitement plusieurs niveaux complémentaires.","learnerInstructions":"Lire les principes intégrateurs ; classer traits, adaptations et récits sans les réduire les uns aux autres.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"PDF textuel.","alternativeResourceKey":null,"notes":"Copie académique ouverte vérifiée."},
+      {"resourceKey":"openstax-biology-11-6","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-041-OPENSTAX-11-6"],"pedagogicalRationale":"Introduit les principales hypothèses biologiques.","learnerInstructions":"Identifier les niveaux biologiques puis réécrire trois formulations déterministes en probabilités conditionnelles.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML structuré.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."},
+      {"resourceKey":"vukasovic-heritability-2015","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"institutional","language":"en","referenceIds":["REF-041-VUKASOVIC"],"pedagogicalRationale":"Donne la base quantitative pour discuter l’héritabilité.","learnerInstructions":"Consulter résumé et méthode ; expliquer pourquoi une estimation populationnelle n’est pas un pourcentage individuel.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"Résumé PubMed ouvert ; texte intégral peut dépendre de l’accès.","alternativeResourceKey":"openstax-biology-11-6","notes":"Ressource facultative ; alternative ouverte fournie."},
+      {"resourceKey":"openstax-learning-11-4","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-041-OPENSTAX-11-4"],"pedagogicalRationale":"Rend opérationnelle la causalité réciproque.","learnerInstructions":"Tracer une boucle personne–conduite–environnement et y placer attentes, modèles et conséquences.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"HTML structuré.","alternativeResourceKey":null,"notes":"Accès ouvert contrôlé."},
+      {"resourceKey":"bandura-agentic-2001","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"institutional","language":"en","referenceIds":["REF-041-BANDURA"],"pedagogicalRationale":"Ajoute formes d’agence et influences sociostructurelles.","learnerInstructions":"Consulter résumé et notions d’agence ; relever les dimensions sociales et structurelles qui bornent l’action.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"Résumé éditeur ouvert ; texte intégral peut dépendre de l’accès.","alternativeResourceKey":"openstax-learning-11-4","notes":"Ressource facultative ; alternative ouverte fournie."},
+      {"resourceKey":"mcadams-mclean-2013","checkedAt":"2026-08-04","urlStatus":"ok","accessType":"open","language":"en","referenceIds":["REF-041-MCADAMS-MCLEAN"],"pedagogicalRationale":"Définit précisément le récit identitaire et son évolution.","learnerInstructions":"Lire définition et processus ; distinguer récit évolutif, mémoire reconstruite et dossier factuel.","mediaSegment":null,"transcriptAvailable":null,"accessibilityNotes":"Page HTML avec texte auteur consultable.","alternativeResourceKey":null,"notes":"Accès public vérifié."}
+    ],
+    "assessmentBanks":[
+      {
+        "conceptSlug":"biologie-heritabilite-non-determinisme","assessmentTitle":"Mini-évaluation — Biologie sans déterminisme","questions":[
+          {"type":"single_choice","prompt":"Que décrit une héritabilité ?","explanation":"Une part de variation dans une population et des environnements donnés.","acceptedAnswers":[],"position":1,"options":[{"label":"Une variation populationnelle située","isCorrect":true,"position":1},{"label":"La part génétique d’une personne","isCorrect":false,"position":2},{"label":"Un destin individuel","isCorrect":false,"position":3},{"label":"Une absence d’environnement","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un trait fortement héritable est nécessairement immuable.","explanation":"Héritabilité et possibilité de changement sont distinctes.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Que faut-il préciser avec une estimation d’héritabilité ?","explanation":"L’estimation dépend du plan et du contexte.","acceptedAnswers":[],"position":3,"options":[{"label":"La population","isCorrect":true,"position":1},{"label":"Les environnements","isCorrect":true,"position":2},{"label":"Les hypothèses du modèle","isCorrect":true,"position":3},{"label":"Un pourcentage individuel","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Que permet un corrélat cérébral isolé ?","explanation":"Il motive une hypothèse mais ne suffit pas à établir causalité ou diagnostic.","acceptedAnswers":[],"position":4,"options":[{"label":"Une hypothèse à tester","isCorrect":true,"position":1},{"label":"Un diagnostic certain","isCorrect":false,"position":2},{"label":"Une cause suffisante","isCorrect":false,"position":3},{"label":"Une prédiction parfaite","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne une tendance biologique qui modifie une probabilité sans fixer l’issue ?","explanation":"Il s’agit d’une prédisposition.","acceptedAnswers":["prédisposition","predisposition"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug":"apprentissage-agence-contexte-social","assessmentTitle":"Mini-évaluation — Agence et contexte","questions":[
+          {"type":"single_choice","prompt":"Que relie le déterminisme réciproque ?","explanation":"Personne, conduite et environnement s’influencent mutuellement.","acceptedAnswers":[],"position":1,"options":[{"label":"Personne, conduite et environnement","isCorrect":true,"position":1},{"label":"Gène et destin","isCorrect":false,"position":2},{"label":"Trait et diagnostic","isCorrect":false,"position":3},{"label":"Récit et vérité absolue","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Reconnaître l’agence oblige à ignorer les contraintes sociales.","explanation":"L’action dépend aussi des ressources et structures.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Qu’est-ce qui peut modifier une attente d’efficacité ?","explanation":"Apprentissage direct, modèles et contexte peuvent tous compter.","acceptedAnswers":[],"position":3,"options":[{"label":"Réussites progressives","isCorrect":true,"position":1},{"label":"Modèles proches","isCorrect":true,"position":2},{"label":"Cadre sécurisant","isCorrect":true,"position":3},{"label":"Étiquette fixe","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quelle analyse évite le blâme individuel ?","explanation":"Elle inclut ressources et contraintes en plus des conduites.","acceptedAnswers":[],"position":4,"options":[{"label":"Une boucle située et multiniveau","isCorrect":true,"position":1},{"label":"Une cause interne unique","isCorrect":false,"position":2},{"label":"Une moralisation du trait","isCorrect":false,"position":3},{"label":"Une prédiction sans contexte","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne la croyance en sa capacité d’organiser une action ?","explanation":"Il s’agit du sentiment d’efficacité personnelle.","acceptedAnswers":["sentiment d’efficacité personnelle","sentiment d'efficacité personnelle","auto-efficacité","auto-efficacite","self-efficacy"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug":"identite-narrative-integration-niveaux","assessmentTitle":"Mini-évaluation — Récits et intégration","questions":[
+          {"type":"single_choice","prompt":"Qu’est-ce que l’identité narrative ?","explanation":"Une histoire de vie intériorisée et évolutive produisant continuité et sens.","acceptedAnswers":[],"position":1,"options":[{"label":"Une histoire de vie évolutive","isCorrect":true,"position":1},{"label":"Une archive exhaustive","isCorrect":false,"position":2},{"label":"Un diagnostic","isCorrect":false,"position":3},{"label":"Un trait unique","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un récit personnel restitue nécessairement le passé sans reconstruction.","explanation":"Mémoire et récit sélectionnent et interprètent.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Qu’est-ce qui peut façonner un récit de soi ?","explanation":"Les récits sont adressés, situés et culturellement outillés.","acceptedAnswers":[],"position":3,"options":[{"label":"Le public","isCorrect":true,"position":1},{"label":"Le moment","isCorrect":true,"position":2},{"label":"Les répertoires culturels","isCorrect":true,"position":3},{"label":"Une biologie souveraine","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quelle formulation est intégrative ?","explanation":"Elle distingue les niveaux et leurs données.","acceptedAnswers":[],"position":4,"options":[{"label":"Plusieurs hypothèses situées et testables","isCorrect":true,"position":1},{"label":"Une cause unique explique tout","isCorrect":false,"position":2},{"label":"Le récit révèle le diagnostic","isCorrect":false,"position":3},{"label":"Le contexte ne compte pas","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel niveau relie passé reconstruit et futur imaginé ?","explanation":"Il s’agit de l’identité narrative.","acceptedAnswers":["identité narrative","identite narrative","récit de soi","recit de soi"],"position":5,"options":[]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer":null,
+      "subjectReviewer":null,
+      "scientificAccuracy":false,
+      "pedagogicalAlignment":true,
+      "seedCompatibility":false,
+      "linksAndMedia":true,
+      "readyForPublication":false,
+      "notes":[
+        "Revue humaine en psychologie de la personnalité, génétique comportementale et psychologie culturelle requise.",
+        "L’étape personnalite-differences-individuelles et le module modeles-personnalite sont planifiés mais absents du seed actuel.",
+        "Validation technique obligatoire ; aucune modification Prisma, API, seed ou backlog.",
+        "Héritabilité et corrélats biologiques ne sont jamais présentés comme destin ou diagnostic individuel.",
+        "Contexte, structures sociales et récits sont traités comme niveaux complémentaires.",
+        "Les ressources à accès institutionnel sont facultatives et disposent d’une alternative ouverte."
+      ]
+    },
+    "changeLog":[
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_behavioral_genetics_and_cultural_psychology"}
+    ]
+  }
+}
