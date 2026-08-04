@@ -639,3 +639,34 @@ test('affiche le sommaire pédagogique en une colonne sans débordement', async 
     page.getByRole('dialog', { name: 'Sommaire de la leçon' }),
   ).toBeVisible();
 });
+
+test('conserve la route privée et reprend après reconnexion', async ({
+  context,
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+
+  await context.setOffline(true);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+  ).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/today');
+
+  await context.setOffline(false);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+  ).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/today');
+});

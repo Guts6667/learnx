@@ -76,6 +76,104 @@ describe('App', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('conserve la destination et revérifie la session après reconnexion', async () => {
+    window.history.pushState({}, '', '/today');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(
+        jsonResponse({
+          user: {
+            id: 'user-1',
+            email: 'learner@example.com',
+            displayName: 'Learner',
+            role: 'USER',
+          },
+        }),
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Mode hors ligne' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: true,
+    });
+    fireEvent(window, new Event('online'));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/auth/session',
+      expect.objectContaining({ credentials: 'include' }),
+    );
+  });
+
+  it('propose une relance explicite après un échec réseau en ligne', async () => {
+    window.history.pushState({}, '', '/today');
+    const user = {
+      id: 'user-1',
+      email: 'learner@example.com',
+      displayName: 'Learner',
+      role: 'USER',
+    };
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('Network unavailable'))
+      .mockResolvedValue(jsonResponse({ user }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Connexion impossible',
+      }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/today');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Réessayer' }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Aujourd’hui' }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('désactive la connexion tant que le navigateur est hors ligne', async () => {
+    window.history.pushState({}, '', '/login');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Connexion' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Se connecter' })).toBeDisabled();
+    expect(
+      screen.getByText(/Reconnectez-vous pour vérifier votre session/),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('restaure la session après un rechargement', async () => {
     window.history.pushState({}, '', '/today');
     mockSession({

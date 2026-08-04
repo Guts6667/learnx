@@ -78,7 +78,8 @@ export function PwaStatus() {
       {offlineReady ? (
         <Card class="flex items-center justify-between gap-3 border-emerald-900 py-3">
           <p class="text-sm text-emerald-100">
-            LearnX est prêt pour une consultation hors ligne.
+            LearnX est installé. Les contenus privés restent disponibles
+            uniquement en ligne.
           </p>
           <Button
             onClick={() => setOfflineReady(false)}

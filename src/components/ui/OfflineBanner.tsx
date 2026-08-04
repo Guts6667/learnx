@@ -9,7 +9,7 @@ interface OfflineBannerProps {
 export function OfflineBanner({
   class: className,
   isOffline = true,
-  message = 'Certaines actions nécessitent une connexion internet.',
+  message = 'Les contenus et actions privés seront disponibles après reconnexion.',
 }: OfflineBannerProps) {
   if (!isOffline) {
     return null;

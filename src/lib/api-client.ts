@@ -16,21 +16,17 @@ export class ApiClientError extends Error {
   }
 }
 
-function isMutation(method: string | undefined): boolean {
-  const normalizedMethod = method?.toUpperCase() ?? 'GET';
-
-  return normalizedMethod !== 'GET' && normalizedMethod !== 'HEAD';
+export function isOfflineRequestError(error: unknown): boolean {
+  return (
+    error instanceof ApiClientError && error.code === 'OFFLINE_REQUEST_NOT_ALLOWED'
+  );
 }
 
-function assertOnlineMutation(method: string | undefined): void {
-  if (
-    isMutation(method) &&
-    typeof navigator !== 'undefined' &&
-    navigator.onLine === false
-  ) {
+function assertOnline(): void {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
     throw new ApiClientError(
-      'OFFLINE_MUTATION_NOT_ALLOWED',
-      'Cette action nécessite une connexion internet.',
+      'OFFLINE_REQUEST_NOT_ALLOWED',
+      'LearnX nécessite une connexion internet pour accéder aux données privées.',
       0,
     );
   }
@@ -58,7 +54,7 @@ export async function apiRequest<T>(
   path: string,
   init: RequestInit = {},
 ): Promise<T> {
-  assertOnlineMutation(init.method);
+  assertOnline();
 
   const response = await fetch(path, {
     ...init,

@@ -471,7 +471,14 @@ export function LessonPage({
 
   if (query.isPending) return <Spinner label="Chargement de la leçon" />;
   if (query.error) {
-    return <ErrorState description="La leçon n’a pas pu être chargée." />;
+    return navigator.onLine ? (
+      <ErrorState description="La leçon n’a pas pu être chargée." />
+    ) : (
+      <EmptyState
+        description="Reconnectez-vous puis relancez cette activité. Aucune progression n’a été simulée."
+        title="Leçon indisponible hors ligne"
+      />
+    );
   }
   if (!query.data?.lesson) {
     return (

@@ -3,11 +3,13 @@ import { useEffect, useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TextField } from '@/components/ui/TextField';
 import { ApiClientError } from '@/lib/api-client';
 import { useLoginMutation, useSessionQuery } from '@/features/auth/session';
+import { useOnlineStatus } from '@/features/pwa/online-status';
 
 interface LoginPageProps {
   path?: string;
@@ -17,6 +19,7 @@ export function LoginPage({ path }: LoginPageProps) {
   void path;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const isOnline = useOnlineStatus();
   const loginMutation = useLoginMutation();
   const sessionQuery = useSessionQuery();
 
@@ -65,6 +68,10 @@ export function LoginPage({ path }: LoginPageProps) {
         id="login-title"
         title="Connexion"
       />
+      <OfflineBanner
+        isOffline={!isOnline}
+        message="Reconnectez-vous pour vérifier votre session et vous connecter."
+      />
       <Card>
         <form class="space-y-5" onSubmit={handleSubmit}>
           <TextField
@@ -92,6 +99,7 @@ export function LoginPage({ path }: LoginPageProps) {
           ) : null}
           <Button
             class="w-full"
+            disabled={!isOnline}
             isLoading={loginMutation.isPending}
             type="submit"
           >

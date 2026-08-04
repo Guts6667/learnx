@@ -27,6 +27,7 @@ describe('PwaStatus', () => {
   it('affiche la bannière lorsque le navigateur passe hors ligne', () => {
     render(<PwaStatus />);
 
+    setOnlineStatus(false);
     fireEvent(window, new Event('offline'));
 
     expect(
