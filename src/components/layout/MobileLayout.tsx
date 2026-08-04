@@ -45,7 +45,7 @@ export function MobileLayout({
   }
 
   return (
-    <div class="min-h-dvh bg-slate-950 text-slate-100">
+    <div class="app-layout min-h-dvh bg-slate-950 text-slate-100">
       <a
         class="fixed top-2 left-2 z-50 -translate-y-20 rounded-xl bg-cyan-300 px-4 py-3 font-semibold text-slate-950 transition focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-white"
         href="#main-content"

@@ -412,7 +412,7 @@ async function openCriticalLesson(page: Page) {
     name: 'Navigation principale',
   });
 
-  await navigation.getByRole('link', { name: 'Programmes' }).click();
+  await navigation.getByRole('link', { name: 'Parcours' }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: 'Mes programmes' }),
   ).toBeVisible();
@@ -430,6 +430,74 @@ async function expectNoHorizontalOverflow(page: Page) {
     ),
   ).toBe(true);
 }
+
+test('garde les cinq destinations lisibles et accessibles sur mobile et desktop', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/today');
+
+  const navigation = page.getByRole('navigation', {
+    name: 'Navigation principale',
+  });
+  const expectedLabels = ['Accueil', 'Parcours', 'Réviser', 'Notes', 'Profil'];
+
+  for (const viewport of [
+    { height: 700, width: 320 },
+    { height: 844, width: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await expectNoHorizontalOverflow(page);
+    await expect(navigation).toBeVisible();
+
+    for (const label of expectedLabels) {
+      const link = navigation.getByRole('link', { name: label });
+      await expect(link).toBeVisible();
+      await link.focus();
+      await expect(link).toBeFocused();
+    }
+
+    expect(
+      await navigation.evaluate(
+        (element) => element.scrollWidth <= element.clientWidth,
+      ),
+    ).toBe(true);
+  }
+
+  const activeLink = navigation.getByRole('link', { name: 'Accueil' });
+  await expect(activeLink).toHaveAttribute('aria-current', 'page');
+  expect(
+    await activeLink.evaluate(
+      (element) => getComputedStyle(element).textDecorationLine,
+    ),
+  ).not.toContain('underline');
+
+  await page.setViewportSize({ height: 900, width: 1280 });
+  const desktopGeometry = await navigation.evaluate((element) => {
+    const links = Array.from(element.querySelectorAll('a'));
+    const rectangle = element.getBoundingClientRect();
+
+    return {
+      height: rectangle.height,
+      linkTops: links.map((link) => link.getBoundingClientRect().top),
+      width: rectangle.width,
+    };
+  });
+
+  expect(desktopGeometry.height).toBeGreaterThan(850);
+  expect(desktopGeometry.width).toBeLessThan(150);
+  expect(desktopGeometry.linkTops).toEqual(
+    [...desktopGeometry.linkTops].sort((left, right) => left - right),
+  );
+});
 
 test('préserve le parcours critique après inscription et reconnexion', async ({
   page,

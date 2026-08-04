@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
+import { fireEvent, render, screen, within } from '@testing-library/preact';
 import { route } from 'preact-router';
 
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
@@ -85,13 +85,45 @@ describe('navigation accessible', () => {
     );
   });
 
-  it('annonce la page active sans dépendre uniquement de la couleur', () => {
+  it('affiche cinq destinations courtes avec des icônes décoratives', () => {
     render(<BottomNavigation currentPath="/program/programme-test" />);
 
-    expect(
-      screen.getByRole('link', { name: /programmes.*page actuelle/i }),
-    ).toHaveAttribute('aria-current', 'page');
-    expect(screen.getByRole('navigation')).toHaveClass('app-safe-navigation');
+    const navigation = screen.getByRole('navigation', {
+      name: 'Navigation principale',
+    });
+    const links = within(navigation).getAllByRole('link');
+
+    expect(links).toHaveLength(5);
+    expect(links.map((link) => link.textContent)).toEqual([
+      'Accueil',
+      'Parcours',
+      'Réviser',
+      'Notes',
+      'Profil',
+    ]);
+
+    for (const link of links) {
+      const icon = link.querySelector('svg');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
+      expect(icon).toHaveAttribute('focusable', 'false');
+    }
+  });
+
+  it('annonce et matérialise la page active sans simple soulignement', () => {
+    render(<BottomNavigation currentPath="/program/programme-test" />);
+
+    const activeLink = screen.getByRole('link', { name: 'Parcours' });
+
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+    expect(activeLink).toHaveClass('bg-cyan-400/15', 'ring-1');
+    expect(activeLink).not.toHaveClass('underline');
+    expect(screen.getByRole('link', { name: 'Accueil' })).not.toHaveAttribute(
+      'aria-current',
+    );
+    expect(screen.getByRole('navigation')).toHaveClass(
+      'app-main-navigation',
+      'app-safe-navigation',
+    );
   });
 
   it('utilise un cadre responsive sans limiter le desktop à une largeur mobile', () => {
