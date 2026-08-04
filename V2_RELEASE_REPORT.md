@@ -1,9 +1,9 @@
 # Rapport de clôture V2 LearnX
 
-Date de l’audit : 4 août 2026
+Date de l’audit et de la clôture : 4 août 2026
 
-Branches auditées : `dev` et branche locale d'intégration
-`codex/v2-main-integration`, créée depuis `origin/main`.
+Branches auditées : `dev`, branche d'intégration
+`codex/v2-main-integration` et `main` déployée.
 
 HEAD de code audité : `b378611`
 (`fix(release): close V2 security and accessibility blockers`)
@@ -11,20 +11,20 @@ HEAD de code audité : `b378611`
 Référence distante intégrée : `origin/dev = 9ce64a8`
 (`fix(seed): allow atomic full curriculum import`)
 
-Commit de fusion préparé : `3d360f2b89a6ff20f831b90f531263d9a6e8b05f`
-(`merge(release): prepare V2 integration into main`), local et non poussé.
-HEAD technique de la branche d'intégration : `280d54ecb0dd8ee5551f8caa62dcbe35837254c8`,
-incluant le correctif de seed, local et non poussé. Le rapport final est committé
-séparément au-dessus de ce HEAD.
+Premier commit de fusion : `3d360f2b89a6ff20f831b90f531263d9a6e8b05f`
+(`merge(release): prepare V2 integration into main`).
+Fusion technique finale avec `origin/dev` :
+`280d54ecb0dd8ee5551f8caa62dcbe35837254c8`, incluant le correctif atomique du
+seed. Les preuves et décisions de release ont ensuite été documentées jusqu'au
+HEAD Production `da9c209`.
 
-Production/main observée : `origin/main = 760103d`
-Écart observé : `dev` possède 41 commits propres et `main` un commit propre ;
-le diff de la base commune vers `dev` couvre 213 fichiers, 70 539 insertions et
-4 800 suppressions.
+Production/main finale : `origin/main = da9c209`
+Déploiement Production : `dpl_Ed5sfb8tKzg1HGVWaASpNhAcPHyH`, état `Ready`,
+alias `https://learnx-eight.vercel.app`.
 
 ## Synthèse exécutive
 
-**Verdict : GO technique pour préparer le merge `dev` vers `main`.**
+**Verdict final : GO — V2 mergée, déployée, seedée et officiellement clôturée.**
 
 La release candidate compile, passe les 290 tests unitaires/API et les 24 tests
 Playwright de la matrice existante. Le schéma Prisma est valide et la CI a
@@ -39,42 +39,41 @@ de mouvement sont couverts, le rate limit de connexion est partagé en base et
 l'inscription publique est désactivée en production. Hono a également été mis
 à jour et `pnpm audit --prod` ne signale plus aucune vulnérabilité connue.
 
-Le GO a permis de préparer le merge sans toucher à `main`. Les six conflits
-réels sont résolus sur la branche d'intégration locale, puis validés par les
-tests seed, la suite complète, Playwright et une exécution des Functions contre
-une branche Neon isolée créée depuis Production puis supprimée. Ce résultat ne
-constitue pas encore le merge ni la clôture de production, qui restent soumis à
-l'autorisation explicite du propriétaire et aux contrôles d'environnement
-ci-dessous.
+Les six conflits réels ont été résolus sur la branche d'intégration, puis validés
+par les tests seed, la suite complète, Playwright et une exécution des Functions
+contre une branche Neon isolée. Après autorisation du propriétaire, `main` a été
+avancée jusqu'à `da9c209`, poussée et déployée. Une sauvegarde Neon vérifiée a
+été créée avant l'opération. Le smoke authentifié puis le seed Production ont
+réussi sans perte des données personnelles.
 
 ## Périmètre et état Git
 
-- `dev`, `origin/dev` et le HEAD audité sont alignés après les commits de la
-  passe.
-- `main` et `origin/main` restent inchangés à `760103d`.
-- Aucun merge, seed de production ou écriture de production n’a été effectué.
+- `main` et `origin/main` sont alignés à `da9c209` après le merge V2.
+- `dev` contient tous les commits fonctionnels V2 jusqu'à `9ce64a8`; la
+  synchronisation du commit documentaire final est effectuée après ce rapport.
+- Le déploiement Vercel Production est `Ready` et le seed Production autorisé a
+  été exécuté une fois après deux dry-runs réussis sur clone.
 - `.DS_Store`, suivi historiquement malgré `.gitignore`, a été retiré de Git
   dans `4a01ccb` avec `git rm --cached`; le fichier local est conservé.
-- `BACKLOG_V3.md` reste un artefact utilisateur provisoire non suivi. Il doit
-  être réaudité après la clôture et le merge V2, puis committé séparément s’il
-  est retenu.
+- `BACKLOG_V3.md` reste un artefact utilisateur provisoire non suivi. Les ajouts
+  UX post-V2 y sont consignés, mais il doit maintenant être réaudité et validé
+  avant tout commit V3.
 - Aucun secret, rapport Playwright, résultat temporaire ou fichier `.env` n’est
   suivi. Seul `.env.example` contient des valeurs factices.
 
-## Synthèse opérationnelle avant merge
+## Synthèse opérationnelle finale
 
 | Catégorie | Sévérité | État et preuve | Action restante |
 | --- | --- | --- | --- |
 | Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#24 verts ; timeout du seed complet corrigé dans `9ce64a8` | aucune |
-| Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; commit `3d360f2`, validation de cohérence et Integration Neon complètes | valider le SHA d'intégration |
-| Configuration propriétaire | P1 opérationnelle | le clone Production contient déjà les 16 migrations V2 alors que `main` porte l'ancien code ; l'isolation Vercel Preview n'a pas pu être prouvée | Rayan configure Preview sur une branche Neon dédiée et prépare le point de restauration Production |
-| Contrôle manuel | P2 | axe/WebKit/texte 200 % verts ; VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge |
-| Publication de contenu | P1 opérationnelle | Production contient 5 étapes/21 leçons ; dry-run deux fois sur clone validé sans modification des données personnelles | seed Production séparé uniquement après sauvegarde et autorisation |
+| Conflits Git | résolu | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; merge `3d360f2`, contrôles de cohérence verts | aucune |
+| Configuration propriétaire | P2 résiduelle | Production réalignée code/schéma et sauvegarde Neon vérifiée ; isolation Vercel Preview toujours non prouvée | configurer une branche Preview dédiée avant de futures migrations Preview |
+| Contrôle manuel | P2 résiduelle | axe/WebKit/texte 200 % et smoke authentifié Production verts | VoiceOver matériel recommandé sur iPhone, non bloquant pour la clôture technique |
+| Publication de contenu | terminé | seed Production réussi : 13 étapes/70 leçons ; étapes 6–13 en brouillon, accès propriétaire confirmé et accès anonyme refusé | publication publique ultérieure via administration seulement |
 | Dette V3 | P2 | en-têtes, pagination, fréquence de `lastUsedAt`, redaction des logs | ne bloque pas le merge V2 |
 
-Le verdict est donc **GO code pour merger après autorisation**, mais **NO-GO
-déploiement Production** tant que la sauvegarde/restauration et l'environnement
-de base cible ne sont pas confirmés par Rayan.
+Le verdict final est **GO Production**. Aucun P0/P1 connu ne reste ouvert. Les
+points Preview et VoiceOver matériel sont des suivis P2 explicites.
 
 ## Résolution du merge préparé
 
@@ -340,16 +339,18 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 | Playwright desktop/320/390/WebKit/axe | 24/24 sur `dev` et branche d'intégration | GO |
 | Integration Neon | run #24 vert sur `dev`, puis commit `3d360f2` validé sur `br-damp-hill-ase0imqf`; migrations/Functions/navigateurs verts, branche supprimée | GO |
 | V2-012 | axe sans sérieux/critique, clavier/focus, 200 %, mouvement réduit | GO automatisé |
-| VoiceOver matériel | non rejoué sur le déploiement final | post-merge requis |
+| VoiceOver matériel | non rejoué sur appareil réel ; axe/WebKit/200 % verts | suivi P2 post-release |
 | dépendances | Hono 4.13.0, `pnpm audit --prod` sans vulnérabilité connue | GO |
 | signup/rate limit | inscription Production désactivée, compteur PostgreSQL partagé et haché | GO |
-| Preview Vercel | variables présentes mais hôtes masqués, isolation non prouvée | NO-GO pour pousser la branche temporaire |
-| smoke authentifié Production | impossible avant merge sans déployer la RC | post-merge requis |
-| sauvegarde/restauration Production | non encore créée ni vérifiée | action Rayan avant merge/déploiement |
+| Preview Vercel | variables présentes mais hôtes masqués, isolation non prouvée | P2 : branche dédiée obligatoire avant futures migrations Preview |
+| smoke authentifié Production | auth, Accueil, programme, leçon, mini-évaluation, exercice, notes, profil, admin, logout et refus anonyme brouillon | GO |
+| sauvegarde/restauration Production | branche `backup-pre-v2-merge-20260804` vérifiée par comptes et empreintes | GO |
+| déploiement Production | Vercel `Ready`, contrôle de déploiement vert, aucune erreur récente | GO |
+| seed Production | 13 étapes/70 leçons, séquence canonique et données personnelles préservées | GO |
 
-## Commits candidats au merge
+## Commits mergés
 
-La plage candidate comprend les 41 commits propres à `dev` jusqu'à `9ce64a8`. Elle comprend le
+La plage mergée comprend les 41 commits propres à `dev` jusqu'à `9ce64a8`. Elle comprend le
 cadrage V2, V2-001 à V2-011, les migrations V2-008A/B, les contenus des étapes
 5 à 13, les correctifs UX, la suppression de note et le retrait de `.DS_Store`.
 La liste exacte est obtenue par :
@@ -358,10 +359,9 @@ La liste exacte est obtenue par :
 git log --reverse --oneline origin/main..origin/dev
 ```
 
-`main` possède en parallèle le commit propre `760103d`. Le merge a été préparé
-depuis les références distantes sur `codex/v2-main-integration` : les six
-conflits sont résolus et aucun doublon de contenu n'est détecté. Aucun P0/P1 de
-code connu ne bloque l'intégration.
+Le commit propre historique `760103d` de `main` a été réconcilié avec `dev` sur
+`codex/v2-main-integration`. Les six conflits sont résolus, aucun doublon de
+contenu n'est détecté et le résultat est déployé dans `main` à `da9c209`.
 
 ## Migrations et compatibilité N-1
 
@@ -423,10 +423,8 @@ les a appliquées.
 Le déploiement Vercel ne lance pas `prisma:seed`. Merger les specs et le seed ne
 rend donc pas automatiquement les étapes 5–13 visibles dans la base Production.
 
-La lecture seule du 4 août 2026 confirme l'état courant : 1 programme, 5 étapes,
-6 modules et 21 leçons. Les étapes 1–4 sont publiées ; l'étape 5 et ses quatre
-leçons existent en brouillon ; les étapes 6–13 sont absentes. Un seed séparé
-sera donc nécessaire pour charger ces dernières.
+La lecture pré-seed du 4 août 2026 confirmait 1 programme, 5 étapes, 6 modules et
+21 leçons. Le seed Production autorisé a ensuite chargé les étapes 6–13.
 
 Le premier dry-run du seed complet sur clone a détecté un timeout atomique à
 120 secondes et a rollbacké sans état partiel. `9ce64a8` porte le budget à dix
@@ -439,41 +437,31 @@ sessions, progressions, reprises, notes, tentatives, soumissions, révisions et
 reports de complétion sont strictement identiques avant/après et les deux seeds
 produisent les mêmes comptes.
 
-Après le déploiement technique :
+Résultat Production : 13 étapes, 22 modules, 70 leçons, 403 blocs, 400
+ressources, 210 notions/évaluations, 1 050 questions et 13 évaluations finales.
+Les étapes 1–5 et leurs 21 leçons restent publiées ; les étapes 6–13 et leurs 49
+leçons sont en brouillon. La prévisualisation propriétaire d'une leçon de
+l'étape 6 fonctionne, tandis qu'un visiteur anonyme est redirigé vers la
+connexion. Les empreintes des progressions, notes, reprises, tentatives,
+soumissions et révisions sont inchangées ; seule l'horodatation de la session
+active a évolué normalement.
 
-1. lire les comptes et statuts Production sans écrire ;
-2. si des étapes manquent, exécuter le seed sur une branche clone de Production
-   et vérifier son idempotence deux fois ;
-3. comparer avant/après les comptes utilisateurs, progressions, notes,
-   tentatives et soumissions, qui doivent rester identiques ;
-4. présenter le diff de contenu à Rayan ;
-5. seulement après autorisation explicite, exécuter séparément le seed
-   Production puis vérifier les 13 étapes/70 leçons.
+## Porte de sortie GO — franchie
 
-Aucun seed Production n'est autorisé par le présent GO technique.
+Les contrôles locaux, la matrice navigateur, l'audit de dépendances,
+`Integration` #24, le déploiement, le smoke authentifié et le seed Production
+sont verts. La V2 est officiellement clôturée.
 
-## Porte de sortie GO
+## Procédure de merge exécutée
 
-Les contrôles locaux, la matrice navigateur, l'audit de dépendances et
-`Integration` #24 sont verts. La prochaine action autorisée est la préparation
-non destructive du merge, suivie du merge uniquement après confirmation
-explicite du propriétaire.
-
-## Procédure de merge après GO
-
-1. Vérifier `origin/main` et `origin/dev`, sans réécriture d’historique.
-2. Faire valider le commit de la branche d'intégration et l'isolation de la base
-   Vercel Preview si un Preview est souhaité.
-3. Créer et vérifier la branche/point de restauration Neon Production.
-4. Merger la branche d'intégration dans `main`, pousser puis surveiller build et
-   migrations ; ne pas lancer de seed.
-5. Exécuter le smoke authentifié : auth, programme, leçon, quiz, exercice,
-   notes, admin et publication.
-6. Vérifier les en-têtes `private, no-store`, le nouveau service worker et la
-   purge du cache historique sur un appareil déjà installé.
-7. Vérifier mobile réel 390 px/iPhone et desktop avec VoiceOver.
-8. Auditer le contenu Production en lecture seule, puis demander une seconde
-   autorisation si un seed est nécessaire.
+1. Références distantes et six conflits vérifiés sans réécriture d'historique.
+2. Branche Neon `backup-pre-v2-merge-20260804` créée et contrôlée.
+3. Branche d'intégration avancée dans `main`, puis `main` poussée à `da9c209`.
+4. Déploiement Vercel `Ready`; en-têtes privés, service worker et navigation V2
+   contrôlés.
+5. Smoke authentifié puis logout/refus anonyme des brouillons réussis.
+6. Seed Production autorisé exécuté après dry-run, puis comptes et empreintes
+   vérifiés.
 
 ## Rollback
 
@@ -488,13 +476,10 @@ explicite du propriétaire.
   revérifier session/logout, progression, notes et admin, puis documenter
   l’incident avant toute nouvelle tentative.
 
-## Décision requise
+## Décision finale
 
-La V2 est techniquement prête sur la branche d'intégration. Rayan doit encore :
-
-1. confirmer l'isolation de la base Preview avant tout push de cette branche ;
-2. valider le SHA et les six résolutions ;
-3. préparer et vérifier le point de restauration Production ;
-4. autoriser explicitement le merge vers `main` ;
-5. participer au smoke authentifié/VoiceOver post-merge ;
-6. autoriser séparément un éventuel seed Production après audit lecture seule.
+La V2 est officiellement clôturée et Production est réalignée avec le schéma
+déjà migré. La branche de sauvegarde Neon doit être conservée pendant la fenêtre
+de stabilisation. Avant de commencer V3, `BACKLOG_V3.md` doit être réaudité puis
+validé explicitement. Restent en suivi P2 : isolation de la base Preview et
+contrôle VoiceOver matériel sur iPhone.
