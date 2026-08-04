@@ -42,6 +42,24 @@ function lessonResponse(isPublished: boolean) {
       exercises: [],
       id: 'lesson-1',
       isPublished,
+      module: {
+        id: 'module-1',
+        isPublished,
+        slug: 'premiers-pas',
+        stage: {
+          id: 'stage-1',
+          isPublished,
+          program: {
+            id: 'program-1',
+            slug: 'programme-test',
+            title: 'Programme test',
+          },
+          slug: 'introduction',
+          title: 'Introduction',
+        },
+        title: 'Premiers pas',
+      },
+      navigation: { nextLesson: null, previousLesson: null },
       objectives: [],
       position: 1,
       prerequisites: [],
@@ -148,7 +166,8 @@ describe('ConceptAssessmentPage', () => {
         name: 'Mini-évaluation — Démarche empirique',
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Brouillon')).toBeInTheDocument();
+    expect(screen.getByText('Sommaire de la leçon')).toBeInTheDocument();
+    expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
     expect(
       screen.queryByText('Les données sont indispensables.'),
     ).not.toBeInTheDocument();

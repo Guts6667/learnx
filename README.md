@@ -43,6 +43,13 @@ Programme
 
 La structure reste indépendante des années et semestres, mais chaque programme et chaque étape peut avoir une durée indicative. Lorsqu’un utilisateur démarre un programme ou une étape, LearnX calcule une date de fin cible et compare la progression réelle à la progression attendue.
 
+Le parcours d’apprentissage utilise la leçon comme contexte permanent. La page
+compose les blocs, ressources, tâches, mini-évaluations, exercices et quiz dans
+une séquence déterministe et expose une seule action principale « Continuer ».
+Les routes profondes conservent le fil d’Ariane et le sommaire de la leçon ; la
+route canonique d’un exercice est
+`/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
+
 ## Démarrage avec Codex
 
 1. Créer un repository vide.

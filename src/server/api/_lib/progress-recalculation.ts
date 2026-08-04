@@ -21,6 +21,8 @@ const MAX_TRANSACTION_ATTEMPTS = 3;
 
 export interface LessonProgressSnapshot {
   canComplete: boolean;
+  conceptStatusById: Map<string, ConceptProgressStatus>;
+  exerciseStatusById: Map<string, ExerciseSubmissionStatus>;
   lessonProgress: {
     completedAt: Date | null;
     percent: number;
@@ -28,6 +30,7 @@ export interface LessonProgressSnapshot {
     status: LessonProgressStatus;
   } | null;
   percent: number;
+  quizPassedById: Map<string, boolean>;
   resourceStatusById: Map<string, ResourceProgressStatus>;
   taskStatusById: Map<string, TaskCompletionStatus>;
 }
@@ -85,6 +88,13 @@ async function readLessonState(
         ...publicationFilter,
         stage: {
           ...publicationFilter,
+          ...(requirePublished
+            ? {
+                progress: {
+                  none: { status: StageProgressStatus.LOCKED, userId },
+                },
+              }
+            : {}),
           program: { ownerId: userId },
         },
       },
@@ -93,6 +103,7 @@ async function readLessonState(
       concepts: {
         where: { isRequired: true },
         select: {
+          id: true,
           progress: {
             where: { userId },
             take: 1,
@@ -103,6 +114,7 @@ async function readLessonState(
       exercises: {
         where: { isRequired: true },
         select: {
+          id: true,
           submissions: {
             where: { userId },
             take: 1,
@@ -128,6 +140,7 @@ async function readLessonState(
       quizzes: {
         where: { isRequired: true },
         select: {
+          id: true,
           _count: { select: { attempts: { where: { userId } } } },
           attempts: {
             where: { passed: true, userId },
@@ -190,7 +203,24 @@ function toLessonSnapshot(
 
   return {
     ...result,
+    conceptStatusById: new Map(
+      lesson.concepts.flatMap((concept) =>
+        concept.progress[0]
+          ? [[concept.id, concept.progress[0].status] as const]
+          : [],
+      ),
+    ),
+    exerciseStatusById: new Map(
+      lesson.exercises.flatMap((exercise) =>
+        exercise.submissions[0]
+          ? [[exercise.id, exercise.submissions[0].status] as const]
+          : [],
+      ),
+    ),
     lessonProgress: lesson.progress[0] ?? null,
+    quizPassedById: new Map(
+      lesson.quizzes.map((quiz) => [quiz.id, quiz.attempts.length > 0]),
+    ),
     resourceStatusById: new Map(
       lesson.resources.flatMap((resource) =>
         resource.progress[0]

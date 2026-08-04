@@ -1,18 +1,27 @@
-import { fireEvent, render, screen } from '@testing-library/preact';
-import { useState } from 'preact/hooks';
+import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import { useRef, useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';
 
 function DrawerFixture() {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Ouvrir la gestion</Button>
+      <Button
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        onClick={() => setIsOpen(true)}
+        elementRef={triggerRef}
+      >
+        Ouvrir la gestion
+      </Button>
       <Drawer
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
+        returnFocusElement={triggerRef.current}
         title="Gestion du module"
       >
         <Button>Première action</Button>
@@ -23,7 +32,7 @@ function DrawerFixture() {
 }
 
 describe('Drawer', () => {
-  it('prend le focus, le piège puis le rend au déclencheur avec Échap', () => {
+  it('prend le focus, le piège puis le rend au déclencheur avec Échap', async () => {
     render(<DrawerFixture />);
     const trigger = screen.getByRole('button', { name: 'Ouvrir la gestion' });
 
@@ -44,6 +53,6 @@ describe('Drawer', () => {
 
     fireEvent.keyDown(closeButton, { key: 'Escape' });
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(trigger).toHaveFocus();
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 });

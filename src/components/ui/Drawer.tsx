@@ -7,6 +7,7 @@ interface DrawerProps {
   children: ComponentChildren;
   isOpen: boolean;
   onDismiss: () => void;
+  returnFocusElement?: HTMLElement | null;
   title: string;
 }
 
@@ -19,7 +20,13 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-export function Drawer({ children, isOpen, onDismiss, title }: DrawerProps) {
+export function Drawer({
+  children,
+  isOpen,
+  onDismiss,
+  returnFocusElement,
+  title,
+}: DrawerProps) {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
@@ -27,10 +34,18 @@ export function Drawer({ children, isOpen, onDismiss, title }: DrawerProps) {
   useEffect(() => {
     if (!isOpen) return;
 
-    returnFocusRef.current =
+    const activeElement =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
+    const expandedTrigger = document.querySelector<HTMLElement>(
+      '[aria-haspopup="dialog"][aria-expanded="true"]',
+    );
+    returnFocusRef.current =
+      returnFocusElement ??
+      (activeElement && activeElement !== document.body
+        ? activeElement
+        : expandedTrigger);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     panelRef.current
@@ -39,16 +54,31 @@ export function Drawer({ children, isOpen, onDismiss, title }: DrawerProps) {
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      returnFocusRef.current?.focus();
+      const returnTarget = returnFocusRef.current;
+      window.requestAnimationFrame(() => {
+        if (returnTarget?.isConnected) returnTarget.focus();
+      });
     };
-  }, [isOpen]);
+  }, [isOpen, returnFocusElement]);
 
   if (!isOpen) return null;
+
+  function restoreTriggerFocus() {
+    const returnTarget = returnFocusRef.current;
+    window.requestAnimationFrame(() => {
+      returnTarget?.focus({ preventScroll: true });
+    });
+  }
+
+  function dismiss() {
+    onDismiss();
+    restoreTriggerFocus();
+  }
 
   function handleKeyDown(event: JSX.TargetedKeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Escape') {
       event.preventDefault();
-      onDismiss();
+      dismiss();
       return;
     }
 
@@ -77,7 +107,7 @@ export function Drawer({ children, isOpen, onDismiss, title }: DrawerProps) {
     <div
       class="fixed inset-0 z-50 flex justify-end bg-slate-950/80"
       onClick={(event) => {
-        if (event.currentTarget === event.target) onDismiss();
+        if (event.currentTarget === event.target) dismiss();
       }}
       onKeyDown={handleKeyDown}
     >
@@ -95,7 +125,7 @@ export function Drawer({ children, isOpen, onDismiss, title }: DrawerProps) {
           <Button
             aria-label="Fermer le panneau"
             data-drawer-close
-            onClick={onDismiss}
+            onClick={dismiss}
             size="sm"
             variant="ghost"
           >

@@ -61,6 +61,31 @@ describe('CurriculumPages', () => {
   });
 
   it('relie le programme, l’étape et le module à leurs contenus', async () => {
+    const lesson = {
+      activityCounts: {
+        concepts: 1,
+        exercises: 1,
+        quizzes: 1,
+        resources: 2,
+        tasks: 1,
+      },
+      estimatedMinutes: 10,
+      id: 'lesson-1',
+      isPublished: false,
+      position: 1,
+      progress: { percent: 25, status: 'IN_PROGRESS' },
+      slug: 'demarrer',
+      summary: 'Les notions essentielles.',
+      title: 'Démarrer',
+    };
+    const module = {
+      id: 'module-1',
+      isPublished: false,
+      lessons: [lesson],
+      position: 1,
+      slug: 'premiers-pas',
+      title: 'Premiers pas',
+    };
     const fetchMock = vi.fn((path: string) => {
       if (path === '/api/programs/bases?preview=true') {
         return Promise.resolve(
@@ -73,7 +98,7 @@ describe('CurriculumPages', () => {
                 {
                   id: 'stage-1',
                   isPublished: false,
-                  modules: [],
+                  modules: [module],
                   position: 1,
                   slug: 'introduction',
                   title: 'Introduction',
@@ -97,7 +122,7 @@ describe('CurriculumPages', () => {
                 {
                   id: 'module-1',
                   isPublished: false,
-                  lessons: [],
+                  lessons: [lesson],
                   position: 1,
                   slug: 'premiers-pas',
                   title: 'Premiers pas',
@@ -152,19 +177,16 @@ describe('CurriculumPages', () => {
             estimatedMinutes: 20,
             id: 'module-1',
             isPublished: false,
-            lessons: [
-              {
-                estimatedMinutes: 10,
-                id: 'lesson-1',
-                isPublished: false,
-                position: 1,
-                slug: 'demarrer',
-                summary: 'Les notions essentielles.',
-                title: 'Démarrer',
-              },
-            ],
+            lessons: [lesson],
             position: 1,
             slug: 'premiers-pas',
+            stage: {
+              id: 'stage-1',
+              isPublished: false,
+              program: { id: 'program-1', slug: 'bases', title: 'Les bases' },
+              slug: 'introduction',
+              title: 'Introduction',
+            },
             title: 'Premiers pas',
           },
         }),
@@ -173,10 +195,19 @@ describe('CurriculumPages', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const programView = renderPage(<ProgramPage programSlug="bases" />);
+    expect(await screen.findByRole('link', { name: 'Prévisualiser' })).toHaveAttribute(
+      'href',
+      '/program/bases/lesson/demarrer',
+    );
+    expect(screen.getByText('10 min · 6 activités')).toBeInTheDocument();
     expect(
-      await screen.findByRole('link', { name: 'Ouvrir l’étape' }),
-    ).toHaveAttribute('href', '/program/bases/stage/introduction');
-    expect(screen.getByText('Brouillon')).toBeInTheDocument();
+      screen.getByText('Prochaine activité : Reprendre l’activité en cours'),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('progressbar', { name: 'Progression — 25 %' })).toHaveAttribute(
+      'aria-valuenow',
+      '25',
+    );
+    expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
 
     programView.unmount();
     const stageView = renderPage(
@@ -202,7 +233,7 @@ describe('CurriculumPages', () => {
     stageView.unmount();
     renderPage(<ModulePage moduleSlug="premiers-pas" programSlug="bases" />);
     expect(
-      await screen.findByRole('heading', { level: 2, name: 'Démarrer' }),
+      await screen.findByRole('heading', { level: 3, name: 'Démarrer' }),
     ).toBeInTheDocument();
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
   });

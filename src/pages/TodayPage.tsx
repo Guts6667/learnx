@@ -96,6 +96,7 @@ function TodayContent({
               <p class="mt-2 text-sm text-slate-300">
                 {data.action.stageTitle}
                 {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
+                {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
               </p>
             ) : null}
             {data.action.estimatedMinutes ? (

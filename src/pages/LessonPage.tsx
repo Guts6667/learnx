@@ -1,30 +1,36 @@
 import { route } from 'preact-router';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 
+import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Spinner } from '@/components/ui/Spinner';
 import {
-  type ContentBlockType,
   type LessonContentBlock,
-  type LessonConceptSummary,
-  type LessonExerciseSummary,
+  type LessonDetail,
+  type LessonProgressResponse,
   type LessonResource,
-  type LessonQuizSummary,
   type LessonTask,
   type ResourceProgressStatus,
   type TaskCompletionStatus,
-  useLessonQuery,
   useLessonProgressMutation,
   useLessonProgressQuery,
+  useLessonQuery,
 } from '@/features/curriculum/queries';
-import { ExerciseCard } from '@/features/exercises/ExerciseCard';
-import { useNoteMutation, useNotesQuery } from '@/features/notes/queries';
+import { useNoteMutation } from '@/features/notes/queries';
+import {
+  activityKey,
+  buildLessonActivitySequence,
+  type LessonActivity,
+  readRememberedActivity,
+  rememberActivity,
+} from '@/lib/lesson-activity-sequence';
 
-const contentBlockLabels: Record<ContentBlockType, string> = {
+const contentBlockLabels: Record<LessonContentBlock['type'], string> = {
   CALLOUT: 'À retenir',
   DEFINITION: 'Définition',
   DIVIDER: 'Séparation',
@@ -36,176 +42,104 @@ const contentBlockLabels: Record<ContentBlockType, string> = {
 };
 
 function getText(value: unknown): string {
-  if (typeof value === 'string') {
-    return value;
-  }
-
-  if (Array.isArray(value)) {
-    return value.map(getText).filter(Boolean).join('\n');
-  }
-
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) return value.map(getText).filter(Boolean).join('\n');
   if (value && typeof value === 'object') {
     const record = value as Record<string, unknown>;
     const text = record.text ?? record.content ?? record.markdown;
-
-    if (typeof text === 'string') {
-      return text;
-    }
+    return typeof text === 'string' ? text : '';
   }
-
   return '';
 }
 
-function getObjectives(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value
-    .filter((objective): objective is string => typeof objective === 'string')
-    .filter(Boolean);
-}
-
-function formatDuration(minutes: number | null): string | null {
-  if (minutes === null) {
-    return null;
-  }
-
-  return `${minutes} min`;
-}
-
-function getSafeExternalUrl(url: string | null): string | null {
-  if (!url) {
-    return null;
-  }
-
-  try {
-    const parsedUrl = new URL(url);
-
-    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
-      ? parsedUrl.toString()
-      : null;
-  } catch {
-    return null;
-  }
-}
-
 function getSourceKeys(value: unknown): string[] {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return [];
-  }
-
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return [];
   const sourceKeys = (value as Record<string, unknown>).sourceKeys;
-
   return Array.isArray(sourceKeys)
     ? sourceKeys.filter((key): key is string => typeof key === 'string')
     : [];
 }
 
-function BlockSources({ resources }: { resources: LessonResource[] }) {
-  if (resources.length === 0) {
+function getSafeExternalUrl(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.toString() : null;
+  } catch {
     return null;
   }
-
-  return (
-    <footer class="border-t border-slate-700 pt-3">
-      <h4 class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
-        Sources de ce bloc
-      </h4>
-      <ul class="mt-2 space-y-2">
-        {resources.map((resource) => {
-          const url = getSafeExternalUrl(resource.url);
-
-          return (
-            <li class="text-sm leading-5 text-slate-400" key={resource.id}>
-              <span class="font-medium text-slate-300">{resource.title}</span>
-              {resource.author ? ` — ${resource.author}` : ''}
-              {resource.citation ? ` · ${resource.citation}` : ''}
-              {url ? (
-                <>
-                  {' · '}
-                  <a
-                    class="inline-flex min-h-11 items-center text-cyan-300 underline"
-                    href={url}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    Voir la source
-                  </a>
-                </>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-    </footer>
-  );
 }
 
-function ContentBlock({
+function ContentActivity({
   block,
   resourcesByKey,
 }: {
   block: LessonContentBlock;
   resourcesByKey: Map<string, LessonResource>;
 }) {
-  if (block.type === 'DIVIDER') {
-    return <hr aria-label="Séparation de contenu" class="border-slate-700" />;
-  }
-
-  const text = getText(block.content);
-  const sourceResources = getSourceKeys(block.content)
+  if (block.type === 'DIVIDER') return <hr class="border-slate-700" />;
+  const sources = getSourceKeys(block.content)
     .map((key) => resourcesByKey.get(key))
     .filter((resource): resource is LessonResource => Boolean(resource));
 
-  if (!text) {
-    return null;
-  }
-
   return (
-    <Card class="space-y-2">
-      <h3 class="text-sm font-semibold text-cyan-300">
+    <Card class="space-y-4">
+      <p class="text-sm font-semibold text-cyan-300">
         {contentBlockLabels[block.type]}
-      </h3>
-      <p class="whitespace-pre-line leading-7 text-slate-200">{text}</p>
-      <BlockSources resources={sourceResources} />
+      </p>
+      <p class="whitespace-pre-line leading-7 text-slate-200">
+        {getText(block.content)}
+      </p>
+      {sources.length === 0 ? null : (
+        <footer class="border-t border-slate-700 pt-3">
+          <h3 class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
+            Sources de ce bloc
+          </h3>
+          <ul class="mt-2 space-y-2 text-sm text-slate-400">
+            {sources.map((source) => {
+              const url = getSafeExternalUrl(source.url);
+              return (
+                <li key={source.id}>
+                  {source.title}
+                  {source.author ? ` — ${source.author}` : ''}
+                  {url ? (
+                    <a
+                      class="ml-2 text-cyan-300 underline"
+                      href={url}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      Ouvrir la source
+                    </a>
+                  ) : null}
+                </li>
+              );
+            })}
+          </ul>
+        </footer>
+      )}
     </Card>
   );
 }
 
-function ResourceCard({
+function ResourceActivity({
   isPending,
-  onProgressChange,
-  progressStatus,
+  onComplete,
   resource,
+  status,
 }: {
   isPending: boolean;
-  onProgressChange?: (status: ResourceProgressStatus) => Promise<void>;
-  progressStatus: ResourceProgressStatus;
+  onComplete?: () => Promise<void>;
   resource: LessonResource;
+  status: ResourceProgressStatus;
 }) {
   const url = getSafeExternalUrl(resource.url);
-  const duration = formatDuration(resource.estimatedMinutes);
-
   return (
-    <Card class="space-y-2">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-semibold">{resource.title}</h3>
-        <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">
-          {resource.isRequired ? 'Obligatoire' : 'Optionnelle'}
-        </span>
-      </div>
-      <p class="text-sm text-slate-400">
-        {resource.type}
-        {resource.author ? ` · ${resource.author}` : ''}
-        {duration ? ` · ${duration}` : ''}
-      </p>
-      {resource.description ? (
-        <p class="text-sm leading-6 text-slate-300">{resource.description}</p>
-      ) : null}
-      {resource.citation ? (
-        <p class="text-sm italic text-slate-400">{resource.citation}</p>
-      ) : null}
+    <Card class="space-y-4">
+      <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
+        {resource.isRequired ? 'Obligatoire' : 'Optionnelle'}
+      </Badge>
+      <p class="leading-7 text-slate-300">{resource.description}</p>
       {url ? (
         <a
           class="inline-flex min-h-11 items-center text-cyan-300 underline"
@@ -216,519 +150,355 @@ function ResourceCard({
           Consulter la ressource
         </a>
       ) : null}
-      {onProgressChange ? (
+      {onComplete ? (
         <Button
-          disabled={isPending || progressStatus === 'COMPLETED'}
+          disabled={status === 'COMPLETED'}
           isLoading={isPending}
-          onClick={() => void onProgressChange('COMPLETED')}
+          onClick={() => void onComplete()}
           variant="secondary"
         >
-          {progressStatus === 'COMPLETED'
-            ? 'Ressource consultée'
-            : 'Marquer comme consultée'}
+          {status === 'COMPLETED' ? 'Ressource consultée' : 'Marquer comme consultée'}
         </Button>
       ) : null}
     </Card>
   );
 }
 
-function TaskCard({
+function TaskActivity({
   isPending,
-  onStatusChange,
+  onToggle,
   status,
   task,
 }: {
   isPending: boolean;
-  onStatusChange?: (status: TaskCompletionStatus) => Promise<void>;
+  onToggle?: () => Promise<void>;
   status: TaskCompletionStatus;
   task: LessonTask;
 }) {
   return (
-    <Card class="space-y-2">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-semibold">{task.title}</h3>
-        <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">
-          {task.isRequired ? 'Obligatoire' : 'Optionnelle'}
-        </span>
-      </div>
-      <p class="text-sm text-slate-400">{task.type}</p>
-      {task.description ? (
-        <p class="text-sm leading-6 text-slate-300">{task.description}</p>
-      ) : null}
-      {onStatusChange ? (
+    <Card class="space-y-4">
+      <Badge tone={task.isRequired ? 'warning' : 'neutral'}>
+        {task.isRequired ? 'Obligatoire' : 'Optionnelle'}
+      </Badge>
+      <p class="leading-7 text-slate-300">{task.description}</p>
+      {onToggle ? (
         <Button
-          disabled={isPending}
           isLoading={isPending}
-          onClick={() =>
-            void onStatusChange(status === 'DONE' ? 'TODO' : 'DONE')
-          }
+          onClick={() => void onToggle()}
           variant="secondary"
         >
-          {status === 'DONE'
-            ? 'Marquer comme à faire'
-            : 'Marquer comme terminée'}
+          {status === 'DONE' ? 'Marquer comme à faire' : 'Marquer comme terminée'}
         </Button>
       ) : null}
     </Card>
   );
 }
 
-function LessonActivityProgress({
-  lessonId,
-  resources,
-  tasks,
-}: {
-  lessonId: string;
-  resources: LessonResource[];
-  tasks: LessonTask[];
-}) {
-  const query = useLessonProgressQuery(lessonId);
-  const mutation = useLessonProgressMutation(lessonId);
-  const progress = query.data;
-  const percent = progress?.lessonProgress.percent ?? 0;
-  const canComplete = progress?.canComplete ?? false;
-  const lessonStatus = progress?.lessonProgress.status ?? 'AVAILABLE';
-
-  async function updateTask(taskId: string, status: TaskCompletionStatus) {
-    await mutation.mutateAsync(
-      `/api/tasks/${encodeURIComponent(taskId)}`,
-      'PATCH',
-      {
-        status,
-      },
-    );
-  }
-
-  async function updateResource(
-    resourceId: string,
-    status: ResourceProgressStatus,
-  ) {
-    await mutation.mutateAsync(
-      `/api/resources/${encodeURIComponent(resourceId)}/progress`,
-      'PATCH',
-      { status },
-    );
-  }
-
-  async function startLesson() {
-    await mutation.mutateAsync(
-      `/api/lessons/${encodeURIComponent(lessonId)}/start`,
-      'POST',
-    );
-  }
-
-  async function completeLesson() {
-    await mutation.mutateAsync(
-      `/api/lessons/${encodeURIComponent(lessonId)}/complete`,
-      'POST',
-    );
-  }
-
-  if (query.isPending) {
-    return <Spinner label="Chargement de la progression" size="sm" />;
-  }
-
-  if (query.error || mutation.error) {
-    return (
-      <ErrorState description="La progression n’a pas pu être mise à jour." />
-    );
-  }
-
-  return (
-    <>
-      <section aria-labelledby="lesson-progress-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="lesson-progress-title">
-          Progression
-        </h2>
-        <Card class="space-y-4">
-          <ProgressBar label="Progression de la leçon" value={percent} />
-          <p class="text-sm text-slate-300">
-            Statut :{' '}
-            {lessonStatus === 'COMPLETED'
-              ? 'Terminée'
-              : lessonStatus === 'IN_PROGRESS'
-                ? 'En cours'
-                : 'À commencer'}
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <Button
-              disabled={mutation.isPending || lessonStatus !== 'AVAILABLE'}
-              isLoading={mutation.isPending}
-              onClick={() => void startLesson()}
-            >
-              Commencer la leçon
-            </Button>
-            <Button
-              disabled={
-                mutation.isPending ||
-                lessonStatus === 'COMPLETED' ||
-                !canComplete
-              }
-              isLoading={mutation.isPending}
-              onClick={() => void completeLesson()}
-              variant="secondary"
-            >
-              Terminer la leçon
-            </Button>
-          </div>
-          {!canComplete ? (
-            <p class="text-sm text-slate-400">
-              Terminez les activités suivies pour pouvoir terminer la leçon.
-            </p>
-          ) : null}
-        </Card>
-      </section>
-
-      <section aria-labelledby="resources-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="resources-title">
-          Ressources
-        </h2>
-        {resources.length === 0 ? (
-          <EmptyState
-            description="Les ressources associées apparaîtront ici."
-            title="Aucune ressource disponible"
-          />
-        ) : (
-          resources.map((resource) => (
-            <ResourceCard
-              isPending={mutation.isPending}
-              key={resource.id}
-              onProgressChange={(status) => updateResource(resource.id, status)}
-              progressStatus={
-                progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'
-              }
-              resource={resource}
-            />
-          ))
-        )}
-      </section>
-
-      <section aria-labelledby="tasks-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="tasks-title">
-          Tâches
-        </h2>
-        {tasks.length === 0 ? (
-          <EmptyState
-            description="Les tâches associées apparaîtront ici."
-            title="Aucune tâche disponible"
-          />
-        ) : (
-          tasks.map((task) => (
-            <TaskCard
-              isPending={mutation.isPending}
-              key={task.id}
-              onStatusChange={(status) => updateTask(task.id, status)}
-              status={progress?.taskCompletions[task.id] ?? 'TODO'}
-              task={task}
-            />
-          ))
-        )}
-      </section>
-    </>
-  );
-}
-
-function DraftLessonActivities({
-  resources,
-  tasks,
-}: {
-  resources: LessonResource[];
-  tasks: LessonTask[];
-}) {
-  return (
-    <>
-      <Card class="space-y-2 border border-amber-800/70 bg-amber-950/30">
-        <h2 class="font-semibold text-amber-200">
-          Prévisualisation en lecture seule
-        </h2>
-        <p class="text-sm leading-6 text-amber-100/80">
-          La progression sera disponible lorsque cette leçon et sa hiérarchie
-          seront publiées.
-        </p>
-      </Card>
-
-      <section aria-labelledby="resources-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="resources-title">
-          Ressources
-        </h2>
-        {resources.length === 0 ? (
-          <EmptyState
-            description="Les ressources associées apparaîtront ici."
-            title="Aucune ressource disponible"
-          />
-        ) : (
-          resources.map((resource) => (
-            <ResourceCard
-              isPending={false}
-              key={resource.id}
-              progressStatus="NOT_STARTED"
-              resource={resource}
-            />
-          ))
-        )}
-      </section>
-
-      <section aria-labelledby="tasks-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="tasks-title">
-          Tâches
-        </h2>
-        {tasks.length === 0 ? (
-          <EmptyState
-            description="Les tâches associées apparaîtront ici."
-            title="Aucune tâche disponible"
-          />
-        ) : (
-          tasks.map((task) => (
-            <TaskCard
-              isPending={false}
-              key={task.id}
-              status="TODO"
-              task={task}
-            />
-          ))
-        )}
-      </section>
-    </>
-  );
-}
-
-function QuizCard({
-  isPublished,
-  lessonSlug,
-  programSlug,
-  quiz,
-}: {
-  isPublished: boolean;
-  lessonSlug: string;
-  programSlug: string;
-  quiz: LessonQuizSummary;
-}) {
-  const href = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}/quiz?quizId=${encodeURIComponent(quiz.id)}`;
-
+function SecondaryActivity({ activity }: { activity: LessonActivity }) {
   return (
     <Card class="space-y-3">
-      <div class="flex items-start justify-between gap-3">
-        <h3 class="font-semibold">{quiz.title}</h3>
-        <Badge tone={quiz.isRequired ? 'warning' : 'neutral'}>
-          {quiz.isRequired ? 'Obligatoire' : 'Optionnel'}
-        </Badge>
-      </div>
-      {quiz.description ? (
-        <p class="text-sm leading-6 text-slate-300">{quiz.description}</p>
-      ) : null}
-      <p class="text-sm text-slate-400">
-        {quiz.questionCount} questions · seuil : {Math.round(quiz.passingScore)}{' '}
-        %
+      <Badge tone={activity.required ? 'warning' : 'neutral'}>
+        {activity.required ? 'Obligatoire' : 'Optionnel'}
+      </Badge>
+      <p class="leading-7 text-slate-300">
+        Cette activité s’ouvre dans une vue dédiée tout en conservant le contexte
+        de la leçon.
       </p>
-      {isPublished ? (
-        <a
-          class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950"
-          href={href}
-        >
-          Commencer le quiz
-        </a>
-      ) : (
-        <button
-          class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
-          disabled
-          type="button"
-        >
-          Quiz disponible après publication
-        </button>
-      )}
     </Card>
   );
 }
 
-function ConceptAssessmentsSection({
-  concepts,
-  isPublished,
-  lessonSlug,
-  programSlug,
+function ActivitySummary({
+  activities,
+  current,
+  onNavigate,
 }: {
-  concepts: LessonConceptSummary[];
-  isPublished: boolean;
-  lessonSlug: string;
-  programSlug: string;
+  activities: LessonActivity[];
+  current: LessonActivity | null;
+  onNavigate?: () => void;
 }) {
   return (
-    <section aria-labelledby="concepts-title" class="space-y-3">
-      <h2 class="text-xl font-semibold" id="concepts-title">
-        Notions à maîtriser
-      </h2>
-      {concepts.length === 0 ? (
-        <EmptyState
-          description="Les notions évaluées apparaîtront ici."
-          title="Aucune notion disponible"
-        />
-      ) : (
-        concepts.map((concept) => (
-          <Card class="space-y-3" key={concept.id}>
-            <div class="flex items-start justify-between gap-3">
-              <h3 class="font-semibold">{concept.title}</h3>
-              <Badge tone={concept.isRequired ? 'warning' : 'neutral'}>
-                {concept.isRequired ? 'Obligatoire' : 'Optionnelle'}
-              </Badge>
-            </div>
-            <p class="text-sm text-slate-400">
-              Seuil de maîtrise : {Math.round(concept.masteryThreshold)} %
-            </p>
-            {concept.assessments.length === 0 ? (
-              <p class="text-sm text-slate-400">
-                Aucune mini-évaluation disponible.
-              </p>
-            ) : (
-              <ul class="space-y-3">
-                {concept.assessments.map((assessment) => {
-                  const href = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}`;
-
-                  return (
-                    <li class="space-y-2" key={assessment.id}>
-                      <p class="text-sm text-slate-300">
-                        {assessment.title ?? `Évaluation — ${concept.title}`} ·{' '}
-                        {assessment.questionCount ?? 0} questions
-                      </p>
-                      <a
-                        class="inline-flex min-h-11 items-center rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-950"
-                        href={href}
-                      >
-                        {isPublished
-                          ? 'Commencer la mini-évaluation'
-                          : 'Prévisualiser et passer la mini-évaluation'}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </Card>
-        ))
-      )}
-    </section>
-  );
-}
-
-function LessonNotesSection({
-  lessonId,
-  lessonTitle,
-}: {
-  lessonId: string;
-  lessonTitle: string;
-}) {
-  const query = useNotesQuery('', lessonId);
-  const mutation = useNoteMutation();
-
-  async function createLinkedNote() {
-    try {
-      const note = await mutation.create({
-        lessonId,
-        title: `Notes — ${lessonTitle}`,
-      });
-      void route(`/notes/${encodeURIComponent(note.id)}`);
-    } catch {
-      // L’erreur normalisée est affichée dans la section.
-    }
-  }
-
-  return (
-    <section aria-labelledby="lesson-notes-title" class="space-y-3">
-      <h2 class="text-xl font-semibold" id="lesson-notes-title">
-        Notes
-      </h2>
-      <Button
-        isLoading={mutation.isPending}
-        onClick={() => void createLinkedNote()}
-      >
-        Nouvelle note liée à cette leçon
-      </Button>
-      {mutation.error || query.error ? (
-        <ErrorState description="Les notes n’ont pas pu être chargées ou créées." />
-      ) : null}
-      {query.isPending ? (
-        <Spinner label="Chargement des notes" size="sm" />
-      ) : null}
-      {query.data?.notes.length ? (
-        <ul class="space-y-2">
-          {query.data.notes.map((note) => (
-            <li key={note.id}>
+    <nav aria-label="Sommaire de la leçon">
+      <ol class="space-y-2">
+        {activities.map((activity) => {
+          const key = activityKey(activity.kind, activity.id);
+          const isCurrent = current?.id === activity.id && current.kind === activity.kind;
+          return (
+            <li key={key}>
               <a
-                class="flex min-h-11 items-center justify-between gap-3 rounded-xl bg-slate-900 px-4 py-3 text-cyan-300 underline"
-                href={`/notes/${encodeURIComponent(note.id)}`}
+                aria-current={isCurrent ? 'step' : undefined}
+                class={`flex min-h-11 items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm ${
+                  isCurrent
+                    ? 'bg-cyan-950 text-cyan-200'
+                    : 'text-slate-300 hover:bg-slate-900'
+                }`}
+                href={activity.href}
+                onClick={onNavigate}
               >
-                <span>{note.title}</span>
-                <span class="text-xs text-slate-400">Modifier</span>
+                <span>{activity.title}</span>
+                <span class="text-xs text-slate-400">
+                  {activity.status === 'COMPLETED' ? 'Terminé' : activity.label}
+                </span>
               </a>
             </li>
-          ))}
-        </ul>
-      ) : null}
-    </section>
+          );
+        })}
+      </ol>
+    </nav>
   );
 }
 
-function AssessmentsSection({
-  exercises,
-  isPublished,
-  lessonSlug,
+function sequenceInput(
+  lesson: LessonDetail,
+  progress: LessonProgressResponse | undefined,
+  programSlug: string,
+) {
+  return {
+    concepts: lesson.concepts,
+    contentBlocks: lesson.contentBlocks,
+    exercises: lesson.exercises,
+    isPublished: lesson.isPublished,
+    lessonSlug: lesson.slug,
+    nextLesson: lesson.navigation.nextLesson,
+    programSlug,
+    progress: progress
+      ? {
+          canComplete: progress.canComplete,
+          conceptStatus: progress.conceptProgress,
+          exerciseStatus: progress.exerciseSubmissions,
+          lessonStatus: progress.lessonProgress.status,
+          quizPassed: progress.quizPassed,
+          resourceStatus: progress.resourceProgress,
+          taskStatus: progress.taskCompletions,
+        }
+      : undefined,
+    quizzes: lesson.quizzes,
+    resources: lesson.resources,
+    tasks: lesson.tasks,
+  };
+}
+
+function LessonWorkspace({
+  lesson,
   programSlug,
-  quizzes,
 }: {
-  exercises: LessonExerciseSummary[];
-  isPublished: boolean;
-  lessonSlug: string;
+  lesson: LessonDetail;
   programSlug: string;
-  quizzes: LessonQuizSummary[];
 }) {
+  const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
+  const mutation = useLessonProgressMutation(lesson.id);
+  const noteMutation = useNoteMutation();
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const summaryTriggerRef = useRef<HTMLButtonElement>(null);
+  const currentKey =
+    new URLSearchParams(window.location.search).get('activity') ??
+    readRememberedActivity(lesson.id);
+  const sequence = useMemo(
+    () =>
+      buildLessonActivitySequence(
+        sequenceInput(lesson, progressQuery.data, programSlug),
+        currentKey,
+      ),
+    [currentKey, lesson, programSlug, progressQuery.data],
+  );
+  const current = sequence.current;
+  const progress = progressQuery.data;
+
+  useEffect(() => {
+    if (!current) return;
+    rememberActivity(lesson.id, activityKey(current.kind, current.id));
+    window.requestAnimationFrame(() => {
+      document
+        .querySelector<HTMLElement>(
+          `[data-activity-key="${activityKey(current.kind, current.id)}"]`,
+        )
+        ?.focus();
+    });
+  }, [current, lesson.id]);
+
+  if (lesson.isPublished && progressQuery.isPending) {
+    return <Spinner label="Chargement du parcours de la leçon" />;
+  }
+  if (lesson.isPublished && progressQuery.error) {
+    return navigator.onLine ? (
+      <ErrorState description="Le parcours de la leçon n’a pas pu être chargé." />
+    ) : (
+      <EmptyState
+        description="Reconnectez-vous puis rechargez cette activité. Aucune progression n’a été simulée."
+        title="Leçon indisponible hors ligne"
+      />
+    );
+  }
+
+  async function updateResource(resourceId: string) {
+    await mutation.mutateAsync(
+      `/api/resources/${encodeURIComponent(resourceId)}/progress`,
+      'PATCH',
+      { status: 'COMPLETED' },
+    );
+  }
+
+  async function updateTask(task: LessonTask) {
+    const currentStatus = progress?.taskCompletions[task.id] ?? 'TODO';
+    await mutation.mutateAsync(`/api/tasks/${encodeURIComponent(task.id)}`, 'PATCH', {
+      status: currentStatus === 'DONE' ? 'TODO' : 'DONE',
+    });
+  }
+
+  async function continueLearning() {
+    if (!current) return;
+    if (current.kind === 'COMPLETE') {
+      if (progress?.canComplete) {
+        await mutation.mutateAsync(
+          `/api/lessons/${encodeURIComponent(lesson.id)}/complete`,
+          'POST',
+        );
+      }
+      return;
+    }
+    if (progress?.lessonProgress.status === 'AVAILABLE') {
+      await mutation.mutateAsync(
+        `/api/lessons/${encodeURIComponent(lesson.id)}/start`,
+        'POST',
+      );
+    }
+    void route(sequence.next?.href ?? current.href);
+  }
+
+  async function createNote() {
+    const note = await noteMutation.create({
+      lessonId: lesson.id,
+      title: `Notes — ${lesson.title}`,
+    });
+    void route(`/notes/${encodeURIComponent(note.id)}`);
+  }
+
+  const resourcesByKey = new Map(
+    lesson.resources.flatMap((resource) =>
+      resource.key ? ([[resource.key, resource]] as const) : [],
+    ),
+  );
+  const block = lesson.contentBlocks.find((item) => item.id === current?.id);
+  const resource = lesson.resources.find((item) => item.id === current?.id);
+  const task = lesson.tasks.find((item) => item.id === current?.id);
+
   return (
-    <section aria-labelledby="assessments-title" class="space-y-3">
-      <h2 class="text-xl font-semibold" id="assessments-title">
-        Évaluations
-      </h2>
-      {quizzes.length === 0 ? (
-        <Card class="space-y-3">
-          <h3 class="font-semibold">Quiz</h3>
-          <p class="text-sm text-slate-300">Aucun quiz n’est disponible.</p>
-          <button
-            class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
-            disabled
-            type="button"
-          >
-            Quiz indisponible
-          </button>
+    <article class="space-y-6" aria-labelledby="lesson-title">
+      <LessonContextHeader
+        lesson={lesson}
+        percent={progress?.lessonProgress.percent ?? 0}
+      />
+      {lesson.isPublished ? null : (
+        <Card class="border border-amber-800/70 bg-amber-950/30">
+          <p class="font-semibold text-amber-200">Prévisualisation en lecture seule</p>
+          <p class="mt-2 text-sm text-amber-100/80">
+            La séquence est consultable, mais aucune progression ne sera créée.
+          </p>
         </Card>
-      ) : (
-        quizzes.map((quiz) => (
-          <QuizCard
-            isPublished={isPublished}
-            key={quiz.id}
-            lessonSlug={lessonSlug}
-            programSlug={programSlug}
-            quiz={quiz}
-          />
-        ))
       )}
-      {exercises.length === 0 ? (
-        <Card class="space-y-3">
-          <h3 class="font-semibold">Exercice</h3>
-          <p class="text-sm text-slate-300">Aucun exercice n’est disponible.</p>
-          <button
-            class="min-h-11 rounded-xl bg-slate-800 px-4 py-2 font-semibold text-slate-400"
-            disabled
-            type="button"
+      <p class="leading-7 text-slate-300">{lesson.summary}</p>
+      <div class="flex flex-wrap gap-3 lg:hidden">
+        <Button
+          aria-expanded={isSummaryOpen}
+          aria-haspopup="dialog"
+          onClick={() => setIsSummaryOpen(true)}
+          elementRef={summaryTriggerRef}
+          variant="secondary"
+        >
+          Ouvrir le sommaire
+        </Button>
+      </div>
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <section class="space-y-4" aria-labelledby="current-activity-title">
+          {current ? (
+            <div
+              data-activity-key={activityKey(current.kind, current.id)}
+              tabIndex={-1}
+            >
+              <p class="text-sm font-semibold text-cyan-300">{current.label}</p>
+              <h2 class="mt-2 text-2xl font-bold" id="current-activity-title">
+                {current.title}
+              </h2>
+              {current.estimatedMinutes === null ? null : (
+                <p class="mt-2 text-sm text-slate-400">
+                  Durée indicative : {current.estimatedMinutes} min
+                </p>
+              )}
+            </div>
+          ) : null}
+          {block ? <ContentActivity block={block} resourcesByKey={resourcesByKey} /> : null}
+          {resource ? (
+            <ResourceActivity
+              isPending={mutation.isPending}
+              onComplete={lesson.isPublished ? () => updateResource(resource.id) : undefined}
+              resource={resource}
+              status={progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'}
+            />
+          ) : null}
+          {task ? (
+            <TaskActivity
+              isPending={mutation.isPending}
+              onToggle={lesson.isPublished ? () => updateTask(task) : undefined}
+              status={progress?.taskCompletions[task.id] ?? 'TODO'}
+              task={task}
+            />
+          ) : null}
+          {current && !block && !resource && !task && current.kind !== 'COMPLETE' ? (
+            <SecondaryActivity activity={current} />
+          ) : null}
+          {current?.kind === 'COMPLETE' ? (
+            <Card>
+              <p class="text-sm text-slate-300">
+                {progress?.canComplete
+                  ? 'Toutes les activités obligatoires sont validées.'
+                  : 'Des activités obligatoires restent à terminer.'}
+              </p>
+            </Card>
+          ) : null}
+          {mutation.error ? (
+            <ErrorState description="La progression n’a pas pu être mise à jour." />
+          ) : null}
+          {current ? (
+            <Button
+              disabled={
+                !lesson.isPublished && current.kind === 'COMPLETE'
+                  ? true
+                  : current.kind === 'COMPLETE' && !progress?.canComplete
+              }
+              isLoading={mutation.isPending}
+              onClick={() => void continueLearning()}
+            >
+              {lesson.isPublished ? 'Continuer' : 'Continuer la prévisualisation'}
+            </Button>
+          ) : null}
+          <Button
+            isLoading={noteMutation.isPending}
+            onClick={() => void createNote()}
+            variant="ghost"
           >
-            Exercice indisponible
-          </button>
-        </Card>
-      ) : (
-        exercises.map((exercise) => (
-          <ExerciseCard
-            exercise={exercise}
-            isLessonPublished={isPublished}
-            key={exercise.id}
-          />
-        ))
-      )}
-    </section>
+            Prendre une note liée
+          </Button>
+        </section>
+        <aside class="hidden lg:block">
+          <div class="sticky top-4 rounded-2xl border border-slate-800 p-4">
+            <h2 class="mb-3 font-semibold">Sommaire</h2>
+            <ActivitySummary activities={sequence.activities} current={current} />
+          </div>
+        </aside>
+      </div>
+      <Drawer
+        isOpen={isSummaryOpen}
+        onDismiss={() => setIsSummaryOpen(false)}
+        returnFocusElement={summaryTriggerRef.current}
+        title="Sommaire de la leçon"
+      >
+        <ActivitySummary
+          activities={sequence.activities}
+          current={current}
+          onNavigate={() => setIsSummaryOpen(false)}
+        />
+      </Drawer>
+    </article>
   );
 }
 
@@ -741,17 +511,11 @@ export function LessonPage({
 }) {
   const query = useLessonQuery(lessonSlug);
 
-  if (query.isPending) {
-    return <Spinner label="Chargement de la leçon" />;
-  }
-
+  if (query.isPending) return <Spinner label="Chargement de la leçon" />;
   if (query.error) {
     return <ErrorState description="La leçon n’a pas pu être chargée." />;
   }
-
-  const lesson = query.data?.lesson;
-
-  if (!lesson) {
+  if (!query.data?.lesson) {
     return (
       <EmptyState
         description="Cette leçon est indisponible."
@@ -760,102 +524,23 @@ export function LessonPage({
     );
   }
 
-  const objectives = getObjectives(lesson.objectives);
-  const resourcesByKey = new Map(
-    lesson.resources.flatMap((resource) =>
-      resource.key ? [[resource.key, resource] as const] : [],
-    ),
-  );
-
-  return (
-    <article aria-labelledby="lesson-title" class="space-y-8">
-      <header>
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Leçon
-        </p>
-        <div class="mt-3 flex flex-wrap items-center gap-3">
-          <h1 id="lesson-title" class="text-3xl font-bold tracking-tight">
-            {lesson.title}
-          </h1>
-          {lesson.isPublished ? null : <Badge tone="warning">Brouillon</Badge>}
-        </div>
-        {lesson.estimatedMinutes !== null ? (
-          <p class="mt-3 text-sm text-slate-300">
-            Durée indicative : {formatDuration(lesson.estimatedMinutes)}
-          </p>
-        ) : null}
-        <p class="mt-3 leading-7 text-slate-300">{lesson.summary}</p>
-      </header>
-
-      <section aria-labelledby="objectives-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="objectives-title">
-          Objectifs
-        </h2>
-        {objectives.length === 0 ? (
-          <EmptyState
-            description="Les objectifs de cette leçon seront ajoutés prochainement."
-            title="Aucun objectif renseigné"
-          />
-        ) : (
-          <ul class="space-y-2" role="list">
-            {objectives.map((objective) => (
-              <li class="rounded-xl bg-slate-900 px-4 py-3" key={objective}>
-                {objective}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section aria-labelledby="content-title" class="space-y-3">
-        <h2 class="text-xl font-semibold" id="content-title">
-          Contenu
-        </h2>
-        {lesson.contentBlocks.length === 0 ? (
-          <EmptyState
-            description="Le contenu pédagogique sera ajouté prochainement."
-            title="Aucun contenu disponible"
-          />
-        ) : (
-          lesson.contentBlocks.map((block) => (
-            <ContentBlock
-              block={block}
-              key={block.id}
-              resourcesByKey={resourcesByKey}
-            />
-          ))
-        )}
-      </section>
-
-      {lesson.isPublished ? (
-        <LessonActivityProgress
-          lessonId={lesson.id}
-          resources={lesson.resources}
-          tasks={lesson.tasks}
-        />
-      ) : (
-        <DraftLessonActivities
-          resources={lesson.resources}
-          tasks={lesson.tasks}
-        />
-      )}
-
-      <ConceptAssessmentsSection
-        concepts={lesson.concepts}
-        isPublished={lesson.isPublished}
-        lessonSlug={lesson.slug}
-        programSlug={programSlug}
+  if (query.data.lesson.isLocked) {
+    const stage = query.data.lesson.module.stage;
+    return (
+      <EmptyState
+        action={
+          <a
+            class="inline-flex min-h-11 items-center text-cyan-300 underline"
+            href={`/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`}
+          >
+            Voir les prérequis
+          </a>
+        }
+        description="Terminez les prérequis de l’étape précédente avant de commencer cette leçon."
+        title="Leçon verrouillée"
       />
+    );
+  }
 
-      <LessonNotesSection lessonId={lesson.id} lessonTitle={lesson.title} />
-
-      <AssessmentsSection
-        exercises={lesson.exercises}
-        isPublished={lesson.isPublished}
-        lessonSlug={lesson.slug}
-        programSlug={programSlug}
-        quizzes={lesson.quizzes}
-      />
-    </article>
-  );
+  return <LessonWorkspace lesson={query.data.lesson} programSlug={programSlug} />;
 }

@@ -41,10 +41,19 @@ export interface TimelineSnapshot {
 }
 
 export interface LessonSummary {
+  activityCounts: {
+    concepts: number;
+    exercises: number;
+    quizzes: number;
+    resources: number;
+    tasks: number;
+  };
   estimatedMinutes: number | null;
   id: string;
+  isLocked: boolean;
   isPublished: boolean;
   position: number;
+  progress: { percent: number; status: LessonProgressStatus };
   slug: string;
   summary: string;
   title: string;
@@ -97,6 +106,13 @@ export interface StageValidation {
 export interface ModuleDetail extends ModuleSummary {
   description: string;
   estimatedMinutes: number | null;
+  stage: {
+    id: string;
+    isPublished: boolean;
+    program: { id: string; slug: string; title: string };
+    slug: string;
+    title: string;
+  };
 }
 
 export type ContentBlockType =
@@ -175,10 +191,28 @@ export interface LessonConceptSummary {
   title: string;
 }
 
-export interface LessonDetail extends LessonSummary {
+export interface LessonDetail
+  extends Omit<LessonSummary, 'activityCounts' | 'progress'> {
   concepts: LessonConceptSummary[];
   contentBlocks: LessonContentBlock[];
   exercises: LessonExerciseSummary[];
+  module: {
+    id: string;
+    isPublished: boolean;
+    slug: string;
+    stage: {
+      id: string;
+      isPublished: boolean;
+      program: { id: string; slug: string; title: string };
+      slug: string;
+      title: string;
+    };
+    title: string;
+  };
+  navigation: {
+    nextLesson: Omit<LessonSummary, 'activityCounts' | 'progress'> | null;
+    previousLesson: Omit<LessonSummary, 'activityCounts' | 'progress'> | null;
+  };
   objectives: unknown;
   prerequisites: unknown;
   quizzes: LessonQuizSummary[];
@@ -193,6 +227,8 @@ export type TaskCompletionStatus = 'DONE' | 'SKIPPED' | 'TODO';
 
 export interface LessonProgressResponse {
   canComplete: boolean;
+  conceptProgress: Record<string, string>;
+  exerciseSubmissions: Record<string, string>;
   lessonProgress: {
     completedAt: string | null;
     percent: number;
@@ -200,20 +236,26 @@ export interface LessonProgressResponse {
     status: LessonProgressStatus;
   };
   resourceProgress: Record<string, ResourceProgressStatus>;
+  quizPassed: Record<string, boolean>;
   taskCompletions: Record<string, TaskCompletionStatus>;
 }
 
-function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
+function useCurriculumQuery<T>(
+  queryKey: readonly string[],
+  path: string,
+  enabled = true,
+) {
   const queryClient = useAppQueryClient();
   const queryKeyHash = queryKey.join(':');
   const observer = useMemo(
     () =>
       new QueryObserver(queryClient, {
+        enabled,
         queryKey,
         queryFn: () => apiRequest<T>(path),
         staleTime: 0,
       }),
-    [path, queryClient, queryKeyHash],
+    [enabled, path, queryClient, queryKeyHash],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
 
@@ -221,7 +263,7 @@ function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
     setResult(observer.getCurrentResult());
     const unsubscribe = observer.subscribe(setResult);
 
-    void observer.refetch();
+    if (enabled) void observer.refetch();
 
     return unsubscribe;
   }, [observer]);
@@ -229,7 +271,7 @@ function useCurriculumQuery<T>(queryKey: readonly string[], path: string) {
   return {
     data: result.data,
     error: result.error,
-    isPending: result.isPending,
+    isPending: enabled && result.isPending,
   };
 }
 
@@ -268,10 +310,11 @@ export function useLessonQuery(lessonSlug: string) {
   );
 }
 
-export function useLessonProgressQuery(lessonId: string) {
+export function useLessonProgressQuery(lessonId: string, enabled = true) {
   return useCurriculumQuery<LessonProgressResponse>(
     ['lesson-progress', lessonId],
     `/api/lessons/${encodeURIComponent(lessonId)}/progress`,
+    enabled,
   );
 }
 

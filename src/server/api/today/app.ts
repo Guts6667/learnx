@@ -37,15 +37,22 @@ interface ReviewRecord {
     module: { title: string; stage: { title: string } };
   };
   program: { id: string; slug: string; title: string };
+  sourceId: string;
 }
 
 interface LessonRecord {
   concepts: Array<{
-    assessments: Array<{ questions: Array<{ id: string }> }>;
+    assessments: Array<{ id: string; questions: Array<{ id: string }> }>;
+    id: string;
     progress: Array<{ status: string }>;
     title: string;
   }>;
   estimatedMinutes: number | null;
+  exercises: Array<{
+    id: string;
+    submissions: Array<{ status: string }>;
+    title: string;
+  }>;
   id: string;
   module: {
     position: number;
@@ -64,6 +71,11 @@ interface LessonRecord {
   progress: Array<{
     lastViewedAt: Date | null;
     status: string;
+  }>;
+  quizzes: Array<{
+    attempts: Array<{ passed: boolean }>;
+    id: string;
+    title: string;
   }>;
   slug: string;
   tasks: Array<{
@@ -236,9 +248,11 @@ export function createPrismaTodayRepository(
               assessments: {
                 where: { isRequired: true },
                 select: {
+                  id: true,
                   questions: { take: 1, select: { id: true } },
                 },
               },
+              id: true,
               progress: {
                 where: { userId },
                 take: 1,
@@ -248,6 +262,19 @@ export function createPrismaTodayRepository(
             },
           },
           estimatedMinutes: true,
+          exercises: {
+            where: { isRequired: true },
+            orderBy: { position: 'asc' },
+            select: {
+              id: true,
+              submissions: {
+                where: { userId },
+                take: 1,
+                select: { status: true },
+              },
+              title: true,
+            },
+          },
           id: true,
           module: {
             select: {
@@ -282,6 +309,20 @@ export function createPrismaTodayRepository(
             where: { userId },
             take: 1,
             select: { lastViewedAt: true, status: true },
+          },
+          quizzes: {
+            where: { isRequired: true },
+            orderBy: { position: 'asc' },
+            select: {
+              attempts: {
+                where: { userId },
+                orderBy: { submittedAt: 'desc' },
+                select: { passed: true },
+                take: 1,
+              },
+              id: true,
+              title: true,
+            },
           },
           slug: true,
           tasks: {
@@ -336,6 +377,7 @@ export function createPrismaTodayRepository(
             },
           },
           program: { select: { id: true, slug: true, title: true } },
+          sourceId: true,
         },
       });
     },
@@ -364,6 +406,17 @@ function lessonHref(programSlug: string, lessonSlug: string) {
   return `/program/${programSlug}/lesson/${lessonSlug}`;
 }
 
+function lessonActivityHref(
+  programSlug: string,
+  lessonSlug: string,
+  kind: string,
+  id: string,
+) {
+  const key = `${kind}:${id}`;
+  const encodedKey = encodeURIComponent(key);
+  return `${lessonHref(programSlug, lessonSlug)}?activity=${encodedKey}#activity-${encodedKey}`;
+}
+
 function lessonOrder(lesson: LessonRecord): number {
   return (
     lesson.module.stage.program.position * 1_000_000 +
@@ -385,7 +438,7 @@ function reviewCandidates(
     return [
       {
         estimatedMinutes: review.lesson.estimatedMinutes,
-        href: lessonHref(review.program.slug, review.lesson.slug),
+        href: `${lessonHref(review.program.slug, review.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(review.sourceId)}&activity=${encodeURIComponent(`concept_assessment:${review.sourceId}`)}`,
         kind,
         lessonTitle: review.lesson.title,
         moduleTitle: review.lesson.module.title,
@@ -417,9 +470,11 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
     .filter((task) => task.completions[0]?.status !== TaskCompletionStatus.DONE)
     .map((task) => ({
       estimatedMinutes: currentLesson.estimatedMinutes,
-      href: lessonHref(
+      href: lessonActivityHref(
         currentLesson.module.stage.program.slug,
         currentLesson.slug,
+        'task',
+        task.id,
       ),
       kind: 'INCOMPLETE_TASK' as const,
       lessonTitle: currentLesson.title,
@@ -433,14 +488,16 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
     }));
 }
 
-function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
+function conceptAssessmentCandidates(
+  lessons: LessonRecord[],
+): RecommendationCandidate[] {
   return lessons.flatMap((lesson) =>
     lesson.concepts.flatMap((concept) => {
-      const ready = concept.assessments.some(
+      const assessment = concept.assessments.find(
         (assessment) => assessment.questions.length > 0,
       );
       if (
-        !ready ||
+        !assessment ||
         concept.progress[0]?.status === ConceptProgressStatus.VALIDATED
       ) {
         return [];
@@ -449,7 +506,7 @@ function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
       return [
         {
           estimatedMinutes: lesson.estimatedMinutes,
-          href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz`,
+          href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/assessment?assessmentId=${encodeURIComponent(assessment.id)}&activity=${encodeURIComponent(`concept_assessment:${assessment.id}`)}`,
           kind: 'REQUIRED_QUIZ' as const,
           lessonTitle: lesson.title,
           moduleTitle: lesson.module.title,
@@ -462,6 +519,48 @@ function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
         },
       ];
     }),
+  );
+}
+
+function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
+  return lessons.flatMap((lesson) =>
+    lesson.quizzes
+      .filter((quiz) => quiz.attempts[0]?.passed !== true)
+      .map((quiz) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/quiz?quizId=${encodeURIComponent(quiz.id)}&activity=${encodeURIComponent(`quiz:${quiz.id}`)}`,
+        kind: 'REQUIRED_QUIZ' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonOrder(lesson),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: quiz.title,
+      })),
+  );
+}
+
+function exerciseCandidates(
+  lessons: LessonRecord[],
+): RecommendationCandidate[] {
+  return lessons.flatMap((lesson) =>
+    lesson.exercises
+      .filter((exercise) => exercise.submissions[0]?.status !== 'SUBMITTED')
+      .map((exercise) => ({
+        estimatedMinutes: lesson.estimatedMinutes,
+        href: `${lessonHref(lesson.module.stage.program.slug, lesson.slug)}/exercise/${encodeURIComponent(exercise.id)}?activity=${encodeURIComponent(`exercise:${exercise.id}`)}`,
+        kind: 'REQUIRED_EXERCISE' as const,
+        lessonTitle: lesson.title,
+        moduleTitle: lesson.module.title,
+        order: lessonOrder(lesson),
+        programId: lesson.module.stage.program.id,
+        programSlug: lesson.module.stage.program.slug,
+        programTitle: lesson.module.stage.program.title,
+        stageTitle: lesson.module.stage.title,
+        title: exercise.title,
+      })),
   );
 }
 
@@ -490,12 +589,10 @@ function navigationCandidate(
     : hasEarlierModule
       ? 'NEXT_MODULE'
       : 'NEXT_LESSON';
-  const href =
-    kind === 'NEXT_STAGE'
-      ? `/program/${nextLesson.module.stage.program.slug}/stage/${nextLesson.module.stage.slug}`
-      : kind === 'NEXT_MODULE'
-        ? `/program/${nextLesson.module.stage.program.slug}/module/${nextLesson.module.slug}`
-        : lessonHref(nextLesson.module.stage.program.slug, nextLesson.slug);
+  const href = lessonHref(
+    nextLesson.module.stage.program.slug,
+    nextLesson.slug,
+  );
   const title =
     kind === 'NEXT_STAGE'
       ? `Découvrir : ${nextLesson.module.stage.title}`
@@ -523,7 +620,9 @@ function lessonCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
 
   return [
     ...taskCandidates(lessons),
+    ...conceptAssessmentCandidates(lessons),
     ...quizCandidates(lessons),
+    ...exerciseCandidates(lessons),
     ...(navigation ? [navigation] : []),
   ];
 }

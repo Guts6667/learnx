@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact';
-import { useState } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -485,13 +485,25 @@ function ManagementDrawer({
   title: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} variant="secondary">
+      <Button
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
+        onClick={() => setIsOpen(true)}
+        elementRef={triggerRef}
+        variant="secondary"
+      >
         Gérer ce contenu
       </Button>
-      <Drawer isOpen={isOpen} onDismiss={() => setIsOpen(false)} title={title}>
+      <Drawer
+        isOpen={isOpen}
+        onDismiss={() => setIsOpen(false)}
+        returnFocusElement={triggerRef.current}
+        title={title}
+      >
         {children}
       </Drawer>
     </>

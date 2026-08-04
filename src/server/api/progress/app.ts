@@ -97,6 +97,8 @@ async function getProgressSnapshot(lessonId: string, userId: string) {
 
 function serializeSnapshot(snapshot: LessonProgressSnapshot) {
   return {
+    conceptProgress: Object.fromEntries(snapshot.conceptStatusById),
+    exerciseSubmissions: Object.fromEntries(snapshot.exerciseStatusById),
     lessonProgress: {
       completedAt: snapshot.lessonProgress?.completedAt ?? null,
       percent: snapshot.percent,
@@ -104,6 +106,7 @@ function serializeSnapshot(snapshot: LessonProgressSnapshot) {
       status: snapshot.lessonProgress?.status ?? LessonProgressStatus.AVAILABLE,
     },
     canComplete: snapshot.canComplete,
+    quizPassed: Object.fromEntries(snapshot.quizPassedById),
     resourceProgress: Object.fromEntries(snapshot.resourceStatusById),
     taskCompletions: Object.fromEntries(snapshot.taskStatusById),
   };

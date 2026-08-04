@@ -36,6 +36,24 @@ function lessonResponse(isPublished = true) {
       exercises: [],
       id: 'lesson-1',
       isPublished,
+      module: {
+        id: 'module-1',
+        isPublished,
+        slug: 'premiers-pas',
+        stage: {
+          id: 'stage-1',
+          isPublished,
+          program: {
+            id: 'program-1',
+            slug: 'programme-test',
+            title: 'Programme test',
+          },
+          slug: 'introduction',
+          title: 'Introduction',
+        },
+        title: 'Premiers pas',
+      },
+      navigation: { nextLesson: null, previousLesson: null },
       objectives: [],
       position: 1,
       prerequisites: [],
@@ -193,6 +211,7 @@ describe('QuizPage', () => {
         name: 'Quiz de la leçon',
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText('Sommaire de la leçon')).toBeInTheDocument();
     expect(screen.getByText('Question 1 sur 4')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));

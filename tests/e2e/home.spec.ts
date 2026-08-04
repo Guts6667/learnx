@@ -24,10 +24,19 @@ const timeline = {
 };
 
 const lessonSummary = {
+  activityCounts: {
+    concepts: 0,
+    exercises: 0,
+    quizzes: 1,
+    resources: 0,
+    tasks: 1,
+  },
   estimatedMinutes: 10,
   id: 'lesson-1',
+  isLocked: false,
   isPublished: true,
   position: 1,
+  progress: { percent: 0, status: 'AVAILABLE' },
   slug: 'lecon-critique',
   summary: 'Une leçon publiée pour valider le parcours critique.',
   title: 'Leçon critique',
@@ -76,6 +85,8 @@ function lessonProgress(state: JourneyState) {
 
   return {
     canComplete: state.quizPassed && state.taskDone,
+    conceptProgress: {},
+    exerciseSubmissions: {},
     lessonProgress: {
       completedAt: null,
       percent,
@@ -83,6 +94,7 @@ function lessonProgress(state: JourneyState) {
       status: state.started ? 'IN_PROGRESS' : 'AVAILABLE',
     },
     resourceProgress: {},
+    quizPassed: { 'quiz-1': state.quizPassed },
     taskCompletions: { 'task-1': state.taskDone ? 'DONE' : 'TODO' },
   };
 }
@@ -211,6 +223,13 @@ async function installJourneyApi(page: Page) {
           ...moduleSummary,
           description: 'Module du parcours critique.',
           estimatedMinutes: 10,
+          stage: {
+            id: 'stage-1',
+            isPublished: true,
+            program: { id: 'program-1', slug: 'programme-e2e', title: 'Programme E2E' },
+            slug: 'stage-e2e',
+            title: 'Étape E2E',
+          },
         },
       });
       return;
@@ -230,6 +249,24 @@ async function installJourneyApi(page: Page) {
             },
           ],
           exercises: [],
+          module: {
+            id: 'module-1',
+            isPublished: true,
+            slug: 'module-e2e',
+            stage: {
+              id: 'stage-1',
+              isPublished: true,
+              program: {
+                id: 'program-1',
+                slug: 'programme-e2e',
+                title: 'Programme E2E',
+              },
+              slug: 'stage-e2e',
+              title: 'Étape E2E',
+            },
+            title: 'Module E2E',
+          },
+          navigation: { nextLesson: null, previousLesson: null },
           objectives: ['Valider le parcours critique'],
           prerequisites: [],
           quizzes: [
@@ -376,9 +413,7 @@ async function openCriticalLesson(page: Page) {
     page.getByRole('heading', { level: 1, name: 'Mes programmes' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Ouvrir le programme' }).click();
-  await page.getByRole('link', { name: 'Ouvrir l’étape' }).click();
-  await page.getByRole('link', { name: 'Ouvrir le module' }).click();
-  await page.getByRole('link', { name: 'Ouvrir la leçon' }).click();
+  await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: lessonSummary.title }),
   ).toBeVisible();
@@ -413,18 +448,17 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   ).toBeVisible();
 
   await openCriticalLesson(page);
-  await page.getByRole('button', { name: 'Commencer la leçon' }).click();
-  await expect(page.getByText('Statut : En cours')).toBeVisible();
+  await page.getByRole('button', { name: 'Continuer' }).click();
 
   await page.getByRole('button', { name: 'Marquer comme terminée' }).click();
   await expect(
     page.getByRole('button', { name: 'Marquer comme à faire' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '50');
 
-  await page.getByRole('link', { name: 'Commencer le quiz' }).click();
+  await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByLabel('Vrai').check();
   await page.getByRole('button', { name: 'Envoyer mes réponses' }).click();
   await expect(page.getByText('Quiz réussi')).toBeVisible();
@@ -434,7 +468,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
     .getByRole('button', { name: 'Revenir à la page précédente' })
     .click();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 
   await page
@@ -452,9 +486,9 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await openCriticalLesson(page);
 
   await expect(
-    page.getByRole('button', { name: 'Marquer comme à faire' }),
+    page.getByRole('heading', { level: 2, name: 'Tâche critique' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: 'Progression de la leçon' }),
+    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 });

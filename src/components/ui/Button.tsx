@@ -1,4 +1,4 @@
-import type { ComponentChildren, JSX } from 'preact';
+import type { ComponentChildren, JSX, Ref } from 'preact';
 
 import { classNames } from '@/components/ui/classNames';
 import { Spinner } from '@/components/ui/Spinner';
@@ -13,6 +13,7 @@ interface ButtonProps extends Omit<
   children: ComponentChildren;
   class?: string;
   disabled?: boolean;
+  elementRef?: Ref<HTMLButtonElement>;
   isLoading?: boolean;
   size?: ButtonSize;
   variant?: ButtonVariant;
@@ -35,6 +36,7 @@ export function Button({
   children,
   class: className,
   disabled = false,
+  elementRef,
   isLoading = false,
   size = 'md',
   type,
@@ -54,6 +56,7 @@ export function Button({
         className,
       )}
       disabled={isDisabled}
+      ref={elementRef}
       type={type ?? 'button'}
     >
       {isLoading ? <Spinner label="Chargement" size="sm" /> : null}

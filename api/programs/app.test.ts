@@ -35,6 +35,7 @@ interface LessonWhere {
 
 function createClient(resourceOwnerId = ownerId) {
   const lesson = {
+    _count: { concepts: 1, exercises: 1, quizzes: 1, resources: 0, tasks: 0 },
     concepts: [
       {
         assessments: [
@@ -68,6 +69,7 @@ function createClient(resourceOwnerId = ownerId) {
     id: 'lesson-1',
     isPublished: false,
     position: 1,
+    progress: [{ percent: 0, status: 'AVAILABLE' as const }],
     quizzes: [
       {
         _count: { questions: 4 },
@@ -86,6 +88,8 @@ function createClient(resourceOwnerId = ownerId) {
     title: 'Draft lesson',
   };
   const module = {
+    description: 'Draft module description',
+    estimatedMinutes: 30,
     id: 'module-1',
     isPublished: false,
     lessons: [lesson],
@@ -102,6 +106,8 @@ function createClient(resourceOwnerId = ownerId) {
     title: 'Draft stage',
   };
   const program = {
+    description: 'Draft program description',
+    estimatedDurationDays: 10,
     id: 'program-1',
     ownerId: resourceOwnerId,
     slug: 'draft-program',
@@ -109,6 +115,39 @@ function createClient(resourceOwnerId = ownerId) {
     status: 'ACTIVE',
     title: 'Draft program',
   };
+  const lessonSibling = {
+    id: lesson.id,
+    isPublished: lesson.isPublished,
+    position: lesson.position,
+    slug: lesson.slug,
+    summary: lesson.summary,
+    title: lesson.title,
+  };
+  Object.assign(module, {
+    stage: {
+      id: stage.id,
+      isPublished: stage.isPublished,
+      program: { id: program.id, slug: program.slug, title: program.title },
+      slug: stage.slug,
+      title: stage.title,
+    },
+  });
+  Object.assign(lesson, {
+    module: {
+      id: module.id,
+      isPublished: module.isPublished,
+      lessons: [lessonSibling],
+      slug: module.slug,
+      stage: {
+        id: stage.id,
+        isPublished: stage.isPublished,
+        program: { id: program.id, slug: program.slug, title: program.title },
+        slug: stage.slug,
+        title: stage.title,
+      },
+      title: module.title,
+    },
+  });
   const findMany = vi.fn(async (input: unknown) => {
     const where = (input as { where: LessonWhere }).where;
     const canAccessDraft =
@@ -188,6 +227,7 @@ describe('curriculum draft preview authorization', () => {
       expect(response.status).toBe(200);
       expect(await response.json()).toMatchObject({
         lesson: {
+          isLocked: false,
           isPublished: false,
           concepts: [
             {

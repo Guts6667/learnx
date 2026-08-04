@@ -122,6 +122,19 @@ describe('progress recalculation', () => {
     await expect(
       getLessonProgressSnapshot(prisma, lessonId, userId),
     ).resolves.toMatchObject({ canComplete: true, percent: 100 });
+    expect(prisma.lesson.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          module: expect.objectContaining({
+            stage: expect.objectContaining({
+              progress: {
+                none: { status: StageProgressStatus.LOCKED, userId },
+              },
+            }),
+          }),
+        }),
+      }),
+    );
   });
 
   it('bloque la complétion lorsque la maîtrise obligatoire manque', async () => {

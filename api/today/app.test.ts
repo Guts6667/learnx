@@ -51,6 +51,7 @@ function createRepository(input?: {
         {
           concepts: [],
           estimatedMinutes: 20,
+          exercises: [],
           id: 'lesson-1',
           module: {
             position: 1,
@@ -72,6 +73,7 @@ function createRepository(input?: {
           },
           position: 1,
           progress: [{ lastViewedAt: now, status: 'IN_PROGRESS' }],
+          quizzes: [],
           slug: 'definition',
           tasks: includeTask
             ? [{ completions: [], id: 'task-1', title: 'Lire le chapitre' }]
@@ -100,6 +102,7 @@ function createRepository(input?: {
                 slug: 'psychologie',
                 title: 'Psychologie',
               },
+              sourceId: 'assessment-1',
             },
           ]
         : [];
@@ -121,6 +124,7 @@ describe('today API', () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       action: {
+        href: '/program/psychologie/lesson/definition/assessment?assessmentId=assessment-1&activity=concept_assessment%3Aassessment-1',
         kind: 'OVERDUE_REVIEW',
         title: 'Réviser : Définir la psychologie',
       },
@@ -138,7 +142,12 @@ describe('today API', () => {
     const response = await app.request('http://localhost/api/today');
 
     await expect(response.json()).resolves.toMatchObject({
-      action: { kind: 'INCOMPLETE_TASK', title: 'Lire le chapitre' },
+      action: {
+        href: '/program/psychologie/lesson/definition?activity=task%3Atask-1#activity-task%3Atask-1',
+        kind: 'INCOMPLETE_TASK',
+        lessonTitle: 'Définir la psychologie',
+        title: 'Lire le chapitre',
+      },
       reviewsDue: 0,
     });
   });
@@ -167,6 +176,62 @@ describe('today API', () => {
     await expect(
       (await emptyApp.request('http://localhost/api/today')).json(),
     ).resolves.toMatchObject({ action: null });
+  });
+
+  it('ouvre exactement mini-évaluation, quiz et exercice requis', async () => {
+    async function getAction(activity: 'assessment' | 'exercise' | 'quiz') {
+      const repository = createRepository({
+        includeReview: false,
+        includeTask: false,
+      });
+      const listLessons = repository.listLessons;
+      repository.listLessons = async (requestedUserId) => {
+        const lessons = await listLessons(requestedUserId);
+        return lessons.map((lesson) => ({
+          ...lesson,
+          concepts:
+            activity === 'assessment'
+              ? [
+                  {
+                    assessments: [
+                      { id: 'assessment-2', questions: [{ id: 'question-1' }] },
+                    ],
+                    id: 'concept-1',
+                    progress: [],
+                    title: 'Observer',
+                  },
+                ]
+              : [],
+          exercises:
+            activity === 'exercise'
+              ? [{ id: 'exercise-1', submissions: [], title: 'Appliquer' }]
+              : [],
+          quizzes:
+            activity === 'quiz'
+              ? [{ attempts: [], id: 'quiz-1', title: 'Consolider' }]
+              : [],
+        }));
+      };
+      const app = createTodayApp({ authentication, repository });
+      const response = await app.request('http://localhost/api/today');
+      return response.json();
+    }
+
+    await expect(getAction('assessment')).resolves.toMatchObject({
+      action: {
+        href: '/program/psychologie/lesson/definition/assessment?assessmentId=assessment-2&activity=concept_assessment%3Aassessment-2',
+      },
+    });
+    await expect(getAction('quiz')).resolves.toMatchObject({
+      action: {
+        href: '/program/psychologie/lesson/definition/quiz?quizId=quiz-1&activity=quiz%3Aquiz-1',
+      },
+    });
+    await expect(getAction('exercise')).resolves.toMatchObject({
+      action: {
+        href: '/program/psychologie/lesson/definition/exercise/exercise-1?activity=exercise%3Aexercise-1',
+      },
+    });
   });
 
   it('refuse les requêtes anonymes et les fuseaux invalides', async () => {

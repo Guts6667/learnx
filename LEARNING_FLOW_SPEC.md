@@ -411,11 +411,12 @@ candidate V3.
 - Recommandation adaptative par IA.
 - Édition collaborative ou réseau social.
 
-## 14. Décisions restantes
+## 14. Décisions V2 appliquées
 
-1. Décider si l’exercice obtient une route profonde canonique ou reste une ancre
-   dans la leçon.
-2. Définir l’activité minimale mémorisée pour reprendre un long bloc de contenu :
-   bloc, sous-section ou simple activité.
-3. Choisir si une activité optionnelle commencée prend temporairement priorité
-   sur la prochaine activité requise.
+1. L’exercice utilise la route profonde canonique
+   `/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
+2. Le bloc de contenu est l’unité minimale de reprise. La clé d’activité courante
+   reste dans l’URL et est mémorisée localement par leçon pour survivre au retour
+   et au rechargement, sans créer de donnée métier ni de migration.
+3. Une activité optionnelle commencée reste accessible dans le sommaire, mais ne
+   prend pas la priorité sur la prochaine activité obligatoire de « Continuer ».

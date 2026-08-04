@@ -22,6 +22,9 @@ const mocks = vi.hoisted(() => {
         status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
       } | null;
       percent: number;
+      conceptStatusById: Map<string, 'LEARNING'>;
+      exerciseStatusById: Map<string, 'DRAFT'>;
+      quizPassedById: Map<string, boolean>;
       resourceStatusById: Map<string, 'COMPLETED'>;
       taskStatusById: Map<string, 'DONE'>;
     },
@@ -93,6 +96,8 @@ const { progressApp } = await import('../../src/server/api/progress/app');
 function snapshot(canComplete = false) {
   return {
     canComplete,
+    conceptStatusById: new Map(),
+    exerciseStatusById: new Map(),
     lessonProgress: {
       completedAt: null,
       percent: canComplete ? 100 : 40,
@@ -100,6 +105,7 @@ function snapshot(canComplete = false) {
       status: LessonProgressStatus.IN_PROGRESS,
     },
     percent: canComplete ? 100 : 40,
+    quizPassedById: new Map(),
     resourceStatusById: new Map([[ids.resource, 'COMPLETED' as const]]),
     taskStatusById: new Map([[ids.task, 'DONE' as const]]),
   };
