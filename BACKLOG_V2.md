@@ -86,6 +86,11 @@ Les tickets P0 constituent le jalon « intégrité et confidentialité ». Le re
 de la V2 constitue le jalon « polish du parcours ». Aucune capacité V3 ne doit
 retarder ces deux jalons.
 
+Dans le jalon polish, l’ordre de navigation est explicite : `V2-006` →
+`V2-007` → `V2-008` → `V2-008A` → `V2-009` → `V2-010`. Le redémarrage de
+module de `V2-008A` reste conditionné à la validation préalable de son modèle
+serveur ; ce point ne doit pas être contourné par une simulation frontend.
+
 ## V2-001 — Supprimer le cache privé du service worker
 
 **Priorité : P0. Dépendances : aucune.**
@@ -375,9 +380,111 @@ La spécification détaillée est `LEARNING_FLOW_SPEC.md`.
 - Risque de chantier massif : livrer par verticales sans mélanger la logique
   métier.
 
+## V2-008A — Navigation pédagogique explicite et reprise de module
+
+**Priorité : P1. Dépendances : V2-003, V2-007, V2-008.**
+
+### Périmètre
+
+#### Navigation contextuelle UX-friendly
+
+- Afficher sur la leçon, le quiz, la mini-évaluation et l’exercice une
+  navigation pédagogique persistante et immédiatement compréhensible.
+- Sur mobile, placer une barre contextuelle compacte au-dessus de la navigation
+  globale ; sur desktop, utiliser un en-tête ou un rail contextuel sans réduire
+  excessivement la largeur de lecture.
+- Proposer des commandes textuelles explicites : `Retour à la leçon`,
+  `Sommaire`, `Précédent` et `Suivant` ou `Continuer`. Une icône peut compléter
+  le texte, jamais le remplacer.
+- Afficher le nom du module et de la leçon ainsi que la position dans la
+  séquence, par exemple `Activité 3 sur 8`.
+- Après la soumission d’un quiz ou d’un exercice, présenter clairement le retour
+  à la leçon et l’activité suivante disponible.
+- Rendre le bouton du sommaire visuellement proéminent avec un libellé explicite ;
+  sa découvrabilité ne doit pas dépendre d’un onboarding.
+- Conserver les URL profondes, l’historique du navigateur, le contexte de
+  leçon, la restitution du focus et le fonctionnement à 320/390 px, au clavier
+  et au lecteur d’écran.
+
+#### Recommencer un module
+
+- Ajouter sur la page module une action secondaire et destructive
+  `Recommencer ce module`.
+- Présenter avant confirmation la liste exacte des progressions remises à zéro
+  et des données conservées.
+- Après confirmation, ouvrir la première leçon disponible du module, remettre
+  sa progression courante à zéro et recalculer module, étape, programme et
+  timeline dans une transaction atomique.
+- Conserver toutes les notes et l’historique des tentatives.
+- Distinguer la nouvelle reprise des tentatives antérieures afin qu’aucune
+  ancienne réussite ne valide automatiquement la reprise courante.
+- Protéger la commande par l’autorisation de l’utilisateur/propriétaire et la
+  rendre idempotente et sûre en concurrence.
+
+### Hors périmètre
+
+- Modification de contenu pédagogique.
+- Redémarrage d’un programme entier ou d’une étape entière.
+- Suppression des notes ou de l’historique des tentatives.
+- Gamification.
+- Refonte de la navigation globale du `V2-010`.
+- Clarification générale des liens et actions du `V2-009`.
+
+### Critères d’acceptation
+
+- Une activité profonde indique toujours module, leçon, position et quatre
+  destinations compréhensibles sans revenir à la navigation globale.
+- `Retour à la leçon`, `Sommaire`, `Précédent` et `Suivant/Continuer` restent
+  visibles ou atteignables sans ambiguïté sur mobile et desktop.
+- Après soumission, le focus rejoint le feedback puis l’utilisateur peut revenir
+  à la leçon ou avancer sans perdre le contexte ni créer une double soumission.
+- Le retour navigateur et une URL profonde restaurent la même activité et le
+  même contexte autorisé.
+- La confirmation de redémarrage énumère tâches, ressources, notions, quiz,
+  exercices et progression concernés, et indique explicitement que notes et
+  tentatives historiques sont conservées.
+- Un redémarrage confirmé crée une nouvelle reprise identifiable, remet à zéro
+  uniquement l’état courant du module et ouvre sa première leçon disponible.
+- Une tentative réussie avant la borne de la nouvelle reprise ne contribue ni à
+  sa maîtrise ni à sa progression.
+- Le recalcul des niveaux supérieurs est atomique ; une erreur ne laisse aucun
+  état partiel et répéter la même commande ne crée pas plusieurs reprises.
+- Un autre utilisateur, un visiteur ou un propriétaire hors périmètre ne peut
+  ni prévisualiser l’impact privé ni redémarrer le module.
+- Aucun contenu ne déborde ou n’est masqué par les deux barres à 320/390 px ; les
+  commandes ont des zones tactiles d’au moins 44 px et des noms accessibles.
+
+### Tests
+
+- Tests unitaires de position, précédent/suivant, première activité disponible
+  et restauration d’une URL profonde.
+- Tests composants de la barre contextuelle, du sommaire proéminent, du focus
+  après soumission et de la confirmation détaillée.
+- Tests d’intégration serveur du redémarrage avec notes conservées, tentatives
+  historiques exclues de la reprise courante et recalcul de toute la hiérarchie.
+- Tests d’autorisation croisée, transaction avec rollback forcé, idempotence et
+  deux confirmations concurrentes.
+- Playwright sur 320/390 px, tablette et desktop : leçon, quiz,
+  mini-évaluation, exercice, retour navigateur, clavier et lecteur d’écran.
+
+### Risques et décision préalable obligatoire
+
+Le schéma ne possède actuellement ni `ModuleProgress` ni notion de reprise ou
+de `run`, alors que les tentatives doivent être conservées. Un vrai redémarrage
+ne doit donc jamais être simulé côté frontend, obtenu en supprimant
+silencieusement l’historique, ni reposer sur un détournement de `startedAt` ou
+`lastViewedAt`.
+
+Avant toute implémentation de ce ticket, Codex doit inspecter le modèle et les
+requêtes de progression, présenter le plus petit modèle serveur cohérent pour
+matérialiser une nouvelle reprise — borne temporelle, run de module ou
+équivalent —, expliquer précisément si une migration est nécessaire et attendre
+la validation de l’utilisateur. Aucun code de redémarrage ni migration ne doit
+être écrit avant cette décision.
+
 ## V2-009 — Clarifier liens et actions
 
-**Priorité : P1. Dépendances : V2-008.**
+**Priorité : P1. Dépendances : V2-008, V2-008A.**
 
 ### Périmètre
 
