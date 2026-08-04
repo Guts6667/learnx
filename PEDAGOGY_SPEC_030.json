@@ -1,0 +1,327 @@
+{
+  "specId": "PEDAGOGY_SPEC_030",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "developpement-vie",
+  "moduleSlug": "cadres-methodes-developpement",
+  "lesson": {
+    "title": "Développement prénatal et petite enfance",
+    "slug": "developpement-prenatal-petite-enfance",
+    "summary": "Du développement prénatal aux premières acquisitions motrices, les trajectoires dépendent du moment, de l'exposition, de la santé, du corps, de l'expérience et des pratiques culturelles. Cette leçon enseigne des périodes descriptives, des risques probabilistes, des fenêtres de jalons plutôt que des échéances et un cadre de soins attentifs sans blâme ni diagnostic à distance.",
+    "objectives": [
+      "Ordonner les périodes germinale, embryonnaire et fœtale et relier chacune à des changements descriptifs sans hiérarchie normative.",
+      "Évaluer une affirmation sur une exposition prénatale selon agent, dose, durée, moment, voie, susceptibilité, comparaison et incertitude.",
+      "Distinguer facteur de risque, association, mécanisme plausible et résultat certain en évitant culpabilisation et déterminisme.",
+      "Interpréter des fenêtres de jalons moteurs comme distributions populationnelles et non comme délais diagnostiques individuels.",
+      "Relier motricité et soins attentifs aux interactions entre corps, environnement, culture, exploration et apprentissage."
+    ],
+    "prerequisites": [
+      "Distinguer corrélation, causalité, risque relatif, probabilité individuelle et confusion.",
+      "Connaître les notions de trajectoire, plasticité, équifinalité, multifinalité et contexte."
+    ],
+    "estimatedMinutes": 190,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Les périodes prénatales sont des repères descriptifs qui se chevauchent par leurs processus. La période germinale commence avec la fécondation et comprend divisions cellulaires, trajet et implantation. Pendant la période embryonnaire, les structures corporelles et systèmes d'organes prennent forme rapidement. La période fœtale est marquée par croissance, différenciation et maturation jusqu'à la naissance. Les calendriers peuvent être exprimés depuis la fécondation ou depuis les dernières règles : toute chronologie doit préciser sa convention. Ces périodes n'indiquent ni valeur, ni personnalité future, ni résultat garanti.",
+          "sourceKeys": ["openstax-prenatal-2-3"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Une exposition prénatale ne se résume pas à oui ou non. Son association avec un résultat peut varier selon l'agent, la dose, la durée, la voie, le moment par rapport aux processus en cours, les expositions combinées, les caractéristiques maternelles et fœtales et la qualité de la mesure. Certains moments sont plus sensibles pour certaines structures, mais sensible ne signifie pas que toute exposition produit un effet. Les preuves humaines combinent souvent séries cliniques, cohortes, études cas-témoins et connaissances mécanistiques, avec des limites de confusion et de rareté. Une conclusion doit donner population, comparaison, issue, incertitude et type de preuve.",
+          "sourceKeys": ["openstax-prenatal-2-3", "alwan-chambers-teratogens-2015"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "L'alcool illustre la différence entre recommandation de prévention et prédiction individuelle. Les autorités sanitaires indiquent qu'aucune quantité ni période d'usage pendant la grossesse n'est connue comme sûre, et recommandent de ne pas boire. Cela ne signifie pas qu'une exposition donnée permet de prédire avec certitude un résultat : les effets varient et on ne peut pas savoir à l'avance quelle grossesse sera affectée. Une communication utile donne la recommandation clairement, évite la honte, n'invente pas un seuil sûr et oriente une personne concernée vers un professionnel de santé qualifié plutôt que vers un diagnostic en ligne.",
+          "sourceKeys": ["cdc-alcohol-pregnancy-2026"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Après la naissance, croissance du corps, maturation cérébrale, perception, réflexes, posture et action s'influencent sans suivre une horloge unique. Les descriptions céphalocaudale et proximodistale résument des tendances générales, pas une séquence exacte pour chaque capacité. Les réflexes sont des réponses observables utiles au suivi clinique, mais leur présence isolée ne prédit ni intelligence ni personnalité. Les acquisitions motrices émergent des dimensions du corps, de l'état de santé, de la tâche, de la surface, de la pratique et du soutien social. Un nouveau geste crée des occasions d'exploration sans garantir à lui seul les apprentissages ultérieurs.",
+          "sourceKeys": ["openstax-infant-physical-3-1", "openstax-infant-motor-3-2", "adolph-hoch-motor-2019"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 5,
+        "content": {
+          "text": "Les fenêtres de réalisation de jalons moteurs décrivent la variabilité observée dans une population et selon une méthode. Elles ne sont ni un compte à rebours ni un diagnostic. L'étude multicentrique de l'OMS a établi des fenêtres pour six jalons de motricité globale chez des enfants suivis dans plusieurs pays selon des critères définis. Pour interpréter un graphique, il faut identifier échantillon, définition du jalon, fréquence d'observation, intervalle et contexte. Une observation hors fenêtre ou une inquiétude persistante appelle une évaluation professionnelle contextualisée ; elle ne justifie pas seule une étiquette ou une conclusion sur l'avenir.",
+          "sourceKeys": ["who-motor-windows-2006", "adolph-hoch-motor-2019"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Le cadre des soins attentifs regroupe bonne santé, nutrition adéquate, sécurité, soins répondant aux signaux et occasions d'apprentissage précoce. Ces composantes dépendent aussi des ressources des familles, services, politiques et conditions matérielles : les présenter comme une simple performance parentale produirait du blâme et masquerait les contraintes. Les pratiques de portage, de positionnement, de jeu et d'autonomie varient culturellement et peuvent façonner les occasions motrices. L'objectif n'est pas d'imposer un style unique, mais d'observer besoins, préférences, sécurité, accessibilité et contexte, puis de soutenir des interactions réciproques et évolutives.",
+          "sourceKeys": ["who-nurturing-care-2018", "adolph-hoch-motor-2019"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-prenatal-2-3",
+        "type": "book",
+        "title": "Lifespan Development — 2.3 Pregnancy and Prenatal Development",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/2-3-pregnancy-and-prenatal-development",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 2.3 Pregnancy and Prenatal Development. In Lifespan Development. OpenStax.",
+        "description": "Lire les périodes prénatales et la section sur expositions ; relever convention de datation, processus, moment sensible et limites prédictives.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "alwan-chambers-teratogens-2015",
+        "type": "article",
+        "title": "Identifying Human Teratogens: An Update",
+        "author": "Sura Alwan et Christina D. Chambers",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4918715/",
+        "citation": "Alwan, S., & Chambers, C. D. (2015). Identifying human teratogens: An update. Journal of Pediatric Genetics, 4(2), 39–41. https://doi.org/10.1055/s-0035-1556745",
+        "description": "Lire les principes et types de preuves ; créer une grille agent-dose-moment-susceptibilité-comparaison sans conseiller un traitement.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "cdc-alcohol-pregnancy-2026",
+        "type": "document",
+        "title": "About Alcohol Use During Pregnancy",
+        "author": "Centers for Disease Control and Prevention",
+        "url": "https://www.cdc.gov/alcohol-pregnancy/about/index.html",
+        "citation": "Centers for Disease Control and Prevention. (2026, April 2). About Alcohol Use During Pregnancy.",
+        "description": "Lire les recommandations officielles ; distinguer absence de niveau sûr connu, prévention populationnelle et impossibilité de prédire un résultat individuel.",
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "openstax-infant-physical-3-1",
+        "type": "book",
+        "title": "Lifespan Development — 3.1 Physical Development in Infants and Toddlers",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/3-1-physical-development-in-infants-and-toddlers",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 3.1 Physical Development in Infants and Toddlers. In Lifespan Development. OpenStax.",
+        "description": "Lire croissance, cerveau, perception et réflexes ; séparer tendances de groupe, observations cliniques et prédictions non justifiées.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 4
+      },
+      {
+        "key": "openstax-infant-motor-3-2",
+        "type": "book",
+        "title": "Lifespan Development — 3.2 Motor Development in Infants and Toddlers",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/3-2-motor-development-in-infants-and-toddlers",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 3.2 Motor Development in Infants and Toddlers. In Lifespan Development. OpenStax.",
+        "description": "Lire réflexes, motricité globale et fine et facteurs d'expérience ; comparer jalon descriptif et échéance normative.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "who-motor-windows-2006",
+        "type": "article",
+        "title": "WHO Motor Development Study: Windows of Achievement for Six Gross Motor Development Milestones",
+        "author": "WHO Multicentre Growth Reference Study Group",
+        "url": "https://www.who.int/docs/default-source/child-growth/child-growth-standards/indicators/motor-development-milestones/who-motor-development-study-windows-of-achievement-for-six-gross-motor-development-milestones.pdf",
+        "citation": "WHO Multicentre Growth Reference Study Group. (2006). WHO Motor Development Study: Windows of achievement for six gross motor development milestones. Acta Paediatrica Supplement, 450, 86–95. https://doi.org/10.1080/08035320500495563",
+        "description": "Lire méthodes, figure des fenêtres et limites ; interpréter une distribution sans convertir ses bornes en diagnostic individuel.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 6
+      },
+      {
+        "key": "adolph-hoch-motor-2019",
+        "type": "article",
+        "title": "Motor Development: Embodied, Embedded, Enculturated, and Enabling",
+        "author": "Karen E. Adolph et Justine E. Hoch",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6320716/",
+        "citation": "Adolph, K. E., & Hoch, J. E. (2019). Motor development: Embodied, embedded, enculturated, and enabling. Annual Review of Psychology, 70, 141–164. https://doi.org/10.1146/annurev-psych-010418-102836",
+        "description": "Lire les quatre dimensions ; relever variabilité corporelle, contexte de tâche, pratiques culturelles et occasions d'apprentissage sans causalité automatique.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 7
+      },
+      {
+        "key": "who-nurturing-care-2018",
+        "type": "document",
+        "title": "Nurturing Care for Early Childhood Development",
+        "author": "Organisation mondiale de la Santé, UNICEF et Groupe de la Banque mondiale",
+        "url": "https://www.who.int/publications/i/item/9789241514064/",
+        "citation": "World Health Organization, United Nations Children's Fund, & World Bank Group. (2018). Nurturing care for early childhood development: A framework for helping children survive and thrive to transform health and human potential.",
+        "description": "Lire les cinq composantes et les responsabilités des systèmes ; construire un soutien multi-niveaux sans réduire le développement au comportement parental.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 8
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Périodes prénatales et risque d'exposition",
+        "slug": "periodes-prenatales-risque-exposition",
+        "description": "Les périodes décrivent des processus ; l'effet possible d'une exposition dépend de sa nature, dose, durée, moment, voie, susceptibilité, contexte et qualité des preuves.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-prenatal-2-3", "alwan-chambers-teratogens-2015", "cdc-alcohol-pregnancy-2026"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Prénatal et expositions", "questionCount": 5}
+      },
+      {
+        "title": "Croissance, réflexes et motricité",
+        "slug": "petite-enfance-croissance-reflexes-motricite",
+        "description": "Croissance, perception, réflexes et motricité présentent des tendances et une large variabilité ; les fenêtres de jalons ne sont ni échéances ni diagnostics.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-infant-physical-3-1", "openstax-infant-motor-3-2", "who-motor-windows-2006", "adolph-hoch-motor-2019"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Corps et action", "questionCount": 5}
+      },
+      {
+        "title": "Variabilité, culture et soins attentifs",
+        "slug": "variabilite-soins-attentifs-trajectoires",
+        "description": "Santé, nutrition, sécurité, réponse aux signaux et apprentissage précoce s'inscrivent dans des ressources, pratiques culturelles et systèmes qui soutiennent des trajectoires diverses.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["who-nurturing-care-2018", "adolph-hoch-motor-2019", "who-motor-windows-2006"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Soins, culture et trajectoires", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Auditer une affirmation d'exposition",
+        "description": "À partir d'une publication fictive « cette exposition cause toujours ce résultat », remplir une grille agent-dose-durée-voie-moment-susceptibilité-comparaison-issue-confusion-incertitude, puis rédiger une conclusion de prévention claire, non culpabilisante et non diagnostique.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1
+      },
+      {
+        "title": "Lire une fenêtre de jalon",
+        "description": "Interpréter un graphique fictif inspiré des fenêtres OMS : identifier population, définition, percentiles et fréquence d'observation ; produire trois conclusions autorisées, trois conclusions interdites et une orientation prudente face à une inquiétude individuelle.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Construire un plan de soins attentifs",
+        "description": "Pour une famille fictive confrontée à des contraintes de logement, horaires et accès aux soins, proposer pour les cinq composantes du cadre des actions aux niveaux enfant-famille-service-politique ; intégrer préférences culturelles, faisabilité, sécurité et absence de blâme.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id":"REF-030-OPENSTAX-23","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 2.3 Pregnancy and Prenatal Development","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/2-3-pregnancy-and-prenatal-development","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Manuel ouvert pour chronologie et introduction aux expositions ; recommandations cliniques recoupées par sources officielles."},
+      {"id":"REF-030-ALWAN","type":"review_article","authors":["Alwan, S.","Chambers, C. D."],"organization":"Journal of Pediatric Genetics / PubMed Central","title":"Identifying Human Teratogens: An Update","year":2015,"edition":null,"publication":"Journal of Pediatric Genetics, 4(2), 39–41","doi":"https://doi.org/10.1055/s-0035-1556745","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4918715/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Article ouvert sur PubMed Central ; droits de l'éditeur","status":"verified","notes":"Mise au point clinique courte ; utilisée pour principes et types de preuves, sans conseil médicamenteux individuel."},
+      {"id":"REF-030-CDC","type":"official_guideline","authors":["Centers for Disease Control and Prevention"],"organization":"Centers for Disease Control and Prevention","title":"About Alcohol Use During Pregnancy","year":2026,"edition":"Updated April 2, 2026","publication":"CDC","doi":null,"url":"https://www.cdc.gov/alcohol-pregnancy/about/index.html","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Document officiel du gouvernement des États-Unis","status":"verified","notes":"Recommandation officielle de prévention ; aucune quantité sûre connue ne signifie pas prédiction certaine pour une exposition donnée."},
+      {"id":"REF-030-OPENSTAX-31","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 3.1 Physical Development in Infants and Toddlers","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/3-1-physical-development-in-infants-and-toddlers","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Source introductive sur croissance, cerveau, perception et réflexes ; aucune prédiction individuelle n'est dérivée d'un réflexe isolé."},
+      {"id":"REF-030-OPENSTAX-32","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 3.2 Motor Development in Infants and Toddlers","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/3-2-motor-development-in-infants-and-toddlers","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Source introductive sur motricité globale et fine, encadrée par l'étude OMS et la revue Adolph-Hoch."},
+      {"id":"REF-030-WHO-MOTOR","type":"empirical_article","authors":["WHO Multicentre Growth Reference Study Group"],"organization":"World Health Organization / Acta Paediatrica","title":"WHO Motor Development Study: Windows of Achievement for Six Gross Motor Development Milestones","year":2006,"edition":null,"publication":"Acta Paediatrica Supplement, 450, 86–95","doi":"https://doi.org/10.1080/08035320500495563","url":"https://www.who.int/docs/default-source/child-growth/child-growth-standards/indicators/motor-development-milestones/who-motor-development-study-windows-of-achievement-for-six-gross-motor-development-milestones.pdf","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"PDF officiel librement consultable ; droits OMS","status":"verified","notes":"Étude longitudinale multicentrique ; les fenêtres décrivent la distribution de six jalons selon des critères définis, pas des diagnostics."},
+      {"id":"REF-030-ADOLPH","type":"review_article","authors":["Adolph, K. E.","Hoch, J. E."],"organization":"Annual Review of Psychology / PubMed Central","title":"Motor Development: Embodied, Embedded, Enculturated, and Enabling","year":2019,"edition":null,"publication":"Annual Review of Psychology, 70, 141–164","doi":"https://doi.org/10.1146/annurev-psych-010418-102836","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC6320716/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Manuscrit auteur ouvert sur PubMed Central ; droits Annual Reviews","status":"verified","notes":"Revue centrale sur corps, environnement, culture et nouvelles occasions d'apprentissage ; les cascades restent non nécessaires et non suffisantes."},
+      {"id":"REF-030-WHO-NURTURE","type":"official_guideline","authors":["World Health Organization","United Nations Children's Fund","World Bank Group"],"organization":"World Health Organization, UNICEF and World Bank Group","title":"Nurturing Care for Early Childhood Development","year":2018,"edition":"Global framework","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789241514064/","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Publication institutionnelle ouverte ; CC BY-NC-SA 3.0 IGO indiqué dans le document","status":"verified","notes":"Cadre officiel multi-organisation ; utilisé pour cinq composantes et responsabilités systémiques, non comme échelle diagnostique."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition":1,"referenceLinks":[{"referenceId":"REF-030-OPENSTAX-23","locator":"Prenatal Development: Germinal, Embryonic and Fetal Stages","supports":"Séquence descriptive des périodes, implantation, organogenèse, croissance et maturation."}],"confidence":"high","confidenceRationale":"Le contenu suit une chronologie descriptive et précise la convention de datation comme point de vigilance.","notApplicableReason":null},
+      {"contentBlockPosition":2,"referenceLinks":[{"referenceId":"REF-030-OPENSTAX-23","locator":"Prenatal Influences and Teratogens","supports":"Moment sensible, dose, durée et diversité des résultats possibles."},{"referenceId":"REF-030-ALWAN","locator":"principles of teratology et discussion des types de preuves humaines","supports":"Susceptibilité, relation dose-réponse, timing, séries cliniques et études analytiques."}],"confidence":"high","confidenceRationale":"La source clinique et le manuel convergent ; aucune exposition n'est transformée en causalité ou résultat certain sans qualification.","notApplicableReason":null},
+      {"contentBlockPosition":3,"referenceLinks":[{"referenceId":"REF-030-CDC","locator":"Key points, There is no known safe amount et Effects","supports":"Absence de quantité et période sûres connues, recommandation de prévention et variabilité des issues."}],"confidence":"high","confidenceRationale":"Recommandation officielle actuelle citée avec sa nuance : prévention claire et prédiction individuelle incertaine.","notApplicableReason":null},
+      {"contentBlockPosition":4,"referenceLinks":[{"referenceId":"REF-030-OPENSTAX-31","locator":"Physical Growth, Brain Development et Reflexes","supports":"Tendances de croissance, maturation et rôle descriptif des réflexes."},{"referenceId":"REF-030-OPENSTAX-32","locator":"Gross and Fine Motor Development","supports":"Acquisitions motrices et variabilité des expériences."},{"referenceId":"REF-030-ADOLPH","locator":"Abstract et sections Embodied, Embedded et Enabling","supports":"Interactions corps-tâche-environnement, flexibilité et occasions d'apprentissage sans garantie causale."}],"confidence":"high","confidenceRationale":"Deux chapitres introductifs et une revue spécialisée convergent ; aucune inférence sur l'intelligence ou la personnalité n'est autorisée.","notApplicableReason":null},
+      {"contentBlockPosition":5,"referenceLinks":[{"referenceId":"REF-030-WHO-MOTOR","locator":"Methods, Results et Figure sur windows of achievement","supports":"Fenêtres empiriques pour six jalons dans une étude multicentrique et variabilité des âges."},{"referenceId":"REF-030-ADOLPH","locator":"sections Enculturated et Behavioral flexibility","supports":"Influence des pratiques, de la tâche et de la culture sur l'acquisition motrice."}],"confidence":"high","confidenceRationale":"Les fenêtres sont interprétées comme distributions populationnelles ; l'orientation professionnelle n'est pas un diagnostic issu du graphique.","notApplicableReason":null},
+      {"contentBlockPosition":6,"referenceLinks":[{"referenceId":"REF-030-WHO-NURTURE","locator":"Executive summary et five components of nurturing care","supports":"Santé, nutrition, sécurité, responsive caregiving et early learning, avec responsabilités des systèmes."},{"referenceId":"REF-030-ADOLPH","locator":"Motor Development Is Enculturated et Conclusions","supports":"Pratiques culturelles, structuration de l'environnement et flexibilité motrice."}],"confidence":"high","confidenceRationale":"Le cadre institutionnel et la revue culturelle convergent ; le texte évite de rendre les parents seuls responsables des conditions structurelles.","notApplicableReason":null}
+    ],
+    "resourceChecks": [
+      {"resourceKey":"openstax-prenatal-2-3","referenceIds":["REF-030-OPENSTAX-23"],"pedagogicalRationale":"Chronologie ouverte et accessible du développement prénatal.","learnerInstructions":"Relever périodes, processus et convention de datation, puis séparer description et prédiction.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"alwan-chambers-teratogens-2015","referenceIds":["REF-030-ALWAN"],"pedagogicalRationale":"Mise au point ouverte sur l'identification prudente d'expositions tératogènes humaines.","learnerInstructions":"Utiliser uniquement pour la grille de preuve ; ne tirer aucun conseil thérapeutique individuel.","language":"en","accessType":"open","accessibilityNotes":"Article HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Ressource facultative ; contenu clinique à revoir par un spécialiste."},
+      {"resourceKey":"cdc-alcohol-pregnancy-2026","referenceIds":["REF-030-CDC"],"pedagogicalRationale":"Recommandation officielle actuelle permettant de distinguer prévention et prédiction.","learnerInstructions":"Citer exactement « aucune quantité sûre connue » et conserver une orientation non culpabilisante.","language":"en","accessType":"open","accessibilityNotes":"Page officielle HTML, titres courts et liens d'aide.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"À recontrôler à chaque revue annuelle car la page officielle peut évoluer."},
+      {"resourceKey":"openstax-infant-physical-3-1","referenceIds":["REF-030-OPENSTAX-31"],"pedagogicalRationale":"Introduction structurée à la croissance, au cerveau, aux sens et aux réflexes.","learnerInstructions":"Pour chaque tendance, écrire ce qu'elle décrit au groupe et ce qu'elle ne permet pas de prédire individuellement.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"openstax-infant-motor-3-2","referenceIds":["REF-030-OPENSTAX-32"],"pedagogicalRationale":"Introduction ouverte aux acquisitions motrices et aux facteurs d'expérience.","learnerInstructions":"Comparer les jalons du chapitre aux fenêtres OMS et annoter toute formulation trop fixe.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"who-motor-windows-2006","referenceIds":["REF-030-WHO-MOTOR"],"pedagogicalRationale":"Données multicentriques officielles pour apprendre à lire des fenêtres plutôt que des échéances.","learnerInstructions":"Identifier échantillon, définition, calendrier d'observation et limites avant toute interprétation.","language":"en","accessType":"open","accessibilityNotes":"PDF officiel ouvert avec tableaux et figures ; texte académique dense.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"adolph-hoch-motor-2019","referenceIds":["REF-030-ADOLPH"],"pedagogicalRationale":"Revue ouverte intégrant corps, environnement, culture et effets d'opportunité.","learnerInstructions":"Classer les exemples dans les quatre dimensions et marquer les effets ni nécessaires ni suffisants.","language":"en","accessType":"open","accessibilityNotes":"Manuscrit HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"who-nurturing-care-2018","referenceIds":["REF-030-WHO-NURTURE"],"pedagogicalRationale":"Cadre officiel ouvert reliant besoins de l'enfant, soutien familial, services et politiques.","learnerInstructions":"Cartographier les cinq composantes à plusieurs niveaux et éviter toute lecture culpabilisante.","language":"en","accessType":"open","accessibilityNotes":"Page officielle avec résumé et téléchargement PDF sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "periodes-prenatales-risque-exposition",
+        "assessmentTitle": "Mini-évaluation — Prénatal et expositions",
+        "questions": [
+          {"type":"single_choice","prompt":"Quelle séquence ordonne correctement les périodes prénatales ?","explanation":"La séquence descriptive usuelle est germinale, embryonnaire puis fœtale.","acceptedAnswers":[],"position":1,"options":[{"label":"Germinale, embryonnaire, fœtale","isCorrect":true,"position":1},{"label":"Fœtale, germinale, embryonnaire","isCorrect":false,"position":2},{"label":"Embryonnaire, adulte, germinale","isCorrect":false,"position":3},{"label":"Motrice, cognitive, sociale","isCorrect":false,"position":4}]},
+          {"type":"multiple_choice","prompt":"Quels paramètres qualifient le risque potentiel d'une exposition prénatale ?","explanation":"Agent, dose, durée, moment, voie, susceptibilité et contexte contribuent à l'évaluation.","acceptedAnswers":[],"position":2,"options":[{"label":"La dose et la durée","isCorrect":true,"position":1},{"label":"Le moment de l'exposition","isCorrect":true,"position":2},{"label":"La susceptibilité et les co-expositions","isCorrect":true,"position":3},{"label":"Le seul nom populaire de la substance","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Une période sensible signifie que toute exposition produit nécessairement un effet.","explanation":"La sensibilité modifie une probabilité selon l'exposition et le processus ; elle ne garantit pas un résultat.","acceptedAnswers":[],"position":3,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"single_choice","prompt":"Quelle formulation respecte la recommandation officielle sur l'alcool pendant la grossesse ?","explanation":"La prévention repose sur l'absence de quantité sûre connue, sans prédire le résultat d'une exposition individuelle.","acceptedAnswers":[],"position":4,"options":[{"label":"Aucune quantité n'est connue comme sûre ; éviter l'alcool et consulter un professionnel en cas de préoccupation","isCorrect":true,"position":1},{"label":"Une petite quantité est toujours sûre","isCorrect":false,"position":2},{"label":"Toute exposition permet un diagnostic certain","isCorrect":false,"position":3},{"label":"La recommandation ne concerne que le dernier trimestre","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel mot désigne une exposition capable, dans certaines conditions, de perturber le développement prénatal ?","explanation":"Le terme est tératogène, à utiliser avec une qualification précise des preuves et conditions.","acceptedAnswers":["tératogène","teratogene","un tératogène","un teratogene"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "petite-enfance-croissance-reflexes-motricite",
+        "assessmentTitle": "Mini-évaluation — Corps et action",
+        "questions": [
+          {"type":"single_choice","prompt":"Comment interpréter une fenêtre d'âge pour un jalon moteur ?","explanation":"Elle décrit une distribution observée selon un échantillon et une méthode, pas un délai diagnostique individuel.","acceptedAnswers":[],"position":1,"options":[{"label":"Comme une plage descriptive dépendante de l'étude","isCorrect":true,"position":1},{"label":"Comme une date limite universelle","isCorrect":false,"position":2},{"label":"Comme une mesure d'intelligence","isCorrect":false,"position":3},{"label":"Comme une preuve causale de l'éducation","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un réflexe observé isolément permet de prédire la personnalité future d'un nourrisson.","explanation":"Les réflexes ont une fonction descriptive et clinique contextualisée ; ils ne prédisent pas seuls personnalité ou intelligence.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Quels facteurs participent à l'émergence d'une habileté motrice ?","explanation":"Corps, santé, tâche, surface, pratique et soutien social interagissent.","acceptedAnswers":[],"position":3,"options":[{"label":"Les dimensions et capacités actuelles du corps","isCorrect":true,"position":1},{"label":"La tâche et l'environnement physique","isCorrect":true,"position":2},{"label":"La pratique et le soutien social","isCorrect":true,"position":3},{"label":"Une horloge identique indépendante du contexte","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Que signifie dire qu'une nouvelle habileté motrice est habilitante ?","explanation":"Elle ouvre des occasions d'exploration et d'apprentissage, sans être nécessaire ni suffisante pour chaque résultat ultérieur.","acceptedAnswers":[],"position":4,"options":[{"label":"Elle crée de nouvelles occasions d'agir et d'apprendre","isCorrect":true,"position":1},{"label":"Elle garantit toutes les acquisitions cognitives","isCorrect":false,"position":2},{"label":"Elle efface les différences culturelles","isCorrect":false,"position":3},{"label":"Elle remplace l'environnement social","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne une réponse automatique observable, comme certaines réponses néonatales ?","explanation":"Le terme attendu est réflexe.","acceptedAnswers":["réflexe","reflexe","un réflexe","un reflexe"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "variabilite-soins-attentifs-trajectoires",
+        "assessmentTitle": "Mini-évaluation — Soins, culture et trajectoires",
+        "questions": [
+          {"type":"multiple_choice","prompt":"Quelles composantes appartiennent au cadre des soins attentifs ?","explanation":"Le cadre comprend santé, nutrition, sécurité, soins répondant aux signaux et apprentissage précoce.","acceptedAnswers":[],"position":1,"options":[{"label":"Bonne santé et nutrition adéquate","isCorrect":true,"position":1},{"label":"Sécurité et sûreté","isCorrect":true,"position":2},{"label":"Soins répondant aux signaux et occasions d'apprentissage","isCorrect":true,"position":3},{"label":"Une méthode éducative unique imposée partout","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Le cadre des soins attentifs rend les parents seuls responsables de toutes les conditions de développement.","explanation":"Services, politiques, ressources et conditions matérielles contribuent aux possibilités de soin et d'apprentissage.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"single_choice","prompt":"Pourquoi considérer les pratiques culturelles en motricité ?","explanation":"Portage, positionnement, jeu et attentes organisent différemment les occasions d'action sans hiérarchie automatique entre cultures.","acceptedAnswers":[],"position":3,"options":[{"label":"Elles peuvent structurer les occasions et formes d'action","isCorrect":true,"position":1},{"label":"Elles prouvent qu'une culture est supérieure","isCorrect":false,"position":2},{"label":"Elles annulent toute influence corporelle","isCorrect":false,"position":3},{"label":"Elles rendent les jalons identiques partout","isCorrect":false,"position":4}]},
+          {"type":"multiple_choice","prompt":"Que doit contenir un soutien non culpabilisant à une famille ?","explanation":"Il doit intégrer besoins, ressources, préférences, contraintes et responsabilités des services et politiques.","acceptedAnswers":[],"position":4,"options":[{"label":"Les préférences et besoins de l'enfant et de la famille","isCorrect":true,"position":1},{"label":"Les contraintes matérielles et d'accès","isCorrect":true,"position":2},{"label":"Les actions possibles des services et politiques","isCorrect":true,"position":3},{"label":"L'affirmation que la volonté parentale suffit toujours","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme du cadre désigne les réponses sensibles et adaptées aux signaux de l'enfant ?","explanation":"Il s'agit des soins répondant aux signaux, souvent appelés responsive caregiving.","acceptedAnswers":["soins répondant aux signaux","soins sensibles","réponse aux signaux","responsive caregiving","soins responsifs"],"position":5,"options":[]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en psychologie du développement, obstétrique ou tératologie, pédiatrie, santé publique et diversité culturelle requise avant publication.",
+        "Validation technique requise : l'étape parente developpement-vie et le module cadres-methodes-developpement sont absents du seed actuel.",
+        "La leçon est éducative et non clinique : aucune observation, exposition ou fenêtre de jalon ne permet un diagnostic ou un conseil thérapeutique à distance.",
+        "Les périodes prénatales sont descriptives ; risque, période sensible et exposition sont formulés probabilistiquement sans culpabilisation.",
+        "La recommandation CDC est citée comme absence de quantité sûre connue et prévention, jamais comme certitude d'un résultat individuel.",
+        "Les fenêtres OMS sont présentées comme distributions issues d'un échantillon multicentrique et non comme dates limites universelles.",
+        "Les pratiques culturelles sont traitées comme sources de variation des occasions sans classement hiérarchique ; les contraintes structurelles évitent le blâme parental.",
+        "Toutes les ressources sont ouvertes ; la ressource clinique facultative reste soumise à validation spécialisée.",
+        "Les URLs, DOI, chapitres OpenStax, pages CDC et OMS et articles PubMed Central ont été vérifiés le 4 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de huit ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_clinical_public_health_and_cultural"}
+    ]
+  }
+}

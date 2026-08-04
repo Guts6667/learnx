@@ -1,0 +1,298 @@
+{
+  "specId": "PEDAGOGY_SPEC_029",
+  "schemaVersion": 1,
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "developpement-vie",
+  "moduleSlug": "cadres-methodes-developpement",
+  "lesson": {
+    "title": "Plans transversaux, longitudinaux et séquentiels",
+    "slug": "plans-transversaux-longitudinaux-sequentiels",
+    "summary": "Comparer des âges une fois, suivre les mêmes personnes ou articuler plusieurs cohortes ne répond pas aux mêmes questions. Cette leçon distingue âge, cohorte et moment de mesure, puis encadre attrition, retest, invariance de mesure, causalité, représentativité et éthique de la recherche développementale.",
+    "objectives": [
+      "Distinguer âge, cohorte de naissance et moment historique de mesure dans une comparaison développementale.",
+      "Choisir entre plan transversal, longitudinal et séquentiel selon la question, les contraintes et les biais attendus.",
+      "Identifier effets de cohorte, attrition, retest et changements d'instrument susceptibles d'altérer une conclusion.",
+      "Expliquer pourquoi une comparaison au fil du temps exige une mesure suffisamment comparable entre groupes et occasions.",
+      "Auditer un protocole avec enfants ou adolescents sur consentement parental, assentiment, droit de retrait, charge, confidentialité et équité."
+    ],
+    "prerequisites": [
+      "Connaître les notions de variable, échantillon, corrélation, confusion et validité externe.",
+      "Savoir distinguer trajectoire individuelle et différence moyenne entre groupes."
+    ],
+    "estimatedMinutes": 185,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L'âge chronologique, la cohorte de naissance et le moment de mesure sont trois dimensions liées mais distinctes. Une personne de 20 ans mesurée en 2026 appartient à une autre cohorte qu'une personne de 20 ans mesurée en 1996 ; elles ont aussi rencontré des institutions, technologies et événements différents. Avec une seule comparaison, âge et cohorte sont confondus. Le temps de mesure peut introduire un événement commun à plusieurs âges. Avant d'appeler une différence « développementale », il faut donc demander quelles dimensions varient ensemble et quelles explications historiques ou de sélection restent possibles.",
+          "sourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Un plan transversal mesure à peu près au même moment des groupes d'âges différents. Il est rapide, évite la perte de participants sur plusieurs années et décrit des différences d'âge présentes dans l'échantillon. Il ne mesure toutefois pas directement le changement des mêmes personnes. Une différence peut refléter l'âge, la cohorte, le recrutement, la survie sélective ou une mesure qui n'a pas le même sens selon les groupes. Le plan transversal convient à une photographie comparative ; il ne suffit pas pour reconstituer à lui seul une trajectoire individuelle ni attribuer une différence à l'effet causal du vieillissement.",
+          "sourceKeys": ["openstax-lifespan-1-5", "salthouse-age-relations-2014", "putnick-invariance-2016"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Un plan longitudinal réévalue les mêmes personnes. Il permet d'estimer stabilité, changement intra-individuel, ordre temporel et diversité des pentes. Mais le temps écoulé n'est pas randomisé : période historique, maturation, événements et sélection peuvent coïncider. Les répétitions entraînent parfois apprentissage ou familiarité ; les instruments et enquêteurs changent ; les personnes qui restent peuvent différer de celles qui quittent l'étude. Le taux d'attrition seul ne dit pas tout : il faut comparer les profils de suivi, décrire les données manquantes, documenter les raisons et tester la sensibilité des résultats.",
+          "sourceKeys": ["openstax-lifespan-1-5", "salthouse-age-relations-2014", "gustavson-attrition-2012"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Un plan séquentiel combine plusieurs cohortes et plusieurs temps : par exemple, recruter des groupes de 10, 20 et 30 ans, puis les suivre avec des vagues qui se chevauchent. Les chevauchements offrent des comparaisons partielles entre personnes du même âge observées à des moments ou dans des cohortes différentes. Ils aident à examiner âge, cohorte et temps, sans les rendre magiquement indépendants. Le coût, la durée, les modèles et les données manquantes augmentent ; les conclusions dépendent encore de la couverture des cohortes, de la comparabilité des mesures et des hypothèses statistiques.",
+          "sourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965"]
+        }
+      },
+      {
+        "type": "objective",
+        "position": 5,
+        "content": {
+          "text": "Comparer des scores suppose que l'instrument représente suffisamment le même construit selon l'âge, le groupe culturel ou le temps. Si le vocabulaire, les tâches, les informateurs ou la manière de répondre changent, une différence chiffrée peut refléter la mesure plutôt que le développement. L'invariance de mesure examine cette équivalence à plusieurs niveaux ; elle n'est pas une formalité binaire ni toujours parfaite. Pour un public débutant, la règle est : définir le construit, justifier les adaptations, tester la comparabilité, rapporter les écarts et limiter la comparaison au niveau que les données soutiennent.",
+          "sourceKeys": ["putnick-invariance-2016", "openstax-lifespan-1-5"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Un devis temporel ne transforme pas automatiquement une association en causalité : âge et exposition ne sont généralement pas assignés au hasard. Il faut expliciter alternatives, temporalité, variables communes, analyses de sensibilité et portée de l'échantillon. Avec des mineurs, l'autorisation d'un adulte ne remplace pas l'assentiment adapté à l'enfant ; le refus ou le retrait doivent rester possibles, et le consentement se poursuit pendant l'étude. Risques, charge, incitations, confidentialité, retour des résultats et inclusion équitable doivent être proportionnés au développement, à la culture et au rapport de pouvoir.",
+          "sourceKeys": ["srcd-ethics-2021", "openstax-lifespan-1-5"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-lifespan-1-5",
+        "type": "book",
+        "title": "Lifespan Development — 1.5 Lifespan Development as a Science: Research Methods",
+        "author": "Diana Riser, Rose Spielman et David Biek",
+        "url": "https://openstax.org/books/lifespan-development/pages/1-5-lifespan-development-as-a-science-research-methods",
+        "citation": "Riser, D., Spielman, R., & Biek, D. (2024). 1.5 Lifespan Development as a Science: Research Methods. In Lifespan Development. OpenStax.",
+        "description": "Lire les sections sur plans transversaux, longitudinaux et séquentiels, puis construire un tableau question-apport-biais.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 1
+      },
+      {
+        "key": "schaie-general-model-1965",
+        "type": "article",
+        "title": "A General Model for the Study of Developmental Problems",
+        "author": "K. Warner Schaie",
+        "url": "https://doi.org/10.1037/h0022371",
+        "citation": "Schaie, K. W. (1965). A general model for the study of developmental problems. Psychological Bulletin, 64(2), 92–107. https://doi.org/10.1037/h0022371",
+        "description": "Consulter le résumé et le modèle âge-cohorte-temps ; utiliser OpenStax comme alternative ouverte pour les définitions opérationnelles.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "salthouse-age-relations-2014",
+        "type": "article",
+        "title": "Why Are There Different Age Relations in Cross-Sectional and Longitudinal Comparisons of Cognitive Functioning?",
+        "author": "Timothy A. Salthouse",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4219741/",
+        "citation": "Salthouse, T. A. (2014). Why are there different age relations in cross-sectional and longitudinal comparisons of cognitive functioning? Current Directions in Psychological Science, 23(4), 252–256. https://doi.org/10.1177/0963721414535212",
+        "description": "Lire les explications par cohorte, retest et sélection ; ne pas généraliser les résultats cognitifs à tous les domaines.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3
+      },
+      {
+        "key": "gustavson-attrition-2012",
+        "type": "article",
+        "title": "Attrition and Generalizability in Longitudinal Studies",
+        "author": "Kristin Gustavson, Tilmann von Soest, Evalill Karevold et Espen Røysamb",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3503744/",
+        "citation": "Gustavson, K., von Soest, T., Karevold, E., & Røysamb, E. (2012). Attrition and generalizability in longitudinal studies: Findings from a 15-year population-based study and a Monte Carlo simulation study. BMC Public Health, 12, 918. https://doi.org/10.1186/1471-2458-12-918",
+        "description": "Lire méthodes et conclusion ; distinguer biais possible sur moyennes et associations et refuser toute règle universelle fondée sur un seul cas.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 4
+      },
+      {
+        "key": "putnick-invariance-2016",
+        "type": "article",
+        "title": "Measurement Invariance Conventions and Reporting",
+        "author": "Diane L. Putnick et Marc H. Bornstein",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5145197/",
+        "citation": "Putnick, D. L., & Bornstein, M. H. (2016). Measurement invariance conventions and reporting: The state of the art and future directions for psychological research. Developmental Review, 41, 71–90. https://doi.org/10.1016/j.dr.2016.06.004",
+        "description": "Lire l'introduction et la hiérarchie des tests ; traduire l'enjeu en question simple : mesure-t-on le même construit de manière comparable ?",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 5
+      },
+      {
+        "key": "srcd-ethics-2021",
+        "type": "document",
+        "title": "Ethical Principles and Standards for Developmental Scientists",
+        "author": "Society for Research in Child Development",
+        "url": "https://www.srcd.org/sites/default/files/file-attachments/SRCDethicalprinciplesstandardsfordevsci_3.2021.pdf",
+        "citation": "Society for Research in Child Development. (2021). Ethical Principles and Standards for Developmental Scientists.",
+        "description": "Lire les sections sur consentement, assentiment, équité, risques, confidentialité et responsabilités envers enfants, familles et communautés.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Âge, cohorte et temps de mesure",
+        "slug": "age-cohorte-temps-mesure",
+        "description": "Une différence entre âges peut mêler âge, génération et période historique ; le plan d'étude détermine quelles comparaisons permettent de les examiner.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965", "salthouse-age-relations-2014"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Âge, cohorte et période", "questionCount": 5}
+      },
+      {
+        "title": "Plans transversal, longitudinal et séquentiel",
+        "slug": "plans-transversal-longitudinal-sequentiel",
+        "description": "Chaque plan répond à des questions différentes : photographie entre groupes, changement intra-individuel ou comparaison croisée de cohortes et vagues.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965", "salthouse-age-relations-2014"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un plan", "questionCount": 5}
+      },
+      {
+        "title": "Attrition, mesure et éthique",
+        "slug": "attrition-mesure-ethique",
+        "description": "La validité d'un suivi dépend des pertes, retests, mesures comparables et procédures éthiques continues, adaptées au développement et au contexte.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["gustavson-attrition-2012", "putnick-invariance-2016", "srcd-ethics-2021", "openstax-lifespan-1-5"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité et éthique du suivi", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Choisir un plan pour trois questions",
+        "description": "Pour une photographie des différences d'âge, l'évolution individuelle de la lecture et la séparation partielle âge-cohorte-période, choisir un plan, dessiner participants et vagues, puis justifier un avantage, deux biais et une limite causale par scénario.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Démêler âge, cohorte et retest",
+        "description": "Analyser un tableau fictif de cohortes suivies sur trois vagues. Identifier comparaisons de même âge, même cohorte et même période ; proposer deux explications concurrentes à un gain et une analyse permettant de sonder l'effet de retest.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2
+      },
+      {
+        "title": "Auditer un suivi avec mineurs",
+        "description": "Évaluer un protocole fictif de cinq ans : recrutement, représentativité, assentiment, retrait, charge, incitation, confidentialité, attrition, changement d'instrument et restitution. Produire une liste d'actions et une conclusion publier-réviser-refuser motivée.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "fr",
+    "audience": "Adulte débutant sans prérequis universitaire",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {"id":"REF-029-OPENSTAX","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.5 Lifespan Development as a Science: Research Methods","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-5-lifespan-development-as-a-science-research-methods","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Introduction ouverte aux plans ; les tableaux simplifiés sont encadrés par Schaie, Salthouse et les revues méthodologiques."},
+      {"id":"REF-029-SCHAIE","type":"theoretical_article","authors":["Schaie, K. W."],"organization":"Psychological Bulletin","title":"A General Model for the Study of Developmental Problems","year":1965,"edition":null,"publication":"Psychological Bulletin, 64(2), 92–107","doi":"https://doi.org/10.1037/h0022371","url":"https://doi.org/10.1037/h0022371","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Métadonnées ouvertes ; texte soumis aux droits APA","status":"verified","notes":"Modèle historique de référence ; ressource facultative car le texte intégral n'est pas garanti ouvert."},
+      {"id":"REF-029-SALTHOUSE","type":"review_article","authors":["Salthouse, T. A."],"organization":"Current Directions in Psychological Science / PubMed Central","title":"Why Are There Different Age Relations in Cross-Sectional and Longitudinal Comparisons of Cognitive Functioning?","year":2014,"edition":null,"publication":"Current Directions in Psychological Science, 23(4), 252–256","doi":"https://doi.org/10.1177/0963721414535212","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC4219741/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Manuscrit auteur ouvert sur PubMed Central ; droits de l'éditeur","status":"verified","notes":"Revue ciblée sur cognition ; utilisée pour les mécanismes méthodologiques, sans généralisation automatique à tous les domaines."},
+      {"id":"REF-029-GUSTAVSON","type":"empirical_article","authors":["Gustavson, K.","von Soest, T.","Karevold, E.","Røysamb, E."],"organization":"BMC Public Health / PubMed Central","title":"Attrition and Generalizability in Longitudinal Studies","year":2012,"edition":null,"publication":"BMC Public Health, 12, 918","doi":"https://doi.org/10.1186/1471-2458-12-918","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3503744/","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"CC BY 2.0","status":"verified","notes":"Une cohorte et des simulations ; les résultats différenciés sur moyennes et associations ne sont pas transformés en règle universelle."},
+      {"id":"REF-029-PUTNICK","type":"review_article","authors":["Putnick, D. L.","Bornstein, M. H."],"organization":"Developmental Review / PubMed Central","title":"Measurement Invariance Conventions and Reporting","year":2016,"edition":null,"publication":"Developmental Review, 41, 71–90","doi":"https://doi.org/10.1016/j.dr.2016.06.004","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC5145197/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Manuscrit auteur ouvert sur PubMed Central ; droits de l'éditeur","status":"verified","notes":"Revue méthodologique utilisée pour l'équivalence des construits entre groupes et occasions, sans exiger une simplification tout-ou-rien."},
+      {"id":"REF-029-SRCD","type":"official_guideline","authors":["Society for Research in Child Development"],"organization":"Society for Research in Child Development","title":"Ethical Principles and Standards for Developmental Scientists","year":2021,"edition":"March 2021","publication":"Society for Research in Child Development","doi":null,"url":"https://www.srcd.org/sites/default/files/file-attachments/SRCDethicalprinciplesstandardsfordevsci_3.2021.pdf","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Document officiel librement consultable ; droits SRCD","status":"verified","notes":"Guide professionnel officiel pour assentiment, permission, équité, confidentialité et responsabilités envers communautés."}
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition":1,"referenceLinks":[{"referenceId":"REF-029-OPENSTAX","locator":"Cross-Sectional Research, Longitudinal Research et Cross-Sequential Research","supports":"Définitions introductives et effets de cohorte."},{"referenceId":"REF-029-SCHAIE","locator":"modèle général âge, cohorte et time of measurement","supports":"Confusion structurelle entre âge, cohorte et moment de mesure."}],"confidence":"high","confidenceRationale":"Le cadre classique et le manuel convergent ; l'attribution développementale reste explicitement conditionnelle.","notApplicableReason":null},
+      {"contentBlockPosition":2,"referenceLinks":[{"referenceId":"REF-029-OPENSTAX","locator":"section Cross-Sectional Research","supports":"Principe, vitesse et limites de cohorte du transversal."},{"referenceId":"REF-029-SALTHOUSE","locator":"Abstract et Cross-sectional age trends","supports":"Sélection et différences de cohorte dans les relations transversales avec l'âge."},{"referenceId":"REF-029-PUTNICK","locator":"Abstract et Introduction","supports":"Risque de comparer des scores lorsque le construit n'a pas le même sens entre groupes."}],"confidence":"high","confidenceRationale":"Les limites sont méthodologiques et aucune différence transversale n'est assimilée à une trajectoire individuelle.","notApplicableReason":null},
+      {"contentBlockPosition":3,"referenceLinks":[{"referenceId":"REF-029-OPENSTAX","locator":"section Longitudinal Research","supports":"Suivi des mêmes personnes, attrition et pratique."},{"referenceId":"REF-029-SALTHOUSE","locator":"Longitudinal age trends et retest effects","supports":"Rôle possible des effets de retest et de la sélection."},{"referenceId":"REF-029-GUSTAVSON","locator":"Methods, Results et Conclusions","supports":"Attrition sélective, différences possibles entre biais sur moyennes et associations et analyses de données manquantes."}],"confidence":"high","confidenceRationale":"Les sources convergent sur les biais ; l'étude d'attrition est présentée comme cas informatif, non comme loi générale.","notApplicableReason":null},
+      {"contentBlockPosition":4,"referenceLinks":[{"referenceId":"REF-029-OPENSTAX","locator":"section Cross-Sequential Research","supports":"Combinaison de cohortes et vagues, avantages et coûts."},{"referenceId":"REF-029-SCHAIE","locator":"modèle séquentiel et matrices âge-cohorte-temps","supports":"Comparaisons partielles permettant d'examiner les trois dimensions."}],"confidence":"high","confidenceRationale":"Le plan séquentiel est décrit comme stratégie de comparaison et non comme solution parfaite.","notApplicableReason":null},
+      {"contentBlockPosition":5,"referenceLinks":[{"referenceId":"REF-029-PUTNICK","locator":"Abstract, levels of measurement invariance et Discussion","supports":"Équivalence psychométrique du construit entre groupes et occasions et conséquences de la non-invariance."},{"referenceId":"REF-029-OPENSTAX","locator":"Research Methods, measurement et developmental considerations","supports":"Besoin de mesures adaptées aux âges et de comparaisons prudentes."}],"confidence":"high","confidenceRationale":"La revue méthodologique soutient directement le contenu ; la terminologie avancée est traduite sans perdre la limite de comparaison.","notApplicableReason":null},
+      {"contentBlockPosition":6,"referenceLinks":[{"referenceId":"REF-029-SRCD","locator":"Principles I à IV et standards sur consent, assent, dissent, risk, equity et confidentiality","supports":"Consentement continu, assentiment, droit de retrait, respect culturel, équité et confidentialité."},{"referenceId":"REF-029-OPENSTAX","locator":"Research Ethics","supports":"Introduction au consentement, aux risques et à la confidentialité en recherche développementale."}],"confidence":"high","confidenceRationale":"Le guide professionnel officiel fournit les normes ; le bloc ne donne aucun avis juridique local.","notApplicableReason":null}
+    ],
+    "resourceChecks": [
+      {"resourceKey":"openstax-lifespan-1-5","referenceIds":["REF-029-OPENSTAX"],"pedagogicalRationale":"Vue d'ensemble ouverte et accessible des trois plans.","learnerInstructions":"Construire un tableau question-échantillon-vagues-apport-biais pour chaque plan.","language":"en","accessType":"open","accessibilityNotes":"Chapitre HTML responsive et manuel téléchargeable sans compte.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Les généralisations trop tranchées du manuel sont corrigées par les sources spécialisées."},
+      {"resourceKey":"schaie-general-model-1965","referenceIds":["REF-029-SCHAIE"],"pedagogicalRationale":"Source historique du modèle âge-cohorte-temps et des plans séquentiels.","learnerInstructions":"Le résumé et le schéma conceptuel suffisent ; utiliser OpenStax pour une lecture intégrale ouverte.","language":"en","accessType":"institutional","accessibilityNotes":"DOI et métadonnées ouverts ; texte intégral selon accès institutionnel.","alternativeResourceKey":"openstax-lifespan-1-5","checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Ressource facultative avec alternative ouverte."},
+      {"resourceKey":"salthouse-age-relations-2014","referenceIds":["REF-029-SALTHOUSE"],"pedagogicalRationale":"Exemple ouvert des écarts entre estimations transversales et longitudinales.","learnerInstructions":"Séparer effet de cohorte, retest et sélection ; ne pas transférer les résultats cognitifs à tout développement.","language":"en","accessType":"open","accessibilityNotes":"Manuscrit HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"gustavson-attrition-2012","referenceIds":["REF-029-GUSTAVSON"],"pedagogicalRationale":"Étude ouverte permettant de nuancer les conséquences de l'attrition.","learnerInstructions":"Comparer biais sur niveaux moyens et associations, puis lister les conditions où les conclusions changent.","language":"en","accessType":"open","accessibilityNotes":"Article HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"putnick-invariance-2016","referenceIds":["REF-029-PUTNICK"],"pedagogicalRationale":"Revue ouverte sur la comparabilité psychométrique au fil du temps et entre groupes.","learnerInstructions":"Lire introduction et tableau des niveaux ; traduire chaque niveau en question de comparaison concrète.","language":"en","accessType":"open","accessibilityNotes":"Manuscrit HTML et PDF ouverts sur PubMed Central.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":null},
+      {"resourceKey":"srcd-ethics-2021","referenceIds":["REF-029-SRCD"],"pedagogicalRationale":"Norme professionnelle officielle propre aux sciences du développement.","learnerInstructions":"Auditer le protocole final avec les standards assentiment, retrait, risque, équité et confidentialité.","language":"en","accessType":"open","accessibilityNotes":"PDF officiel ouvert, texte structuré par principes et standards.","alternativeResourceKey":null,"checkedAt":"2026-08-04","urlStatus":"ok","mediaSegment":null,"transcriptAvailable":null,"notes":"Les obligations juridiques locales doivent être vérifiées séparément."}
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "age-cohorte-temps-mesure",
+        "assessmentTitle": "Mini-évaluation — Âge, cohorte et période",
+        "questions": [
+          {"type":"single_choice","prompt":"Deux groupes de 20 et 70 ans sont comparés en 2026. Quelle dimension est confondue avec l'âge ?","explanation":"Les groupes ont aussi des années de naissance et des expériences historiques différentes.","acceptedAnswers":[],"position":1,"options":[{"label":"La cohorte de naissance","isCorrect":true,"position":1},{"label":"La randomisation","isCorrect":false,"position":2},{"label":"Le suivi intra-individuel","isCorrect":false,"position":3},{"label":"L'assentiment","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Observer une différence entre groupes d'âge une seule fois prouve un effet causal du vieillissement.","explanation":"Cohorte, sélection, mesure et contexte historique restent des explications possibles.","acceptedAnswers":[],"position":2,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"multiple_choice","prompt":"Quelles dimensions faut-il distinguer dans un devis développemental séquentiel ?","explanation":"Le modèle classique examine âge, cohorte et moment de mesure.","acceptedAnswers":[],"position":3,"options":[{"label":"Âge chronologique","isCorrect":true,"position":1},{"label":"Cohorte de naissance","isCorrect":true,"position":2},{"label":"Moment historique de mesure","isCorrect":true,"position":3},{"label":"Couleur préférée du chercheur","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Des personnes du même âge sont observées en 1996 et 2026. Quelle comparaison devient possible ?","explanation":"Le même âge à deux périodes permet d'examiner des différences liées à la cohorte et au contexte historique, sans les séparer entièrement.","acceptedAnswers":[],"position":4,"options":[{"label":"Comparer des personnes de même âge issues de cohortes et périodes différentes","isCorrect":true,"position":1},{"label":"Mesurer directement le changement de la même personne","isCorrect":false,"position":2},{"label":"Éliminer toute sélection","isCorrect":false,"position":3},{"label":"Prouver une cause culturelle unique","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme désigne un groupe de personnes nées pendant une période proche ?","explanation":"Il s'agit d'une cohorte de naissance.","acceptedAnswers":["cohorte","cohorte de naissance","une cohorte","une cohorte de naissance"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "plans-transversal-longitudinal-sequentiel",
+        "assessmentTitle": "Mini-évaluation — Choisir un plan",
+        "questions": [
+          {"type":"single_choice","prompt":"Quel plan compare plusieurs groupes d'âge lors d'une même période sans suivre nécessairement les mêmes personnes ?","explanation":"C'est la définition du plan transversal.","acceptedAnswers":[],"position":1,"options":[{"label":"Transversal","isCorrect":true,"position":1},{"label":"Longitudinal","isCorrect":false,"position":2},{"label":"Séquentiel","isCorrect":false,"position":3},{"label":"Essai randomisé d'âge","isCorrect":false,"position":4}]},
+          {"type":"single_choice","prompt":"Quel plan observe directement le changement des mêmes personnes ?","explanation":"Un plan longitudinal réévalue les mêmes unités à plusieurs temps.","acceptedAnswers":[],"position":2,"options":[{"label":"Longitudinal","isCorrect":true,"position":1},{"label":"Transversal","isCorrect":false,"position":2},{"label":"Une seule enquête","isCorrect":false,"position":3},{"label":"Comparaison écologique","isCorrect":false,"position":4}]},
+          {"type":"multiple_choice","prompt":"Quels éléments caractérisent un plan séquentiel ?","explanation":"Il combine plusieurs cohortes, plusieurs vagues et souvent des âges qui se chevauchent.","acceptedAnswers":[],"position":3,"options":[{"label":"Plusieurs cohortes","isCorrect":true,"position":1},{"label":"Plusieurs moments de mesure","isCorrect":true,"position":2},{"label":"Des âges de comparaison qui se chevauchent","isCorrect":true,"position":3},{"label":"L'élimination automatique de tout biais","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Un plan séquentiel sépare parfaitement âge, cohorte et période sans hypothèse ni donnée manquante.","explanation":"Il offre des comparaisons supplémentaires mais conserve coûts, attrition, couverture limitée et hypothèses de mesure et de modèle.","acceptedAnswers":[],"position":4,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"short_answer","prompt":"Quel plan combine plusieurs cohortes suivies sur plusieurs vagues ?","explanation":"Il s'agit d'un plan séquentiel ou transversal-longitudinal.","acceptedAnswers":["séquentiel","sequentiel","plan séquentiel","plan sequentiel","transversal-longitudinal"],"position":5,"options":[]}
+        ]
+      },
+      {
+        "conceptSlug": "attrition-mesure-ethique",
+        "assessmentTitle": "Mini-évaluation — Qualité et éthique du suivi",
+        "questions": [
+          {"type":"single_choice","prompt":"Pourquoi l'attrition menace-t-elle parfois une étude longitudinale ?","explanation":"Si les personnes perdues diffèrent systématiquement, l'échantillon restant et certaines estimations peuvent être biaisés.","acceptedAnswers":[],"position":1,"options":[{"label":"Les personnes qui restent peuvent différer de celles qui partent","isCorrect":true,"position":1},{"label":"Toute perte annule toujours toutes les associations","isCorrect":false,"position":2},{"label":"Elle supprime les effets de retest","isCorrect":false,"position":3},{"label":"Elle rend la mesure automatiquement invariante","isCorrect":false,"position":4}]},
+          {"type":"multiple_choice","prompt":"Que faut-il rapporter face à l'attrition ?","explanation":"Taux, profils, raisons, données manquantes et analyses de sensibilité éclairent ses conséquences.","acceptedAnswers":[],"position":2,"options":[{"label":"Le nombre et le profil des personnes perdues","isCorrect":true,"position":1},{"label":"Les raisons connues et la structure des données manquantes","isCorrect":true,"position":2},{"label":"Des analyses de sensibilité","isCorrect":true,"position":3},{"label":"Seulement le nombre initial de participants","isCorrect":false,"position":4}]},
+          {"type":"true_false","prompt":"Utiliser le même score numérique garantit que le construit a le même sens à tous les âges.","explanation":"La comparabilité dépend du fonctionnement de la mesure, des tâches, du langage et des informateurs, pas seulement du format numérique.","acceptedAnswers":[],"position":3,"options":[{"label":"Vrai","isCorrect":false,"position":1},{"label":"Faux","isCorrect":true,"position":2}]},
+          {"type":"single_choice","prompt":"Dans une recherche avec un enfant capable de comprendre, quelle procédure est la plus juste ?","explanation":"Permission et assentiment sont complémentaires, et le refus ou retrait doivent rester possibles.","acceptedAnswers":[],"position":4,"options":[{"label":"Obtenir la permission requise et l'assentiment adapté, puis respecter le refus","isCorrect":true,"position":1},{"label":"Se contenter de la signature d'un adulte quelles que soient les réactions de l'enfant","isCorrect":false,"position":2},{"label":"Cacher la possibilité de retrait","isCorrect":false,"position":3},{"label":"Augmenter la pression pour réduire l'attrition","isCorrect":false,"position":4}]},
+          {"type":"short_answer","prompt":"Quel terme psychométrique désigne l'équivalence suffisante d'un construit entre groupes ou occasions ?","explanation":"Il s'agit de l'invariance de mesure.","acceptedAnswers":["invariance","invariance de mesure","équivalence de mesure","equivalence de mesure"],"position":5,"options":[]}
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en méthodes développementales, psychométrie, données manquantes et éthique de la recherche avec mineurs requise avant publication.",
+        "Validation technique requise : l'étape parente developpement-vie et le module cadres-methodes-developpement sont absents du seed actuel.",
+        "Aucun plan n'est présenté comme isolant automatiquement âge, cohorte et temps ni comme preuve causale.",
+        "Les conséquences de l'attrition sont décrites comme dépendantes de son mécanisme et de l'estimand ; aucune règle universelle n'est tirée d'une seule étude.",
+        "L'invariance de mesure est introduite sans exiger une équivalence parfaite ni autoriser des comparaisons que les données ne soutiennent pas.",
+        "Le guide SRCD est une norme professionnelle générale et ne remplace pas les obligations juridiques et institutionnelles locales.",
+        "Toutes les ressources obligatoires sont ouvertes ; l'article historique à accès limité est facultatif avec alternative OpenStax.",
+        "Les URLs, DOI, pages OpenStax et PubMed Central et le PDF officiel SRCD ont été vérifiés le 4 août 2026."
+      ]
+    },
+    "changeLog": [
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de six ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_psychometric_and_ethics"}
+    ]
+  }
+}
