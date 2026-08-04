@@ -24,6 +24,11 @@ import {
   type Prisma,
 } from '../generated/prisma/client';
 
+export const SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS = {
+  maxWait: 10_000,
+  timeout: 10 * 60_000,
+} as const;
+
 const programStatusSchema = z.enum(['draft', 'active', 'archived']);
 const contentBlockTypeSchema = z.enum([
   'rich_text',
@@ -1290,7 +1295,7 @@ async function main() {
           sampleSeed.conceptAssessmentBanks,
         );
       },
-      { maxWait: 10_000, timeout: 120_000 },
+      SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
     );
 
     console.info('Sample program seeded successfully.');
