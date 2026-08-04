@@ -218,8 +218,17 @@ describe('LessonPage', () => {
     ).toHaveTextContent('Synthétiser');
     fireEvent.click(screen.getByRole('button', { name: 'Fermer le panneau' }));
     expect(
-      screen.getByRole('link', { name: 'Programme test' }),
-    ).toHaveAttribute('href', '/program/programme-test');
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Leçon : Démarrer' }),
+    ).not.toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalledWith(
       '/api/lessons/lesson-1/progress',
       expect.anything(),

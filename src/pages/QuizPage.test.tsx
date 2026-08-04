@@ -214,6 +214,18 @@ describe('QuizPage', () => {
     expect(
       screen.getByRole('button', { name: 'Sommaire' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Leçon : Démarrer' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
+    expect(
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
     expect(screen.getByText('Question 1 sur 4')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Question suivante' }));

@@ -169,6 +169,18 @@ describe('ConceptAssessmentPage', () => {
     expect(
       screen.getByRole('button', { name: 'Sommaire' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Leçon : Démarrer' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
+    expect(
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
+    ).not.toBeInTheDocument();
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
     expect(
       screen.queryByText('Les données sont indispensables.'),

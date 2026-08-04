@@ -1,7 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/preact';
+import { route } from 'preact-router';
 
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { MobileLayout } from '@/components/layout/MobileLayout';
+
+vi.mock('preact-router', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('preact-router')>()),
+  route: vi.fn(),
+}));
+
+function PageWithStableBackTarget() {
+  useBackNavigationTarget('/program/programme-test/module/premiers-pas');
+
+  return <h1>Leçon</h1>;
+}
 
 describe('navigation accessible', () => {
   afterEach(() => vi.restoreAllMocks());
@@ -43,6 +56,33 @@ describe('navigation accessible', () => {
 
     expect(button).toHaveFocus();
     expect(back).toHaveBeenCalledTimes(1);
+  });
+
+  it('utilise la destination contextuelle stable avant l’historique', () => {
+    window.history.pushState(
+      {},
+      '',
+      '/program/programme-test/lesson/demarrer',
+    );
+    const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+
+    render(
+      <MobileLayout
+        canGoBack
+        currentPath="/program/programme-test/lesson/demarrer"
+      >
+        <PageWithStableBackTarget />
+      </MobileLayout>,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Revenir à la page précédente' }),
+    );
+
+    expect(back).not.toHaveBeenCalled();
+    expect(route).toHaveBeenCalledWith(
+      '/program/programme-test/module/premiers-pas',
+    );
   });
 
   it('annonce la page active sans dépendre uniquement de la couleur', () => {

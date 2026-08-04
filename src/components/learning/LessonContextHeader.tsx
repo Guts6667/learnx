@@ -1,4 +1,5 @@
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { LessonDetail } from '@/features/curriculum/queries';
@@ -51,45 +52,22 @@ export function LessonContextHeader({
   percent?: number;
 }) {
   const program = lesson.module.stage.program;
-  const stage = lesson.module.stage;
   const module = lesson.module;
+  const canonicalLessonHref = lessonHref(lesson);
+  const moduleHref = `/program/${encodeURIComponent(program.slug)}/module/${encodeURIComponent(module.slug)}`;
+
+  useBackNavigationTarget(activityTitle ? canonicalLessonHref : moduleHref);
 
   return (
     <header class="space-y-4">
-      <nav aria-label="Fil d’Ariane de la leçon">
-        <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
-          <li>
-            <a
-              class="text-cyan-300 underline"
-              href={`/program/${program.slug}`}
-            >
-              {program.title}
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <a
-              class="text-cyan-300 underline"
-              href={`/program/${program.slug}/stage/${stage.slug}`}
-            >
-              {stage.title}
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <a
-              class="text-cyan-300 underline"
-              href={`/program/${program.slug}/module/${module.slug}`}
-            >
-              {module.title}
-            </a>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" class="text-slate-200">
-            {activityTitle ?? lesson.title}
-          </li>
-        </ol>
-      </nav>
+      {activityTitle ? (
+        <a
+          class="inline-flex min-h-11 max-w-full items-center rounded-lg text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+          href={canonicalLessonHref}
+        >
+          Leçon : {lesson.title}
+        </a>
+      ) : null}
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
@@ -101,16 +79,10 @@ export function LessonContextHeader({
         </div>
         {lesson.isPublished ? null : <Badge tone="warning">Brouillon</Badge>}
       </div>
-      <div class="flex flex-wrap items-center gap-4 text-sm text-slate-300">
+      <div class="text-sm text-slate-300">
         {lesson.estimatedMinutes === null ? null : (
           <span>{lesson.estimatedMinutes} min</span>
         )}
-        <a
-          class="inline-flex min-h-11 items-center text-cyan-300 underline"
-          href={`/program/${program.slug}/module/${module.slug}`}
-        >
-          Retour au module
-        </a>
       </div>
       {percent === undefined ? null : (
         <ProgressBar

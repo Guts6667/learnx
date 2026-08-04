@@ -30,26 +30,40 @@ export function ProfilePage() {
         id="profile-title"
         title={user.displayName}
       />
-      <Card class="max-w-2xl space-y-5">
-        <div>
+      <Card class="max-w-2xl">
+        <div class="min-w-0">
           <p class="text-sm text-slate-400">Adresse e-mail</p>
           <p class="mt-1 break-all text-base text-slate-100">{user.email}</p>
         </div>
-        {user.role === 'ADMIN' ? (
-          <a
-            class="inline-flex min-h-11 items-center text-cyan-300 underline"
-            href="/admin"
-          >
-            Ouvrir l’administration
-          </a>
-        ) : null}
-        <Button
-          isLoading={logoutMutation.isPending}
-          onClick={handleLogout}
-          variant="secondary"
+        <div
+          aria-labelledby="profile-actions-title"
+          class="mt-6 space-y-3 border-t border-slate-800 pt-5"
         >
-          Se déconnecter
-        </Button>
+          <h2
+            class="text-sm font-semibold text-slate-300"
+            id="profile-actions-title"
+          >
+            Actions
+          </h2>
+          <div class="flex w-full min-w-0 flex-col gap-3">
+            {user.role === 'ADMIN' ? (
+              <a
+                class="inline-flex min-h-11 w-full min-w-0 items-center justify-center rounded-xl bg-slate-800 px-4 py-2.5 text-center text-sm font-semibold text-slate-100 transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                href="/admin"
+              >
+                Ouvrir l’administration
+              </a>
+            ) : null}
+            <Button
+              class="w-full min-w-0"
+              isLoading={logoutMutation.isPending}
+              onClick={handleLogout}
+              variant="ghost"
+            >
+              Se déconnecter
+            </Button>
+          </div>
+        </div>
       </Card>
     </section>
   );

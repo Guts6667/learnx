@@ -186,6 +186,43 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
+  it('empile les actions du profil administrateur sans concurrence tactile', async () => {
+    window.history.pushState({}, '', '/profile');
+    const user = {
+      id: 'admin-1',
+      email:
+        'administrateur-avec-une-adresse-volontairement-longue@example.com',
+      displayName: 'Admin',
+      role: 'ADMIN',
+    };
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(jsonResponse({ user }))),
+    );
+
+    render(<App />);
+
+    const email = await screen.findByText(user.email);
+    const actions = screen.getByRole('heading', { level: 2, name: 'Actions' });
+    const adminLink = screen.getByRole('link', {
+      name: 'Ouvrir l’administration',
+    });
+    const logout = screen.getByRole('button', { name: 'Se déconnecter' });
+
+    expect(email).toHaveClass('break-all');
+    expect(adminLink).toHaveAttribute('href', '/admin');
+    expect(adminLink).toHaveClass('min-h-11', 'w-full');
+    expect(adminLink).not.toHaveClass('underline');
+    expect(logout).toHaveClass('min-h-11', 'w-full');
+    expect(actions.compareDocumentPosition(adminLink)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(adminLink.compareDocumentPosition(logout)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(adminLink.parentElement).toHaveClass('flex-col');
+  });
+
   it('restaure directement une URL admin profonde', async () => {
     const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
     const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';

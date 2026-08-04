@@ -99,10 +99,16 @@ describe('ExercisePage', () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Programme test' }),
-    ).toHaveAttribute('href', '/program/programme-test');
+      screen.getByRole('link', { name: 'Leçon : Démarrer' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
     expect(
-      screen.queryByRole('link', { name: 'Retour à la leçon' }),
+      screen.queryByRole('link', { name: 'Programme test' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Introduction' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Premiers pas' }),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Sommaire' }));
     expect(
