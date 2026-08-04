@@ -162,11 +162,13 @@ function getAutosaveLabel(status: AutosaveStatus, hasTitle: boolean): string {
 }
 
 function NoteEditor({ note }: { note: NoteDetail }) {
-  const { isPending, save } = useNoteMutation();
+  const { error, isPending, remove, save } = useNoteMutation();
   const [title, setTitle] = useState(note.title);
   const [markdown, setMarkdown] = useState(note.markdown);
   const [mode, setMode] = useState<'preview' | 'write'>('write');
   const [status, setStatus] = useState<AutosaveStatus>('saved');
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
 
   function markDirty() {
@@ -189,6 +191,21 @@ function NoteEditor({ note }: { note: NoteDetail }) {
 
     return () => window.clearTimeout(timeout);
   }, [isPending, markdown, note.id, save, status, title]);
+
+  useEffect(() => {
+    if (!isConfirmingDelete) return;
+
+    window.requestAnimationFrame(() => cancelDeleteRef.current?.focus());
+  }, [isConfirmingDelete]);
+
+  async function deleteNote() {
+    try {
+      await remove(note.id);
+      void route('/notes');
+    } catch {
+      // L’erreur normalisée est affichée dans la zone de confirmation.
+    }
+  }
 
   return (
     <div class="space-y-5">
@@ -316,6 +333,66 @@ function NoteEditor({ note }: { note: NoteDetail }) {
       ) : (
         <Badge tone="neutral">Note personnelle</Badge>
       )}
+      <Card class="space-y-4 border border-red-950/80">
+        {isConfirmingDelete ? (
+          <div
+            aria-describedby="delete-note-description"
+            aria-labelledby="delete-note-title"
+            class="space-y-4"
+            role="alertdialog"
+          >
+            <div>
+              <h2 class="font-semibold text-red-200" id="delete-note-title">
+                Supprimer définitivement cette note ?
+              </h2>
+              <p
+                class="mt-2 text-sm leading-6 text-slate-300"
+                id="delete-note-description"
+              >
+                « {note.title} » sera supprimée. Cette action est irréversible.
+              </p>
+            </div>
+            {error ? (
+              <ErrorState description="La note n’a pas pu être supprimée." />
+            ) : null}
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <Button
+                class="w-full sm:w-auto"
+                disabled={isPending}
+                elementRef={cancelDeleteRef}
+                onClick={() => setIsConfirmingDelete(false)}
+                variant="secondary"
+              >
+                Annuler
+              </Button>
+              <Button
+                class="w-full sm:w-auto"
+                isLoading={isPending}
+                onClick={() => void deleteNote()}
+                variant="danger"
+              >
+                Confirmer la suppression
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div class="space-y-3">
+            <div>
+              <h2 class="font-semibold">Supprimer la note</h2>
+              <p class="mt-2 text-sm leading-6 text-slate-300">
+                La suppression est définitive et nécessite une confirmation.
+              </p>
+            </div>
+            <Button
+              disabled={isPending}
+              onClick={() => setIsConfirmingDelete(true)}
+              variant="danger"
+            >
+              Supprimer la note
+            </Button>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }

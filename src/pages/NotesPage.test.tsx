@@ -257,4 +257,48 @@ describe('NotePage', () => {
       screen.getByRole('link', { name: 'Ouvrir la leçon' }),
     ).toHaveAttribute('href', '/program/programme-test/lesson/demarrer');
   });
+
+  it('exige une confirmation avant de supprimer définitivement la note', async () => {
+    const fetchMock = vi.fn((_path: string, init?: RequestInit) => {
+      if (init?.method === 'DELETE') {
+        return Promise.resolve(new Response(null, { status: 204 }));
+      }
+
+      return Promise.resolve(jsonResponse(noteResponse()));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <NotePage noteId={noteId} />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Supprimer la note' }),
+    );
+
+    const dialog = screen.getByRole('alertdialog', {
+      name: 'Supprimer définitivement cette note ?',
+    });
+    expect(dialog).toHaveTextContent('Cette action est irréversible.');
+
+    await act(
+      () =>
+        new Promise<void>((resolve) =>
+          window.requestAnimationFrame(() => resolve()),
+        ),
+    );
+    expect(screen.getByRole('button', { name: 'Annuler' })).toHaveFocus();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Confirmer la suppression' }),
+    );
+
+    await act(() => Promise.resolve());
+    expect(fetchMock).toHaveBeenCalledWith(
+      `/api/notes/${noteId}`,
+      expect.objectContaining({ method: 'DELETE' }),
+    );
+  });
 });
