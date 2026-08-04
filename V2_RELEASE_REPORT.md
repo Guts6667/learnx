@@ -8,22 +8,25 @@ Branches auditées : `dev` et branche locale d'intégration
 HEAD de code audité : `b378611`
 (`fix(release): close V2 security and accessibility blockers`)
 
-Référence distante intégrée : `origin/dev = ec306e6`
-(`docs(release): mark V2 candidate ready to merge`)
+Référence distante intégrée : `origin/dev = 9ce64a8`
+(`fix(seed): allow atomic full curriculum import`)
 
 Commit de fusion préparé : `3d360f2b89a6ff20f831b90f531263d9a6e8b05f`
 (`merge(release): prepare V2 integration into main`), local et non poussé.
+HEAD technique de la branche d'intégration : `280d54ecb0dd8ee5551f8caa62dcbe35837254c8`,
+incluant le correctif de seed, local et non poussé. Le rapport final est committé
+séparément au-dessus de ce HEAD.
 
 Production/main observée : `origin/main = 760103d`
-Écart observé : `dev` possède 40 commits propres et `main` un commit propre ;
-le diff de la base commune vers `dev` couvre 213 fichiers, 70 524 insertions et
+Écart observé : `dev` possède 41 commits propres et `main` un commit propre ;
+le diff de la base commune vers `dev` couvre 213 fichiers, 70 539 insertions et
 4 800 suppressions.
 
 ## Synthèse exécutive
 
 **Verdict : GO technique pour préparer le merge `dev` vers `main`.**
 
-La release candidate compile, passe les 289 tests unitaires/API et les 24 tests
+La release candidate compile, passe les 290 tests unitaires/API et les 24 tests
 Playwright de la matrice existante. Le schéma Prisma est valide et la CI a
 appliqué les 16 migrations sur une branche Neon éphémère. Les protections de propriété,
 l’atomicité de progression, la publication en cascade, le parcours centré sur
@@ -62,11 +65,11 @@ ci-dessous.
 
 | Catégorie | Sévérité | État et preuve | Action restante |
 | --- | --- | --- | --- |
-| Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#23 verts | aucune |
+| Code à corriger | aucune P0/P1 | suites locales, axe, build et Integration #22/#23 verts ; timeout du seed complet corrigé dans `9ce64a8` | aucune |
 | Conflits Git | résolu localement | 4 add/add sur `PEDAGOGY_SPEC_018–021`, 2 modify/modify sur le seed et ses tests ; commit `3d360f2`, validation de cohérence et Integration Neon complètes | valider le SHA d'intégration |
 | Configuration propriétaire | P1 opérationnelle | `build:vercel` lance `prisma migrate deploy`; l'isolation des valeurs Vercel Preview n'a pas pu être prouvée car elles sont masquées | Rayan confirme Preview sur une branche Neon dédiée et prépare le point de restauration Production |
 | Contrôle manuel | P2 | axe/WebKit/texte 200 % verts ; VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge |
-| Publication de contenu | P1 opérationnelle | `build:vercel` ne lance jamais `prisma:seed` | audit lecture seule puis seed séparé uniquement après sauvegarde et autorisation |
+| Publication de contenu | P1 opérationnelle | Production contient 5 étapes/21 leçons ; dry-run deux fois sur clone validé sans modification des données personnelles | seed Production séparé uniquement après sauvegarde et autorisation |
 | Dette V3 | P2 | en-têtes, pagination, fréquence de `lastUsedAt`, redaction des logs | ne bloque pas le merge V2 |
 
 Le verdict est donc **GO code pour merger après autorisation**, mais **NO-GO
@@ -236,7 +239,7 @@ release sur l'environnement final.
 | --- | --- |
 | `pnpm lint` | succès |
 | `pnpm typecheck` | succès |
-| `pnpm test` | succès, 56 fichiers et 289 tests |
+| `NODE_OPTIONS=--no-experimental-webstorage pnpm test` | succès, 56 fichiers et 290 tests ; option requise localement avec Node 24 pour laisser jsdom fournir WebStorage |
 | `pnpm build` | succès, bundle JS 165,38 kB / 48,12 kB gzip |
 | `pnpm test:e2e` | succès, 24 tests sur 4 projets, axe inclus |
 | test offline ciblé Chromium/WebKit | succès, 2/2 |
@@ -249,6 +252,7 @@ release sur l'environnement final.
 | `pnpm deployment:check -- https://learnx-eight.vercel.app` | succès anonyme |
 | `pnpm audit --prod` | succès; aucune vulnérabilité connue |
 | `git diff --check` | succès |
+| `pnpm prisma:seed` ×2 sur clone Production | succès après `9ce64a8`; 13 étapes/70 leçons, comptes stables et empreintes personnelles inchangées |
 
 Le seed n’a pas été rejoué sur la base partagée. La procédure du dépôt interdit
 à juste titre les écritures d’intégration sans branche éphémère identifiée.
@@ -331,8 +335,8 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 
 | Gate | Preuve | État |
 | --- | --- | --- |
-| lint, typecheck, 289 tests, build | branche `dev` et worktree d'intégration | GO |
-| seed ciblé et cohérence 13 étapes | 20 tests seed + contrôle croisé JSON | GO |
+| lint, typecheck, 290 tests, build | branche `dev` et worktree d'intégration | GO |
+| seed ciblé et cohérence 13 étapes | 21 tests seed + contrôle croisé JSON + deux seeds réels sur clone | GO |
 | Playwright desktop/320/390/WebKit/axe | 24/24 sur `dev` et branche d'intégration | GO |
 | Integration Neon | runs #22/#23 sur `dev`, puis commit `3d360f2` validé sur `br-damp-hill-ase0imqf`; migrations/Functions/navigateurs verts, branche supprimée | GO |
 | V2-012 | axe sans sérieux/critique, clavier/focus, 200 %, mouvement réduit | GO automatisé |
@@ -345,7 +349,7 @@ Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 
 ## Commits candidats au merge
 
-La plage candidate comprend les 40 commits propres à `dev` jusqu'à `ec306e6`. Elle comprend le
+La plage candidate comprend les 41 commits propres à `dev` jusqu'à `9ce64a8`. Elle comprend le
 cadrage V2, V2-001 à V2-011, les migrations V2-008A/B, les contenus des étapes
 5 à 13, les correctifs UX, la suppression de note et le retrait de `.DS_Store`.
 La liste exacte est obtenue par :
@@ -408,6 +412,23 @@ NO-GO absolu pour les nouvelles migrations.
 
 Le déploiement Vercel ne lance pas `prisma:seed`. Merger les specs et le seed ne
 rend donc pas automatiquement les étapes 5–13 visibles dans la base Production.
+
+La lecture seule du 4 août 2026 confirme l'état courant : 1 programme, 5 étapes,
+6 modules et 21 leçons. Les étapes 1–4 sont publiées ; l'étape 5 et ses quatre
+leçons existent en brouillon ; les étapes 6–13 sont absentes. Un seed séparé
+sera donc nécessaire pour charger ces dernières.
+
+Le premier dry-run du seed complet sur clone a détecté un timeout atomique à
+120 secondes et a rollbacké sans état partiel. `9ce64a8` porte le budget à dix
+minutes. Deux exécutions suivantes ont réussi sur un nouveau clone : 13 étapes,
+22 modules, 70 leçons, 403 blocs, 400 ressources, 210 notions/évaluations,
+1 050 questions et 13 évaluations finales. Les 210 activités canoniques se
+répartissent en 8 tâches et 202 exercices ; 55 tâches et 8 exercices historiques
+restent non canoniques pour préserver l'historique. Les empreintes des comptes,
+sessions, progressions, reprises, notes, tentatives, soumissions, révisions et
+reports de complétion sont strictement identiques avant/après et les deux seeds
+produisent les mêmes comptes.
+
 Après le déploiement technique :
 
 1. lire les comptes et statuts Production sans écrire ;
