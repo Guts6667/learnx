@@ -14,6 +14,22 @@ enum Role {
   @@map("user_role")
 }
 
+enum AccountStatus {
+  ACTIVE    @map("active")
+  SUSPENDED @map("suspended")
+
+  @@map("account_status")
+}
+
+enum AccessRequestStatus {
+  PENDING_EMAIL    @map("pending_email")
+  PENDING_APPROVAL @map("pending_approval")
+  APPROVED         @map("approved")
+  REJECTED         @map("rejected")
+
+  @@map("access_request_status")
+}
+
 enum ProgramStatus {
   DRAFT    @map("draft")
   ACTIVE   @map("active")
@@ -187,6 +203,8 @@ model User {
   passwordHash                 String                        @map("password_hash")
   displayName                  String                        @map("display_name")
   role                         Role                          @default(USER)
+  accountStatus                AccountStatus                 @default(ACTIVE) @map("account_status")
+  suspendedAt                  DateTime?                     @map("suspended_at")
   createdAt                    DateTime                      @default(now()) @map("created_at")
   updatedAt                    DateTime                      @updatedAt @map("updated_at")
   sessions                     Session[]
@@ -205,6 +223,9 @@ model User {
   notes                        Note[]
   moduleRuns                   ModuleRun[]
   activityCompletionCarryovers ActivityCompletionCarryover[]
+  reviewedAccessRequests       AccessRequest[]               @relation("AccessRequestReviewer")
+  activatedAccessRequest       AccessRequest?                @relation("ActivatedAccessRequest")
+  issuedAccessInvitations      AccessInvitation[]            @relation("AccessInvitationIssuer")
 
   @@map("users")
 }
@@ -230,6 +251,62 @@ model LoginRateLimit {
 
   @@index([windowStartedAt])
   @@map("login_rate_limits")
+}
+
+model AccessRequest {
+  id                 String              @id @default(uuid()) @db.Uuid
+  emailNormalized    String              @map("email_normalized")
+  status             AccessRequestStatus @default(PENDING_EMAIL)
+  version            Int                 @default(1)
+  emailVerifiedAt    DateTime?           @map("email_verified_at")
+  reviewedAt         DateTime?           @map("reviewed_at")
+  reviewedByUserId   String?             @map("reviewed_by_user_id") @db.Uuid
+  rejectionReason    String?             @map("rejection_reason")
+  activatedUserId    String?             @unique @map("activated_user_id") @db.Uuid
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  reviewedBy         User?               @relation("AccessRequestReviewer", fields: [reviewedByUserId], references: [id], onDelete: Restrict)
+  activatedUser      User?               @relation("ActivatedAccessRequest", fields: [activatedUserId], references: [id], onDelete: SetNull)
+  emailVerifications EmailVerification[]
+  invitations        AccessInvitation[]
+
+  @@index([emailNormalized, status])
+  @@index([status, createdAt])
+  @@map("access_requests")
+}
+
+model EmailVerification {
+  id              String        @id @default(uuid()) @db.Uuid
+  accessRequestId String        @map("access_request_id") @db.Uuid
+  tokenHash       String        @unique @map("token_hash")
+  expiresAt       DateTime      @map("expires_at")
+  consumedAt      DateTime?     @map("consumed_at")
+  invalidatedAt   DateTime?     @map("invalidated_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  accessRequest   AccessRequest @relation(fields: [accessRequestId], references: [id], onDelete: Cascade)
+
+  @@index([accessRequestId, expiresAt])
+  @@index([expiresAt])
+  @@map("email_verifications")
+}
+
+model AccessInvitation {
+  id              String        @id @default(uuid()) @db.Uuid
+  accessRequestId String        @map("access_request_id") @db.Uuid
+  tokenHash       String        @unique @map("token_hash")
+  assignedRole    Role          @default(USER) @map("assigned_role")
+  expiresAt       DateTime      @map("expires_at")
+  consumedAt      DateTime?     @map("consumed_at")
+  invalidatedAt   DateTime?     @map("invalidated_at")
+  invitedByUserId String?       @map("invited_by_user_id") @db.Uuid
+  createdAt       DateTime      @default(now()) @map("created_at")
+  accessRequest   AccessRequest @relation(fields: [accessRequestId], references: [id], onDelete: Cascade)
+  invitedBy       User?         @relation("AccessInvitationIssuer", fields: [invitedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([accessRequestId, expiresAt])
+  @@index([expiresAt])
+  @@index([invitedByUserId])
+  @@map("access_invitations")
 }
 
 model Program {

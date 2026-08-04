@@ -11,8 +11,14 @@ Toutes les clés primaires utilisent UUID.
 - password_hash
 - display_name
 - role : user | admin
+- account_status : active | suspended
+- suspended_at nullable, obligatoire lorsque le compte est suspendu
 - created_at
 - updated_at
+
+Les comptes V2 existants sont backfillés en `active`. Un compte suspendu reste
+un compte existant : la révocation effective de ses sessions et les contrôles
+runtime sont livrés séparément par V3-008.
 
 ### sessions
 
@@ -32,6 +38,53 @@ Toutes les clés primaires utilisent UUID.
 
 Cette table ne contient ni adresse IP ni e-mail en clair. Elle fournit une
 fenêtre de limitation commune à toutes les Functions serverless.
+
+### access_requests
+
+- id
+- email_normalized
+- status : pending_email | pending_approval | approved | rejected
+- version, strictement positif
+- email_verified_at nullable
+- reviewed_at nullable
+- reviewed_by_user_id nullable
+- rejection_reason nullable
+- activated_user_id nullable et unique
+- created_at
+- updated_at
+
+Une seule demande ouverte peut exister par e-mail normalisé. Les transitions
+restent explicites : une demande doit être vérifiée avant revue, et une demande
+refusée conserve une raison non vide.
+
+### email_verifications
+
+- id
+- access_request_id
+- token_hash unique
+- expires_at
+- consumed_at nullable
+- invalidated_at nullable
+- created_at
+
+Le token brut n'est jamais stocké. Une demande ne peut avoir qu'un token actif
+et celui-ci ne peut pas être à la fois consommé et invalidé.
+
+### access_invitations
+
+- id
+- access_request_id
+- token_hash unique
+- assigned_role : user | admin
+- expires_at
+- consumed_at nullable
+- invalidated_at nullable
+- invited_by_user_id nullable
+- created_at
+
+Une invitation ne peut être créée que pour une demande approuvée. Une seule
+invitation active est autorisée par demande ; la création du compte et le choix
+du mot de passe restent hors du périmètre de V3-002.
 
 ## Programmes
 

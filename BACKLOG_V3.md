@@ -180,6 +180,9 @@ dépendances sont satisfaites et que chaque ticket garde un diff autonome.
 
 **Priorité : P0. Dépendances : V3-001.**
 
+**Statut : implémenté sur `dev` — migration additive à valider sur une branche
+Neon isolée avant toute promotion.**
+
 ### Périmètre
 
 - Ajouter les entités/états validés pour demandes, vérifications, invitations et
