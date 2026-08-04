@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "specId": "PEDAGOGY_SPEC_067",
+  "programSlug": "fondamentaux-psychologie",
+  "stageSlug": "integration-preuves",
+  "moduleSlug": "projet-integrateur",
+  "lesson": {
+    "title": "Formuler une question délimitée",
+    "slug": "formuler-question-delimitee",
+    "summary": "Transformer un thème psychologique en question explicite, faisable et révisable, sans forcer un cadre unique ni promettre une réponse que les données ne peuvent fournir.",
+    "position": 1,
+    "estimatedMinutes": 105,
+    "objectives": [
+      "Distinguer thème, problème, question de recherche et décision pratique.",
+      "Choisir et adapter un cadre de formulation au type de question et de données visé.",
+      "Délimiter population, phénomène, contexte, comparaison, résultats et horizon sans fausse précision."
+    ],
+    "prerequisites": [
+      "Distinguer description, association et causalité.",
+      "Reconnaître les principaux plans de recherche en psychologie.",
+      "Identifier les limites éthiques et pratiques d’une enquête."
+    ],
+    "contentBlocks": [
+      {
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un thème comme « stress au travail » n’est pas encore une question. Une question délimitée nomme ce que l’on veut comprendre, auprès de qui, dans quel contexte et pour quel usage. Elle distingue la connaissance recherchée de la décision qui pourrait ensuite être prise : établir une fréquence, décrire une expérience, examiner une association ou estimer un effet ne mobilise ni les mêmes données ni les mêmes méthodes.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Commencer par écrire une phrase libre : population ou groupe concerné, phénomène ou intervention, résultat ou expérience d’intérêt, contexte et horizon. Ajouter ensuite la nature de la relation recherchée — description, association, expérience vécue ou effet causal — et la décision que le dossier doit éclairer. Cette première version rend visibles les termes ambigus et les informations manquantes.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "PICO organise population, intervention, comparaison et résultat ; PECO remplace l’intervention par une exposition ; SPIDER aide à penser échantillon, phénomène d’intérêt, design, évaluation et type de recherche dans certains projets qualitatifs ou mixtes. Ce sont des aides de cadrage, pas des formulaires à remplir intégralement. Un élément peut rester ouvert s’il n’est pas pertinent, et un autre cadre — par exemple PCC pour une revue exploratoire — peut mieux convenir au type de synthèse.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024", "ohat-handbook-2019", "cooke-spider-2012", "jbi-manual-question-2024"]
+        }
+      },
+      {
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "La précision utile n’est pas l’accumulation de critères. Une question trop large rend la recherche et la comparaison incohérentes ; une question trop étroite peut exclure des populations, mesures ou contextes pertinents et produire une illusion de certitude. Les termes normatifs comme « efficace », « normal » ou « résilient » doivent être définis par des observations ou indicateurs et non supposés partagés.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
+        }
+      },
+      {
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "Tester la question par une recherche exploratoire courte : les concepts sont-ils utilisés de la même manière ? Les résultats possibles répondraient-ils réellement à la question ? Les populations et contextes sont-ils comparables ? Noter toute reformulation avec sa raison. Affiner une question après exploration est légitime si le changement reste transparent et ne sert pas à sélectionner rétrospectivement une réponse favorable.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024"]
+        }
+      },
+      {
+        "type": "rich_text",
+        "position": 6,
+        "content": {
+          "text": "La version prête à enquêter tient en une phrase, accompagnée d’un périmètre : inclusions, exclusions, concepts à opérationnaliser, type de preuve attendu, contraintes éthiques et limites d’usage. Elle indique aussi ce que le dossier ne permettra pas de conclure. Une bonne question est suffisamment stable pour guider la recherche, mais explicitement révisable si la littérature révèle un problème de faisabilité ou de pertinence.",
+          "sourceKeys": ["cochrane-handbook-ch2-2024", "ohat-handbook-2019", "jbi-manual-question-2024"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "cochrane-handbook-ch2-2024",
+        "title": "Cochrane Handbook — Chapter 2: Determining the scope of the review and the questions it will address",
+        "type": "document",
+        "url": "https://training.cochrane.org/handbook/current/chapter-02",
+        "author": "Thomas J., Kneale D., McKenzie J. E., Brennan S. E. et Bhaumik S.",
+        "citation": "Thomas, J., Kneale, D., McKenzie, J. E., Brennan, S. E., & Bhaumik, S. (2024). Chapter 2: Determining the scope of the review and the questions it will address. In Cochrane Handbook for Systematic Reviews of Interventions (Version 6.5; updated August 2023).",
+        "description": "Lire les sections sur la portée, la pertinence des parties prenantes, PICO et l’affinement transparent de la question.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1
+      },
+      {
+        "key": "jbi-manual-question-2024",
+        "title": "JBI Manual for Evidence Synthesis — Developing the title and question",
+        "type": "document",
+        "url": "https://jbi-global.atlassian.net/wiki/spaces/MANUAL/pages/355862667/10.2.2%2BDeveloping%2Bthe%2Btitle%2Band%2Bquestion",
+        "author": "Peters M. D. J. et al.",
+        "citation": "Peters, M. D. J., et al. (2020). Scoping Reviews, section 10.2.2: Developing the title and question. In E. Aromataris et al. (Eds.), JBI Manual for Evidence Synthesis. JBI, 2024. https://doi.org/10.46658/JBIMES-24-09",
+        "description": "Étudier l’usage de PCC pour une revue exploratoire et l’alignement entre question, périmètre et critères, sans en faire un gabarit universel.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "ohat-handbook-2019",
+        "title": "OHAT Handbook for Conducting a Literature-Based Health Assessment Using OHAT Approach",
+        "type": "document",
+        "url": "https://ntp.niehs.nih.gov/sites/default/files/ntp/ohat/pubs/handbookmarch2019_508.pdf",
+        "author": "Office of Health Assessment and Translation",
+        "citation": "Office of Health Assessment and Translation. (2019). Handbook for Conducting a Literature-Based Health Assessment Using OHAT Approach (updated March 4, 2019). National Toxicology Program.",
+        "description": "Observer comment une question d’exposition est structurée par PECO et reliée aux critères d’éligibilité.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "cooke-spider-2012",
+        "title": "Beyond PICO: The SPIDER Tool for Qualitative Evidence Synthesis",
+        "type": "article",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22829486/",
+        "author": "Cooke A., Smith D. et Booth A.",
+        "citation": "Cooke, A., Smith, D., & Booth, A. (2012). Beyond PICO: The SPIDER tool for qualitative evidence synthesis. Qualitative Health Research, 22(10), 1435–1443. https://doi.org/10.1177/1049732312452938",
+        "description": "Comprendre l’intention de SPIDER et ses limites à partir de l’article méthodologique original.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Question, visée et périmètre",
+        "slug": "question-visee-perimetre",
+        "description": "Une question explicite relie une connaissance recherchée à un périmètre et à un usage, sans confondre résultat scientifique et décision.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question et périmètre", "questionCount": 5}
+      },
+      {
+        "title": "Cadres de formulation flexibles",
+        "slug": "cadres-formulation-flexibles",
+        "description": "PICO, PECO, SPIDER et d’autres cadres soutiennent des questions différentes ; aucun n’impose de remplir toutes ses cases.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["ohat-handbook-2019", "cooke-spider-2012", "jbi-manual-question-2024"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un cadre", "questionCount": 5}
+      },
+      {
+        "title": "Délimitation révisable",
+        "slug": "delimitation-revisable",
+        "description": "Le périmètre équilibre faisabilité et pertinence ; ses révisions sont justifiées et tracées plutôt que pilotées par le résultat souhaité.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"],
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Tester la délimitation", "questionCount": 5}
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Passer du thème à la question",
+        "description": "Transformer trois thèmes larges en questions descriptive, associative et causale ; expliciter pour chacune la population, le contexte, le résultat et l’usage.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1
+      },
+      {
+        "title": "Choisir sans forcer un cadre",
+        "description": "Comparer PICO, PECO, SPIDER et un cadre JBI sur deux projets fictifs ; retenir le plus utile, laisser les dimensions non pertinentes ouvertes et justifier.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2
+      },
+      {
+        "title": "Rédiger la question du projet",
+        "description": "Produire une question en une phrase, un périmètre d’inclusion et d’exclusion, les concepts à définir, les limites éthiques et une liste de conclusions impossibles.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3
+      }
+    ]
+  },
+  "editorial": {
+    "status": "editorial_review",
+    "version": "1.0.0",
+    "language": "fr",
+    "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie",
+    "owner": "LearnX",
+    "createdAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-04",
+    "nextReviewAt": "2027-08-04",
+    "references": [
+      {
+        "id": "REF-067-COCHRANE-CH2",
+        "type": "official_handbook",
+        "authors": ["Thomas J.", "Kneale D.", "McKenzie J. E.", "Brennan S. E.", "Bhaumik S."],
+        "organization": "Cochrane",
+        "title": "Chapter 2: Determining the scope of the review and the questions it will address",
+        "year": 2024,
+        "edition": "Version 6.5; updated August 2023",
+        "publication": "Cochrane Handbook for Systematic Reviews of Interventions",
+        "doi": null,
+        "url": "https://training.cochrane.org/handbook/current/chapter-02",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Cochrane terms of use",
+        "status": "verified",
+        "notes": "Guide de synthèse d’interventions ; les principes de cadrage sont transférés prudemment aux projets pédagogiques en psychologie."
+      },
+      {
+        "id": "REF-067-JBI-QUESTION",
+        "type": "official_manual",
+        "authors": ["Peters M. D. J.", "Godfrey C.", "McInerney P.", "Munn Z.", "Tricco A. C.", "Khalil H."],
+        "organization": "JBI",
+        "title": "JBI Manual for Evidence Synthesis: Developing the title and question",
+        "year": 2024,
+        "edition": "Online manual 2024; page published March 26, 2024",
+        "publication": "JBI Manual for Evidence Synthesis",
+        "doi": null,
+        "url": "https://jbi-global.atlassian.net/wiki/spaces/MANUAL/pages/355862667/10.2.2%2BDeveloping%2Bthe%2Btitle%2Band%2Bquestion",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "JBI terms of use",
+        "status": "verified",
+        "notes": "Cette section porte sur les revues exploratoires et recommande PCC ; elle illustre un cadre adapté à un type de synthèse, pas un quota universel de critères."
+      },
+      {
+        "id": "REF-067-OHAT-PECO",
+        "type": "official_handbook",
+        "authors": ["Office of Health Assessment and Translation"],
+        "organization": "National Toxicology Program",
+        "title": "OHAT Handbook for Conducting a Literature-Based Health Assessment Using OHAT Approach",
+        "year": 2019,
+        "edition": "Updated March 4, 2019",
+        "publication": "National Toxicology Program",
+        "doi": null,
+        "url": "https://ntp.niehs.nih.gov/sites/default/files/ntp/ohat/pubs/handbookmarch2019_508.pdf",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "B",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "U.S. government publication",
+        "status": "verified",
+        "notes": "PECO est présenté dans un contexte d’évaluation des expositions ; transfert hors de ce cadre à justifier."
+      },
+      {
+        "id": "REF-067-COOKE-SPIDER",
+        "type": "methodological_article",
+        "authors": ["Cooke A.", "Smith D.", "Booth A."],
+        "organization": null,
+        "title": "Beyond PICO: The SPIDER Tool for Qualitative Evidence Synthesis",
+        "year": 2012,
+        "edition": null,
+        "publication": "Qualitative Health Research, 22(10), 1435–1443",
+        "doi": "10.1177/1049732312452938",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/22829486/",
+        "accessedAt": "2026-08-04",
+        "evidenceLevel": "C",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Abstract open; full text subject to publisher access",
+        "status": "verified",
+        "notes": "Article méthodologique proposant SPIDER ; il ne démontre pas sa supériorité universelle."
+      }
+    ],
+    "contentBlockSources": [
+      {"contentBlockPosition": 1, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "Sections 2.2–2.3", "supports": "Portée, objectifs et types de questions."}, {"referenceId": "REF-067-JBI-QUESTION", "locator": "Scoping review question(s)", "supports": "Question claire reliée au périmètre d’une revue exploratoire."}], "confidence": "high", "confidenceRationale": "Deux manuels méthodologiques convergents.", "notApplicableReason": null},
+      {"contentBlockPosition": 2, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "Formulating review questions", "supports": "Éléments de la question et lien aux objectifs."}, {"referenceId": "REF-067-JBI-QUESTION", "locator": "Scoping review question(s)", "supports": "Clarté de la question et cohérence avec le périmètre."}], "confidence": "high", "confidenceRationale": "Procédure pédagogique dérivée de guides reconnus.", "notApplicableReason": null},
+      {"contentBlockPosition": 3, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "PICO", "supports": "PICO et degré de précision variable."}, {"referenceId": "REF-067-OHAT-PECO", "locator": "PECO statement", "supports": "Population, exposition, comparaison et résultat."}, {"referenceId": "REF-067-COOKE-SPIDER", "locator": "Abstract and SPIDER framework", "supports": "Cadre qualitatif et mixte."}, {"referenceId": "REF-067-JBI-QUESTION", "locator": "PCC mnemonic", "supports": "PCC pour cadrer une revue exploratoire."}], "confidence": "high", "confidenceRationale": "Les définitions proviennent des sources fondatrices ou officielles.", "notApplicableReason": null},
+      {"contentBlockPosition": 4, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "Broad versus narrow reviews", "supports": "Arbitrage entre largeur, pertinence et faisabilité."}, {"referenceId": "REF-067-JBI-QUESTION", "locator": "Question construction", "supports": "Alignement entre titre, question et critères."}], "confidence": "moderate", "confidenceRationale": "Les avertissements sur les termes normatifs relèvent aussi d’une transposition éditoriale.", "notApplicableReason": null},
+      {"contentBlockPosition": 5, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "Section 2.5.2: Changing review questions", "supports": "Affinement transparent après exploration."}], "confidence": "high", "confidenceRationale": "Le manuel autorise l’affinement à condition de le documenter.", "notApplicableReason": null},
+      {"contentBlockPosition": 6, "referenceLinks": [{"referenceId": "REF-067-COCHRANE-CH2", "locator": "Scope and eligibility", "supports": "Question reliée au périmètre et aux critères."}, {"referenceId": "REF-067-OHAT-PECO", "locator": "PECO and eligibility criteria", "supports": "Traduction de la question en critères."}, {"referenceId": "REF-067-JBI-QUESTION", "locator": "Title-question alignment", "supports": "Cohérence finale de la formulation."}], "confidence": "high", "confidenceRationale": "Synthèse convergente de trois guides.", "notApplicableReason": null}
+    ],
+    "resourceChecks": [
+      {"resourceKey": "cochrane-handbook-ch2-2024", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-067-COCHRANE-CH2"], "pedagogicalRationale": "Référence centrale pour relier question, portée et critères.", "learnerInstructions": "Lire les passages sur PICO, largeur de la question et documentation des changements.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Page HTML structurée et consultable au clavier.", "alternativeResourceKey": null, "notes": "Version courante 6.5 vérifiée."},
+      {"resourceKey": "jbi-manual-question-2024", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-067-JBI-QUESTION"], "pedagogicalRationale": "Montre que PCC répond au besoin spécifique de cadrage d’une revue exploratoire.", "learnerInstructions": "Repérer Population, Concept et Contexte, puis comparer cet usage à PICO, PECO et SPIDER sans mémorisation mécanique.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Page HTML ; certains menus peuvent alourdir la navigation mobile.", "alternativeResourceKey": null, "notes": "Page publiée le 26 mars 2024 dans le manuel en ligne 2024."},
+      {"resourceKey": "ohat-handbook-2019", "checkedAt": "2026-08-04", "urlStatus": "ok", "accessType": "open", "language": "en", "referenceIds": ["REF-067-OHAT-PECO"], "pedagogicalRationale": "Exemple officiel de PECO relié à l’éligibilité.", "learnerInstructions": "Lire uniquement la formulation PECO et noter le contexte toxicologique.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "PDF balisé de l’administration américaine.", "alternativeResourceKey": "cochrane-handbook-ch2-2024", "notes": "Ressource optionnelle et spécialisée."},
+      {"resourceKey": "cooke-spider-2012", "checkedAt": "2026-08-04", "urlStatus": "restricted", "accessType": "paid", "language": "en", "referenceIds": ["REF-067-COOKE-SPIDER"], "pedagogicalRationale": "Source originale du cadre SPIDER.", "learnerInstructions": "Lire l’abstract PubMed ; consulter le texte intégral seulement si accessible institutionnellement.", "mediaSegment": null, "transcriptAvailable": null, "accessibilityNotes": "Résumé HTML ouvert ; texte intégral possiblement payant.", "alternativeResourceKey": "jbi-manual-question-2024", "notes": "Ne pas rendre l’achat obligatoire."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "question-visee-perimetre",
+        "assessmentTitle": "Mini-évaluation — Question et périmètre",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel énoncé est déjà une question délimitée ?", "explanation": "Il précise groupe, relation étudiée et résultat sans présumer la réponse.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Chez des étudiants de première année, comment la durée de sommeil est-elle associée à l’attention mesurée en cours ?", "isCorrect": true, "position": 1}, {"label": "Le sommeil", "isCorrect": false, "position": 2}, {"label": "Pourquoi les étudiants dorment-ils mal ?", "isCorrect": false, "position": 3}, {"label": "Prouver que dormir davantage réussit toujours", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Une question de recherche et une décision pratique sont interchangeables.", "explanation": "Les résultats peuvent éclairer une décision sans la déterminer seuls.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Que doit rendre explicite une question bien cadrée ?", "explanation": "Population, phénomène et type de connaissance évitent plusieurs ambiguïtés majeures.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Le groupe ou contexte concerné", "isCorrect": true, "position": 1}, {"label": "Le phénomène ou la relation étudiée", "isCorrect": true, "position": 2}, {"label": "Le type de résultat recherché", "isCorrect": true, "position": 3}, {"label": "La conclusion souhaitée à l’avance", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Que change principalement le passage d’une question descriptive à une question causale ?", "explanation": "L’inférence causale demande un design et des hypothèses adaptés.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Le type de données, de comparaison et d’hypothèses nécessaires", "isCorrect": true, "position": 1}, {"label": "Uniquement le titre", "isCorrect": false, "position": 2}, {"label": "La nécessité de supprimer le contexte", "isCorrect": false, "position": 3}, {"label": "La certitude automatique du résultat", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Comment appelle-t-on l’ensemble des inclusions, exclusions et limites d’une question ?", "explanation": "Il s’agit du périmètre de la question.", "acceptedAnswers": ["périmètre", "perimetre", "périmètre de la question", "scope"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "cadres-formulation-flexibles",
+        "assessmentTitle": "Mini-évaluation — Choisir un cadre",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel cadre met explicitement l’exposition au centre ?", "explanation": "PECO signifie population, exposition, comparaison et résultat.", "acceptedAnswers": [], "position": 1, "options": [{"label": "PECO", "isCorrect": true, "position": 1}, {"label": "PICO", "isCorrect": false, "position": 2}, {"label": "SPIDER", "isCorrect": false, "position": 3}, {"label": "Aucun cadre", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Toutes les cases de PICO doivent être détaillées avec la même précision dans toute question.", "explanation": "Le degré de précision dépend de la question et de la pertinence de chaque élément.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quand SPIDER peut-il être utile ?", "explanation": "Il peut soutenir certaines recherches qualitatives ou mixtes centrées sur une expérience.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Pour une expérience vécue", "isCorrect": true, "position": 1}, {"label": "Pour certaines synthèses qualitatives", "isCorrect": true, "position": 2}, {"label": "Pour certains projets mixtes", "isCorrect": true, "position": 3}, {"label": "Pour imposer un essai randomisé", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Que faire si aucun acronyme ne correspond exactement à la question ?", "explanation": "Le cadre sert la question ; il peut être adapté ou remplacé avec justification.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Adapter ou choisir un autre cadre et documenter ce choix", "isCorrect": true, "position": 1}, {"label": "Modifier la question pour remplir PICO", "isCorrect": false, "position": 2}, {"label": "Ajouter des comparateurs fictifs", "isCorrect": false, "position": 3}, {"label": "Abandonner toute délimitation", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel élément de PECO remplace l’intervention de PICO ?", "explanation": "PECO place l’exposition à cet endroit.", "acceptedAnswers": ["exposition", "l’exposition", "exposure"], "position": 5, "options": []}
+        ]
+      },
+      {
+        "conceptSlug": "delimitation-revisable",
+        "assessmentTitle": "Mini-évaluation — Tester la délimitation",
+        "questions": [
+          {"type": "single_choice", "prompt": "Quel motif justifie le mieux une reformulation après recherche exploratoire ?", "explanation": "Une opérationnalisation absente ou incohérente peut rendre la question infaisable.", "acceptedAnswers": [], "position": 1, "options": [{"label": "Le concept n’est pas mesuré comme prévu dans la littérature disponible", "isCorrect": true, "position": 1}, {"label": "Les premiers résultats contredisent l’idée préférée", "isCorrect": false, "position": 2}, {"label": "On veut obtenir une réponse positive", "isCorrect": false, "position": 3}, {"label": "Un titre plus spectaculaire est possible", "isCorrect": false, "position": 4}]},
+          {"type": "true_false", "prompt": "Toute modification de question après une recherche exploratoire constitue une faute.", "explanation": "Elle peut être nécessaire si sa raison et ses conséquences sont tracées.", "acceptedAnswers": [], "position": 2, "options": [{"label": "Vrai", "isCorrect": false, "position": 1}, {"label": "Faux", "isCorrect": true, "position": 2}]},
+          {"type": "multiple_choice", "prompt": "Quels tests de faisabilité sont pertinents ?", "explanation": "Disponibilité, comparabilité et possibilité de répondre doivent être explorées.", "acceptedAnswers": [], "position": 3, "options": [{"label": "Vérifier l’existence de données adaptées", "isCorrect": true, "position": 1}, {"label": "Examiner les définitions du concept", "isCorrect": true, "position": 2}, {"label": "Tester si les résultats répondraient à la question", "isCorrect": true, "position": 3}, {"label": "Supprimer les résultats défavorables", "isCorrect": false, "position": 4}]},
+          {"type": "single_choice", "prompt": "Quel signe indique une question artificiellement étroite ?", "explanation": "Des critères sans justification peuvent exclure les données pertinentes.", "acceptedAnswers": [], "position": 4, "options": [{"label": "Des exclusions nombreuses sans lien avec la visée", "isCorrect": true, "position": 1}, {"label": "Un contexte explicite", "isCorrect": false, "position": 2}, {"label": "Une population définie", "isCorrect": false, "position": 3}, {"label": "Une limite d’usage annoncée", "isCorrect": false, "position": 4}]},
+          {"type": "short_answer", "prompt": "Quel principe impose de noter pourquoi la question a changé ?", "explanation": "La transparence rend la révision vérifiable.", "acceptedAnswers": ["transparence", "traçabilité", "tracabilite", "documentation transparente"], "position": 5, "options": []}
+        ]
+      }
+    ],
+    "changeLog": [
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_research_question_and_evidence_synthesis_review"}
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Revue humaine en méthodologie de recherche et synthèse des preuves requise.",
+        "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.",
+        "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.",
+        "PICO, PECO, SPIDER et les autres cadres restent des outils flexibles, jamais des quotas à remplir.",
+        "La question et ses révisions doivent conserver une trace explicite et ne pas être ajustées au résultat souhaité."
+      ]
+    }
+  }
+}
