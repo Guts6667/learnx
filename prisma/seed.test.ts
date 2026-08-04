@@ -1,11 +1,21 @@
 import { readFile } from 'node:fs/promises';
 
 import {
+  SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
   readSampleProgram,
   readSampleSeed,
   seedSampleProgram,
   type SeedProgramRepository,
 } from './seed';
+
+describe('seed transaction budget', () => {
+  it('keeps enough time to import the complete sample curriculum atomically', () => {
+    expect(SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS).toEqual({
+      maxWait: 10_000,
+      timeout: 600_000,
+    });
+  });
+});
 
 function createRepository() {
   const assessments = new Map<string, string>();
