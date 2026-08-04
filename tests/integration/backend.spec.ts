@@ -83,7 +83,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
           targetType: 'MODULE',
         },
       }),
-      404,
+      403,
     );
     const unpublishPreviewResponse = await expectStatus(
       await owner.post('/api/admin/publication/preview', {

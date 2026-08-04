@@ -61,8 +61,15 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
       }),
     ).toBeVisible();
     await expect(page.getByText('Contenu pédagogique réel')).toBeVisible();
-    await expect(page.getByText('Mini-évaluation intégration')).toBeVisible();
-    await expect(page.getByText('Exercice intégration')).toBeVisible();
+    await page.getByRole('button', { name: 'Sommaire' }).click();
+    const summary = page.getByRole('dialog', {
+      name: 'Sommaire de la leçon',
+    });
+    await expect(summary).toBeVisible();
+    await expect(
+      summary.getByText('Mini-évaluation intégration'),
+    ).toBeVisible();
+    await expect(summary.getByText('Exercice intégration')).toBeVisible();
   } finally {
     await cleanupIntegrationUsers([email]);
   }
