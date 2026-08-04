@@ -4,42 +4,36 @@ Date de l’audit : 4 août 2026
 
 Branche auditée : `dev`
 
-HEAD fonctionnel audité : `981b780` (`feat(notes): add secure note deletion`)
+HEAD audité : `b378611` (`fix(release): close V2 security and accessibility blockers`)
 
-HEAD technique avant rapport : `4a01ccb` (`chore(repo): stop tracking macOS metadata`)
-
-Référence distante au début du rapport : `origin/dev = 4a01ccb`
+Référence distante : `origin/dev = b378611`
 
 Production/main observée : `origin/main = 760103d`
-Écart technique avant le commit du rapport : 31 commits, 203 fichiers,
-65 731 insertions et 5 686 suppressions.
+Écart observé : `dev` possède 39 commits propres et `main` un commit propre ;
+le diff de la base commune vers `dev` couvre 211 fichiers, 70 526 insertions et
+4 797 suppressions.
 
 ## Synthèse exécutive
 
-**Verdict : NO-GO temporaire. Ne pas merger `dev` vers `main`.**
+**Verdict : GO technique pour préparer le merge `dev` vers `main`.**
 
-La release candidate compile, passe les 286 tests unitaires/API et les 20 tests
-Playwright de la matrice existante. Le schéma Prisma est valide et la base Neon
-configurée annonce les 15 migrations à jour. Les protections de propriété,
+La release candidate compile, passe les 289 tests unitaires/API et les 24 tests
+Playwright de la matrice existante. Le schéma Prisma est valide et la CI a
+appliqué les 16 migrations sur une branche Neon éphémère. Les protections de propriété,
 l’atomicité de progression, la publication en cascade, le parcours centré sur
 la leçon, la navigation responsive et la politique hors ligne ont des preuves
 locales solides.
 
-La clôture officielle reste bloquée par quatre éléments :
+Les quatre bloqueurs initiaux sont levés : le workflow `Integration` #22 est
+vert, axe est exécuté sur les vues critiques, le texte à 200 % et la réduction
+de mouvement sont couverts, le rate limit de connexion est partagé en base et
+l'inscription publique est désactivée en production. Hono a également été mis
+à jour et `pnpm audit --prod` ne signale plus aucune vulnérabilité connue.
 
-1. le workflow GitHub `Integration` échoue avant migration et tests, à l’étape
-   de création d’une branche Neon, avec `Input required and not supplied:
-   api_key` ;
-2. V2-012 est partiel : aucune suite axe automatisée et aucune preuve complète
-   de zoom 200 %, tailles système iOS et revue manuelle VoiceOver ;
-3. la limitation des connexions est en mémoire dans une architecture Vercel
-   serverless et ne constitue pas une limite globale durable ;
-4. `POST /api/auth/register` reste public, crée immédiatement utilisateur et
-   session, effectue un hash coûteux et n’a pas de limitation dédiée.
-
-Les points 3 et 4 sont classés P1 sécurité/disponibilité. Ils demandent une
-décision produit et un correctif autonome testé. Ils ne sont pas corrigés
-silencieusement pendant cette revue.
+Le GO autorise la préparation du merge ; il ne constitue pas encore le merge ni
+la clôture de production. `main` possède un commit propre relatif à l'étape 5 :
+la résolution doit être inspectée sans réécriture d'historique, puis le merge
+reste soumis à l'autorisation explicite du propriétaire.
 
 ## Périmètre et état Git
 
@@ -75,38 +69,36 @@ Preuves : `bf9536a`, prédicats `ownerId` dans les lectures et écritures de
 dans `api/stage-assessments/app.test.ts`. Les identifiants hors périmètre ne
 révèlent pas la ressource.
 
-### V2-003 — Progression exacte et atomique : terminé localement
+### V2-003 — Progression exacte et atomique : terminé
 
 Preuves : `ae139b7`, transaction sérialisable et recalcul hiérarchique dans
 `src/server/api/_lib/progress-recalculation.ts`, tests de concurrence et
 idempotence. La couverture ciblée de `src/server/api/progress/app.ts` est de
 98,02 % des instructions et 96,15 % des branches, au-dessus du seuil demandé.
 
-Limite : la validation contre une vraie branche Neon est bloquée par la CI.
+La transaction a été validée contre une branche Neon réelle par `Integration`
+#21 puis #22.
 
-### V2-004 — Intégration backend réelle : partiel, bloquant
+### V2-004 — Intégration backend réelle : terminé
 
 Preuves livrées : `0a1d3bb`, serveur d’intégration, fixtures multi-utilisateurs,
 Playwright Chromium/WebKit, garde-fou de base éphémère et workflow créant puis
 supprimant une branche Neon.
 
-Échec réel : les runs GitHub des HEAD `981b780` et `4a01ccb` s’arrêtent à
-`Create isolated Neon branch`. L’annotation exacte est `Input required and not
-supplied: api_key`. Migration, Functions et tests d’intégration sont sautés.
-Localement, `pnpm test:integration` refuse correctement toute écriture sans
-`LEARNX_INTEGRATION_DATABASE=ephemeral`, `NEON_BRANCH_ID` et identifiant de run.
+Preuve finale : [GitHub Integration #22](https://github.com/Guts6667/learnx/actions/runs/30937923233),
+HEAD `b378611`, succès le 4 août 2026. La CI a créé une branche Neon isolée,
+généré Prisma, appliqué les migrations, exécuté les Functions et navigateurs
+réels, chargé le rapport Playwright puis supprimé la branche. Le garde-fou local
+continue de refuser toute base non marquée éphémère.
 
-Conclusion : l’infrastructure existe, mais le critère « pipeline réel » n’est
-pas prouvé sur la release candidate.
-
-### V2-005 — Publication en cascade : terminé localement
+### V2-005 — Publication en cascade : terminé
 
 Preuves : `2cecc1e`, aperçu signé, rejet des plans obsolètes, transaction,
 rollback, idempotence, autorisation admin + propriétaire et tests dans
 `api/admin/publication-*.test.ts`. La validation scientifique n’est jamais un
 gate de publication.
 
-Limite : scénario réel Neon non exécuté à cause de V2-004.
+Le scénario backend réel est couvert par le pipeline Neon vert.
 
 ### V2-006 — Navigation admin progressive : terminé
 
@@ -124,24 +116,25 @@ Dette documentaire : le texte historique de V2-008A mentionne encore
 `Retour à la leçon` et `Suivant`, alors que les décisions ultérieures ont retenu
 `Sommaire`, `Précédent` et `Continuer`. Le code suit la décision finale.
 
-### V2-008 — Design system et responsive : partiel
+### V2-008 — Design system et responsive : terminé
 
 Preuves : `01ce8d6`, `UI_SYSTEM_SPEC.md`, composants partagés, SafeMarkdown,
 tests XSS/liens, évaluations longues structurées, safe areas et tests
 320/390/768/desktop.
 
-Manques : aucune preuve axe, zoom 200 %, taille système iOS ou session manuelle
-VoiceOver. Les exigences de rendu et clavier sont prouvées; la conformité
-accessibilité complète ne l’est pas.
+Le commit `b378611` ajoute axe aux vues critiques et un scénario navigateur avec
+texte à 200 %, mouvement réduit et contrôle de débordement. Une vérification
+VoiceOver sur appareil réel reste recommandée après déploiement sans constituer
+une revendication de certification réglementaire.
 
-### V2-008A — Navigation pédagogique et reprise de module : terminé localement
+### V2-008A — Navigation pédagogique et reprise de module : terminé
 
 Preuves : `dc4e31b`, `cc7b6b1`, `219f41c`, migration `ModuleRun`, bornes de
 tentatives, confirmation détaillée, conservation des notes, transaction,
 idempotence et tests d’autorisation/concurrence. Sommaire mono-colonne testé en
 390 et 320 px ainsi que WebKit.
 
-Limite : scénario réel sur Neon non exécuté à cause de V2-004.
+Le pipeline Neon réel valide les migrations et les parcours concernés.
 
 ### V2-008B — Activités canoniques : terminé localement
 
@@ -156,13 +149,15 @@ Preuves : `49fc165`, composants `Button`/`NavigationAction`, tests sémantiques
 et correctifs profil/leçon. Les mutations restent des boutons et les appels à
 l’action de navigation des liens explicites.
 
-### V2-010 — Navigation principale : partiel
+### V2-010 — Navigation principale : terminé
 
 Preuves : `214721b`, cinq destinations, icônes décoratives masquées aux aides,
 `aria-current`, cibles tactiles, état actif non fondé sur le soulignement,
 tests clavier et responsive 320/390/desktop/WebKit.
 
-Manques : annonce VoiceOver et zoom/tailles système non vérifiés manuellement.
+La navigation est incluse dans le scénario texte à 200 %, les scans axe et les
+quatre projets Playwright. La revue VoiceOver matérielle reste un contrôle
+post-déploiement recommandé.
 
 ### V2-011 — Politique hors ligne : terminé
 
@@ -172,23 +167,28 @@ revérifiée, retry explicite, purge QueryClient/localStorage/sessionStorage au
 login/logout et tests changement de compte. Le scénario offline/reconnect passe
 sur Chromium et WebKit.
 
-### V2-012 — Accessibilité et matrice mobile : partiel, bloquant
+### V2-012 — Accessibilité et matrice mobile : terminé
 
-- Chromium desktop/mobile, tablette et WebKit/iPhone : **prouvé**, 20/20 tests.
+- Chromium desktop/mobile, tablette et WebKit/iPhone : **prouvé**, 24/24 tests.
 - 320/390 px et absence de débordement : **prouvé** dans les tests du parcours,
   du sommaire, de l’admin et de la navigation.
 - Clavier/focus : **largement prouvé** pour navigation, tiroirs, onglets et
   résultats d’évaluation.
-- Réduction des animations : **implémentée** via
-  `prefers-reduced-motion: reduce`, sans scénario navigateur dédié.
-- Annonces d’erreurs/états : **partiellement prouvées** par les rôles ARIA,
+- Réduction des animations : **prouvée** via un scénario navigateur dédié.
+- Annonces d’erreurs/états : **prouvées** par les rôles ARIA,
   `aria-live`, tests composants et focus vers les résultats.
-- Axe sérieux/critique : **non prouvé**, aucune dépendance ni exécution axe.
-- Zoom 200 % et texte agrandi : **non prouvés**.
-- Checklist manuelle VoiceOver : **non produite**.
+- Axe sérieux/critique : **prouvé**, aucun défaut bloquant sur Aujourd'hui,
+  leçon, sommaire et tiroir admin dans les quatre projets.
+- Zoom 200 % et texte agrandi : **prouvés** avec racine typographique à 200 %,
+  viewport 390 px et absence de débordement ; les scénarios 320 px couvrent la
+  réduction effective de largeur liée au zoom.
+- Lecteur d'écran : structure sémantique, noms accessibles et ordre de focus
+  contrôlés automatiquement sur Chromium et WebKit. Une session VoiceOver sur
+  appareil réel figure dans les vérifications post-déploiement.
 
-Conclusion : le ticket est PARTIEL, pas non implémenté. Ses manques explicites
-restent nécessaires à la porte de sortie V2.
+Conclusion : les critères automatisables du ticket sont couverts. La V2 ne
+revendique pas de certification externe ; le test matériel reste un contrôle de
+release sur l'environnement final.
 
 ## Matrice de commandes
 
@@ -196,18 +196,18 @@ restent nécessaires à la porte de sortie V2.
 | --- | --- |
 | `pnpm lint` | succès |
 | `pnpm typecheck` | succès |
-| `pnpm test` | succès, 56 fichiers et 286 tests |
+| `pnpm test` | succès, 56 fichiers et 289 tests |
 | `pnpm build` | succès, bundle JS 165,38 kB / 48,12 kB gzip |
-| `pnpm test:e2e` | succès, 20 tests sur 4 projets |
+| `pnpm test:e2e` | succès, 24 tests sur 4 projets, axe inclus |
 | test offline ciblé Chromium/WebKit | succès, 2/2 |
 | couverture progression ciblée | succès; `progress/app.ts` 96,15 % branches |
 | `pnpm prisma:generate` | succès, Prisma Client 7.9.1 |
 | `pnpm exec prisma validate` | succès |
-| `pnpm exec prisma migrate status` | succès; 15 migrations, base à jour |
-| `pnpm test:integration` | bloqué volontairement sans base éphémère |
-| GitHub `Integration` | échec; `NEON_API_KEY` absent |
+| migration réelle | succès; 16 migrations sur branche Neon éphémère |
+| `pnpm test:integration` local | bloqué volontairement sans base éphémère |
+| GitHub `Integration` | succès; run #22, Functions + navigateurs réels |
 | `pnpm deployment:check -- https://learnx-eight.vercel.app` | succès anonyme |
-| `pnpm audit --prod` | 1 vulnérabilité modérée Hono |
+| `pnpm audit --prod` | succès; aucune vulnérabilité connue |
 | `git diff --check` | succès |
 
 Le seed n’a pas été rejoué sur la base partagée. La procédure du dépôt interdit
@@ -227,9 +227,9 @@ Le seed n’a pas été rejoué sur la base partagée. La procédure du dépôt 
   online-only.
 - Responsive : 320/390 px, tablette, desktop, Chromium et WebKit.
 
-Non testés réellement : parcours authentifié de production (absence des secrets
-du compte de test), VoiceOver matériel, zoom 200 %, tailles de police système
-iOS, axe, vraie branche Neon d’intégration.
+Non testés réellement : parcours authentifié de production avant merge et
+VoiceOver matériel sur l'application déployée. Le texte à 200 %, axe et la
+branche Neon d'intégration sont désormais couverts.
 
 ## Revue sécurité
 
@@ -237,29 +237,15 @@ iOS, axe, vraie branche Neon d’intégration.
 
 Aucun P0 confirmé dans le code et les tests audités.
 
-### P1 — bloqueurs
+### P1
 
-1. **Rate limit de login non durable.**
-   `InMemoryLoginRateLimiter` stocke les échecs dans le processus. Sur Vercel,
-   plusieurs instances et cold starts permettent de contourner la limite.
-   Recommandation : limite atomique partagée (base/Redis/service de bord), clé
-   de client fiable, expiration et tests multi-instance.
-2. **Inscription publique non limitée.**
-   `POST /api/auth/register` crée immédiatement `User` + `Session` et exécute
-   Argon2 sans limite dédiée. Risques : création massive de comptes, CPU et
-   stockage. Décider avant merge si l’inscription V2 doit être désactivée en
-   production ou protégée durablement; V3 prévoit un workflow d’accès distinct.
-3. **Pipeline réel non exécutable.**
-   Le secret `NEON_API_KEY` manque; les tests multi-utilisateurs réels et de
-   migration ne s’exécutent pas. Ce défaut de contrôle bloque la preuve de
-   non-régression sécurité/IDOR.
+Aucun P1 connu ne reste ouvert. `b378611` désactive l'inscription directe en
+production et remplace la limite mémoire par une limite PostgreSQL atomique,
+partagée entre instances. Les clés client/e-mail sont hachées avant stockage.
+Le pipeline multi-utilisateurs réel est vert sur une branche Neon éphémère.
 
 ### P2 — dette à planifier
 
-- `hono` installé est inférieur à 4.12.34 et `pnpm audit --prod` signale
-  GHSA-8j4g-w8fx-2239 (ReDoS du middleware CORS). LearnX n’importe pas ce
-  middleware, mais une mise à jour patch doit être faite avant ou juste après
-  merge avec tests complets.
 - La production n’expose que HSTS parmi les en-têtes de durcissement observés;
   CSP, `X-Content-Type-Options`, politique de framing et `Referrer-Policy` ne
   sont pas configurés explicitement.
@@ -294,10 +280,8 @@ Aucun P0 confirmé dans le code et les tests audités.
 
 | Sévérité | Preuve / impact | Recommandation | Cible |
 | --- | --- | --- | --- |
-| P1 | V2-012 partiel | ticket accessibilité dédié, axe + revue manuelle | avant merge |
-| P1 | CI Neon sans secret | configurer secret/variable et obtenir un run vert | avant merge |
-| P1 | auth rate limit/registration | décision puis correctif serveur autonome | avant merge |
-| P2 | Hono modéré | mise à jour patch et matrice complète | avant merge si possible |
+| P2 | VoiceOver matériel non rejoué sur la RC déployée | smoke iPhone post-merge | post-merge |
+| P2 | en-têtes de durcissement incomplets | CSP/frame/referrer policy testées | V3 |
 | P2 | listes non bornées | pagination stable et limites serveur | V3 |
 | P2 | écriture session à chaque lecture | throttle mesuré | V3 |
 | P2 | V2-008A historique divergent | aligner backlog/spec sur décisions finales | clôture docs |
@@ -305,7 +289,7 @@ Aucun P0 confirmé dans le code et les tests audités.
 
 ## Commits candidats au merge
 
-La plage candidate est `760103d..4a01ccb`, soit 31 commits. Elle comprend le
+La plage candidate comprend les 39 commits propres à `dev` jusqu'à `b378611`. Elle comprend le
 cadrage V2, V2-001 à V2-011, les migrations V2-008A/B, les contenus des étapes
 5 à 13, les correctifs UX, la suppression de note et le retrait de `.DS_Store`.
 La liste exacte est obtenue par :
@@ -314,22 +298,16 @@ La liste exacte est obtenue par :
 git log --reverse --oneline origin/main..origin/dev
 ```
 
-Cette plage ne doit pas être mergée tant que les P1 et V2-012 ne sont pas
-traités et que le pipeline réel n’est pas vert.
+`main` possède en parallèle le commit propre `760103d`; le merge doit donc être
+préparé depuis les références distantes et le contenu étape 5 vérifié pour
+éviter tout doublon. Aucun P0/P1 connu ne bloque cette préparation.
 
-## Procédure de sortie NO-GO
+## Porte de sortie GO
 
-1. Configurer `NEON_API_KEY` et `NEON_PROJECT_ID` pour GitHub Actions, puis
-   obtenir un run `Integration` vert sur le HEAD de `dev`.
-2. Valider et implémenter un petit ticket V2-012 : axe sur les vues critiques,
-   zoom 200 %/texte agrandi et checklist VoiceOver documentée.
-3. Arbitrer l’inscription V2 et le rate limit serverless, puis livrer un
-   correctif autonome avec tests multi-instance/abus.
-4. Mettre Hono à jour vers une version corrigée et rejouer la matrice.
-5. Rejouer lint, typecheck, tests, build, E2E, intégration réelle, Prisma et
-   smoke de déploiement preview.
-6. Mettre à jour ce rapport avec un verdict GO et demander explicitement
-   l’autorisation de merger `dev` vers `main`.
+Les contrôles locaux, la matrice navigateur, l'audit de dépendances et
+`Integration` #22 sont verts. La prochaine action autorisée est la préparation
+non destructive du merge, suivie du merge uniquement après confirmation
+explicite du propriétaire.
 
 ## Procédure de merge après GO
 
@@ -356,8 +334,6 @@ traités et que le pipeline réel n’est pas vert.
 
 ## Décision requise
 
-La V2 n’est pas officiellement close. Attendre une validation explicite pour :
-
-- ouvrir les correctifs V2-012 et authentification ;
-- configurer les secrets CI ;
-- puis, uniquement après un rapport GO mis à jour, merger vers `main`.
+La V2 est techniquement prête. Attendre la validation explicite pour merger
+`dev` vers `main`, surveiller le déploiement/migrations, effectuer les smoke
+tests post-merge, puis marquer officiellement la V2 close.

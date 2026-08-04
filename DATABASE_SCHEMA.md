@@ -23,6 +23,16 @@ Toutes les clés primaires utilisent UUID.
 - created_at
 - last_used_at
 
+### login_rate_limits
+
+- key_hash, clé primaire SHA-256 de l’adresse client et de l’e-mail normalisé
+- failures
+- window_started_at
+- updated_at
+
+Cette table ne contient ni adresse IP ni e-mail en clair. Elle fournit une
+fenêtre de limitation commune à toutes les Functions serverless.
+
 ## Programmes
 
 ### programs

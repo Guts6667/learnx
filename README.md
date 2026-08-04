@@ -158,7 +158,8 @@ utilise les secrets `LEARNX_DEPLOYMENT_EMAIL` et
 
 Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :
 
-- `POST /api/auth/register`
+- `POST /api/auth/register` — développement et intégration uniquement ; refusé
+  par défaut en production en attendant le workflow d’accès V3
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
@@ -167,6 +168,10 @@ Les mots de passe sont hachés avec argon2id. Les sessions sont opaques, leur
 hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
 `HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
 n’est stocké dans `localStorage`.
+
+Les échecs de connexion sont limités à cinq par fenêtre de quinze minutes. Le
+compteur est partagé dans PostgreSQL entre les Functions serverless ; sa clé
+IP/e-mail est hachée avant stockage.
 
 ## API de parcours
 
