@@ -260,6 +260,11 @@ describe('progress recalculation', () => {
       runSerializableProgressTransaction(prisma, async () => 'ok'),
     ).resolves.toBe('ok');
     expect(transaction).toHaveBeenCalledTimes(2);
+    expect(transaction).toHaveBeenCalledWith(expect.any(Function), {
+      isolationLevel: 'Serializable',
+      maxWait: 10_000,
+      timeout: 30_000,
+    });
   });
 
   it('limite les reprises de conflit concurrent', async () => {

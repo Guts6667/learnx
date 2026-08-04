@@ -20,6 +20,8 @@ import {
 import { getCurrentModuleRun } from './module-runs.js';
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
+const PROGRESS_TRANSACTION_MAX_WAIT_MS = 10_000;
+const PROGRESS_TRANSACTION_TIMEOUT_MS = 30_000;
 
 export interface LessonProgressSnapshot {
   canComplete: boolean;
@@ -60,6 +62,8 @@ export async function runSerializableProgressTransaction<T>(
     try {
       return await prisma.$transaction(operation, {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        maxWait: PROGRESS_TRANSACTION_MAX_WAIT_MS,
+        timeout: PROGRESS_TRANSACTION_TIMEOUT_MS,
       });
     } catch (error) {
       if (
