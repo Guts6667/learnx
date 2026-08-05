@@ -238,9 +238,8 @@ function createClient(
         return where.ownerId === resourceOwnerId ? program : null;
       }),
       findMany: vi.fn(async (input: unknown) => {
-        const where = (
-          input as { where: Parameters<typeof canReadProgram>[0] }
-        ).where;
+        const where = (input as { where: Parameters<typeof canReadProgram>[0] })
+          .where;
 
         return canReadProgram(where) ? [program] : [];
       }),
@@ -305,12 +304,24 @@ describe('curriculum draft preview authorization', () => {
       });
       expect(findMany).toHaveBeenCalledWith(
         expect.objectContaining({
+          include: expect.objectContaining({
+            lessonSequenceItems: expect.objectContaining({
+              orderBy: { position: 'asc' },
+            }),
+          }),
           where: expect.objectContaining({
             module: expect.objectContaining({
               stage: expect.objectContaining({
                 program: expect.objectContaining({ ownerId }),
               }),
             }),
+          }),
+        }),
+      );
+      expect(findMany).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          include: expect.objectContaining({
+            sequenceItems: expect.anything(),
           }),
         }),
       );

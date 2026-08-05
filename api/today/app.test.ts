@@ -1,7 +1,9 @@
 import type { MiddlewareHandler } from 'hono';
 
+import type { PrismaClient } from '../../generated/prisma/client';
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
 import {
+  createPrismaTodayRepository,
   createTodayApp,
   type TodayRepository,
 } from '../../src/server/api/today/app';
@@ -120,6 +122,30 @@ function createRepository(input?: {
 }
 
 describe('today API', () => {
+  it('utilise le nom Prisma réel de la relation de séquence', async () => {
+    const findMany = vi.fn(async () => []);
+    const repository = createPrismaTodayRepository({
+      lesson: { findMany },
+    } as unknown as PrismaClient);
+
+    await repository.listLessons(userId);
+
+    expect(findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.objectContaining({
+          lessonSequenceItems: expect.objectContaining({
+            orderBy: { position: 'asc' },
+          }),
+        }),
+      }),
+    );
+    expect(findMany).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.objectContaining({ sequenceItems: expect.anything() }),
+      }),
+    );
+  });
+
   it('sélectionne une seule révision en retard avant la tâche courante', async () => {
     const app = createTodayApp({
       authentication,

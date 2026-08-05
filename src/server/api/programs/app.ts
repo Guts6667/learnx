@@ -457,7 +457,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           },
         },
         resources: { orderBy: { position: 'asc' } },
-        sequenceItems: {
+        lessonSequenceItems: {
           orderBy: { position: 'asc' },
           select: { key: true, kind: true },
         },
@@ -527,7 +527,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     return context.json({
       lesson: {
         ...lesson,
-        sequence: lesson.sequenceItems,
+        sequence: lesson.lessonSequenceItems,
         isLocked: lessonIsLocked,
         module: moduleContext,
         navigation: {
@@ -546,7 +546,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           ...task,
           resources: resources.map((link) => link.resource),
         })),
-        sequenceItems: undefined,
+        lessonSequenceItems: undefined,
       },
     });
   });

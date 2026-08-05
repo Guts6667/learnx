@@ -87,7 +87,7 @@ interface LessonRecord {
     id: string;
     title: string;
   }>;
-  sequenceItems?: Array<{
+  lessonSequenceItems?: Array<{
     conceptAssessmentId: string | null;
     exerciseId: string | null;
     position: number;
@@ -332,7 +332,7 @@ export function createPrismaTodayRepository(
               title: true,
             },
           },
-          sequenceItems: {
+          lessonSequenceItems: {
             orderBy: { position: 'asc' },
             select: {
               conceptAssessmentId: true,
@@ -459,7 +459,7 @@ function lessonOrder(lesson: LessonRecord): number {
 }
 
 function lessonSequenceOrder(lesson: LessonRecord, targetId: string): number {
-  const item = lesson.sequenceItems?.find(
+  const item = lesson.lessonSequenceItems?.find(
     (candidate) =>
       candidate.taskId === targetId ||
       candidate.conceptAssessmentId === targetId ||
