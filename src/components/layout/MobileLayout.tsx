@@ -12,7 +12,7 @@ interface MobileLayoutProps {
   currentPath?: string;
 }
 
-const rootPaths = new Set(['/', '/login', '/today']);
+const rootPaths = new Set(['/', '/login', '/request-access', '/today']);
 
 export function MobileLayout({
   canGoBack = false,

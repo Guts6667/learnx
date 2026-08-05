@@ -2,6 +2,7 @@ import { route } from 'preact-router';
 import { useEffect, useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
+import { actionClassNames } from '@/components/ui/actionStyles';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -105,6 +106,12 @@ export function LoginPage({ path }: LoginPageProps) {
           >
             Se connecter
           </Button>
+          <a
+            class={actionClassNames('secondary', 'md', 'w-full')}
+            href="/request-access"
+          >
+            Demander un accès
+          </a>
         </form>
       </Card>
     </section>

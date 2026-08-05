@@ -36,8 +36,10 @@ runtime sont livrés séparément par V3-008.
 - window_started_at
 - updated_at
 
-Cette table ne contient ni adresse IP ni e-mail en clair. Elle fournit une
-fenêtre de limitation commune à toutes les Functions serverless.
+Cette table ne contient ni adresse IP ni e-mail en clair. Elle fournit des
+fenêtres de limitation communes à toutes les Functions serverless. Les clés
+sont préfixées par domaine avant hachage afin de séparer la connexion des
+demandes d'accès publiques.
 
 ### access_requests
 

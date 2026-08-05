@@ -174,6 +174,91 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('ouvre une demande d’accès publique sans demander de mot de passe', async () => {
+    window.history.pushState({}, '', '/login');
+    mockSession(null);
+
+    render(<App />);
+
+    const accessLink = await screen.findByRole('link', {
+      name: 'Demander un accès',
+    });
+    expect(accessLink).toHaveAttribute('href', '/request-access');
+
+    fireEvent.click(accessLink);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Demander un accès',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Adresse e-mail')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Mot de passe')).not.toBeInTheDocument();
+  });
+
+  it('affiche une confirmation générique après la demande d’accès', async () => {
+    window.history.pushState({}, '', '/request-access');
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(
+        jsonResponse(
+          {
+            message:
+              'Votre demande a été prise en compte. Les prochaines étapes vous seront communiquées par e-mail.',
+          },
+          202,
+        ),
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    fireEvent.input(await screen.findByLabelText('Adresse e-mail'), {
+      target: { value: 'learner@example.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Envoyer ma demande' }));
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 2,
+        name: 'Demande enregistrée',
+      }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/access-requests',
+      expect.objectContaining({
+        body: JSON.stringify({ email: 'learner@example.com' }),
+        credentials: 'include',
+        method: 'POST',
+      }),
+    );
+  });
+
+  it('désactive la demande d’accès hors ligne', async () => {
+    window.history.pushState({}, '', '/request-access');
+    Object.defineProperty(navigator, 'onLine', {
+      configurable: true,
+      value: false,
+    });
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Demander un accès',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Envoyer ma demande' }),
+    ).toBeDisabled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('restaure la session après un rechargement', async () => {
     window.history.pushState({}, '', '/today');
     mockSession({

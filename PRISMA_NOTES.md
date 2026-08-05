@@ -59,3 +59,6 @@ pnpm prisma:seed
 - Les accès utilisateurs doivent toujours inclure un filtre par `userId`.
 - Les limites d’authentification partagées utilisent `login_rate_limits` et une
   incrémentation SQL atomique ; aucune clé IP/e-mail brute n’est persistée.
+- Les demandes d'accès réutilisent ce stockage avec un namespace distinct et
+  des clés IP/e-mail hachées ; l'index partiel d'`access_requests` garantit une
+  seule demande ouverte par adresse normalisée.

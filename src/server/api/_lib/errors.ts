@@ -1,4 +1,5 @@
 export type ApiErrorCode =
+  | 'ACCESS_REQUESTS_DISABLED'
   | 'ASSESSMENT_NOT_READY'
   | 'AUTHENTICATION_REQUIRED'
   | 'AMBIGUOUS_RESOURCE'
@@ -14,6 +15,7 @@ export type ApiErrorCode =
   | 'REGISTRATION_DISABLED'
   | 'RESOURCE_NOT_FOUND'
   | 'TIMELINE_NOT_STARTED'
+  | 'TOO_MANY_ACCESS_REQUESTS'
   | 'TOO_MANY_LOGIN_ATTEMPTS';
 
 export interface ApiErrorBody {

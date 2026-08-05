@@ -56,6 +56,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
 
   const ownerEmail = uniqueEmail('owner', testInfo.retry);
   const outsiderEmail = uniqueEmail('outsider', testInfo.retry);
+  const accessRequestEmail = uniqueEmail('access-request', testInfo.retry);
   const owner = await playwrightRequest.newContext({
     baseURL,
     timeout: 30_000,
@@ -66,8 +67,38 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
   });
 
   try {
+    const accessRequestResponses = await Promise.all(
+      Array.from({ length: 4 }, () =>
+        owner.post('/api/access-requests', {
+          data: { email: ` ${accessRequestEmail.toUpperCase()} ` },
+          headers: { 'x-forwarded-for': '2001:db8::10' },
+        }),
+      ),
+    );
+    for (const response of accessRequestResponses) {
+      await expectStatus(response, 202);
+    }
+    expect(
+      await prisma.accessRequest.count({
+        where: { emailNormalized: accessRequestEmail },
+      }),
+    ).toBe(1);
+
     await register(owner, ownerEmail);
     await register(outsider, outsiderEmail);
+
+    await expectStatus(
+      await owner.post('/api/access-requests', {
+        data: { email: ownerEmail },
+        headers: { 'x-forwarded-for': '2001:db8::11' },
+      }),
+      202,
+    );
+    expect(
+      await prisma.accessRequest.count({
+        where: { emailNormalized: ownerEmail },
+      }),
+    ).toBe(0);
 
     await expectStatus(await owner.post('/api/auth/logout'), 204);
     await expectStatus(
@@ -434,6 +465,9 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       200,
     );
   } finally {
+    await prisma.accessRequest.deleteMany({
+      where: { emailNormalized: accessRequestEmail },
+    });
     await cleanupIntegrationUsers([ownerEmail, outsiderEmail]);
     await owner.dispose();
     await outsider.dispose();

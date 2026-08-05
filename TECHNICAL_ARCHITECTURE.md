@@ -148,6 +148,8 @@ Préfixe : `/api`
 ### Auth
 
 - `POST /api/auth/register` — disponible hors production uniquement
+- `POST /api/access-requests` — demande publique sans mot de passe, réponse non
+  énumérante et rate limit partagé
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
@@ -205,6 +207,8 @@ Préfixe : `/api`
 - cookies de session sécurisés ;
 - protection brute-force partagée dans PostgreSQL entre les instances
   serverless, avec clé client/e-mail hachée ;
+- demandes d'accès protégées par des compteurs partagés IP/e-mail hachés,
+  idempotentes sur l'e-mail normalisé et désactivables par kill switch ;
 - inscription directe désactivée en production jusqu’au cycle d’accès V3 ;
 - validation Zod de toutes les entrées ;
 - capacités serveur centralisées par rôle avec refus par défaut ;
