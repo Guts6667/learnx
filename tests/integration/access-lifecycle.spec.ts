@@ -8,6 +8,7 @@ import {
   hashVerificationToken,
   prismaEmailVerificationRepository,
 } from '../../src/server/api/_lib/email-verification.js';
+import { createPrismaAccessRequestReviewService } from '../../src/server/api/admin/access-request-review-service.js';
 
 function uniqueValue(label: string): string {
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'local';
@@ -239,5 +240,133 @@ test('vérification e-mail réelle expirante et one-shot', async ({
     await prisma.accessRequest.deleteMany({
       where: { id: { in: [request.id, expiredRequest.id] } },
     });
+  }
+});
+
+test('revue admin réelle atomique, idempotente et auditée', async ({
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
+
+  const reviewer = await prisma.user.create({
+    data: {
+      displayName: 'Access reviewer integration',
+      email: `${uniqueValue('access-reviewer')}@example.test`,
+      passwordHash: 'not-a-real-password-hash',
+      role: 'ADMIN',
+    },
+  });
+  const approvedRequest = await prisma.accessRequest.create({
+    data: {
+      emailNormalized: `${uniqueValue('approved-request')}@example.test`,
+      emailVerifiedAt: new Date(),
+      status: 'PENDING_APPROVAL',
+    },
+  });
+  const rejectedRequest = await prisma.accessRequest.create({
+    data: {
+      emailNormalized: `${uniqueValue('rejected-request')}@example.test`,
+      emailVerifiedAt: new Date(),
+      status: 'PENDING_APPROVAL',
+    },
+  });
+  const hiddenRequest = await prisma.accessRequest.create({
+    data: {
+      emailNormalized: `${uniqueValue('hidden-request')}@example.test`,
+    },
+  });
+  const service = createPrismaAccessRequestReviewService(prisma);
+
+  try {
+    const page = await service.list({
+      page: 1,
+      pageSize: 10,
+      search: approvedRequest.emailNormalized,
+      status: 'PENDING_APPROVAL',
+    });
+    expect(page.items.map((item) => item.id)).toEqual([approvedRequest.id]);
+    expect(page.items.some((item) => item.id === hiddenRequest.id)).toBe(false);
+
+    const concurrentApprovals = await Promise.all([
+      service.approve(reviewer.id, approvedRequest.id, {
+        expectedVersion: 1,
+        role: 'CREATOR',
+      }),
+      service.approve(reviewer.id, approvedRequest.id, {
+        expectedVersion: 1,
+        role: 'CREATOR',
+      }),
+    ]);
+    expect(
+      concurrentApprovals.filter((result) => result.kind === 'APPLIED'),
+    ).toHaveLength(1);
+    expect(
+      concurrentApprovals.every((result) =>
+        ['APPLIED', 'CONFLICT', 'IDEMPOTENT'].includes(result.kind),
+      ),
+    ).toBe(true);
+    await expect(
+      service.approve(reviewer.id, approvedRequest.id, {
+        expectedVersion: 1,
+        role: 'CREATOR',
+      }),
+    ).resolves.toMatchObject({ kind: 'IDEMPOTENT' });
+
+    expect(
+      await prisma.accessInvitation.count({
+        where: { accessRequestId: approvedRequest.id },
+      }),
+    ).toBe(1);
+    expect(
+      await prisma.auditEvent.findMany({
+        orderBy: { action: 'asc' },
+        select: { action: true },
+        where: { targetId: { in: [approvedRequest.id] } },
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        { action: 'ACCESS_REQUEST_APPROVE' },
+        { action: 'ACCOUNT_ROLE_ASSIGN' },
+      ]),
+    );
+
+    await expect(
+      service.reject(reviewer.id, rejectedRequest.id, {
+        expectedVersion: 1,
+        reason: 'Demande hors périmètre.',
+      }),
+    ).resolves.toMatchObject({ kind: 'APPLIED' });
+    await expect(
+      service.reject(reviewer.id, rejectedRequest.id, {
+        expectedVersion: 1,
+        reason: 'Demande hors périmètre.',
+      }),
+    ).resolves.toMatchObject({ kind: 'IDEMPOTENT' });
+    expect(
+      await prisma.accessInvitation.count({
+        where: { accessRequestId: rejectedRequest.id },
+      }),
+    ).toBe(0);
+    expect(
+      await prisma.auditEvent.count({
+        where: {
+          action: 'ACCESS_REQUEST_REJECT',
+          targetId: rejectedRequest.id,
+        },
+      }),
+    ).toBe(1);
+  } finally {
+    await prisma.auditEvent.deleteMany({
+      where: { actorUserId: reviewer.id },
+    });
+    await prisma.accessRequest.deleteMany({
+      where: {
+        id: {
+          in: [approvedRequest.id, rejectedRequest.id, hiddenRequest.id],
+        },
+      },
+    });
+    await prisma.user.delete({ where: { id: reviewer.id } });
   }
 });

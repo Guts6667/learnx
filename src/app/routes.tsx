@@ -23,6 +23,7 @@ import { QuizPage } from '@/pages/QuizPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
 import { TodayPage } from '@/pages/TodayPage';
 import { AdminPage } from '@/pages/AdminPage';
+import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -58,6 +59,18 @@ function AdminManagementRoute({
           programId={programId}
           stageId={stageId}
         />
+      </AdminRoute>
+    </ProtectedRoute>
+  );
+}
+
+function AdminAccessRequestsRoute({ path }: RouteParams) {
+  void path;
+
+  return (
+    <ProtectedRoute>
+      <AdminRoute>
+        <AdminAccessRequestsPage />
       </AdminRoute>
     </ProtectedRoute>
   );
@@ -244,6 +257,7 @@ export function AppRoutes() {
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
+        <AdminAccessRequestsRoute path="/admin/access-requests" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId" />

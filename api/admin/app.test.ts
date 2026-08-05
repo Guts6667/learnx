@@ -6,6 +6,10 @@ import {
   type AdminRepository,
 } from '../../src/server/api/admin/app';
 import type { AdminNavigationService } from '../../src/server/api/admin/navigation-service';
+import type {
+  AccessRequestReviewItem,
+  AccessRequestReviewService,
+} from '../../src/server/api/admin/access-request-review-service';
 import {
   PublicationPlanBlockedError,
   PublicationPlanStaleError,
@@ -18,6 +22,53 @@ const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
 const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
+const accessRequestId = '1d8cf94c-d690-430e-a3c0-c3ef68ca857a';
+
+const pendingAccessRequest: AccessRequestReviewItem = {
+  assignedRole: null,
+  createdAt: new Date('2026-08-05T08:00:00.000Z'),
+  emailNormalized: 'candidate@example.com',
+  emailVerifiedAt: new Date('2026-08-05T08:05:00.000Z'),
+  id: accessRequestId,
+  invitationExpiresAt: null,
+  rejectionReason: null,
+  reviewedAt: null,
+  status: 'PENDING_APPROVAL',
+  version: 2,
+};
+
+function createAccessRequestReviewService(): AccessRequestReviewService {
+  return {
+    approve: vi.fn(async (_actorUserId, _requestId, input) => ({
+      kind: 'APPLIED' as const,
+      request: {
+        ...pendingAccessRequest,
+        assignedRole: input.role,
+        invitationExpiresAt: new Date('2026-08-12T08:05:00.000Z'),
+        reviewedAt: new Date('2026-08-05T08:10:00.000Z'),
+        status: 'APPROVED' as const,
+        version: 3,
+      },
+    })),
+    list: vi.fn(async (filters) => ({
+      items: [pendingAccessRequest],
+      page: filters.page,
+      pageSize: filters.pageSize,
+      total: 1,
+      totalPages: 1,
+    })),
+    reject: vi.fn(async (_actorUserId, _requestId, input) => ({
+      kind: 'APPLIED' as const,
+      request: {
+        ...pendingAccessRequest,
+        rejectionReason: input.reason,
+        reviewedAt: new Date('2026-08-05T08:10:00.000Z'),
+        status: 'REJECTED' as const,
+        version: 3,
+      },
+    })),
+  };
+}
 
 function authentication(
   id = ownerId,
@@ -504,5 +555,134 @@ describe('administration minimale', () => {
 
     expect(response.status).toBe(409);
     expect(await response.json()).toMatchObject({ error: { code } });
+  });
+
+  it('liste les demandes vérifiées avec pagination, filtre et recherche', async () => {
+    const accessRequestReviewService = createAccessRequestReviewService();
+    const app = createAdminApp({
+      accessRequestReviewService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      '/api/admin/access-requests?page=2&pageSize=10&status=PENDING_APPROVAL&search=candidate',
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      page: {
+        items: [{ emailNormalized: 'candidate@example.com' }],
+        page: 2,
+        pageSize: 10,
+      },
+    });
+    expect(accessRequestReviewService.list).toHaveBeenCalledWith({
+      page: 2,
+      pageSize: 10,
+      search: 'candidate',
+      status: 'PENDING_APPROVAL',
+    });
+  });
+
+  it.each(['USER', 'CREATOR'] as const)(
+    'interdit la revue des demandes au rôle %s',
+    async (role) => {
+      const accessRequestReviewService = createAccessRequestReviewService();
+      const app = createAdminApp({
+        accessRequestReviewService,
+        authentication: authentication(ownerId, role),
+        repository: createRepository().repository,
+      });
+
+      const response = await app.request('/api/admin/access-requests');
+
+      expect(response.status).toBe(403);
+      expect(accessRequestReviewService.list).not.toHaveBeenCalled();
+    },
+  );
+
+  it('accepte une demande avec rôle et version explicites', async () => {
+    const accessRequestReviewService = createAccessRequestReviewService();
+    const app = createAdminApp({
+      accessRequestReviewService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/access-requests/${accessRequestId}/approve`,
+      {
+        body: JSON.stringify({ expectedVersion: 2, role: 'CREATOR' }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      request: { assignedRole: 'CREATOR', status: 'APPROVED', version: 3 },
+    });
+    expect(accessRequestReviewService.approve).toHaveBeenCalledWith(
+      ownerId,
+      accessRequestId,
+      { expectedVersion: 2, role: 'CREATOR' },
+    );
+  });
+
+  it('refuse une demande avec un motif interne explicite', async () => {
+    const accessRequestReviewService = createAccessRequestReviewService();
+    const app = createAdminApp({
+      accessRequestReviewService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/access-requests/${accessRequestId}/reject`,
+      {
+        body: JSON.stringify({
+          expectedVersion: 2,
+          reason: 'Demande hors périmètre.',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      request: {
+        rejectionReason: 'Demande hors périmètre.',
+        status: 'REJECTED',
+      },
+    });
+    expect(accessRequestReviewService.reject).toHaveBeenCalledWith(
+      ownerId,
+      accessRequestId,
+      { expectedVersion: 2, reason: 'Demande hors périmètre.' },
+    );
+  });
+
+  it('normalise un conflit de décision concurrente', async () => {
+    const accessRequestReviewService = createAccessRequestReviewService();
+    accessRequestReviewService.approve = vi.fn(async () => ({
+      kind: 'CONFLICT' as const,
+    }));
+    const app = createAdminApp({
+      accessRequestReviewService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/access-requests/${accessRequestId}/approve`,
+      {
+        body: JSON.stringify({ expectedVersion: 2, role: 'USER' }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'ACCESS_REQUEST_CONFLICT' },
+    });
   });
 });

@@ -589,7 +589,17 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
   return (
     <>
       <Breadcrumbs items={[{ label: 'Administration' }]} />
-      <h1 class="text-3xl font-bold tracking-tight">Programmes</h1>
+      <h1 class="text-3xl font-bold tracking-tight">Administration</h1>
+      <Card class="space-y-3">
+        <h2 class="text-xl font-semibold">Demandes d’accès</h2>
+        <p class="leading-7 text-slate-300">
+          Examinez les demandes dont l’adresse e-mail a été vérifiée.
+        </p>
+        <NavigationAction href="/admin/access-requests" variant="secondary">
+          Gérer les demandes
+        </NavigationAction>
+      </Card>
+      <h2 class="text-xl font-semibold">Programmes</h2>
       {programs.length === 0 ? (
         <EmptyState
           description="Créez d’abord un programme pour administrer son contenu."

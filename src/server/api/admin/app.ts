@@ -10,6 +10,11 @@ import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
+  createPrismaAccessRequestReviewService,
+  reviewableAccessRequestStatuses,
+  type AccessRequestReviewService,
+} from './access-request-review-service.js';
+import {
   createPrismaAdminNavigationService,
   type AdminNavigationService,
 } from './navigation-service.js';
@@ -84,6 +89,7 @@ export interface AdminRepository {
 }
 
 interface AdminAppOptions {
+  accessRequestReviewService?: AccessRequestReviewService;
   authentication?: MiddlewareHandler<AuthEnvironment>;
   navigationService?: AdminNavigationService;
   publicationService?: PublicationService;
@@ -118,6 +124,25 @@ const publicationRequestSchema = z
 const applyPublicationSchema = publicationRequestSchema.extend({
   planId: z.string().regex(/^[a-f0-9]{64}$/),
 });
+const reviewStatusSchema = z.enum(reviewableAccessRequestStatuses);
+const accessRequestListSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  search: z.string().trim().max(320).optional(),
+  status: reviewStatusSchema.optional(),
+});
+const approveAccessRequestSchema = z
+  .object({
+    expectedVersion: z.number().int().min(1),
+    role: z.enum(['USER', 'CREATOR', 'ADMIN']),
+  })
+  .strict();
+const rejectAccessRequestSchema = z
+  .object({
+    expectedVersion: z.number().int().min(1),
+    reason: z.string().trim().min(1).max(2_000),
+  })
+  .strict();
 
 const lessonSelect = {
   id: true,
@@ -313,6 +338,20 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     }
     return defaultPublicationService;
   };
+  let defaultAccessRequestReviewService:
+    | AccessRequestReviewService
+    | undefined;
+  const getAccessRequestReviewService = async () => {
+    if (options.accessRequestReviewService) {
+      return options.accessRequestReviewService;
+    }
+    if (!defaultAccessRequestReviewService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultAccessRequestReviewService =
+        createPrismaAccessRequestReviewService(prisma);
+    }
+    return defaultAccessRequestReviewService;
+  };
 
   app.use('/api/admin/*', options.authentication ?? requireUser);
   app.use('/api/admin/*', requireCapability('program.admin.read'));
@@ -335,6 +374,63 @@ export function createAdminApp(options: AdminAppOptions = {}) {
       await getNavigationService()
     ).listPrograms(context.get('user').id);
     return context.json({ kind: 'PROGRAMS', programs });
+  });
+
+  app.get('/api/admin/access-requests', async (context) => {
+    assertCapability(context.get('user').role, 'account.request.review');
+    const parsed = accessRequestListSchema.safeParse(context.req.query());
+    if (!parsed.success) throw invalidRequest();
+
+    const page = await (
+      await getAccessRequestReviewService()
+    ).list(parsed.data);
+    return context.json({ page });
+  });
+
+  app.post('/api/admin/access-requests/:requestId/approve', async (context) => {
+    assertCapability(context.get('user').role, 'account.request.review');
+    assertCapability(context.get('user').role, 'account.invitation.issue');
+    assertCapability(context.get('user').role, 'account.role.assign');
+    const requestId = parseIdentifier(context.req.param('requestId'));
+    const parsed = approveAccessRequestSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (
+      await getAccessRequestReviewService()
+    ).approve(context.get('user').id, requestId, parsed.data);
+    if (result.kind === 'NOT_FOUND') throw notFound();
+    if (result.kind === 'CONFLICT') {
+      throw new ApiError(
+        'ACCESS_REQUEST_CONFLICT',
+        'The access request has already been reviewed or changed.',
+        409,
+      );
+    }
+    return context.json({ request: result.request });
+  });
+
+  app.post('/api/admin/access-requests/:requestId/reject', async (context) => {
+    assertCapability(context.get('user').role, 'account.request.review');
+    const requestId = parseIdentifier(context.req.param('requestId'));
+    const parsed = rejectAccessRequestSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (
+      await getAccessRequestReviewService()
+    ).reject(context.get('user').id, requestId, parsed.data);
+    if (result.kind === 'NOT_FOUND') throw notFound();
+    if (result.kind === 'CONFLICT') {
+      throw new ApiError(
+        'ACCESS_REQUEST_CONFLICT',
+        'The access request has already been reviewed or changed.',
+        409,
+      );
+    }
+    return context.json({ request: result.request });
   });
 
   app.get('/api/admin/programs/:programId', async (context) => {
