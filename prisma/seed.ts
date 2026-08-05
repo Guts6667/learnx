@@ -618,11 +618,19 @@ function getModuleDescription(module: z.infer<typeof moduleSchema>): string {
   return `Module consacré à ${module.title}.`;
 }
 
-export async function readSampleSeed(): Promise<SampleSeed> {
-  const sourcePath = resolve(process.cwd(), 'seed/sample-program.json');
+async function readSeedFile(relativePath: string): Promise<SampleSeed> {
+  const sourcePath = resolve(process.cwd(), relativePath);
   const source = await readFile(sourcePath, 'utf8');
 
   return sampleProgramSchema.parse(JSON.parse(source) as unknown);
+}
+
+export async function readSampleSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/sample-program.json');
+}
+
+export async function readOfficineExpressSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/officine-express-program.json');
 }
 
 export async function readSampleProgram(): Promise<SampleProgram> {
@@ -1626,21 +1634,25 @@ async function main() {
       );
     }
 
-    const sampleSeed = await readSampleSeed();
+    const seeds = await Promise.all([
+      readSampleSeed(),
+      readOfficineExpressSeed(),
+    ]);
 
-    await prisma.$transaction(
-      async (transaction) => {
+    await prisma.$transaction(async (transaction) => {
+      const repository = createSeedProgramRepository(transaction);
+
+      for (const seed of seeds) {
         await seedSampleProgram(
-          createSeedProgramRepository(transaction),
+          repository,
           owner.id,
-          sampleSeed.program,
-          sampleSeed.conceptAssessmentBanks,
+          seed.program,
+          seed.conceptAssessmentBanks,
         );
-      },
-      SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
-    );
+      }
+    }, SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS);
 
-    console.info('Sample program seeded successfully.');
+    console.info('Programs seeded successfully.');
   } finally {
     await prisma.$disconnect();
   }

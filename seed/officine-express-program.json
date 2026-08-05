@@ -1,0 +1,2216 @@
+{
+  "program": {
+    "title": "Officine Express",
+    "slug": "officine-express",
+    "description": "Parcours personnel et rapide de reconnaissance de quelques DCI et noms de spécialités rencontrés en officine. Il ne forme ni à la posologie, ni à la substitution, ni au conseil clinique : toute décision reste du ressort du pharmacien.",
+    "status": "active",
+    "position": 2,
+    "estimatedDurationDays": 1,
+    "stages": [
+      {
+        "title": "Douleur et fièvre — Mise dans le bain",
+        "slug": "douleur-fievre-mise-dans-le-bain",
+        "position": 1,
+        "estimatedDurationDays": 1,
+        "assessment": {
+          "title": "Évaluation cumulative — Officine Express",
+          "type": "cumulative_exam",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Évaluation courte de reconnaissance couvrant les sept leçons du pilote. Elle vérifie les correspondances DCI ↔ noms, les associations, deux vigilances transversales et le réflexe de transmission au pharmacien.",
+          "instructions": "## Consigne\nRépondre aux dix questions sans consulter les cartes, en indiquant brièvement le raisonnement lorsque la question demande une vigilance.\n\n## Questions\n1. Parmi EFFERALGAN, ADVIL, PARACETAMOL VIATRIS et PROFENID, lesquels contiennent du paracétamol ?\n2. Quelle substance contient IBUPROFENE TEVA ?\n3. Quelle substance contient BI PROFENID LP ?\n4. Quelle DCI se trouve derrière KARDEGIC ?\n5. DOLIPRANE et PROFENID ont-ils exactement le même usage général ? Expliquer en une phrase.\n6. DAFALGAN CODEINE contient-il uniquement du paracétamol ?\n7. Deux boîtes différentes contiennent toutes les deux du paracétamol : quel risque faut-il repérer et quel réflexe adopter ?\n8. Peut-on associer ibuprofène et kétoprofène sans risque particulier ?\n9. Classer TOPALGIC, IXPRIM, CONTRAMAL LP et ZALDIAR entre « tramadol seul » et « tramadol + paracétamol ».\n10. La composition exacte d’une boîte reste incertaine : quel est le bon réflexe ?\n\n## Format de remise\nRéponse numérotée de 1 à 10, courte et lisible.",
+          "rubric": [
+            {
+              "criterion": "Correspondances DCI et noms",
+              "weight": 40,
+              "requirements": [
+                "Les noms sont reliés aux bonnes substances.",
+                "Paracétamol, ibuprofène, kétoprofène et acide acétylsalicylique sont distingués."
+              ]
+            },
+            {
+              "criterion": "Reconnaissance des associations",
+              "weight": 25,
+              "requirements": [
+                "Paracétamol seul et paracétamol + codéine sont distingués.",
+                "Tramadol seul et tramadol + paracétamol sont correctement classés."
+              ]
+            },
+            {
+              "criterion": "Vigilances essentielles",
+              "weight": 25,
+              "requirements": [
+                "Le risque de cumul du paracétamol est repéré.",
+                "L’association de plusieurs AINS n’est pas banalisée."
+              ]
+            },
+            {
+              "criterion": "Réflexe officinal",
+              "weight": 10,
+              "requirements": [
+                "La réponse exige de lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Fondamentaux de lecture",
+            "slug": "fondamentaux-officine",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Lire un nom de médicament",
+                "slug": "lire-un-nom-de-medicament",
+                "summary": "Distinguer le nom d’une spécialité, la DCI et la substance active, repérer une association et adopter le réflexe lire, vérifier, pharmacien.",
+                "objectives": [
+                  "Distinguer le nom d’une spécialité de la DCI et de la substance active.",
+                  "Reconnaître qu’une même substance active peut apparaître sous plusieurs noms commerciaux.",
+                  "Repérer qu’un nom proche peut correspondre à une association de plusieurs substances.",
+                  "Appliquer le réflexe lire le nom complet, vérifier la composition et transmettre au pharmacien."
+                ],
+                "prerequisites": [],
+                "estimatedMinutes": 5,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Sur une boîte, le nom de la spécialité identifie le médicament commercialisé. La DCI est le nom commun de la substance active, c’est-à-dire la substance qui produit l’effet recherché. Dans l’exemple DOLIPRANE, le nom de spécialité est DOLIPRANE et la DCI est paracétamol.",
+                      "sourceKeys": ["sante-dci", "doliprane-1000"]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Une même substance active peut être présente sous plusieurs noms commerciaux. Dans les exemples vérifiés, DOLIPRANE, DAFALGAN et EFFERALGAN contiennent tous du paracétamol.",
+                      "sourceKeys": [
+                        "doliprane-1000",
+                        "dafalgan-1000",
+                        "efferalgan-1000"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Un nom proche peut cacher une substance en plus : DAFALGAN contient du paracétamol, tandis que DAFALGAN CODEINE associe paracétamol et codéine. Il faut lire le nom complet et vérifier la composition.",
+                      "sourceKeys": [
+                        "dafalgan-1000",
+                        "dafalgan-codeine-effervescent"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Réflexe officinal : reconnaître un nom ne permet pas de décider seul d’un remplacement. Lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute.",
+                      "sourceKeys": ["sante-dci"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "sante-dci",
+                    "type": "website",
+                    "title": "Prescription en dénomination commune internationale (DCI)",
+                    "author": "Ministère chargé de la Santé",
+                    "url": "https://sante.gouv.fr/soins-et-maladies/medicaments/professionnels-de-sante/prescription-et-dispensation/article/prescription-en-denomination-commune-internationale-dci",
+                    "citation": "Ministère chargé de la Santé. (2026). Prescription en dénomination commune internationale (DCI). Consulté le 5 août 2026.",
+                    "description": "Lire la définition de la DCI et retenir qu’elle désigne le nom commun de la substance active.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "doliprane-1000",
+                    "type": "website",
+                    "title": "DOLIPRANE 1000 mg, comprimé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DOLIPRANE 1000 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Repérer le nom de la spécialité et la rubrique « Composition en substances actives ».",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "dafalgan-1000",
+                    "type": "website",
+                    "title": "DAFALGAN 1000 mg, comprimé effervescent",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier que cette spécialité contient du paracétamol.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  },
+                  {
+                    "key": "efferalgan-1000",
+                    "type": "website",
+                    "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). EFFERALGAN 1000 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier que cette spécialité contient du paracétamol.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 4
+                  },
+                  {
+                    "key": "dafalgan-codeine-effervescent",
+                    "type": "website",
+                    "title": "DAFALGAN CODEINE, comprimé effervescent sécable",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61109911/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé effervescent sécable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Comparer la composition avec DAFALGAN et repérer la codéine ajoutée.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 5
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Lire un nom : spécialité, DCI et substance active",
+                    "slug": "lire-nom-specialite-dci-substance",
+                    "description": "Le nom commercial identifie une spécialité ; la DCI nomme la substance active. Un nom complet peut signaler une association et doit toujours être vérifié.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "sante-dci",
+                      "doliprane-1000",
+                      "dafalgan-1000",
+                      "efferalgan-1000",
+                      "dafalgan-codeine-effervescent"
+                    ],
+                    "assessment": {
+                      "key": "assessment-lire-nom-specialite-dci-substance",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Lire un nom : spécialité, DCI et substance active",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Classer les informations d’une boîte",
+                    "description": "À partir des exemples DOLIPRANE et DAFALGAN CODEINE, dire à voix haute le nom de la spécialité, la ou les substances actives et le réflexe à adopter en cas de doute.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-lire-nom-specialite-dci-substance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "DCI courantes — Douleur et fièvre",
+            "slug": "dci-douleur-fievre",
+            "position": 2,
+            "lessons": [
+              {
+                "title": "Paracétamol",
+                "slug": "paracetamol",
+                "summary": "Reconnaître le paracétamol derrière quelques noms courants, rappeler son utilité générale et éviter le cumul de plusieurs produits qui en contiennent.",
+                "objectives": [
+                  "Associer paracétamol, DOLIPRANE, DAFALGAN, EFFERALGAN et deux noms DCI + laboratoire dans les deux sens.",
+                  "Dire que le paracétamol calme la douleur et fait baisser la fièvre.",
+                  "Repérer une association contenant aussi de la codéine.",
+                  "Éviter le cumul non vérifié de plusieurs médicaments contenant du paracétamol."
+                ],
+                "prerequisites": [
+                  "Avoir terminé « Lire un nom de médicament »."
+                ],
+                "estimatedMinutes": 7,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le paracétamol est une substance active qui calme les douleurs légères à modérées et fait baisser la fièvre.",
+                      "sourceKeys": ["doliprane-1000"]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans les exemples vérifiés, DOLIPRANE, DAFALGAN, EFFERALGAN, PARACETAMOL BIOGARAN et PARACETAMOL VIATRIS contiennent du paracétamol. Il faut savoir passer du nom à la DCI et de la DCI aux noms.",
+                      "sourceKeys": [
+                        "doliprane-1000",
+                        "dafalgan-1000",
+                        "efferalgan-1000",
+                        "paracetamol-biogaran",
+                        "paracetamol-viatris"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "DAFALGAN CODEINE n’est pas du paracétamol seul : cette spécialité associe paracétamol et codéine. Lire le nom complet permet de repérer la substance ajoutée.",
+                      "sourceKeys": ["dafalgan-codeine"]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Le paracétamol est présent dans de nombreux produits. Ne pas associer plusieurs médicaments qui en contiennent sans vérification : cela expose à un surdosage. En cas de doute, vérifier la composition et transmettre au pharmacien.",
+                      "sourceKeys": ["doliprane-1000", "dafalgan-codeine"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "doliprane-1000",
+                    "type": "website",
+                    "title": "DOLIPRANE 1000 mg, comprimé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DOLIPRANE 1000 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition et les indications générales du paracétamol.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "dafalgan-1000",
+                    "type": "website",
+                    "title": "DAFALGAN 1000 mg, comprimé effervescent",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière DAFALGAN.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "efferalgan-1000",
+                    "type": "website",
+                    "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). EFFERALGAN 1000 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière EFFERALGAN.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  },
+                  {
+                    "key": "paracetamol-biogaran",
+                    "type": "website",
+                    "title": "PARACETAMOL BIOGARAN 1 g, comprimé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68787715/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). PARACETAMOL BIOGARAN 1 g, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Repérer la construction DCI + laboratoire.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 4
+                  },
+                  {
+                    "key": "paracetamol-viatris",
+                    "type": "website",
+                    "title": "PARACETAMOL VIATRIS 1000 mg, comprimé sécable",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67165233/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). PARACETAMOL VIATRIS 1000 mg, comprimé sécable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Repérer la construction DCI + laboratoire.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 5
+                  },
+                  {
+                    "key": "dafalgan-codeine",
+                    "type": "website",
+                    "title": "DAFALGAN CODEINE, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Comparer une spécialité au paracétamol seul avec une association contenant aussi de la codéine.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 6
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Paracétamol : DCI, noms et cumul",
+                    "slug": "paracetamol-dci-noms-cumul",
+                    "description": "Le paracétamol se retrouve sous plusieurs noms ; il calme la douleur et la fièvre et ne doit pas être cumulé à partir de plusieurs produits sans vérification.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "doliprane-1000",
+                      "dafalgan-1000",
+                      "efferalgan-1000",
+                      "paracetamol-biogaran",
+                      "paracetamol-viatris",
+                      "dafalgan-codeine"
+                    ],
+                    "assessment": {
+                      "key": "assessment-paracetamol-dci-noms-cumul",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Paracétamol : DCI, noms et cumul",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Faire les associations paracétamol",
+                    "description": "Sans regarder le contenu, associer DOLIPRANE, DAFALGAN et EFFERALGAN à leur DCI, puis citer la règle de vigilance sur le cumul.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-paracetamol-dci-noms-cumul"
+                  }
+                ]
+              },
+              {
+                "title": "Ibuprofène",
+                "slug": "ibuprofene",
+                "summary": "Reconnaître l’ibuprofène et quelques noms sélectionnés, le classer parmi les AINS et retenir qu’il ne doit pas être associé à un autre AINS sans vérification.",
+                "objectives": [
+                  "Associer ibuprofène, ADVIL, NUROFEN et IBUPROFENE TEVA dans les deux sens.",
+                  "Classer l’ibuprofène parmi les AINS et citer son utilité générale.",
+                  "Appliquer la vigilance sur l’association de plusieurs AINS."
+                ],
+                "prerequisites": [
+                  "Savoir distinguer DCI et nom de spécialité."
+                ],
+                "estimatedMinutes": 7,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "L’ibuprofène est un anti-inflammatoire non stéroïdien, ou AINS. Il calme la douleur, fait baisser la fièvre et agit sur l’inflammation.",
+                      "sourceKeys": ["ibuprofene-teva"]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans les exemples vérifiés, ADVIL, NUROFEN et IBUPROFENE TEVA contiennent de l’ibuprofène. Le passage du nom à la DCI et de la DCI aux noms doit devenir automatique.",
+                      "sourceKeys": [
+                        "advil-400",
+                        "nurofen-200",
+                        "ibuprofene-teva"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "L’ibuprofène étant un AINS, il ne doit pas être associé à un autre AINS sans vérification : cette association augmente le risque d’ulcération ou de saignement digestif.",
+                      "sourceKeys": ["ibuprofene-teva"]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Réflexe : lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute. Reconnaître la famille AINS ne permet pas de choisir un médicament à la place d’un autre.",
+                      "sourceKeys": ["ibuprofene-teva"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "ibuprofene-teva",
+                    "type": "website",
+                    "title": "IBUPROFENE TEVA 400 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/69847599/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). IBUPROFENE TEVA 400 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition, la classe AINS et la mise en garde sur les autres AINS.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "advil-400",
+                    "type": "website",
+                    "title": "ADVIL 400 mg, comprimé enrobé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63646874/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ADVIL 400 mg, comprimé enrobé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière ADVIL.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "nurofen-200",
+                    "type": "website",
+                    "title": "NUROFEN 200 mg, comprimé enrobé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60305960/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). NUROFEN 200 mg, comprimé enrobé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière NUROFEN.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Ibuprofène : DCI, noms et famille AINS",
+                    "slug": "ibuprofene-dci-noms-ains",
+                    "description": "ADVIL, NUROFEN et IBUPROFENE TEVA contiennent de l’ibuprofène, un AINS qui ne doit pas être associé à un autre AINS sans vérification.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "ibuprofene-teva",
+                      "advil-400",
+                      "nurofen-200"
+                    ],
+                    "assessment": {
+                      "key": "assessment-ibuprofene-dci-noms-ains",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Ibuprofène : DCI, noms et famille AINS",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Classer les noms de l’ibuprofène",
+                    "description": "Associer ADVIL, NUROFEN et IBUPROFENE TEVA à l’ibuprofène, puis expliquer en une phrase pourquoi il faut rechercher les autres AINS du traitement.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-ibuprofene-dci-noms-ains"
+                  }
+                ]
+              },
+              {
+                "title": "Kétoprofène",
+                "slug": "ketoprofene",
+                "summary": "Reconnaître le kétoprofène derrière PROFENID, BI PROFENID LP et KETUM, le distinguer de l’ibuprofène et retenir la vigilance solaire propre au gel.",
+                "objectives": [
+                  "Associer kétoprofène, PROFENID, BI PROFENID LP et KETUM dans les deux sens.",
+                  "Distinguer kétoprofène et ibuprofène tout en les classant parmi les AINS.",
+                  "Appliquer la vigilance de photosensibilisation du kétoprofène en gel."
+                ],
+                "prerequisites": [
+                  "Savoir distinguer DCI et nom de spécialité.",
+                  "Avoir identifié la famille AINS avec l’ibuprofène."
+                ],
+                "estimatedMinutes": 8,
+                "position": 3,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le kétoprofène est un anti-inflammatoire non stéroïdien, ou AINS. Il calme la douleur et agit sur l’inflammation.",
+                      "sourceKeys": ["profenid-100", "ketum-gel"]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans les exemples vérifiés, PROFENID, BI PROFENID LP et KETUM contiennent du kétoprofène. KETUM existe notamment sous forme de comprimé et de gel.",
+                      "sourceKeys": [
+                        "profenid-100",
+                        "bi-profenid-lp-100",
+                        "ketum-100",
+                        "ketum-gel"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Kétoprofène et ibuprofène appartiennent tous deux à la famille des AINS, mais ce sont deux substances différentes. PROFENID, BI PROFENID LP et KETUM ne doivent pas être classés avec ADVIL ou NUROFEN.",
+                      "sourceKeys": [
+                        "profenid-100",
+                        "bi-profenid-lp-100",
+                        "ketum-100"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "La vigilance solaire concerne le kétoprofène en gel : pendant le traitement et les deux semaines suivant son arrêt, ne pas exposer la zone traitée au soleil, même voilé, ni aux UV, et la protéger avec un vêtement.",
+                      "sourceKeys": ["ketum-gel"]
+                    }
+                  },
+                  {
+                    "key": "content-5",
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Cette comparaison sert uniquement à classer et à ne pas confondre. Le choix d’un médicament relève du prescripteur ou du pharmacien.",
+                      "sourceKeys": ["ketum-gel"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "ketum-gel",
+                    "type": "website",
+                    "title": "KETUM 2,5 POUR CENT, gel",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63736058/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). KETUM 2,5 POUR CENT, gel. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition et la mise en garde relative au soleil et aux UV.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "profenid-100",
+                    "type": "website",
+                    "title": "PROFENID 100 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66771790/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). PROFENID 100 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière PROFENID.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "bi-profenid-lp-100",
+                    "type": "website",
+                    "title": "BI PROFENID LP 100 mg, comprimé sécable à libération prolongée",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61165486/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). BI PROFENID LP 100 mg, comprimé sécable à libération prolongée. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière BI PROFENID LP.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  },
+                  {
+                    "key": "ketum-100",
+                    "type": "website",
+                    "title": "KETUM 100 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/69159834/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). KETUM 100 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière KETUM sous forme de comprimé.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Kétoprofène : DCI, noms et vigilance du gel",
+                    "slug": "ketoprofene-dci-noms-gel",
+                    "description": "PROFENID, BI PROFENID LP et KETUM contiennent du kétoprofène ; le gel impose une protection solaire pendant le traitement et deux semaines après.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "ketum-gel",
+                      "profenid-100",
+                      "bi-profenid-lp-100",
+                      "ketum-100"
+                    ],
+                    "assessment": {
+                      "key": "assessment-ketoprofene-dci-noms-gel",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Kétoprofène : DCI, noms et vigilance du gel",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Distinguer kétoprofène et ibuprofène",
+                    "description": "Classer PROFENID, BI PROFENID LP, KETUM, ADVIL et NUROFEN selon leur DCI, puis citer la vigilance propre au kétoprofène en gel.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-5"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-ketoprofene-dci-noms-gel"
+                  }
+                ]
+              },
+              {
+                "title": "Aspirine et acide acétylsalicylique",
+                "slug": "aspirine-acide-acetylsalicylique",
+                "summary": "Relier le nom courant aspirine à la DCI acide acétylsalicylique, reconnaître trois noms sélectionnés et comprendre que dosage et finalité doivent être vérifiés.",
+                "objectives": [
+                  "Relier aspirine et acide acétylsalicylique dans les deux sens.",
+                  "Associer ASPEGIC, KARDEGIC et ASPIRINE UPSA à cette DCI.",
+                  "Comprendre qu’une même DCI peut correspondre à des finalités différentes selon le dosage et la présentation.",
+                  "Retenir le risque accru de saignement."
+                ],
+                "prerequisites": [
+                  "Savoir distinguer DCI et nom de spécialité."
+                ],
+                "estimatedMinutes": 8,
+                "position": 4,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Acide acétylsalicylique est la DCI de la substance couramment appelée aspirine. Selon la présentation, elle peut calmer la douleur, faire baisser la fièvre ou diminuer l’inflammation.",
+                      "sourceKeys": [
+                        "aspegic-adultes-1000",
+                        "aspirine-upsa-500"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans les exemples vérifiés, ASPEGIC, KARDEGIC et ASPIRINE UPSA contiennent de l’acide acétylsalicylique. Il faut pouvoir passer du nom courant ou de la DCI à ces noms, et inversement.",
+                      "sourceKeys": [
+                        "aspegic-adultes-1000",
+                        "kardegic-75",
+                        "aspirine-upsa-500"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Même DCI ne signifie pas même finalité : des dosages et présentations différents, comme ASPEGIC et KARDEGIC, peuvent correspondre à des usages différents. Vérifier le dosage et transmettre au pharmacien en cas de doute.",
+                      "sourceKeys": ["aspegic-adultes-1000", "kardegic-75"]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "On dit souvent que l’aspirine « fluidifie le sang ». Plus précisément, l’acide acétylsalicylique a un effet antiagrégant plaquettaire dès de faibles doses et pendant plusieurs jours ; il augmente le risque de saignement.",
+                      "sourceKeys": ["aspegic-adultes-1000"]
+                    }
+                  },
+                  {
+                    "key": "content-5",
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Réflexe : ne pas déduire la finalité d’une boîte à partir de la seule racine du nom. Lire le nom complet, vérifier la composition et le dosage, puis transmettre au pharmacien.",
+                      "sourceKeys": ["aspegic-adultes-1000", "kardegic-75"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "aspegic-adultes-1000",
+                    "type": "website",
+                    "title": "ASPEGIC ADULTES 1000 mg, poudre pour solution buvable",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63936571/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ASPEGIC ADULTES 1000 mg, poudre pour solution buvable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition, les indications générales et la mise en garde sur le risque hémorragique.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "kardegic-75",
+                    "type": "website",
+                    "title": "KARDEGIC 75 mg, poudre pour solution buvable",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/64755969/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). KARDEGIC 75 mg, poudre pour solution buvable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI et observer que le dosage et la finalité diffèrent d’ASPEGIC.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "aspirine-upsa-500",
+                    "type": "website",
+                    "title": "ASPIRINE UPSA 500 mg, comprimé effervescent",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/65265765/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ASPIRINE UPSA 500 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier la DCI derrière ASPIRINE UPSA.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Aspirine : nom courant, DCI et finalités",
+                    "slug": "aspirine-dci-finalites",
+                    "description": "Aspirine est le nom courant de l’acide acétylsalicylique ; ASPEGIC, KARDEGIC et ASPIRINE UPSA en contiennent, avec des finalités qui peuvent varier selon le dosage.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "aspegic-adultes-1000",
+                      "kardegic-75",
+                      "aspirine-upsa-500"
+                    ],
+                    "assessment": {
+                      "key": "assessment-aspirine-dci-finalites",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Aspirine : nom courant, DCI et finalités",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Relier aspirine, DCI et spécialités",
+                    "description": "Associer aspirine, acide acétylsalicylique, ASPEGIC, KARDEGIC et ASPIRINE UPSA, puis expliquer pourquoi le dosage doit être vérifié.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-5"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-aspirine-dci-finalites"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Associations avec des antalgiques opioïdes",
+            "slug": "associations-antalgiques-opioides",
+            "position": 3,
+            "lessons": [
+              {
+                "title": "Codéine et associations avec le paracétamol",
+                "slug": "codeine-associations-paracetamol",
+                "summary": "Reconnaître la codéine comme substance distincte et identifier trois associations paracétamol + codéine sans confondre DAFALGAN et DAFALGAN CODEINE.",
+                "objectives": [
+                  "Reconnaître la codéine comme une substance active et un antalgique opioïde.",
+                  "Associer DAFALGAN CODEINE, CODOLIPRANE et KLIPAL à paracétamol + codéine.",
+                  "Distinguer DAFALGAN de DAFALGAN CODEINE.",
+                  "Appliquer la vigilance relative aux médicaments sédatifs."
+                ],
+                "prerequisites": [
+                  "Avoir terminé « Lire un nom de médicament ».",
+                  "Connaître les principaux noms du paracétamol."
+                ],
+                "estimatedMinutes": 7,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La codéine est une substance active distincte du paracétamol et un antalgique opioïde. Dans cette leçon, elle est étudiée dans des spécialités qui l’associent au paracétamol.",
+                      "sourceKeys": [
+                        "dafalgan-codeine",
+                        "codoliprane",
+                        "klipal"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "DAFALGAN CODEINE, CODOLIPRANE et KLIPAL associent paracétamol et codéine. Il faut savoir passer de chacun de ces noms à la composition et de l’association aux noms.",
+                      "sourceKeys": [
+                        "dafalgan-codeine",
+                        "codoliprane",
+                        "klipal"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "DAFALGAN contient du paracétamol seul, alors que DAFALGAN CODEINE contient du paracétamol et de la codéine. Le mot ajouté au nom correspond ici à une différence réelle de composition.",
+                      "sourceKeys": ["dafalgan-1000", "dafalgan-codeine"]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Associée à des médicaments sédatifs, la codéine peut augmenter le risque de somnolence et de dépression respiratoire. En cas de doute sur une association ou un traitement en cours, vérifier et transmettre au pharmacien.",
+                      "sourceKeys": ["klipal"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "dafalgan-codeine",
+                    "type": "website",
+                    "title": "DAFALGAN CODEINE, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition et comparer avec DAFALGAN.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "codoliprane",
+                    "type": "website",
+                    "title": "CODOLIPRANE 500 mg/30 mg, comprimé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60904643/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). CODOLIPRANE 500 mg/30 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier l’association paracétamol + codéine.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "klipal",
+                    "type": "website",
+                    "title": "KLIPAL 600 mg/50 mg, comprimé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67869942/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). KLIPAL 600 mg/50 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier l’association et la mise en garde relative aux médicaments sédatifs.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  },
+                  {
+                    "key": "dafalgan-1000",
+                    "type": "website",
+                    "title": "DAFALGAN 1000 mg, comprimé effervescent",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Comparer une spécialité au paracétamol seul avec DAFALGAN CODEINE.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Codéine : reconnaître les associations avec le paracétamol",
+                    "slug": "codeine-associations-paracetamol",
+                    "description": "DAFALGAN CODEINE, CODOLIPRANE et KLIPAL associent paracétamol et codéine ; DAFALGAN seul ne contient pas de codéine.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "dafalgan-codeine",
+                      "codoliprane",
+                      "klipal",
+                      "dafalgan-1000"
+                    ],
+                    "assessment": {
+                      "key": "assessment-codeine-associations-paracetamol",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Codéine : reconnaître les associations avec le paracétamol",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Classer paracétamol seul et associations",
+                    "description": "Classer DAFALGAN, DAFALGAN CODEINE, CODOLIPRANE et KLIPAL selon qu’ils contiennent du paracétamol seul ou paracétamol + codéine.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-codeine-associations-paracetamol"
+                  }
+                ]
+              },
+              {
+                "title": "Tramadol seul et avec paracétamol",
+                "slug": "tramadol-seul-association-paracetamol",
+                "summary": "Reconnaître le tramadol comme antalgique opioïde, distinguer TOPALGIC et CONTRAMAL LP des associations IXPRIM et ZALDIAR, puis appliquer la vigilance relative aux sédatifs.",
+                "objectives": [
+                  "Reconnaître le tramadol comme DCI et antalgique opioïde.",
+                  "Distinguer tramadol seul et tramadol + paracétamol.",
+                  "Associer TOPALGIC, CONTRAMAL LP, IXPRIM et ZALDIAR à leur composition.",
+                  "Appliquer la vigilance relative aux médicaments sédatifs."
+                ],
+                "prerequisites": [
+                  "Savoir lire le nom complet et vérifier la composition.",
+                  "Comprendre le principe d’une association de substances actives."
+                ],
+                "estimatedMinutes": 7,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-1",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le tramadol est une substance active et un antalgique opioïde, distinct du paracétamol.",
+                      "sourceKeys": ["topalgic-50", "contramal-lp-100"]
+                    }
+                  },
+                  {
+                    "key": "content-2",
+                    "type": "example",
+                    "position": 2,
+                    "content": {
+                      "text": "Dans les exemples étudiés, TOPALGIC et CONTRAMAL LP contiennent du tramadol seul. IXPRIM et ZALDIAR associent tramadol et paracétamol.",
+                      "sourceKeys": [
+                        "topalgic-50",
+                        "contramal-lp-100",
+                        "ixprim",
+                        "zaldiar"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-3",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Une spécialité d’association contient plusieurs substances actives. Le nom ne suffit pas à deviner : il faut lire le nom complet et vérifier la composition.",
+                      "sourceKeys": ["ixprim", "zaldiar"]
+                    }
+                  },
+                  {
+                    "key": "content-4",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Associé à des médicaments sédatifs, le tramadol peut augmenter le risque de somnolence et de dépression respiratoire. En cas de doute sur un traitement associé, vérifier et transmettre au pharmacien.",
+                      "sourceKeys": ["topalgic-50"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "topalgic-50",
+                    "type": "website",
+                    "title": "TOPALGIC 50 mg, gélule",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63435884/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). TOPALGIC 50 mg, gélule. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Lire la composition et la mise en garde relative aux médicaments sédatifs.",
+                    "isRequired": true,
+                    "estimatedMinutes": 2,
+                    "position": 1
+                  },
+                  {
+                    "key": "contramal-lp-100",
+                    "type": "website",
+                    "title": "CONTRAMAL LP 100 mg, comprimé à libération prolongée",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68951381/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). CONTRAMAL LP 100 mg, comprimé à libération prolongée. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier qu’il s’agit de tramadol seul.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 2
+                  },
+                  {
+                    "key": "ixprim",
+                    "type": "website",
+                    "title": "IXPRIM 37,5 mg/325 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61137241/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). IXPRIM 37,5 mg/325 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier l’association tramadol + paracétamol.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 3
+                  },
+                  {
+                    "key": "zaldiar",
+                    "type": "website",
+                    "title": "ZALDIAR 37,5 mg/325 mg, comprimé pelliculé",
+                    "author": "Agence nationale de sécurité du médicament et des produits de santé",
+                    "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60327615/extrait",
+                    "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ZALDIAR 37,5 mg/325 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+                    "description": "Vérifier l’association tramadol + paracétamol.",
+                    "isRequired": false,
+                    "estimatedMinutes": 1,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Tramadol : seul ou associé au paracétamol",
+                    "slug": "tramadol-seul-association-paracetamol",
+                    "description": "TOPALGIC et CONTRAMAL LP contiennent du tramadol seul ; IXPRIM et ZALDIAR associent tramadol et paracétamol.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "topalgic-50",
+                      "contramal-lp-100",
+                      "ixprim",
+                      "zaldiar"
+                    ],
+                    "assessment": {
+                      "key": "assessment-tramadol-seul-association-paracetamol",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Tramadol : seul ou associé au paracétamol",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-classification",
+                    "title": "Classer les spécialités de tramadol",
+                    "description": "Classer TOPALGIC, CONTRAMAL LP, IXPRIM et ZALDIAR selon qu’ils contiennent du tramadol seul ou tramadol + paracétamol.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-classification"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-tramadol-seul-association-paracetamol"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "conceptAssessmentBanks": [
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "fondamentaux-officine",
+      "lessonSlug": "lire-un-nom-de-medicament",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "lire-nom-specialite-dci-substance",
+          "assessmentTitle": "Mini-évaluation — Lire un nom : spécialité, DCI et substance active",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Dans l’exemple étudié, DOLIPRANE est…",
+              "explanation": "DOLIPRANE est le nom de la spécialité ; paracétamol est la DCI.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "un nom de spécialité",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "une DCI",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "un dosage",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une même substance active ne peut avoir qu’un seul nom commercial.",
+              "explanation": "Une même substance peut être présente dans plusieurs spécialités portant des noms différents.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que contient DAFALGAN CODEINE dans l’exemple étudié ?",
+              "explanation": "Le nom complet correspond ici à une association de deux substances actives.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Paracétamol et codéine",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Paracétamol uniquement",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Codéine uniquement",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Deux boîtes contiennent la même substance active : je peux décider seule de remplacer l’une par l’autre.",
+              "explanation": "Reconnaître une substance ne vaut pas décision de remplacement : il faut vérifier et transmettre au pharmacien.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel est le bon réflexe devant un nom de médicament ?",
+              "explanation": "Le réflexe commun au parcours est lire, vérifier et transmettre au pharmacien en cas de doute.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Lire le nom complet, vérifier la composition et demander au pharmacien en cas de doute",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Se fier uniquement à la couleur de la boîte",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Décider à partir du nom de marque",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "dci-douleur-fievre",
+      "lessonSlug": "paracetamol",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "paracetamol-dci-noms-cumul",
+          "assessmentTitle": "Mini-évaluation — Paracétamol : DCI, noms et cumul",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle substance contient DOLIPRANE ?",
+              "explanation": "DOLIPRANE est un nom commercial du paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Paracétamol",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ibuprofène",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Kétoprofène",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels contiennent du paracétamol ?",
+              "explanation": "ADVIL contient de l’ibuprofène ; les trois autres contiennent du paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "DOLIPRANE",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "DAFALGAN",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "EFFERALGAN",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "ADVIL",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle est l’utilité générale du paracétamol ?",
+              "explanation": "Le paracétamol est antalgique et antipyrétique.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Calmer la douleur et faire baisser la fièvre",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Agir uniquement sur l’inflammation",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Fluidifier le sang",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "On peut associer DOLIPRANE et DAFALGAN sans vérifier leur composition.",
+              "explanation": "Dans les exemples vus, les deux contiennent du paracétamol ; le cumul expose à un surdosage.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "DAFALGAN CODEINE ne contient que du paracétamol.",
+              "explanation": "DAFALGAN CODEINE associe paracétamol et codéine.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "dci-douleur-fievre",
+      "lessonSlug": "ibuprofene",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "ibuprofene-dci-noms-ains",
+          "assessmentTitle": "Mini-évaluation — Ibuprofène : DCI, noms et famille AINS",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle substance contient ADVIL ?",
+              "explanation": "ADVIL est un nom commercial de l’ibuprofène.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Ibuprofène",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Paracétamol",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Kétoprofène",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels contiennent de l’ibuprofène ?",
+              "explanation": "DOLIPRANE contient du paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "ADVIL",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "NUROFEN",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "IBUPROFENE TEVA",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "DOLIPRANE",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "single_choice",
+              "prompt": "L’ibuprofène appartient à quelle famille ?",
+              "explanation": "L’ibuprofène est un anti-inflammatoire non stéroïdien.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Les AINS",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les antihistaminiques",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Les antibiotiques",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "On peut associer l’ibuprofène à un autre AINS sans risque particulier.",
+              "explanation": "Associer plusieurs AINS augmente notamment le risque digestif.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle DCI retrouve-t-on derrière NUROFEN dans l’exemple étudié ?",
+              "explanation": "NUROFEN contient de l’ibuprofène.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Ibuprofène",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Aspirine",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Codéine",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "dci-douleur-fievre",
+      "lessonSlug": "ketoprofene",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "ketoprofene-dci-noms-gel",
+          "assessmentTitle": "Mini-évaluation — Kétoprofène : DCI, noms et vigilance du gel",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle substance contient PROFENID ?",
+              "explanation": "PROFENID contient du kétoprofène.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Kétoprofène",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ibuprofène",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Paracétamol",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels contiennent du kétoprofène ?",
+              "explanation": "ADVIL contient de l’ibuprofène.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "PROFENID",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "BI PROFENID LP",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "KETUM",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "ADVIL",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Kétoprofène et ibuprofène sont la même substance.",
+              "explanation": "Ce sont deux substances différentes de la même famille AINS.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Après application de kétoprofène en gel, la zone traitée peut être exposée au soleil.",
+              "explanation": "Le risque de photosensibilisation impose de protéger la zone pendant le traitement et deux semaines après.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle DCI correspond à KETUM dans l’exemple étudié ?",
+              "explanation": "KETUM contient du kétoprofène.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Kétoprofène",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Tramadol",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Acide acétylsalicylique",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "dci-douleur-fievre",
+      "lessonSlug": "aspirine-acide-acetylsalicylique",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "aspirine-dci-finalites",
+          "assessmentTitle": "Mini-évaluation — Aspirine : nom courant, DCI et finalités",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "« Aspirine » correspond à quelle DCI ?",
+              "explanation": "Aspirine est le nom courant de l’acide acétylsalicylique.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Acide acétylsalicylique",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Paracétamol",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Kétoprofène",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle substance contient ASPEGIC ?",
+              "explanation": "ASPEGIC contient de l’acide acétylsalicylique.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Acide acétylsalicylique",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Ibuprofène",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Codéine",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels contiennent de l’acide acétylsalicylique ?",
+              "explanation": "DOLIPRANE contient du paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "ASPEGIC",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "KARDEGIC",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "ASPIRINE UPSA",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "DOLIPRANE",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Toutes les présentations d’aspirine ont forcément la même finalité.",
+              "explanation": "Le dosage et la présentation peuvent correspondre à des finalités différentes.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "L’aspirine peut augmenter le risque de saignement.",
+              "explanation": "Son effet antiagrégant plaquettaire augmente le risque hémorragique.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "associations-antalgiques-opioides",
+      "lessonSlug": "codeine-associations-paracetamol",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "codeine-associations-paracetamol",
+          "assessmentTitle": "Mini-évaluation — Codéine : reconnaître les associations avec le paracétamol",
+          "questions": [
+            {
+              "type": "true_false",
+              "prompt": "La codéine est la même substance que le paracétamol.",
+              "explanation": "Ce sont deux substances actives distinctes qui peuvent être associées.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que contient DAFALGAN CODEINE ?",
+              "explanation": "DAFALGAN CODEINE associe les deux substances.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Paracétamol et codéine",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Paracétamol uniquement",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Codéine uniquement",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels associent paracétamol et codéine ?",
+              "explanation": "DAFALGAN contient du paracétamol seul dans l’exemple étudié.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "DAFALGAN CODEINE",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "CODOLIPRANE",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "DAFALGAN",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "KLIPAL",
+                  "isCorrect": true,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un nom proche d’un produit connu garantit une composition identique.",
+              "explanation": "Il faut lire le nom complet et vérifier la composition.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "Codéine et médicaments sédatifs peuvent augmenter le risque de somnolence et de dépression respiratoire.",
+              "explanation": "Cette association exige une vérification et un relais vers le pharmacien.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "officine-express",
+      "stageSlug": "douleur-fievre-mise-dans-le-bain",
+      "moduleSlug": "associations-antalgiques-opioides",
+      "lessonSlug": "tramadol-seul-association-paracetamol",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "tramadol-seul-association-paracetamol",
+          "assessmentTitle": "Mini-évaluation — Tramadol : seul ou associé au paracétamol",
+          "questions": [
+            {
+              "type": "true_false",
+              "prompt": "Le tramadol est la même substance que le paracétamol.",
+              "explanation": "Le tramadol est un antalgique opioïde distinct du paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "true_false",
+              "prompt": "TOPALGIC contient du paracétamol dans l’exemple étudié.",
+              "explanation": "TOPALGIC contient du tramadol seul.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que contient IXPRIM ?",
+              "explanation": "IXPRIM associe tramadol et paracétamol.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Tramadol et paracétamol",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Tramadol uniquement",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Paracétamol uniquement",
+                  "isCorrect": false,
+                  "position": 3
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Lesquels associent tramadol et paracétamol ?",
+              "explanation": "TOPALGIC et CONTRAMAL LP contiennent du tramadol seul dans les exemples étudiés.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "IXPRIM",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "TOPALGIC",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "ZALDIAR",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "CONTRAMAL LP",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "Tramadol et médicaments sédatifs peuvent augmenter le risque de somnolence et de dépression respiratoire.",
+              "explanation": "Cette association exige une vérification et un relais vers le pharmacien.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

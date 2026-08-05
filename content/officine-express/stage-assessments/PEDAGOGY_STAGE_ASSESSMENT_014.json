@@ -1,0 +1,167 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_014",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation cumulative — Officine Express",
+      "type": "cumulative_exam",
+      "isRequired": true,
+      "passingScore": 70,
+      "description": "Évaluation courte de reconnaissance couvrant les sept leçons du pilote. Elle vérifie les correspondances DCI ↔ noms, les associations, deux vigilances transversales et le réflexe de transmission au pharmacien.",
+      "instructions": "## Consigne\nRépondre aux dix questions sans consulter les cartes, en indiquant brièvement le raisonnement lorsque la question demande une vigilance.\n\n## Questions\n1. Parmi EFFERALGAN, ADVIL, PARACETAMOL VIATRIS et PROFENID, lesquels contiennent du paracétamol ?\n2. Quelle substance contient IBUPROFENE TEVA ?\n3. Quelle substance contient BI PROFENID LP ?\n4. Quelle DCI se trouve derrière KARDEGIC ?\n5. DOLIPRANE et PROFENID ont-ils exactement le même usage général ? Expliquer en une phrase.\n6. DAFALGAN CODEINE contient-il uniquement du paracétamol ?\n7. Deux boîtes différentes contiennent toutes les deux du paracétamol : quel risque faut-il repérer et quel réflexe adopter ?\n8. Peut-on associer ibuprofène et kétoprofène sans risque particulier ?\n9. Classer TOPALGIC, IXPRIM, CONTRAMAL LP et ZALDIAR entre « tramadol seul » et « tramadol + paracétamol ».\n10. La composition exacte d’une boîte reste incertaine : quel est le bon réflexe ?\n\n## Format de remise\nRéponse numérotée de 1 à 10, courte et lisible.",
+      "rubric": [
+        {
+          "criterion": "Correspondances DCI et noms",
+          "weight": 40,
+          "requirements": [
+            "Les noms sont reliés aux bonnes substances.",
+            "Paracétamol, ibuprofène, kétoprofène et acide acétylsalicylique sont distingués."
+          ]
+        },
+        {
+          "criterion": "Reconnaissance des associations",
+          "weight": 25,
+          "requirements": [
+            "Paracétamol seul et paracétamol + codéine sont distingués.",
+            "Tramadol seul et tramadol + paracétamol sont correctement classés."
+          ]
+        },
+        {
+          "criterion": "Vigilances essentielles",
+          "weight": 25,
+          "requirements": [
+            "Le risque de cumul du paracétamol est repéré.",
+            "L’association de plusieurs AINS n’est pas banalisée."
+          ]
+        },
+        {
+          "criterion": "Réflexe officinal",
+          "weight": 10,
+          "requirements": [
+            "La réponse exige de lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute."
+          ]
+        }
+      ]
+    },
+    "description": "Évaluation courte de reconnaissance couvrant les sept leçons du pilote. Elle vérifie les correspondances DCI ↔ noms, les associations, deux vigilances transversales et le réflexe de transmission au pharmacien.",
+    "instructions": [
+      "## Consigne",
+      "Répondre aux dix questions sans consulter les cartes, en indiquant brièvement le raisonnement lorsque la question demande une vigilance.",
+      "## Questions",
+      "1. Parmi EFFERALGAN, ADVIL, PARACETAMOL VIATRIS et PROFENID, lesquels contiennent du paracétamol ?",
+      "2. Quelle substance contient IBUPROFENE TEVA ?",
+      "3. Quelle substance contient BI PROFENID LP ?",
+      "4. Quelle DCI se trouve derrière KARDEGIC ?",
+      "5. DOLIPRANE et PROFENID ont-ils exactement le même usage général ? Expliquer en une phrase.",
+      "6. DAFALGAN CODEINE contient-il uniquement du paracétamol ?",
+      "7. Deux boîtes différentes contiennent toutes les deux du paracétamol : quel risque faut-il repérer et quel réflexe adopter ?",
+      "8. Peut-on associer ibuprofène et kétoprofène sans risque particulier ?",
+      "9. Classer TOPALGIC, IXPRIM, CONTRAMAL LP et ZALDIAR entre « tramadol seul » et « tramadol + paracétamol ».",
+      "10. La composition exacte d’une boîte reste incertaine : quel est le bon réflexe ?",
+      "## Format de remise",
+      "Réponse numérotée de 1 à 10, courte et lisible."
+    ],
+    "case": "Marie termine le parcours Officine Express et doit reconnaître les substances derrière plusieurs noms sans prendre de décision clinique ou de substitution.",
+    "estimatedMinutes": 8,
+    "submissionFormat": "Réponse numérotée courte aux dix questions.",
+    "conceptSlugs": [
+      "lire-nom-specialite-dci-substance",
+      "paracetamol-dci-noms-cumul",
+      "ibuprofene-dci-noms-ains",
+      "ketoprofene-dci-noms-gel",
+      "aspirine-dci-finalites",
+      "codeine-associations-paracetamol",
+      "tramadol-seul-association-paracetamol"
+    ],
+    "rubric": [
+      {
+        "criterion": "Correspondances DCI et noms",
+        "weight": 40,
+        "requirements": [
+          "Les noms sont reliés aux bonnes substances.",
+          "Paracétamol, ibuprofène, kétoprofène et acide acétylsalicylique sont distingués."
+        ]
+      },
+      {
+        "criterion": "Reconnaissance des associations",
+        "weight": 25,
+        "requirements": [
+          "Paracétamol seul et paracétamol + codéine sont distingués.",
+          "Tramadol seul et tramadol + paracétamol sont correctement classés."
+        ]
+      },
+      {
+        "criterion": "Vigilances essentielles",
+        "weight": 25,
+        "requirements": [
+          "Le risque de cumul du paracétamol est repéré.",
+          "L’association de plusieurs AINS n’est pas banalisée."
+        ]
+      },
+      {
+        "criterion": "Réflexe officinal",
+        "weight": 10,
+        "requirements": [
+          "La réponse exige de lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute."
+        ]
+      }
+    ],
+    "remediation": "Revoir uniquement les leçons correspondant aux erreurs, refaire leur mini-évaluation, puis soumettre une nouvelle réponse aux questions non maîtrisées."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "createdAt": "2026-08-05",
+    "referenceIds": [
+      "REF-OE-071-01",
+      "REF-OE-071-02",
+      "REF-OE-071-03",
+      "REF-OE-071-04",
+      "REF-OE-071-05",
+      "REF-OE-072-01",
+      "REF-OE-072-02",
+      "REF-OE-072-03",
+      "REF-OE-072-04",
+      "REF-OE-072-05",
+      "REF-OE-072-06",
+      "REF-OE-073-01",
+      "REF-OE-073-02",
+      "REF-OE-073-03",
+      "REF-OE-074-01",
+      "REF-OE-074-02",
+      "REF-OE-074-03",
+      "REF-OE-074-04",
+      "REF-OE-075-01",
+      "REF-OE-075-02",
+      "REF-OE-075-03",
+      "REF-OE-076-01",
+      "REF-OE-076-02",
+      "REF-OE-076-03",
+      "REF-OE-076-04",
+      "REF-OE-077-01",
+      "REF-OE-077-02",
+      "REF-OE-077-03",
+      "REF-OE-077-04"
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "readyForPublication": true,
+      "notes": [
+        "Évaluation destinée à un usage personnel ; aucune validation scientifique ou professionnelle n’est revendiquée.",
+        "Corrigé attendu : Q1 EFFERALGAN et PARACETAMOL VIATRIS ; Q2 ibuprofène ; Q3 kétoprofène ; Q4 acide acétylsalicylique ; Q5 non ; Q6 paracétamol + codéine ; Q7 surdosage et vérification ; Q8 non, risque digestif ; Q9 TOPALGIC/CONTRAMAL LP seuls et IXPRIM/ZALDIAR associés ; Q10 lire, vérifier, pharmacien."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion de l’évaluation cumulative Markdown en artefact d’étape et payload de seed.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}

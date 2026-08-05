@@ -1,0 +1,543 @@
+{
+  "specId": "PEDAGOGY_SPEC_076",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "moduleSlug": "associations-antalgiques-opioides",
+  "lesson": {
+    "title": "Codéine et associations avec le paracétamol",
+    "slug": "codeine-associations-paracetamol",
+    "summary": "Reconnaître la codéine comme substance distincte et identifier trois associations paracétamol + codéine sans confondre DAFALGAN et DAFALGAN CODEINE.",
+    "objectives": [
+      "Reconnaître la codéine comme une substance active et un antalgique opioïde.",
+      "Associer DAFALGAN CODEINE, CODOLIPRANE et KLIPAL à paracétamol + codéine.",
+      "Distinguer DAFALGAN de DAFALGAN CODEINE.",
+      "Appliquer la vigilance relative aux médicaments sédatifs."
+    ],
+    "prerequisites": [
+      "Avoir terminé « Lire un nom de médicament ».",
+      "Connaître les principaux noms du paracétamol."
+    ],
+    "estimatedMinutes": 7,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La codéine est une substance active distincte du paracétamol et un antalgique opioïde. Dans cette leçon, elle est étudiée dans des spécialités qui l’associent au paracétamol.",
+          "sourceKeys": ["dafalgan-codeine", "codoliprane", "klipal"]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "DAFALGAN CODEINE, CODOLIPRANE et KLIPAL associent paracétamol et codéine. Il faut savoir passer de chacun de ces noms à la composition et de l’association aux noms.",
+          "sourceKeys": ["dafalgan-codeine", "codoliprane", "klipal"]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "DAFALGAN contient du paracétamol seul, alors que DAFALGAN CODEINE contient du paracétamol et de la codéine. Le mot ajouté au nom correspond ici à une différence réelle de composition.",
+          "sourceKeys": ["dafalgan-1000", "dafalgan-codeine"]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Associée à des médicaments sédatifs, la codéine peut augmenter le risque de somnolence et de dépression respiratoire. En cas de doute sur une association ou un traitement en cours, vérifier et transmettre au pharmacien.",
+          "sourceKeys": ["klipal"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "dafalgan-codeine",
+        "type": "website",
+        "title": "DAFALGAN CODEINE, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Lire la composition et comparer avec DAFALGAN.",
+        "isRequired": true,
+        "estimatedMinutes": 2,
+        "position": 1
+      },
+      {
+        "key": "codoliprane",
+        "type": "website",
+        "title": "CODOLIPRANE 500 mg/30 mg, comprimé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60904643/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). CODOLIPRANE 500 mg/30 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier l’association paracétamol + codéine.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 2
+      },
+      {
+        "key": "klipal",
+        "type": "website",
+        "title": "KLIPAL 600 mg/50 mg, comprimé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67869942/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). KLIPAL 600 mg/50 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier l’association et la mise en garde relative aux médicaments sédatifs.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 3
+      },
+      {
+        "key": "dafalgan-1000",
+        "type": "website",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Comparer une spécialité au paracétamol seul avec DAFALGAN CODEINE.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Codéine : reconnaître les associations avec le paracétamol",
+        "slug": "codeine-associations-paracetamol",
+        "description": "DAFALGAN CODEINE, CODOLIPRANE et KLIPAL associent paracétamol et codéine ; DAFALGAN seul ne contient pas de codéine.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "dafalgan-codeine",
+          "codoliprane",
+          "klipal",
+          "dafalgan-1000"
+        ],
+        "assessment": {
+          "key": "assessment-codeine-associations-paracetamol",
+          "type": "quiz",
+          "title": "Mini-évaluation — Codéine : reconnaître les associations avec le paracétamol",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-classification",
+        "title": "Classer paracétamol seul et associations",
+        "description": "Classer DAFALGAN, DAFALGAN CODEINE, CODOLIPRANE et KLIPAL selon qu’ils contiennent du paracétamol seul ou paracétamol + codéine.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-classification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-codeine-associations-paracetamol"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte débutant en officine ; parcours personnel de reconnaissance, sans formation à la décision clinique ni à la substitution.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-05",
+    "lastReviewedAt": "2026-08-05",
+    "nextReviewAt": "2027-02-05",
+    "references": [
+      {
+        "id": "REF-OE-076-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN CODEINE, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-076-02",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "CODOLIPRANE 500 mg/30 mg, comprimé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60904643/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-076-03",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "KLIPAL 600 mg/50 mg, comprimé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67869942/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-076-04",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-076-01",
+            "locator": "Fiches info, indications et compositions.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          },
+          {
+            "referenceId": "REF-OE-076-02",
+            "locator": "Fiches info, indications et compositions.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          },
+          {
+            "referenceId": "REF-OE-076-03",
+            "locator": "Fiches info, indications et compositions.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-076-01",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-076-02",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-076-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-076-04",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          },
+          {
+            "referenceId": "REF-OE-076-01",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-076-03",
+            "locator": "RCP, rubriques 4.4 et 4.5 relatives aux médicaments sédatifs.",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "dafalgan-codeine",
+        "referenceIds": ["REF-OE-076-01"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Lire la composition et comparer avec DAFALGAN.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "codoliprane",
+        "referenceIds": ["REF-OE-076-02"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier l’association paracétamol + codéine.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "klipal",
+        "referenceIds": ["REF-OE-076-03"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier l’association et la mise en garde relative aux médicaments sédatifs.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dafalgan-1000",
+        "referenceIds": ["REF-OE-076-04"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Comparer une spécialité au paracétamol seul avec DAFALGAN CODEINE.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "codeine-associations-paracetamol",
+        "assessmentTitle": "Mini-évaluation — Codéine : reconnaître les associations avec le paracétamol",
+        "questions": [
+          {
+            "type": "true_false",
+            "prompt": "La codéine est la même substance que le paracétamol.",
+            "explanation": "Ce sont deux substances actives distinctes qui peuvent être associées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que contient DAFALGAN CODEINE ?",
+            "explanation": "DAFALGAN CODEINE associe les deux substances.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Paracétamol et codéine",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Paracétamol uniquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Codéine uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Lesquels associent paracétamol et codéine ?",
+            "explanation": "DAFALGAN contient du paracétamol seul dans l’exemple étudié.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "DAFALGAN CODEINE",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "CODOLIPRANE",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "DAFALGAN",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "KLIPAL",
+                "isCorrect": true,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un nom proche d’un produit connu garantit une composition identique.",
+            "explanation": "Il faut lire le nom complet et vérifier la composition.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "true_false",
+            "prompt": "Codéine et médicaments sédatifs peuvent augmenter le risque de somnolence et de dépression respiratoire.",
+            "explanation": "Cette association exige une vérification et un relais vers le pharmacien.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication prévue pour un usage personnel de mise dans le bain ; aucune mention « Validé scientifiquement » ne doit être affichée.",
+        "Le parcours enseigne la reconnaissance et le réflexe de vérification, jamais la posologie, la substitution, le conseil clinique ou la décision de délivrance.",
+        "Une revue par un pharmacien reste recommandée avant tout élargissement à un public professionnel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion du brouillon Markdown audité en spécification LearnX et banque de cinq questions.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}

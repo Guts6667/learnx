@@ -1,0 +1,645 @@
+{
+  "specId": "PEDAGOGY_SPEC_072",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "moduleSlug": "dci-douleur-fievre",
+  "lesson": {
+    "title": "Paracétamol",
+    "slug": "paracetamol",
+    "summary": "Reconnaître le paracétamol derrière quelques noms courants, rappeler son utilité générale et éviter le cumul de plusieurs produits qui en contiennent.",
+    "objectives": [
+      "Associer paracétamol, DOLIPRANE, DAFALGAN, EFFERALGAN et deux noms DCI + laboratoire dans les deux sens.",
+      "Dire que le paracétamol calme la douleur et fait baisser la fièvre.",
+      "Repérer une association contenant aussi de la codéine.",
+      "Éviter le cumul non vérifié de plusieurs médicaments contenant du paracétamol."
+    ],
+    "prerequisites": ["Avoir terminé « Lire un nom de médicament »."],
+    "estimatedMinutes": 7,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le paracétamol est une substance active qui calme les douleurs légères à modérées et fait baisser la fièvre.",
+          "sourceKeys": ["doliprane-1000"]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Dans les exemples vérifiés, DOLIPRANE, DAFALGAN, EFFERALGAN, PARACETAMOL BIOGARAN et PARACETAMOL VIATRIS contiennent du paracétamol. Il faut savoir passer du nom à la DCI et de la DCI aux noms.",
+          "sourceKeys": [
+            "doliprane-1000",
+            "dafalgan-1000",
+            "efferalgan-1000",
+            "paracetamol-biogaran",
+            "paracetamol-viatris"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "DAFALGAN CODEINE n’est pas du paracétamol seul : cette spécialité associe paracétamol et codéine. Lire le nom complet permet de repérer la substance ajoutée.",
+          "sourceKeys": ["dafalgan-codeine"]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Le paracétamol est présent dans de nombreux produits. Ne pas associer plusieurs médicaments qui en contiennent sans vérification : cela expose à un surdosage. En cas de doute, vérifier la composition et transmettre au pharmacien.",
+          "sourceKeys": ["doliprane-1000", "dafalgan-codeine"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "doliprane-1000",
+        "type": "website",
+        "title": "DOLIPRANE 1000 mg, comprimé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DOLIPRANE 1000 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Lire la composition et les indications générales du paracétamol.",
+        "isRequired": true,
+        "estimatedMinutes": 2,
+        "position": 1
+      },
+      {
+        "key": "dafalgan-1000",
+        "type": "website",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier la DCI derrière DAFALGAN.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 2
+      },
+      {
+        "key": "efferalgan-1000",
+        "type": "website",
+        "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). EFFERALGAN 1000 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier la DCI derrière EFFERALGAN.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 3
+      },
+      {
+        "key": "paracetamol-biogaran",
+        "type": "website",
+        "title": "PARACETAMOL BIOGARAN 1 g, comprimé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68787715/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). PARACETAMOL BIOGARAN 1 g, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Repérer la construction DCI + laboratoire.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 4
+      },
+      {
+        "key": "paracetamol-viatris",
+        "type": "website",
+        "title": "PARACETAMOL VIATRIS 1000 mg, comprimé sécable",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67165233/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). PARACETAMOL VIATRIS 1000 mg, comprimé sécable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Repérer la construction DCI + laboratoire.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 5
+      },
+      {
+        "key": "dafalgan-codeine",
+        "type": "website",
+        "title": "DAFALGAN CODEINE, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Comparer une spécialité au paracétamol seul avec une association contenant aussi de la codéine.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Paracétamol : DCI, noms et cumul",
+        "slug": "paracetamol-dci-noms-cumul",
+        "description": "Le paracétamol se retrouve sous plusieurs noms ; il calme la douleur et la fièvre et ne doit pas être cumulé à partir de plusieurs produits sans vérification.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "doliprane-1000",
+          "dafalgan-1000",
+          "efferalgan-1000",
+          "paracetamol-biogaran",
+          "paracetamol-viatris",
+          "dafalgan-codeine"
+        ],
+        "assessment": {
+          "key": "assessment-paracetamol-dci-noms-cumul",
+          "type": "quiz",
+          "title": "Mini-évaluation — Paracétamol : DCI, noms et cumul",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-classification",
+        "title": "Faire les associations paracétamol",
+        "description": "Sans regarder le contenu, associer DOLIPRANE, DAFALGAN et EFFERALGAN à leur DCI, puis citer la règle de vigilance sur le cumul.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-classification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-paracetamol-dci-noms-cumul"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte débutant en officine ; parcours personnel de reconnaissance, sans formation à la décision clinique ni à la substitution.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-05",
+    "lastReviewedAt": "2026-08-05",
+    "nextReviewAt": "2027-02-05",
+    "references": [
+      {
+        "id": "REF-OE-072-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DOLIPRANE 1000 mg, comprimé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-072-02",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-072-03",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-072-04",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "PARACETAMOL BIOGARAN 1 g, comprimé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68787715/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-072-05",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "PARACETAMOL VIATRIS 1000 mg, comprimé sécable",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/67165233/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-072-06",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN CODEINE, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/66003374/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-072-01",
+            "locator": "Fiche info, rubrique « Indications thérapeutiques ».",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-072-01",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-072-02",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-072-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-072-04",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-072-05",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-072-06",
+            "locator": "Fiche info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-072-01",
+            "locator": "RCP, rubrique 4.4 « Mises en garde spéciales et précautions d’emploi ».",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          },
+          {
+            "referenceId": "REF-OE-072-06",
+            "locator": "RCP, rubrique 4.4 « Mises en garde spéciales et précautions d’emploi ».",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "doliprane-1000",
+        "referenceIds": ["REF-OE-072-01"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Lire la composition et les indications générales du paracétamol.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dafalgan-1000",
+        "referenceIds": ["REF-OE-072-02"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier la DCI derrière DAFALGAN.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "efferalgan-1000",
+        "referenceIds": ["REF-OE-072-03"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier la DCI derrière EFFERALGAN.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "paracetamol-biogaran",
+        "referenceIds": ["REF-OE-072-04"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Repérer la construction DCI + laboratoire.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "paracetamol-viatris",
+        "referenceIds": ["REF-OE-072-05"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Repérer la construction DCI + laboratoire.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dafalgan-codeine",
+        "referenceIds": ["REF-OE-072-06"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Comparer une spécialité au paracétamol seul avec une association contenant aussi de la codéine.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "paracetamol-dci-noms-cumul",
+        "assessmentTitle": "Mini-évaluation — Paracétamol : DCI, noms et cumul",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle substance contient DOLIPRANE ?",
+            "explanation": "DOLIPRANE est un nom commercial du paracétamol.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Paracétamol",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ibuprofène",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Kétoprofène",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Lesquels contiennent du paracétamol ?",
+            "explanation": "ADVIL contient de l’ibuprofène ; les trois autres contiennent du paracétamol.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "DOLIPRANE",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "DAFALGAN",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "EFFERALGAN",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "ADVIL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle est l’utilité générale du paracétamol ?",
+            "explanation": "Le paracétamol est antalgique et antipyrétique.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Calmer la douleur et faire baisser la fièvre",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Agir uniquement sur l’inflammation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Fluidifier le sang",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "On peut associer DOLIPRANE et DAFALGAN sans vérifier leur composition.",
+            "explanation": "Dans les exemples vus, les deux contiennent du paracétamol ; le cumul expose à un surdosage.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "true_false",
+            "prompt": "DAFALGAN CODEINE ne contient que du paracétamol.",
+            "explanation": "DAFALGAN CODEINE associe paracétamol et codéine.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication prévue pour un usage personnel de mise dans le bain ; aucune mention « Validé scientifiquement » ne doit être affichée.",
+        "Le parcours enseigne la reconnaissance et le réflexe de vérification, jamais la posologie, la substitution, le conseil clinique ou la décision de délivrance.",
+        "Une revue par un pharmacien reste recommandée avant tout élargissement à un public professionnel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion du brouillon Markdown audité en spécification LearnX et banque de cinq questions.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}

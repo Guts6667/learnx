@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import {
   SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
   createSeedProgramRepository,
+  readOfficineExpressSeed,
   readSampleProgram,
   readSampleSeed,
   seedSampleProgram,
@@ -296,6 +297,60 @@ function createRepository() {
 }
 
 describe('sample program seed', () => {
+  it('lit et importe le pilote Officine Express complet', async () => {
+    const seed = await readOfficineExpressSeed();
+    const context = createRepository();
+    const lessons = seed.program.stages.flatMap((stage) =>
+      stage.modules.flatMap((module) => module.lessons),
+    );
+
+    expect(seed.program).toMatchObject({
+      slug: 'officine-express',
+      status: 'active',
+    });
+    expect(seed.program.stages).toHaveLength(1);
+    expect(seed.program.stages[0].modules).toHaveLength(3);
+    expect(lessons).toHaveLength(7);
+    expect(lessons.every((lesson) => lesson.concepts.length === 1)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 1)).toBe(true);
+    expect(lessons.every((lesson) => lesson.sequence.length > 0)).toBe(true);
+    expect(seed.conceptAssessmentBanks).toHaveLength(7);
+    expect(
+      seed.conceptAssessmentBanks.flatMap((group) => group.assessmentBanks),
+    ).toHaveLength(7);
+    expect(
+      seed.conceptAssessmentBanks
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(35);
+    expect(
+      seed.program.stages[0].assessment.rubric.reduce(
+        (total, criterion) => total + criterion.weight,
+        0,
+      ),
+    ).toBe(100);
+
+    await seedSampleProgram(
+      context.repository,
+      'user-1',
+      seed.program,
+      seed.conceptAssessmentBanks,
+    );
+
+    expect(context.programs).toHaveLength(1);
+    expect(context.stages).toHaveLength(1);
+    expect(context.modules).toHaveLength(3);
+    expect(context.lessons).toHaveLength(7);
+    expect(context.concepts).toHaveLength(7);
+    expect(context.assessments).toHaveLength(7);
+    expect(context.assessmentQuestions).toHaveLength(7);
+    expect(context.resources).toHaveLength(29);
+    expect(context.tasks).toHaveLength(0);
+    expect(context.exercises).toHaveLength(7);
+    expect(context.sequences).toHaveLength(7);
+    expect(context.stageAssessments).toHaveLength(1);
+  });
+
   it('reads the curriculum hierarchy from the example JSON', async () => {
     const sampleProgram = await readSampleProgram();
 

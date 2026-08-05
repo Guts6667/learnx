@@ -1,0 +1,483 @@
+{
+  "specId": "PEDAGOGY_SPEC_073",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "moduleSlug": "dci-douleur-fievre",
+  "lesson": {
+    "title": "Ibuprofène",
+    "slug": "ibuprofene",
+    "summary": "Reconnaître l’ibuprofène et quelques noms sélectionnés, le classer parmi les AINS et retenir qu’il ne doit pas être associé à un autre AINS sans vérification.",
+    "objectives": [
+      "Associer ibuprofène, ADVIL, NUROFEN et IBUPROFENE TEVA dans les deux sens.",
+      "Classer l’ibuprofène parmi les AINS et citer son utilité générale.",
+      "Appliquer la vigilance sur l’association de plusieurs AINS."
+    ],
+    "prerequisites": ["Savoir distinguer DCI et nom de spécialité."],
+    "estimatedMinutes": 7,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L’ibuprofène est un anti-inflammatoire non stéroïdien, ou AINS. Il calme la douleur, fait baisser la fièvre et agit sur l’inflammation.",
+          "sourceKeys": ["ibuprofene-teva"]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Dans les exemples vérifiés, ADVIL, NUROFEN et IBUPROFENE TEVA contiennent de l’ibuprofène. Le passage du nom à la DCI et de la DCI aux noms doit devenir automatique.",
+          "sourceKeys": ["advil-400", "nurofen-200", "ibuprofene-teva"]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "L’ibuprofène étant un AINS, il ne doit pas être associé à un autre AINS sans vérification : cette association augmente le risque d’ulcération ou de saignement digestif.",
+          "sourceKeys": ["ibuprofene-teva"]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Réflexe : lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute. Reconnaître la famille AINS ne permet pas de choisir un médicament à la place d’un autre.",
+          "sourceKeys": ["ibuprofene-teva"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "ibuprofene-teva",
+        "type": "website",
+        "title": "IBUPROFENE TEVA 400 mg, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/69847599/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). IBUPROFENE TEVA 400 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Lire la composition, la classe AINS et la mise en garde sur les autres AINS.",
+        "isRequired": true,
+        "estimatedMinutes": 2,
+        "position": 1
+      },
+      {
+        "key": "advil-400",
+        "type": "website",
+        "title": "ADVIL 400 mg, comprimé enrobé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63646874/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ADVIL 400 mg, comprimé enrobé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier la DCI derrière ADVIL.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 2
+      },
+      {
+        "key": "nurofen-200",
+        "type": "website",
+        "title": "NUROFEN 200 mg, comprimé enrobé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60305960/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). NUROFEN 200 mg, comprimé enrobé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier la DCI derrière NUROFEN.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Ibuprofène : DCI, noms et famille AINS",
+        "slug": "ibuprofene-dci-noms-ains",
+        "description": "ADVIL, NUROFEN et IBUPROFENE TEVA contiennent de l’ibuprofène, un AINS qui ne doit pas être associé à un autre AINS sans vérification.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["ibuprofene-teva", "advil-400", "nurofen-200"],
+        "assessment": {
+          "key": "assessment-ibuprofene-dci-noms-ains",
+          "type": "quiz",
+          "title": "Mini-évaluation — Ibuprofène : DCI, noms et famille AINS",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-classification",
+        "title": "Classer les noms de l’ibuprofène",
+        "description": "Associer ADVIL, NUROFEN et IBUPROFENE TEVA à l’ibuprofène, puis expliquer en une phrase pourquoi il faut rechercher les autres AINS du traitement.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-classification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-ibuprofene-dci-noms-ains"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte débutant en officine ; parcours personnel de reconnaissance, sans formation à la décision clinique ni à la substitution.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-05",
+    "lastReviewedAt": "2026-08-05",
+    "nextReviewAt": "2027-02-05",
+    "references": [
+      {
+        "id": "REF-OE-073-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "IBUPROFENE TEVA 400 mg, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/69847599/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-073-02",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "ADVIL 400 mg, comprimé enrobé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63646874/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-073-03",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "NUROFEN 200 mg, comprimé enrobé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60305960/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-073-01",
+            "locator": "Fiche info, rubrique « Indications thérapeutiques » et classe pharmacothérapeutique.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-073-02",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-073-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-073-01",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-073-01",
+            "locator": "RCP, rubriques 4.4 et 4.5, utilisation concomitante d’autres AINS.",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-073-01",
+            "locator": "RCP, rubriques de mises en garde et interactions.",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "ibuprofene-teva",
+        "referenceIds": ["REF-OE-073-01"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Lire la composition, la classe AINS et la mise en garde sur les autres AINS.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "advil-400",
+        "referenceIds": ["REF-OE-073-02"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier la DCI derrière ADVIL.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nurofen-200",
+        "referenceIds": ["REF-OE-073-03"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier la DCI derrière NUROFEN.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "ibuprofene-dci-noms-ains",
+        "assessmentTitle": "Mini-évaluation — Ibuprofène : DCI, noms et famille AINS",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle substance contient ADVIL ?",
+            "explanation": "ADVIL est un nom commercial de l’ibuprofène.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ibuprofène",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Paracétamol",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Kétoprofène",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Lesquels contiennent de l’ibuprofène ?",
+            "explanation": "DOLIPRANE contient du paracétamol.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "ADVIL",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "NUROFEN",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "IBUPROFENE TEVA",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "DOLIPRANE",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "L’ibuprofène appartient à quelle famille ?",
+            "explanation": "L’ibuprofène est un anti-inflammatoire non stéroïdien.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Les AINS",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les antihistaminiques",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les antibiotiques",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "On peut associer l’ibuprofène à un autre AINS sans risque particulier.",
+            "explanation": "Associer plusieurs AINS augmente notamment le risque digestif.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle DCI retrouve-t-on derrière NUROFEN dans l’exemple étudié ?",
+            "explanation": "NUROFEN contient de l’ibuprofène.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ibuprofène",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Aspirine",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Codéine",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication prévue pour un usage personnel de mise dans le bain ; aucune mention « Validé scientifiquement » ne doit être affichée.",
+        "Le parcours enseigne la reconnaissance et le réflexe de vérification, jamais la posologie, la substitution, le conseil clinique ou la décision de délivrance.",
+        "Une revue par un pharmacien reste recommandée avant tout élargissement à un public professionnel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion du brouillon Markdown audité en spécification LearnX et banque de cinq questions.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}

@@ -1,0 +1,543 @@
+{
+  "specId": "PEDAGOGY_SPEC_077",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "moduleSlug": "associations-antalgiques-opioides",
+  "lesson": {
+    "title": "Tramadol seul et avec paracétamol",
+    "slug": "tramadol-seul-association-paracetamol",
+    "summary": "Reconnaître le tramadol comme antalgique opioïde, distinguer TOPALGIC et CONTRAMAL LP des associations IXPRIM et ZALDIAR, puis appliquer la vigilance relative aux sédatifs.",
+    "objectives": [
+      "Reconnaître le tramadol comme DCI et antalgique opioïde.",
+      "Distinguer tramadol seul et tramadol + paracétamol.",
+      "Associer TOPALGIC, CONTRAMAL LP, IXPRIM et ZALDIAR à leur composition.",
+      "Appliquer la vigilance relative aux médicaments sédatifs."
+    ],
+    "prerequisites": [
+      "Savoir lire le nom complet et vérifier la composition.",
+      "Comprendre le principe d’une association de substances actives."
+    ],
+    "estimatedMinutes": 7,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le tramadol est une substance active et un antalgique opioïde, distinct du paracétamol.",
+          "sourceKeys": ["topalgic-50", "contramal-lp-100"]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Dans les exemples étudiés, TOPALGIC et CONTRAMAL LP contiennent du tramadol seul. IXPRIM et ZALDIAR associent tramadol et paracétamol.",
+          "sourceKeys": ["topalgic-50", "contramal-lp-100", "ixprim", "zaldiar"]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une spécialité d’association contient plusieurs substances actives. Le nom ne suffit pas à deviner : il faut lire le nom complet et vérifier la composition.",
+          "sourceKeys": ["ixprim", "zaldiar"]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Associé à des médicaments sédatifs, le tramadol peut augmenter le risque de somnolence et de dépression respiratoire. En cas de doute sur un traitement associé, vérifier et transmettre au pharmacien.",
+          "sourceKeys": ["topalgic-50"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "topalgic-50",
+        "type": "website",
+        "title": "TOPALGIC 50 mg, gélule",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63435884/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). TOPALGIC 50 mg, gélule. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Lire la composition et la mise en garde relative aux médicaments sédatifs.",
+        "isRequired": true,
+        "estimatedMinutes": 2,
+        "position": 1
+      },
+      {
+        "key": "contramal-lp-100",
+        "type": "website",
+        "title": "CONTRAMAL LP 100 mg, comprimé à libération prolongée",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68951381/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). CONTRAMAL LP 100 mg, comprimé à libération prolongée. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier qu’il s’agit de tramadol seul.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 2
+      },
+      {
+        "key": "ixprim",
+        "type": "website",
+        "title": "IXPRIM 37,5 mg/325 mg, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61137241/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). IXPRIM 37,5 mg/325 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier l’association tramadol + paracétamol.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 3
+      },
+      {
+        "key": "zaldiar",
+        "type": "website",
+        "title": "ZALDIAR 37,5 mg/325 mg, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60327615/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). ZALDIAR 37,5 mg/325 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier l’association tramadol + paracétamol.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Tramadol : seul ou associé au paracétamol",
+        "slug": "tramadol-seul-association-paracetamol",
+        "description": "TOPALGIC et CONTRAMAL LP contiennent du tramadol seul ; IXPRIM et ZALDIAR associent tramadol et paracétamol.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "topalgic-50",
+          "contramal-lp-100",
+          "ixprim",
+          "zaldiar"
+        ],
+        "assessment": {
+          "key": "assessment-tramadol-seul-association-paracetamol",
+          "type": "quiz",
+          "title": "Mini-évaluation — Tramadol : seul ou associé au paracétamol",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-classification",
+        "title": "Classer les spécialités de tramadol",
+        "description": "Classer TOPALGIC, CONTRAMAL LP, IXPRIM et ZALDIAR selon qu’ils contiennent du tramadol seul ou tramadol + paracétamol.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-classification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-tramadol-seul-association-paracetamol"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte débutant en officine ; parcours personnel de reconnaissance, sans formation à la décision clinique ni à la substitution.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-05",
+    "lastReviewedAt": "2026-08-05",
+    "nextReviewAt": "2027-02-05",
+    "references": [
+      {
+        "id": "REF-OE-077-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "TOPALGIC 50 mg, gélule",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63435884/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-077-02",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "CONTRAMAL LP 100 mg, comprimé à libération prolongée",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/68951381/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-077-03",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "IXPRIM 37,5 mg/325 mg, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61137241/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-077-04",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "ZALDIAR 37,5 mg/325 mg, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60327615/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-077-01",
+            "locator": "Fiches info, indications et compositions.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          },
+          {
+            "referenceId": "REF-OE-077-02",
+            "locator": "Fiches info, indications et compositions.",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-077-01",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-077-02",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-077-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-077-04",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-077-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          },
+          {
+            "referenceId": "REF-OE-077-04",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-077-01",
+            "locator": "RCP, rubriques 4.4 et 4.5 relatives aux médicaments sédatifs.",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "topalgic-50",
+        "referenceIds": ["REF-OE-077-01"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Lire la composition et la mise en garde relative aux médicaments sédatifs.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "contramal-lp-100",
+        "referenceIds": ["REF-OE-077-02"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier qu’il s’agit de tramadol seul.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "ixprim",
+        "referenceIds": ["REF-OE-077-03"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier l’association tramadol + paracétamol.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "zaldiar",
+        "referenceIds": ["REF-OE-077-04"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier l’association tramadol + paracétamol.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "tramadol-seul-association-paracetamol",
+        "assessmentTitle": "Mini-évaluation — Tramadol : seul ou associé au paracétamol",
+        "questions": [
+          {
+            "type": "true_false",
+            "prompt": "Le tramadol est la même substance que le paracétamol.",
+            "explanation": "Le tramadol est un antalgique opioïde distinct du paracétamol.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "true_false",
+            "prompt": "TOPALGIC contient du paracétamol dans l’exemple étudié.",
+            "explanation": "TOPALGIC contient du tramadol seul.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que contient IXPRIM ?",
+            "explanation": "IXPRIM associe tramadol et paracétamol.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Tramadol et paracétamol",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Tramadol uniquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Paracétamol uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Lesquels associent tramadol et paracétamol ?",
+            "explanation": "TOPALGIC et CONTRAMAL LP contiennent du tramadol seul dans les exemples étudiés.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "IXPRIM",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "TOPALGIC",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "ZALDIAR",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "CONTRAMAL LP",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "true_false",
+            "prompt": "Tramadol et médicaments sédatifs peuvent augmenter le risque de somnolence et de dépression respiratoire.",
+            "explanation": "Cette association exige une vérification et un relais vers le pharmacien.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication prévue pour un usage personnel de mise dans le bain ; aucune mention « Validé scientifiquement » ne doit être affichée.",
+        "Le parcours enseigne la reconnaissance et le réflexe de vérification, jamais la posologie, la substitution, le conseil clinique ou la décision de délivrance.",
+        "Une revue par un pharmacien reste recommandée avant tout élargissement à un public professionnel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion du brouillon Markdown audité en spécification LearnX et banque de cinq questions.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}

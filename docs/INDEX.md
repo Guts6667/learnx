@@ -38,6 +38,17 @@ Ne jamais charger toutes les spécifications pour modifier une seule leçon.
 Ouvrir uniquement la spec ciblée, les évaluations liées et les documents de
 gouvernance exigés par `AGENTS.md`.
 
+## Programme Officine Express
+
+- Blueprint : `content/officine-express/CURRICULUM_BLUEPRINT.md`
+- Spécifications de leçons : `content/officine-express/specs/`
+- Évaluation d'étape : `content/officine-express/stage-assessments/`
+- Bundle importé par Prisma : `seed/officine-express-program.json`
+
+Ce programme personnel est un pilote court de reconnaissance médicamenteuse.
+Il ne remplace ni une formation professionnelle ni la validation du
+pharmacien.
+
 ## Archives
 
 - `docs/archive/v1/` : backlog et point d'entrée historique V1.

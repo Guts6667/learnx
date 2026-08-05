@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_071",
+  "schemaVersion": 1,
+  "programSlug": "officine-express",
+  "stageSlug": "douleur-fievre-mise-dans-le-bain",
+  "moduleSlug": "fondamentaux-officine",
+  "lesson": {
+    "title": "Lire un nom de médicament",
+    "slug": "lire-un-nom-de-medicament",
+    "summary": "Distinguer le nom d’une spécialité, la DCI et la substance active, repérer une association et adopter le réflexe lire, vérifier, pharmacien.",
+    "objectives": [
+      "Distinguer le nom d’une spécialité de la DCI et de la substance active.",
+      "Reconnaître qu’une même substance active peut apparaître sous plusieurs noms commerciaux.",
+      "Repérer qu’un nom proche peut correspondre à une association de plusieurs substances.",
+      "Appliquer le réflexe lire le nom complet, vérifier la composition et transmettre au pharmacien."
+    ],
+    "prerequisites": [],
+    "estimatedMinutes": 5,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Sur une boîte, le nom de la spécialité identifie le médicament commercialisé. La DCI est le nom commun de la substance active, c’est-à-dire la substance qui produit l’effet recherché. Dans l’exemple DOLIPRANE, le nom de spécialité est DOLIPRANE et la DCI est paracétamol.",
+          "sourceKeys": ["sante-dci", "doliprane-1000"]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Une même substance active peut être présente sous plusieurs noms commerciaux. Dans les exemples vérifiés, DOLIPRANE, DAFALGAN et EFFERALGAN contiennent tous du paracétamol.",
+          "sourceKeys": ["doliprane-1000", "dafalgan-1000", "efferalgan-1000"]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un nom proche peut cacher une substance en plus : DAFALGAN contient du paracétamol, tandis que DAFALGAN CODEINE associe paracétamol et codéine. Il faut lire le nom complet et vérifier la composition.",
+          "sourceKeys": ["dafalgan-1000", "dafalgan-codeine-effervescent"]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Réflexe officinal : reconnaître un nom ne permet pas de décider seul d’un remplacement. Lire le nom complet, vérifier la composition et transmettre au pharmacien en cas de doute.",
+          "sourceKeys": ["sante-dci"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "sante-dci",
+        "type": "website",
+        "title": "Prescription en dénomination commune internationale (DCI)",
+        "author": "Ministère chargé de la Santé",
+        "url": "https://sante.gouv.fr/soins-et-maladies/medicaments/professionnels-de-sante/prescription-et-dispensation/article/prescription-en-denomination-commune-internationale-dci",
+        "citation": "Ministère chargé de la Santé. (2026). Prescription en dénomination commune internationale (DCI). Consulté le 5 août 2026.",
+        "description": "Lire la définition de la DCI et retenir qu’elle désigne le nom commun de la substance active.",
+        "isRequired": true,
+        "estimatedMinutes": 2,
+        "position": 1
+      },
+      {
+        "key": "doliprane-1000",
+        "type": "website",
+        "title": "DOLIPRANE 1000 mg, comprimé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DOLIPRANE 1000 mg, comprimé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Repérer le nom de la spécialité et la rubrique « Composition en substances actives ».",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 2
+      },
+      {
+        "key": "dafalgan-1000",
+        "type": "website",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN 1000 mg, comprimé effervescent. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier que cette spécialité contient du paracétamol.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 3
+      },
+      {
+        "key": "efferalgan-1000",
+        "type": "website",
+        "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). EFFERALGAN 1000 mg, comprimé pelliculé. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Vérifier que cette spécialité contient du paracétamol.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 4
+      },
+      {
+        "key": "dafalgan-codeine-effervescent",
+        "type": "website",
+        "title": "DAFALGAN CODEINE, comprimé effervescent sécable",
+        "author": "Agence nationale de sécurité du médicament et des produits de santé",
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61109911/extrait",
+        "citation": "Agence nationale de sécurité du médicament et des produits de santé. (2026). DAFALGAN CODEINE, comprimé effervescent sécable. Base de données publique des médicaments. Consulté le 5 août 2026.",
+        "description": "Comparer la composition avec DAFALGAN et repérer la codéine ajoutée.",
+        "isRequired": false,
+        "estimatedMinutes": 1,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Lire un nom : spécialité, DCI et substance active",
+        "slug": "lire-nom-specialite-dci-substance",
+        "description": "Le nom commercial identifie une spécialité ; la DCI nomme la substance active. Un nom complet peut signaler une association et doit toujours être vérifié.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "sante-dci",
+          "doliprane-1000",
+          "dafalgan-1000",
+          "efferalgan-1000",
+          "dafalgan-codeine-effervescent"
+        ],
+        "assessment": {
+          "key": "assessment-lire-nom-specialite-dci-substance",
+          "type": "quiz",
+          "title": "Mini-évaluation — Lire un nom : spécialité, DCI et substance active",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-classification",
+        "title": "Classer les informations d’une boîte",
+        "description": "À partir des exemples DOLIPRANE et DAFALGAN CODEINE, dire à voix haute le nom de la spécialité, la ou les substances actives et le réflexe à adopter en cas de doute.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-classification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-lire-nom-specialite-dci-substance"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte débutant en officine ; parcours personnel de reconnaissance, sans formation à la décision clinique ni à la substitution.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-05",
+    "lastReviewedAt": "2026-08-05",
+    "nextReviewAt": "2027-02-05",
+    "references": [
+      {
+        "id": "REF-OE-071-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Ministère chargé de la Santé",
+        "title": "Prescription en dénomination commune internationale (DCI)",
+        "year": 2026,
+        "edition": null,
+        "publication": "sante.gouv.fr",
+        "doi": null,
+        "url": "https://sante.gouv.fr/soins-et-maladies/medicaments/professionnels-de-sante/prescription-et-dispensation/article/prescription-en-denomination-commune-internationale-dci",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-071-02",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DOLIPRANE 1000 mg, comprimé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60234100/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-071-03",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN 1000 mg, comprimé effervescent",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/63264636/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-071-04",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "EFFERALGAN 1000 mg, comprimé pelliculé",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/60025403/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      },
+      {
+        "id": "REF-OE-071-05",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Agence nationale de sécurité du médicament et des produits de santé",
+        "title": "DAFALGAN CODEINE, comprimé effervescent sécable",
+        "year": 2026,
+        "edition": null,
+        "publication": "Base de données publique des médicaments",
+        "doi": null,
+        "url": "https://base-donnees-publique.medicaments.gouv.fr/medicament/61109911/extrait",
+        "accessedAt": "2026-08-05",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Source officielle évolutive ; commercialisation et contenu à revérifier lors de la prochaine revue."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-071-01",
+            "locator": "Définition de la DCI ; fiche info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          },
+          {
+            "referenceId": "REF-OE-071-02",
+            "locator": "Définition de la DCI ; fiche info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 1."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-071-02",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-071-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          },
+          {
+            "referenceId": "REF-OE-071-04",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 2."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-071-03",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          },
+          {
+            "referenceId": "REF-OE-071-05",
+            "locator": "Fiches info, rubrique « Composition en substances actives ».",
+            "supports": "Établit ou vérifie le contenu du bloc 3."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-OE-071-01",
+            "locator": "Section sur la prescription et la dispensation en DCI.",
+            "supports": "Établit ou vérifie le contenu du bloc 4."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Correspondances, indications générales et vigilances vérifiées dans des fiches et RCP officiels français.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "sante-dci",
+        "referenceIds": ["REF-OE-071-01"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Lire la définition de la DCI et retenir qu’elle désigne le nom commun de la substance active.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "doliprane-1000",
+        "referenceIds": ["REF-OE-071-02"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Repérer le nom de la spécialité et la rubrique « Composition en substances actives ».",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dafalgan-1000",
+        "referenceIds": ["REF-OE-071-03"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier que cette spécialité contient du paracétamol.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "efferalgan-1000",
+        "referenceIds": ["REF-OE-071-04"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Vérifier que cette spécialité contient du paracétamol.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "dafalgan-codeine-effervescent",
+        "referenceIds": ["REF-OE-071-05"],
+        "pedagogicalRationale": "Permet de vérifier directement la dénomination, la composition et, selon le cas, l’indication ou la vigilance enseignée.",
+        "learnerInstructions": "Comparer la composition avec DAFALGAN et repérer la codéine ajoutée.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle ; lecture ciblée des rubriques indiquées.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-05",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "lire-nom-specialite-dci-substance",
+        "assessmentTitle": "Mini-évaluation — Lire un nom : spécialité, DCI et substance active",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Dans l’exemple étudié, DOLIPRANE est…",
+            "explanation": "DOLIPRANE est le nom de la spécialité ; paracétamol est la DCI.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "un nom de spécialité",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "une DCI",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "un dosage",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une même substance active ne peut avoir qu’un seul nom commercial.",
+            "explanation": "Une même substance peut être présente dans plusieurs spécialités portant des noms différents.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que contient DAFALGAN CODEINE dans l’exemple étudié ?",
+            "explanation": "Le nom complet correspond ici à une association de deux substances actives.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Paracétamol et codéine",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Paracétamol uniquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Codéine uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux boîtes contiennent la même substance active : je peux décider seule de remplacer l’une par l’autre.",
+            "explanation": "Reconnaître une substance ne vaut pas décision de remplacement : il faut vérifier et transmettre au pharmacien.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le bon réflexe devant un nom de médicament ?",
+            "explanation": "Le réflexe commun au parcours est lire, vérifier et transmettre au pharmacien en cas de doute.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Lire le nom complet, vérifier la composition et demander au pharmacien en cas de doute",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Se fier uniquement à la couleur de la boîte",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Décider à partir du nom de marque",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication prévue pour un usage personnel de mise dans le bain ; aucune mention « Validé scientifiquement » ne doit être affichée.",
+        "Le parcours enseigne la reconnaissance et le réflexe de vérification, jamais la posologie, la substitution, le conseil clinique ou la décision de délivrance.",
+        "Une revue par un pharmacien reste recommandée avant tout élargissement à un public professionnel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-05",
+        "author": "Claude et Codex",
+        "change": "Conversion du brouillon Markdown audité en spécification LearnX et banque de cinq questions.",
+        "reviewRequired": "link_and_content_review_on_next_version"
+      }
+    ]
+  }
+}
