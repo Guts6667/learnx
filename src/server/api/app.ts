@@ -4,6 +4,7 @@ import { adminApp } from './admin/app.js';
 import { accessRequestsApp } from './access-requests/app.js';
 import { ApiError, toApiErrorBody } from './_lib/errors.js';
 import { authApp } from './auth/app.js';
+import { catalogApp } from './catalog/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
 import { conceptsApp } from './concepts/app.js';
 import { exercisesApp } from './exercises/app.js';
@@ -40,6 +41,7 @@ export function createApiApp() {
   app.route('/', authApp);
   app.route('/', accessRequestsApp);
   app.route('/', adminApp);
+  app.route('/', catalogApp);
   app.route('/', curriculumApp);
   app.route('/', progressApp);
   app.route('/', conceptsApp);

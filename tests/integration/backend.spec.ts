@@ -10,7 +10,6 @@ import {
   cleanupIntegrationUsers,
   createIntegrationFixture,
 } from './fixture.js';
-import { createPrismaProgramEnrollmentService } from '../../src/server/api/_lib/program-enrollment.js';
 import { prisma } from '../../src/server/prisma.js';
 
 const password = 'Integration-Only-Password-2026!';
@@ -404,14 +403,38 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     );
     await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
 
-    const outsiderUser = await prisma.user.findUniqueOrThrow({
-      where: { email: outsiderEmail },
-      select: { id: true },
+    const catalogResponse = await expectStatus(
+      await outsider.get('/api/catalog/programs?pageSize=10'),
+      200,
+    );
+    expect(await catalogResponse.json()).toMatchObject({
+      items: [{ id: fixture.programId, isEnrolled: false }],
+      nextCursor: null,
     });
-    const enrollmentService = createPrismaProgramEnrollmentService(prisma);
-    await expect(
-      enrollmentService.enroll(outsiderUser.id, fixture.programId),
-    ).resolves.toMatchObject({ status: 'ACTIVE', userId: outsiderUser.id });
+    const emptyEnrollments = await expectStatus(
+      await outsider.get('/api/me/programs'),
+      200,
+    );
+    expect(await emptyEnrollments.json()).toEqual({
+      items: [],
+      nextCursor: null,
+    });
+    await expectStatus(
+      await outsider.post(`/api/programs/${fixture.programId}/enrollment`),
+      200,
+    );
+    const activeEnrollments = await expectStatus(
+      await outsider.get('/api/me/programs'),
+      200,
+    );
+    expect(await activeEnrollments.json()).toMatchObject({
+      items: [
+        {
+          enrollment: { status: 'ACTIVE' },
+          program: { id: fixture.programId },
+        },
+      ],
+    });
     await expectStatus(
       await outsider.get(`/api/programs/${fixture.programSlug}`),
       200,
@@ -435,9 +458,22 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       }),
       200,
     );
-    await expect(
-      enrollmentService.withdraw(outsiderUser.id, fixture.programId),
-    ).resolves.toMatchObject({ status: 'WITHDRAWN' });
+    await expectStatus(
+      await outsider.delete(`/api/programs/${fixture.programId}/enrollment`),
+      200,
+    );
+    const withdrawnEnrollments = await expectStatus(
+      await outsider.get('/api/me/programs?status=WITHDRAWN'),
+      200,
+    );
+    expect(await withdrawnEnrollments.json()).toMatchObject({
+      items: [
+        {
+          enrollment: { status: 'WITHDRAWN' },
+          program: { id: fixture.programId },
+        },
+      ],
+    });
     await expectStatus(
       await outsider.get(`/api/lessons/${fixture.lessonSlug}`),
       404,

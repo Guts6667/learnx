@@ -556,6 +556,8 @@ suivie et la désinscription préserve les données personnelles.**
 
 **Priorité : P1. Dépendances : V3-010 à V3-012.**
 
+**Statut : implémenté sur `dev` — aucune migration requise.**
+
 ### Périmètre
 
 - APIs paginées/recherchables du catalogue visible et des enrollments personnels.

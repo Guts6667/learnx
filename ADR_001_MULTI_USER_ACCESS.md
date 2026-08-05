@@ -154,8 +154,10 @@ centraliser ; elle ne change pas le comportement dans cet ADR.
 | `PATCH /api/reviews/:reviewId` | révision possédée | `userId` strict + enrollment |
 | `GET /api/today` | contenus possédés + données personnelles | enrollments + données personnelles |
 
-Les futures routes demande, vérification, invitation, catalogue et enrollments
-n'existent pas encore et relèvent de V3-004 à V3-013.
+Les routes de demande, vérification, invitation, catalogue et enrollments sont
+livrées progressivement par V3-004 à V3-013. Le catalogue et les enrollments
+exposent uniquement les programmes publics, actifs et versionnés ; Mes
+programmes reste strictement limité au compte authentifié.
 
 ### 3.1 Politique appliquée par V3-012
 
