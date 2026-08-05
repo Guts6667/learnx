@@ -11,6 +11,7 @@ import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { createAccessInvitationDelivery } from '../_lib/access-invitation.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 import {
   administrableAccountStatuses,
   createPrismaAccountAdministrationService,
@@ -209,7 +210,7 @@ export function createPrismaAdminRepository(
       return client.lesson.findFirst({
         where: {
           id: lessonId,
-          module: { stage: { program: { ownerId } } },
+          module: { stage: { program: editorialProgramWhere(ownerId) } },
         },
         select: {
           id: true,
@@ -227,7 +228,10 @@ export function createPrismaAdminRepository(
     },
     async findModuleForOwner(moduleId, ownerId) {
       return client.module.findFirst({
-        where: { id: moduleId, stage: { program: { ownerId } } },
+        where: {
+          id: moduleId,
+          stage: { program: editorialProgramWhere(ownerId) },
+        },
         select: {
           id: true,
           lessons: {
@@ -253,7 +257,11 @@ export function createPrismaAdminRepository(
         const ownedLesson = await transaction.lesson.findFirst({
           where: {
             id: lessonId,
-            module: { stage: { program: { ownerId: audit.actorUserId } } },
+            module: {
+              stage: {
+                program: editorialProgramWhere(audit.actorUserId),
+              },
+            },
           },
           select: { id: true },
         });
@@ -280,7 +288,7 @@ export function createPrismaAdminRepository(
         const ownedModule = await transaction.module.findFirst({
           where: {
             id: moduleId,
-            stage: { program: { ownerId: audit.actorUserId } },
+            stage: { program: editorialProgramWhere(audit.actorUserId) },
           },
           select: { id: true },
         });

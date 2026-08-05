@@ -2,6 +2,7 @@ import type { MiddlewareHandler } from 'hono';
 
 import type { PrismaClient } from '../../generated/prisma/client';
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
+import { learningProgramWhere } from '../../src/server/api/_lib/program-access-policy';
 import {
   createPrismaRepository,
   createQuizzesApp,
@@ -320,7 +321,7 @@ describe('quiz persistence filters', () => {
               isPublished: true,
               stage: {
                 isPublished: true,
-                program: { ownerId: userId, status: 'ACTIVE' },
+                program: learningProgramWhere(userId),
               },
             },
           },
@@ -345,6 +346,7 @@ describe('quiz persistence filters', () => {
       submittedAt,
     }));
     const transaction = {
+      quiz: { findFirst: vi.fn(async () => ({ id: quizId })) },
       lesson: {
         findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
       },

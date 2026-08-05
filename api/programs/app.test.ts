@@ -276,7 +276,7 @@ describe('curriculum draft preview authorization', () => {
     expect(getClient).not.toHaveBeenCalled();
   });
 
-  it.each(['USER', 'ADMIN'] as const)(
+  it.each(['USER', 'CREATOR', 'ADMIN'] as const)(
     'autorise le propriétaire authentifié avec le rôle %s',
     async (role) => {
       const { client, findMany } = createClient();

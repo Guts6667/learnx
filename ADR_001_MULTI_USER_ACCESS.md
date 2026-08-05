@@ -157,6 +157,25 @@ centraliser ; elle ne change pas le comportement dans cet ADR.
 Les futures routes demande, vérification, invitation, catalogue et enrollments
 n'existent pas encore et relèvent de V3-004 à V3-013.
 
+### 3.1 Politique appliquée par V3-012
+
+Les routes d'apprentissage utilisent désormais une politique Prisma partagée :
+un programme `ACTIVE` est lisible soit par son propriétaire historique, soit
+par un utilisateur ayant un `ProgramEnrollment` `ACTIVE` lorsque le programme
+est `PUBLIC`. Une désinscription, un programme privé ou un brouillon ne passent
+donc jamais par le chemin enrollment.
+
+La prévisualisation reste un chemin distinct, limité au propriétaire d'un
+programme `ACTIVE` ou `DRAFT`. Les routes administratives combinent leur
+capacité dédiée avec cette relation éditoriale ; le rôle `ADMIN` seul ne donne
+pas accès aux programmes d'un autre propriétaire. Les données d'apprentissage
+restent filtrées par le `userId` de la session.
+
+Les écritures de progression, tentatives et soumissions répètent le contrôle
+d'accès dans leur transaction sérialisable. Une modification concurrente de
+publication ou d'enrollment ne peut ainsi pas être contournée par un contrôle
+effectué uniquement avant l'écriture.
+
 ## 4. Options étudiées
 
 ### Option A — Porter tout le cycle sur `User`

@@ -178,12 +178,14 @@ describe('reviews persistence', () => {
     } as unknown as PrismaClient;
     const repository = createPrismaReviewsRepository(client);
 
-    await repository.listPending(userId);
+    await repository.listPending(userId, false);
 
     expect(findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({
-          program: expect.objectContaining({ ownerId: userId }),
+          program: expect.objectContaining({
+            OR: expect.arrayContaining([expect.objectContaining({ ownerId: userId })]),
+          }),
           status: ReviewStatus.PENDING,
           userId,
         }),

@@ -2,7 +2,6 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
-  ProgramStatus,
   type Prisma,
   type PrismaClient,
   type QuizQuestionType,
@@ -13,7 +12,12 @@ import {
   type SubmittedAssessmentAnswer,
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
@@ -191,10 +195,7 @@ export function createPrismaRepository(
               isPublished: true,
               stage: {
                 isPublished: true,
-                program: {
-                  ownerId: userId,
-                  status: ProgramStatus.ACTIVE,
-                },
+                program: learningProgramWhere(userId),
               },
             },
           },
@@ -224,7 +225,22 @@ export function createPrismaRepository(
     },
     async listAttempts(quizId, userId) {
       const attempts = await client.quizAttempt.findMany({
-        where: { quizId, userId },
+        where: {
+          quizId,
+          userId,
+          quiz: {
+            lesson: {
+              isPublished: true,
+              module: {
+                isPublished: true,
+                stage: {
+                  isPublished: true,
+                  program: learningProgramWhere(userId),
+                },
+              },
+            },
+          },
+        },
         orderBy: { submittedAt: 'desc' },
         include: { moduleRun: { select: { sequence: true } } },
       });
@@ -235,6 +251,25 @@ export function createPrismaRepository(
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
+        const accessibleQuiz = await transaction.quiz.findFirst({
+          where: {
+            id: input.quizId,
+            lessonId: input.lessonId,
+            lesson: {
+              isPublished: true,
+              module: {
+                isPublished: true,
+                stage: {
+                  isPublished: true,
+                  program: learningProgramWhere(input.userId),
+                },
+              },
+            },
+          },
+          select: { id: true },
+        });
+        if (!accessibleQuiz) throw notFound();
+
         const moduleRun = await ensureCurrentModuleRunForLesson(
           transaction,
           input.lessonId,
@@ -280,6 +315,7 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
   const now = options.now ?? (() => new Date());
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -329,6 +365,7 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
   });
 
   app.post('/api/quizzes/:quizId/attempts', async (context) => {
+    assertCapability(context.get('user').role, 'learning.write.own');
     const parsedAttempt = await parseAttempt(context.req.raw);
 
     if (!parsedAttempt.success) {

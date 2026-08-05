@@ -439,7 +439,9 @@ describe('stage assessment persistence filters', () => {
       expect.objectContaining({ where: ownershipFilter }),
     );
     expect(updateManyAndReturn).toHaveBeenCalledWith(
-      expect.objectContaining({ where: ownershipFilter }),
+      expect.objectContaining({
+        where: expect.objectContaining(ownershipFilter),
+      }),
     );
   });
 });

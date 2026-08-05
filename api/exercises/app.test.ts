@@ -2,6 +2,7 @@ import type { MiddlewareHandler } from 'hono';
 
 import type { PrismaClient } from '../../generated/prisma/client';
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
+import { learningProgramWhere } from '../../src/server/api/_lib/program-access-policy';
 import {
   createExercisesApp,
   createPrismaExerciseRepository,
@@ -286,7 +287,7 @@ describe('exercise persistence filters', () => {
               isPublished: true,
               stage: {
                 isPublished: true,
-                program: { ownerId: userId, status: 'ACTIVE' },
+                program: learningProgramWhere(userId),
               },
             },
           },
@@ -310,8 +311,10 @@ describe('exercise persistence filters', () => {
       moduleRun: { findFirst: vi.fn(async () => currentRun) },
       exerciseSubmission: {
         findFirst: vi.fn(async () => ({
+          contentMarkdown: 'Réponse.',
           exercise: { lessonId },
           moduleRunId,
+          status: 'DRAFT' as const,
         })),
         update: vi.fn(async () => ({
           contentMarkdown: 'Réponse.',

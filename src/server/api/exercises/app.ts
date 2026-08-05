@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import {
   ExerciseSubmissionStatus,
-  ProgramStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import {
@@ -12,7 +11,12 @@ import {
   type ExerciseSubmissionState,
 } from '../../../lib/exercises.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
@@ -127,7 +131,7 @@ function publishedLessonWhere(userId: string) {
       isPublished: true,
       stage: {
         isPublished: true,
-        program: { ownerId: userId, status: ProgramStatus.ACTIVE },
+        program: learningProgramWhere(userId),
       },
     },
   } as const;
@@ -160,8 +164,8 @@ export function createPrismaExerciseRepository(
   return {
     async createOrGetSubmission(exerciseId, userId) {
       return runSerializableProgressTransaction(client, async (transaction) => {
-        const exercise = await transaction.exercise.findUnique({
-          where: { id: exerciseId },
+        const exercise = await transaction.exercise.findFirst({
+          where: exerciseWhere(exerciseId, userId),
           select: { lessonId: true },
         });
         if (!exercise) throw notFound();
@@ -235,10 +239,21 @@ export function createPrismaExerciseRepository(
     async saveSubmission(submissionId, contentMarkdown, userId) {
       return runSerializableProgressTransaction(client, async (transaction) => {
         const submission = await transaction.exerciseSubmission.findFirst({
-          where: { id: submissionId, userId },
+          where: {
+            id: submissionId,
+            userId,
+            exercise: { lesson: publishedLessonWhere(userId) },
+          },
           include: { exercise: { select: { lessonId: true } } },
         });
         if (!submission) throw notFound();
+        try {
+          assertExerciseSubmissionCanBeEdited(
+            submission.status as ExerciseSubmissionState,
+          );
+        } catch (error) {
+          throw conflict(error instanceof Error ? error.message : 'Conflict.');
+        }
         const currentRun = await getCurrentModuleRunForLesson(
           transaction,
           submission.exercise.lessonId,
@@ -256,10 +271,22 @@ export function createPrismaExerciseRepository(
       return runSerializableProgressTransaction(client, async (transaction) => {
         const currentSubmission =
           await transaction.exerciseSubmission.findFirst({
-            where: { id: submissionId, userId },
+            where: {
+              id: submissionId,
+              userId,
+              exercise: { lesson: publishedLessonWhere(userId) },
+            },
             include: { exercise: { select: { lessonId: true } } },
           });
         if (!currentSubmission) throw notFound();
+        try {
+          assertExerciseSubmissionCanBeSubmitted({
+            contentMarkdown: currentSubmission.contentMarkdown,
+            status: currentSubmission.status as ExerciseSubmissionState,
+          });
+        } catch (error) {
+          throw conflict(error instanceof Error ? error.message : 'Conflict.');
+        }
         const currentRun = await getCurrentModuleRunForLesson(
           transaction,
           currentSubmission.exercise.lessonId,
@@ -304,6 +331,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   };
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
@@ -336,6 +364,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   });
 
   app.post('/api/exercises/:exerciseId/submissions', async (context) => {
+    assertCapability(context.get('user').role, 'learning.write.own');
     const exerciseId = parseIdentifier(context.req.param('exerciseId'));
     const userId = context.get('user').id;
     const repository = await getRepository();
@@ -352,6 +381,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   });
 
   app.patch('/api/exercise-submissions/:submissionId', async (context) => {
+    assertCapability(context.get('user').role, 'learning.write.own');
     const submissionId = parseIdentifier(context.req.param('submissionId'));
     const parsed = saveSchema.safeParse(await parseJson(context.req.raw));
 
@@ -384,6 +414,7 @@ export function createExercisesApp(options: ExercisesAppOptions = {}) {
   app.post(
     '/api/exercise-submissions/:submissionId/submit',
     async (context) => {
+      assertCapability(context.get('user').role, 'learning.write.own');
       const submissionId = parseIdentifier(context.req.param('submissionId'));
       const repository = await getRepository();
       const submission = await repository.findOwnedSubmission(

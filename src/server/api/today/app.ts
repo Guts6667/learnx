@@ -5,7 +5,6 @@ import {
   CanonicalActivityKind,
   ConceptProgressStatus,
   LessonProgressStatus,
-  ProgramStatus,
   ReviewStatus,
   StageAssessmentSubmissionStatus,
   StageProgressStatus,
@@ -18,8 +17,10 @@ import {
   type RecommendationCandidate,
 } from '../../../lib/recommendation.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { getCurrentModuleRun } from '../_lib/module-runs.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 
 interface ProgramRecord {
   id: string;
@@ -144,7 +145,7 @@ export function createPrismaTodayRepository(
   return {
     async listActivePrograms(userId) {
       return client.program.findMany({
-        where: { ownerId: userId, status: ProgramStatus.ACTIVE },
+        where: learningProgramWhere(userId),
         orderBy: { position: 'asc' },
         select: {
           id: true,
@@ -165,7 +166,7 @@ export function createPrismaTodayRepository(
           isRequired: true,
           stage: {
             isPublished: true,
-            program: { ownerId: userId, status: ProgramStatus.ACTIVE },
+            program: learningProgramWhere(userId),
           },
         },
         orderBy: { position: 'asc' },
@@ -224,7 +225,7 @@ export function createPrismaTodayRepository(
             isPublished: true,
             stage: {
               isPublished: true,
-              program: { ownerId: userId, status: ProgramStatus.ACTIVE },
+              program: learningProgramWhere(userId),
             },
           },
         },
@@ -364,10 +365,7 @@ export function createPrismaTodayRepository(
         where: {
           status: ReviewStatus.PENDING,
           userId,
-          program: {
-            ownerId: userId,
-            status: ProgramStatus.ACTIVE,
-          },
+          program: learningProgramWhere(userId),
           lesson: {
             isPublished: true,
             module: {
@@ -719,6 +717,7 @@ export function createTodayApp(options: TodayAppOptions = {}) {
   };
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);

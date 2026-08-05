@@ -2,6 +2,7 @@ import type { MiddlewareHandler } from 'hono';
 
 import type { PrismaClient } from '../../../../generated/prisma/client';
 import type { AuthEnvironment } from '../_lib/auth';
+import { learningProgramWhere } from '../_lib/program-access-policy';
 import {
   createModuleRunsApp,
   createPrismaModuleRestartRepository,
@@ -76,7 +77,7 @@ describe('module restart API', () => {
           id: moduleId,
           isPublished: true,
           stage: expect.objectContaining({
-            program: { ownerId: userId, status: 'ACTIVE' },
+            program: learningProgramWhere(userId),
           }),
         }),
       }),

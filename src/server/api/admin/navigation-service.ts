@@ -3,6 +3,7 @@ import {
   type ProgramStatus,
   type ProgramVisibility,
 } from '../../../../generated/prisma/client.js';
+import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 
 export interface AdminProgramSummary {
   id: string;
@@ -135,7 +136,7 @@ export function createPrismaAdminNavigationService(
       return client.lesson.findFirst({
         where: {
           id: lessonId,
-          module: { stage: { program: { ownerId } } },
+          module: { stage: { program: editorialProgramWhere(ownerId) } },
         },
         select: {
           ...lessonSummarySelect,
@@ -155,7 +156,10 @@ export function createPrismaAdminNavigationService(
     },
     async findModule(moduleId, ownerId) {
       return client.module.findFirst({
-        where: { id: moduleId, stage: { program: { ownerId } } },
+        where: {
+          id: moduleId,
+          stage: { program: editorialProgramWhere(ownerId) },
+        },
         select: {
           ...moduleSummarySelect,
           lessons: {
@@ -173,7 +177,7 @@ export function createPrismaAdminNavigationService(
     },
     async findProgram(programId, ownerId) {
       return client.program.findFirst({
-        where: { id: programId, ownerId },
+        where: { id: programId, ...editorialProgramWhere(ownerId) },
         select: {
           ...programSummarySelect,
           stages: {
@@ -185,7 +189,7 @@ export function createPrismaAdminNavigationService(
     },
     async findStage(stageId, ownerId) {
       return client.stage.findFirst({
-        where: { id: stageId, program: { ownerId } },
+        where: { id: stageId, program: editorialProgramWhere(ownerId) },
         select: {
           ...stageSummarySelect,
           modules: {
@@ -198,7 +202,7 @@ export function createPrismaAdminNavigationService(
     },
     async listPrograms(ownerId) {
       return client.program.findMany({
-        where: { ownerId },
+        where: editorialProgramWhere(ownerId),
         orderBy: [{ position: 'asc' }, { id: 'asc' }],
         select: programSummarySelect,
       });

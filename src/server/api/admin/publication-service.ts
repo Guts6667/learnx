@@ -13,6 +13,7 @@ import {
   type PublicationTargetType,
 } from './publication-plan.js';
 import { writeAuditEvent } from '../_lib/audit.js';
+import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 import { createOrReusePublishedProgramVersion } from './program-version-service.js';
 
 export interface PublicationRequest {
@@ -178,7 +179,7 @@ async function readTarget(
   if (targetType === 'PROGRAM') {
     const program = await client.program.findFirst({
       select: programPublicationSelect,
-      where: { id: targetId, ownerId },
+      where: { id: targetId, ...editorialProgramWhere(ownerId) },
     });
     return program
       ? {
@@ -191,7 +192,7 @@ async function readTarget(
   if (targetType === 'STAGE') {
     const stage = await client.stage.findFirst({
       select: stagePublicationSelect,
-      where: { id: targetId, program: { ownerId } },
+      where: { id: targetId, program: editorialProgramWhere(ownerId) },
     });
     return stage
       ? {
@@ -203,7 +204,10 @@ async function readTarget(
 
   const module = await client.module.findFirst({
     select: modulePublicationSelect,
-    where: { id: targetId, stage: { program: { ownerId } } },
+    where: {
+      id: targetId,
+      stage: { program: editorialProgramWhere(ownerId) },
+    },
   });
   return module
     ? {

@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import {
   ConceptProgressStatus,
-  ProgramStatus,
   ResourceProgressStatus,
 } from '../../../../generated/prisma/client.js';
 import {
@@ -11,7 +10,9 @@ import {
   isConceptValidated,
 } from '../../../lib/concepts.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 
 interface ConceptReadModel {
   assessments: Array<{
@@ -94,10 +95,7 @@ function createPrismaConceptRepository(): ConceptRepository {
               isPublished: true,
               stage: {
                 isPublished: true,
-                program: {
-                  ownerId: userId,
-                  status: ProgramStatus.ACTIVE,
-                },
+                program: learningProgramWhere(userId),
               },
             },
           },
@@ -189,6 +187,7 @@ export function createConceptsApp(options: ConceptsAppOptions = {}) {
   const repository = options.repository ?? createPrismaConceptRepository();
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {

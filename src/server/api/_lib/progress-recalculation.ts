@@ -18,6 +18,10 @@ import {
   calculateStagePercent,
 } from './timeline-progress.js';
 import { getCurrentModuleRun } from './module-runs.js';
+import {
+  learningOrPreviewProgramWhere,
+  learningProgramWhere,
+} from './program-access-policy.js';
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
 const PROGRESS_TRANSACTION_MAX_WAIT_MS = 5_000;
@@ -85,6 +89,9 @@ async function readLessonState(
   requirePublished: boolean,
 ) {
   const publicationFilter = requirePublished ? { isPublished: true } : {};
+  const programFilter = requirePublished
+    ? learningProgramWhere(userId)
+    : learningOrPreviewProgramWhere(userId, true);
   const lessonContext = await prisma.lesson.findFirst({
     where: {
       id: lessonId,
@@ -93,7 +100,7 @@ async function readLessonState(
         ...publicationFilter,
         stage: {
           ...publicationFilter,
-          program: { ownerId: userId },
+          program: programFilter,
         },
       },
     },
@@ -126,7 +133,7 @@ async function readLessonState(
                 },
               }
             : {}),
-          program: { ownerId: userId },
+          program: programFilter,
         },
       },
     },

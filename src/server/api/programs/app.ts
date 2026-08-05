@@ -3,13 +3,18 @@ import { z } from 'zod';
 
 import {
   LessonProgressStatus,
-  ProgramStatus,
-  ProgramVisibility,
   StageProgressStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  learningProgramWhere,
+  previewProgramWhere,
+} from '../_lib/program-access-policy.js';
 import {
   getProgramTimeline,
   getStageTimeline,
@@ -62,24 +67,10 @@ function isPreviewRequest(url: string): boolean {
   return query.data.preview === 'true';
 }
 
-function getProgramStatusFilter(preview: boolean) {
-  return preview
-    ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
-    : ProgramStatus.ACTIVE;
-}
-
 function getProgramAccessFilter(userId: string, preview: boolean) {
-  if (preview) {
-    return {
-      ownerId: userId,
-      status: getProgramStatusFilter(true),
-    };
-  }
-
-  return {
-    OR: [{ ownerId: userId }, { visibility: ProgramVisibility.PUBLIC }],
-    status: ProgramStatus.ACTIVE,
-  };
+  return preview
+    ? previewProgramWhere(userId)
+    : learningProgramWhere(userId);
 }
 
 function selectAccessibleCandidate<T>(
@@ -205,6 +196,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
   const readStageValidation = options.readStageValidation ?? getStageValidation;
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -224,10 +216,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const prisma = await getClient();
     const user = context.get('user');
     const programs = await prisma.program.findMany({
-      where: {
-        ownerId: user.id,
-        status: getProgramStatusFilter(preview),
-      },
+      where: getProgramAccessFilter(user.id, preview),
       orderBy: { position: 'asc' },
       include: {
         stages: {

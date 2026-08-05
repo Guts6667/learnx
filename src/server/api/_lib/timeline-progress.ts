@@ -7,6 +7,7 @@ import {
   calculateTimelineSnapshot,
   clampPercent,
 } from '../../../lib/timeline.js';
+import { learningProgramWhere } from './program-access-policy.js';
 
 interface ProgressLesson {
   progress: Array<{ percent: number }>;
@@ -19,6 +20,8 @@ interface ProgressModule {
 interface ProgressStage {
   modules: ProgressModule[];
 }
+
+type TimelineClient = Pick<PrismaClient, 'program' | 'stage'>;
 
 function average(values: number[]): number {
   if (values.length === 0) {
@@ -63,13 +66,13 @@ const publishedProgressInclude = (userId: string) => ({
 });
 
 export async function getStageTimeline(
-  prisma: PrismaClient,
+  prisma: TimelineClient,
   stageId: string,
   userId: string,
   now = new Date(),
 ) {
   const stage = await prisma.stage.findFirst({
-    where: { id: stageId, program: { ownerId: userId } },
+    where: { id: stageId, program: learningProgramWhere(userId) },
     include: {
       ...publishedProgressInclude(userId),
       progress: { where: { userId }, take: 1 },
@@ -92,13 +95,13 @@ export async function getStageTimeline(
 }
 
 export async function getProgramTimeline(
-  prisma: PrismaClient,
+  prisma: TimelineClient,
   programId: string,
   userId: string,
   now = new Date(),
 ) {
   const program = await prisma.program.findFirst({
-    where: { id: programId, ownerId: userId },
+    where: { id: programId, ...learningProgramWhere(userId) },
     include: {
       progress: { where: { userId }, take: 1 },
       stages: {
@@ -133,7 +136,7 @@ export async function refreshTimelineForLessonActivity(
   const lesson = await prisma.lesson.findFirst({
     where: {
       id: lessonId,
-      module: { stage: { program: { ownerId: userId } } },
+      module: { stage: { program: learningProgramWhere(userId) } },
     },
     select: {
       module: {

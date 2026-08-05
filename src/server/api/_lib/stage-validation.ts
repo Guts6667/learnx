@@ -2,7 +2,6 @@ import {
   CanonicalActivityKind,
   ConceptProgressStatus,
   ExerciseSubmissionStatus,
-  ProgramStatus,
   StageAssessmentSubmissionStatus,
   StageProgressStatus,
   TaskCompletionStatus,
@@ -15,6 +14,10 @@ import {
 } from '../../../lib/stage-validation.js';
 import { calculateTargetEndDate } from '../../../lib/timeline.js';
 import { getCurrentModuleRun } from './module-runs.js';
+import {
+  learningProgramWhere,
+  previewProgramWhere,
+} from './program-access-policy.js';
 
 interface StageValidationOptions {
   preview?: boolean;
@@ -32,12 +35,9 @@ async function readStageValidationState(
     where: {
       id: stageId,
       ...publicationFilter,
-      program: {
-        ownerId: userId,
-        status: preview
-          ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
-          : ProgramStatus.ACTIVE,
-      },
+      program: preview
+        ? previewProgramWhere(userId)
+        : learningProgramWhere(userId),
     },
     select: {
       assessments: {

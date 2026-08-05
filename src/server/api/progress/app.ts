@@ -7,7 +7,12 @@ import {
   calculateTimelineSnapshot,
 } from '../../../lib/timeline.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import {
   getProgramTimeline,
   getStageTimeline,
@@ -115,6 +120,7 @@ function serializeSnapshot(snapshot: LessonProgressSnapshot) {
 export const progressApp = new Hono<AuthEnvironment>();
 
 progressApp.use('*', requireUser);
+progressApp.use('*', requireCapability('learning.read'));
 
 progressApp.onError((error, context) => {
   if (error instanceof ApiError) {
@@ -142,53 +148,57 @@ progressApp.onError((error, context) => {
 });
 
 progressApp.post('/api/programs/:programId/start', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const programId = assertIdentifier(context.req.param('programId'));
   const userId = context.get('user').id;
   const prisma = await getPrismaClient();
-  const program = await prisma.program.findFirst({
-    where: { id: programId, ownerId: userId, status: 'ACTIVE' },
-    select: { estimatedDurationDays: true, id: true },
-  });
-
-  if (!program) {
-    throw notFound();
-  }
-
   const now = new Date();
-  const [currentProgress, timeline] = await Promise.all([
-    prisma.programProgress.findUnique({
-      where: { userId_programId: { programId, userId } },
-    }),
-    getProgramTimeline(prisma, programId, userId, now),
-  ]);
-  const startedAt = currentProgress?.startedAt ?? now;
-  const targetEndAt =
-    currentProgress?.targetEndAt ??
-    calculateTargetEndDate(startedAt, program.estimatedDurationDays);
-  const progress = await prisma.programProgress.upsert({
-    where: { userId_programId: { programId, userId } },
-    create: {
-      lastViewedAt: now,
-      percent: timeline?.actualPercent ?? 0,
-      programId,
-      startedAt,
-      targetEndAt,
-      userId,
-    },
-    update: {
-      lastViewedAt: now,
-      percent: timeline?.actualPercent ?? 0,
-      startedAt,
-      targetEndAt,
-    },
-  });
+  const timeline = await runSerializableProgressTransaction(
+    prisma,
+    async (transaction) => {
+      const program = await transaction.program.findFirst({
+        where: { id: programId, ...learningProgramWhere(userId) },
+        select: { estimatedDurationDays: true, id: true },
+      });
+      if (!program) throw notFound();
 
-  return context.json({
-    timeline: createTimelineResponse(progress.percent, progress, now),
-  });
+      const [currentProgress, currentTimeline] = await Promise.all([
+        transaction.programProgress.findUnique({
+          where: { userId_programId: { programId, userId } },
+        }),
+        getProgramTimeline(transaction, programId, userId, now),
+      ]);
+      const startedAt = currentProgress?.startedAt ?? now;
+      const targetEndAt =
+        currentProgress?.targetEndAt ??
+        calculateTargetEndDate(startedAt, program.estimatedDurationDays);
+      const progress = await transaction.programProgress.upsert({
+        where: { userId_programId: { programId, userId } },
+        create: {
+          lastViewedAt: now,
+          percent: currentTimeline?.actualPercent ?? 0,
+          programId,
+          startedAt,
+          targetEndAt,
+          userId,
+        },
+        update: {
+          lastViewedAt: now,
+          percent: currentTimeline?.actualPercent ?? 0,
+          startedAt,
+          targetEndAt,
+        },
+      });
+
+      return createTimelineResponse(progress.percent, progress, now);
+    },
+  );
+
+  return context.json({ timeline });
 });
 
 progressApp.patch('/api/programs/:programId/schedule', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const programId = assertIdentifier(context.req.param('programId'));
   const parsedInput = scheduleSchema.safeParse(
     await parseBody(context.req.raw),
@@ -200,96 +210,114 @@ progressApp.patch('/api/programs/:programId/schedule', async (context) => {
 
   const userId = context.get('user').id;
   const prisma = await getPrismaClient();
-  const currentProgress = await prisma.programProgress.findFirst({
-    where: { programId, userId, program: { ownerId: userId } },
-  });
-
-  if (!currentProgress) {
-    throw notFound();
-  }
-
-  if (!currentProgress.startedAt) {
-    throw new ApiError(
-      'TIMELINE_NOT_STARTED',
-      'Start this program before changing its target date.',
-      409,
-    );
-  }
-
   const targetEndAt = new Date(parsedInput.data.targetEndAt);
-  assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
   const now = new Date();
-  const timeline = await getProgramTimeline(prisma, programId, userId, now);
-  const progress = await prisma.programProgress.update({
-    where: { userId_programId: { programId, userId } },
-    data: { lastViewedAt: now, targetEndAt },
-  });
+  const timeline = await runSerializableProgressTransaction(
+    prisma,
+    async (transaction) => {
+      const currentProgress = await transaction.programProgress.findFirst({
+        where: {
+          programId,
+          userId,
+          program: learningProgramWhere(userId),
+        },
+      });
+      if (!currentProgress) throw notFound();
+      if (!currentProgress.startedAt) {
+        throw new ApiError(
+          'TIMELINE_NOT_STARTED',
+          'Start this program before changing its target date.',
+          409,
+        );
+      }
 
-  return context.json({
-    timeline: createTimelineResponse(
-      timeline?.actualPercent ?? progress.percent,
-      progress,
-      now,
-    ),
-  });
+      assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
+      const currentTimeline = await getProgramTimeline(
+        transaction,
+        programId,
+        userId,
+        now,
+      );
+      const progress = await transaction.programProgress.update({
+        where: { userId_programId: { programId, userId } },
+        data: { lastViewedAt: now, targetEndAt },
+      });
+
+      return createTimelineResponse(
+        currentTimeline?.actualPercent ?? progress.percent,
+        progress,
+        now,
+      );
+    },
+  );
+
+  return context.json({ timeline });
 });
 
 progressApp.post('/api/stages/:stageId/start', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const stageId = assertIdentifier(context.req.param('stageId'));
   const userId = context.get('user').id;
   const prisma = await getPrismaClient();
-  const stage = await prisma.stage.findFirst({
-    where: {
-      id: stageId,
-      isPublished: true,
-      program: { ownerId: userId, status: 'ACTIVE' },
-    },
-    select: { estimatedDurationDays: true, id: true },
-  });
-
-  if (!stage) {
-    throw notFound();
-  }
-
   const now = new Date();
-  const [currentProgress, timeline] = await Promise.all([
-    prisma.stageProgress.findUnique({
-      where: { userId_stageId: { stageId, userId } },
-    }),
-    getStageTimeline(prisma, stageId, userId, now),
-  ]);
-  const startedAt = currentProgress?.startedAt ?? now;
-  const targetEndAt =
-    currentProgress?.targetEndAt ??
-    calculateTargetEndDate(startedAt, stage.estimatedDurationDays);
-  const progress = await prisma.stageProgress.upsert({
-    where: { userId_stageId: { stageId, userId } },
-    create: {
-      lastViewedAt: now,
-      percent: timeline?.actualPercent ?? 0,
-      stageId,
-      startedAt,
-      status: 'IN_PROGRESS',
-      targetEndAt,
-      userId,
-    },
-    update: {
-      lastViewedAt: now,
-      percent: timeline?.actualPercent ?? 0,
-      startedAt,
-      status:
-        currentProgress?.status === 'COMPLETED' ? 'COMPLETED' : 'IN_PROGRESS',
-      targetEndAt,
-    },
-  });
+  const result = await runSerializableProgressTransaction(
+    prisma,
+    async (transaction) => {
+      const stage = await transaction.stage.findFirst({
+        where: {
+          id: stageId,
+          isPublished: true,
+          program: learningProgramWhere(userId),
+        },
+        select: { estimatedDurationDays: true, id: true },
+      });
+      if (!stage) throw notFound();
 
-  return context.json({
-    status: progress.status,
-    timeline: createTimelineResponse(progress.percent, progress, now),
-  });
+      const [currentProgress, currentTimeline] = await Promise.all([
+        transaction.stageProgress.findUnique({
+          where: { userId_stageId: { stageId, userId } },
+        }),
+        getStageTimeline(transaction, stageId, userId, now),
+      ]);
+      const startedAt = currentProgress?.startedAt ?? now;
+      const targetEndAt =
+        currentProgress?.targetEndAt ??
+        calculateTargetEndDate(startedAt, stage.estimatedDurationDays);
+      const progress = await transaction.stageProgress.upsert({
+        where: { userId_stageId: { stageId, userId } },
+        create: {
+          lastViewedAt: now,
+          percent: currentTimeline?.actualPercent ?? 0,
+          stageId,
+          startedAt,
+          status: 'IN_PROGRESS',
+          targetEndAt,
+          userId,
+        },
+        update: {
+          lastViewedAt: now,
+          percent: currentTimeline?.actualPercent ?? 0,
+          startedAt,
+          status:
+            currentProgress?.status === 'COMPLETED'
+              ? 'COMPLETED'
+              : 'IN_PROGRESS',
+          targetEndAt,
+        },
+      });
+
+      return {
+        status: progress.status,
+        timeline: createTimelineResponse(progress.percent, progress, now),
+      };
+    },
+  );
+
+  return context.json(result);
 });
 
 progressApp.patch('/api/stages/:stageId/schedule', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const stageId = assertIdentifier(context.req.param('stageId'));
   const parsedInput = scheduleSchema.safeParse(
     await parseBody(context.req.raw),
@@ -301,39 +329,51 @@ progressApp.patch('/api/stages/:stageId/schedule', async (context) => {
 
   const userId = context.get('user').id;
   const prisma = await getPrismaClient();
-  const currentProgress = await prisma.stageProgress.findFirst({
-    where: { stageId, userId, stage: { program: { ownerId: userId } } },
-  });
-
-  if (!currentProgress) {
-    throw notFound();
-  }
-
-  if (!currentProgress.startedAt) {
-    throw new ApiError(
-      'TIMELINE_NOT_STARTED',
-      'Start this stage before changing its target date.',
-      409,
-    );
-  }
-
   const targetEndAt = new Date(parsedInput.data.targetEndAt);
-  assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
   const now = new Date();
-  const timeline = await getStageTimeline(prisma, stageId, userId, now);
-  const progress = await prisma.stageProgress.update({
-    where: { userId_stageId: { stageId, userId } },
-    data: { lastViewedAt: now, targetEndAt },
-  });
+  const result = await runSerializableProgressTransaction(
+    prisma,
+    async (transaction) => {
+      const currentProgress = await transaction.stageProgress.findFirst({
+        where: {
+          stageId,
+          userId,
+          stage: { program: learningProgramWhere(userId) },
+        },
+      });
+      if (!currentProgress) throw notFound();
+      if (!currentProgress.startedAt) {
+        throw new ApiError(
+          'TIMELINE_NOT_STARTED',
+          'Start this stage before changing its target date.',
+          409,
+        );
+      }
 
-  return context.json({
-    status: progress.status,
-    timeline: createTimelineResponse(
-      timeline?.actualPercent ?? progress.percent,
-      progress,
-      now,
-    ),
-  });
+      assertTargetAfterStart(currentProgress.startedAt, targetEndAt);
+      const currentTimeline = await getStageTimeline(
+        transaction,
+        stageId,
+        userId,
+        now,
+      );
+      const progress = await transaction.stageProgress.update({
+        where: { userId_stageId: { stageId, userId } },
+        data: { lastViewedAt: now, targetEndAt },
+      });
+
+      return {
+        status: progress.status,
+        timeline: createTimelineResponse(
+          currentTimeline?.actualPercent ?? progress.percent,
+          progress,
+          now,
+        ),
+      };
+    },
+  );
+
+  return context.json(result);
 });
 
 progressApp.get('/api/lessons/:lessonId/progress', async (context) => {
@@ -344,6 +384,7 @@ progressApp.get('/api/lessons/:lessonId/progress', async (context) => {
 });
 
 progressApp.post('/api/lessons/:lessonId/start', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const lessonId = assertIdentifier(context.req.param('lessonId'));
   const userId = context.get('user').id;
   const now = new Date();
@@ -364,6 +405,7 @@ progressApp.post('/api/lessons/:lessonId/start', async (context) => {
 });
 
 progressApp.post('/api/lessons/:lessonId/complete', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const lessonId = assertIdentifier(context.req.param('lessonId'));
   const userId = context.get('user').id;
   const now = new Date();
@@ -393,6 +435,7 @@ progressApp.post('/api/lessons/:lessonId/complete', async (context) => {
 });
 
 progressApp.patch('/api/tasks/:taskId', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const taskId = assertIdentifier(context.req.param('taskId'));
   const parsedInput = taskStatusSchema.safeParse(
     await parseBody(context.req.raw),
@@ -416,7 +459,10 @@ progressApp.patch('/api/tasks/:taskId', async (context) => {
             isPublished: true,
             module: {
               isPublished: true,
-              stage: { isPublished: true, program: { ownerId: userId } },
+              stage: {
+                isPublished: true,
+                program: learningProgramWhere(userId),
+              },
             },
           },
         },
@@ -454,6 +500,7 @@ progressApp.patch('/api/tasks/:taskId', async (context) => {
 });
 
 progressApp.patch('/api/resources/:resourceId/progress', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
   const resourceId = assertIdentifier(context.req.param('resourceId'));
   const parsedInput = resourceStatusSchema.safeParse(
     await parseBody(context.req.raw),
@@ -476,7 +523,10 @@ progressApp.patch('/api/resources/:resourceId/progress', async (context) => {
             isPublished: true,
             module: {
               isPublished: true,
-              stage: { isPublished: true, program: { ownerId: userId } },
+              stage: {
+                isPublished: true,
+                program: learningProgramWhere(userId),
+              },
             },
           },
         },

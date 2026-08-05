@@ -8,7 +8,13 @@ import {
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningOrPreviewProgramWhere } from '../_lib/program-access-policy.js';
+import { runSerializableProgressTransaction } from '../_lib/progress-recalculation.js';
 
 interface ReviewResource {
   id: string;
@@ -42,8 +48,9 @@ export interface ReviewsRepository {
     reviewId: string,
     userId: string,
     completedAt: Date,
+    canPreview: boolean,
   ): Promise<CompletedReview | null>;
-  listPending(userId: string): Promise<ReviewRecord[]>;
+  listPending(userId: string, canPreview: boolean): Promise<ReviewRecord[]>;
 }
 
 interface ReviewsAppOptions {
@@ -79,35 +86,38 @@ export function createPrismaReviewsRepository(
   client: PrismaClient,
 ): ReviewsRepository {
   return {
-    async complete(reviewId, userId, completedAt) {
-      const ownedReview = await client.reviewItem.findFirst({
-        where: { id: reviewId, userId, program: { ownerId: userId } },
-        select: { id: true },
+    async complete(reviewId, userId, completedAt, canPreview) {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const ownedReview = await transaction.reviewItem.findFirst({
+          where: {
+            id: reviewId,
+            userId,
+            program: learningOrPreviewProgramWhere(userId, canPreview),
+          },
+          select: { id: true },
+        });
+
+        if (!ownedReview) return null;
+
+        const updatedReview = await transaction.reviewItem.update({
+          where: { id: ownedReview.id },
+          data: { completedAt, status: ReviewStatus.COMPLETED },
+          select: { completedAt: true, id: true, status: true },
+        });
+
+        return {
+          completedAt: updatedReview.completedAt ?? completedAt,
+          id: updatedReview.id,
+          status: updatedReview.status,
+        };
       });
-
-      if (!ownedReview) return null;
-
-      const updatedReview = await client.reviewItem.update({
-        where: { id: ownedReview.id },
-        data: { completedAt, status: ReviewStatus.COMPLETED },
-        select: { completedAt: true, id: true, status: true },
-      });
-
-      return {
-        completedAt: updatedReview.completedAt ?? completedAt,
-        id: updatedReview.id,
-        status: updatedReview.status,
-      };
     },
-    async listPending(userId) {
+    async listPending(userId, canPreview) {
       const reviews = await client.reviewItem.findMany({
         where: {
           status: ReviewStatus.PENDING,
           userId,
-          program: {
-            ownerId: userId,
-            status: { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] },
-          },
+          program: learningOrPreviewProgramWhere(userId, canPreview),
         },
         orderBy: [{ dueAt: 'asc' }, { createdAt: 'asc' }],
         select: {
@@ -146,7 +156,11 @@ export function createPrismaReviewsRepository(
           id: { in: assessmentIds },
           concept: {
             lesson: {
-              module: { stage: { program: { ownerId: userId } } },
+              module: {
+                stage: {
+                  program: learningOrPreviewProgramWhere(userId, canPreview),
+                },
+              },
             },
           },
         },
@@ -222,6 +236,7 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
   };
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
@@ -237,22 +252,31 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
   });
 
   app.get('/api/reviews', async (context) => {
+    const user = context.get('user');
     const reviews = await (
       await getRepository()
-    ).listPending(context.get('user').id);
+    ).listPending(
+      user.id,
+      true,
+    );
 
     return context.json({ reviews: reviews.map(serializeReview) });
   });
 
   app.patch('/api/reviews/:reviewId', async (context) => {
+    assertCapability(context.get('user').role, 'learning.write.own');
     const reviewId = identifierSchema.safeParse(context.req.param('reviewId'));
     const input = updateSchema.safeParse(await parseJson(context.req.raw));
 
     if (!reviewId.success || !input.success) throw invalidRequest();
 
-    const review = await (
-      await getRepository()
-    ).complete(reviewId.data, context.get('user').id, now());
+    const user = context.get('user');
+    const review = await (await getRepository()).complete(
+      reviewId.data,
+      user.id,
+      now(),
+      true,
+    );
 
     if (!review) throw notFound();
 

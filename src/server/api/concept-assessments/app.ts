@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import {
   ConceptProgressStatus,
-  ProgramStatus,
   type ConceptQuestionType,
   type Prisma,
   type PrismaClient,
@@ -16,7 +15,16 @@ import {
   type SubmittedAssessmentAnswer,
 } from '../../../lib/concept-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  learningOrPreviewProgramWhere,
+  learningProgramWhere,
+  previewProgramWhere,
+} from '../_lib/program-access-policy.js';
 import {
   recalculateLessonProgress,
   runSerializableProgressTransaction,
@@ -81,6 +89,7 @@ interface RecordAttemptInput {
   lessonId: string;
   passed: boolean;
   programId: string;
+  preview: boolean;
   score: number;
   submittedAt: Date;
   userId: string;
@@ -95,6 +104,7 @@ export interface ConceptAssessmentRepository {
   listAttempts(
     assessmentId: string,
     userId: string,
+    preview: boolean,
   ): Promise<AttemptReadModel[]>;
   recordAttempt(input: RecordAttemptInput): Promise<RecordedAttempt>;
 }
@@ -230,12 +240,9 @@ export function createPrismaRepository(
                 ...(preview ? {} : { isPublished: true }),
                 stage: {
                   ...(preview ? {} : { isPublished: true }),
-                  program: {
-                    ownerId: userId,
-                    status: preview
-                      ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
-                      : ProgramStatus.ACTIVE,
-                  },
+                  program: preview
+                    ? previewProgramWhere(userId)
+                    : learningProgramWhere(userId),
                 },
               },
             },
@@ -283,9 +290,27 @@ export function createPrismaRepository(
         title: assessment.title,
       };
     },
-    async listAttempts(assessmentId, userId) {
+    async listAttempts(assessmentId, userId, preview) {
+      const publicationFilter = preview ? {} : { isPublished: true };
       const attempts = await client.conceptAssessmentAttempt.findMany({
-        where: { assessmentId, userId },
+        where: {
+          assessmentId,
+          userId,
+          assessment: {
+            concept: {
+              lesson: {
+                ...publicationFilter,
+                module: {
+                  ...publicationFilter,
+                  stage: {
+                    ...publicationFilter,
+                    program: learningOrPreviewProgramWhere(userId, preview),
+                  },
+                },
+              },
+            },
+          },
+        },
         orderBy: { submittedAt: 'desc' },
         include: { moduleRun: { select: { sequence: true } } },
       });
@@ -296,6 +321,36 @@ export function createPrismaRepository(
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
+        const publicationFilter = input.preview ? {} : { isPublished: true };
+        const accessibleAssessment =
+          await transaction.conceptAssessment.findFirst({
+            where: {
+              conceptId: input.conceptId,
+              id: input.assessmentId,
+              concept: {
+                lesson: {
+                  id: input.lessonId,
+                  ...publicationFilter,
+                  module: {
+                    ...publicationFilter,
+                    stage: {
+                      ...publicationFilter,
+                      program: {
+                        id: input.programId,
+                        ...learningOrPreviewProgramWhere(
+                          input.userId,
+                          input.preview,
+                        ),
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            select: { id: true },
+          });
+        if (!accessibleAssessment) throw notFound();
+
         const moduleRun = await ensureCurrentModuleRunForLesson(
           transaction,
           input.lessonId,
@@ -402,7 +457,7 @@ export function createPrismaRepository(
           input.lessonId,
           input.userId,
           input.submittedAt,
-          { requirePublished: false },
+          { requirePublished: !input.preview },
         );
 
         if (!lessonProgress) throw notFound();
@@ -431,6 +486,7 @@ export function createConceptAssessmentsApp(
     options.refreshValidation ?? (async () => undefined);
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -446,22 +502,23 @@ export function createConceptAssessmentsApp(
   });
 
   async function getAssessment(context: {
-    get(key: 'user'): { id: string };
+    get(key: 'user'): AuthEnvironment['Variables']['user'];
     req: { param(name: string): string; url: string };
   }) {
     const assessmentId = assertIdentifier(context.req.param('assessmentId'));
     const repository = options.repository ?? (await getPrismaRepository());
+    const preview = isPreviewRequest(context.req.url);
     const assessment = await repository.findAssessmentForUser(
       assessmentId,
       context.get('user').id,
-      isPreviewRequest(context.req.url),
+      preview,
     );
 
     if (!assessment) {
       throw notFound();
     }
 
-    return { assessment, assessmentId, repository };
+    return { assessment, assessmentId, preview, repository };
   }
 
   app.get('/api/concept-assessments/:assessmentId', async (context) => {
@@ -473,10 +530,12 @@ export function createConceptAssessmentsApp(
   app.get(
     '/api/concept-assessments/:assessmentId/attempts',
     async (context) => {
-      const { assessmentId, repository } = await getAssessment(context);
+      const { assessmentId, preview, repository } =
+        await getAssessment(context);
       const attempts = await repository.listAttempts(
         assessmentId,
         context.get('user').id,
+        preview,
       );
 
       return context.json({ attempts: attempts.map(serializeAttempt) });
@@ -486,13 +545,14 @@ export function createConceptAssessmentsApp(
   app.post(
     '/api/concept-assessments/:assessmentId/attempts',
     async (context) => {
+      assertCapability(context.get('user').role, 'learning.write.own');
       const parsedAttempt = await parseAttempt(context.req.raw);
 
       if (!parsedAttempt.success) {
         throw invalidRequest();
       }
 
-      const { assessment, assessmentId, repository } =
+      const { assessment, assessmentId, preview, repository } =
         await getAssessment(context);
 
       if (assessment.questions.length === 0) {
@@ -520,6 +580,7 @@ export function createConceptAssessmentsApp(
         lessonId: assessment.concept.lessonId,
         passed: result.passed,
         programId: assessment.concept.programId,
+        preview,
         score: result.score,
         submittedAt,
         userId: context.get('user').id,

@@ -10,6 +10,7 @@ import {
   cleanupIntegrationUsers,
   createIntegrationFixture,
 } from './fixture.js';
+import { createPrismaProgramEnrollmentService } from '../../src/server/api/_lib/program-enrollment.js';
 import { prisma } from '../../src/server/prisma.js';
 
 const password = 'Integration-Only-Password-2026!';
@@ -402,6 +403,51 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       200,
     );
     await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
+
+    const outsiderUser = await prisma.user.findUniqueOrThrow({
+      where: { email: outsiderEmail },
+      select: { id: true },
+    });
+    const enrollmentService = createPrismaProgramEnrollmentService(prisma);
+    await expect(
+      enrollmentService.enroll(outsiderUser.id, fixture.programId),
+    ).resolves.toMatchObject({ status: 'ACTIVE', userId: outsiderUser.id });
+    await expectStatus(
+      await outsider.get(`/api/programs/${fixture.programSlug}`),
+      200,
+    );
+    await expectStatus(
+      await outsider.get(`/api/lessons/${fixture.lessonSlug}`),
+      200,
+    );
+    await expectStatus(
+      await outsider.get(`/api/notes/${note.note.id}`),
+      404,
+    );
+    const outsiderAttempts = await expectStatus(
+      await outsider.get(`/api/quizzes/${fixture.quizId}/attempts`),
+      200,
+    );
+    expect(await outsiderAttempts.json()).toEqual({ attempts: [] });
+    await expectStatus(
+      await outsider.patch(`/api/tasks/${fixture.taskId}`, {
+        data: { status: 'DONE' },
+      }),
+      200,
+    );
+    await expect(
+      enrollmentService.withdraw(outsiderUser.id, fixture.programId),
+    ).resolves.toMatchObject({ status: 'WITHDRAWN' });
+    await expectStatus(
+      await outsider.get(`/api/lessons/${fixture.lessonSlug}`),
+      404,
+    );
+    await expectStatus(
+      await outsider.patch(`/api/tasks/${fixture.taskId}`, {
+        data: { status: 'DONE' },
+      }),
+      404,
+    );
 
     const finalAssessment = await expectStatus(
       await owner.get(`/api/stages/${fixture.stageId}/assessment`),

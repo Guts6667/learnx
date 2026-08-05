@@ -4,14 +4,18 @@ import { z } from 'zod';
 import {
   ConceptProgressStatus,
   LessonProgressStatus,
-  ProgramStatus,
   ReviewStatus,
   TaskCompletionStatus,
   type Prisma,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import { getCurrentModuleRun } from '../_lib/module-runs.js';
 import {
   refreshStageAndProgram,
@@ -99,7 +103,7 @@ async function readOwnedModule(
       isPublished: true,
       stage: {
         isPublished: true,
-        program: { ownerId: userId, status: ProgramStatus.ACTIVE },
+        program: learningProgramWhere(userId),
       },
     },
     select: {
@@ -309,6 +313,7 @@ async function getRepository() {
 export function createModuleRunsApp(options: ModuleRunsAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
@@ -330,6 +335,7 @@ export function createModuleRunsApp(options: ModuleRunsAppOptions = {}) {
   });
 
   app.post('/api/modules/:moduleId/restart', async (context) => {
+    assertCapability(context.get('user').role, 'learning.write.own');
     const moduleId = parseIdentifier(context.req.param('moduleId'));
     const parsed = await parseBody(context.req.raw);
     if (!parsed.success) throw invalidRequest();

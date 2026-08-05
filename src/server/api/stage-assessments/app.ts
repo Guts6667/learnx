@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import {
   AuditAction,
-  ProgramStatus,
   StageAssessmentSubmissionStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
@@ -14,8 +13,17 @@ import {
 } from '../../../lib/stage-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
-import { assertCapability } from '../_lib/authorization.js';
+import {
+  assertCapability,
+  requireCapability,
+} from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  editorialProgramWhere,
+  learningProgramWhere,
+  previewProgramWhere,
+} from '../_lib/program-access-policy.js';
+import { runSerializableProgressTransaction } from '../_lib/progress-recalculation.js';
 import { refreshStageValidation } from '../_lib/stage-validation.js';
 
 const identifierSchema = z.uuid();
@@ -113,8 +121,13 @@ export interface StageAssessmentRepository {
     attachmentUrl?: string | null;
     contentMarkdown?: string | null;
     id: string;
+    userId: string;
   }): Promise<SubmissionRecord>;
-  submitSubmission(id: string, submittedAt: Date): Promise<SubmissionRecord>;
+  submitSubmission(
+    id: string,
+    submittedAt: Date,
+    userId: string,
+  ): Promise<SubmissionRecord>;
 }
 
 interface AppOptions {
@@ -139,7 +152,7 @@ function publishedAssessmentWhere(assessmentId: string, userId: string) {
     id: assessmentId,
     stage: {
       isPublished: true,
-      program: { ownerId: userId, status: ProgramStatus.ACTIVE },
+      program: learningProgramWhere(userId),
     },
   } as const;
 }
@@ -164,13 +177,24 @@ export function createPrismaStageAssessmentRepository(
 
   return {
     async createOrGetSubmission(assessmentId, userId) {
-      return client.stageAssessmentSubmission.upsert({
-        where: {
-          userId_stageAssessmentId: { stageAssessmentId: assessmentId, userId },
-        },
-        create: { stageAssessmentId: assessmentId, userId },
-        update: {},
-        select: submissionSelect,
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const assessment = await transaction.stageAssessment.findFirst({
+          where: publishedAssessmentWhere(assessmentId, userId),
+          select: { id: true },
+        });
+        if (!assessment) throw notFound();
+
+        return transaction.stageAssessmentSubmission.upsert({
+          where: {
+            userId_stageAssessmentId: {
+              stageAssessmentId: assessmentId,
+              userId,
+            },
+          },
+          create: { stageAssessmentId: assessmentId, userId },
+          update: {},
+          select: submissionSelect,
+        });
       });
     },
     async findAssessmentForUser(stageId, userId, preview) {
@@ -179,12 +203,9 @@ export function createPrismaStageAssessmentRepository(
           stageId,
           stage: {
             ...(preview ? {} : { isPublished: true }),
-            program: {
-              ownerId: userId,
-              status: preview
-                ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
-                : ProgramStatus.ACTIVE,
-            },
+            program: preview
+              ? previewProgramWhere(userId)
+              : learningProgramWhere(userId),
           },
         },
         orderBy: { position: 'asc' },
@@ -204,7 +225,16 @@ export function createPrismaStageAssessmentRepository(
     },
     async findOwnedSubmission(submissionId, userId) {
       return client.stageAssessmentSubmission.findFirst({
-        where: { id: submissionId, userId },
+        where: {
+          id: submissionId,
+          stageAssessment: {
+            stage: {
+              isPublished: true,
+              program: learningProgramWhere(userId),
+            },
+          },
+          userId,
+        },
         select: submissionSelect,
       });
     },
@@ -218,7 +248,9 @@ export function createPrismaStageAssessmentRepository(
       const record = await client.stageAssessmentSubmission.findFirst({
         where: {
           id: submissionId,
-          stageAssessment: { stage: { program: { ownerId } } },
+          stageAssessment: {
+            stage: { program: editorialProgramWhere(ownerId) },
+          },
         },
         select: {
           ...submissionSelect,
@@ -241,8 +273,11 @@ export function createPrismaStageAssessmentRepository(
           await transaction.stageAssessmentSubmission.updateManyAndReturn({
             where: {
               id: input.id,
+              status: StageAssessmentSubmissionStatus.SUBMITTED,
               stageAssessment: {
-                stage: { program: { ownerId: input.ownerId } },
+                stage: {
+                  program: editorialProgramWhere(input.ownerId),
+                },
               },
             },
             data: {
@@ -268,20 +303,58 @@ export function createPrismaStageAssessmentRepository(
       });
     },
     async saveSubmission(input) {
-      return client.stageAssessmentSubmission.update({
-        where: { id: input.id },
-        data: {
-          attachmentUrl: input.attachmentUrl,
-          contentMarkdown: input.contentMarkdown,
-        },
-        select: submissionSelect,
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const submission = await transaction.stageAssessmentSubmission.findFirst({
+          where: {
+            id: input.id,
+            stageAssessment: {
+              stage: { program: learningProgramWhere(input.userId) },
+            },
+            userId: input.userId,
+          },
+          select: submissionSelect,
+        });
+        if (!submission) throw notFound();
+        try {
+          assertSubmissionCanBeEdited(submission.status);
+        } catch (error) {
+          throw conflict(error instanceof Error ? error.message : 'Conflict.');
+        }
+
+        return transaction.stageAssessmentSubmission.update({
+          where: { id: input.id },
+          data: {
+            attachmentUrl: input.attachmentUrl,
+            contentMarkdown: input.contentMarkdown,
+          },
+          select: submissionSelect,
+        });
       });
     },
-    async submitSubmission(id, submittedAt) {
-      return client.stageAssessmentSubmission.update({
-        where: { id },
-        data: { status: 'SUBMITTED', submittedAt },
-        select: submissionSelect,
+    async submitSubmission(id, submittedAt, userId) {
+      return runSerializableProgressTransaction(client, async (transaction) => {
+        const submission = await transaction.stageAssessmentSubmission.findFirst({
+          where: {
+            id,
+            stageAssessment: {
+              stage: { program: learningProgramWhere(userId) },
+            },
+            userId,
+          },
+          select: submissionSelect,
+        });
+        if (!submission) throw notFound();
+        try {
+          assertSubmissionCanBeSubmitted(submission);
+        } catch (error) {
+          throw conflict(error instanceof Error ? error.message : 'Conflict.');
+        }
+
+        return transaction.stageAssessmentSubmission.update({
+          where: { id },
+          data: { status: 'SUBMITTED', submittedAt },
+          select: submissionSelect,
+        });
       });
     },
   };
@@ -360,6 +433,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
   };
 
   app.use('*', options.authentication ?? requireUser);
+  app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
@@ -376,10 +450,11 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
   app.get('/api/stages/:stageId/assessment', async (context) => {
     const repository = await getRepository();
     const user = context.get('user');
+    const preview = parsePreview(context.req.url);
     const assessment = await repository.findAssessmentForUser(
       parseIdentifier(context.req.param('stageId')),
       user.id,
-      parsePreview(context.req.url),
+      preview,
     );
 
     if (!assessment) throw notFound();
@@ -399,6 +474,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
     async (context) => {
       const repository = await getRepository();
       const user = context.get('user');
+      assertCapability(user.role, 'learning.write.own');
       const assessmentId = parseIdentifier(context.req.param('assessmentId'));
       const assessment = await repository.findPublishedAssessmentForUser(
         assessmentId,
@@ -427,6 +503,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
       if (!parsed.success) throw invalidRequest();
 
       if (parsed.data.action === 'save') {
+        assertCapability(user.role, 'learning.write.own');
         const submission = await repository.findOwnedSubmission(
           submissionId,
           user.id,
@@ -443,6 +520,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
           attachmentUrl: parsed.data.attachmentUrl,
           contentMarkdown: parsed.data.contentMarkdown,
           id: submissionId,
+          userId: user.id,
         });
         return context.json({ submission: serializeSubmission(updated) });
       }
@@ -504,6 +582,7 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
     async (context) => {
       const repository = await getRepository();
       const user = context.get('user');
+      assertCapability(user.role, 'learning.write.own');
       const submissionId = parseIdentifier(context.req.param('submissionId'));
       const submission = await repository.findOwnedSubmission(
         submissionId,
@@ -518,7 +597,11 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
         throw conflict(error instanceof Error ? error.message : 'Conflict.');
       }
 
-      const updated = await repository.submitSubmission(submissionId, now());
+      const updated = await repository.submitSubmission(
+        submissionId,
+        now(),
+        user.id,
+      );
       return context.json({ submission: serializeSubmission(updated) });
     },
   );

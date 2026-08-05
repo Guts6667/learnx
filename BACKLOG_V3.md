@@ -494,6 +494,8 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-003, V3-009 et V3-011.**
 
+**Statut : implémenté sur `dev` — aucune migration de schéma.**
+
 ### Périmètre
 
 - Remplacer les filtres `ownerId` dispersés par des politiques partagées tenant

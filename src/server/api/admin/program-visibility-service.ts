@@ -4,6 +4,7 @@ import {
   type ProgramVisibility,
 } from '../../../../generated/prisma/client.js';
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
+import { editorialProgramWhere } from '../_lib/program-access-policy.js';
 
 export interface ProgramVisibilityState {
   id: string;
@@ -39,7 +40,10 @@ export function createPrismaProgramVisibilityService(
     async update(actorUserId, programId, input) {
       return client.$transaction(async (transaction) => {
         const current = await transaction.program.findFirst({
-          where: { id: programId, ownerId: actorUserId },
+          where: {
+            id: programId,
+            ...editorialProgramWhere(actorUserId),
+          },
           select: programSelect,
         });
         if (!current) return { kind: 'NOT_FOUND' };
@@ -53,7 +57,7 @@ export function createPrismaProgramVisibilityService(
         const updated = await transaction.program.updateMany({
           where: {
             id: programId,
-            ownerId: actorUserId,
+            ...editorialProgramWhere(actorUserId),
             updatedAt: input.expectedUpdatedAt,
           },
           data: { visibility: input.visibility },

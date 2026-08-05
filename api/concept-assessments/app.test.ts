@@ -468,6 +468,9 @@ describe('concept assessment persistence', () => {
       return currentProgress ? typedInput.update : typedInput.create;
     });
     const transaction = {
+      conceptAssessment: {
+        findFirst: vi.fn(async () => ({ id: assessmentId })),
+      },
       lesson: {
         findUnique: vi.fn(async () => ({ moduleId: moduleRun.moduleId })),
       },
@@ -507,6 +510,7 @@ describe('concept assessment persistence', () => {
       lessonId,
       passed,
       programId,
+      preview: false,
       score: passed ? 100 : 50,
       submittedAt,
       userId,
