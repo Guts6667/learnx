@@ -4,6 +4,7 @@ import { z } from 'zod';
 import {
   LessonProgressStatus,
   ProgramStatus,
+  ProgramVisibility,
   StageProgressStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
@@ -65,6 +66,32 @@ function getProgramStatusFilter(preview: boolean) {
   return preview
     ? { in: [ProgramStatus.ACTIVE, ProgramStatus.DRAFT] }
     : ProgramStatus.ACTIVE;
+}
+
+function getProgramAccessFilter(userId: string, preview: boolean) {
+  if (preview) {
+    return {
+      ownerId: userId,
+      status: getProgramStatusFilter(true),
+    };
+  }
+
+  return {
+    OR: [{ ownerId: userId }, { visibility: ProgramVisibility.PUBLIC }],
+    status: ProgramStatus.ACTIVE,
+  };
+}
+
+function selectAccessibleCandidate<T>(
+  candidates: T[],
+  userId: string,
+  getOwnerId: (candidate: T) => string,
+): T {
+  const owned = candidates.find((candidate) => getOwnerId(candidate) === userId);
+  if (owned) return owned;
+  if (candidates.length === 0) throw notFound();
+  if (candidates.length > 1) throw ambiguousResource();
+  return candidates[0];
 }
 
 function getPublicationFilter(preview: boolean) {
@@ -230,12 +257,12 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const preview = isPreviewRequest(context.req.url);
     const prisma = await getClient();
     const user = context.get('user');
-    const program = await prisma.program.findFirst({
+    const programs = await prisma.program.findMany({
       where: {
-        ownerId: user.id,
+        ...getProgramAccessFilter(user.id, preview),
         slug: context.req.param('programSlug'),
-        status: getProgramStatusFilter(preview),
       },
+      take: 3,
       include: {
         stages: {
           where: getPublicationFilter(preview),
@@ -244,10 +271,11 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         },
       },
     });
-
-    if (!program) {
-      throw notFound();
-    }
+    const program = selectAccessibleCandidate(
+      programs,
+      user.id,
+      (candidate) => candidate.ownerId,
+    );
 
     const [timeline, stages] = await Promise.all([
       readProgramTimeline(prisma, program.id, user.id),
@@ -271,29 +299,34 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const preview = isPreviewRequest(context.req.url);
     const prisma = await getClient();
     const user = context.get('user');
-    const stage = await prisma.stage.findFirst({
+    const stages = await prisma.stage.findMany({
       where: {
         slug: context.req.param('stageSlug'),
         ...getPublicationFilter(preview),
         program: {
-          ownerId: user.id,
+          ...getProgramAccessFilter(user.id, preview),
           slug: context.req.param('programSlug'),
-          status: getProgramStatusFilter(preview),
         },
       },
-      include: getStageInclude(preview, user.id),
+      take: 3,
+      include: {
+        ...getStageInclude(preview, user.id),
+        program: { select: { ownerId: true } },
+      },
     });
-
-    if (!stage) {
-      throw notFound();
-    }
+    const stage = selectAccessibleCandidate(
+      stages,
+      user.id,
+      (candidate) => candidate.program.ownerId,
+    );
 
     const [timeline, validation] = await Promise.all([
       readStageTimeline(prisma, stage.id, user.id),
       readStageValidation(prisma, stage.id, user.id, { preview }),
     ]);
 
-    const { progress, ...stageSummary } = stage;
+    const { program: _programAccess, progress, ...stageSummary } = stage;
+    void _programAccess;
     void progress;
     return context.json({
       stage: {
@@ -316,8 +349,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         stage: {
           ...getPublicationFilter(preview),
           program: {
-            ownerId: user.id,
-            status: getProgramStatusFilter(preview),
+            ...getProgramAccessFilter(user.id, preview),
           },
         },
       },
@@ -330,7 +362,9 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
             isPublished: true,
             slug: true,
             title: true,
-            program: { select: { id: true, slug: true, title: true } },
+            program: {
+              select: { id: true, ownerId: true, slug: true, title: true },
+            },
             progress: {
               where: { userId: user.id },
               take: 1,
@@ -341,21 +375,21 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       },
     });
 
-    if (modules.length === 0) {
-      throw notFound();
-    }
-
-    if (modules.length > 1) {
-      throw ambiguousResource();
-    }
-
-    const moduleIsLocked = isStageLocked(modules[0].stage);
-    const { progress, ...stageContext } = modules[0].stage;
+    const selectedModule = selectAccessibleCandidate(
+      modules,
+      user.id,
+      (candidate) => candidate.stage.program.ownerId,
+    );
+    const moduleIsLocked = isStageLocked(selectedModule.stage);
+    const { progress, program, ...stageWithoutProgram } = selectedModule.stage;
+    const { ownerId: _ownerId, ...programContext } = program;
+    const stageContext = { ...stageWithoutProgram, program: programContext };
+    void _ownerId;
     void progress;
     return context.json({
       module: {
-        ...modules[0],
-        lessons: modules[0].lessons.map((lesson) =>
+        ...selectedModule,
+        lessons: selectedModule.lessons.map((lesson) =>
           serializeLessonSummary(lesson, moduleIsLocked),
         ),
         stage: stageContext,
@@ -376,8 +410,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           stage: {
             ...getPublicationFilter(preview),
             program: {
-              ownerId: user.id,
-              status: getProgramStatusFilter(preview),
+              ...getProgramAccessFilter(user.id, preview),
             },
           },
         },
@@ -458,7 +491,9 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
                 isPublished: true,
                 slug: true,
                 title: true,
-                program: { select: { id: true, slug: true, title: true } },
+                program: {
+                  select: { id: true, ownerId: true, slug: true, title: true },
+                },
                 progress: {
                   where: { userId: user.id },
                   take: 1,
@@ -471,25 +506,24 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       },
     });
 
-    if (lessons.length === 0) {
-      throw notFound();
-    }
-
-    if (lessons.length > 1) {
-      throw ambiguousResource();
-    }
-
-    const lesson = lessons[0];
+    const lesson = selectAccessibleCandidate(
+      lessons,
+      user.id,
+      (candidate) => candidate.module.stage.program.ownerId,
+    );
     const currentLessonIndex = lesson.module.lessons.findIndex(
       (candidate) => candidate.id === lesson.id,
     );
     const previousLesson = lesson.module.lessons[currentLessonIndex - 1] ?? null;
     const nextLesson = lesson.module.lessons[currentLessonIndex + 1] ?? null;
     const lessonIsLocked = isStageLocked(lesson.module.stage);
-    const { progress, ...stageContext } = lesson.module.stage;
+    const { progress, program, ...stageWithoutProgram } = lesson.module.stage;
+    const { ownerId: _ownerId, ...programContext } = program;
+    const stageContext = { ...stageWithoutProgram, program: programContext };
     const { lessons: siblingLessons, ...moduleWithoutLessons } = lesson.module;
     const moduleContext = { ...moduleWithoutLessons, stage: stageContext };
     void siblingLessons;
+    void _ownerId;
     void progress;
 
     return context.json({

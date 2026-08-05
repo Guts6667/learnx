@@ -10,6 +10,8 @@ export interface AdminProgramSummary {
   slug: string;
   status: 'ACTIVE' | 'ARCHIVED' | 'DRAFT';
   title: string;
+  updatedAt: string;
+  visibility: 'PRIVATE' | 'PUBLIC';
 }
 
 export interface AdminStageSummary {
@@ -78,6 +80,10 @@ interface AdminModuleResponse {
 
 interface AdminLessonResponse {
   lesson: AdminLessonSummary;
+}
+
+interface AdminProgramVisibilityResponse {
+  program: Pick<AdminProgramSummary, 'id' | 'status' | 'updatedAt' | 'visibility'>;
 }
 
 export type PublicationAction = 'PUBLISH' | 'UNPUBLISH';
@@ -234,6 +240,26 @@ export function useAdminCurriculumMutation() {
       ),
     [execute],
   );
+  const updateProgramVisibility = useCallback(
+    (
+      programId: string,
+      input: Pick<AdminProgramSummary, 'updatedAt' | 'visibility'>,
+    ) =>
+      execute(() =>
+        apiRequest<AdminProgramVisibilityResponse>(
+          `/api/admin/programs/${encodeURIComponent(programId)}/visibility`,
+          {
+            body: JSON.stringify({
+              expectedUpdatedAt: input.updatedAt,
+              visibility: input.visibility,
+            }),
+            headers: { 'content-type': 'application/json' },
+            method: 'PATCH',
+          },
+        ),
+      ),
+    [execute],
+  );
   const previewPublication = useCallback(
     (input: PublicationRequest) =>
       execute(
@@ -269,5 +295,6 @@ export function useAdminCurriculumMutation() {
     previewPublication,
     updateLesson,
     updateModule,
+    updateProgramVisibility,
   };
 }

@@ -17,6 +17,7 @@ enum Role {
 
 enum AuditAction {
   PROGRAM_PUBLICATION_APPLY @map("program_publication_apply")
+  PROGRAM_VISIBILITY_UPDATE @map("program_visibility_update")
   MODULE_UPDATE             @map("module_update")
   LESSON_UPDATE             @map("lesson_update")
   STAGE_ASSESSMENT_REVIEW   @map("stage_assessment_review")
@@ -52,6 +53,13 @@ enum ProgramStatus {
   ARCHIVED @map("archived")
 
   @@map("program_status")
+}
+
+enum ProgramVisibility {
+  PRIVATE @map("private")
+  PUBLIC  @map("public")
+
+  @@map("program_visibility")
 }
 
 enum ContentBlockType {
@@ -350,6 +358,7 @@ model Program {
   slug                  String
   description           String
   status                ProgramStatus     @default(DRAFT)
+  visibility            ProgramVisibility @default(PRIVATE)
   icon                  String?
   position              Int               @default(0)
   estimatedDurationDays Int?              @map("estimated_duration_days")
@@ -363,6 +372,7 @@ model Program {
 
   @@unique([ownerId, slug])
   @@index([ownerId, position])
+  @@index([visibility, status, position])
   @@map("programs")
 }
 

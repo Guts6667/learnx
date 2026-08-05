@@ -28,12 +28,25 @@ interface LessonWhere {
     isPublished?: boolean;
     stage: {
       isPublished?: boolean;
-      program: { ownerId: string };
+      program: {
+        OR?: Array<{ ownerId?: string; visibility?: string }>;
+        ownerId?: string;
+      };
     };
   };
 }
 
-function createClient(resourceOwnerId = ownerId) {
+function createClient(
+  resourceOwnerId = ownerId,
+  options: {
+    programStatus?: 'ACTIVE' | 'DRAFT';
+    published?: boolean;
+    visibility?: 'PRIVATE' | 'PUBLIC';
+  } = {},
+) {
+  const programStatus = options.programStatus ?? 'ACTIVE';
+  const published = options.published ?? false;
+  const visibility = options.visibility ?? 'PRIVATE';
   const lesson = {
     _count: { concepts: 1, exercises: 1, quizzes: 1, resources: 0, tasks: 0 },
     concepts: [
@@ -67,7 +80,7 @@ function createClient(resourceOwnerId = ownerId) {
       },
     ],
     id: 'lesson-1',
-    isPublished: false,
+    isPublished: published,
     position: 1,
     progress: [{ percent: 0, status: 'AVAILABLE' as const }],
     quizzes: [
@@ -91,7 +104,7 @@ function createClient(resourceOwnerId = ownerId) {
     description: 'Draft module description',
     estimatedMinutes: 30,
     id: 'module-1',
-    isPublished: false,
+    isPublished: published,
     lessons: [lesson],
     position: 1,
     slug: 'draft-module',
@@ -99,7 +112,7 @@ function createClient(resourceOwnerId = ownerId) {
   };
   const stage = {
     id: 'stage-1',
-    isPublished: false,
+    isPublished: published,
     modules: [module],
     position: 1,
     slug: 'draft-stage',
@@ -112,8 +125,9 @@ function createClient(resourceOwnerId = ownerId) {
     ownerId: resourceOwnerId,
     slug: 'draft-program',
     stages: [stage],
-    status: 'ACTIVE',
+    status: programStatus,
     title: 'Draft program',
+    visibility,
   };
   const lessonSibling = {
     id: lesson.id,
@@ -127,7 +141,12 @@ function createClient(resourceOwnerId = ownerId) {
     stage: {
       id: stage.id,
       isPublished: stage.isPublished,
-      program: { id: program.id, slug: program.slug, title: program.title },
+      program: {
+        id: program.id,
+        ownerId: program.ownerId,
+        slug: program.slug,
+        title: program.title,
+      },
       slug: stage.slug,
       title: stage.title,
     },
@@ -141,7 +160,12 @@ function createClient(resourceOwnerId = ownerId) {
       stage: {
         id: stage.id,
         isPublished: stage.isPublished,
-        program: { id: program.id, slug: program.slug, title: program.title },
+        program: {
+          id: program.id,
+          ownerId: program.ownerId,
+          slug: program.slug,
+          title: program.title,
+        },
         slug: stage.slug,
         title: stage.title,
       },
@@ -155,23 +179,56 @@ function createClient(resourceOwnerId = ownerId) {
       where.module.isPublished === undefined &&
       where.module.stage.isPublished === undefined &&
       where.module.stage.program.ownerId === resourceOwnerId;
+    const canAccessPublished =
+      published &&
+      programStatus === 'ACTIVE' &&
+      where.isPublished === true &&
+      where.module.isPublished === true &&
+      where.module.stage.isPublished === true &&
+      where.module.stage.program.OR?.some(
+        (candidate) =>
+          candidate.ownerId === resourceOwnerId ||
+          (candidate.visibility === 'PUBLIC' && visibility === 'PUBLIC'),
+      );
 
-    if (!canAccessDraft) {
+    if (!canAccessDraft && !canAccessPublished) {
       return [];
     }
 
     return [lesson];
   });
+  function canReadProgram(where: {
+    OR?: Array<{ ownerId?: string; visibility?: string }>;
+    ownerId?: string;
+    status?: string | { in: string[] };
+  }): boolean {
+    const statusAllowed =
+      typeof where.status === 'object'
+        ? where.status.in.includes(programStatus)
+        : where.status === undefined || where.status === programStatus;
+    const accessAllowed =
+      where.ownerId === resourceOwnerId ||
+      where.OR?.some(
+        (candidate) =>
+          candidate.ownerId === resourceOwnerId ||
+          (candidate.visibility === 'PUBLIC' && visibility === 'PUBLIC'),
+      );
+    return Boolean(statusAllowed && accessAllowed);
+  }
   const client = {
     module: {
       findMany: vi.fn(async (input: unknown) => {
         const where = (
           input as {
-            where: { stage: { program: { ownerId: string } } };
+            where: {
+              stage: {
+                program: Parameters<typeof canReadProgram>[0];
+              };
+            };
           }
         ).where;
 
-        return where.stage.program.ownerId === resourceOwnerId ? [module] : [];
+        return canReadProgram(where.stage.program) ? [module] : [];
       }),
     },
     program: {
@@ -181,17 +238,24 @@ function createClient(resourceOwnerId = ownerId) {
         return where.ownerId === resourceOwnerId ? program : null;
       }),
       findMany: vi.fn(async (input: unknown) => {
-        const where = (input as { where: { ownerId: string } }).where;
+        const where = (
+          input as { where: Parameters<typeof canReadProgram>[0] }
+        ).where;
 
-        return where.ownerId === resourceOwnerId ? [program] : [];
+        return canReadProgram(where) ? [program] : [];
       }),
     },
     stage: {
-      findFirst: vi.fn(async (input: unknown) => {
-        const where = (input as { where: { program: { ownerId: string } } })
-          .where;
+      findMany: vi.fn(async (input: unknown) => {
+        const where = (
+          input as {
+            where: { program: Parameters<typeof canReadProgram>[0] };
+          }
+        ).where;
 
-        return where.program.ownerId === resourceOwnerId ? stage : null;
+        return canReadProgram(where.program)
+          ? [{ ...stage, program: { ownerId: resourceOwnerId } }]
+          : [];
       }),
     },
     lesson: { findMany },
@@ -327,6 +391,80 @@ describe('curriculum draft preview authorization', () => {
         }),
       }),
     );
+  });
+
+  it('autorise un membre authentifié à lire toute la hiérarchie publiée d’un programme public', async () => {
+    const { client } = createClient(ownerId, {
+      published: true,
+      visibility: 'PUBLIC',
+    });
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+      readProgramTimeline: async () => null,
+      readStageTimeline: async () => null,
+      readStageValidation: async () => null,
+    });
+    const paths = [
+      '/api/programs/draft-program',
+      '/api/programs/draft-program/stages/draft-stage',
+      '/api/modules/draft-module',
+      '/api/lessons/draft-lesson',
+    ];
+
+    for (const path of paths) {
+      const response = await app.request(`http://localhost${path}`);
+      expect(response.status, path).toBe(200);
+    }
+  });
+
+  it('masque une leçon publiée lorsque le programme reste privé', async () => {
+    const { client } = createClient(ownerId, {
+      published: true,
+      visibility: 'PRIVATE',
+    });
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/lessons/draft-lesson',
+    );
+
+    expect(response.status).toBe(404);
+  });
+
+  it('réserve toujours preview=true au propriétaire', async () => {
+    const { client } = createClient(ownerId, { visibility: 'PUBLIC' });
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/lessons/draft-lesson?preview=true',
+    );
+
+    expect(response.status).toBe(404);
+  });
+
+  it('masque un programme public tant que son statut reste brouillon', async () => {
+    const { client } = createClient(ownerId, {
+      programStatus: 'DRAFT',
+      published: true,
+      visibility: 'PUBLIC',
+    });
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/lessons/draft-lesson',
+    );
+
+    expect(response.status).toBe(404);
   });
 
   it('refuse un paramètre de prévisualisation invalide', async () => {

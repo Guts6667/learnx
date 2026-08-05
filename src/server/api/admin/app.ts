@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import {
   AuditAction,
+  ProgramVisibility,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
@@ -31,6 +32,10 @@ import {
   PublicationPlanStaleError,
   type PublicationService,
 } from './publication-service.js';
+import {
+  createPrismaProgramVisibilityService,
+  type ProgramVisibilityService,
+} from './program-visibility-service.js';
 
 interface AdminLesson {
   id: string;
@@ -101,6 +106,7 @@ interface AdminAppOptions {
   authentication?: MiddlewareHandler<AuthEnvironment>;
   navigationService?: AdminNavigationService;
   publicationService?: PublicationService;
+  programVisibilityService?: ProgramVisibilityService;
   repository?: AdminRepository;
 }
 
@@ -164,6 +170,12 @@ const accountTransitionSchema = z
   .object({
     expectedStatus: z.enum(administrableAccountStatuses),
     expectedUpdatedAt: z.iso.datetime({ offset: true }),
+  })
+  .strict();
+const programVisibilityUpdateSchema = z
+  .object({
+    expectedUpdatedAt: z.iso.datetime({ offset: true }),
+    visibility: z.enum([ProgramVisibility.PRIVATE, ProgramVisibility.PUBLIC]),
   })
   .strict();
 
@@ -381,6 +393,18 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     }
     return defaultPublicationService;
   };
+  let defaultProgramVisibilityService: ProgramVisibilityService | undefined;
+  const getProgramVisibilityService = async () => {
+    if (options.programVisibilityService) {
+      return options.programVisibilityService;
+    }
+    if (!defaultProgramVisibilityService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultProgramVisibilityService =
+        createPrismaProgramVisibilityService(prisma);
+    }
+    return defaultProgramVisibilityService;
+  };
   let defaultAccessRequestReviewService:
     | AccessRequestReviewService
     | undefined;
@@ -573,6 +597,34 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     );
     if (!program) throw notFound();
     return context.json({ kind: 'PROGRAM', program });
+  });
+
+  app.patch('/api/admin/programs/:programId/visibility', async (context) => {
+    assertCapability(context.get('user').role, 'program.admin.edit');
+    const programId = parseIdentifier(context.req.param('programId'));
+    const parsed = programVisibilityUpdateSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (await getProgramVisibilityService()).update(
+      context.get('user').id,
+      programId,
+      {
+        expectedUpdatedAt: new Date(parsed.data.expectedUpdatedAt),
+        visibility: parsed.data.visibility,
+      },
+    );
+    if (result.kind === 'NOT_FOUND') throw notFound();
+    if (result.kind === 'CONFLICT') {
+      throw new ApiError(
+        'PROGRAM_VISIBILITY_CONFLICT',
+        'Program visibility changed. Refresh before retrying.',
+        409,
+      );
+    }
+
+    return context.json({ program: result.program });
   });
 
   app.get('/api/admin/stages/:stageId', async (context) => {

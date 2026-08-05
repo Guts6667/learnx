@@ -1,6 +1,7 @@
 import {
   type PrismaClient,
   type ProgramStatus,
+  type ProgramVisibility,
 } from '../../../../generated/prisma/client.js';
 
 export interface AdminProgramSummary {
@@ -9,6 +10,8 @@ export interface AdminProgramSummary {
   slug: string;
   status: ProgramStatus;
   title: string;
+  updatedAt: Date;
+  visibility: ProgramVisibility;
 }
 
 export interface AdminStageSummary {
@@ -80,6 +83,8 @@ const programSummarySelect = {
   slug: true,
   status: true,
   title: true,
+  updatedAt: true,
+  visibility: true,
 } as const;
 
 const stageSummarySelect = {

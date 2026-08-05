@@ -29,6 +29,8 @@ const program = {
   slug: 'programme-test',
   status: 'DRAFT',
   title: 'Programme test',
+  updatedAt: '2026-08-05T10:00:00.000Z',
+  visibility: 'PRIVATE',
 } as const;
 const stage = {
   id: stageId,
@@ -161,6 +163,52 @@ describe('AdminPage', () => {
             description: 'Résumé du module',
             position: 0,
             title: 'Module test',
+          }),
+          method: 'PATCH',
+        }),
+      );
+    });
+  });
+
+  it('confirme séparément la visibilité du programme', async () => {
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (
+        path === `/api/admin/programs/${programId}/visibility` &&
+        init?.method === 'PATCH'
+      ) {
+        return Promise.resolve(
+          jsonResponse({
+            program: { ...program, status: 'DRAFT', visibility: 'PUBLIC' },
+          }),
+        );
+      }
+      return Promise.resolve(
+        jsonResponse({ kind: 'PROGRAM', program: { ...program, stages: [stage] } }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminPage programId={programId} />
+      </AppProviders>,
+    );
+
+    await screen.findByRole('heading', { level: 1, name: 'Programme test' });
+    fireEvent.click(screen.getByRole('button', { name: 'Gérer ce contenu' }));
+    expect(screen.getByText('Privé')).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Rendre visible par les membres' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmer' }));
+
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/admin/programs/${programId}/visibility`,
+        expect.objectContaining({
+          body: JSON.stringify({
+            expectedUpdatedAt: program.updatedAt,
+            visibility: 'PUBLIC',
           }),
           method: 'PATCH',
         }),

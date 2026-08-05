@@ -60,6 +60,18 @@ function ProgramStatusBadge({
   return <StatusBadge isPublished={status === 'ACTIVE'} />;
 }
 
+function VisibilityBadge({
+  visibility,
+}: {
+  visibility: AdminProgramSummary['visibility'];
+}) {
+  return (
+    <Badge tone={visibility === 'PUBLIC' ? 'success' : 'warning'}>
+      {visibility === 'PUBLIC' ? 'Visible par les membres' : 'Privé'}
+    </Badge>
+  );
+}
+
 function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav aria-label="Fil d’Ariane">
@@ -270,6 +282,74 @@ function PublicationAction({
           </div>
         </Card>
       ) : mutation.error ? (
+        <ErrorState description={getMutationError(mutation.error)} />
+      ) : null}
+    </section>
+  );
+}
+
+function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
+  const mutation = useAdminCurriculumMutation();
+  const nextVisibility = program.visibility === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  async function apply() {
+    setSuccess(false);
+    try {
+      await mutation.updateProgramVisibility(program.id, {
+        updatedAt: program.updatedAt,
+        visibility: nextVisibility,
+      });
+      setIsConfirming(false);
+      setSuccess(true);
+    } catch {
+      // L’erreur normalisée est rendue ci-dessous.
+    }
+  }
+
+  return (
+    <section aria-labelledby={`visibility-${program.id}`} class="space-y-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <h3 class="font-semibold" id={`visibility-${program.id}`}>
+          Visibilité du programme
+        </h3>
+        <VisibilityBadge visibility={program.visibility} />
+      </div>
+      <p class="text-sm leading-6 text-slate-300">
+        Un programme public et publié est consultable par les membres LearnX
+        authentifiés. Les brouillons restent privés et la validation scientifique
+        est indépendante.
+      </p>
+      {isConfirming ? (
+        <Card class="space-y-3 bg-slate-900" role="alertdialog">
+          <p class="text-sm text-slate-200">
+            {nextVisibility === 'PUBLIC'
+              ? 'Rendre ce programme visible par tous les membres une fois publié ?'
+              : 'Rendre ce programme accessible uniquement à son propriétaire ?'}
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <Button isLoading={mutation.isPending} onClick={() => void apply()}>
+              Confirmer
+            </Button>
+            <Button onClick={() => setIsConfirming(false)} variant="ghost">
+              Annuler
+            </Button>
+          </div>
+        </Card>
+      ) : (
+        <Button onClick={() => setIsConfirming(true)} variant="secondary">
+          {nextVisibility === 'PUBLIC'
+            ? 'Rendre visible par les membres'
+            : 'Rendre privé'}
+        </Button>
+      )}
+      {success ? (
+        <p class="text-sm text-emerald-200" role="status">
+          Visibilité mise à jour.
+        </p>
+      ) : null}
+      {mutation.error ? (
         <ErrorState description={getMutationError(mutation.error)} />
       ) : null}
     </section>
@@ -647,6 +727,7 @@ function ProgramView({ program }: { program: AdminProgram }) {
         <ProgramStatusBadge status={program.status} />
       </div>
       <ManagementDrawer title={`Gérer ${program.title}`}>
+        <ProgramVisibilityAction program={program} />
         <PublicationAction
           isPublished={isPublished}
           targetId={program.id}

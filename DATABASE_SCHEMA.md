@@ -105,7 +105,7 @@ Le journal est append-only au niveau applicatif. La clé unique
 événements conservent l'acteur, la cible et les seuls détails techniques utiles ;
 les mots de passe, tokens, e-mails et corps de contenu n'y sont jamais copiés.
 
-Actions réservées : publication, édition de module/leçon, revue d'évaluation,
+Actions réservées : publication, visibilité de programme, édition de module/leçon, revue d'évaluation,
 décisions de demande d'accès, émission d'invitation, attribution de rôle et
 suspension/réactivation. V3-003 n'expose aucune API de lecture de ce journal.
 
@@ -119,12 +119,20 @@ suspension/réactivation. V3-003 n'expose aucune API de lecture de ce journal.
 - slug
 - description
 - status : draft | active | archived
+- visibility : private | public, indépendante du statut de publication
 - icon nullable
 - position
 - estimated_duration_days nullable
 - created_at
 - updated_at
 - unique(owner_id, slug)
+- index(visibility, status, position)
+
+La valeur par défaut `private` préserve les accès historiques. Un programme
+`public` n'est lisible par un autre membre authentifié que si son statut est
+`active` et si les niveaux descendants demandés sont publiés. Les brouillons
+restent réservés au propriétaire ; la validation scientifique ne modifie pas
+la visibilité.
 
 ### stages
 

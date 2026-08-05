@@ -19,6 +19,7 @@ import {
   PublicationPlanStaleError,
   type PublicationService,
 } from '../../src/server/api/admin/publication-service';
+import type { ProgramVisibilityService } from '../../src/server/api/admin/program-visibility-service';
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
@@ -225,6 +226,8 @@ function createNavigationService(): AdminNavigationService {
     slug: 'programme-test',
     status: 'DRAFT' as const,
     title: 'Programme test',
+    updatedAt: new Date('2026-08-05T10:00:00.000Z'),
+    visibility: 'PRIVATE' as const,
   };
   const stage = {
     id: stageId,
@@ -357,6 +360,94 @@ describe('administration minimale', () => {
       programs: [{ position: 0, title: 'Programme test' }],
     });
     expect(listPrograms).toHaveBeenCalledWith(ownerId);
+  });
+
+  it('modifie la visibilité d’un programme possédé avec précondition de concurrence', async () => {
+    const update = vi.fn<ProgramVisibilityService['update']>(async () => ({
+      kind: 'SUCCESS',
+      program: {
+        id: programId,
+        status: 'ACTIVE',
+        updatedAt: new Date('2026-08-05T11:00:00.000Z'),
+        visibility: 'PUBLIC',
+      },
+    }));
+    const app = createAdminApp({
+      authentication: authentication(),
+      programVisibilityService: { update },
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request(
+      `/api/admin/programs/${programId}/visibility`,
+      {
+        body: JSON.stringify({
+          expectedUpdatedAt: '2026-08-05T10:00:00.000Z',
+          visibility: 'PUBLIC',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(update).toHaveBeenCalledWith(ownerId, programId, {
+      expectedUpdatedAt: new Date('2026-08-05T10:00:00.000Z'),
+      visibility: 'PUBLIC',
+    });
+  });
+
+  it('masque un programme non possédé lors du changement de visibilité', async () => {
+    const update = vi.fn<ProgramVisibilityService['update']>(async () => ({
+      kind: 'NOT_FOUND',
+    }));
+    const app = createAdminApp({
+      authentication: authentication(),
+      programVisibilityService: { update },
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request(
+      `/api/admin/programs/${programId}/visibility`,
+      {
+        body: JSON.stringify({
+          expectedUpdatedAt: '2026-08-05T10:00:00.000Z',
+          visibility: 'PUBLIC',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(404);
+  });
+
+  it('retourne un conflit si la visibilité a changé entre lecture et écriture', async () => {
+    const update = vi.fn<ProgramVisibilityService['update']>(async () => ({
+      kind: 'CONFLICT',
+    }));
+    const app = createAdminApp({
+      authentication: authentication(),
+      programVisibilityService: { update },
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request(
+      `/api/admin/programs/${programId}/visibility`,
+      {
+        body: JSON.stringify({
+          expectedUpdatedAt: '2026-08-05T10:00:00.000Z',
+          visibility: 'PRIVATE',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'PROGRAM_VISIBILITY_CONFLICT' },
+    });
   });
 
   it('liste les comptes avec pagination, statut et recherche', async () => {
