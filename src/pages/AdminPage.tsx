@@ -599,6 +599,15 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
           Gérer les demandes
         </NavigationAction>
       </Card>
+      <Card class="space-y-3">
+        <h2 class="text-xl font-semibold">Comptes utilisateurs</h2>
+        <p class="leading-7 text-slate-300">
+          Suspendez un accès, révoquez ses sessions ou réactivez un compte.
+        </p>
+        <NavigationAction href="/admin/accounts" variant="secondary">
+          Gérer les comptes
+        </NavigationAction>
+      </Card>
       <h2 class="text-xl font-semibold">Programmes</h2>
       {programs.length === 0 ? (
         <EmptyState

@@ -181,6 +181,12 @@ hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
 `HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
 n’est stocké dans `localStorage`.
 
+Un compte suspendu ne peut ni ouvrir une nouvelle session ni réutiliser une
+session existante. L’administration `/admin/accounts` révoque toutes les
+sessions dans la transaction de suspension. Une réactivation conserve les
+notes, progressions, tentatives et soumissions, mais impose une nouvelle
+connexion.
+
 Les échecs de connexion sont limités à cinq par fenêtre de quinze minutes. Le
 compteur est partagé dans PostgreSQL entre les Functions serverless ; sa clé
 IP/e-mail est hachée avant stockage.

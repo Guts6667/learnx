@@ -1,4 +1,7 @@
-import type { Role } from '../../../../generated/prisma/client.js';
+import type {
+  AccountStatus,
+  Role,
+} from '../../../../generated/prisma/client.js';
 
 export interface AuthenticatedUser {
   id: string;
@@ -7,7 +10,11 @@ export interface AuthenticatedUser {
   role: Role;
 }
 
-export interface StoredUser extends AuthenticatedUser {
+export interface StoredAccountUser extends AuthenticatedUser {
+  accountStatus: AccountStatus;
+}
+
+export interface StoredUser extends StoredAccountUser {
   passwordHash: string;
 }
 
@@ -25,7 +32,7 @@ export interface AuthRepository {
     userId: string;
     tokenHash: string;
     expiresAt: Date;
-  }): Promise<StoredSession>;
+  }): Promise<StoredSession | null>;
   createUser(input: {
     email: string;
     passwordHash: string;
@@ -34,8 +41,8 @@ export interface AuthRepository {
   deleteSessionByTokenHash(tokenHash: string): Promise<void>;
   findSessionWithUserByTokenHash(tokenHash: string): Promise<{
     session: StoredSession;
-    user: AuthenticatedUser;
+    user: StoredAccountUser;
   } | null>;
   findUserByEmail(email: string): Promise<StoredUser | null>;
-  touchSession(id: string, lastUsedAt: Date): Promise<void>;
+  touchSession(id: string, lastUsedAt: Date): Promise<boolean>;
 }

@@ -147,6 +147,8 @@ export function createAuthApp(options: AuthAppOptions = {}) {
   app.get('/api/auth/session', async (context) => {
     const user = await getSessionUser(context.req.raw, options.dependencies);
 
+    if (!user) clearSessionCookie(context, secureCookies);
+
     return context.json({ user });
   });
 

@@ -11,6 +11,12 @@ import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { createAccessInvitationDelivery } from '../_lib/access-invitation.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
+  administrableAccountStatuses,
+  createPrismaAccountAdministrationService,
+  type AccountAdministrationService,
+  type AccountTransitionResult,
+} from './account-administration-service.js';
+import {
   createPrismaAccessRequestReviewService,
   reviewableAccessRequestStatuses,
   type AccessRequestReviewService,
@@ -90,6 +96,7 @@ export interface AdminRepository {
 }
 
 interface AdminAppOptions {
+  accountAdministrationService?: AccountAdministrationService;
   accessRequestReviewService?: AccessRequestReviewService;
   authentication?: MiddlewareHandler<AuthEnvironment>;
   navigationService?: AdminNavigationService;
@@ -146,6 +153,18 @@ const rejectAccessRequestSchema = z
   .strict();
 const resendAccessInvitationSchema = z
   .object({ expectedVersion: z.number().int().min(1) })
+  .strict();
+const accountListSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+  search: z.string().trim().max(320).optional(),
+  status: z.enum(administrableAccountStatuses).optional(),
+});
+const accountTransitionSchema = z
+  .object({
+    expectedStatus: z.enum(administrableAccountStatuses),
+    expectedUpdatedAt: z.iso.datetime({ offset: true }),
+  })
   .strict();
 
 const lessonSelect = {
@@ -296,6 +315,26 @@ function lessonNotReady(): ApiError {
   );
 }
 
+function handleAccountTransition(result: AccountTransitionResult) {
+  if (result.kind === 'NOT_FOUND') throw notFound();
+  if (result.kind === 'CONFLICT') {
+    throw new ApiError(
+      'ACCOUNT_STATE_CONFLICT',
+      'The account status has changed. Refresh before retrying.',
+      409,
+    );
+  }
+  if (result.kind === 'SELF_SUSPENSION') {
+    throw new ApiError(
+      'SELF_SUSPENSION_NOT_ALLOWED',
+      'The current administrator cannot suspend their own account.',
+      409,
+    );
+  }
+
+  return result.account;
+}
+
 async function parseJson(request: Request): Promise<unknown> {
   try {
     return await request.json();
@@ -358,6 +397,20 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     }
     return defaultAccessRequestReviewService;
   };
+  let defaultAccountAdministrationService:
+    | AccountAdministrationService
+    | undefined;
+  const getAccountAdministrationService = async () => {
+    if (options.accountAdministrationService) {
+      return options.accountAdministrationService;
+    }
+    if (!defaultAccountAdministrationService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultAccountAdministrationService =
+        createPrismaAccountAdministrationService(prisma);
+    }
+    return defaultAccountAdministrationService;
+  };
 
   app.use('/api/admin/*', options.authentication ?? requireUser);
   app.use('/api/admin/*', requireCapability('program.admin.read'));
@@ -380,6 +433,53 @@ export function createAdminApp(options: AdminAppOptions = {}) {
       await getNavigationService()
     ).listPrograms(context.get('user').id);
     return context.json({ kind: 'PROGRAMS', programs });
+  });
+
+  app.get('/api/admin/accounts', async (context) => {
+    assertCapability(context.get('user').role, 'account.suspend');
+    const parsed = accountListSchema.safeParse(context.req.query());
+    if (!parsed.success) throw invalidRequest();
+
+    const page = await (await getAccountAdministrationService()).list(
+      parsed.data,
+    );
+    return context.json({ page });
+  });
+
+  app.post('/api/admin/accounts/:userId/suspend', async (context) => {
+    assertCapability(context.get('user').role, 'account.suspend');
+    const userId = parseIdentifier(context.req.param('userId'));
+    const parsed = accountTransitionSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (await getAccountAdministrationService()).suspend(
+      context.get('user').id,
+      userId,
+      {
+        expectedStatus: parsed.data.expectedStatus,
+        expectedUpdatedAt: new Date(parsed.data.expectedUpdatedAt),
+      },
+    );
+    return context.json({ account: handleAccountTransition(result) });
+  });
+
+  app.post('/api/admin/accounts/:userId/reactivate', async (context) => {
+    assertCapability(context.get('user').role, 'account.suspend');
+    const userId = parseIdentifier(context.req.param('userId'));
+    const parsed = accountTransitionSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (
+      await getAccountAdministrationService()
+    ).reactivate(context.get('user').id, userId, {
+      expectedStatus: parsed.data.expectedStatus,
+      expectedUpdatedAt: new Date(parsed.data.expectedUpdatedAt),
+    });
+    return context.json({ account: handleAccountTransition(result) });
   });
 
   app.get('/api/admin/access-requests', async (context) => {

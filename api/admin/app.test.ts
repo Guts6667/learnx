@@ -1,6 +1,10 @@
 import { Hono, type MiddlewareHandler } from 'hono';
 
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
+import type {
+  AdministrableAccount,
+  AccountAdministrationService,
+} from '../../src/server/api/admin/account-administration-service';
 import {
   createAdminApp,
   type AdminRepository,
@@ -23,6 +27,43 @@ const moduleId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const lessonId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
 const accessRequestId = '1d8cf94c-d690-430e-a3c0-c3ef68ca857a';
+const accountId = 'ceffb1eb-0681-4c4d-bf50-50e673f65ca4';
+
+const activeAccount: AdministrableAccount = {
+  accountStatus: 'ACTIVE',
+  createdAt: new Date('2026-08-05T08:00:00.000Z'),
+  displayName: 'Learner',
+  email: 'learner@example.com',
+  id: accountId,
+  role: 'USER',
+  suspendedAt: null,
+  updatedAt: new Date('2026-08-05T08:00:00.000Z'),
+};
+
+function createAccountAdministrationService(): AccountAdministrationService {
+  return {
+    list: vi.fn(async (filters) => ({
+      items: [activeAccount],
+      page: filters.page,
+      pageSize: filters.pageSize,
+      total: 1,
+      totalPages: 1,
+    })),
+    reactivate: vi.fn(async () => ({
+      account: { ...activeAccount, updatedAt: new Date() },
+      kind: 'APPLIED' as const,
+    })),
+    suspend: vi.fn(async () => ({
+      account: {
+        ...activeAccount,
+        accountStatus: 'SUSPENDED' as const,
+        suspendedAt: new Date(),
+        updatedAt: new Date(),
+      },
+      kind: 'APPLIED' as const,
+    })),
+  };
+}
 
 const pendingAccessRequest: AccessRequestReviewItem = {
   assignedRole: null,
@@ -316,6 +357,171 @@ describe('administration minimale', () => {
       programs: [{ position: 0, title: 'Programme test' }],
     });
     expect(listPrograms).toHaveBeenCalledWith(ownerId);
+  });
+
+  it('liste les comptes avec pagination, statut et recherche', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      '/api/admin/accounts?page=2&pageSize=10&status=ACTIVE&search=learner',
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      page: { items: [{ id: accountId }], page: 2, pageSize: 10 },
+    });
+    expect(accountAdministrationService.list).toHaveBeenCalledWith({
+      page: 2,
+      pageSize: 10,
+      search: 'learner',
+      status: 'ACTIVE',
+    });
+  });
+
+  it.each(['USER', 'CREATOR'] as const)(
+    'interdit la gestion des comptes au rôle %s',
+    async (role) => {
+      const accountAdministrationService =
+        createAccountAdministrationService();
+      const app = createAdminApp({
+        accountAdministrationService,
+        authentication: authentication(ownerId, role),
+        repository: createRepository().repository,
+      });
+
+      const response = await app.request('/api/admin/accounts');
+
+      expect(response.status).toBe(403);
+      expect(accountAdministrationService.list).not.toHaveBeenCalled();
+    },
+  );
+
+  it('suspend un compte avec une précondition explicite', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/suspend`,
+      {
+        body: JSON.stringify({
+          expectedStatus: 'ACTIVE',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      account: { accountStatus: 'SUSPENDED', id: accountId },
+    });
+    expect(accountAdministrationService.suspend).toHaveBeenCalledWith(
+      ownerId,
+      accountId,
+      {
+        expectedStatus: 'ACTIVE',
+        expectedUpdatedAt: activeAccount.updatedAt,
+      },
+    );
+  });
+
+  it('normalise la suspension du compte administrateur courant', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    accountAdministrationService.suspend = vi.fn(async () => ({
+      kind: 'SELF_SUSPENSION' as const,
+    }));
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${ownerId}/suspend`,
+      {
+        body: JSON.stringify({
+          expectedStatus: 'ACTIVE',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'SELF_SUSPENSION_NOT_ALLOWED' },
+    });
+  });
+
+  it('réactive un compte suspendu sans créer de session', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/reactivate`,
+      {
+        body: JSON.stringify({
+          expectedStatus: 'SUSPENDED',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(accountAdministrationService.reactivate).toHaveBeenCalledWith(
+      ownerId,
+      accountId,
+      {
+        expectedStatus: 'SUSPENDED',
+        expectedUpdatedAt: activeAccount.updatedAt,
+      },
+    );
+  });
+
+  it('normalise un conflit de statut concurrent', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    accountAdministrationService.suspend = vi.fn(async () => ({
+      kind: 'CONFLICT' as const,
+    }));
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/suspend`,
+      {
+        body: JSON.stringify({
+          expectedStatus: 'ACTIVE',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'ACCOUNT_STATE_CONFLICT' },
+    });
   });
 
   it.each([

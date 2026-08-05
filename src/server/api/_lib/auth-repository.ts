@@ -16,6 +16,7 @@ function isUniqueConstraintError(error: unknown): boolean {
 }
 
 function toStoredUser(user: {
+  accountStatus: StoredUser['accountStatus'];
   id: string;
   email: string;
   passwordHash: string;
@@ -29,7 +30,19 @@ export const prismaAuthRepository: AuthRepository = {
   async createSession(input) {
     const prisma = await getPrismaClient();
 
-    return prisma.session.create({ data: input });
+    return prisma.$transaction(async (transaction) => {
+      const activeUsers = await transaction.$queryRaw<Array<{ id: string }>>`
+        SELECT "id"
+        FROM "users"
+        WHERE "id" = ${input.userId}::uuid
+          AND "account_status" = 'active'::"account_status"
+        FOR UPDATE
+      `;
+
+      if (activeUsers.length !== 1) return null;
+
+      return transaction.session.create({ data: input });
+    });
   },
   async createUser(input) {
     try {
@@ -73,6 +86,11 @@ export const prismaAuthRepository: AuthRepository = {
   },
   async touchSession(id, lastUsedAt) {
     const prisma = await getPrismaClient();
-    await prisma.session.update({ where: { id }, data: { lastUsedAt } });
+    const result = await prisma.session.updateMany({
+      where: { id, user: { accountStatus: 'ACTIVE' } },
+      data: { lastUsedAt },
+    });
+
+    return result.count === 1;
   },
 };

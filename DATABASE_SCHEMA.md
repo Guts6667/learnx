@@ -17,8 +17,9 @@ Toutes les clés primaires utilisent UUID.
 - updated_at
 
 Les comptes V2 existants sont backfillés en `active`. Un compte suspendu reste
-un compte existant : la révocation effective de ses sessions et les contrôles
-runtime sont livrés séparément par V3-008.
+un compte existant : ses sessions sont révoquées atomiquement, les sessions
+existantes et nouvelles sont refusées côté serveur, et ses données personnelles
+d’apprentissage sont conservées.
 
 ### sessions
 

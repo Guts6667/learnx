@@ -45,6 +45,7 @@ function createTestDependencies() {
     async createUser(input) {
       userSequence += 1;
       const user: StoredUser = {
+        accountStatus: 'ACTIVE',
         id: `user-${userSequence}`,
         email: input.email,
         passwordHash: input.passwordHash,
@@ -76,6 +77,7 @@ function createTestDependencies() {
       return {
         session,
         user: {
+          accountStatus: user.accountStatus,
           id: user.id,
           email: user.email,
           displayName: user.displayName,
@@ -94,6 +96,8 @@ function createTestDependencies() {
       if (session) {
         session.lastUsedAt = lastUsedAt;
       }
+
+      return Boolean(session);
     },
   };
 
@@ -113,7 +117,7 @@ function createTestDependencies() {
       passwordHash === `hashed:${password}`,
   };
 
-  return { dependencies, users };
+  return { dependencies, sessions, users };
 }
 
 function getSessionCookie(response: Response): string {
@@ -184,6 +188,83 @@ describe('auth API', () => {
     expect(response.headers.get('set-cookie')).toMatch(
       /HttpOnly; Secure; SameSite=Lax/i,
     );
+  });
+
+  it('refuse un compte suspendu et invalide sa session existante', async () => {
+    const { dependencies, sessions, users } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'suspended@example.com',
+          password: 'correct-horse-battery-staple',
+          displayName: 'Suspended learner',
+        }),
+        headers: { 'content-type': 'application/json' },
+      },
+    );
+    const user = users.get('suspended@example.com');
+    if (!user) throw new Error('Expected registered user.');
+    user.accountStatus = 'SUSPENDED';
+
+    const loginResponse = await app.request(
+      'http://localhost/api/auth/login',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: user.email,
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+      },
+    );
+    const sessionResponse = await app.request(
+      'http://localhost/api/auth/session',
+      { headers: { cookie: getSessionCookie(registerResponse) } },
+    );
+
+    expect(loginResponse.status).toBe(401);
+    expect(await loginResponse.json()).toEqual({
+      error: {
+        code: 'INVALID_CREDENTIALS',
+        message: 'Invalid email address or password.',
+      },
+    });
+    expect(await sessionResponse.json()).toEqual({ user: null });
+    expect(sessionResponse.headers.get('set-cookie')).toMatch(/Max-Age=0/i);
+    expect(sessions.size).toBe(0);
+  });
+
+  it('refuse la session si le compte est suspendu pendant la connexion', async () => {
+    const { dependencies, users } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    await app.request('http://localhost/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'concurrent@example.com',
+        password: 'correct-horse-battery-staple',
+        displayName: 'Concurrent learner',
+      }),
+      headers: { 'content-type': 'application/json' },
+    });
+    dependencies.repository.createSession = vi.fn(async () => null);
+
+    const response = await app.request('http://localhost/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: 'concurrent@example.com',
+        password: 'correct-horse-battery-staple',
+      }),
+      headers: { 'content-type': 'application/json' },
+    });
+
+    expect(users.get('concurrent@example.com')?.accountStatus).toBe('ACTIVE');
+    expect(response.status).toBe(401);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'INVALID_CREDENTIALS' },
+    });
   });
 
   it('rejects duplicate registration and invalid request bodies', async () => {

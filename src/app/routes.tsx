@@ -24,6 +24,7 @@ import { ReviewsPage } from '@/pages/ReviewsPage';
 import { TodayPage } from '@/pages/TodayPage';
 import { AdminPage } from '@/pages/AdminPage';
 import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
+import { AdminAccountsPage } from '@/pages/AdminAccountsPage';
 import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 
 interface RouteParams {
@@ -72,6 +73,18 @@ function AdminAccessRequestsRoute({ path }: RouteParams) {
     <ProtectedRoute>
       <AdminRoute>
         <AdminAccessRequestsPage />
+      </AdminRoute>
+    </ProtectedRoute>
+  );
+}
+
+function AdminAccountsRoute({ path }: RouteParams) {
+  void path;
+
+  return (
+    <ProtectedRoute>
+      <AdminRoute>
+        <AdminAccountsPage />
       </AdminRoute>
     </ProtectedRoute>
   );
@@ -260,6 +273,7 @@ export function AppRoutes() {
           <ProfilePage />
         </ProtectedRoute>
         <AdminAccessRequestsRoute path="/admin/access-requests" />
+        <AdminAccountsRoute path="/admin/accounts" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId" />

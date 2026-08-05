@@ -13,6 +13,13 @@ import {
   prismaEmailVerificationRepository,
 } from '../../src/server/api/_lib/email-verification.js';
 import { createPrismaAccessRequestReviewService } from '../../src/server/api/admin/access-request-review-service.js';
+import { createPrismaAccountAdministrationService } from '../../src/server/api/admin/account-administration-service.js';
+import {
+  getSessionUser,
+  loginUser,
+} from '../../src/server/api/_lib/auth.js';
+import { hashPassword } from '../../src/server/api/_lib/password.js';
+import { hashSessionToken, SESSION_COOKIE_NAME } from '../../src/server/api/_lib/session.js';
 
 function uniqueValue(label: string): string {
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'local';
@@ -418,5 +425,113 @@ test('revue admin réelle atomique, idempotente et auditée', async ({
       where: { email: approvedRequest.emailNormalized },
     });
     await prisma.user.delete({ where: { id: reviewer.id } });
+  }
+});
+
+test('suspension réelle multi-session, conservation et réactivation', async ({
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
+
+  const reviewer = await prisma.user.create({
+    data: {
+      displayName: 'Account administrator integration',
+      email: `${uniqueValue('account-admin')}@example.test`,
+      passwordHash: await hashPassword('admin-integration-password'),
+      role: 'ADMIN',
+    },
+  });
+  const password = 'learner-integration-password';
+  const learner = await prisma.user.create({
+    data: {
+      displayName: 'Suspended learner integration',
+      email: `${uniqueValue('suspended-learner')}@example.test`,
+      passwordHash: await hashPassword(password),
+      role: 'USER',
+    },
+  });
+  const rawSessionTokens = [randomUUID(), randomUUID()];
+  await prisma.session.createMany({
+    data: rawSessionTokens.map((token) => ({
+      expiresAt: new Date(Date.now() + 60_000),
+      tokenHash: hashSessionToken(token),
+      userId: learner.id,
+    })),
+  });
+  const note = await prisma.note.create({
+    data: {
+      markdown: 'Cette note doit survivre à la suspension.',
+      title: 'Note conservée',
+      userId: learner.id,
+    },
+  });
+  const service = createPrismaAccountAdministrationService(prisma);
+
+  try {
+    const suspended = await service.suspend(reviewer.id, learner.id, {
+      expectedStatus: 'ACTIVE',
+      expectedUpdatedAt: learner.updatedAt,
+    });
+    expect(suspended).toMatchObject({
+      account: { accountStatus: 'SUSPENDED' },
+      kind: 'APPLIED',
+    });
+    expect(
+      await prisma.session.count({ where: { userId: learner.id } }),
+    ).toBe(0);
+    expect(await prisma.note.count({ where: { id: note.id } })).toBe(1);
+    await expect(
+      getSessionUser(
+        new Request('https://learn-x.app/api/auth/session', {
+          headers: {
+            cookie: `${SESSION_COOKIE_NAME}=${rawSessionTokens[0]}`,
+          },
+        }),
+      ),
+    ).resolves.toBeNull();
+    await expect(loginUser({ email: learner.email, password })).rejects.toMatchObject({
+      code: 'INVALID_CREDENTIALS',
+    });
+    await expect(
+      service.suspend(reviewer.id, learner.id, {
+        expectedStatus: 'ACTIVE',
+        expectedUpdatedAt: learner.updatedAt,
+      }),
+    ).resolves.toMatchObject({ kind: 'IDEMPOTENT' });
+    expect(
+      await prisma.auditEvent.count({
+        where: {
+          action: 'ACCOUNT_SUSPEND',
+          actorUserId: reviewer.id,
+          targetId: learner.id,
+        },
+      }),
+    ).toBe(1);
+
+    if (!('account' in suspended)) {
+      throw new Error('Expected suspended account state.');
+    }
+    const reactivated = await service.reactivate(reviewer.id, learner.id, {
+      expectedStatus: 'SUSPENDED',
+      expectedUpdatedAt: suspended.account.updatedAt,
+    });
+    expect(reactivated).toMatchObject({
+      account: { accountStatus: 'ACTIVE', suspendedAt: null },
+      kind: 'APPLIED',
+    });
+    expect(
+      await prisma.session.count({ where: { userId: learner.id } }),
+    ).toBe(0);
+    await expect(loginUser({ email: learner.email, password })).resolves.toMatchObject({
+      user: { id: learner.id },
+    });
+  } finally {
+    await prisma.auditEvent.deleteMany({
+      where: { actorUserId: reviewer.id },
+    });
+    await prisma.user.deleteMany({
+      where: { id: { in: [learner.id, reviewer.id] } },
+    });
   }
 });

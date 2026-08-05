@@ -157,6 +157,21 @@ Préfixe : `/api`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
 
+Une session n’est créée et acceptée que si `User.accountStatus` vaut `ACTIVE`.
+La suspension et la révocation de toutes les sessions partagent une transaction
+serveur afin qu’aucune session résiduelle ne survive au commit.
+
+### Administration des comptes
+
+- `GET /api/admin/accounts` — liste paginée et filtrable
+- `POST /api/admin/accounts/:userId/suspend` — suspension et révocation globale
+- `POST /api/admin/accounts/:userId/reactivate` — réactivation sans restauration
+  de session
+
+Ces endpoints exigent la capacité `account.suspend`, utilisent une précondition
+de statut/version temporelle et écrivent un événement d’audit sans donnée
+personnelle.
+
 ### Parcours
 
 - `GET /api/programs`

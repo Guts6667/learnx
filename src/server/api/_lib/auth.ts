@@ -13,7 +13,7 @@ import {
 import type {
   AuthRepository,
   AuthenticatedUser,
-  StoredUser,
+  StoredAccountUser,
 } from './auth-types.js';
 
 export interface AuthEnvironment {
@@ -55,7 +55,7 @@ const defaultDependencies: AuthDependencies = {
   },
 };
 
-function toAuthenticatedUser(user: StoredUser): AuthenticatedUser {
+function toAuthenticatedUser(user: StoredAccountUser): AuthenticatedUser {
   return {
     id: user.id,
     email: user.email,
@@ -86,11 +86,19 @@ async function createSession(
 ): Promise<AuthResult> {
   const sessionToken = dependencies.createSessionToken();
 
-  await dependencies.repository.createSession({
+  const session = await dependencies.repository.createSession({
     userId: user.id,
     tokenHash: dependencies.hashSessionToken(sessionToken),
     expiresAt: dependencies.getSessionExpiry(dependencies.now()),
   });
+
+  if (!session) {
+    throw new ApiError(
+      'INVALID_CREDENTIALS',
+      'Invalid email address or password.',
+      401,
+    );
+  }
 
   return { sessionToken, user };
 }
@@ -144,7 +152,7 @@ export async function loginUser(
     ? await dependencies.verifyPassword(user.passwordHash, input.password)
     : false;
 
-  if (!user || !passwordIsValid) {
+  if (!user || !passwordIsValid || user.accountStatus !== 'ACTIVE') {
     throw new ApiError(
       'INVALID_CREDENTIALS',
       'Invalid email address or password.',
@@ -174,17 +182,25 @@ export async function getSessionUser(
 
   if (
     !sessionWithUser ||
-    sessionWithUser.session.expiresAt <= dependencies.now()
+    sessionWithUser.session.expiresAt <= dependencies.now() ||
+    sessionWithUser.user.accountStatus !== 'ACTIVE'
   ) {
+    if (sessionWithUser) {
+      await dependencies.repository.deleteSessionByTokenHash(
+        dependencies.hashSessionToken(sessionToken),
+      );
+    }
     return null;
   }
 
-  await dependencies.repository.touchSession(
+  const sessionStillActive = await dependencies.repository.touchSession(
     sessionWithUser.session.id,
     dependencies.now(),
   );
 
-  return sessionWithUser.user;
+  if (!sessionStillActive) return null;
+
+  return toAuthenticatedUser(sessionWithUser.user);
 }
 
 export async function logoutUser(
