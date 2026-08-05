@@ -4,13 +4,29 @@ interface VerificationEmailContent {
   verificationUrl: string;
 }
 
+interface AccessInvitationEmailContent {
+  activationUrl: string;
+  expiresAt: Date;
+  recipientEmail: string;
+}
+
 export interface VerificationEmailInput extends VerificationEmailContent {
+  idempotencyKey: string;
+}
+
+export interface AccessInvitationEmailInput
+  extends AccessInvitationEmailContent {
   idempotencyKey: string;
 }
 
 export interface EmailProvider {
   readonly name: string;
   sendVerificationEmail(input: VerificationEmailInput): Promise<void>;
+}
+
+export interface AccessInvitationEmailProvider {
+  readonly name: string;
+  sendAccessInvitationEmail(input: AccessInvitationEmailInput): Promise<void>;
 }
 
 interface ResendEmailProviderOptions {
@@ -62,7 +78,43 @@ export function createVerificationEmailContent({
   };
 }
 
-export class ResendEmailProvider implements EmailProvider {
+export function createAccessInvitationEmailContent({
+  activationUrl,
+  expiresAt,
+  recipientEmail,
+}: AccessInvitationEmailContent) {
+  const expiration = new Intl.DateTimeFormat('fr-FR', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+    timeZone: 'Europe/Paris',
+  }).format(expiresAt);
+  const safeUrl = escapeHtml(activationUrl);
+
+  return {
+    html: [
+      '<h1>Ton accès à LearnX est accepté</h1>',
+      '<p>Choisis maintenant ton mot de passe pour activer ton compte.</p>',
+      `<p><a href="${safeUrl}">Activer mon compte</a></p>`,
+      `<p>Ce lien expire le ${escapeHtml(expiration)} et ne peut être utilisé qu’une fois.</p>`,
+      '<p>Si tu n’attendais pas cette invitation, ignore cet e-mail.</p>',
+    ].join(''),
+    subject: 'Active ton compte LearnX',
+    text: [
+      'Ton accès à LearnX est accepté',
+      '',
+      'Choisis maintenant ton mot de passe pour activer ton compte.',
+      activationUrl,
+      '',
+      `Ce lien expire le ${expiration} et ne peut être utilisé qu’une fois.`,
+      'Si tu n’attendais pas cette invitation, ignore cet e-mail.',
+    ].join('\n'),
+    to: recipientEmail,
+  };
+}
+
+export class ResendEmailProvider
+  implements EmailProvider, AccessInvitationEmailProvider
+{
   public readonly name = 'resend';
 
   private readonly fetchImplementation: typeof fetch;
@@ -74,7 +126,25 @@ export class ResendEmailProvider implements EmailProvider {
   public async sendVerificationEmail(
     input: VerificationEmailInput,
   ): Promise<void> {
-    const content = createVerificationEmailContent(input);
+    await this.sendEmail(
+      createVerificationEmailContent(input),
+      input.idempotencyKey,
+    );
+  }
+
+  public async sendAccessInvitationEmail(
+    input: AccessInvitationEmailInput,
+  ): Promise<void> {
+    await this.sendEmail(
+      createAccessInvitationEmailContent(input),
+      input.idempotencyKey,
+    );
+  }
+
+  private async sendEmail(
+    content: { html: string; subject: string; text: string; to: string },
+    idempotencyKey: string,
+  ): Promise<void> {
     const response = await this.fetchImplementation(
       'https://api.resend.com/emails',
       {
@@ -82,7 +152,7 @@ export class ResendEmailProvider implements EmailProvider {
         headers: {
           authorization: `Bearer ${this.options.apiKey}`,
           'content-type': 'application/json',
-          'idempotency-key': input.idempotencyKey,
+          'idempotency-key': idempotencyKey,
         },
         body: JSON.stringify({
           from: this.options.from,

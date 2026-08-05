@@ -9,9 +9,15 @@ import {
   type AccessRequestRateLimiter,
 } from '../_lib/access-request-rate-limit.js';
 import {
+  accessInvitationActivationInputSchema,
   accessRequestInputSchema,
   emailVerificationInputSchema,
 } from '../_lib/auth-validation.js';
+import {
+  createPrismaAccessInvitationActivationService,
+  type AccessInvitationActivationService,
+} from '../_lib/access-invitation.js';
+import { setSessionCookie } from '../_lib/auth.js';
 import { getClientAddress } from '../_lib/client-address.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
@@ -21,10 +27,12 @@ import {
 } from '../_lib/email-verification.js';
 
 interface AccessRequestsAppOptions {
+  activationService?: AccessInvitationActivationService;
   dependencies?: AccessRequestDependencies;
   enabled?: boolean;
   emailVerification?: EmailVerificationDependencies;
   rateLimiter?: AccessRequestRateLimiter;
+  secureCookies?: boolean;
 }
 
 const confirmation = {
@@ -53,6 +61,18 @@ export function createAccessRequestsApp(
   const enabled =
     options.enabled ?? process.env.LEARNX_ACCESS_REQUESTS_ENABLED !== 'false';
   const rateLimiter = options.rateLimiter ?? sharedRateLimiter;
+  const secureCookies =
+    options.secureCookies ?? process.env.NODE_ENV === 'production';
+  let defaultActivationService: AccessInvitationActivationService | undefined;
+  async function getActivationService() {
+    if (options.activationService) return options.activationService;
+    if (!defaultActivationService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultActivationService =
+        createPrismaAccessInvitationActivationService(prisma);
+    }
+    return defaultActivationService;
+  }
 
   app.onError((error, context) => {
     if (error instanceof ApiError) {
@@ -139,6 +159,32 @@ export function createAccessRequestsApp(
         'Ton adresse e-mail est vérifiée. Ta demande est maintenant en attente d’approbation.',
       status: 'verified' as const,
     });
+  });
+
+  app.post('/api/access-invitations/activate', async (context) => {
+    const parsedInput = accessInvitationActivationInputSchema.safeParse(
+      await parseBody(context.req.raw),
+    );
+    if (!parsedInput.success) {
+      throw new ApiError(
+        'INVALID_ACCESS_INVITATION',
+        'Cette invitation est invalide ou a expiré.',
+        400,
+      );
+    }
+
+    const result = await (
+      await getActivationService()
+    ).activate(parsedInput.data);
+    if (!result) {
+      throw new ApiError(
+        'INVALID_ACCESS_INVITATION',
+        'Cette invitation est invalide ou a expiré.',
+        400,
+      );
+    }
+    setSessionCookie(context, result.sessionToken, secureCookies);
+    return context.json({ user: result.user }, 201);
   });
 
   return app;

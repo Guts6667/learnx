@@ -229,4 +229,101 @@ describe('access requests API', () => {
       },
     });
   });
+
+  it('activates an approved invitation and opens a secure session', async () => {
+    const context = createTestContext();
+    const activate = vi.fn(async () => ({
+      sessionToken: 'new-session-token',
+      user: {
+        displayName: 'Learner',
+        email: 'learner@example.com',
+        id: '00000000-0000-4000-8000-000000000001',
+        role: 'CREATOR' as const,
+      },
+    }));
+    const app = createAccessRequestsApp({
+      ...context,
+      activationService: { activate },
+      secureCookies: true,
+    });
+    const response = await app.request('/api/access-invitations/activate', {
+      body: JSON.stringify({
+        displayName: ' Learner ',
+        password: 'correct-horse-battery-staple',
+        token: 'a'.repeat(43),
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(201);
+    expect(await response.json()).toMatchObject({
+      user: { email: 'learner@example.com', role: 'CREATOR' },
+    });
+    expect(response.headers.get('set-cookie')).toMatch(
+      /^learnx_session=new-session-token;.*HttpOnly.*Secure.*SameSite=Lax/i,
+    );
+    expect(activate).toHaveBeenCalledWith({
+      displayName: 'Learner',
+      password: 'correct-horse-battery-staple',
+      token: 'a'.repeat(43),
+    });
+  });
+
+  it.each([
+    {
+      displayName: 'Learner',
+      password: 'too-short',
+      token: 'a'.repeat(43),
+    },
+    {
+      displayName: 'Learner',
+      password: 'correct-horse-battery-staple',
+      token: 'invalid token value',
+    },
+  ])('returns one safe error for invalid activation input', async (body) => {
+    const context = createTestContext();
+    const activate = vi.fn(async () => null);
+    const app = createAccessRequestsApp({
+      ...context,
+      activationService: { activate },
+    });
+    const response = await app.request('/api/access-invitations/activate', {
+      body: JSON.stringify(body),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      error: {
+        code: 'INVALID_ACCESS_INVITATION',
+        message: 'Cette invitation est invalide ou a expiré.',
+      },
+    });
+    expect(activate).not.toHaveBeenCalled();
+  });
+
+  it('returns the same safe error for expired or replayed invitations', async () => {
+    const context = createTestContext();
+    const app = createAccessRequestsApp({
+      ...context,
+      activationService: { activate: async () => null },
+    });
+    const response = await app.request('/api/access-invitations/activate', {
+      body: JSON.stringify({
+        displayName: 'Learner',
+        password: 'correct-horse-battery-staple',
+        token: 'a'.repeat(43),
+      }),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'INVALID_ACCESS_INVITATION' },
+    });
+    expect(response.headers.get('set-cookie')).toBeNull();
+  });
 });

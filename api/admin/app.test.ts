@@ -67,6 +67,17 @@ function createAccessRequestReviewService(): AccessRequestReviewService {
         version: 3,
       },
     })),
+    resend: vi.fn(async () => ({
+      kind: 'APPLIED' as const,
+      request: {
+        ...pendingAccessRequest,
+        assignedRole: 'USER' as const,
+        invitationExpiresAt: new Date('2026-08-12T08:05:00.000Z'),
+        reviewedAt: new Date('2026-08-05T08:10:00.000Z'),
+        status: 'APPROVED' as const,
+        version: 4,
+      },
+    })),
   };
 }
 
@@ -684,5 +695,29 @@ describe('administration minimale', () => {
     expect(await response.json()).toMatchObject({
       error: { code: 'ACCESS_REQUEST_CONFLICT' },
     });
+  });
+
+  it('renvoie une invitation approuvée avec une précondition de version', async () => {
+    const accessRequestReviewService = createAccessRequestReviewService();
+    const app = createAdminApp({
+      accessRequestReviewService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/access-requests/${accessRequestId}/resend-invitation`,
+      {
+        body: JSON.stringify({ expectedVersion: 3 }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(accessRequestReviewService.resend).toHaveBeenCalledWith(
+      ownerId,
+      accessRequestId,
+      { expectedVersion: 3 },
+    );
   });
 });

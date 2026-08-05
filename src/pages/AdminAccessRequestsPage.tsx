@@ -46,6 +46,18 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
   const [role, setRole] = useState<AssignableRole>('USER');
   const [success, setSuccess] = useState<string>();
 
+  async function resendInvitation() {
+    setSuccess(undefined);
+    try {
+      await mutation.resend(request.id, {
+        expectedVersion: request.version,
+      });
+      setSuccess('Une nouvelle invitation a été envoyée.');
+    } catch {
+      // The normalized mutation error is announced below.
+    }
+  }
+
   async function applyDecision() {
     setSuccess(undefined);
     try {
@@ -77,6 +89,23 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
         ) : null}
         {request.rejectionReason ? (
           <p>Motif interne : {request.rejectionReason}</p>
+        ) : null}
+        {request.status === 'APPROVED' ? (
+          <Button
+            isLoading={mutation.isPending}
+            onClick={() => void resendInvitation()}
+            variant="secondary"
+          >
+            Renvoyer l’invitation
+          </Button>
+        ) : null}
+        {success ? (
+          <p class="text-sm text-emerald-200" role="status">
+            {success}
+          </p>
+        ) : null}
+        {mutation.error ? (
+          <ErrorState description={reviewError(mutation.error)} />
         ) : null}
       </div>
     );

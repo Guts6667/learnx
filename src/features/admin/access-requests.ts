@@ -92,8 +92,9 @@ export function useAdminAccessRequestReviewMutation() {
   const execute = useCallback(
     async (
       requestId: string,
-      action: 'approve' | 'reject',
+      action: 'approve' | 'reject' | 'resend-invitation',
       input:
+        | { expectedVersion: number }
         | { expectedVersion: number; reason: string }
         | { expectedVersion: number; role: AssignableRole },
     ) => {
@@ -131,5 +132,7 @@ export function useAdminAccessRequestReviewMutation() {
       requestId: string,
       input: { expectedVersion: number; reason: string },
     ) => execute(requestId, 'reject', input),
+    resend: (requestId: string, input: { expectedVersion: number }) =>
+      execute(requestId, 'resend-invitation', input),
   };
 }

@@ -8,6 +8,7 @@ import {
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
 import { assertCapability, requireCapability } from '../_lib/authorization.js';
+import { createAccessInvitationDelivery } from '../_lib/access-invitation.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   createPrismaAccessRequestReviewService,
@@ -142,6 +143,9 @@ const rejectAccessRequestSchema = z
     expectedVersion: z.number().int().min(1),
     reason: z.string().trim().min(1).max(2_000),
   })
+  .strict();
+const resendAccessInvitationSchema = z
+  .object({ expectedVersion: z.number().int().min(1) })
   .strict();
 
 const lessonSelect = {
@@ -348,7 +352,9 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     if (!defaultAccessRequestReviewService) {
       const { prisma } = await import('../../prisma.js');
       defaultAccessRequestReviewService =
-        createPrismaAccessRequestReviewService(prisma);
+        createPrismaAccessRequestReviewService(prisma, {
+          delivery: createAccessInvitationDelivery(),
+        });
     }
     return defaultAccessRequestReviewService;
   };
@@ -432,6 +438,31 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     }
     return context.json({ request: result.request });
   });
+
+  app.post(
+    '/api/admin/access-requests/:requestId/resend-invitation',
+    async (context) => {
+      assertCapability(context.get('user').role, 'account.invitation.issue');
+      const requestId = parseIdentifier(context.req.param('requestId'));
+      const parsed = resendAccessInvitationSchema.safeParse(
+        await parseJson(context.req.raw),
+      );
+      if (!parsed.success) throw invalidRequest();
+
+      const result = await (
+        await getAccessRequestReviewService()
+      ).resend(context.get('user').id, requestId, parsed.data);
+      if (result.kind === 'NOT_FOUND') throw notFound();
+      if (result.kind === 'CONFLICT') {
+        throw new ApiError(
+          'ACCESS_REQUEST_CONFLICT',
+          'The access request has already been reviewed or changed.',
+          409,
+        );
+      }
+      return context.json({ request: result.request });
+    },
+  );
 
   app.get('/api/admin/programs/:programId', async (context) => {
     const program = await (

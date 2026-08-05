@@ -150,6 +150,9 @@ Préfixe : `/api`
 - `POST /api/auth/register` — disponible hors production uniquement
 - `POST /api/access-requests` — demande publique sans mot de passe, réponse non
   énumérante et rate limit partagé
+- `POST /api/access-requests/verify-email` — vérification one-shot de l’adresse
+- `POST /api/access-invitations/activate` — activation one-shot, création du
+  compte et ouverture de session atomiques
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`

@@ -1,4 +1,4 @@
-import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 
 import {
   AuditAction,
@@ -6,6 +6,12 @@ import {
   Role,
 } from '../../../../generated/prisma/client.js';
 import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
+import {
+  createAccessInvitationToken,
+  getAccessInvitationTtlMilliseconds,
+  hashAccessInvitationToken,
+  type AccessInvitationDelivery,
+} from '../_lib/access-invitation.js';
 
 export const reviewableAccessRequestStatuses = [
   'PENDING_APPROVAL',
@@ -61,9 +67,12 @@ export interface AccessRequestReviewService {
     requestId: string,
     input: { expectedVersion: number; reason: string },
   ): Promise<AccessRequestReviewResult>;
+  resend(
+    actorUserId: string,
+    requestId: string,
+    input: { expectedVersion: number },
+  ): Promise<AccessRequestReviewResult>;
 }
-
-const invitationTtlMilliseconds = 7 * 24 * 60 * 60 * 1_000;
 
 const reviewInclude = {
   invitations: {
@@ -72,10 +81,6 @@ const reviewInclude = {
     take: 1,
   },
 } as const;
-
-function hashToken(token: string): string {
-  return createHash('sha256').update(token, 'utf8').digest('hex');
-}
 
 function toReviewItem(request: {
   createdAt: Date;
@@ -114,7 +119,37 @@ function toReviewItem(request: {
 
 export function createPrismaAccessRequestReviewService(
   client: PrismaClient,
+  options: {
+    delivery?: AccessInvitationDelivery;
+    invitationTtlMilliseconds?: number;
+  } = {},
 ): AccessRequestReviewService {
+  const invitationTtlMilliseconds =
+    options.invitationTtlMilliseconds ??
+    getAccessInvitationTtlMilliseconds();
+
+  async function deliverOrInvalidate(input: {
+    expiresAt: Date;
+    invitationId: string;
+    recipientEmail: string;
+    token: string;
+  }): Promise<void> {
+    if (!options.delivery) return;
+    try {
+      await options.delivery.send(input);
+    } catch (error) {
+      await client.accessInvitation.updateMany({
+        data: { invalidatedAt: new Date() },
+        where: {
+          consumedAt: null,
+          id: input.invitationId,
+          invalidatedAt: null,
+        },
+      });
+      throw error;
+    }
+  }
+
   return {
     async list(filters) {
       const where = {
@@ -152,11 +187,11 @@ export function createPrismaAccessRequestReviewService(
       const invitationExpiresAt = new Date(
         now.getTime() + invitationTtlMilliseconds,
       );
-      const invitationTokenHash = hashToken(
-        randomBytes(32).toString('base64url'),
-      );
+      const invitationToken = createAccessInvitationToken();
+      const invitationTokenHash =
+        hashAccessInvitationToken(invitationToken);
 
-      return client.$transaction(async (transaction) => {
+      const result = await client.$transaction(async (transaction) => {
         const existing = await transaction.accessRequest.findUnique({
           include: reviewInclude,
           where: { id: requestId },
@@ -252,6 +287,15 @@ export function createPrismaAccessRequestReviewService(
         });
         return { kind: 'APPLIED' as const, request: toReviewItem(updated) };
       });
+      if (result.kind === 'APPLIED') {
+        await deliverOrInvalidate({
+          expiresAt: invitationExpiresAt,
+          invitationId,
+          recipientEmail: result.request.emailNormalized,
+          token: invitationToken,
+        });
+      }
+      return result;
     },
 
     async reject(actorUserId, requestId, input) {
@@ -323,6 +367,91 @@ export function createPrismaAccessRequestReviewService(
         });
         return { kind: 'APPLIED' as const, request: toReviewItem(updated) };
       });
+    },
+
+    async resend(actorUserId, requestId, input) {
+      const now = new Date();
+      const invitationId = randomUUID();
+      const invitationToken = createAccessInvitationToken();
+      const invitationExpiresAt = new Date(
+        now.getTime() + invitationTtlMilliseconds,
+      );
+
+      const result = await client.$transaction(async (transaction) => {
+        const existing = await transaction.accessRequest.findUnique({
+          include: reviewInclude,
+          where: { id: requestId },
+        });
+        const assignedRole = existing?.invitations[0]?.assignedRole;
+        if (!existing || existing.status !== 'APPROVED' || !assignedRole) {
+          return { kind: 'NOT_FOUND' } as const;
+        }
+        if (existing.version !== input.expectedVersion) {
+          return { kind: 'CONFLICT' } as const;
+        }
+        const transitioned = await transaction.accessRequest.updateMany({
+          data: { version: { increment: 1 } },
+          where: {
+            activatedUserId: null,
+            id: requestId,
+            status: 'APPROVED',
+            version: input.expectedVersion,
+          },
+        });
+        if (transitioned.count !== 1) {
+          return { kind: 'CONFLICT' } as const;
+        }
+        await transaction.accessInvitation.updateMany({
+          data: { invalidatedAt: now },
+          where: {
+            accessRequestId: requestId,
+            consumedAt: null,
+            invalidatedAt: null,
+          },
+        });
+        await transaction.accessInvitation.create({
+          data: {
+            accessRequestId: requestId,
+            assignedRole,
+            createdAt: now,
+            expiresAt: invitationExpiresAt,
+            id: invitationId,
+            invitedByUserId: actorUserId,
+            tokenHash: hashAccessInvitationToken(invitationToken),
+          },
+        });
+        const auditValues = {
+          assignedRole,
+          expectedVersion: input.expectedVersion,
+        };
+        await writeAuditEvent(transaction, {
+          action: AuditAction.ACCESS_INVITATION_ISSUE,
+          actorUserId,
+          idempotencyKey: createAuditIdempotencyKey(
+            AuditAction.ACCESS_INVITATION_ISSUE,
+            invitationId,
+            auditValues,
+          ),
+          metadata: auditValues,
+          targetId: invitationId,
+          targetType: 'access_invitation',
+        });
+        const updated = await transaction.accessRequest.findUniqueOrThrow({
+          include: reviewInclude,
+          where: { id: requestId },
+        });
+        return { kind: 'APPLIED' as const, request: toReviewItem(updated) };
+      });
+
+      if (result.kind === 'APPLIED') {
+        await deliverOrInvalidate({
+          expiresAt: invitationExpiresAt,
+          invitationId,
+          recipientEmail: result.request.emailNormalized,
+          token: invitationToken,
+        });
+      }
+      return result;
     },
   };
 }

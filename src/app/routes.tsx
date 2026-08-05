@@ -24,6 +24,7 @@ import { ReviewsPage } from '@/pages/ReviewsPage';
 import { TodayPage } from '@/pages/TodayPage';
 import { AdminPage } from '@/pages/AdminPage';
 import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
+import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -239,6 +240,7 @@ export function AppRoutes() {
         <LoginPage path="/login" />
         <AccessRequestPage path="/request-access" />
         <VerifyEmailPage path="/verify-email" />
+        <ActivateAccountPage path="/activate" />
         <ProgramsRoute path="/program" />
         <ProgramRoute path="/program/:programSlug" />
         <StageRoute path="/program/:programSlug/stage/:stageSlug" />

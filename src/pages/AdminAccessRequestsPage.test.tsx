@@ -153,4 +153,59 @@ describe('AdminAccessRequestsPage', () => {
       screen.getByRole('button', { name: 'Prévisualiser la décision' }),
     ).toBeEnabled();
   });
+
+  it('permet de renouveler une invitation approuvée', async () => {
+    const approvedRequest = {
+      ...pendingRequest(),
+      assignedRole: 'USER',
+      invitationExpiresAt: '2026-08-12T08:05:00.000Z',
+      reviewedAt: '2026-08-05T08:10:00.000Z',
+      status: 'APPROVED',
+      version: 3,
+    };
+    const fetchMock = vi.fn((path: string) => {
+      if (path.endsWith(`/${requestId}/resend-invitation`)) {
+        return Promise.resolve(
+          jsonResponse({
+            request: { ...approvedRequest, version: 4 },
+          }),
+        );
+      }
+      return Promise.resolve(
+        jsonResponse({
+          page: {
+            items: [approvedRequest],
+            page: 1,
+            pageSize: 20,
+            total: 1,
+            totalPages: 1,
+          },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminAccessRequestsPage />
+      </AppProviders>,
+    );
+    fireEvent.change(
+      screen.getByRole('combobox', { name: 'État des demandes' }),
+      { target: { value: 'APPROVED' } },
+    );
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Renvoyer l’invitation' }),
+    );
+
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/admin/access-requests/${requestId}/resend-invitation`,
+        expect.objectContaining({
+          body: JSON.stringify({ expectedVersion: 3 }),
+          method: 'POST',
+        }),
+      );
+    });
+  });
 });

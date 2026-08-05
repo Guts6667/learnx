@@ -4,6 +4,10 @@ import { expect, test } from '@playwright/test';
 
 import { prisma } from '../../src/server/prisma.js';
 import {
+  createPrismaAccessInvitationActivationService,
+  type AccessInvitationDeliveryInput,
+} from '../../src/server/api/_lib/access-invitation.js';
+import {
   consumeEmailVerification,
   hashVerificationToken,
   prismaEmailVerificationRepository,
@@ -276,7 +280,15 @@ test('revue admin réelle atomique, idempotente et auditée', async ({
       emailNormalized: `${uniqueValue('hidden-request')}@example.test`,
     },
   });
-  const service = createPrismaAccessRequestReviewService(prisma);
+  let deliveredInvitation: AccessInvitationDeliveryInput | undefined;
+  const service = createPrismaAccessRequestReviewService(prisma, {
+    delivery: {
+      async send(input) {
+        deliveredInvitation = input;
+      },
+    },
+    invitationTtlMilliseconds: 60_000,
+  });
 
   try {
     const page = await service.list({
@@ -318,6 +330,9 @@ test('revue admin réelle atomique, idempotente et auditée', async ({
         where: { accessRequestId: approvedRequest.id },
       }),
     ).toBe(1);
+    expect(deliveredInvitation).toMatchObject({
+      recipientEmail: approvedRequest.emailNormalized,
+    });
     expect(
       await prisma.auditEvent.findMany({
         orderBy: { action: 'asc' },
@@ -356,6 +371,38 @@ test('revue admin réelle atomique, idempotente et auditée', async ({
         },
       }),
     ).toBe(1);
+
+    if (!deliveredInvitation) {
+      throw new Error('Expected the access invitation to be delivered.');
+    }
+    const activationService = createPrismaAccessInvitationActivationService(
+      prisma,
+      {
+        createSessionToken: () => randomUUID(),
+        hashPassword: async () => 'integration-only-password-hash',
+      },
+    );
+    const activation = await activationService.activate({
+      displayName: 'Invited learner',
+      password: 'not-stored-by-the-test',
+      token: deliveredInvitation.token,
+    });
+    expect(activation?.user).toMatchObject({
+      email: approvedRequest.emailNormalized,
+      role: 'CREATOR',
+    });
+    await expect(
+      activationService.activate({
+        displayName: 'Invited learner',
+        password: 'not-stored-by-the-test',
+        token: deliveredInvitation.token,
+      }),
+    ).resolves.toBeNull();
+    expect(
+      await prisma.session.count({
+        where: { userId: activation?.user.id },
+      }),
+    ).toBe(1);
   } finally {
     await prisma.auditEvent.deleteMany({
       where: { actorUserId: reviewer.id },
@@ -366,6 +413,9 @@ test('revue admin réelle atomique, idempotente et auditée', async ({
           in: [approvedRequest.id, rejectedRequest.id, hiddenRequest.id],
         },
       },
+    });
+    await prisma.user.deleteMany({
+      where: { email: approvedRequest.emailNormalized },
     });
     await prisma.user.delete({ where: { id: reviewer.id } });
   }

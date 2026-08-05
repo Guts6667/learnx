@@ -1,4 +1,5 @@
 import {
+  createAccessInvitationEmailContent,
   createVerificationEmailContent,
   ResendEmailProvider,
 } from './email-provider';
@@ -11,6 +12,20 @@ const input = {
 };
 
 describe('email provider', () => {
+  it('creates accessible text and HTML invitation content', () => {
+    const invitation = {
+      activationUrl: 'https://learn-x.app/activate#token=secret-token',
+      expiresAt: input.expiresAt,
+      recipientEmail: input.recipientEmail,
+    };
+    const content = createAccessInvitationEmailContent(invitation);
+
+    expect(content.subject).toBe('Active ton compte LearnX');
+    expect(content.text).toContain(invitation.activationUrl);
+    expect(content.html).toContain('Activer mon compte');
+    expect(content.html).not.toContain('<script>');
+  });
+
   it('creates accessible text and HTML verification content', () => {
     const content = createVerificationEmailContent(input);
 
@@ -47,6 +62,33 @@ describe('email provider', () => {
       expect.objectContaining({
         from: 'LearnX <access@learnx.example>',
         to: ['learner@example.com'],
+      }),
+    );
+  });
+
+  it('sends an access invitation through the same provider adapter', async () => {
+    const fetchMock = vi.fn<typeof fetch>(() =>
+      Promise.resolve(new Response(null, { status: 200 })),
+    );
+    const provider = new ResendEmailProvider({
+      apiKey: 'secret-api-key',
+      fetch: fetchMock,
+      from: 'LearnX <access@learnx.example>',
+    });
+
+    await provider.sendAccessInvitationEmail({
+      activationUrl: 'https://learn-x.app/activate#token=safe-token',
+      expiresAt: input.expiresAt,
+      idempotencyKey: 'invitation-1',
+      recipientEmail: input.recipientEmail,
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://api.resend.com/emails',
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'idempotency-key': 'invitation-1',
+        }),
       }),
     );
   });
