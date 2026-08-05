@@ -111,7 +111,7 @@ describe('ConceptAssessmentPage', () => {
   it('permet au propriétaire de passer une banque brouillon via la prévisualisation', async () => {
     const basePath = `/api/concept-assessments/${assessmentId}`;
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/lessons/demarrer?preview=true') {
+      if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse(false)));
       }
       if (path === `${basePath}?preview=true`) {
@@ -207,7 +207,7 @@ describe('ConceptAssessmentPage', () => {
   it('utilise les endpoints publics stricts quand la leçon est publiée', async () => {
     const basePath = `/api/concept-assessments/${assessmentId}`;
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/lessons/demarrer?preview=true') {
+      if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse(true)));
       }
       if (path === basePath) {

@@ -586,6 +586,8 @@ suivie et la désinscription préserve les données personnelles.**
 
 **Priorité : P1. Dépendances : V3-013.**
 
+**Statut : implémenté sur `dev` — aucune migration requise.**
+
 ### Périmètre
 
 - Explorer les programmes visibles, consulter langue/statut, s'inscrire et

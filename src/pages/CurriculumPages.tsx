@@ -1,4 +1,5 @@
 import { route } from 'preact-router';
+import { useRef, useState } from 'preact/hooks';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -10,13 +11,21 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StageAssessmentCard } from '@/features/stage-assessments/StageAssessmentCard';
+import { useOnlineStatus } from '@/features/pwa/online-status';
+import {
+  type CatalogProgram,
+  type EnrolledProgram,
+  type EnrollmentStatus,
+  useCatalogProgramsQuery,
+  useEnrolledProgramsQuery,
+  useProgramEnrollmentMutation,
+} from '@/features/programs/queries';
 import {
   type LessonSummary,
   type StageValidation,
   useModuleQuery,
   useModuleRestart,
   useProgramQuery,
-  useProgramsQuery,
   useStageQuery,
 } from '@/features/curriculum/queries';
 
@@ -195,54 +204,449 @@ function StageValidationCard({
   );
 }
 
-export function ProgramsPage() {
-  const query = useProgramsQuery();
-  const state = getQueryState(query.error, query.isPending);
+function durationLabel(days: number | null) {
+  if (days === null) return 'Durée non renseignée';
+  return `${days} jour${days > 1 ? 's' : ''}`;
+}
 
-  if (state) {
-    return state;
+function publishedVersionLabel(version: number) {
+  return `Version publiée ${version}`;
+}
+
+function CatalogProgramCard({
+  isMutationDisabled,
+  isMutationLoading,
+  onEnroll,
+  program,
+}: {
+  isMutationDisabled: boolean;
+  isMutationLoading: boolean;
+  onEnroll: (program: CatalogProgram) => void;
+  program: CatalogProgram;
+}) {
+  return (
+    <li>
+      <Card class="flex h-full flex-col space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <h2 class="text-xl font-semibold">{program.title}</h2>
+          <Badge tone={program.isEnrolled ? 'success' : 'info'}>
+            {program.isEnrolled ? 'Inscrit' : 'Disponible'}
+          </Badge>
+        </div>
+        <p class="text-sm leading-6 text-slate-300">{program.description}</p>
+        <ul class="space-y-1 text-sm text-slate-400">
+          <li>{durationLabel(program.estimatedDurationDays)}</li>
+          <li>
+            {program.stageCount} étape{program.stageCount > 1 ? 's' : ''}{' '}
+            publiée{program.stageCount > 1 ? 's' : ''}
+          </li>
+          <li>{publishedVersionLabel(program.publishedVersion.number)}</li>
+        </ul>
+        {program.isEnrolled ? (
+          <NavigationAction
+            class="mt-auto"
+            href={`/program/${encodeURIComponent(program.slug)}`}
+          >
+            Ouvrir le programme
+          </NavigationAction>
+        ) : (
+          <Button
+            class="mt-auto w-full"
+            disabled={isMutationDisabled}
+            isLoading={isMutationLoading}
+            onClick={() => onEnroll(program)}
+          >
+            S’inscrire
+          </Button>
+        )}
+      </Card>
+    </li>
+  );
+}
+
+function EnrolledProgramCard({
+  isConfirming,
+  isMutationDisabled,
+  isMutationLoading,
+  onCancel,
+  onConfirm,
+  onRequestWithdrawal,
+  program,
+}: {
+  isConfirming: boolean;
+  isMutationDisabled: boolean;
+  isMutationLoading: boolean;
+  onCancel: () => void;
+  onConfirm: (program: EnrolledProgram) => void;
+  onRequestWithdrawal: (program: EnrolledProgram) => void;
+  program: EnrolledProgram;
+}) {
+  const isActive = program.enrollment.status === 'ACTIVE';
+  const percent = program.progress?.percent ?? 0;
+
+  return (
+    <li>
+      <Card class="flex h-full flex-col space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <h2 class="text-xl font-semibold">{program.program.title}</h2>
+          <Badge tone={isActive ? 'success' : 'warning'}>
+            {isActive ? 'Inscrit' : 'Désinscrit'}
+          </Badge>
+        </div>
+        <p class="text-sm leading-6 text-slate-300">
+          {program.program.description}
+        </p>
+        <ul class="space-y-1 text-sm text-slate-400">
+          <li>{durationLabel(program.program.estimatedDurationDays)}</li>
+          <li>
+            {publishedVersionLabel(program.program.publishedVersion.number)}
+          </li>
+        </ul>
+        <ProgressBar
+          label={`Progression — ${Math.round(percent)} %`}
+          value={percent}
+        />
+        {isActive ? (
+          <>
+            <NavigationAction
+              href={`/program/${encodeURIComponent(program.program.slug)}`}
+            >
+              {percent > 0 ? 'Continuer' : 'Commencer'}
+            </NavigationAction>
+            {!isConfirming ? (
+              <Button
+                disabled={isMutationDisabled}
+                onClick={() => onRequestWithdrawal(program)}
+                variant="ghost"
+              >
+                Se désinscrire
+              </Button>
+            ) : (
+              <div
+                aria-label={`Confirmer la désinscription de ${program.program.title}`}
+                class="space-y-3 rounded-xl border border-amber-800 bg-amber-950/30 p-4"
+                role="region"
+              >
+                <p class="text-sm leading-6 text-amber-100">
+                  L’accès au programme sera retiré. Vos notes, votre progression
+                  et vos tentatives seront conservées.
+                </p>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                  <Button
+                    disabled={isMutationDisabled}
+                    isLoading={isMutationLoading}
+                    onClick={() => onConfirm(program)}
+                    variant="danger"
+                  >
+                    Confirmer la désinscription
+                  </Button>
+                  <Button onClick={onCancel} variant="ghost">
+                    Annuler
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <p class="text-sm text-slate-400">
+            Vos données personnelles d’apprentissage sont conservées.
+          </p>
+        )}
+      </Card>
+    </li>
+  );
+}
+
+function DirectoryPagination({
+  hasMore,
+  isLoading,
+  onLoadMore,
+}: {
+  hasMore: boolean;
+  isLoading: boolean;
+  onLoadMore: () => void;
+}) {
+  if (!hasMore) return null;
+  return (
+    <div class="flex justify-center">
+      <Button
+        isLoading={isLoading}
+        onClick={onLoadMore}
+        variant="secondary"
+      >
+        Afficher plus
+      </Button>
+    </div>
+  );
+}
+
+type ProgramsView = 'catalog' | 'enrolled';
+
+export function ProgramsPage() {
+  const isOnline = useOnlineStatus();
+  const [activeView, setActiveView] = useState<ProgramsView>('enrolled');
+  const [enrollmentStatus, setEnrollmentStatus] =
+    useState<EnrollmentStatus>('ACTIVE');
+  const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [confirmingProgramId, setConfirmingProgramId] = useState<string>();
+  const [announcement, setAnnouncement] = useState<string>();
+  const enrolledTabRef = useRef<HTMLButtonElement>(null);
+  const catalogTabRef = useRef<HTMLButtonElement>(null);
+  const catalog = useCatalogProgramsQuery(search, isOnline);
+  const enrolled = useEnrolledProgramsQuery(
+    search,
+    enrollmentStatus,
+    isOnline,
+  );
+  const mutation = useProgramEnrollmentMutation();
+
+  function selectView(view: ProgramsView, focus = false) {
+    setActiveView(view);
+    setConfirmingProgramId(undefined);
+    if (focus) {
+      (view === 'enrolled' ? enrolledTabRef : catalogTabRef).current?.focus();
+    }
   }
 
-  const programs = query.data?.programs ?? [];
+  function handleTabKeyDown(event: KeyboardEvent, view: ProgramsView) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const nextView =
+      event.key === 'Home'
+        ? 'enrolled'
+        : event.key === 'End'
+          ? 'catalog'
+          : view === 'enrolled'
+            ? 'catalog'
+            : 'enrolled';
+    selectView(nextView, true);
+  }
 
-  if (programs.length === 0) {
-    return (
-      <EmptyState
-        description="Les programmes publiés apparaîtront ici."
-        title="Aucun programme disponible"
-      />
-    );
+  async function refreshDirectories() {
+    await Promise.all([catalog.reload(), enrolled.reload()]);
+  }
+
+  async function enroll(program: CatalogProgram) {
+    setAnnouncement(undefined);
+    try {
+      await mutation.execute(program.id, 'enroll');
+      await refreshDirectories();
+      setAnnouncement(`${program.title} a été ajouté à Mes programmes.`);
+    } catch {
+      // The normalized error is rendered below.
+    }
+  }
+
+  async function withdraw(program: EnrolledProgram) {
+    setAnnouncement(undefined);
+    try {
+      await mutation.execute(program.program.id, 'withdraw');
+      setConfirmingProgramId(undefined);
+      await refreshDirectories();
+      setAnnouncement(`Vous êtes désinscrit de ${program.program.title}.`);
+    } catch {
+      // The normalized error is rendered below.
+    }
+  }
+
+  function submitSearch(event: SubmitEvent) {
+    event.preventDefault();
+    setSearch(searchInput.trim().replace(/\s+/g, ' '));
   }
 
   return (
-    <section aria-labelledby="programs-title" class="page-shell">
+    <section aria-labelledby="programs-title" class="page-shell space-y-6">
       <PageHeader
+        description="Retrouvez vos apprentissages ou explorez les programmes disponibles."
         eyebrow="Parcours"
         id="programs-title"
-        title="Mes programmes"
+        title="Programmes"
       />
-      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {programs.map((program) => (
-          <Card key={program.id} class="flex flex-col space-y-4">
-            <div>
-              <div class="flex flex-wrap items-center gap-2">
-                <h2 class="text-xl font-semibold">{program.title}</h2>
-                {program.status === 'DRAFT' ? <DraftBadge /> : null}
-              </div>
-              <p class="mt-2 text-sm leading-6 text-slate-300">
-                {program.description}
-              </p>
-            </div>
-            <ProgressPlaceholder />
-            <NavigationAction
-              class="mt-auto"
-              href={`/program/${program.slug}`}
-            >
-              Ouvrir le programme
-            </NavigationAction>
-          </Card>
-        ))}
+      <div
+        aria-label="Choisir une vue des programmes"
+        class="grid grid-cols-2 gap-2 rounded-2xl border border-slate-700 bg-slate-900 p-1"
+        role="tablist"
+      >
+        <button
+          aria-controls="enrolled-programs-panel"
+          aria-selected={activeView === 'enrolled'}
+          class={`min-h-11 rounded-xl px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${activeView === 'enrolled' ? 'bg-cyan-400 text-slate-950' : 'text-slate-200 hover:bg-slate-800'}`}
+          id="enrolled-programs-tab"
+          onClick={() => selectView('enrolled')}
+          onKeyDown={(event) => handleTabKeyDown(event, 'enrolled')}
+          ref={enrolledTabRef}
+          role="tab"
+          type="button"
+        >
+          Mes programmes
+        </button>
+        <button
+          aria-controls="catalog-programs-panel"
+          aria-selected={activeView === 'catalog'}
+          class={`min-h-11 rounded-xl px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${activeView === 'catalog' ? 'bg-cyan-400 text-slate-950' : 'text-slate-200 hover:bg-slate-800'}`}
+          id="catalog-programs-tab"
+          onClick={() => selectView('catalog')}
+          onKeyDown={(event) => handleTabKeyDown(event, 'catalog')}
+          ref={catalogTabRef}
+          role="tab"
+          type="button"
+        >
+          Explorer
+        </button>
       </div>
+      <form class="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
+        <label class="grid gap-2 text-sm font-medium text-slate-200">
+          Rechercher un programme
+          <input
+            class="min-h-11 min-w-0 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            onInput={(event) => setSearchInput(event.currentTarget.value)}
+            placeholder="Titre ou description"
+            type="search"
+            value={searchInput}
+          />
+        </label>
+        <Button class="self-end" type="submit" variant="secondary">
+          Rechercher
+        </Button>
+      </form>
+      {!isOnline ? (
+        <ErrorState
+          description="Reconnectez-vous pour consulter le catalogue privé et gérer vos inscriptions."
+          title="Programmes indisponibles hors ligne"
+        />
+      ) : (
+        <div
+          aria-labelledby={`${activeView}-programs-tab`}
+          id={`${activeView}-programs-panel`}
+          role="tabpanel"
+          tabindex={0}
+        >
+          {activeView === 'enrolled' ? (
+            <div class="space-y-5">
+              <label class="grid max-w-xs gap-2 text-sm font-medium text-slate-200">
+                Statut de l’inscription
+                <select
+                  class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  onChange={(event) => {
+                    setConfirmingProgramId(undefined);
+                    setEnrollmentStatus(
+                      event.currentTarget.value as EnrollmentStatus,
+                    );
+                  }}
+                  value={enrollmentStatus}
+                >
+                  <option value="ACTIVE">Programmes en cours</option>
+                  <option value="WITHDRAWN">Programmes quittés</option>
+                </select>
+              </label>
+              {enrolled.isPending ? (
+                <Skeleton label="Chargement de Mes programmes" />
+              ) : enrolled.error ? (
+                <ErrorState
+                  action={
+                    <Button onClick={() => void enrolled.reload()}>
+                      Réessayer
+                    </Button>
+                  }
+                  description="Mes programmes n’ont pas pu être chargés."
+                />
+              ) : enrolled.data.items.length === 0 ? (
+                <EmptyState
+                  action={
+                    enrollmentStatus === 'ACTIVE' ? (
+                      <Button onClick={() => selectView('catalog')}>
+                        Explorer les programmes
+                      </Button>
+                    ) : undefined
+                  }
+                  description={
+                    enrollmentStatus === 'ACTIVE'
+                      ? 'Inscrivez-vous à un programme pour le retrouver ici.'
+                      : 'Aucune ancienne inscription ne correspond à cette recherche.'
+                  }
+                  title={
+                    enrollmentStatus === 'ACTIVE'
+                      ? 'Aucun programme suivi'
+                      : 'Aucun programme quitté'
+                  }
+                />
+              ) : (
+                <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  {enrolled.data.items.map((program) => (
+                    <EnrolledProgramCard
+                      isConfirming={
+                        confirmingProgramId === program.program.id
+                      }
+                      isMutationDisabled={Boolean(mutation.pendingProgramId)}
+                      isMutationLoading={
+                        mutation.pendingProgramId === program.program.id
+                      }
+                      key={program.enrollment.id}
+                      onCancel={() => setConfirmingProgramId(undefined)}
+                      onConfirm={(item) => void withdraw(item)}
+                      onRequestWithdrawal={(item) =>
+                        setConfirmingProgramId(item.program.id)
+                      }
+                      program={program}
+                    />
+                  ))}
+                </ul>
+              )}
+              <DirectoryPagination
+                hasMore={Boolean(enrolled.data.nextCursor)}
+                isLoading={enrolled.isLoadingMore}
+                onLoadMore={() => void enrolled.loadMore()}
+              />
+            </div>
+          ) : (
+            <div class="space-y-5">
+              {catalog.isPending ? (
+                <Skeleton label="Chargement du catalogue" />
+              ) : catalog.error ? (
+                <ErrorState
+                  action={
+                    <Button onClick={() => void catalog.reload()}>
+                      Réessayer
+                    </Button>
+                  }
+                  description="Le catalogue n’a pas pu être chargé."
+                />
+              ) : catalog.data.items.length === 0 ? (
+                <EmptyState
+                  description="Aucun programme public ne correspond à votre recherche."
+                  title="Catalogue vide"
+                />
+              ) : (
+                <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  {catalog.data.items.map((program) => (
+                    <CatalogProgramCard
+                      isMutationDisabled={Boolean(mutation.pendingProgramId)}
+                      isMutationLoading={
+                        mutation.pendingProgramId === program.id
+                      }
+                      key={program.id}
+                      onEnroll={(item) => void enroll(item)}
+                      program={program}
+                    />
+                  ))}
+                </ul>
+              )}
+              <DirectoryPagination
+                hasMore={Boolean(catalog.data.nextCursor)}
+                isLoading={catalog.isLoadingMore}
+                onLoadMore={() => void catalog.loadMore()}
+              />
+            </div>
+          )}
+        </div>
+      )}
+      {mutation.error ? (
+        <ErrorState description="L’inscription n’a pas pu être mise à jour. Réessayez." />
+      ) : null}
+      <p aria-live="polite" class="text-sm text-emerald-200" role="status">
+        {announcement}
+      </p>
     </section>
   );
 }

@@ -68,7 +68,7 @@ describe('ExercisePage', () => {
 
   it('conserve le contexte de leçon sur une route profonde canonique', async () => {
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/lessons/demarrer?preview=true') {
+      if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse()));
       }
       if (path === `/api/exercises/${exerciseId}`) {

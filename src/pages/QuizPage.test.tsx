@@ -179,7 +179,7 @@ describe('QuizPage', () => {
 
   it('parcourt les quatre formats, soumet et affiche le feedback serveur', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/lessons/demarrer?preview=true') {
+      if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse()));
       }
 
@@ -282,7 +282,7 @@ describe('QuizPage', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string, init?: RequestInit) => {
-        if (path === '/api/lessons/demarrer?preview=true') {
+        if (path === '/api/lessons/demarrer') {
           return Promise.resolve(jsonResponse(lessonResponse()));
         }
         if (path === `/api/quizzes/${quizId}/attempts`) {

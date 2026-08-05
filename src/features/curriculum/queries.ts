@@ -2,7 +2,7 @@ import { QueryObserver } from '@tanstack/query-core';
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 
 import { useAppQueryClient } from '@/app/providers';
-import { apiRequest } from '@/lib/api-client';
+import { ApiClientError, apiRequest } from '@/lib/api-client';
 
 export interface ProgramSummary {
   description: string;
@@ -279,6 +279,7 @@ function useCurriculumQuery<T>(
   queryKey: readonly string[],
   path: string,
   enabled = true,
+  allowOwnerPreview = false,
 ) {
   const queryClient = useAppQueryClient();
   const queryKeyHash = queryKey.join(':');
@@ -287,10 +288,24 @@ function useCurriculumQuery<T>(
       new QueryObserver(queryClient, {
         enabled,
         queryKey,
-        queryFn: () => apiRequest<T>(path),
+        queryFn: async () => {
+          try {
+            return await apiRequest<T>(path);
+          } catch (error) {
+            if (
+              !allowOwnerPreview ||
+              !(error instanceof ApiClientError) ||
+              error.status !== 404
+            ) {
+              throw error;
+            }
+            const separator = path.includes('?') ? '&' : '?';
+            return apiRequest<T>(`${path}${separator}preview=true`);
+          }
+        },
         staleTime: 0,
       }),
-    [enabled, path, queryClient, queryKeyHash],
+    [allowOwnerPreview, enabled, path, queryClient, queryKeyHash],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
 
@@ -319,22 +334,28 @@ export function useProgramsQuery() {
 
 export function useProgramQuery(programSlug: string) {
   return useCurriculumQuery<{ program: ProgramDetail }>(
-    ['program', programSlug, 'preview'],
-    `/api/programs/${encodeURIComponent(programSlug)}?preview=true`,
+    ['program', programSlug, 'accessible'],
+    `/api/programs/${encodeURIComponent(programSlug)}`,
+    true,
+    true,
   );
 }
 
 export function useStageQuery(programSlug: string, stageSlug: string) {
   return useCurriculumQuery<{ stage: StageDetail }>(
-    ['stage', programSlug, stageSlug, 'preview'],
-    `/api/programs/${encodeURIComponent(programSlug)}/stages/${encodeURIComponent(stageSlug)}?preview=true`,
+    ['stage', programSlug, stageSlug, 'accessible'],
+    `/api/programs/${encodeURIComponent(programSlug)}/stages/${encodeURIComponent(stageSlug)}`,
+    true,
+    true,
   );
 }
 
 export function useModuleQuery(moduleSlug: string) {
   return useCurriculumQuery<{ module: ModuleDetail }>(
-    ['module', moduleSlug, 'preview'],
-    `/api/modules/${encodeURIComponent(moduleSlug)}?preview=true`,
+    ['module', moduleSlug, 'accessible'],
+    `/api/modules/${encodeURIComponent(moduleSlug)}`,
+    true,
+    true,
   );
 }
 
@@ -397,8 +418,10 @@ export function useModuleRestart(moduleId: string) {
 
 export function useLessonQuery(lessonSlug: string) {
   return useCurriculumQuery<{ lesson: LessonDetail }>(
-    ['lesson', lessonSlug, 'preview'],
-    `/api/lessons/${encodeURIComponent(lessonSlug)}?preview=true`,
+    ['lesson', lessonSlug, 'accessible'],
+    `/api/lessons/${encodeURIComponent(lessonSlug)}`,
+    true,
+    true,
   );
 }
 

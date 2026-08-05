@@ -174,6 +174,70 @@ async function installJourneyApi(page: Page) {
       return;
     }
 
+    if (method === 'GET' && path === '/api/catalog/programs') {
+      await respond({
+        items: [
+          {
+            description: program.description,
+            estimatedDurationDays: program.estimatedDurationDays,
+            icon: null,
+            id: program.id,
+            isEnrolled: true,
+            publishedVersion: {
+              checksum: 'e2e-checksum',
+              id: 'version-1',
+              number: 1,
+              publishedAt: '2026-08-03T08:00:00.000Z',
+            },
+            slug: program.slug,
+            stageCount: 1,
+            title: program.title,
+          },
+        ],
+        nextCursor: null,
+      });
+      return;
+    }
+
+    if (method === 'GET' && path === '/api/me/programs') {
+      await respond({
+        items: [
+          {
+            enrollment: {
+              enrolledAt: '2026-08-03T08:00:00.000Z',
+              id: 'enrollment-1',
+              status: 'ACTIVE',
+              updatedAt: '2026-08-03T08:00:00.000Z',
+              withdrawnAt: null,
+            },
+            program: {
+              description: program.description,
+              estimatedDurationDays: program.estimatedDurationDays,
+              icon: null,
+              id: program.id,
+              publishedVersion: {
+                checksum: 'e2e-checksum',
+                id: 'version-1',
+                number: 1,
+                publishedAt: '2026-08-03T08:00:00.000Z',
+              },
+              slug: program.slug,
+              title: program.title,
+            },
+            progress: {
+              completedAt: null,
+              lastViewedAt: '2026-08-03T08:00:00.000Z',
+              percent: 0,
+              startedAt: null,
+              targetEndAt: null,
+            },
+          },
+        ],
+        nextCursor: null,
+      });
+      return;
+    }
+
     if (method === 'GET' && path === '/api/programs/programme-e2e') {
       await respond({ program });
       return;
@@ -416,9 +480,9 @@ async function openCriticalLesson(page: Page) {
 
   await navigation.getByRole('link', { name: 'Parcours' }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Mes programmes' }),
+    page.getByRole('heading', { level: 1, name: 'Programmes' }),
   ).toBeVisible();
-  await page.getByRole('link', { name: 'Ouvrir le programme' }).click();
+  await page.getByRole('link', { name: 'Commencer' }).click();
   await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: lessonSummary.title }),
@@ -432,6 +496,43 @@ async function expectNoHorizontalOverflow(page: Page) {
     ),
   ).toBe(true);
 }
+
+test('garde Mes programmes et Explorer utilisables sur tous les viewports', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/program');
+
+  const enrolledTab = page.getByRole('tab', { name: 'Mes programmes' });
+  const catalogTab = page.getByRole('tab', { name: 'Explorer' });
+  await expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
+  await enrolledTab.focus();
+  await enrolledTab.press('ArrowRight');
+  await expect(catalogTab).toBeFocused();
+  await expect(catalogTab).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByText('Version publiée 1')).toBeVisible();
+
+  for (const viewport of [
+    { height: 700, width: 320 },
+    { height: 844, width: 390 },
+    { height: 900, width: 1280 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await expectNoHorizontalOverflow(page);
+    await expect(catalogTab).toBeVisible();
+    await expect(page.getByRole('heading', { name: program.title })).toBeVisible();
+  }
+
+  await expectNoSeriousA11yViolations(page);
+});
 
 test('garde les cinq destinations lisibles et accessibles sur mobile et desktop', async ({
   page,

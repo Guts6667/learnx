@@ -1,4 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/preact';
 import type { ComponentChildren } from 'preact';
 
 import { AppProviders } from '@/app/providers';
@@ -24,25 +29,73 @@ describe('CurriculumPages', () => {
     vi.unstubAllGlobals();
   });
 
-  it('affiche les programmes et leur progression indisponible', async () => {
+  it('affiche Mes programmes par défaut et permet d’explorer au clavier', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn(() =>
-        Promise.resolve(
+      vi.fn((path: string) => {
+        if (path.startsWith('/api/catalog/programs?')) {
+          return Promise.resolve(
+            jsonResponse({
+              items: [
+                {
+                  description: 'Approfondir les bases.',
+                  estimatedDurationDays: 12,
+                  icon: null,
+                  id: 'program-2',
+                  isEnrolled: false,
+                  publishedVersion: {
+                    checksum: 'catalog-checksum',
+                    id: 'version-2',
+                    number: 2,
+                    publishedAt: '2026-08-05T10:00:00.000Z',
+                  },
+                  slug: 'approfondir',
+                  stageCount: 3,
+                  title: 'Approfondir',
+                },
+              ],
+              nextCursor: null,
+            }),
+          );
+        }
+        return Promise.resolve(
           jsonResponse({
-            programs: [
+            items: [
               {
-                description: 'Découvrir les bases.',
-                id: 'program-1',
-                slug: 'bases',
-                stages: [],
-                status: 'ACTIVE',
-                title: 'Les bases',
+                enrollment: {
+                  enrolledAt: '2026-08-05T10:00:00.000Z',
+                  id: 'enrollment-1',
+                  status: 'ACTIVE',
+                  updatedAt: '2026-08-05T10:00:00.000Z',
+                  withdrawnAt: null,
+                },
+                program: {
+                  description: 'Découvrir les bases.',
+                  estimatedDurationDays: 10,
+                  icon: null,
+                  id: 'program-1',
+                  publishedVersion: {
+                    checksum: 'checksum',
+                    id: 'version-1',
+                    number: 1,
+                    publishedAt: '2026-08-05T10:00:00.000Z',
+                  },
+                  slug: 'bases',
+                  title: 'Les bases',
+                },
+                progress: {
+                  completedAt: null,
+                  lastViewedAt: '2026-08-05T10:00:00.000Z',
+                  percent: 35,
+                  startedAt: '2026-08-05T10:00:00.000Z',
+                  targetEndAt: null,
+                },
               },
             ],
+            nextCursor: null,
           }),
-        ),
-      ),
+        );
+      }),
     );
 
     renderPage(<ProgramsPage />);
@@ -51,13 +104,276 @@ describe('CurriculumPages', () => {
       await screen.findByRole('heading', { level: 2, name: 'Les bases' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('progressbar', {
-        name: 'Progression — bientôt disponible',
-      }),
-    ).toHaveAttribute('aria-valuenow', '0');
+      screen.getByRole('progressbar', { name: 'Progression — 35 %' }),
+    ).toHaveAttribute('aria-valuenow', '35');
     expect(
-      screen.getByRole('link', { name: 'Ouvrir le programme' }),
+      screen.getByRole('link', { name: 'Continuer' }),
     ).toHaveAttribute('href', '/program/bases');
+    const enrolledTab = screen.getByRole('tab', { name: 'Mes programmes' });
+    const catalogTab = screen.getByRole('tab', { name: 'Explorer' });
+    expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
+
+    fireEvent.keyDown(enrolledTab, { key: 'ArrowRight' });
+    expect(catalogTab).toHaveAttribute('aria-selected', 'true');
+    expect(catalogTab).toHaveFocus();
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Approfondir' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'S’inscrire' })).toBeEnabled();
+  });
+
+  it('confirme l’inscription côté serveur avant de mettre à jour le catalogue', async () => {
+    let isEnrolled = false;
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (init?.method === 'POST') {
+        isEnrolled = true;
+        return Promise.resolve(jsonResponse({ enrollment: { id: 'new' } }));
+      }
+      if (path.startsWith('/api/catalog/programs?')) {
+        return Promise.resolve(
+          jsonResponse({
+            items: [
+              {
+                description: 'Un programme public.',
+                estimatedDurationDays: 8,
+                icon: null,
+                id: 'program-public',
+                isEnrolled,
+                publishedVersion: {
+                  checksum: 'checksum',
+                  id: 'version-public',
+                  number: 1,
+                  publishedAt: '2026-08-05T10:00:00.000Z',
+                },
+                slug: 'programme-public',
+                stageCount: 2,
+                title: 'Programme public',
+              },
+            ],
+            nextCursor: null,
+          }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ items: [], nextCursor: null }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramsPage />);
+    fireEvent.click(screen.getByRole('tab', { name: 'Explorer' }));
+    const enrollButton = await screen.findByRole('button', {
+      name: 'S’inscrire',
+    });
+    fireEvent.click(enrollButton);
+
+    expect(
+      await screen.findByText(
+        'Programme public a été ajouté à Mes programmes.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      fetchMock.mock.calls.some(
+        ([path, init]) =>
+          path === '/api/programs/program-public/enrollment' &&
+          init?.method === 'POST',
+      ),
+    ).toBe(true);
+    expect(
+      await screen.findByRole('link', { name: 'Ouvrir le programme' }),
+    ).toHaveAttribute('href', '/program/programme-public');
+  });
+
+  it('normalise la recherche et charge la page suivante sans doublon', async () => {
+    const fetchMock = vi.fn((path: string) => {
+      if (path.startsWith('/api/me/programs?')) {
+        return Promise.resolve(jsonResponse({ items: [], nextCursor: null }));
+      }
+      const isNextPage = path.includes('cursor=next-page');
+      return Promise.resolve(
+        jsonResponse({
+          items: [
+            {
+              description: isNextPage ? 'Seconde page.' : 'Première page.',
+              estimatedDurationDays: 5,
+              icon: null,
+              id: isNextPage ? 'program-2' : 'program-1',
+              isEnrolled: false,
+              publishedVersion: {
+                checksum: 'checksum',
+                id: 'version',
+                number: 1,
+                publishedAt: '2026-08-05T10:00:00.000Z',
+              },
+              slug: isNextPage ? 'second' : 'premier',
+              stageCount: 1,
+              title: isNextPage ? 'Second programme' : 'Premier programme',
+            },
+          ],
+          nextCursor: isNextPage ? null : 'next-page',
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramsPage />);
+    fireEvent.input(screen.getByLabelText('Rechercher un programme'), {
+      target: { value: '  sciences   humaines  ' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Rechercher' }));
+    fireEvent.click(screen.getByRole('tab', { name: 'Explorer' }));
+
+    expect(
+      await screen.findByRole('heading', { name: 'Premier programme' }),
+    ).toBeInTheDocument();
+    expect(
+      fetchMock.mock.calls.some(([path]) =>
+        path.includes('search=sciences+humaines'),
+      ),
+    ).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: 'Afficher plus' }));
+    expect(
+      await screen.findByRole('heading', { name: 'Second programme' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Premier programme' }),
+    ).toBeInTheDocument();
+  });
+
+  it('demande confirmation avant la désinscription et conserve un retour explicite', async () => {
+    let isActive = true;
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (init?.method === 'DELETE') {
+        isActive = false;
+        return Promise.resolve(jsonResponse({ enrollment: { id: 'enrollment' } }));
+      }
+      if (path.startsWith('/api/me/programs?')) {
+        return Promise.resolve(
+          jsonResponse({
+            items: isActive
+              ? [
+                  {
+                    enrollment: {
+                      enrolledAt: '2026-08-05T10:00:00.000Z',
+                      id: 'enrollment',
+                      status: 'ACTIVE',
+                      updatedAt: '2026-08-05T10:00:00.000Z',
+                      withdrawnAt: null,
+                    },
+                    program: {
+                      description: 'Programme à quitter.',
+                      estimatedDurationDays: null,
+                      icon: null,
+                      id: 'program-active',
+                      publishedVersion: {
+                        checksum: 'checksum',
+                        id: 'version',
+                        number: 1,
+                        publishedAt: '2026-08-05T10:00:00.000Z',
+                      },
+                      slug: 'programme-actif',
+                      title: 'Programme actif',
+                    },
+                    progress: null,
+                  },
+                ]
+              : [],
+            nextCursor: null,
+          }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ items: [], nextCursor: null }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramsPage />);
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Se désinscrire' }),
+    );
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      '/api/programs/program-active/enrollment',
+      expect.objectContaining({ method: 'DELETE' }),
+    );
+    expect(
+      screen.getByText(/Vos notes, votre progression et vos tentatives/),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Confirmer la désinscription' }),
+    );
+
+    expect(
+      await screen.findByText('Vous êtes désinscrit de Programme actif.'),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'Aucun programme suivi' }),
+    ).toBeInTheDocument();
+  });
+
+  it('affiche un état hors ligne sans lancer de requête privée', () => {
+    const onlineSpy = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramsPage />);
+
+    expect(
+      screen.getByRole('heading', {
+        name: 'Programmes indisponibles hors ligne',
+      }),
+    ).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+    onlineSpy.mockRestore();
+  });
+
+  it('n’utilise la prévisualisation brouillon qu’après un refus de la lecture normale', async () => {
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/programs/brouillon') {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              error: {
+                code: 'RESOURCE_NOT_FOUND',
+                message: 'Resource not found.',
+              },
+            }),
+            {
+              headers: { 'content-type': 'application/json' },
+              status: 404,
+            },
+          ),
+        );
+      }
+      return Promise.resolve(
+        jsonResponse({
+          program: {
+            description: 'Prévisualisation propriétaire.',
+            id: 'draft-program',
+            slug: 'brouillon',
+            stages: [],
+            status: 'DRAFT',
+            timeline: {
+              actualPercent: 0,
+              completedAt: null,
+              expectedPercent: 0,
+              progressDelta: 0,
+              startedAt: null,
+              targetEndAt: null,
+              temporalStatus: null,
+            },
+            title: 'Programme brouillon',
+          },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramPage programSlug="brouillon" />);
+
+    expect(
+      await screen.findByRole('heading', { name: 'Programme brouillon' }),
+    ).toBeInTheDocument();
+    expect(fetchMock.mock.calls.map(([path]) => path)).toEqual([
+      '/api/programs/brouillon',
+      '/api/programs/brouillon?preview=true',
+    ]);
   });
 
   it('relie le programme, l’étape et le module à leurs contenus', async () => {
@@ -87,7 +403,7 @@ describe('CurriculumPages', () => {
       title: 'Premiers pas',
     };
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/programs/bases?preview=true') {
+      if (path === '/api/programs/bases') {
         return Promise.resolve(
           jsonResponse({
             program: {
@@ -111,7 +427,7 @@ describe('CurriculumPages', () => {
         );
       }
 
-      if (path === '/api/programs/bases/stages/introduction?preview=true') {
+      if (path === '/api/programs/bases/stages/introduction') {
         return Promise.resolve(
           jsonResponse({
             stage: {
@@ -277,7 +593,7 @@ describe('CurriculumPages', () => {
       },
     };
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/modules/premiers-pas?preview=true') {
+      if (path === '/api/modules/premiers-pas') {
         return Promise.resolve(
           jsonResponse({
             module: {

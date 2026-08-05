@@ -304,7 +304,7 @@ describe('LessonPage', () => {
       '/program/programme-test/lesson/demarrer?activity=task%3Atask-1',
     );
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/lessons/demarrer?preview=true') {
+      if (path === '/api/lessons/demarrer') {
         return Promise.resolve(jsonResponse(lessonResponse(true)));
       }
       if (path === '/api/lessons/lesson-1/progress') {
@@ -381,7 +381,7 @@ describe('LessonPage', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string) =>
-        path === '/api/lessons/demarrer?preview=true'
+        path === '/api/lessons/demarrer'
           ? Promise.resolve(jsonResponse(lessonResponse(true)))
           : Promise.reject(new TypeError('Network unavailable')),
       ),
