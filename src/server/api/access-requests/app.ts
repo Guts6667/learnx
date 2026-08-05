@@ -8,13 +8,22 @@ import {
   SharedAccessRequestRateLimiter,
   type AccessRequestRateLimiter,
 } from '../_lib/access-request-rate-limit.js';
-import { accessRequestInputSchema } from '../_lib/auth-validation.js';
+import {
+  accessRequestInputSchema,
+  emailVerificationInputSchema,
+} from '../_lib/auth-validation.js';
 import { getClientAddress } from '../_lib/client-address.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  consumeEmailVerification,
+  createEmailVerificationConsumerDependencies,
+  type EmailVerificationDependencies,
+} from '../_lib/email-verification.js';
 
 interface AccessRequestsAppOptions {
   dependencies?: AccessRequestDependencies;
   enabled?: boolean;
+  emailVerification?: EmailVerificationDependencies;
   rateLimiter?: AccessRequestRateLimiter;
 }
 
@@ -83,10 +92,53 @@ export function createAccessRequestsApp(
       },
       now,
     );
-    await requestAccess(parsedInput.data.email, options.dependencies);
+    await requestAccess(
+      parsedInput.data.email,
+      options.dependencies && options.emailVerification
+        ? {
+            ...options.dependencies,
+            emailVerification: options.emailVerification,
+          }
+        : options.dependencies,
+    );
 
     context.header('Cache-Control', 'private, no-store');
     return context.json(confirmation, 202);
+  });
+
+  app.post('/api/access-requests/verify-email', async (context) => {
+    const parsedInput = emailVerificationInputSchema.safeParse(
+      await parseBody(context.req.raw),
+    );
+    if (!parsedInput.success) {
+      throw new ApiError(
+        'INVALID_EMAIL_VERIFICATION',
+        'Ce lien de vérification est invalide ou a expiré.',
+        400,
+      );
+    }
+
+    const emailVerification =
+      options.emailVerification ??
+      createEmailVerificationConsumerDependencies();
+
+    const consumed = await consumeEmailVerification(
+      parsedInput.data.token,
+      emailVerification,
+    );
+    if (!consumed) {
+      throw new ApiError(
+        'INVALID_EMAIL_VERIFICATION',
+        'Ce lien de vérification est invalide ou a expiré.',
+        400,
+      );
+    }
+
+    return context.json({
+      message:
+        'Ton adresse e-mail est vérifiée. Ta demande est maintenant en attente d’approbation.',
+      status: 'verified' as const,
+    });
   });
 
   return app;

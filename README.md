@@ -103,9 +103,19 @@ Production du projet Vercel :
 - `DIRECT_URL` : connexion Neon directe utilisée pendant les migrations ;
 - `ADMIN_EMAIL` : adresse du compte propriétaire utilisée uniquement par le
   seed manuel.
-`APP_URL` est réservée aux futurs liens absolus et peut être renseignée avec
-l’origine HTTPS stable lorsqu’un domaine définitif est attribué. Elle n’est pas
-lue par le runtime actuel.
+- `APP_URL` : origine HTTPS stable utilisée dans les liens de vérification ;
+- `LEARNX_EMAIL_VERIFICATION_ENABLED` : active explicitement l'envoi des liens ;
+- `LEARNX_EMAIL_VERIFICATION_TTL_MS` : durée de validité, entre 5 minutes et
+  7 jours ;
+- `LEARNX_EMAIL_FROM` : expéditeur appartenant à un domaine Resend vérifié ;
+- `RESEND_API_KEY` : secret serveur Resend, jamais exposé au client.
+
+L'envoi est désactivé tant que `LEARNX_EMAIL_VERIFICATION_ENABLED` n'est pas
+`true`. Une désactivation n'efface ni les demandes ni les vérifications déjà
+émises. L'adaptateur fournisseur est isolé dans le serveur : un autre
+fournisseur peut remplacer Resend sans modifier le cycle de demande. Le lien
+place le token dans le fragment URL afin qu'il ne soit pas transmis dans les
+logs HTTP ; seul son hash SHA-256 est conservé en base.
 
 Les valeurs réelles restent dans Vercel et dans les fichiers `.env` locaux
 ignorés par Git. Après leur modification, un nouveau déploiement est nécessaire.

@@ -1,5 +1,6 @@
 import type { AccessRequestDependencies } from '../../src/server/api/_lib/access-request';
 import type { AccessRequestRateLimiter } from '../../src/server/api/_lib/access-request-rate-limit';
+import type { EmailVerificationDependencies } from '../../src/server/api/_lib/email-verification';
 import { createAccessRequestsApp } from '../../src/server/api/access-requests/app';
 
 const testNow = new Date('2026-08-05T10:00:00.000Z');
@@ -152,5 +153,80 @@ describe('access requests API', () => {
     expect(invalidResponse.status).toBe(400);
     expect(disabledResponse.status).toBe(503);
     expect(context.requests).toEqual([]);
+  });
+
+  it('consumes a valid token once and returns the same safe error for invalid tokens', async () => {
+    const context = createTestContext();
+    let available = true;
+    const emailVerification: EmailVerificationDependencies = {
+      appUrl: 'https://learnx.example',
+      createAccessRequestId: () => 'request-1',
+      createToken: () => 'a'.repeat(43),
+      createVerificationId: () => 'verification-1',
+      emailProvider: {
+        name: 'test-provider',
+        async sendVerificationEmail() {},
+      },
+      logger: { error() {} },
+      now: () => testNow,
+      repository: {
+        async consume() {
+          const result = available;
+          available = false;
+          return result;
+        },
+        async invalidate() {},
+        async issue() {
+          return null;
+        },
+      },
+      ttlMilliseconds: 60_000,
+    };
+    const app = createAccessRequestsApp({ ...context, emailVerification });
+    const body = JSON.stringify({ token: 'a'.repeat(43) });
+
+    const first = await app.request(
+      'http://localhost/api/access-requests/verify-email',
+      { body, method: 'POST', headers: { 'content-type': 'application/json' } },
+    );
+    const replay = await app.request(
+      'http://localhost/api/access-requests/verify-email',
+      { body, method: 'POST', headers: { 'content-type': 'application/json' } },
+    );
+
+    expect(first.status).toBe(200);
+    expect(await first.json()).toEqual({
+      message:
+        'Ton adresse e-mail est vérifiée. Ta demande est maintenant en attente d’approbation.',
+      status: 'verified',
+    });
+    expect(replay.status).toBe(400);
+    expect(await replay.json()).toEqual({
+      error: {
+        code: 'INVALID_EMAIL_VERIFICATION',
+        message: 'Ce lien de vérification est invalide ou a expiré.',
+      },
+    });
+  });
+
+  it('never accepts malformed verification tokens', async () => {
+    const context = createTestContext();
+    const app = createAccessRequestsApp(context);
+    const response = await app.request(
+      'http://localhost/api/access-requests/verify-email',
+      {
+        body: JSON.stringify({ token: 'too-short' }),
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+      },
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({
+      error: {
+        code: 'INVALID_EMAIL_VERIFICATION',
+        message: 'Ce lien de vérification est invalide ou a expiré.',
+      },
+    });
   });
 });

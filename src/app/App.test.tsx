@@ -259,6 +259,66 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('vérifie explicitement un e-mail sans envoyer le token dans la requête de page', async () => {
+    const token = 'a'.repeat(43);
+    window.history.pushState({}, '', `/verify-email#token=${token}`);
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(
+        jsonResponse({
+          message:
+            'Ton adresse e-mail est vérifiée. Ta demande est maintenant en attente d’approbation.',
+          status: 'verified',
+        }),
+      ),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Vérifier mon adresse e-mail',
+      }),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Vérifier mon adresse' }),
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        level: 2,
+        name: 'Adresse vérifiée',
+      }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/access-requests/verify-email',
+      expect.objectContaining({
+        body: JSON.stringify({ token }),
+        method: 'POST',
+      }),
+    );
+    expect(window.location.hash).toBe('');
+  });
+
+  it('refuse une page de vérification sans token', async () => {
+    window.history.pushState({}, '', '/verify-email');
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByText(
+        'Ce lien de vérification est invalide ou incomplet.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Vérifier mon adresse' }),
+    ).toBeDisabled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('restaure la session après un rechargement', async () => {
     window.history.pushState({}, '', '/today');
     mockSession({

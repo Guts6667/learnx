@@ -15,6 +15,7 @@ import { LessonPage } from '@/pages/LessonPage';
 import { ExercisePage } from '@/pages/ExercisePage';
 import { LoginPage } from '@/pages/LoginPage';
 import { AccessRequestPage } from '@/pages/AccessRequestPage';
+import { VerifyEmailPage } from '@/pages/VerifyEmailPage';
 import { NotePage, NotesPage } from '@/pages/NotesPage';
 import { NotFoundPage } from '@/pages/PlaceholderPage';
 import { ProfilePage } from '@/pages/ProfilePage';
@@ -224,6 +225,7 @@ export function AppRoutes() {
         </ProtectedRoute>
         <LoginPage path="/login" />
         <AccessRequestPage path="/request-access" />
+        <VerifyEmailPage path="/verify-email" />
         <ProgramsRoute path="/program" />
         <ProgramRoute path="/program/:programSlug" />
         <StageRoute path="/program/:programSlug/stage/:stageSlug" />

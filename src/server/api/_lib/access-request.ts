@@ -1,5 +1,11 @@
 import { randomUUID } from 'node:crypto';
 
+import {
+  createEmailVerificationDependencies,
+  issueEmailVerification,
+  type EmailVerificationDependencies,
+} from './email-verification.js';
+
 export interface AccessRequestRepository {
   createPendingUnlessUserExists(input: {
     email: string;
@@ -10,6 +16,7 @@ export interface AccessRequestRepository {
 
 export interface AccessRequestDependencies {
   createId(): string;
+  emailVerification?: EmailVerificationDependencies;
   now(): Date;
   repository: AccessRequestRepository;
 }
@@ -47,16 +54,28 @@ const prismaAccessRequestRepository: AccessRequestRepository = {
   },
 };
 
-const defaultDependencies: AccessRequestDependencies = {
+const baseDependencies: AccessRequestDependencies = {
   createId: randomUUID,
   now: () => new Date(),
   repository: prismaAccessRequestRepository,
 };
 
+function createDefaultDependencies(): AccessRequestDependencies {
+  return {
+    ...baseDependencies,
+    emailVerification: createEmailVerificationDependencies(),
+  };
+}
+
 export async function requestAccess(
   email: string,
-  dependencies = defaultDependencies,
+  dependencies = createDefaultDependencies(),
 ): Promise<void> {
+  if (dependencies.emailVerification) {
+    await issueEmailVerification(email, dependencies.emailVerification);
+    return;
+  }
+
   await dependencies.repository.createPendingUnlessUserExists({
     email,
     id: dependencies.createId(),

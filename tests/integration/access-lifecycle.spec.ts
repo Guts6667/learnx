@@ -3,6 +3,11 @@ import { randomUUID } from 'node:crypto';
 import { expect, test } from '@playwright/test';
 
 import { prisma } from '../../src/server/prisma.js';
+import {
+  consumeEmailVerification,
+  hashVerificationToken,
+  prismaEmailVerificationRepository,
+} from '../../src/server/api/_lib/email-verification.js';
 
 function uniqueValue(label: string): string {
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'local';
@@ -170,5 +175,69 @@ test('contraintes réelles du cycle accès et compatibilité des comptes V2', as
       },
     });
     await prisma.user.deleteMany({ where: { id: reviewer.id } });
+  }
+});
+
+test('vérification e-mail réelle expirante et one-shot', async ({
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
+
+  const email = `${uniqueValue('email-verification')}@example.test`;
+  const expiredEmail = `${uniqueValue('expired-email-verification')}@example.test`;
+  const token = randomUUID();
+  const expiredToken = randomUUID();
+  const request = await prisma.accessRequest.create({
+    data: { emailNormalized: email },
+  });
+  const expiredRequest = await prisma.accessRequest.create({
+    data: { emailNormalized: expiredEmail },
+  });
+  const now = new Date();
+  const consumeDependencies = {
+    now: () => new Date(),
+    repository: prismaEmailVerificationRepository,
+  };
+
+  try {
+    await prisma.emailVerification.create({
+      data: {
+        accessRequestId: request.id,
+        expiresAt: new Date(now.getTime() + 60_000),
+        tokenHash: hashVerificationToken(token),
+      },
+    });
+    await prisma.emailVerification.create({
+      data: {
+        accessRequestId: expiredRequest.id,
+        createdAt: new Date(now.getTime() - 120_000),
+        expiresAt: new Date(now.getTime() - 60_000),
+        tokenHash: hashVerificationToken(expiredToken),
+      },
+    });
+
+    await expect(
+      consumeEmailVerification(expiredToken, consumeDependencies),
+    ).resolves.toBe(false);
+
+    const doubleClick = await Promise.all([
+      consumeEmailVerification(token, consumeDependencies),
+      consumeEmailVerification(token, consumeDependencies),
+    ]);
+    expect(doubleClick.sort()).toEqual([false, true]);
+
+    const updatedRequest = await prisma.accessRequest.findUniqueOrThrow({
+      where: { id: request.id },
+    });
+    expect(updatedRequest.status).toBe('PENDING_APPROVAL');
+    expect(updatedRequest.emailVerifiedAt).not.toBeNull();
+    await expect(
+      consumeEmailVerification(token, consumeDependencies),
+    ).resolves.toBe(false);
+  } finally {
+    await prisma.accessRequest.deleteMany({
+      where: { id: { in: [request.id, expiredRequest.id] } },
+    });
   }
 });

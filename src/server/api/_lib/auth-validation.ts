@@ -19,6 +19,16 @@ export const accessRequestInputSchema = z
   })
   .strict();
 
+export const emailVerificationInputSchema = z
+  .object({
+    token: z
+      .string()
+      .min(32)
+      .max(512)
+      .regex(/^[A-Za-z0-9_-]+$/),
+  })
+  .strict();
+
 export type LoginInput = z.infer<typeof loginInputSchema>;
 export type RegisterInput = z.infer<typeof registerInputSchema>;
 export type AccessRequestInput = z.infer<typeof accessRequestInputSchema>;
