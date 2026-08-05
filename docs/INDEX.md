@@ -15,7 +15,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
-| Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Draft jusqu'à validation V3-016 |
+| Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
 | Évaluations | `ASSESSMENT_SPEC.md` | Schéma, logique serveur et tests |
 | Revue scientifique | `SCIENTIFIC_REVIEW_SPEC.md` | Vision optionnelle non persistée tant qu'aucun ticket ne l'autorise |

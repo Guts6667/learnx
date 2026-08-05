@@ -31,13 +31,22 @@ Formats MVP :
 - short answer ;
 - mini practice.
 
-Recommandation :
+Règles d'expérience :
 
-- 3 à 7 questions pour un mini-quiz ;
-- durée cible de 2 à 10 minutes ;
-- feedback immédiat ;
-- explication après chaque réponse ;
+- aucun nombre arbitraire de questions n'est imposé : la couverture de la
+  notion dicte le volume ;
+- durée cible de 2 à 10 minutes pour une validation courte ;
+- une question est affichée à la fois ;
+- la tentative complète est soumise avant d'afficher le résultat ;
+- le score et la correction détaillée apparaissent après la soumission ;
+- aucun feedback révélateur ni explication de correction n'apparaît pendant la
+  tentative ;
 - seuil par défaut : 70 %.
+
+Une mini-évaluation cible une notion précise. Un quiz consolide plusieurs acquis
+d'une leçon. Ils ne doivent pas représenter deux fois la même intention
+pédagogique. Les tentatives et leurs corrections restent consultables ; le
+serveur est l'unique autorité de réussite et de progression.
 
 ## Évaluation finale par étape
 

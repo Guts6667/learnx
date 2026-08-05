@@ -2,18 +2,18 @@
 
 ## Statut
 
-- Version : 0.1.0
-- Statut : **DRAFT À VALIDER**
+- Version : 1.0.0
+- Statut : **APPROUVÉE**
+- Approbation produit : 5 août 2026
 - Ticket gate : `V3-016`
 - Baseline : V2 clôturée à `ba3c352`
 - Autorité pédagogique : responsable pédagogique LearnX
 
-Ce document rassemble exclusivement les décisions produit et pédagogiques déjà
-transmises. Il ne vaut pas encore autorisation d'implémenter V3-017 à V3-022.
-Le responsable pédagogique doit le relire, résoudre les décisions ouvertes et
-l'approuver explicitement. Codex implémente ensuite l'ordre fourni, signale les
-contraintes et propose des variantes techniques ; il ne déduit jamais la
-pédagogie depuis l'interface ou les tables existantes.
+Ce document rassemble les décisions produit et pédagogiques approuvées et
+autorise l'implémentation de V3-017 à V3-022 dans l'ordre de leurs dépendances.
+Codex implémente l'ordre fourni, signale les contraintes et propose des variantes
+techniques ; il ne déduit jamais la pédagogie depuis l'interface ou les tables
+existantes.
 
 ## 1. Principes
 
@@ -52,7 +52,8 @@ pédagogie depuis l'interface ou les tables existantes.
 - À la première visite, l'étape ouverte est la première non terminée ; l'étape 1
   n'est choisie que lorsqu'aucune progression n'existe.
 - Aux visites suivantes, la dernière étape développée est restaurée pour ce
-  compte et ce programme. Cette préférence UI reste distincte de la progression.
+  compte et ce programme depuis une préférence serveur. Cette préférence UI
+  reste distincte de la progression.
 - Une étape repliée affiche uniquement : numéro, titre, durée,
   progression/statut compact et chevron. Elle n'affiche jamais le nombre
   d'activités ni les descriptions détaillées.
@@ -72,8 +73,9 @@ pédagogie depuis l'interface ou les tables existantes.
 
 ### 3.1 Autorité de l'ordre
 
-Chaque future `PEDAGOGY_SPEC` fournit explicitement l'ordre inter-types. Les
-types supportés par la séquence sont :
+Chaque future `PEDAGOGY_SPEC` fournit explicitement l'ordre inter-types. Le
+champ `lesson.sequence` contient une liste ordonnée de références `{kind, key}`
+vers des identités stables. Les types authorables sont :
 
 ```text
 CONTENT
@@ -82,11 +84,11 @@ TASK
 CONCEPT_ASSESSMENT
 EXERCISE
 QUIZ
-COMPLETE
 ```
 
-`COMPLETE` est terminal. Les sources bibliographiques ne figurent pas dans
-cette liste ; elles sont attachées aux contenus soutenus.
+`COMPLETE` n'est jamais authoré : le moteur l'ajoute comme état terminal après
+la dernière activité canonique. Les sources bibliographiques ne figurent pas
+dans cette liste ; elles sont attachées aux contenus soutenus.
 
 Une séquence valide peut par exemple être :
 
@@ -97,7 +99,6 @@ LIRE ressource A
 → MINI-ÉVALUATION
 → CONTENU 2
 → EXERCICE
-→ COMPLETE
 ```
 
 Cet exemple démontre une capacité du moteur, pas un patron à appliquer à toutes
@@ -158,7 +159,10 @@ La spec fournit, sans complétion automatique par Codex :
 - destination et éventuelle alternative accessible.
 
 La carte affiche ces informations, un badge `Obligatoire`, un CTA adapté comme
-`Ouvrir la lecture`, puis l'état `Consultée` ou `Terminée`. Après consultation,
+`Ouvrir la lecture`, puis l'état `Consultée`. La navigation linéaire reste libre
+si cette confirmation manque, mais le serveur expose `canComplete = false` et
+refuse `Terminer la leçon` jusqu'à la déclaration de consultation. Cette
+déclaration ne mesure ni ne prétend mesurer la compréhension. Après consultation,
 l'apprenant revient dans la séquence à l'activité pertinente.
 
 ### 4.4 Ressource facultative
@@ -188,9 +192,22 @@ affiche un état explicite et ne simule jamais la consultation réussie.
   suppose une lecture externe devient autoportant ou la lecture déjà modélisée
   reçoit une consigne et un placement explicites.
 
-## 6. Activité courante et navigation finale
+## 6. Évaluations et remédiation
 
-### 6.1 Ordre du document
+- Une mini-évaluation valide une notion ciblée ; un quiz consolide plusieurs
+  acquis de la leçon. Ils ne dupliquent jamais la même intention pédagogique.
+- L'expérience actuelle est conservée : une question à la fois, soumission de
+  l'évaluation complète, puis score et correction détaillée.
+- Aucune réponse révélatrice ni correction immédiate n'est affichée pendant la
+  tentative. Les tentatives et leur historique sont conservés.
+- Le serveur reste l'unique autorité de réussite, de verrouillage et de
+  progression.
+- Après un échec, la spec peut authorer une remédiation vers un contenu, une
+  ressource ou un exercice interne précis avant une nouvelle tentative.
+
+## 7. Activité courante et navigation finale
+
+### 7.1 Ordre du document
 
 Pour chaque activité, l'ordre du flux est :
 
@@ -200,7 +217,7 @@ Pour chaque activité, l'ordre du flux est :
 4. bouton secondaire `Sommaire de la leçon` ;
 5. ligne finale `Précédent` à gauche et action droite à droite.
 
-### 6.2 Comportement
+### 7.2 Comportement
 
 - La navigation pédagogique n'est jamais `sticky` ou `fixed` ; elle reste dans
   le flux, sous le contenu, sans recouvrir la barre principale.
@@ -209,24 +226,26 @@ Pour chaque activité, l'ordre du flux est :
   est indisponible.
 - `Continuer` mène à l'activité suivante exacte, même si elle est une ressource
   obligatoire ; il ne saute pas les types.
-- À la dernière activité, le libellé devient `Terminer la leçon` ou
-  `Leçon suivante` selon l'état fourni par le serveur.
+- À la dernière activité d'une leçon non terminée, l'unique emplacement primaire
+  affiche `Terminer la leçon`. Après succès serveur, ce même emplacement devient
+  `Leçon suivante` lorsqu'une destination existe.
 - Le sommaire ouvre toutes les activités autorisées, montre leur position,
   verbe, titre et état, puis restitue le focus à la fermeture.
 
-## 7. Prise de note contextuelle
+## 8. Prise de note contextuelle
 
 - `Prendre une note` est un vrai bouton secondaire/outlined avec icône note ou
   crayon, cible tactile d'au moins 44 px.
 - Il apparaît dans le flux normal avant la navigation finale et ne concurrence
   jamais l'action primaire.
 - Un panneau ou tiroir s'ouvre sans perdre la position de lecture.
-- Le produit annonce avant sauvegarde que la note sera liée à la leçon ou à
-  l'activité courante.
+- Toute note est liée à la leçon. Elle peut aussi référencer l'activité courante
+  lorsque l'identité stable introduite par V3-017 existe ; une petite migration
+  additive est acceptée pour cette liaison facultative.
 - Après sauvegarde, une confirmation accessible et `Voir la note` sont proposés.
 - L'autosauvegarde, la propriété et l'idempotence existantes restent applicables.
 
-## 8. Reprise et progression
+## 9. Reprise et progression
 
 - Aujourd'hui et `Continuer` consomment la recommandation/activité serveur.
 - Le dernier emplacement significatif est mémorisé au niveau activité sans
@@ -238,9 +257,12 @@ Pour chaque activité, l'ordre du flux est :
 - Recommencer un module crée une nouvelle reprise et n'hérite pas arbitrairement
   des anciennes tentatives ; les notes sont conservées.
 - Progression leçon/module/étape/programme compte chaque activité canonique une
-  seule fois.
+  seule fois. Une ressource ne compte jamais comme activité ni preuve de
+  maîtrise ; son caractère obligatoire affecte `canComplete`, pas le pourcentage.
+- Programme et étape conservent leurs valeurs serveur existantes. Le module
+  reçoit une agrégation serveur dédiée ; le frontend ne recalcule aucun niveau.
 
-## 9. États
+## 10. États
 
 ### Brouillon
 
@@ -269,7 +291,7 @@ Pour chaque activité, l'ordre du flux est :
 - Recalcul serveur d'une destination sûre.
 - Aucun message ne révèle un brouillon non autorisé.
 
-## 10. Mobile et accessibilité
+## 11. Mobile et accessibilité
 
 - Colonne unique à 320/390 px, aucun débordement horizontal.
 - La navigation principale peut rester fixe ; le contenu réserve barre basse et
@@ -285,7 +307,7 @@ Pour chaque activité, l'ordre du flux est :
 - Desktop peut employer un contexte latéral, sans modifier l'ordre ni créer une
   seconde source de vérité.
 
-## 11. Responsabilités
+## 12. Responsabilités
 
 ### Responsable pédagogique
 
@@ -303,9 +325,9 @@ Pour chaque activité, l'ordre du flux est :
 - Implémente fidèlement, signale une impossibilité et propose des options
   techniques sans trancher la pédagogie.
 
-## 12. Critères d'acceptation de la spec
+## 13. Critères d'acceptation de la spec
 
-La spec pourra passer de `DRAFT À VALIDER` à `APPROUVÉE` lorsque :
+La spec est approuvée parce que :
 
 - le responsable pédagogique confirme chaque section et les libellés terminaux ;
 - le contrat de séquence authorée est défini pour les futures
@@ -317,26 +339,34 @@ La spec pourra passer de `DRAFT À VALIDER` à `APPROUVÉE` lorsque :
 - reprise, progression et recommencement ne se contredisent pas ;
 - mobile, clavier, focus, lecteur d'écran et texte 200 % ont des critères
   vérifiables ;
-- les décisions ouvertes ci-dessous sont résolues.
+- les décisions produit ci-dessous sont résolues et font autorité.
 
-## 13. Décisions encore ouvertes pour validation produit
+## 14. Décisions produit résolues
 
-1. Persistance exacte de la dernière étape développée : locale privée ou serveur.
-2. Libellé terminal précis selon les cas `Terminer la leçon` et
-   `Leçon suivante`.
-3. Comportement de progression d'une ressource obligatoire : consultation
-   déclarative, confirmation explicite ou autre règle fournie pédagogiquement.
-4. Forme exacte du contrat authoré dans les `PEDAGOGY_SPEC` et stratégie
-   d'identité stable.
-5. Comportement des activités facultatives déjà commencées dans la reprise.
-6. Périmètre de liaison d'une note : leçon seulement ou activité précise lorsque
-   le modèle le permet.
+1. La dernière étape développée est persistée côté serveur par compte et
+   programme, séparément de la progression.
+2. Le terminal utilise un seul emplacement : `Terminer la leçon`, puis
+   `Leçon suivante` après succès serveur lorsqu'elle existe.
+3. Une ressource obligatoire exige une consultation déclarée pour terminer la
+   leçon, sans bloquer la navigation ni prétendre mesurer la compréhension.
+4. `lesson.sequence` est une liste ordonnée `{kind, key}` ; `COMPLETE` est
+   ajouté par le moteur et n'est pas authoré.
+5. Une activité facultative commencée reste accessible sans remplacer la
+   prochaine obligation recommandée par le serveur.
+6. Une note est liée à la leçon et peut facultativement cibler une identité
+   stable d'activité.
+7. Les mini-évaluations ciblent une notion, les quiz consolident la leçon ; la
+   correction détaillée n'apparaît qu'après soumission complète.
 
-## 14. Tests attendus après approbation
+## 15. Tests attendus après approbation
 
 - Ordre inter-types, backfill V2 exact, reprise et progression.
 - Ressource obligatoire/facultative, lien externe, indisponibilité et retour.
+- Blocage serveur de `Terminer la leçon` sans consultation déclarée, sans
+  blocage de la navigation linéaire.
 - Sources au point d'usage, liens sûrs et absence de double comptage.
+- Mini-évaluation/quiz, absence de feedback révélateur avant soumission,
+  correction finale et historique des tentatives.
 - Sommaire, Précédent/Continuer, première/dernière activité et deep links.
 - Brouillon/public, verrouillage, utilisateur non autorisé et deux comptes.
 - Notes contextuelles, autosauvegarde, erreur et idempotence.

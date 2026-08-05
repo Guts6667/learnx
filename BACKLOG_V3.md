@@ -2,11 +2,13 @@
 
 ## Statut et autorité
 
-- Version : 1.0.0
+- Version : 1.1.0
 - Statut : **plan V3 validé — implémentation ticket par ticket**
 - Baseline réauditée : `ba3c352` (`main`, `dev` et `staging` alignées)
-- Date : 4 août 2026
-- Source de cadrage : décisions produit validées après clôture V2
+- Date : 5 août 2026
+- Source de cadrage : décisions produit validées après clôture V2, audit UX et
+  pédagogique de Claude, puis arbitrages du responsable produit
+- Dernier ticket livré sur `dev` : `V3-012` à `1002cff`
 
 Ce backlog remplace le brouillon V3 antérieur. Il ordonne la transformation de
 LearnX en plateforme multi-utilisateur sans transformer V3 en vague de
@@ -57,6 +59,12 @@ complète. La publication pédagogique ne requiert jamais une revue scientifique
 10. Sources et ressources sont déjà distinctes : aucune migration n'est créée
     uniquement pour les séparer.
 11. Aucun P0/P1 sécurité connu ne reste ouvert à la clôture V3.
+12. Une ressource obligatoire peut être dépassée dans la navigation, mais sa
+    consultation déclarée reste une précondition serveur de fin de leçon ; elle
+    ne prouve jamais la compréhension et ne compte pas comme activité maîtrisée.
+13. Les évaluations conservent l'expérience actuelle : une question à la fois,
+    soumission de l'ensemble, puis score et correction détaillée ; aucune réponse
+    correcte n'est révélée avant la soumission complète.
 
 ## Preuves de l'état `ba3c352`
 
@@ -72,7 +80,7 @@ complète. La publication pédagogique ne requiert jamais une revue scientifique
 - La V2 est clôturée ; sa branche Neon de sauvegarde reste disponible pendant
   la stabilisation.
 
-## Machine d'états de compte cible à confirmer par V3-001
+## Machine d'états de compte retenue par V3-001 et implémentée par V3-002
 
 ```text
 demande créée
@@ -92,10 +100,9 @@ PENDING_EMAIL ── vérifiée ──► PENDING_APPROVAL
                                     réactivation ────┘
 ```
 
-La décision privilégiée est de séparer demande, invitation et compte afin de ne
+La décision retenue sépare demande, invitation et compte afin de ne
 pas rendre `passwordHash` artificiellement nullable. `ACTIVE` et `SUSPENDED`
 décrivent un `User`; les états antérieurs décrivent des enregistrements dédiés.
-V3-001 doit comparer cette option aux alternatives avant migration.
 
 ## Matrice rôles/capacités cible
 
@@ -144,7 +151,7 @@ dépendances sont satisfaites et que chaque ticket garde un diff autonome.
 
 **Priorité : P0. Dépendances : V2 clôturée à `ba3c352`.**
 
-**Statut : livré par `ADR_001_MULTI_USER_ACCESS.md`.**
+**Statut : livré par `ADR_001_MULTI_USER_ACCESS.md` à `bcd9cee`.**
 
 ### Périmètre
 
@@ -181,8 +188,9 @@ dépendances sont satisfaites et que chaque ticket garde un diff autonome.
 
 **Priorité : P0. Dépendances : V3-001.**
 
-**Statut : implémenté sur `dev` — migration additive à valider sur une branche
-Neon isolée avant toute promotion.**
+**Statut : implémenté sur `dev` à `f6e6fe6` ; fixture d'intégration corrigée à
+`f566fab` — migration additive à valider sur une branche Neon isolée avant toute
+promotion.**
 
 ### Périmètre
 
@@ -217,8 +225,8 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-001 et V3-002.**
 
-**Statut : implémenté sur `dev` — migration additive à valider sur une branche
-Neon isolée avant toute promotion.**
+**Statut : implémenté sur `dev` à `3c82c31` — migration additive à valider sur
+une branche Neon isolée avant toute promotion.**
 
 ### Périmètre
 
@@ -253,6 +261,8 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-002 et V3-003.**
 
+**Statut : implémenté sur `dev` à `edede1d`.**
+
 ### Périmètre
 
 - Formulaire sans mot de passe créant une demande `PENDING_EMAIL`.
@@ -283,6 +293,10 @@ Neon isolée avant toute promotion.**
 ## V3-005 — Vérification e-mail et fournisseur
 
 **Priorité : P0. Dépendances : V3-004 et choix fournisseur.**
+
+**Statut : implémenté sur `dev` à `d3cb40d` avec adaptateur Resend ; la
+configuration de production et la délivrabilité restent des décisions
+d'exploitation.**
 
 ### Périmètre
 
@@ -315,6 +329,8 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-003 et V3-005.**
 
+**Statut : implémenté sur `dev` à `8053804`.**
+
 ### Périmètre
 
 - Liste admin paginée/filtrable des demandes vérifiées.
@@ -344,6 +360,8 @@ Neon isolée avant toute promotion.**
 ## V3-007 — Invitation one-shot, mot de passe et activation
 
 **Priorité : P0. Dépendances : V3-006.**
+
+**Statut : implémenté sur `dev` à `db8e7c5`.**
 
 ### Périmètre
 
@@ -376,6 +394,8 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-003 et V3-007.**
 
+**Statut : implémenté sur `dev` à `c097b84`.**
+
 ### Périmètre
 
 - Suspendre/réactiver un compte et révoquer atomiquement toutes ses sessions.
@@ -403,6 +423,9 @@ Neon isolée avant toute promotion.**
 ## V3-009 — Propriété, visibilité et publication séparées
 
 **Priorité : P0. Dépendances : V3-001 et V3-003.**
+
+**Statut : implémenté sur `dev` à `87fc6e0` avec les visibilités `PRIVATE` et
+`PUBLIC` ; `UNLISTED` n'est pas retenu.**
 
 ### Périmètre
 
@@ -434,6 +457,9 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-009.**
 
+**Statut : implémenté sur `dev` à `adc6d6c` par snapshot JSON immuable de
+`ProgramVersion`.**
+
 ### Périmètre
 
 - Version immuable minimale d'un programme publié et identité stable des objets
@@ -463,6 +489,9 @@ Neon isolée avant toute promotion.**
 ## V3-011 — Enrollments et migration des accès existants
 
 **Priorité : P0. Dépendances : V3-009 et V3-010.**
+
+**Statut : implémenté sur `dev` à `05276f3` ; l'enrollment référence la version
+suivie et la désinscription préserve les données personnelles.**
 
 ### Périmètre
 
@@ -494,7 +523,7 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-003, V3-009 et V3-011.**
 
-**Statut : implémenté sur `dev` — aucune migration de schéma.**
+**Statut : implémenté sur `dev` à `1002cff` — aucune migration de schéma.**
 
 ### Périmètre
 
@@ -611,11 +640,14 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0 produit. Dépendances : validation du responsable pédagogique.**
 
+**Statut : arbitrages produit validés ; `LEARNING_FLOW_V3_SPEC.md` devient la
+source d'autorité approuvée pour V3-017 à V3-022.**
+
 ### Périmètre
 
 - Finaliser `LEARNING_FLOW_V3_SPEC.md` comme source d'autorité sur orientation,
   timeline, séquence authorée, ressources, sources, notes, navigation, reprise,
-  progression, mobile et accessibilité.
+  évaluations, remédiation, progression, mobile et accessibilité.
 - Résoudre chaque décision ouverte sans inventer de placement de contenu.
 
 ### Hors périmètre
@@ -644,7 +676,10 @@ Neon isolée avant toute promotion.**
 ### Périmètre
 
 - Modéliser l'ordre global explicitement authoré de `CONTENT`, `RESOURCE`,
-  `TASK`, `CONCEPT_ASSESSMENT`, `EXERCISE`, `QUIZ`; `COMPLETE` reste terminal.
+  `TASK`, `CONCEPT_ASSESSMENT`, `EXERCISE` et `QUIZ` ; `COMPLETE` est un état
+  terminal ajouté par le moteur.
+- Étendre les futures `PEDAGOGY_SPEC` avec `lesson.sequence`, une liste ordonnée
+  de références `{kind, key}` vers des identités de contenu stables.
 - Backfiller un ordre reproduisant exactement V2 avant tout réordonnancement.
 - Unifier sommaire, Continuer, reprise, progression et recommencement de module.
 
@@ -657,6 +692,8 @@ Neon isolée avant toute promotion.**
 - Références uniques/valides, seed idempotent et parcours V2 inchangé après
   backfill seul.
 - Une seule séquence serveur fait autorité dans toutes les routes concernées.
+- `COMPLETE` n'est pas authoré : le moteur l'ajoute uniquement comme état
+  terminal après la dernière activité canonique.
 
 ### Tests et risques
 
@@ -677,6 +714,8 @@ Neon isolée avant toute promotion.**
 
 - Faire produire/valider par le responsable pédagogique l'ordre explicite de
   chaque leçon, puis intégrer fidèlement les specs approuvées.
+- Réconcilier specs éditoriales et seed, supprimer les intentions dupliquées et
+  alterner contenus/pratiques uniquement lorsque la pertinence le justifie.
 - Auditer cohérence, sources, ressources, évaluations et progression.
 
 ### Hors périmètre
@@ -699,7 +738,7 @@ Neon isolée avant toute promotion.**
 
 ## V3-019 — Timeline et accordéon Programme compact
 
-**Priorité : P1. Dépendances : V3-014 et V3-016.**
+**Priorité : P1. Dépendances : V3-014, V3-016 et agrégation serveur du module.**
 
 ### Périmètre
 
@@ -707,6 +746,9 @@ Neon isolée avant toute promotion.**
   terminée, puis restauration de la dernière étape ouverte par compte/programme.
 - Repliée : numéro, titre, durée, progression/statut et chevron, sans nombre
   d'activités. Développée : résumé, modules compacts et CTA.
+- Les ressources ne comptent jamais comme activités ni comme preuves de
+  maîtrise. Programme et étape réutilisent leurs valeurs serveur existantes ;
+  le module reçoit une agrégation serveur dédiée.
 
 ### Hors périmètre
 
@@ -726,7 +768,8 @@ Neon isolée avant toute promotion.**
 
 ### Migration et rollback
 
-- Préférence locale privée ou modèle minimal justifié ; rollback vers liste V2.
+- Préférence serveur minimale par compte et programme, séparée de la
+  progression ; rollback vers liste V2 sans effacer cette préférence.
 
 ## V3-020 — Ressources guidées et sources au point d'usage
 
@@ -738,6 +781,12 @@ Neon isolée avant toute promotion.**
   authorée avec verbe, objectif, périmètre, consigne, durée, statut et CTA.
 - Ressource facultative non bloquante ; source bibliographique secondaire et
   repliable après le contenu qu'elle soutient.
+- La navigation reste libre après une ressource obligatoire non confirmée, mais
+  le serveur expose `canComplete = false` et refuse `Terminer la leçon` jusqu'à
+  la déclaration de consultation. Cette déclaration ne prétend jamais mesurer
+  la compréhension.
+- Une remédiation peut cibler un contenu, une ressource ou un exercice interne
+  explicitement authoré.
 - Auditer les lectures implicites du programme psychologie.
 
 ### Hors périmètre
@@ -770,6 +819,9 @@ Neon isolée avant toute promotion.**
 - Ordre normal : activité, ressources/sources, note, Sommaire, puis
   Précédent/Continuer en bas ; aucune navigation pédagogique sticky/fixed.
 - Un seul Continuer ; fin explicite `Terminer la leçon` ou `Leçon suivante`.
+- Sur la dernière activité non terminée, l'emplacement unique affiche
+  `Terminer la leçon`; après succès serveur, ce même emplacement devient
+  `Leçon suivante` lorsqu'une destination existe.
 
 ### Hors périmètre
 
@@ -792,12 +844,14 @@ Neon isolée avant toute promotion.**
 
 ## V3-022 — Prise de note identifiable et panneau contextuel
 
-**Priorité : P1. Dépendances : V3-016 et V3-021.**
+**Priorité : P1. Dépendances : V3-016, V3-017 et V3-021.**
 
 ### Périmètre
 
 - Vrai bouton secondaire `Prendre une note` avec icône, avant la navigation.
 - Panneau sans perte de position, liaison annoncée, confirmation et `Voir la note`.
+- La liaison à la leçon est obligatoire ; la liaison à l'activité est
+  facultative lorsque son identité stable existe.
 
 ### Hors périmètre
 
@@ -815,7 +869,8 @@ Neon isolée avant toute promotion.**
 
 ### Migration et rollback
 
-- Aucune migration attendue ; réutiliser Note.
+- Réutiliser Note ; une petite migration additive est acceptée uniquement pour
+  la liaison facultative à l'identité stable d'activité.
 
 ## V3-023 — Fondation i18n de l'interface
 
@@ -1144,22 +1199,28 @@ Neon isolée avant toute promotion.**
 - Sauvegarde Neon vérifiée. Roll-forward prioritaire ; restauration DB + code
   coordonnée si le schéma n'est pas compatible N-1.
 
-## Décisions ouvertes
+## Décisions produit et techniques résolues
 
-1. Modèle exact demande/invitation/compte : décision V3-001.
-2. Fournisseur e-mail, domaine, région, délivrabilité, webhook et coût : V3-005.
-3. Rétention/anonymisation des demandes refusées et nouvelle demande : V3-001/006.
-4. Intention de rôle demandée ou rôle attribué uniquement par Admin : V3-006.
-5. Besoin de visibilité `UNLISTED` : V3-009.
-6. Version suivie par enrollment et sémantique de désinscription : V3-010/011.
-7. Snapshot JSON ou modèle normalisé minimal de version : V3-010.
-8. Place d'Explorer dans la navigation : V3-014.
-9. Stockage de la préférence d'étape ouverte : V3-019.
-10. Stratégie URL/slug multilingue compatible avec les liens français : V3-024/025.
-11. Fourniture et validation de `LEARNING_FLOW_V3_SPEC.md` : V3-016.
-12. Le futur programme du frère de Rayan reste conditionné à un brief complet,
-    au schéma final des specs et au gabarit sourcing/QA ; aucun sujet ni contenu
-    n'est inventé par Codex.
+1. Demande, invitation et compte sont des états distincts ; un utilisateur est
+   actif ou suspendu.
+2. Le rôle est attribué uniquement par Admin lors de l'acceptation.
+3. Les seules visibilités V3 sont `PRIVATE` et `PUBLIC`.
+4. `ProgramVersion` est un snapshot JSON immuable et l'enrollment référence la
+   version suivie sans détruire les données lors d'une désinscription.
+5. La dernière étape ouverte est une préférence serveur par compte et programme,
+   indépendante de la progression.
+6. `LEARNING_FLOW_V3_SPEC.md` est approuvée ; son gate V3-016 est fermé.
+7. Les recommandations retenues de l'audit UX/pédagogique sont intégrées dans
+   V3-017 à V3-022, sans lot parallèle de correctifs ni placement inventé.
+
+## Décisions restant à traiter dans leur ticket
+
+1. Domaine, région, délivrabilité, webhook et coût de Resend en production :
+   exploitation de V3-005.
+2. Durée de rétention et anonymisation des demandes refusées : V3-006/V3-028.
+3. Place exacte d'Explorer dans la navigation principale : V3-014.
+4. Stratégie URL/slug multilingue compatible avec les liens français :
+   V3-024/V3-025.
 
 ## Hors périmètre V3
 
