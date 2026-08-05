@@ -2,9 +2,10 @@
 
 ## Statut
 
-- Version : 1.0.0
+- Version : 1.0.1
 - Statut : **APPROUVÉE**
 - Approbation produit : 5 août 2026
+- Revue croisée technique et documentaire : 5 août 2026
 - Ticket gate : `V3-016`
 - Baseline : V2 clôturée à `ba3c352`
 - Autorité pédagogique : responsable pédagogique LearnX
@@ -372,3 +373,36 @@ La spec est approuvée parce que :
 - Notes contextuelles, autosauvegarde, erreur et idempotence.
 - Chromium/WebKit, 320/390/desktop, axe, clavier, zoom/texte 200 %, VoiceOver et
   reduced motion.
+
+## 16. Transmission aux tickets d'implémentation
+
+La fermeture de `V3-016` approuve le contrat produit, sans modifier le flow V2.
+Chaque évolution reste livrée et réversible dans son ticket dédié :
+
+| Ticket | Responsabilité dérivée de cette spécification |
+| --- | --- |
+| `V3-017` | identité stable, séquence inter-types, backfill V2 exact et source de vérité serveur |
+| `V3-018` | ordre du programme psychologie fourni et validé par le responsable pédagogique |
+| `V3-019` | timeline Programme, préférence d'étape ouverte et agrégation Module serveur |
+| `V3-020` | ressources guidées dans la séquence et sources bibliographiques au point d'usage |
+| `V3-021` | navigation non flottante, sommaire, terminal unique et deep links stables |
+| `V3-022` | prise de note secondaire, liaison obligatoire à la leçon et liaison facultative à l'activité |
+
+La revue croisée confirme les contraintes suivantes :
+
+- le moteur V2 conserve temporairement son ordre par collections ; seul le
+  backfill de `V3-017` peut introduire le nouveau contrat sans changer cet ordre ;
+- les routes profondes existantes de quiz, mini-évaluation et exercice restent
+  valides pendant et après la transition ;
+- `ASSESSMENT_SPEC.md` confirme la distinction mini-évaluation/quiz, la
+  soumission complète avant correction et l'autorité du serveur ;
+- `PEDAGOGY_AUTHORING_GUIDE.md` reste inchangé jusqu'à l'ajout du contrat
+  `lesson.sequence` par `V3-017` ; aucune spec pédagogique existante n'est
+  réordonnée par ce gate ;
+- les exigences de focus, clavier, lecteur d'écran, tailles tactiles, safe area,
+  réduction des animations et texte à 200 % sont des critères bloquants des
+  tickets UI concernés, pas des suppositions à compléter par le frontend.
+
+Tout écart technique découvert ultérieurement est remonté comme contrainte du
+ticket concerné. Il ne permet ni d'inventer un placement pédagogique, ni de
+modifier silencieusement cette spécification approuvée.

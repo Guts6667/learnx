@@ -646,8 +646,9 @@ suivie et la désinscription préserve les données personnelles.**
 
 **Priorité : P0 produit. Dépendances : validation du responsable pédagogique.**
 
-**Statut : arbitrages produit validés ; `LEARNING_FLOW_V3_SPEC.md` devient la
-source d'autorité approuvée pour V3-017 à V3-022.**
+**Statut : livré sur `dev` — gate produit fermé ;
+`LEARNING_FLOW_V3_SPEC.md` est la source d'autorité approuvée pour V3-017 à
+V3-022. Aucune migration ni modification applicative.**
 
 ### Périmètre
 
