@@ -617,6 +617,8 @@ suivie et la désinscription préserve les données personnelles.**
 
 **Priorité : P0. Dépendances : V3-003, V3-006 et V3-012.**
 
+**Statut : implémenté sur `dev` — aucune migration requise.**
+
 ### Périmètre
 
 - Permettre à Admin d'attribuer Créateur et rendre sa frontière observable.

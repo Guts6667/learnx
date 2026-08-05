@@ -173,6 +173,13 @@ const accountTransitionSchema = z
     expectedUpdatedAt: z.iso.datetime({ offset: true }),
   })
   .strict();
+const accountRoleTransitionSchema = z
+  .object({
+    expectedRole: z.enum(['USER', 'CREATOR']),
+    expectedUpdatedAt: z.iso.datetime({ offset: true }),
+    role: z.enum(['USER', 'CREATOR']),
+  })
+  .strict();
 const programVisibilityUpdateSchema = z
   .object({
     expectedUpdatedAt: z.iso.datetime({ offset: true }),
@@ -351,6 +358,13 @@ function handleAccountTransition(result: AccountTransitionResult) {
       409,
     );
   }
+  if (result.kind === 'ROLE_NOT_ASSIGNABLE') {
+    throw new ApiError(
+      'ACCOUNT_STATE_CONFLICT',
+      'Only learner and creator roles can be changed from this endpoint.',
+      409,
+    );
+  }
 
   return result.account;
 }
@@ -511,6 +525,26 @@ export function createAdminApp(options: AdminAppOptions = {}) {
       expectedStatus: parsed.data.expectedStatus,
       expectedUpdatedAt: new Date(parsed.data.expectedUpdatedAt),
     });
+    return context.json({ account: handleAccountTransition(result) });
+  });
+
+  app.post('/api/admin/accounts/:userId/role', async (context) => {
+    assertCapability(context.get('user').role, 'account.role.assign');
+    const userId = parseIdentifier(context.req.param('userId'));
+    const parsed = accountRoleTransitionSchema.safeParse(
+      await parseJson(context.req.raw),
+    );
+    if (!parsed.success) throw invalidRequest();
+
+    const result = await (await getAccountAdministrationService()).assignRole(
+      context.get('user').id,
+      userId,
+      {
+        expectedRole: parsed.data.expectedRole,
+        expectedUpdatedAt: new Date(parsed.data.expectedUpdatedAt),
+        role: parsed.data.role,
+      },
+    );
     return context.json({ account: handleAccountTransition(result) });
   });
 

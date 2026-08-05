@@ -190,6 +190,36 @@ describe('auth API', () => {
     );
   });
 
+  it('recharge le rôle courant sans conserver celui mis en cache à la création de session', async () => {
+    const { dependencies, users } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Future creator',
+          email: 'creator@example.com',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const user = users.get('creator@example.com');
+    if (!user) throw new Error('Expected registered user.');
+    user.role = 'CREATOR';
+
+    const sessionResponse = await app.request(
+      'http://localhost/api/auth/session',
+      { headers: { cookie: getSessionCookie(registerResponse) } },
+    );
+
+    expect(sessionResponse.status).toBe(200);
+    expect(await sessionResponse.json()).toMatchObject({
+      user: { id: user.id, role: 'CREATOR' },
+    });
+  });
+
   it('refuse un compte suspendu et invalide sa session existante', async () => {
     const { dependencies, sessions, users } = createTestDependencies();
     const app = createAuthApp({ dependencies });

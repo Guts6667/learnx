@@ -81,11 +81,13 @@ function lessonResponse() {
 describe('AdminRoute', () => {
   afterEach(() => vi.unstubAllGlobals());
 
-  it('refuse visuellement l’accès à un utilisateur non-admin', async () => {
+  it.each(['USER', 'CREATOR'] as const)(
+    'refuse visuellement l’accès au rôle %s',
+    async (role) => {
     vi.stubGlobal(
       'fetch',
       vi.fn(() =>
-        Promise.resolve(jsonResponse({ user: { ...adminUser, role: 'USER' } })),
+        Promise.resolve(jsonResponse({ user: { ...adminUser, role } })),
       ),
     );
 
@@ -99,7 +101,8 @@ describe('AdminRoute', () => {
 
     expect(await screen.findByText('Accès refusé')).toBeInTheDocument();
     expect(screen.queryByText('Contenu secret')).not.toBeInTheDocument();
-  });
+    },
+  );
 });
 
 describe('AdminPage', () => {

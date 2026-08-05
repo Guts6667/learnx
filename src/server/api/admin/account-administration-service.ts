@@ -46,9 +46,21 @@ export type AccountTransitionResult =
   | { account: AdministrableAccount; kind: 'APPLIED' | 'IDEMPOTENT' }
   | { kind: 'CONFLICT' }
   | { kind: 'NOT_FOUND' }
+  | { kind: 'ROLE_NOT_ASSIGNABLE' }
   | { kind: 'SELF_SUSPENSION' };
 
+export interface AccountRoleTransitionInput {
+  expectedRole: Extract<Role, 'CREATOR' | 'USER'>;
+  expectedUpdatedAt: Date;
+  role: Extract<Role, 'CREATOR' | 'USER'>;
+}
+
 export interface AccountAdministrationService {
+  assignRole(
+    actorUserId: string,
+    userId: string,
+    input: AccountRoleTransitionInput,
+  ): Promise<AccountTransitionResult>;
   list(
     filters: AccountAdministrationFilters,
   ): Promise<AccountAdministrationPage>;
@@ -82,6 +94,74 @@ function sameTimestamp(left: Date, right: Date): boolean {
 export function createPrismaAccountAdministrationService(
   client: PrismaClient,
 ): AccountAdministrationService {
+  async function assignRole(
+    actorUserId: string,
+    userId: string,
+    input: AccountRoleTransitionInput,
+  ): Promise<AccountTransitionResult> {
+    return client.$transaction(async (transaction) => {
+      const existing = await transaction.user.findUnique({
+        select: accountSelect,
+        where: { id: userId },
+      });
+      if (!existing) return { kind: 'NOT_FOUND' } as const;
+      if (existing.role !== 'USER' && existing.role !== 'CREATOR') {
+        return { kind: 'ROLE_NOT_ASSIGNABLE' } as const;
+      }
+      if (existing.role === input.role) {
+        return { account: existing, kind: 'IDEMPOTENT' } as const;
+      }
+      if (
+        existing.role !== input.expectedRole ||
+        !sameTimestamp(existing.updatedAt, input.expectedUpdatedAt)
+      ) {
+        return { kind: 'CONFLICT' } as const;
+      }
+
+      const update = await transaction.user.updateMany({
+        data: { role: input.role },
+        where: {
+          id: userId,
+          role: existing.role,
+          updatedAt: existing.updatedAt,
+        },
+      });
+      if (update.count !== 1) {
+        const current = await transaction.user.findUnique({
+          select: accountSelect,
+          where: { id: userId },
+        });
+        if (current && current.role === input.role) {
+          return { account: current, kind: 'IDEMPOTENT' } as const;
+        }
+        return { kind: 'CONFLICT' } as const;
+      }
+
+      const auditValues = {
+        fromRole: existing.role,
+        previousUpdatedAt: existing.updatedAt.toISOString(),
+        toRole: input.role,
+      };
+      await writeAuditEvent(transaction, {
+        action: AuditAction.ACCOUNT_ROLE_ASSIGN,
+        actorUserId,
+        idempotencyKey: createAuditIdempotencyKey(
+          AuditAction.ACCOUNT_ROLE_ASSIGN,
+          userId,
+          auditValues,
+        ),
+        metadata: auditValues,
+        targetId: userId,
+        targetType: 'user',
+      });
+      const account = await transaction.user.findUniqueOrThrow({
+        select: accountSelect,
+        where: { id: userId },
+      });
+      return { account, kind: 'APPLIED' } as const;
+    });
+  }
+
   async function transition(
     actorUserId: string,
     userId: string,
@@ -175,6 +255,7 @@ export function createPrismaAccountAdministrationService(
   }
 
   return {
+    assignRole,
     async list(filters) {
       const where = {
         accountStatus: filters.status,

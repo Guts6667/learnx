@@ -11,6 +11,7 @@ import {
   type AccountStatus,
   type AdminAccount,
   useAdminAccountsQuery,
+  useAdminAccountRoleMutation,
   useAdminAccountStatusMutation,
 } from '@/features/admin/accounts';
 import { useSessionQuery } from '@/features/auth/session';
@@ -24,7 +25,7 @@ const roleLabels = {
 
 function mutationError(error: unknown): string {
   if (error instanceof ApiClientError && error.code === 'ACCOUNT_STATE_CONFLICT') {
-    return 'Le statut du compte a changé. Rechargez la liste avant de réessayer.';
+    return 'Le compte a changé. Rechargez la liste avant de réessayer.';
   }
   if (
     error instanceof ApiClientError &&
@@ -33,7 +34,77 @@ function mutationError(error: unknown): string {
     return 'Vous ne pouvez pas suspendre votre propre compte.';
   }
 
-  return 'Le statut du compte n’a pas pu être modifié.';
+  return 'Le compte n’a pas pu être modifié.';
+}
+
+function AccountRoleAction({ account }: { account: AdminAccount }) {
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [success, setSuccess] = useState<string>();
+  const mutation = useAdminAccountRoleMutation();
+
+  if (account.role === 'ADMIN') return null;
+
+  const isCreator = account.role === 'CREATOR';
+  const nextRole = isCreator ? 'USER' : 'CREATOR';
+
+  async function confirm() {
+    setSuccess(undefined);
+    try {
+      await mutation.execute(account, nextRole);
+      setSuccess(
+        isCreator
+          ? 'Le compte est désormais Apprenant. Ses données personnelles sont conservées.'
+          : 'Le rôle Créateur est attribué. Il reste sans accès à l’administration et aux outils éditoriaux.',
+      );
+      setIsConfirming(false);
+    } catch {
+      // The normalized mutation error is announced below.
+    }
+  }
+
+  return (
+    <div class="space-y-3 border-t border-slate-700 pt-4">
+      {!isConfirming ? (
+        <Button onClick={() => setIsConfirming(true)} variant="secondary">
+          {isCreator
+            ? 'Rétrograder en Apprenant'
+            : 'Attribuer le rôle Créateur'}
+        </Button>
+      ) : (
+        <Card class="space-y-3 bg-slate-950" role="region">
+          <h3 class="font-semibold">
+            {isCreator
+              ? 'Confirmer le rôle Apprenant'
+              : 'Confirmer le rôle Créateur'}
+          </h3>
+          <p class="text-sm leading-6 text-slate-300">
+            {isCreator
+              ? 'Les notes, progressions, tentatives et soumissions seront conservées. Le compte gardera uniquement les fonctions Apprenant.'
+              : 'Le compte conservera les fonctions Apprenant. Le rôle Créateur ne donne aucun accès à l’administration et ne permet ni création, ni édition, ni prévisualisation, ni publication avant V5.'}
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <Button
+              isLoading={mutation.isPending}
+              onClick={() => void confirm()}
+            >
+              Confirmer
+            </Button>
+            <Button onClick={() => setIsConfirming(false)} variant="ghost">
+              Annuler
+            </Button>
+          </div>
+        </Card>
+      )}
+      {success ? (
+        <p class="text-sm text-emerald-200" role="status">
+          {success}
+        </p>
+      ) : null}
+      {mutation.error ? (
+        <ErrorState description={mutationError(mutation.error)} />
+      ) : null}
+    </div>
+  );
 }
 
 function AccountAction({
@@ -152,6 +223,7 @@ function AccountCard({
             }).format(new Date(account.suspendedAt))}
           </p>
         ) : null}
+        <AccountRoleAction account={account} />
         <AccountAction
           account={account}
           isCurrentAccount={account.id === currentUserId}

@@ -90,6 +90,82 @@ describe('AdminAccountsPage', () => {
     expect(
       screen.getAllByRole('button', { name: 'Suspendre le compte' }),
     ).toHaveLength(1);
+    expect(
+      screen.getAllByRole('button', { name: 'Attribuer le rôle Créateur' }),
+    ).toHaveLength(1);
+  });
+
+  it('attribue Créateur après une confirmation qui explicite sa frontière', async () => {
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/auth/session') {
+        return Promise.resolve(jsonResponse(sessionResponse()));
+      }
+      if (path.endsWith(`/${learnerId}/role`)) {
+        return Promise.resolve(
+          jsonResponse({ account: account({ role: 'CREATOR' }) }),
+        );
+      }
+      return Promise.resolve(jsonResponse(pageResponse()));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <AdminAccountsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Attribuer le rôle Créateur',
+      }),
+    );
+    expect(screen.getByText(/aucun accès à l’administration/)).toHaveTextContent(
+      /ni création, ni édition, ni prévisualisation, ni publication avant V5/,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmer' }));
+
+    await vi.waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/admin/accounts/${learnerId}/role`,
+        expect.objectContaining({
+          body: JSON.stringify({
+            expectedRole: 'USER',
+            expectedUpdatedAt: '2026-08-05T08:00:00.000Z',
+            role: 'CREATOR',
+          }),
+          method: 'POST',
+        }),
+      );
+    });
+    expect(
+      await screen.findByText(/Le rôle Créateur est attribué/),
+    ).toBeInTheDocument();
+  });
+
+  it('propose une rétrogradation sans suppression des données personnelles', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((path: string) => {
+        if (path === '/api/auth/session') {
+          return Promise.resolve(jsonResponse(sessionResponse()));
+        }
+        return Promise.resolve(
+          jsonResponse(pageResponse([account({ role: 'CREATOR' })])),
+        );
+      }),
+    );
+
+    render(
+      <AppProviders>
+        <AdminAccountsPage />
+      </AppProviders>,
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Rétrograder en Apprenant' }),
+    );
+    expect(screen.getByText(/notes, progressions, tentatives/)).toBeInTheDocument();
   });
 
   it('confirme une suspension en annonçant la révocation et la conservation', async () => {

@@ -7,14 +7,14 @@ import {
 const actorUserId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const accountId = 'ceffb1eb-0681-4c4d-bf50-50e673f65ca4';
 
-function createFixture() {
+function createFixture(initialRole: AdministrableAccount['role'] = 'USER') {
   let account: AdministrableAccount = {
     accountStatus: 'ACTIVE',
     createdAt: new Date('2026-08-05T08:00:00.000Z'),
     displayName: 'Learner',
     email: 'learner@example.com',
     id: accountId,
-    role: 'USER',
+    role: initialRole,
     suspendedAt: null,
     updatedAt: new Date('2026-08-05T08:00:00.000Z'),
   };
@@ -59,19 +59,21 @@ function createFixture() {
       ),
       updateMany: vi.fn(
         async (input: {
-          data: {
-            accountStatus: AdministrableAccount['accountStatus'];
-            suspendedAt: Date | null;
-          };
+          data: Partial<
+            Pick<AdministrableAccount, 'accountStatus' | 'role' | 'suspendedAt'>
+          >;
           where: {
-            accountStatus: AdministrableAccount['accountStatus'];
+            accountStatus?: AdministrableAccount['accountStatus'];
             id: string;
+            role?: AdministrableAccount['role'];
             updatedAt: Date;
           };
         }) => {
           if (
             input.where.id !== account.id ||
-            input.where.accountStatus !== account.accountStatus ||
+            (input.where.accountStatus !== undefined &&
+              input.where.accountStatus !== account.accountStatus) ||
+            (input.where.role !== undefined && input.where.role !== account.role) ||
             input.where.updatedAt.getTime() !== account.updatedAt.getTime()
           ) {
             return { count: 0 };
@@ -111,6 +113,77 @@ function createFixture() {
 }
 
 describe('account administration service', () => {
+  it('attribue Créateur atomiquement, conserve les sessions et audite', async () => {
+    const fixture = createFixture();
+    const before = fixture.getAccount();
+
+    const result = await fixture.service.assignRole(actorUserId, accountId, {
+      expectedRole: 'USER',
+      expectedUpdatedAt: before.updatedAt,
+      role: 'CREATOR',
+    });
+
+    expect(result).toMatchObject({
+      account: { id: accountId, role: 'CREATOR' },
+      kind: 'APPLIED',
+    });
+    expect(fixture.sessions.size).toBe(2);
+    expect(fixture.audits).toHaveLength(1);
+    expect(fixture.audits[0]?.action).toBe('ACCOUNT_ROLE_ASSIGN');
+    expect(fixture.transaction.session.deleteMany).not.toHaveBeenCalled();
+  });
+
+  it('rend l’attribution concurrente idempotente sans dupliquer l’audit', async () => {
+    const fixture = createFixture();
+    const input = {
+      expectedRole: 'USER' as const,
+      expectedUpdatedAt: fixture.getAccount().updatedAt,
+      role: 'CREATOR' as const,
+    };
+
+    const results = await Promise.all([
+      fixture.service.assignRole(actorUserId, accountId, input),
+      fixture.service.assignRole(actorUserId, accountId, input),
+    ]);
+
+    expect(results.map((result) => result.kind).sort()).toEqual([
+      'APPLIED',
+      'IDEMPOTENT',
+    ]);
+    expect(fixture.audits).toHaveLength(1);
+  });
+
+  it('rétrograde Créateur sans supprimer ses données personnelles', async () => {
+    const fixture = createFixture('CREATOR');
+    const before = fixture.getAccount();
+
+    const result = await fixture.service.assignRole(actorUserId, accountId, {
+      expectedRole: 'CREATOR',
+      expectedUpdatedAt: before.updatedAt,
+      role: 'USER',
+    });
+
+    expect(result).toMatchObject({
+      account: { id: accountId, role: 'USER' },
+      kind: 'APPLIED',
+    });
+    expect(fixture.sessions.size).toBe(2);
+  });
+
+  it('refuse de modifier un rôle Administrateur', async () => {
+    const fixture = createFixture('ADMIN');
+
+    await expect(
+      fixture.service.assignRole(actorUserId, accountId, {
+        expectedRole: 'USER',
+        expectedUpdatedAt: fixture.getAccount().updatedAt,
+        role: 'CREATOR',
+      }),
+    ).resolves.toEqual({ kind: 'ROLE_NOT_ASSIGNABLE' });
+    expect(fixture.transaction.user.updateMany).not.toHaveBeenCalled();
+    expect(fixture.audits).toHaveLength(0);
+  });
+
   it('suspend atomiquement le compte, révoque toutes les sessions et audite', async () => {
     const fixture = createFixture();
     const before = fixture.getAccount();

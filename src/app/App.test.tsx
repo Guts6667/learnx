@@ -466,6 +466,32 @@ describe('App', () => {
     expect(adminLink.parentElement).toHaveClass('flex-col');
   });
 
+  it('ne propose aucune navigation d’administration au rôle créateur', async () => {
+    window.history.pushState({}, '', '/profile');
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            user: {
+              displayName: 'Créatrice',
+              email: 'creator@example.test',
+              id: 'creator-1',
+              role: 'CREATOR',
+            },
+          }),
+        ),
+      ),
+    );
+
+    render(<App />);
+
+    expect(await screen.findByText('creator@example.test')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Ouvrir l’administration' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('refuse la zone admin au rôle créateur sans charger ses données', async () => {
     window.history.pushState({}, '', '/admin');
     const fetchMock = vi.fn((path: string) => {

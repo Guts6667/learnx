@@ -43,6 +43,10 @@ const activeAccount: AdministrableAccount = {
 
 function createAccountAdministrationService(): AccountAdministrationService {
   return {
+    assignRole: vi.fn(async (_actorUserId, _userId, input) => ({
+      account: { ...activeAccount, role: input.role, updatedAt: new Date() },
+      kind: 'APPLIED' as const,
+    })),
     list: vi.fn(async (filters) => ({
       items: [activeAccount],
       page: filters.page,
@@ -614,6 +618,89 @@ describe('administration minimale', () => {
     expect(await response.json()).toMatchObject({
       error: { code: 'ACCOUNT_STATE_CONFLICT' },
     });
+  });
+
+  it('attribue le rôle Créateur avec une précondition explicite', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/role`,
+      {
+        body: JSON.stringify({
+          expectedRole: 'USER',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+          role: 'CREATOR',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(accountAdministrationService.assignRole).toHaveBeenCalledWith(
+      ownerId,
+      accountId,
+      {
+        expectedRole: 'USER',
+        expectedUpdatedAt: activeAccount.updatedAt,
+        role: 'CREATOR',
+      },
+    );
+  });
+
+  it('refuse toute attribution du rôle Administrateur', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/role`,
+      {
+        body: JSON.stringify({
+          expectedRole: 'USER',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+          role: 'ADMIN',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(400);
+    expect(accountAdministrationService.assignRole).not.toHaveBeenCalled();
+  });
+
+  it('interdit à Créateur de modifier directement un rôle', async () => {
+    const accountAdministrationService =
+      createAccountAdministrationService();
+    const app = createAdminApp({
+      accountAdministrationService,
+      authentication: authentication(ownerId, 'CREATOR'),
+      repository: createRepository().repository,
+    });
+    const response = await app.request(
+      `/api/admin/accounts/${accountId}/role`,
+      {
+        body: JSON.stringify({
+          expectedRole: 'USER',
+          expectedUpdatedAt: activeAccount.updatedAt.toISOString(),
+          role: 'CREATOR',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(403);
+    expect(accountAdministrationService.assignRole).not.toHaveBeenCalled();
   });
 
   it.each([
