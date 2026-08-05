@@ -1,5 +1,5 @@
 import { route } from 'preact-router';
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect, useMemo, useRef } from 'preact/hooks';
 
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
@@ -219,6 +219,7 @@ function sequenceInput(
       : undefined,
     quizzes: lesson.quizzes,
     resources: lesson.resources,
+    sequence: lesson.sequence,
     tasks: lesson.tasks,
   };
 }
@@ -233,8 +234,13 @@ function LessonWorkspace({
   const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
   const mutation = useLessonProgressMutation(lesson.id);
   const noteMutation = useNoteMutation();
+  const lastReportedActivity = useRef<string | null>(null);
+  const serverActivity = progressQuery.data?.currentActivity;
   const currentKey =
     new URLSearchParams(window.location.search).get('activity') ??
+    (serverActivity
+      ? activityKey(serverActivity.kind, serverActivity.id)
+      : null) ??
     readRememberedActivity(lesson.id);
   const sequence = useMemo(
     () =>
@@ -250,6 +256,23 @@ function LessonWorkspace({
   useEffect(() => {
     if (!current) return;
     rememberActivity(lesson.id, activityKey(current.kind, current.id));
+    const key = activityKey(current.kind, current.id);
+    if (
+      lesson.isPublished &&
+      current.kind !== 'COMPLETE' &&
+      lastReportedActivity.current !== key
+    ) {
+      lastReportedActivity.current = key;
+      void mutation
+        .mutateAsync(
+          `/api/lessons/${encodeURIComponent(lesson.id)}/location`,
+          'PATCH',
+          { id: current.id, kind: current.kind },
+        )
+        .catch(() => {
+          lastReportedActivity.current = null;
+        });
+    }
     window.requestAnimationFrame(() => {
       document
         .querySelector<HTMLElement>(
@@ -257,7 +280,7 @@ function LessonWorkspace({
         )
         ?.focus();
     });
-  }, [current, lesson.id]);
+  }, [current, lesson.id, lesson.isPublished]);
 
   if (lesson.isPublished && progressQuery.isPending) {
     return <Spinner label="Chargement du parcours de la leçon" />;
@@ -416,10 +439,7 @@ function LessonWorkspace({
               task={task}
             />
           ) : null}
-          {current &&
-          !block &&
-          !task &&
-          current.kind !== 'COMPLETE' ? (
+          {current && !block && !task && current.kind !== 'COMPLETE' ? (
             <SecondaryActivity activity={current} />
           ) : null}
           {current?.kind === 'COMPLETE' ? (

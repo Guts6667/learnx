@@ -378,6 +378,11 @@ async function installJourneyApi(page: Page) {
       return;
     }
 
+    if (method === 'PATCH' && path === '/api/lessons/lesson-1/location') {
+      await respond(lessonProgress(state));
+      return;
+    }
+
     if (method === 'PATCH' && path === '/api/tasks/task-1') {
       const input = request.postDataJSON() as Record<string, unknown>;
       state.taskDone = input.status === 'DONE';

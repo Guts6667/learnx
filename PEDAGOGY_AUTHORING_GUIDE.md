@@ -87,12 +87,18 @@ Règles :
   "contentBlocks": [],
   "resources": [],
   "concepts": [],
-  "tasks": []
+  "tasks": [],
+  "quizzes": [],
+  "sequence": [
+    { "kind": "CONTENT", "key": "content-definition" },
+    { "kind": "TASK", "key": "read-reference" },
+    { "kind": "CONCEPT_ASSESSMENT", "key": "concept-demarche-assessment" }
+  ]
 }
 ```
 
 Pour le seed, `summary`, `objectives`, `prerequisites`, `estimatedMinutes`,
-`contentBlocks`, `resources`, `concepts` et `tasks` ont des valeurs par défaut ou
+`contentBlocks`, `resources`, `concepts`, `tasks` et `quizzes` ont des valeurs par défaut ou
 sont techniquement optionnels. Pour une leçon déclarée complète, tous les champs
 ci-dessus sont néanmoins obligatoires. Seul `prerequisites` peut être vide sans
 justification. Les quatre listes pédagogiques ne peuvent pas être vides pour une
@@ -104,7 +110,8 @@ route vers un seul modèle canonique :
 - `reading`, `watching`, `listening`, `checklist` deviennent une `Task` légère ;
 - `writing`, `practice`, `reflection`, `project` deviennent un `Exercise` avec
   production ou réponse ;
-- une `Resource` reste un support et ne compte jamais comme activité autonome.
+- une `Resource` reste un support guidé : elle peut être référencée dans la
+  séquence mais ne constitue jamais une preuve de maîtrise.
 
 Forme d'une entrée :
 
@@ -121,9 +128,9 @@ Forme d'une entrée :
 }
 ```
 
-`key` est stable dans une leçon. Les anciens sidecars sans clé restent
-importables avec `activity-{position}`, mais toute nouvelle spécification doit
-la fournir. `resourceKeys` ne contient que des clés présentes dans
+`key` est stable dans une leçon et obligatoire. Une clé technique créée par le
+backfill V2 est persistée et immuable : elle doit être reportée explicitement
+dans le seed et la spécification avant tout réordonnancement. `resourceKeys` ne contient que des clés présentes dans
 `lesson.resources` et sert à afficher les supports au point d'usage d'une tâche
 passive. Une activité productive ne doit pas être dupliquée en tâche binaire.
 
@@ -138,6 +145,7 @@ Forme exacte :
 
 ```json
 {
+  "key": "content-definition",
   "type": "definition",
   "position": 1,
   "content": {
@@ -153,7 +161,7 @@ Types autorisés :
 rich_text | objective | definition | example | callout | quote | embed | divider
 ```
 
-`position` est un entier strictement positif, unique dans la leçon. `text` est
+`key` est immuable et unique dans la leçon. `position` est un entier strictement positif, unique dans la leçon. `text` est
 non vide. `sourceKeys` contient uniquement des clés présentes dans
 `lesson.resources`. Il est obligatoire pour tout bloc de connaissance
 publiable et vide seulement lorsqu'un `notApplicableReason` valide existe dans
@@ -211,12 +219,16 @@ Forme exacte :
     "openstax-psychology-2e-1-1"
   ],
   "assessment": {
+    "key": "concept-demarche-assessment",
     "type": "quiz",
     "title": "Mini-évaluation — Démarche empirique",
     "questionCount": 5
   }
 }
 ```
+
+La clé de la mini-évaluation est obligatoire, stable et distincte du slug de la
+notion. La déplacer ne change jamais cette clé.
 
 Types d’évaluation autorisés :
 
@@ -260,6 +272,42 @@ reading | watching | listening | reflection | checklist | writing | practice | p
 `weight` est strictement positif. `position` est un entier strictement positif
 et unique dans la leçon. La description indique le livrable ou le critère de
 complétion.
+
+### 4.6 Quiz de leçon et séquence globale
+
+Un quiz authoré possède une `key` immuable, un titre, une position, un seuil,
+son caractère obligatoire et ses questions complètes. Les types de questions
+acceptés sont `true_false`, `single_choice`, `multiple_choice` et
+`short_answer`. Les options, réponses acceptées et explications suivent le même
+contrat strict que les banques de mini-évaluations.
+
+`lesson.sequence` est obligatoire dans toute nouvelle spécification. Elle
+contient exclusivement des références ordonnées de cette forme :
+
+```json
+{ "kind": "CONTENT", "key": "content-definition" }
+```
+
+Les valeurs authorables de `kind` sont :
+
+```text
+CONTENT | RESOURCE | TASK | CONCEPT_ASSESSMENT | EXERCISE | QUIZ
+```
+
+Règles bloquantes :
+
+- chaque paire `{kind, key}` est unique et cible un élément de la même leçon ;
+- chaque contenu, tâche, mini-évaluation, exercice et quiz canonique apparaît
+  exactement une fois ; une ressource peut rester hors séquence tant que sa
+  place guidée n'a pas été validée éditorialement ;
+- `COMPLETE` n'est jamais écrit : le moteur l'ajoute après le dernier élément ;
+- les références bibliographiques et `sourceKeys` ne figurent jamais dans la
+  séquence ;
+- l'ordre est fourni par le responsable pédagogique, jamais déduit du type ou
+  des positions propres à chaque collection ;
+- modifier `position` ou l'ordre ne modifie aucune clé ;
+- avant le premier réordonnancement d'une leçon V2, toutes les clés techniques
+  issues du backfill doivent être recopiées dans le seed et le sidecar concerné.
 
 ## 5. Sidecar `editorial` exact
 

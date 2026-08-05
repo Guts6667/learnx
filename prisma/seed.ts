@@ -17,7 +17,9 @@ import {
   ConceptAssessmentType,
   ConceptQuestionType,
   ContentBlockType,
+  LessonSequenceKind,
   ProgramStatus,
+  QuizQuestionType,
   ResourceType,
   StageAssessmentType,
   TaskType,
@@ -69,6 +71,7 @@ const conceptAssessmentTypeSchema = z.enum([
   'case_question',
 ]);
 const conceptAssessmentSchema = z.object({
+  key: z.string().trim().min(1),
   type: conceptAssessmentTypeSchema,
   title: z.string().trim().min(1),
   questionCount: z.number().int().positive(),
@@ -116,6 +119,7 @@ const conceptSchema = z
   });
 
 const contentBlockSchema = z.object({
+  key: z.string().trim().min(1),
   type: contentBlockTypeSchema,
   position: z.number().int().positive(),
   content: z.object({
@@ -138,7 +142,7 @@ const resourceSchema = z.object({
 });
 
 const taskSchema = z.object({
-  key: z.string().trim().min(1).optional(),
+  key: z.string().trim().min(1),
   title: z.string().trim().min(1),
   description: z.string().trim().min(1).optional(),
   type: taskTypeSchema,
@@ -146,6 +150,51 @@ const taskSchema = z.object({
   weight: z.number().positive(),
   position: z.number().int().positive(),
   resourceKeys: z.array(z.string().trim().min(1)).default([]),
+});
+
+const lessonSequenceKindSchema = z.enum([
+  'CONTENT',
+  'RESOURCE',
+  'TASK',
+  'CONCEPT_ASSESSMENT',
+  'EXERCISE',
+  'QUIZ',
+]);
+
+const lessonSequenceItemSchema = z.object({
+  kind: lessonSequenceKindSchema,
+  key: z.string().trim().min(1),
+});
+const quizQuestionTypeSchema = z.enum([
+  'true_false',
+  'single_choice',
+  'multiple_choice',
+  'short_answer',
+]);
+const quizQuestionSchema = z.object({
+  type: quizQuestionTypeSchema,
+  prompt: z.string().trim().min(1),
+  explanation: z.string().trim().min(1),
+  acceptedAnswers: z.array(z.string().trim().min(1)).default([]),
+  position: z.number().int().positive(),
+  options: z
+    .array(
+      z.object({
+        label: z.string().trim().min(1),
+        isCorrect: z.boolean(),
+        position: z.number().int().positive(),
+      }),
+    )
+    .default([]),
+});
+const quizSchema = z.object({
+  key: z.string().trim().min(1),
+  title: z.string().trim().min(1),
+  description: z.string().trim().min(1).optional(),
+  passingScore: z.number().min(0).max(100).default(70),
+  isRequired: z.boolean().default(true),
+  position: z.number().int().positive(),
+  questions: z.array(quizQuestionSchema).min(1),
 });
 
 const conceptQuestionTypeSchema = z.enum([
@@ -192,6 +241,8 @@ const lessonSchema = z.object({
   resources: z.array(resourceSchema).default([]),
   concepts: z.array(conceptSchema).default([]),
   tasks: z.array(taskSchema).default([]),
+  quizzes: z.array(quizSchema).default([]),
+  sequence: z.array(lessonSequenceItemSchema),
 });
 
 const moduleSchema = z.object({
@@ -233,15 +284,20 @@ export interface SeedProgramRepository {
     positions: number[],
   ): Promise<void>;
   pruneEditorialContent(input: {
-    contentBlockPositions: number[];
+    contentBlockKeys: string[];
     lessonId: string;
     resourceKeys: string[];
+  }): Promise<void>;
+  prepareLessonSequenceUpdate(input: {
+    lessonId: string;
+    references: Array<{ key: string; kind: LessonSequenceKind }>;
   }): Promise<void>;
   pruneCanonicalActivities(input: {
     exerciseKeys: string[];
     lessonId: string;
     taskKeys: string[];
   }): Promise<void>;
+  pruneQuizzes(lessonId: string, keys: string[]): Promise<void>;
   archiveExerciseMirror(input: {
     activityType: TaskType;
     key: string;
@@ -276,6 +332,17 @@ export interface SeedProgramRepository {
       type: ConceptQuestionType;
     }>,
   ): Promise<void>;
+  replaceQuizQuestions(
+    quizId: string,
+    questions: Array<{
+      acceptedAnswers: string[];
+      explanation: string;
+      options: Array<{ isCorrect: boolean; label: string; position: number }>;
+      position: number;
+      prompt: string;
+      type: QuizQuestionType;
+    }>,
+  ): Promise<void>;
   replaceConceptResources(
     conceptId: string,
     resourceIds: string[],
@@ -283,6 +350,7 @@ export interface SeedProgramRepository {
   upsertContentBlock(input: {
     content: Prisma.InputJsonValue;
     lessonId: string;
+    key: string;
     position: number;
     type: ContentBlockType;
   }): Promise<{ id: string }>;
@@ -298,11 +366,21 @@ export interface SeedProgramRepository {
   upsertConceptAssessment(input: {
     assessmentType: ConceptAssessmentType;
     conceptId: string;
+    key: string;
+    lessonId: string;
     isRequired: boolean;
     position: number;
     questionCount: number;
     title: string;
   }): Promise<{ id: string }>;
+  replaceLessonSequence(input: {
+    items: Array<{
+      key: string;
+      kind: LessonSequenceKind;
+      targetId: string;
+    }>;
+    lessonId: string;
+  }): Promise<void>;
   upsertLesson(input: {
     moduleId: string;
     title: string;
@@ -341,6 +419,15 @@ export interface SeedProgramRepository {
     title: string;
     type: ResourceType;
     url: string;
+  }): Promise<{ id: string }>;
+  upsertQuiz(input: {
+    description?: string;
+    isRequired: boolean;
+    key: string;
+    lessonId: string;
+    passingScore: number;
+    position: number;
+    title: string;
   }): Promise<{ id: string }>;
   upsertProgram(input: {
     ownerId: string;
@@ -387,7 +474,20 @@ function isPassiveTask(type: z.infer<typeof taskTypeSchema>): boolean {
 }
 
 function getActivityKey(task: z.infer<typeof taskSchema>): string {
-  return task.key ?? `activity-${task.position}`;
+  return task.key;
+}
+
+function toLessonSequenceKind(
+  kind: z.infer<typeof lessonSequenceKindSchema>,
+): LessonSequenceKind {
+  return {
+    CONCEPT_ASSESSMENT: LessonSequenceKind.CONCEPT_ASSESSMENT,
+    CONTENT: LessonSequenceKind.CONTENT,
+    EXERCISE: LessonSequenceKind.EXERCISE,
+    QUIZ: LessonSequenceKind.QUIZ,
+    RESOURCE: LessonSequenceKind.RESOURCE,
+    TASK: LessonSequenceKind.TASK,
+  }[kind];
 }
 
 function toConceptAssessmentType(
@@ -410,6 +510,17 @@ function toConceptQuestionType(
     short_answer: ConceptQuestionType.SHORT_ANSWER,
     single_choice: ConceptQuestionType.SINGLE_CHOICE,
     true_false: ConceptQuestionType.TRUE_FALSE,
+  }[type];
+}
+
+function toQuizQuestionType(
+  type: z.infer<typeof quizQuestionTypeSchema>,
+): QuizQuestionType {
+  return {
+    multiple_choice: QuizQuestionType.MULTIPLE_CHOICE,
+    short_answer: QuizQuestionType.SHORT_ANSWER,
+    single_choice: QuizQuestionType.SINGLE_CHOICE,
+    true_false: QuizQuestionType.TRUE_FALSE,
   }[type];
 }
 
@@ -625,6 +736,17 @@ export async function seedSampleProgram(
           estimatedMinutes: lessonData.estimatedMinutes,
           position: lessonData.position,
         });
+        await repository.prepareLessonSequenceUpdate({
+          lessonId: lesson.id,
+          references: lessonData.sequence.map((item) => ({
+            key: item.key,
+            kind: toLessonSequenceKind(item.kind),
+          })),
+        });
+        const sequenceTargets = new Map<
+          string,
+          { kind: LessonSequenceKind; targetId: string }
+        >();
 
         const hasEditorialContent =
           lessonData.contentBlocks.length > 0 ||
@@ -633,8 +755,8 @@ export async function seedSampleProgram(
 
         if (hasEditorialContent) {
           await repository.pruneEditorialContent({
-            contentBlockPositions: lessonData.contentBlocks.map(
-              (block) => block.position,
+            contentBlockKeys: lessonData.contentBlocks.map(
+              (block) => block.key,
             ),
             lessonId: lesson.id,
             resourceKeys: lessonData.resources.map((resource) => resource.key),
@@ -642,11 +764,16 @@ export async function seedSampleProgram(
         }
 
         for (const blockData of lessonData.contentBlocks) {
-          await repository.upsertContentBlock({
+          const block = await repository.upsertContentBlock({
             content: blockData.content,
+            key: blockData.key,
             lessonId: lesson.id,
             position: blockData.position,
             type: toContentBlockType(blockData.type),
+          });
+          sequenceTargets.set(`CONTENT:${blockData.key}`, {
+            kind: LessonSequenceKind.CONTENT,
+            targetId: block.id,
           });
         }
 
@@ -668,6 +795,10 @@ export async function seedSampleProgram(
           });
 
           resourceIdsByKey.set(resourceData.key, resource.id);
+          sequenceTargets.set(`RESOURCE:${resourceData.key}`, {
+            kind: LessonSequenceKind.RESOURCE,
+            targetId: resource.id,
+          });
         }
 
         const taskKeys = lessonData.tasks
@@ -681,6 +812,12 @@ export async function seedSampleProgram(
           lessonId: lesson.id,
           taskKeys,
         });
+        if (lessonData.quizzes.length > 0) {
+          await repository.pruneQuizzes(
+            lesson.id,
+            lessonData.quizzes.map((quiz) => quiz.key),
+          );
+        }
 
         for (const taskData of lessonData.tasks) {
           const activityType = toTaskType(taskData.type);
@@ -719,10 +856,14 @@ export async function seedSampleProgram(
               lessonId: lesson.id,
               resourceIds,
             });
+            sequenceTargets.set(`TASK:${activityKey}`, {
+              kind: LessonSequenceKind.TASK,
+              targetId: task.id,
+            });
             continue;
           }
 
-          await repository.upsertExercise({
+          const exercise = await repository.upsertExercise({
             activityType,
             instructions: taskData.description ?? taskData.title,
             isRequired: taskData.isRequired,
@@ -742,6 +883,37 @@ export async function seedSampleProgram(
             kind: CanonicalActivityKind.EXERCISE,
             lessonId: lesson.id,
             resourceIds: [],
+          });
+          sequenceTargets.set(`EXERCISE:${activityKey}`, {
+            kind: LessonSequenceKind.EXERCISE,
+            targetId: exercise.id,
+          });
+        }
+
+        for (const quizData of lessonData.quizzes) {
+          const quiz = await repository.upsertQuiz({
+            description: quizData.description,
+            isRequired: quizData.isRequired,
+            key: quizData.key,
+            lessonId: lesson.id,
+            passingScore: quizData.passingScore,
+            position: quizData.position,
+            title: quizData.title,
+          });
+          await repository.replaceQuizQuestions(
+            quiz.id,
+            quizData.questions.map((question) => ({
+              acceptedAnswers: question.acceptedAnswers,
+              explanation: question.explanation,
+              options: question.options,
+              position: question.position,
+              prompt: question.prompt,
+              type: toQuizQuestionType(question.type),
+            })),
+          );
+          sequenceTargets.set(`QUIZ:${quizData.key}`, {
+            kind: LessonSequenceKind.QUIZ,
+            targetId: quiz.id,
           });
         }
 
@@ -775,11 +947,20 @@ export async function seedSampleProgram(
                 conceptData.assessment.type,
               ),
               conceptId: concept.id,
+              key: conceptData.assessment.key,
+              lessonId: lesson.id,
               isRequired: conceptData.isRequired,
               position: 1,
               questionCount: conceptData.assessment.questionCount,
               title: conceptData.assessment.title,
             });
+            sequenceTargets.set(
+              `CONCEPT_ASSESSMENT:${conceptData.assessment.key}`,
+              {
+                kind: LessonSequenceKind.CONCEPT_ASSESSMENT,
+                targetId: assessment.id,
+              },
+            );
             const assessmentBankKey = [
               sampleProgram.slug,
               stageData.slug,
@@ -829,6 +1010,38 @@ export async function seedSampleProgram(
 
           await repository.replaceConceptResources(concept.id, resourceIds);
         }
+
+        const seenSequenceReferences = new Set<string>();
+        const sequenceItems = lessonData.sequence.map((item) => {
+          const reference = `${item.kind}:${item.key}`;
+          if (seenSequenceReferences.has(reference)) {
+            throw new Error(
+              `Duplicate lesson sequence reference "${reference}" for "${lessonData.slug}".`,
+            );
+          }
+          seenSequenceReferences.add(reference);
+          const target = sequenceTargets.get(reference);
+          if (!target) {
+            throw new Error(
+              `Unknown lesson sequence reference "${reference}" for "${lessonData.slug}".`,
+            );
+          }
+          return { key: item.key, ...target };
+        });
+        const missingTargets = [...sequenceTargets.keys()].filter(
+          (reference) =>
+            !reference.startsWith('RESOURCE:') &&
+            !seenSequenceReferences.has(reference),
+        );
+        if (missingTargets.length > 0) {
+          throw new Error(
+            `Lesson sequence for "${lessonData.slug}" omits canonical activities: ${missingTargets.join(', ')}.`,
+          );
+        }
+        await repository.replaceLessonSequence({
+          items: sequenceItems,
+          lessonId: lesson.id,
+        });
       }
     }
   }
@@ -844,7 +1057,34 @@ export async function seedSampleProgram(
   }
 }
 
-function createSeedProgramRepository(
+async function neutralizeObsoleteSequencePointers(
+  client: Prisma.TransactionClient,
+  input: {
+    lessonId: string;
+    references: Array<{ key: string; kind: LessonSequenceKind }>;
+  },
+): Promise<void> {
+  const obsoleteItems = await client.lessonSequenceItem.findMany({
+    where: {
+      lessonId: input.lessonId,
+      NOT: input.references.length > 0 ? { OR: input.references } : undefined,
+    },
+    select: { id: true },
+  });
+  if (obsoleteItems.length === 0) return;
+
+  await client.lessonProgress.updateMany({
+    where: {
+      lessonId: input.lessonId,
+      currentSequenceItemId: {
+        in: obsoleteItems.map((item) => item.id),
+      },
+    },
+    data: { currentSequenceItemId: null },
+  });
+}
+
+export function createSeedProgramRepository(
   client: Prisma.TransactionClient,
 ): SeedProgramRepository {
   return {
@@ -865,13 +1105,13 @@ function createSeedProgramRepository(
       await client.contentBlock.deleteMany({
         where: {
           lessonId: input.lessonId,
-          position: { notIn: input.contentBlockPositions },
+          key: { notIn: input.contentBlockKeys },
         },
       });
       await client.resource.deleteMany({
         where: {
           lessonId: input.lessonId,
-          OR: [{ key: null }, { key: { notIn: input.resourceKeys } }],
+          key: { notIn: input.resourceKeys },
         },
       });
     },
@@ -888,12 +1128,18 @@ function createSeedProgramRepository(
         where: {
           isCanonical: true,
           lessonId,
-          ...(exerciseKeys.length > 0
-            ? { key: { notIn: exerciseKeys } }
-            : {}),
+          ...(exerciseKeys.length > 0 ? { key: { notIn: exerciseKeys } } : {}),
         },
         data: { isCanonical: false },
       });
+    },
+    async pruneQuizzes(lessonId, keys) {
+      await client.quiz.deleteMany({
+        where: { lessonId, key: { notIn: keys } },
+      });
+    },
+    async prepareLessonSequenceUpdate(input) {
+      await neutralizeObsoleteSequencePointers(client, input);
     },
     async archiveExerciseMirror(input) {
       await client.exercise.updateMany({
@@ -996,25 +1242,20 @@ function createSeedProgramRepository(
           .filter(
             (item) =>
               item.userId === userId &&
-              belongsToCurrentModuleRun(
-                item.completedAt,
-                currentRun.startedAt,
-              ),
+              belongsToCurrentModuleRun(item.completedAt, currentRun.startedAt),
           )
           .map((item) => item.id);
         const sourceExerciseIds = exerciseSubmissions
           .filter(
-            (item) => item.userId === userId && item.moduleRunId === moduleRunId,
+            (item) =>
+              item.userId === userId && item.moduleRunId === moduleRunId,
           )
           .map((item) => item.id);
         const sourceResourceIds = resourceProgresses
           .filter(
             (item) =>
               item.userId === userId &&
-              belongsToCurrentModuleRun(
-                item.completedAt,
-                currentRun.startedAt,
-              ),
+              belongsToCurrentModuleRun(item.completedAt, currentRun.startedAt),
           )
           .map((item) => item.id);
         if (
@@ -1052,9 +1293,9 @@ function createSeedProgramRepository(
             )
             .map((item) => item.completedAt),
         ].filter((date): date is Date => date !== null);
-        const completedAt = dates.sort(
-          (left, right) => right.getTime() - left.getTime(),
-        )[0] ?? new Date(0);
+        const completedAt =
+          dates.sort((left, right) => right.getTime() - left.getTime())[0] ??
+          new Date(0);
         const sources = {
           exerciseSubmissionIds: sourceExerciseIds,
           resourceProgressIds: sourceResourceIds,
@@ -1126,6 +1367,41 @@ function createSeedProgramRepository(
         }
       }
     },
+    async replaceQuizQuestions(quizId, questions) {
+      await client.question.deleteMany({
+        where: {
+          quizId,
+          position: { notIn: questions.map((question) => question.position) },
+        },
+      });
+      for (const question of questions) {
+        const { options, ...questionData } = question;
+        const storedQuestion = await client.question.upsert({
+          where: { quizId_position: { position: question.position, quizId } },
+          create: { ...questionData, quizId },
+          update: questionData,
+          select: { id: true },
+        });
+        await client.questionOption.deleteMany({
+          where: {
+            questionId: storedQuestion.id,
+            position: { notIn: options.map((option) => option.position) },
+          },
+        });
+        for (const option of options) {
+          await client.questionOption.upsert({
+            where: {
+              questionId_position: {
+                position: option.position,
+                questionId: storedQuestion.id,
+              },
+            },
+            create: { ...option, questionId: storedQuestion.id },
+            update: option,
+          });
+        }
+      }
+    },
     async replaceConceptResources(conceptId, resourceIds) {
       if (resourceIds.length === 0) {
         await client.conceptResource.deleteMany({ where: { conceptId } });
@@ -1137,12 +1413,89 @@ function createSeedProgramRepository(
         data: resourceIds.map((resourceId) => ({ conceptId, resourceId })),
       });
     },
+    async replaceLessonSequence({ items, lessonId }) {
+      const references = items.map((item) => ({
+        key: item.key,
+        kind: item.kind,
+      }));
+      await neutralizeObsoleteSequencePointers(client, {
+        lessonId,
+        references,
+      });
+      await client.lessonSequenceItem.deleteMany({
+        where: {
+          lessonId,
+          NOT: references.length > 0 ? { OR: references } : undefined,
+        },
+      });
+      await client.lessonSequenceItem.updateMany({
+        where: { lessonId },
+        data: { position: { increment: 1_000_000 } },
+      });
+
+      for (const [index, item] of items.entries()) {
+        const target = {
+          contentBlockId:
+            item.kind === LessonSequenceKind.CONTENT ? item.targetId : null,
+          resourceId:
+            item.kind === LessonSequenceKind.RESOURCE ? item.targetId : null,
+          taskId: item.kind === LessonSequenceKind.TASK ? item.targetId : null,
+          conceptAssessmentId:
+            item.kind === LessonSequenceKind.CONCEPT_ASSESSMENT
+              ? item.targetId
+              : null,
+          exerciseId:
+            item.kind === LessonSequenceKind.EXERCISE ? item.targetId : null,
+          quizId: item.kind === LessonSequenceKind.QUIZ ? item.targetId : null,
+        };
+        const existing = await client.lessonSequenceItem.findUnique({
+          where: {
+            lessonId_kind_key: { key: item.key, kind: item.kind, lessonId },
+          },
+          select: {
+            conceptAssessmentId: true,
+            contentBlockId: true,
+            exerciseId: true,
+            quizId: true,
+            resourceId: true,
+            taskId: true,
+          },
+        });
+        if (
+          existing &&
+          (existing.contentBlockId !== target.contentBlockId ||
+            existing.resourceId !== target.resourceId ||
+            existing.taskId !== target.taskId ||
+            existing.conceptAssessmentId !== target.conceptAssessmentId ||
+            existing.exerciseId !== target.exerciseId ||
+            existing.quizId !== target.quizId)
+        ) {
+          throw new Error(
+            `Immutable lesson sequence target changed for "${item.kind}:${item.key}".`,
+          );
+        }
+        await client.lessonSequenceItem.upsert({
+          where: {
+            lessonId_kind_key: { key: item.key, kind: item.kind, lessonId },
+          },
+          create: {
+            ...target,
+            key: item.key,
+            kind: item.kind,
+            lessonId,
+            position: index + 1,
+          },
+          update: { position: index + 1 },
+          select: { id: true },
+        });
+      }
+    },
     async upsertContentBlock(input) {
-      const { lessonId, position, ...data } = input;
+      const { key, lessonId, position, ...data } = input;
 
       return client.contentBlock.upsert({
-        where: { lessonId_position: { lessonId, position } },
-        create: { lessonId, position, ...data },
+        where: { lessonId_key: { key, lessonId } },
+        create: { key, lessonId, position, ...data },
         update: data,
       });
     },
@@ -1156,33 +1509,13 @@ function createSeedProgramRepository(
       });
     },
     async upsertConceptAssessment(input) {
-      const existing = await client.conceptAssessment.findFirst({
-        where: { conceptId: input.conceptId, position: input.position },
-        orderBy: { id: 'asc' },
+      const { key, lessonId, ...data } = input;
+      return client.conceptAssessment.upsert({
+        where: { lessonId_key: { key, lessonId } },
+        create: { key, lessonId, ...data },
+        update: data,
         select: { id: true },
       });
-
-      if (!existing) {
-        return client.conceptAssessment.create({
-          data: input,
-          select: { id: true },
-        });
-      }
-
-      await client.conceptAssessment.deleteMany({
-        where: {
-          conceptId: input.conceptId,
-          id: { not: existing.id },
-          position: input.position,
-        },
-      });
-      const assessment = await client.conceptAssessment.update({
-        where: { id: existing.id },
-        data: input,
-        select: { id: true },
-      });
-
-      return assessment;
     },
     async upsertLesson(input) {
       const { moduleId, slug, ...data } = input;
@@ -1227,6 +1560,15 @@ function createSeedProgramRepository(
         where: { lessonId_key: { key, lessonId } },
         create: { key, lessonId, ...data },
         update: data,
+      });
+    },
+    async upsertQuiz(input) {
+      const { key, lessonId, ...data } = input;
+      return client.quiz.upsert({
+        where: { lessonId_key: { key, lessonId } },
+        create: { key, lessonId, ...data },
+        update: data,
+        select: { id: true },
       });
     },
     async upsertStage(input) {

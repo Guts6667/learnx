@@ -7,10 +7,7 @@ import {
   calculateTimelineSnapshot,
 } from '../../../lib/timeline.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
-import {
-  assertCapability,
-  requireCapability,
-} from '../_lib/authorization.js';
+import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import {
@@ -39,6 +36,17 @@ const resourceStatusSchema = z.object({
 });
 const scheduleSchema = z.object({
   targetEndAt: z.iso.datetime({ offset: true }),
+});
+const lessonLocationSchema = z.object({
+  id: z.string().uuid(),
+  kind: z.enum([
+    'CONTENT',
+    'RESOURCE',
+    'TASK',
+    'CONCEPT_ASSESSMENT',
+    'EXERCISE',
+    'QUIZ',
+  ]),
 });
 
 function notFound(): ApiError {
@@ -101,6 +109,17 @@ async function getProgressSnapshot(lessonId: string, userId: string) {
 }
 
 function serializeSnapshot(snapshot: LessonProgressSnapshot) {
+  const currentItem = snapshot.lessonProgress?.currentSequenceItem;
+  const currentTargetId = currentItem
+    ? {
+        CONCEPT_ASSESSMENT: currentItem.conceptAssessmentId,
+        CONTENT: currentItem.contentBlockId,
+        EXERCISE: currentItem.exerciseId,
+        QUIZ: currentItem.quizId,
+        RESOURCE: currentItem.resourceId,
+        TASK: currentItem.taskId,
+      }[currentItem.kind]
+    : null;
   return {
     conceptProgress: Object.fromEntries(snapshot.conceptStatusById),
     exerciseSubmissions: Object.fromEntries(snapshot.exerciseStatusById),
@@ -111,6 +130,10 @@ function serializeSnapshot(snapshot: LessonProgressSnapshot) {
       status: snapshot.lessonProgress?.status ?? LessonProgressStatus.AVAILABLE,
     },
     canComplete: snapshot.canComplete,
+    currentActivity:
+      currentItem && currentTargetId
+        ? { id: currentTargetId, kind: currentItem.kind }
+        : null,
     quizPassed: Object.fromEntries(snapshot.quizPassedById),
     resourceProgress: Object.fromEntries(snapshot.resourceStatusById),
     taskCompletions: Object.fromEntries(snapshot.taskStatusById),
@@ -402,6 +425,58 @@ progressApp.post('/api/lessons/:lessonId/start', async (context) => {
   return context.json({
     ...serializeSnapshot(snapshot),
   });
+});
+
+progressApp.patch('/api/lessons/:lessonId/location', async (context) => {
+  assertCapability(context.get('user').role, 'learning.write.own');
+  const lessonId = assertIdentifier(context.req.param('lessonId'));
+  const parsedInput = lessonLocationSchema.safeParse(
+    await parseBody(context.req.raw),
+  );
+  if (!parsedInput.success) throw invalidRequest();
+  const userId = context.get('user').id;
+  const prisma = await getPrismaClient();
+  const targetField = {
+    CONCEPT_ASSESSMENT: 'conceptAssessmentId',
+    CONTENT: 'contentBlockId',
+    EXERCISE: 'exerciseId',
+    QUIZ: 'quizId',
+    RESOURCE: 'resourceId',
+    TASK: 'taskId',
+  }[parsedInput.data.kind];
+  const item = await prisma.lessonSequenceItem.findFirst({
+    where: {
+      [targetField]: parsedInput.data.id,
+      kind: parsedInput.data.kind,
+      lessonId,
+      lesson: {
+        isPublished: true,
+        module: {
+          isPublished: true,
+          stage: {
+            isPublished: true,
+            program: learningProgramWhere(userId),
+          },
+        },
+      },
+    },
+    select: { id: true },
+  });
+  if (!item) throw notFound();
+  await prisma.lessonProgress.upsert({
+    where: { userId_lessonId: { lessonId, userId } },
+    create: {
+      currentSequenceItemId: item.id,
+      lastViewedAt: new Date(),
+      lessonId,
+      startedAt: new Date(),
+      status: LessonProgressStatus.IN_PROGRESS,
+      userId,
+    },
+    update: { currentSequenceItemId: item.id, lastViewedAt: new Date() },
+  });
+  const snapshot = await getProgressSnapshot(lessonId, userId);
+  return context.json(serializeSnapshot(snapshot));
 });
 
 progressApp.post('/api/lessons/:lessonId/complete', async (context) => {

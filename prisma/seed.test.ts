@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 
 import {
   SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
+  createSeedProgramRepository,
   readSampleProgram,
   readSampleSeed,
   seedSampleProgram,
@@ -13,6 +14,37 @@ describe('seed transaction budget', () => {
     expect(SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS).toEqual({
       maxWait: 10_000,
       timeout: 600_000,
+    });
+  });
+});
+
+describe('lesson sequence pointer cleanup', () => {
+  it('neutralise uniquement le pointeur vers une activité retirée', async () => {
+    const findMany = vi.fn(async () => [{ id: 'obsolete-sequence-item' }]);
+    const updateMany = vi.fn(async () => ({ count: 1 }));
+    const repository = createSeedProgramRepository({
+      lessonProgress: { updateMany },
+      lessonSequenceItem: { findMany },
+    } as never);
+
+    await repository.prepareLessonSequenceUpdate({
+      lessonId: 'lesson-1',
+      references: [{ key: 'content-1', kind: 'CONTENT' }],
+    });
+
+    expect(findMany).toHaveBeenCalledWith({
+      select: { id: true },
+      where: {
+        lessonId: 'lesson-1',
+        NOT: { OR: [{ key: 'content-1', kind: 'CONTENT' }] },
+      },
+    });
+    expect(updateMany).toHaveBeenCalledWith({
+      data: { currentSequenceItemId: null },
+      where: {
+        currentSequenceItemId: { in: ['obsolete-sequence-item'] },
+        lessonId: 'lesson-1',
+      },
     });
   });
 });
@@ -38,6 +70,11 @@ function createRepository() {
   const modules = new Map<string, string>();
   const lessons = new Map<string, string>();
   const resources = new Map<string, string>();
+  const quizzes = new Map<string, string>();
+  const sequences = new Map<
+    string,
+    Parameters<SeedProgramRepository['replaceLessonSequence']>[0]['items']
+  >();
   const tasks = new Map<string, string>();
 
   const repository: SeedProgramRepository = {
@@ -73,11 +110,11 @@ function createRepository() {
     },
     async pruneEditorialContent(input) {
       for (const key of contentBlocks.keys()) {
-        const [lessonId, position] = key.split(':');
+        const [lessonId, contentBlockKey] = key.split(':');
 
         if (
           lessonId === input.lessonId &&
-          !input.contentBlockPositions.includes(Number(position))
+          !input.contentBlockKeys.includes(contentBlockKey)
         ) {
           contentBlocks.delete(key);
         }
@@ -126,18 +163,31 @@ function createRepository() {
         }
       }
     },
+    async pruneQuizzes(lessonId, keys) {
+      for (const key of quizzes.keys()) {
+        const [storedLessonId, quizKey] = key.split(':');
+        if (storedLessonId === lessonId && !keys.includes(quizKey)) {
+          quizzes.delete(key);
+        }
+      }
+    },
+    async prepareLessonSequenceUpdate() {},
     async replaceConceptAssessmentQuestions(assessmentId, questions) {
       assessmentQuestions.set(assessmentId, questions);
     },
     async replaceConceptResources(conceptId, resourceIds) {
       conceptResources.set(conceptId, resourceIds);
     },
+    async replaceQuizQuestions() {},
+    async replaceLessonSequence({ items, lessonId }) {
+      sequences.set(lessonId, structuredClone(items));
+    },
     async replaceTaskResources(taskId, resourceIds) {
       taskResources.set(taskId, resourceIds);
     },
     async syncActivityCarryovers() {},
     async upsertContentBlock(input) {
-      const key = `${input.lessonId}:${input.position}`;
+      const key = `${input.lessonId}:${input.key}`;
       const id = contentBlocks.get(key) ?? `block-${contentBlocks.size + 1}`;
 
       contentBlocks.set(key, id);
@@ -192,6 +242,12 @@ function createRepository() {
       resources.set(key, id);
       return { id };
     },
+    async upsertQuiz(input) {
+      const key = `${input.lessonId}:${input.key}`;
+      const id = quizzes.get(key) ?? `quiz-${quizzes.size + 1}`;
+      quizzes.set(key, id);
+      return { id };
+    },
     async upsertStage(input) {
       const key = `${input.programId}:${input.slug}`;
       const id = stages.get(key) ?? `stage-${stages.size + 1}`;
@@ -230,6 +286,7 @@ function createRepository() {
     programs,
     repository,
     resources,
+    sequences,
     stages,
     stageAssessments,
     stageAssessmentInputs,
@@ -1219,6 +1276,7 @@ describe('sample program seed', () => {
       programs,
       repository,
       resources,
+      sequences,
       stages,
       stageAssessments,
       stageAssessmentInputs,
@@ -1257,6 +1315,13 @@ describe('sample program seed', () => {
     expect(resources).toHaveLength(400);
     expect(tasks).toHaveLength(8);
     expect(exercises).toHaveLength(202);
+    expect(sequences).toHaveLength(70);
+    expect(
+      [...sequences.values()].reduce((total, items) => total + items.length, 0),
+    ).toBe(823);
+    expect(
+      [...sequences.values()].flat().some((item) => item.kind === 'RESOURCE'),
+    ).toBe(false);
     expect([...tasks.keys()].some((key) => exercises.has(key))).toBe(false);
     expect(
       [...conceptResources.values()].reduce(

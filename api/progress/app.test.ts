@@ -4,6 +4,7 @@ const ids = {
   lesson: '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8',
   program: '87b72c3a-0b2f-4dda-b82c-5874c91df9c8',
   resource: '97476e0e-2103-40c0-8185-f7601a8d2fd2',
+  sequenceItem: '71ef6280-158f-40d0-9269-14867c93cc6d',
   stage: '7c777cf7-8f6b-421c-88f4-d17c8d530e93',
   task: 'f3c7c0f0-7cc6-49ec-b841-095696d75416',
   user: '5db401f4-5be0-438b-bc36-59d8d50cc301',
@@ -30,6 +31,8 @@ const mocks = vi.hoisted(() => {
     },
   };
   const prisma = {
+    lessonProgress: { upsert: vi.fn() },
+    lessonSequenceItem: { findFirst: vi.fn() },
     program: { findFirst: vi.fn() },
     programProgress: {
       findFirst: vi.fn(),
@@ -192,6 +195,10 @@ beforeEach(() => {
   });
   mocks.prisma.taskCompletion.upsert.mockResolvedValue({});
   mocks.prisma.resourceProgress.upsert.mockResolvedValue({});
+  mocks.prisma.lessonSequenceItem.findFirst.mockResolvedValue({
+    id: ids.sequenceItem,
+  });
+  mocks.prisma.lessonProgress.upsert.mockResolvedValue({});
 });
 
 describe('progress API', () => {
@@ -232,6 +239,42 @@ describe('progress API', () => {
       (await progressApp.request('http://localhost/api/lessons/no/progress'))
         .status,
     ).toBe(400);
+  });
+
+  it('mémorise uniquement une cible de séquence appartenant à la leçon autorisée', async () => {
+    const response = await progressApp.request(
+      `http://localhost/api/lessons/${ids.lesson}/location`,
+      jsonRequest('PATCH', { id: ids.task, kind: 'TASK' }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(mocks.prisma.lessonSequenceItem.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          kind: 'TASK',
+          lessonId: ids.lesson,
+          taskId: ids.task,
+        }),
+      }),
+    );
+    expect(mocks.prisma.lessonProgress.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({
+          currentSequenceItemId: ids.sequenceItem,
+          lessonId: ids.lesson,
+          userId: ids.user,
+        }),
+      }),
+    );
+
+    mocks.prisma.lessonSequenceItem.findFirst.mockResolvedValueOnce(null);
+    const foreignTarget = await progressApp.request(
+      `http://localhost/api/lessons/${ids.lesson}/location`,
+      jsonRequest('PATCH', { id: ids.resource, kind: 'RESOURCE' }),
+    );
+
+    expect(foreignTarget.status).toBe(404);
+    expect(mocks.prisma.lessonProgress.upsert).toHaveBeenCalledTimes(1);
   });
 
   it('sérialise un suivi encore absent et normalise les erreurs inattendues', async () => {

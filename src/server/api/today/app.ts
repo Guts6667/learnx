@@ -87,6 +87,13 @@ interface LessonRecord {
     id: string;
     title: string;
   }>;
+  sequenceItems?: Array<{
+    conceptAssessmentId: string | null;
+    exerciseId: string | null;
+    position: number;
+    quizId: string | null;
+    taskId: string | null;
+  }>;
   slug: string;
   tasks: Array<{
     completions: Array<{ status: string }>;
@@ -325,6 +332,16 @@ export function createPrismaTodayRepository(
               title: true,
             },
           },
+          sequenceItems: {
+            orderBy: { position: 'asc' },
+            select: {
+              conceptAssessmentId: true,
+              exerciseId: true,
+              position: true,
+              quizId: true,
+              taskId: true,
+            },
+          },
           slug: true,
           tasks: {
             where: { isCanonical: true, isRequired: true },
@@ -441,6 +458,17 @@ function lessonOrder(lesson: LessonRecord): number {
   );
 }
 
+function lessonSequenceOrder(lesson: LessonRecord, targetId: string): number {
+  const item = lesson.sequenceItems?.find(
+    (candidate) =>
+      candidate.taskId === targetId ||
+      candidate.conceptAssessmentId === targetId ||
+      candidate.exerciseId === targetId ||
+      candidate.quizId === targetId,
+  );
+  return lessonOrder(lesson) + (item?.position ?? 9_999) / 10_000;
+}
+
 function reviewCandidates(
   reviews: ReviewRecord[],
   now: Date,
@@ -502,7 +530,7 @@ function taskCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
       kind: 'INCOMPLETE_TASK' as const,
       lessonTitle: currentLesson.title,
       moduleTitle: currentLesson.module.title,
-      order: lessonOrder(currentLesson),
+      order: lessonSequenceOrder(currentLesson, task.id),
       programId: currentLesson.module.stage.program.id,
       programSlug: currentLesson.module.stage.program.slug,
       programTitle: currentLesson.module.stage.program.title,
@@ -533,7 +561,7 @@ function conceptAssessmentCandidates(
           kind: 'REQUIRED_QUIZ' as const,
           lessonTitle: lesson.title,
           moduleTitle: lesson.module.title,
-          order: lessonOrder(lesson),
+          order: lessonSequenceOrder(lesson, assessment.id),
           programId: lesson.module.stage.program.id,
           programSlug: lesson.module.stage.program.slug,
           programTitle: lesson.module.stage.program.title,
@@ -555,7 +583,7 @@ function quizCandidates(lessons: LessonRecord[]): RecommendationCandidate[] {
         kind: 'REQUIRED_QUIZ' as const,
         lessonTitle: lesson.title,
         moduleTitle: lesson.module.title,
-        order: lessonOrder(lesson),
+        order: lessonSequenceOrder(lesson, quiz.id),
         programId: lesson.module.stage.program.id,
         programSlug: lesson.module.stage.program.slug,
         programTitle: lesson.module.stage.program.title,
@@ -585,7 +613,7 @@ function exerciseCandidates(
         kind: 'REQUIRED_EXERCISE' as const,
         lessonTitle: lesson.title,
         moduleTitle: lesson.module.title,
-        order: lessonOrder(lesson),
+        order: lessonSequenceOrder(lesson, exercise.id),
         programId: lesson.module.stage.program.id,
         programSlug: lesson.module.stage.program.slug,
         programTitle: lesson.module.stage.program.title,

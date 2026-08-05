@@ -24,6 +24,7 @@ export function lessonActivitySequence(
       programSlug: lesson.module.stage.program.slug,
       quizzes: lesson.quizzes,
       resources: lesson.resources,
+      sequence: lesson.sequence,
       tasks: lesson.tasks,
     },
     currentKey,

@@ -10,10 +10,7 @@ import {
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
-import {
-  assertCapability,
-  requireCapability,
-} from '../_lib/authorization.js';
+import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import { getCurrentModuleRun } from '../_lib/module-runs.js';
@@ -243,6 +240,7 @@ export function createPrismaModuleRestartRepository(
                 where: { lesson: { moduleId }, userId },
                 data: {
                   completedAt: null,
+                  currentSequenceItemId: null,
                   lastViewedAt: null,
                   percent: 0,
                   startedAt: null,

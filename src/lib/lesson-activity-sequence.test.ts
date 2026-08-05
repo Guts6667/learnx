@@ -11,7 +11,13 @@ function fixture(): LessonSequenceInput {
     concepts: [
       {
         assessments: [
-          { id: 'assessment-1', isRequired: true, position: 1, title: 'Notion' },
+          {
+            id: 'assessment-1',
+            isRequired: true,
+            key: 'assessment',
+            position: 1,
+            title: 'Notion',
+          },
         ],
         id: 'concept-1',
         isRequired: true,
@@ -19,8 +25,18 @@ function fixture(): LessonSequenceInput {
         title: 'Concept',
       },
     ],
-    contentBlocks: [{ id: 'block-1', position: 1, type: 'RICH_TEXT' }],
-    exercises: [{ id: 'exercise-1', isRequired: true, position: 1, title: 'Exercice' }],
+    contentBlocks: [
+      { id: 'block-1', key: 'content', position: 1, type: 'RICH_TEXT' },
+    ],
+    exercises: [
+      {
+        id: 'exercise-1',
+        isRequired: true,
+        key: 'exercise',
+        position: 1,
+        title: 'Exercice',
+      },
+    ],
     isPublished: true,
     lessonSlug: 'lecon',
     programSlug: 'programme',
@@ -33,17 +49,34 @@ function fixture(): LessonSequenceInput {
       resourceStatus: {},
       taskStatus: {},
     },
-    quizzes: [{ id: 'quiz-1', isRequired: true, position: 1, title: 'Quiz' }],
+    quizzes: [
+      {
+        id: 'quiz-1',
+        isRequired: true,
+        key: 'quiz',
+        position: 1,
+        title: 'Quiz',
+      },
+    ],
     resources: [
       {
         estimatedMinutes: 5,
         id: 'resource-1',
         isRequired: true,
+        key: 'resource',
         position: 1,
         title: 'Ressource',
       },
     ],
-    tasks: [{ id: 'task-1', isRequired: true, position: 1, title: 'Tâche' }],
+    tasks: [
+      {
+        id: 'task-1',
+        isRequired: true,
+        key: 'task',
+        position: 1,
+        title: 'Tâche',
+      },
+    ],
   };
 }
 
@@ -77,6 +110,30 @@ describe('lesson activity sequence', () => {
     expect(sequence.next?.href).toContain('assessmentId=assessment-1');
   });
 
+  it('respecte l’ordre inter-types fourni par le serveur', () => {
+    const input = fixture();
+    input.sequence = [
+      { kind: 'RESOURCE', key: 'resource' },
+      { kind: 'CONTENT', key: 'content' },
+      { kind: 'CONCEPT_ASSESSMENT', key: 'assessment' },
+      { kind: 'TASK', key: 'task' },
+      { kind: 'QUIZ', key: 'quiz' },
+      { kind: 'EXERCISE', key: 'exercise' },
+    ];
+
+    expect(
+      buildLessonActivitySequence(input).activities.map((item) => item.kind),
+    ).toEqual([
+      'RESOURCE',
+      'CONTENT',
+      'CONCEPT_ASSESSMENT',
+      'TASK',
+      'QUIZ',
+      'EXERCISE',
+      'COMPLETE',
+    ]);
+  });
+
   it('ignore une activité optionnelle non commencée pour Continuer', () => {
     const input = fixture();
     input.resources[0].isRequired = false;
@@ -96,7 +153,9 @@ describe('lesson activity sequence', () => {
     input.progress = undefined;
     const sequence = buildLessonActivitySequence(input);
 
-    expect(sequence.activities.every((activity) => activity.status === 'PREVIEW')).toBe(true);
+    expect(
+      sequence.activities.every((activity) => activity.status === 'PREVIEW'),
+    ).toBe(true);
   });
 
   it('passe à la leçon suivante après complétion', () => {

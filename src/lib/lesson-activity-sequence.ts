@@ -1,5 +1,6 @@
 export type LessonActivityKind =
   | 'CONTENT'
+  | 'RESOURCE'
   | 'TASK'
   | 'CONCEPT_ASSESSMENT'
   | 'EXERCISE'
@@ -7,10 +8,7 @@ export type LessonActivityKind =
   | 'COMPLETE';
 
 export type LessonActivityStatus =
-  | 'AVAILABLE'
-  | 'COMPLETED'
-  | 'IN_PROGRESS'
-  | 'PREVIEW';
+  'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'PREVIEW';
 
 export interface LessonActivity {
   estimatedMinutes: number | null;
@@ -32,6 +30,7 @@ export interface LessonActivitySequence {
 interface PositionedActivity {
   id: string;
   isRequired?: boolean;
+  key?: string;
   position: number;
   title?: string | null;
 }
@@ -59,6 +58,10 @@ export interface LessonSequenceInput {
   };
   quizzes: PositionedActivity[];
   resources: Array<PositionedActivity & { estimatedMinutes?: number | null }>;
+  sequence?: Array<{
+    key: string;
+    kind: Exclude<LessonActivityKind, 'COMPLETE'>;
+  }>;
   tasks: PositionedActivity[];
 }
 
@@ -68,12 +71,14 @@ const activityLabels: Record<LessonActivityKind, string> = {
   CONTENT: 'Comprendre',
   EXERCISE: 'Mettre en pratique',
   QUIZ: 'Consolider',
+  RESOURCE: 'Consulter une ressource',
   TASK: 'Réaliser une tâche',
 };
 
 function byPosition<T extends PositionedActivity>(items: T[]): T[] {
   return [...items].sort(
-    (left, right) => left.position - right.position || left.id.localeCompare(right.id),
+    (left, right) =>
+      left.position - right.position || left.id.localeCompare(right.id),
   );
 }
 
@@ -148,11 +153,22 @@ export function buildLessonActivitySequence(
       id: block.id,
       kind: 'CONTENT',
       required: true,
+      status: status(input.isPublished, progress?.lessonStatus === 'COMPLETED'),
+      title: block.title ?? `Contenu ${block.position}`,
+    }),
+  );
+  const resources = byPosition(input.resources).map((resource) =>
+    createActivity(baseHref, {
+      estimatedMinutes: resource.estimatedMinutes ?? null,
+      id: resource.id,
+      kind: 'RESOURCE',
+      required: resource.isRequired ?? false,
       status: status(
         input.isPublished,
-        progress?.lessonStatus === 'COMPLETED',
+        progress?.resourceStatus[resource.id] === 'COMPLETED',
+        progress?.resourceStatus[resource.id] === 'STARTED',
       ),
-      title: block.title ?? `Contenu ${block.position}`,
+      title: resource.title ?? 'Ressource',
     }),
   );
   const tasks = byPosition(input.tasks).map((task) =>
@@ -227,14 +243,43 @@ export function buildLessonActivitySequence(
     ),
     title: 'Terminer la leçon',
   });
-  const activities = [
+  const legacyActivities = [
     ...content,
     ...tasks,
     ...assessments,
     ...exercises,
     ...quizzes,
-    completion,
   ];
+  const candidates = new Map<string, LessonActivity>();
+  for (const [items, source] of [
+    [content, input.contentBlocks],
+    [resources, input.resources],
+    [tasks, input.tasks],
+    [exercises, input.exercises],
+    [quizzes, input.quizzes],
+  ] as const) {
+    items.forEach((activity, index) => {
+      const item = source[index];
+      if (item?.key) candidates.set(`${activity.kind}:${item.key}`, activity);
+    });
+  }
+  let assessmentIndex = 0;
+  for (const concept of byPosition(input.concepts)) {
+    for (const assessment of byPosition(concept.assessments)) {
+      const activity = assessments[assessmentIndex++];
+      if (activity && assessment.key) {
+        candidates.set(`CONCEPT_ASSESSMENT:${assessment.key}`, activity);
+      }
+    }
+  }
+  const resolved = input.sequence?.map((item) =>
+    candidates.get(`${item.kind}:${item.key}`),
+  );
+  const canonicalActivities =
+    resolved && resolved.length > 0 && resolved.every(Boolean)
+      ? (resolved as LessonActivity[])
+      : legacyActivities;
+  const activities = [...canonicalActivities, completion];
   const currentIndex = currentKey
     ? activities.findIndex(
         (activity) => activityKey(activity.kind, activity.id) === currentKey,
@@ -273,7 +318,8 @@ export function buildLessonActivitySequence(
   const firstActivityIndex = firstActivity
     ? activities.findIndex(
         (activity) =>
-          activity.id === firstActivity.id && activity.kind === firstActivity.kind,
+          activity.id === firstActivity.id &&
+          activity.kind === firstActivity.kind,
       )
     : -1;
   const next = current

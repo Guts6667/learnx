@@ -36,6 +36,15 @@ export interface LessonProgressSnapshot {
     percent: number;
     startedAt: Date | null;
     status: LessonProgressStatus;
+    currentSequenceItem?: {
+      conceptAssessmentId: string | null;
+      contentBlockId: string | null;
+      exerciseId: string | null;
+      kind: string;
+      quizId: string | null;
+      resourceId: string | null;
+      taskId: string | null;
+    } | null;
   } | null;
   percent: number;
   quizPassedById: Map<string, boolean>;
@@ -182,7 +191,23 @@ async function readLessonState(
           },
         },
       },
-      progress: { where: { userId }, take: 1 },
+      progress: {
+        where: { userId },
+        take: 1,
+        include: {
+          currentSequenceItem: {
+            select: {
+              conceptAssessmentId: true,
+              contentBlockId: true,
+              exerciseId: true,
+              kind: true,
+              quizId: true,
+              resourceId: true,
+              taskId: true,
+            },
+          },
+        },
+      },
       quizzes: {
         where: { isRequired: true },
         select: {
@@ -439,9 +464,10 @@ export async function refreshStageAndProgram(
     requiredExercises: exercises.map((exercise) => ({
       id: exercise.id,
       isValidated:
-        lessonSnapshots.get(exercise.lessonId)?.exerciseStatusById.get(
-          exercise.id,
-        ) === ExerciseSubmissionStatus.SUBMITTED,
+        lessonSnapshots
+          .get(exercise.lessonId)
+          ?.exerciseStatusById.get(exercise.id) ===
+        ExerciseSubmissionStatus.SUBMITTED,
       title: exercise.title,
     })),
     requiredTasks: tasks.map((task) => ({

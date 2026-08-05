@@ -7,9 +7,7 @@ import {
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
-import {
-  requireCapability,
-} from '../_lib/authorization.js';
+import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   learningProgramWhere,
@@ -68,9 +66,7 @@ function isPreviewRequest(url: string): boolean {
 }
 
 function getProgramAccessFilter(userId: string, preview: boolean) {
-  return preview
-    ? previewProgramWhere(userId)
-    : learningProgramWhere(userId);
+  return preview ? previewProgramWhere(userId) : learningProgramWhere(userId);
 }
 
 function selectAccessibleCandidate<T>(
@@ -78,7 +74,9 @@ function selectAccessibleCandidate<T>(
   userId: string,
   getOwnerId: (candidate: T) => string,
 ): T {
-  const owned = candidates.find((candidate) => getOwnerId(candidate) === userId);
+  const owned = candidates.find(
+    (candidate) => getOwnerId(candidate) === userId,
+  );
   if (owned) return owned;
   if (candidates.length === 0) throw notFound();
   if (candidates.length > 1) throw ambiguousResource();
@@ -173,9 +171,10 @@ function serializeLessonSummary<T extends LessonSummaryRecord>(
   };
 }
 
-function serializeModules<
-  T extends { lessons: LessonSummaryRecord[] },
->(modules: T[], isLocked = false) {
+function serializeModules<T extends { lessons: LessonSummaryRecord[] }>(
+  modules: T[],
+  isLocked = false,
+) {
   return modules.map((module) => ({
     ...module,
     lessons: module.lessons.map((lesson) =>
@@ -184,7 +183,9 @@ function serializeModules<
   }));
 }
 
-function isStageLocked(stage: { progress?: Array<{ status: string }> }): boolean {
+function isStageLocked(stage: {
+  progress?: Array<{ status: string }>;
+}): boolean {
   return stage.progress?.[0]?.status === StageProgressStatus.LOCKED;
 }
 
@@ -413,6 +414,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
               orderBy: { position: 'asc' },
               select: {
                 id: true,
+                key: true,
                 isRequired: true,
                 position: true,
                 questionCount: true,
@@ -435,6 +437,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
             id: true,
             instructions: true,
             isRequired: true,
+            key: true,
             position: true,
             rubric: true,
             title: true,
@@ -447,12 +450,17 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
             description: true,
             id: true,
             isRequired: true,
+            key: true,
             passingScore: true,
             position: true,
             title: true,
           },
         },
         resources: { orderBy: { position: 'asc' } },
+        sequenceItems: {
+          orderBy: { position: 'asc' },
+          select: { key: true, kind: true },
+        },
         tasks: {
           where: { isCanonical: true },
           orderBy: { position: 'asc' },
@@ -503,7 +511,8 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     const currentLessonIndex = lesson.module.lessons.findIndex(
       (candidate) => candidate.id === lesson.id,
     );
-    const previousLesson = lesson.module.lessons[currentLessonIndex - 1] ?? null;
+    const previousLesson =
+      lesson.module.lessons[currentLessonIndex - 1] ?? null;
     const nextLesson = lesson.module.lessons[currentLessonIndex + 1] ?? null;
     const lessonIsLocked = isStageLocked(lesson.module.stage);
     const { progress, program, ...stageWithoutProgram } = lesson.module.stage;
@@ -518,10 +527,13 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
     return context.json({
       lesson: {
         ...lesson,
+        sequence: lesson.sequenceItems,
         isLocked: lessonIsLocked,
         module: moduleContext,
         navigation: {
-          nextLesson: nextLesson ? { ...nextLesson, isLocked: lessonIsLocked } : null,
+          nextLesson: nextLesson
+            ? { ...nextLesson, isLocked: lessonIsLocked }
+            : null,
           previousLesson: previousLesson
             ? { ...previousLesson, isLocked: lessonIsLocked }
             : null,
@@ -534,6 +546,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
           ...task,
           resources: resources.map((link) => link.resource),
         })),
+        sequenceItems: undefined,
       },
     });
   });

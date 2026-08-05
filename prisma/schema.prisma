@@ -116,6 +116,15 @@ enum CanonicalActivityKind {
   @@map("canonical_activity_kind")
 }
 
+enum LessonSequenceKind {
+  CONTENT
+  RESOURCE
+  TASK
+  CONCEPT_ASSESSMENT
+  EXERCISE
+  QUIZ
+}
+
 enum LessonProgressStatus {
   AVAILABLE    @map("available")
   IN_PROGRESS  @map("in_progress")
@@ -361,22 +370,22 @@ model AuditEvent {
 }
 
 model Program {
-  id                    String            @id @default(uuid()) @db.Uuid
-  ownerId               String            @map("owner_id") @db.Uuid
+  id                    String              @id @default(uuid()) @db.Uuid
+  ownerId               String              @map("owner_id") @db.Uuid
   title                 String
   slug                  String
   description           String
-  status                ProgramStatus     @default(DRAFT)
-  visibility            ProgramVisibility @default(PRIVATE)
+  status                ProgramStatus       @default(DRAFT)
+  visibility            ProgramVisibility   @default(PRIVATE)
   icon                  String?
-  position              Int               @default(0)
-  estimatedDurationDays Int?              @map("estimated_duration_days")
-  createdAt             DateTime          @default(now()) @map("created_at")
-  updatedAt             DateTime          @updatedAt @map("updated_at")
-  publishedVersionId    String?           @unique @map("published_version_id") @db.Uuid
-  owner                 User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  publishedVersion      ProgramVersion?   @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
-  versions              ProgramVersion[]  @relation("ProgramVersions")
+  position              Int                 @default(0)
+  estimatedDurationDays Int?                @map("estimated_duration_days")
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+  publishedVersionId    String?             @unique @map("published_version_id") @db.Uuid
+  owner                 User                @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  publishedVersion      ProgramVersion?     @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  versions              ProgramVersion[]    @relation("ProgramVersions")
   enrollments           ProgramEnrollment[]
   stages                Stage[]
   progress              ProgramProgress[]
@@ -390,16 +399,16 @@ model Program {
 }
 
 model ProgramVersion {
-  id                String   @id @default(uuid()) @db.Uuid
-  programId         String   @map("program_id") @db.Uuid
+  id                String              @id @default(uuid()) @db.Uuid
+  programId         String              @map("program_id") @db.Uuid
   version           Int
   checksum          String
-  snapshot          Json     @map("snapshot_json")
-  publishedAt       DateTime @default(now()) @map("published_at")
-  publishedByUserId String   @map("published_by_user_id") @db.Uuid
-  program           Program  @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
-  publishedBy       User     @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
-  currentForProgram Program? @relation("CurrentPublishedProgramVersion")
+  snapshot          Json                @map("snapshot_json")
+  publishedAt       DateTime            @default(now()) @map("published_at")
+  publishedByUserId String              @map("published_by_user_id") @db.Uuid
+  program           Program             @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
+  publishedBy       User                @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
+  currentForProgram Program?            @relation("CurrentPublishedProgramVersion")
   enrollments       ProgramEnrollment[]
 
   @@unique([programId, version])
@@ -555,11 +564,13 @@ model Lesson {
   tasks                        Task[]
   progress                     LessonProgress[]
   concepts                     Concept[]
+  conceptAssessments           ConceptAssessment[]
   quizzes                      Quiz[]
   exercises                    Exercise[]
   reviewItems                  ReviewItem[]
   notes                        Note[]
   activityCompletionCarryovers ActivityCompletionCarryover[]
+  lessonSequenceItems          LessonSequenceItem[]
 
   @@unique([moduleId, slug])
   @@index([moduleId, position])
@@ -567,73 +578,83 @@ model Lesson {
 }
 
 model ContentBlock {
-  id       String           @id @default(uuid()) @db.Uuid
-  lessonId String           @map("lesson_id") @db.Uuid
-  type     ContentBlockType
-  content  Json             @map("content_json")
-  position Int              @default(0)
-  lesson   Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
+  type         ContentBlockType
+  content      Json                @map("content_json")
+  position     Int                 @default(0)
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  sequenceItem LessonSequenceItem? @relation("ContentBlockSequenceItem")
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("content_blocks")
 }
 
 model Resource {
-  id               String             @id @default(uuid()) @db.Uuid
-  lessonId         String             @map("lesson_id") @db.Uuid
-  key              String?
+  id               String              @id @default(uuid()) @db.Uuid
+  lessonId         String              @map("lesson_id") @db.Uuid
+  key              String
   type             ResourceType
   title            String
   author           String?
   url              String?
   citation         String?
   description      String?
-  isRequired       Boolean            @default(false) @map("is_required")
-  estimatedMinutes Int?               @map("estimated_minutes")
-  position         Int                @default(0)
-  lesson           Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  isRequired       Boolean             @default(false) @map("is_required")
+  estimatedMinutes Int?                @map("estimated_minutes")
+  position         Int                 @default(0)
+  lesson           Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   progress         ResourceProgress[]
   conceptLinks     ConceptResource[]
   taskLinks        TaskResource[]
+  sequenceItem     LessonSequenceItem? @relation("ResourceSequenceItem")
 
   @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("resources")
 }
 
 model Task {
-  id          String           @id @default(uuid()) @db.Uuid
-  lessonId    String           @map("lesson_id") @db.Uuid
-  key         String
-  title       String
-  description String?
-  type        TaskType
-  isRequired  Boolean          @default(true) @map("is_required")
-  weight      Float            @default(1)
-  position    Int              @default(0)
-  isCanonical Boolean          @default(true) @map("is_canonical")
-  lesson      Lesson           @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  completions TaskCompletion[]
-  resources   TaskResource[]
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
+  title        String
+  description  String?
+  type         TaskType
+  isRequired   Boolean             @default(true) @map("is_required")
+  weight       Float               @default(1)
+  position     Int                 @default(0)
+  isCanonical  Boolean             @default(true) @map("is_canonical")
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completions  TaskCompletion[]
+  resources    TaskResource[]
+  sequenceItem LessonSequenceItem? @relation("TaskSequenceItem")
 
   @@unique([lessonId, position])
   @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("tasks")
 }
 
 model LessonProgress {
-  id           String               @id @default(uuid()) @db.Uuid
-  userId       String               @map("user_id") @db.Uuid
-  lessonId     String               @map("lesson_id") @db.Uuid
-  status       LessonProgressStatus @default(AVAILABLE)
-  percent      Float                @default(0)
-  startedAt    DateTime?            @map("started_at")
-  completedAt  DateTime?            @map("completed_at")
-  lastViewedAt DateTime?            @map("last_viewed_at")
-  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id                    String               @id @default(uuid()) @db.Uuid
+  userId                String               @map("user_id") @db.Uuid
+  lessonId              String               @map("lesson_id") @db.Uuid
+  status                LessonProgressStatus @default(AVAILABLE)
+  percent               Float                @default(0)
+  startedAt             DateTime?            @map("started_at")
+  completedAt           DateTime?            @map("completed_at")
+  lastViewedAt          DateTime?            @map("last_viewed_at")
+  currentSequenceItemId String?              @map("current_sequence_item_id") @db.Uuid
+  user                  User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson                Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  currentSequenceItem   LessonSequenceItem?  @relation(fields: [lessonId, currentSequenceItemId], references: [lessonId, id], onDelete: NoAction)
 
   @@unique([userId, lessonId])
   @@index([userId, status])
@@ -704,18 +725,22 @@ model ResourceProgress {
 }
 
 model Quiz {
-  id           String        @id @default(uuid()) @db.Uuid
-  lessonId     String        @map("lesson_id") @db.Uuid
+  id           String              @id @default(uuid()) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  key          String
   title        String
   description  String?
-  passingScore Float         @default(70) @map("passing_score")
-  isRequired   Boolean       @default(true) @map("is_required")
-  position     Int           @default(0)
-  lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  passingScore Float               @default(70) @map("passing_score")
+  isRequired   Boolean             @default(true) @map("is_required")
+  position     Int                 @default(0)
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   questions    Question[]
   attempts     QuizAttempt[]
+  sequenceItem LessonSequenceItem? @relation("QuizSequenceItem")
 
   @@unique([lessonId, position])
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("quizzes")
 }
@@ -777,9 +802,11 @@ model Exercise {
   isCanonical  Boolean              @default(true) @map("is_canonical")
   lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   submissions  ExerciseSubmission[]
+  sequenceItem LessonSequenceItem?  @relation("ExerciseSequenceItem")
 
   @@unique([lessonId, position])
   @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("exercises")
 }
@@ -868,6 +895,7 @@ model Concept {
   progress         ConceptProgress[]
 
   @@unique([lessonId, slug])
+  @@unique([lessonId, id])
   @@index([lessonId, position])
   @@map("concepts")
 }
@@ -887,17 +915,60 @@ model ConceptResource {
 model ConceptAssessment {
   id             String                      @id @default(uuid()) @db.Uuid
   conceptId      String                      @map("concept_id") @db.Uuid
+  lessonId       String                      @map("lesson_id") @db.Uuid
+  key            String
   assessmentType ConceptAssessmentType       @map("assessment_type")
   title          String?
   questionCount  Int?                        @map("question_count")
   isRequired     Boolean                     @default(true) @map("is_required")
   position       Int                         @default(0)
-  concept        Concept                     @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  concept        Concept                     @relation(fields: [lessonId, conceptId], references: [lessonId, id], onDelete: Cascade)
+  lesson         Lesson                      @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   questions      ConceptAssessmentQuestion[]
   attempts       ConceptAssessmentAttempt[]
+  sequenceItem   LessonSequenceItem?         @relation("ConceptAssessmentSequenceItem")
 
+  @@unique([lessonId, key])
+  @@unique([lessonId, id])
   @@index([conceptId, position])
   @@map("concept_assessments")
+}
+
+model LessonSequenceItem {
+  id                  String             @id @default(uuid()) @db.Uuid
+  lessonId            String             @map("lesson_id") @db.Uuid
+  kind                LessonSequenceKind
+  key                 String
+  position            Int
+  contentBlockId      String?            @unique @map("content_block_id") @db.Uuid
+  resourceId          String?            @unique @map("resource_id") @db.Uuid
+  taskId              String?            @unique @map("task_id") @db.Uuid
+  conceptAssessmentId String?            @unique @map("concept_assessment_id") @db.Uuid
+  exerciseId          String?            @unique @map("exercise_id") @db.Uuid
+  quizId              String?            @unique @map("quiz_id") @db.Uuid
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  backfilledFromV2    Boolean            @default(false) @map("backfilled_from_v2")
+  lesson              Lesson             @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  contentBlock        ContentBlock?      @relation("ContentBlockSequenceItem", fields: [lessonId, contentBlockId], references: [lessonId, id], onDelete: Cascade)
+  resource            Resource?          @relation("ResourceSequenceItem", fields: [lessonId, resourceId], references: [lessonId, id], onDelete: Cascade)
+  task                Task?              @relation("TaskSequenceItem", fields: [lessonId, taskId], references: [lessonId, id], onDelete: Cascade)
+  conceptAssessment   ConceptAssessment? @relation("ConceptAssessmentSequenceItem", fields: [lessonId, conceptAssessmentId], references: [lessonId, id], onDelete: Cascade)
+  exercise            Exercise?          @relation("ExerciseSequenceItem", fields: [lessonId, exerciseId], references: [lessonId, id], onDelete: Cascade)
+  quiz                Quiz?              @relation("QuizSequenceItem", fields: [lessonId, quizId], references: [lessonId, id], onDelete: Cascade)
+  currentProgress     LessonProgress[]
+
+  @@unique([lessonId, position])
+  @@unique([lessonId, kind, key])
+  @@unique([lessonId, id])
+  @@unique([lessonId, contentBlockId])
+  @@unique([lessonId, resourceId])
+  @@unique([lessonId, taskId])
+  @@unique([lessonId, conceptAssessmentId])
+  @@unique([lessonId, exerciseId])
+  @@unique([lessonId, quizId])
+  @@index([lessonId, position])
+  @@map("lesson_sequence_items")
 }
 
 model ConceptAssessmentQuestion {

@@ -113,6 +113,7 @@ export async function createIntegrationFixture(
   await prisma.contentBlock.create({
     data: {
       content: { text: 'Contenu pédagogique réel de la fixture.' },
+      key: 'content-1',
       lessonId: lesson.id,
       position: 1,
       type: ContentBlockType.RICH_TEXT,
@@ -161,6 +162,8 @@ export async function createIntegrationFixture(
     data: {
       assessmentType: ConceptAssessmentType.QUIZ,
       conceptId: concept.id,
+      key: 'concept-integration-assessment-1',
+      lessonId: lesson.id,
       isRequired: true,
       position: 1,
       questionCount: 1,
@@ -196,6 +199,7 @@ export async function createIntegrationFixture(
     data: {
       description: 'Quiz de synthèse réel.',
       isRequired: true,
+      key: 'quiz-1',
       lessonId: lesson.id,
       passingScore: 70,
       position: 1,

@@ -9,6 +9,7 @@ const exercise = {
   id: exerciseId,
   instructions: 'Rédigez une analyse structurée en Markdown.',
   isRequired: true,
+  key: 'analyse-appliquee',
   position: 1,
   rubric: null,
   title: 'Analyse appliquée',

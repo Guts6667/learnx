@@ -159,6 +159,7 @@ export type ContentBlockType =
 export interface LessonContentBlock {
   content: unknown;
   id: string;
+  key: string;
   position: number;
   type: ContentBlockType;
 }
@@ -170,7 +171,7 @@ export interface LessonResource {
   estimatedMinutes: number | null;
   id: string;
   isRequired: boolean;
-  key: string | null;
+  key: string;
   position: number;
   title: string;
   type: string;
@@ -191,6 +192,7 @@ export interface LessonTask {
 
 export interface LessonExerciseSummary {
   id: string;
+  key: string;
   instructions: string;
   isRequired: boolean;
   position: number;
@@ -201,6 +203,7 @@ export interface LessonExerciseSummary {
 export interface LessonQuizSummary {
   description: string | null;
   id: string;
+  key: string;
   isRequired: boolean;
   passingScore: number;
   position: number;
@@ -211,6 +214,7 @@ export interface LessonQuizSummary {
 export interface LessonConceptSummary {
   assessments: Array<{
     id: string;
+    key: string;
     isRequired: boolean;
     position: number;
     questionCount: number | null;
@@ -252,6 +256,16 @@ export interface LessonDetail extends Omit<
   prerequisites: unknown;
   quizzes: LessonQuizSummary[];
   resources: LessonResource[];
+  sequence: Array<{
+    key: string;
+    kind:
+      | 'CONTENT'
+      | 'RESOURCE'
+      | 'TASK'
+      | 'CONCEPT_ASSESSMENT'
+      | 'EXERCISE'
+      | 'QUIZ';
+  }>;
   tasks: LessonTask[];
 }
 
@@ -262,6 +276,16 @@ export type TaskCompletionStatus = 'DONE' | 'SKIPPED' | 'TODO';
 
 export interface LessonProgressResponse {
   canComplete: boolean;
+  currentActivity: {
+    id: string;
+    kind:
+      | 'CONTENT'
+      | 'RESOURCE'
+      | 'TASK'
+      | 'CONCEPT_ASSESSMENT'
+      | 'EXERCISE'
+      | 'QUIZ';
+  } | null;
   conceptProgress: Record<string, string>;
   exerciseSubmissions: Record<string, string>;
   lessonProgress: {
