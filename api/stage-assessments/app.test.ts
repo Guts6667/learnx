@@ -17,7 +17,7 @@ const now = new Date('2026-08-02T23:30:00.000Z');
 
 function authentication(
   id = userId,
-  role: 'ADMIN' | 'USER' = 'USER',
+  role: 'ADMIN' | 'CREATOR' | 'USER' = 'USER',
 ): MiddlewareHandler<AuthEnvironment> {
   return async (context, next) => {
     context.set('user', {
@@ -272,6 +272,18 @@ describe('stage assessment API', () => {
         )
       ).status,
     ).toBe(403);
+    const creatorApp = createStageAssessmentsApp({
+      authentication: authentication(userId, 'CREATOR'),
+      repository: state.repository,
+    });
+    expect(
+      (
+        await creatorApp.request(
+          `/api/stage-assessment-submissions/${submissionId}`,
+          jsonRequest('PATCH', { action: 'validate', score: 82 }),
+        )
+      ).status,
+    ).toBe(403);
 
     const refreshValidation = vi.fn(async () => undefined);
     const adminApp = createStageAssessmentsApp({
@@ -397,12 +409,20 @@ describe('stage assessment persistence filters', () => {
   it('includes the program owner in review reads and writes', async () => {
     const findFirst = vi.fn(async () => null);
     const updateManyAndReturn = vi.fn(async () => []);
-    const repository = createPrismaStageAssessmentRepository({
+    const transaction = {
+      auditEvent: { upsert: vi.fn() },
       stageAssessmentSubmission: { findFirst, updateManyAndReturn },
+    };
+    const repository = createPrismaStageAssessmentRepository({
+      ...transaction,
+      $transaction: async (
+        operation: (client: typeof transaction) => unknown,
+      ) => operation(transaction),
     } as unknown as PrismaClient);
 
     await repository.findSubmissionForReview(submissionId, userId);
     await repository.reviewSubmission({
+      auditIdempotencyKey: 'audit-key',
       id: submissionId,
       ownerId: userId,
       reviewFeedback: null,

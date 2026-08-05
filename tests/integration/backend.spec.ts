@@ -10,6 +10,7 @@ import {
   cleanupIntegrationUsers,
   createIntegrationFixture,
 } from './fixture.js';
+import { prisma } from '../../src/server/prisma.js';
 
 const password = 'Integration-Only-Password-2026!';
 
@@ -81,6 +82,11 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       `${process.env.LEARNX_INTEGRATION_RUN_ID}-backend-retry-${testInfo.retry}`,
     );
 
+    await prisma.user.update({
+      where: { email: outsiderEmail },
+      data: { role: 'CREATOR' },
+    });
+
     await expectStatus(
       await outsider.post('/api/admin/publication/preview', {
         data: {
@@ -125,6 +131,35 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       }),
       200,
     );
+    expect(
+      await prisma.auditEvent.count({
+        where: {
+          action: 'PROGRAM_PUBLICATION_APPLY',
+          actor: { email: ownerEmail },
+          idempotencyKey: unpublishRequest.planId,
+        },
+      }),
+    ).toBe(1);
+    await expectStatus(
+      await owner.patch(`/api/admin/modules/${fixture.moduleId}`, {
+        data: { description: 'Module audité par le test réel.' },
+      }),
+      200,
+    );
+    await expectStatus(
+      await owner.patch(`/api/admin/lessons/${fixture.lessonId}`, {
+        data: { summary: 'Leçon auditée par le test réel.' },
+      }),
+      200,
+    );
+    expect(
+      await prisma.auditEvent.count({
+        where: {
+          actor: { email: ownerEmail },
+          action: { in: ['MODULE_UPDATE', 'LESSON_UPDATE'] },
+        },
+      }),
+    ).toBe(2);
     const publishPreviewResponse = await expectStatus(
       await owner.post('/api/admin/publication/preview', {
         data: {
@@ -370,6 +405,23 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
         `/api/stage-assessment-submissions/${finalDraft.submission.id}/submit`,
       ),
       200,
+    );
+    await expectStatus(
+      await owner.patch(
+        `/api/stage-assessment-submissions/${finalDraft.submission.id}`,
+        { data: { action: 'validate', score: 90 } },
+      ),
+      200,
+    );
+    const auditEvents = await prisma.auditEvent.findMany({
+      where: { actor: { email: ownerEmail } },
+      select: { action: true, metadata: true },
+    });
+    expect(auditEvents.map(({ action }) => action)).toContain(
+      'STAGE_ASSESSMENT_REVIEW',
+    );
+    expect(JSON.stringify(auditEvents)).not.toMatch(
+      /password|token|@example\.test/i,
     );
 
     const progressResponse = await expectStatus(

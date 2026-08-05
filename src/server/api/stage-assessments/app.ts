@@ -2,8 +2,8 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
+  AuditAction,
   ProgramStatus,
-  Role,
   StageAssessmentSubmissionStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
@@ -13,6 +13,8 @@ import {
   assertSubmissionCanBeSubmitted,
 } from '../../../lib/stage-assessments.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
+import { assertCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import { refreshStageValidation } from '../_lib/stage-validation.js';
 
@@ -103,6 +105,7 @@ export interface StageAssessmentRepository {
     ownerId: string;
     reviewFeedback: string | null;
     reviewedAt: Date;
+    auditIdempotencyKey: string;
     score: number | null;
     status: 'NEEDS_REVISION' | 'VALIDATED';
   }): Promise<SubmissionRecord | null>;
@@ -233,24 +236,36 @@ export function createPrismaStageAssessmentRepository(
       };
     },
     async reviewSubmission(input) {
-      const submissions =
-        await client.stageAssessmentSubmission.updateManyAndReturn({
-          where: {
-            id: input.id,
-            stageAssessment: {
-              stage: { program: { ownerId: input.ownerId } },
+      return client.$transaction(async (transaction) => {
+        const submissions =
+          await transaction.stageAssessmentSubmission.updateManyAndReturn({
+            where: {
+              id: input.id,
+              stageAssessment: {
+                stage: { program: { ownerId: input.ownerId } },
+              },
             },
-          },
-          data: {
-            reviewFeedback: input.reviewFeedback,
-            reviewedAt: input.reviewedAt,
-            score: input.score,
-            status: input.status,
-          },
-          select: submissionSelect,
-        });
+            data: {
+              reviewFeedback: input.reviewFeedback,
+              reviewedAt: input.reviewedAt,
+              score: input.score,
+              status: input.status,
+            },
+            select: submissionSelect,
+          });
+        const submission = submissions[0] ?? null;
+        if (!submission) return null;
 
-      return submissions[0] ?? null;
+        await writeAuditEvent(transaction, {
+          action: AuditAction.STAGE_ASSESSMENT_REVIEW,
+          actorUserId: input.ownerId,
+          idempotencyKey: input.auditIdempotencyKey,
+          metadata: { status: input.status },
+          targetId: input.id,
+          targetType: 'stage_assessment_submission',
+        });
+        return submission;
+      });
     },
     async saveSubmission(input) {
       return client.stageAssessmentSubmission.update({
@@ -432,16 +447,12 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
         return context.json({ submission: serializeSubmission(updated) });
       }
 
-      if (user.role !== Role.ADMIN) {
-        throw new ApiError(
-          'FORBIDDEN',
-          'Administrator access is required.',
-          403,
-        );
-      }
+      assertCapability(user.role, 'learning.submission.review');
 
-      const reviewRecord =
-        await repository.findSubmissionForReview(submissionId, user.id);
+      const reviewRecord = await repository.findSubmissionForReview(
+        submissionId,
+        user.id,
+      );
       if (!reviewRecord) throw notFound();
 
       try {
@@ -462,6 +473,14 @@ export function createStageAssessmentsApp(options: AppOptions = {}) {
 
       const reviewedAt = now();
       const updated = await repository.reviewSubmission({
+        auditIdempotencyKey: createAuditIdempotencyKey(
+          AuditAction.STAGE_ASSESSMENT_REVIEW,
+          submissionId,
+          {
+            action: parsed.data.action,
+            score: parsed.data.score,
+          },
+        ),
         id: submissionId,
         ownerId: user.id,
         reviewFeedback: parsed.data.reviewFeedback ?? null,

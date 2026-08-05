@@ -321,6 +321,33 @@ describe('App', () => {
     expect(adminLink.parentElement).toHaveClass('flex-col');
   });
 
+  it('refuse la zone admin au rôle créateur sans charger ses données', async () => {
+    window.history.pushState({}, '', '/admin');
+    const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/auth/session') {
+        return Promise.resolve(
+          jsonResponse({
+            user: {
+              displayName: 'Créatrice',
+              email: 'creator@example.test',
+              id: 'creator-1',
+              role: 'CREATOR',
+            },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Accès refusé' }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it('restaure directement une URL admin profonde', async () => {
     const programId = 'a83f9385-aecd-41a8-ae33-c62d02fbb23f';
     const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';

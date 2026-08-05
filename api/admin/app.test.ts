@@ -21,7 +21,7 @@ const stageId = '5cb04580-f91c-46e8-a5d3-d70be5043c1b';
 
 function authentication(
   id = ownerId,
-  role: 'ADMIN' | 'USER' = 'ADMIN',
+  role: 'ADMIN' | 'CREATOR' | 'USER' = 'ADMIN',
 ): MiddlewareHandler<AuthEnvironment> {
   return async (context, next) => {
     context.set('user', {
@@ -197,6 +197,21 @@ describe('administration minimale', () => {
     expect(await response.json()).toMatchObject({
       error: { code: 'FORBIDDEN' },
     });
+  });
+
+  it('refuse toute la zone admin au rôle créateur', async () => {
+    const navigationService = createNavigationService();
+    const listPrograms = vi.spyOn(navigationService, 'listPrograms');
+    const app = createAdminApp({
+      authentication: authentication(ownerId, 'CREATOR'),
+      navigationService,
+      repository: createRepository().repository,
+    });
+
+    const response = await app.request('/api/admin/programs');
+
+    expect(response.status).toBe(403);
+    expect(listPrograms).not.toHaveBeenCalled();
   });
 
   it('ne protège pas les routes privées qui ne font pas partie de l’administration', async () => {

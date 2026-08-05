@@ -280,5 +280,8 @@ export async function createIntegrationFixture(
 export async function cleanupIntegrationUsers(emails: string[]): Promise<void> {
   requireEphemeralIntegrationDatabase();
   const { prisma } = await import('../../src/server/prisma.js');
+  await prisma.auditEvent.deleteMany({
+    where: { actor: { email: { in: emails } } },
+  });
   await prisma.user.deleteMany({ where: { email: { in: emails } } });
 }

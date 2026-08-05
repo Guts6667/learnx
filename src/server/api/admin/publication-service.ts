@@ -1,4 +1,5 @@
 import {
+  AuditAction,
   Prisma,
   ProgramStatus,
   type PrismaClient,
@@ -11,6 +12,7 @@ import {
   type PublicationTarget,
   type PublicationTargetType,
 } from './publication-plan.js';
+import { writeAuditEvent } from '../_lib/audit.js';
 
 export interface PublicationRequest {
   action: PublicationAction;
@@ -285,6 +287,19 @@ export function createPrismaPublicationService(
         }
 
         await applyChanges(transaction, plan);
+        await writeAuditEvent(transaction, {
+          action: AuditAction.PROGRAM_PUBLICATION_APPLY,
+          actorUserId: ownerId,
+          idempotencyKey: request.planId,
+          metadata: {
+            action: request.action,
+            changeCount: plan.changes.length,
+            mode: request.mode,
+            targetType: request.targetType,
+          },
+          targetId: request.targetId,
+          targetType: request.targetType.toLowerCase(),
+        });
         return plan;
       });
     },

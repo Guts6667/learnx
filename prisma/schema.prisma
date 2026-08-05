@@ -8,10 +8,26 @@ datasource db {
 }
 
 enum Role {
-  USER  @map("user")
-  ADMIN @map("admin")
+  USER    @map("user")
+  CREATOR @map("creator")
+  ADMIN   @map("admin")
 
   @@map("user_role")
+}
+
+enum AuditAction {
+  PROGRAM_PUBLICATION_APPLY @map("program_publication_apply")
+  MODULE_UPDATE             @map("module_update")
+  LESSON_UPDATE             @map("lesson_update")
+  STAGE_ASSESSMENT_REVIEW   @map("stage_assessment_review")
+  ACCESS_REQUEST_APPROVE    @map("access_request_approve")
+  ACCESS_REQUEST_REJECT     @map("access_request_reject")
+  ACCESS_INVITATION_ISSUE   @map("access_invitation_issue")
+  ACCOUNT_ROLE_ASSIGN       @map("account_role_assign")
+  ACCOUNT_SUSPEND           @map("account_suspend")
+  ACCOUNT_REACTIVATE        @map("account_reactivate")
+
+  @@map("audit_action")
 }
 
 enum AccountStatus {
@@ -226,6 +242,7 @@ model User {
   reviewedAccessRequests       AccessRequest[]               @relation("AccessRequestReviewer")
   activatedAccessRequest       AccessRequest?                @relation("ActivatedAccessRequest")
   issuedAccessInvitations      AccessInvitation[]            @relation("AccessInvitationIssuer")
+  auditEvents                  AuditEvent[]                  @relation("AuditEventActor")
 
   @@map("users")
 }
@@ -307,6 +324,23 @@ model AccessInvitation {
   @@index([expiresAt])
   @@index([invitedByUserId])
   @@map("access_invitations")
+}
+
+model AuditEvent {
+  id             String      @id @default(uuid()) @db.Uuid
+  actorUserId    String      @map("actor_user_id") @db.Uuid
+  action         AuditAction
+  targetType     String      @map("target_type")
+  targetId       String      @map("target_id") @db.Uuid
+  idempotencyKey String      @map("idempotency_key")
+  metadata       Json        @default("{}") @map("metadata_json")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  actor          User        @relation("AuditEventActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([actorUserId, action, idempotencyKey])
+  @@index([action, createdAt])
+  @@index([targetType, targetId, createdAt])
+  @@map("audit_events")
 }
 
 model Program {

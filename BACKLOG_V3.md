@@ -216,6 +216,9 @@ Neon isolée avant toute promotion.**
 
 **Priorité : P0. Dépendances : V3-001 et V3-002.**
 
+**Statut : implémenté sur `dev` — migration additive à valider sur une branche
+Neon isolée avant toute promotion.**
+
 ### Périmètre
 
 - Centraliser rôles/capacités serveur et refus par défaut ; réserver Créateur et

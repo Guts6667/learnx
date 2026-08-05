@@ -36,12 +36,12 @@ describe('V3 access lifecycle schema', () => {
     expect(enumBlock('AccessRequestStatus')).toContain('PENDING_APPROVAL');
     expect(enumBlock('AccessRequestStatus')).toContain('APPROVED');
     expect(enumBlock('AccessRequestStatus')).toContain('REJECTED');
-    expect(enumBlock('Role')).not.toContain('CREATOR');
+    expect(migration).not.toContain("ADD VALUE IF NOT EXISTS 'creator'");
     expect(schema).toContain('model AccessRequest {');
     expect(schema).toContain('model EmailVerification {');
     expect(schema).toContain('model AccessInvitation {');
     expect(schema).not.toContain('model ProgramEnrollment {');
-    expect(schema).not.toContain('model AuditEvent {');
+    expect(migration).not.toContain('CREATE TABLE "audit_events"');
   });
 
   it('enforces one open request and one active token per request', () => {

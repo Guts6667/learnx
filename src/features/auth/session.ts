@@ -9,7 +9,7 @@ export interface SessionUser {
   displayName: string;
   email: string;
   id: string;
-  role: 'USER' | 'ADMIN';
+  role: 'USER' | 'CREATOR' | 'ADMIN';
 }
 
 export interface SessionResponse {

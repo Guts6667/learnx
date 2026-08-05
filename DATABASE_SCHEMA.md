@@ -10,7 +10,7 @@ Toutes les clés primaires utilisent UUID.
 - email unique
 - password_hash
 - display_name
-- role : user | admin
+- role : user | creator | admin
 - account_status : active | suspended
 - suspended_at nullable, obligatoire lorsque le compte est suspendu
 - created_at
@@ -85,6 +85,26 @@ et celui-ci ne peut pas être à la fois consommé et invalidé.
 Une invitation ne peut être créée que pour une demande approuvée. Une seule
 invitation active est autorisée par demande ; la création du compte et le choix
 du mot de passe restent hors du périmètre de V3-002.
+
+### audit_events
+
+- id
+- actor_user_id
+- action
+- target_type
+- target_id
+- idempotency_key
+- metadata_json, objet JSON technique sans secret ni donnée personnelle
+- created_at
+
+Le journal est append-only au niveau applicatif. La clé unique
+`(actor_user_id, action, idempotency_key)` rend les retries idempotents. Les
+événements conservent l'acteur, la cible et les seuls détails techniques utiles ;
+les mots de passe, tokens, e-mails et corps de contenu n'y sont jamais copiés.
+
+Actions réservées : publication, édition de module/leçon, revue d'évaluation,
+décisions de demande d'accès, émission d'invitation, attribution de rôle et
+suspension/réactivation. V3-003 n'expose aucune API de lecture de ce journal.
 
 ## Programmes
 

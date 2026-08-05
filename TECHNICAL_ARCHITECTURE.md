@@ -207,7 +207,12 @@ Préfixe : `/api`
   serverless, avec clé client/e-mail hachée ;
 - inscription directe désactivée en production jusqu’au cycle d’accès V3 ;
 - validation Zod de toutes les entrées ;
+- capacités serveur centralisées par rôle avec refus par défaut ;
+- le rôle `CREATOR` conserve uniquement les capacités d'apprentissage et
+  n'ouvre jamais `/admin` ;
 - vérification systématique de propriété par `userId` ;
+- mutations administratives sensibles auditées dans la même transaction, avec
+  clé d'idempotence et métadonnées techniques sans secret ni donnée personnelle ;
 - Markdown rendu après sanitisation ;
 - erreurs serveur sans fuite de stack ;
 - réponses correctes des quiz non envoyées avant soumission ;

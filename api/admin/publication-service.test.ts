@@ -35,6 +35,7 @@ function createModuleDatabase() {
     updatedAt: state.updatedAt,
   });
   const transaction = {
+    auditEvent: { upsert: vi.fn() },
     lesson: {
       async updateMany() {
         state.lessonPublished = true;
@@ -139,6 +140,7 @@ describe('Prisma publication service', () => {
       updatedAt: timestamp,
     });
     const transaction = {
+      auditEvent: { upsert: vi.fn() },
       lesson: {
         async updateMany() {
           state.lessonPublished = true;

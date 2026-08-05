@@ -2,10 +2,12 @@ import { Hono, type MiddlewareHandler } from 'hono';
 import { z } from 'zod';
 
 import {
-  Role,
+  AuditAction,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
+import { createAuditIdempotencyKey, writeAuditEvent } from '../_lib/audit.js';
+import { assertCapability, requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
   createPrismaAdminNavigationService,
@@ -69,8 +71,16 @@ export interface AdminRepository {
     moduleId: string,
     ownerId: string,
   ): Promise<ModulePublicationState | null>;
-  updateLesson(lessonId: string, input: LessonUpdate): Promise<AdminLesson>;
-  updateModule(moduleId: string, input: ModuleUpdate): Promise<AdminModule>;
+  updateLesson(
+    lessonId: string,
+    input: LessonUpdate,
+    audit: { actorUserId: string; idempotencyKey: string },
+  ): Promise<AdminLesson | null>;
+  updateModule(
+    moduleId: string,
+    input: ModuleUpdate,
+    audit: { actorUserId: string; idempotencyKey: string },
+  ): Promise<AdminModule | null>;
 }
 
 interface AdminAppOptions {
@@ -178,18 +188,58 @@ export function createPrismaAdminRepository(
         },
       });
     },
-    async updateLesson(lessonId, input) {
-      return client.lesson.update({
-        where: { id: lessonId },
-        data: input,
-        select: lessonSelect,
+    async updateLesson(lessonId, input, audit) {
+      return client.$transaction(async (transaction) => {
+        const ownedLesson = await transaction.lesson.findFirst({
+          where: {
+            id: lessonId,
+            module: { stage: { program: { ownerId: audit.actorUserId } } },
+          },
+          select: { id: true },
+        });
+        if (!ownedLesson) return null;
+
+        const lesson = await transaction.lesson.update({
+          where: { id: lessonId },
+          data: input,
+          select: lessonSelect,
+        });
+        await writeAuditEvent(transaction, {
+          action: AuditAction.LESSON_UPDATE,
+          actorUserId: audit.actorUserId,
+          idempotencyKey: audit.idempotencyKey,
+          metadata: { changedFields: Object.keys(input).sort() },
+          targetId: lessonId,
+          targetType: 'lesson',
+        });
+        return lesson;
       });
     },
-    async updateModule(moduleId, input) {
-      return client.module.update({
-        where: { id: moduleId },
-        data: input,
-        select: moduleSelect,
+    async updateModule(moduleId, input, audit) {
+      return client.$transaction(async (transaction) => {
+        const ownedModule = await transaction.module.findFirst({
+          where: {
+            id: moduleId,
+            stage: { program: { ownerId: audit.actorUserId } },
+          },
+          select: { id: true },
+        });
+        if (!ownedModule) return null;
+
+        const module = await transaction.module.update({
+          where: { id: moduleId },
+          data: input,
+          select: moduleSelect,
+        });
+        await writeAuditEvent(transaction, {
+          action: AuditAction.MODULE_UPDATE,
+          actorUserId: audit.actorUserId,
+          idempotencyKey: audit.idempotencyKey,
+          metadata: { changedFields: Object.keys(input).sort() },
+          targetId: moduleId,
+          targetType: 'module',
+        });
+        return module;
       });
     },
   };
@@ -203,10 +253,6 @@ async function getPrismaRepository(): Promise<AdminRepository> {
 
 function invalidRequest(): ApiError {
   return new ApiError('INVALID_REQUEST', 'Invalid request.', 400);
-}
-
-function forbidden(): ApiError {
-  return new ApiError('FORBIDDEN', 'Administrator access is required.', 403);
 }
 
 function notFound(): ApiError {
@@ -269,10 +315,7 @@ export function createAdminApp(options: AdminAppOptions = {}) {
   };
 
   app.use('/api/admin/*', options.authentication ?? requireUser);
-  app.use('/api/admin/*', async (context, next) => {
-    if (context.get('user').role !== Role.ADMIN) throw forbidden();
-    await next();
-  });
+  app.use('/api/admin/*', requireCapability('program.admin.read'));
   app.onError((error, context) => {
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
@@ -339,6 +382,7 @@ export function createAdminApp(options: AdminAppOptions = {}) {
   });
 
   app.post('/api/admin/publication/preview', async (context) => {
+    assertCapability(context.get('user').role, 'program.admin.publish');
     const parsed = publicationRequestSchema.safeParse(
       await parseJson(context.req.raw),
     );
@@ -353,6 +397,7 @@ export function createAdminApp(options: AdminAppOptions = {}) {
   });
 
   app.post('/api/admin/publication/apply', async (context) => {
+    assertCapability(context.get('user').role, 'program.admin.publish');
     const parsed = applyPublicationSchema.safeParse(
       await parseJson(context.req.raw),
     );
@@ -385,6 +430,7 @@ export function createAdminApp(options: AdminAppOptions = {}) {
   });
 
   app.patch('/api/admin/modules/:moduleId', async (context) => {
+    assertCapability(context.get('user').role, 'program.admin.edit');
     const moduleId = parseIdentifier(context.req.param('moduleId'));
     const parsed = moduleUpdateSchema.safeParse(
       await parseJson(context.req.raw),
@@ -399,12 +445,22 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     );
 
     if (!ownedModule) throw notFound();
+    const updatedModule = await repository.updateModule(moduleId, parsed.data, {
+      actorUserId: context.get('user').id,
+      idempotencyKey: createAuditIdempotencyKey(
+        AuditAction.MODULE_UPDATE,
+        moduleId,
+        parsed.data,
+      ),
+    });
+    if (!updatedModule) throw notFound();
     return context.json({
-      module: await repository.updateModule(moduleId, parsed.data),
+      module: updatedModule,
     });
   });
 
   app.patch('/api/admin/lessons/:lessonId', async (context) => {
+    assertCapability(context.get('user').role, 'program.admin.edit');
     const lessonId = parseIdentifier(context.req.param('lessonId'));
     const parsed = lessonUpdateSchema.safeParse(
       await parseJson(context.req.raw),
@@ -423,8 +479,18 @@ export function createAdminApp(options: AdminAppOptions = {}) {
       throw lessonNotReady();
     }
 
+    const updatedLesson = await repository.updateLesson(lessonId, parsed.data, {
+      actorUserId: context.get('user').id,
+      idempotencyKey: createAuditIdempotencyKey(
+        AuditAction.LESSON_UPDATE,
+        lessonId,
+        parsed.data,
+      ),
+    });
+    if (!updatedLesson) throw notFound();
+
     return context.json({
-      lesson: await repository.updateLesson(lessonId, parsed.data),
+      lesson: updatedLesson,
     });
   });
 
