@@ -223,6 +223,7 @@ function createNavigationService(): AdminNavigationService {
   const program = {
     id: programId,
     position: 0,
+    publishedVersion: null,
     slug: 'programme-test',
     status: 'DRAFT' as const,
     title: 'Programme test',

@@ -13,6 +13,7 @@ import {
   type PublicationTargetType,
 } from './publication-plan.js';
 import { writeAuditEvent } from '../_lib/audit.js';
+import { createOrReusePublishedProgramVersion } from './program-version-service.js';
 
 export interface PublicationRequest {
   action: PublicationAction;
@@ -79,6 +80,7 @@ const modulePublicationSelect = {
   },
   title: true,
   updatedAt: true,
+  stage: { select: { programId: true } },
 } satisfies Prisma.ModuleSelect;
 
 const stagePublicationSelect = {
@@ -95,6 +97,7 @@ const stagePublicationSelect = {
   },
   title: true,
   updatedAt: true,
+  programId: true,
 } satisfies Prisma.StageSelect;
 
 const programPublicationSelect = {
@@ -171,13 +174,18 @@ async function readTarget(
   ownerId: string,
   targetType: PublicationTargetType,
   targetId: string,
-): Promise<PublicationTarget | null> {
+): Promise<{ programId: string; target: PublicationTarget } | null> {
   if (targetType === 'PROGRAM') {
     const program = await client.program.findFirst({
       select: programPublicationSelect,
       where: { id: targetId, ownerId },
     });
-    return program ? { entity: mapProgram(program), type: 'PROGRAM' } : null;
+    return program
+      ? {
+          programId: program.id,
+          target: { entity: mapProgram(program), type: 'PROGRAM' },
+        }
+      : null;
   }
 
   if (targetType === 'STAGE') {
@@ -185,14 +193,24 @@ async function readTarget(
       select: stagePublicationSelect,
       where: { id: targetId, program: { ownerId } },
     });
-    return stage ? { entity: mapStage(stage), type: 'STAGE' } : null;
+    return stage
+      ? {
+          programId: stage.programId,
+          target: { entity: mapStage(stage), type: 'STAGE' },
+        }
+      : null;
   }
 
   const module = await client.module.findFirst({
     select: modulePublicationSelect,
     where: { id: targetId, stage: { program: { ownerId } } },
   });
-  return module ? { entity: mapModule(module), type: 'MODULE' } : null;
+  return module
+    ? {
+        programId: module.stage.programId,
+        target: { entity: mapModule(module), type: 'MODULE' },
+      }
+    : null;
 }
 
 async function applyChanges(
@@ -240,7 +258,7 @@ function isRetryableTransactionError(error: unknown): boolean {
     typeof error === 'object' &&
     error !== null &&
     'code' in error &&
-    error.code === 'P2034'
+    (error.code === 'P2034' || error.code === 'P2002')
   );
 }
 
@@ -267,15 +285,19 @@ export function createPrismaPublicationService(
   return {
     async apply(ownerId, request) {
       return runSerializableTransaction(client, async (transaction) => {
-        const target = await readTarget(
+        const resolved = await readTarget(
           transaction,
           ownerId,
           request.targetType,
           request.targetId,
         );
-        if (!target) return null;
+        if (!resolved) return null;
 
-        const plan = buildPublicationPlan(target, request.action, request.mode);
+        const plan = buildPublicationPlan(
+          resolved.target,
+          request.action,
+          request.mode,
+        );
         const isAlreadyApplied =
           plan.changes.length === 0 && plan.blockers.length === 0;
 
@@ -287,6 +309,14 @@ export function createPrismaPublicationService(
         }
 
         await applyChanges(transaction, plan);
+        const publishedVersion =
+          plan.changes.length > 0
+            ? await createOrReusePublishedProgramVersion(
+                transaction,
+                resolved.programId,
+                ownerId,
+              )
+            : null;
         await writeAuditEvent(transaction, {
           action: AuditAction.PROGRAM_PUBLICATION_APPLY,
           actorUserId: ownerId,
@@ -296,6 +326,12 @@ export function createPrismaPublicationService(
             changeCount: plan.changes.length,
             mode: request.mode,
             targetType: request.targetType,
+            ...(publishedVersion
+              ? {
+                  versionId: publishedVersion.id,
+                  versionNumber: publishedVersion.version,
+                }
+              : {}),
           },
           targetId: request.targetId,
           targetType: request.targetType.toLowerCase(),
@@ -304,15 +340,15 @@ export function createPrismaPublicationService(
       });
     },
     async preview(ownerId, request) {
-      const target = await readTarget(
+      const resolved = await readTarget(
         client as unknown as Prisma.TransactionClient,
         ownerId,
         request.targetType,
         request.targetId,
       );
 
-      return target
-        ? buildPublicationPlan(target, request.action, request.mode)
+      return resolved
+        ? buildPublicationPlan(resolved.target, request.action, request.mode)
         : null;
     },
   };

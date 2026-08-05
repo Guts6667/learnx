@@ -33,7 +33,11 @@ function createModuleDatabase() {
     ],
     title: 'Module',
     updatedAt: state.updatedAt,
+    stage: { programId: 'program-1' },
   });
+  let storedVersion:
+    | { checksum: string; id: string; publishedAt: Date; version: number }
+    | undefined;
   const transaction = {
     auditEvent: { upsert: vi.fn() },
     lesson: {
@@ -49,7 +53,30 @@ function createModuleDatabase() {
         state.modulePublished = true;
       },
     },
-    program: { update: vi.fn() },
+    program: {
+      findFirst: vi.fn(async () => ({
+        id: 'program-1',
+        status: 'ACTIVE',
+        stages: [],
+        title: 'Programme',
+      })),
+      update: vi.fn(),
+    },
+    programVersion: {
+      create: vi.fn(async ({ data }: { data: { checksum: string; version: number } }) => {
+        storedVersion = {
+          checksum: data.checksum,
+          id: 'version-1',
+          publishedAt: timestamp,
+          version: data.version,
+        };
+        return storedVersion;
+      }),
+      findFirst: vi.fn(async () =>
+        storedVersion ? { version: storedVersion.version } : null,
+      ),
+      findUnique: vi.fn(async () => storedVersion ?? null),
+    },
     stage: { updateMany: vi.fn() },
   };
   const client = {
@@ -67,7 +94,7 @@ function createModuleDatabase() {
     },
   } as unknown as PrismaClient;
 
-  return { client, state };
+  return { client, state, transaction };
 }
 
 describe('Prisma publication service', () => {
@@ -100,6 +127,17 @@ describe('Prisma publication service', () => {
       lessonPublished: true,
       modulePublished: true,
     });
+    expect(fixture.transaction.programVersion.create).toHaveBeenCalledTimes(1);
+    expect(fixture.transaction.auditEvent.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({
+          metadata: expect.objectContaining({
+            versionId: 'version-1',
+            versionNumber: 1,
+          }),
+        }),
+      }),
+    );
 
     await expect(
       service.apply(ownerId, {
@@ -138,6 +176,7 @@ describe('Prisma publication service', () => {
       ],
       title: 'Étape',
       updatedAt: timestamp,
+      programId: 'program-1',
     });
     const transaction = {
       auditEvent: { upsert: vi.fn() },

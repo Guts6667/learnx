@@ -179,6 +179,11 @@ personnelle.
 - `GET /api/modules/:slug`
 - `GET /api/lessons/:slug`
 
+Les contenus publiés possèdent une version immuable (`ProgramVersion`) avec
+snapshot canonique et checksum. La hiérarchie relationnelle reste la copie de
+travail ; la version suivie par un apprenant sera reliée par les enrollments du
+ticket V3-011.
+
 ### Progression et planification
 
 - `POST /api/programs/:id/start`

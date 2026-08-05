@@ -12,6 +12,12 @@ export interface AdminProgramSummary {
   title: string;
   updatedAt: Date;
   visibility: ProgramVisibility;
+  publishedVersion: {
+    checksum: string;
+    id: string;
+    publishedAt: Date;
+    version: number;
+  } | null;
 }
 
 export interface AdminStageSummary {
@@ -85,6 +91,14 @@ const programSummarySelect = {
   title: true,
   updatedAt: true,
   visibility: true,
+  publishedVersion: {
+    select: {
+      checksum: true,
+      id: true,
+      publishedAt: true,
+      version: true,
+    },
+  },
 } as const;
 
 const stageSummarySelect = {

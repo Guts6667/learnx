@@ -26,6 +26,7 @@ const adminUser = {
 const program = {
   id: programId,
   position: 0,
+  publishedVersion: null,
   slug: 'programme-test',
   status: 'DRAFT',
   title: 'Programme test',
@@ -171,6 +172,15 @@ describe('AdminPage', () => {
   });
 
   it('confirme séparément la visibilité du programme', async () => {
+    const versionedProgram = {
+      ...program,
+      publishedVersion: {
+        checksum: 'a'.repeat(64),
+        id: 'version-1',
+        publishedAt: '2026-08-05T10:00:00.000Z',
+        version: 1,
+      },
+    };
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (
         path === `/api/admin/programs/${programId}/visibility` &&
@@ -178,12 +188,19 @@ describe('AdminPage', () => {
       ) {
         return Promise.resolve(
           jsonResponse({
-            program: { ...program, status: 'DRAFT', visibility: 'PUBLIC' },
+            program: {
+              ...versionedProgram,
+              status: 'DRAFT',
+              visibility: 'PUBLIC',
+            },
           }),
         );
       }
       return Promise.resolve(
-        jsonResponse({ kind: 'PROGRAM', program: { ...program, stages: [stage] } }),
+        jsonResponse({
+          kind: 'PROGRAM',
+          program: { ...versionedProgram, stages: [stage] },
+        }),
       );
     });
     vi.stubGlobal('fetch', fetchMock);
@@ -195,6 +212,7 @@ describe('AdminPage', () => {
     );
 
     await screen.findByRole('heading', { level: 1, name: 'Programme test' });
+    expect(screen.getByText(/Version publiée : v1/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Gérer ce contenu' }));
     expect(screen.getByText('Privé')).toBeInTheDocument();
     fireEvent.click(

@@ -125,6 +125,7 @@ suspension/réactivation. V3-003 n'expose aucune API de lecture de ce journal.
 - estimated_duration_days nullable
 - created_at
 - updated_at
+- published_version_id nullable, référence la version immuable actuellement publiée
 - unique(owner_id, slug)
 - index(visibility, status, position)
 
@@ -133,6 +134,23 @@ La valeur par défaut `private` préserve les accès historiques. Un programme
 `active` et si les niveaux descendants demandés sont publiés. Les brouillons
 restent réservés au propriétaire ; la validation scientifique ne modifie pas
 la visibilité.
+
+### program_versions
+
+- id
+- program_id
+- version, entier strictement positif et monotone par programme
+- checksum, empreinte SHA-256 du snapshot canonique
+- snapshot_json, copie immuable et reproductible du contenu publié
+- published_at
+- published_by_user_id
+- unique(program_id, version)
+- unique(program_id, checksum)
+
+La hiérarchie relationnelle reste la copie de travail éditoriale. Une
+publication crée ou réutilise atomiquement un snapshot ; une republication
+strictement identique ne crée pas de doublon. Les programmes actifs antérieurs
+à V3-010 reçoivent une version legacy complète lors de la migration.
 
 ### stages
 

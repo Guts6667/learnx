@@ -12,6 +12,12 @@ export interface AdminProgramSummary {
   title: string;
   updatedAt: string;
   visibility: 'PRIVATE' | 'PUBLIC';
+  publishedVersion: {
+    checksum: string;
+    id: string;
+    publishedAt: string;
+    version: number;
+  } | null;
 }
 
 export interface AdminStageSummary {

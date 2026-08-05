@@ -726,6 +726,13 @@ function ProgramView({ program }: { program: AdminProgram }) {
         <h1 class="text-3xl font-bold tracking-tight">{program.title}</h1>
         <ProgramStatusBadge status={program.status} />
       </div>
+      <p class="text-sm text-slate-300">
+        {program.publishedVersion
+          ? `Version publiée : v${program.publishedVersion.version} — ${new Date(
+              program.publishedVersion.publishedAt,
+            ).toLocaleDateString('fr-FR')}`
+          : 'Aucune version publiée enregistrée.'}
+      </p>
       <ManagementDrawer title={`Gérer ${program.title}`}>
         <ProgramVisibilityAction program={program} />
         <PublicationAction

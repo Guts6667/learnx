@@ -55,6 +55,10 @@ pnpm prisma:seed
 - Prisma Client n’est utilisé que côté serveur.
 - Aucun import de Prisma dans le bundle frontend.
 - Les migrations sont versionnées.
+- Les publications de programme produisent une `ProgramVersion` immuable dans
+  la même transaction sérialisable que les changements de publication.
+- Le snapshot de version exclut les timestamps techniques de son checksum et
+  conserve les identifiants pédagogiques nécessaires aux futurs enrollments.
 - Le seed doit être idempotent.
 - Les accès utilisateurs doivent toujours inclure un filtre par `userId`.
 - Les limites d’authentification partagées utilisent `login_rate_limits` et une
