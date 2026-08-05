@@ -3,13 +3,13 @@
 ## Objet
 
 Cette politique classe toute évolution pédagogique avant modification. Elle
-protège le MVP contre les changements de moteur implicites sans empêcher les
+protège le moteur contre les changements implicites sans empêcher les
 corrections de contenu nécessaires.
 
 Elle ne remplace pas `EDITORIAL_GUIDELINES.md`, qui définit la qualité, ni
 `PEDAGOGY_AUTHORING_GUIDE.md`, qui définit le format.
 
-## 1. Correction MVP sans impact moteur
+## 1. Correction de contenu sans impact moteur
 
 Peut être réalisée dans un commit documentaire ou de données autonome :
 
@@ -47,9 +47,9 @@ impact, solution minimale et critères d’acceptation lorsque le changement :
 Tant que la validation n’est pas obtenue, la spec utilise le format existant ou
 reste `draft`. Aucun champ prospectif n’est glissé dans `lesson`.
 
-## 3. Idée V2
+## 3. Idée future
 
-À conserver hors du MVP lorsqu’elle est utile mais non nécessaire à la qualité
+À conserver hors du ticket actif lorsqu’elle est utile mais non nécessaire à la qualité
 ou à la sécurité immédiate, par exemple :
 
 - moteur de prérequis ou de dépendances entre notions ;
@@ -61,7 +61,7 @@ ou à la sécurité immédiate, par exemple :
 - génération ou correction automatique par IA ;
 - nouveaux médias interactifs ou types d’évaluation.
 
-Une idée V2 n’est pas ajoutée à `BACKLOG_CODEX.md` sans demande explicite. Elle
+Une idée future n’est pas ajoutée à `BACKLOG_V3.md` sans demande explicite. Elle
 peut être conservée dans une note de décision dédiée lorsqu’un emplacement est
 validé.
 
@@ -74,9 +74,9 @@ Avant toute modification, répondre :
 3. Le changement touche-t-il Prisma, l’API, le moteur, les tickets ou une donnée
    déjà publiée ?
 
-La réponse produit l’une des trois classifications : `MVP_CONTENT`,
-`TECH_VALIDATION` ou `V2_IDEA`. Le commit indique la classification et ne mélange
-pas une correction MVP avec une évolution technique.
+La réponse produit l’une des trois classifications : `CONTENT_ONLY`,
+`TECH_VALIDATION` ou `FUTURE_IDEA`. Le commit indique la classification et ne
+mélange pas une correction de contenu avec une évolution technique.
 
 En cas de doute sur l’impact moteur, classer `TECH_VALIDATION` et demander une
 revue avant édition.

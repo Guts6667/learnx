@@ -1,5 +1,10 @@
 # Product Requirements — LearnX MVP
 
+> **Statut : baseline produit historique.** Ce document conserve les exigences
+> fondatrices encore valides. Pour l'état courant et les évolutions
+> multi-utilisateur, `BACKLOG_V3.md` et les ADR acceptées font autorité. Il ne
+> doit pas être lu intégralement pour chaque ticket.
+
 ## 1. Vision
 
 LearnX est un environnement personnel d’apprentissage modulaire.

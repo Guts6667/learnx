@@ -93,7 +93,6 @@ function createRepository() {
           resources.delete(key);
         }
       }
-
     },
     async pruneExercises(lessonId, positions) {
       for (const key of exercises.keys()) {
@@ -110,7 +109,10 @@ function createRepository() {
     async pruneCanonicalActivities(input) {
       for (const key of tasks.keys()) {
         const [lessonId, activityKey] = key.split(':');
-        if (lessonId === input.lessonId && !input.taskKeys.includes(activityKey)) {
+        if (
+          lessonId === input.lessonId &&
+          !input.taskKeys.includes(activityKey)
+        ) {
           tasks.delete(key);
         }
       }
@@ -1009,12 +1011,12 @@ describe('sample program seed', () => {
       ...Array.from(
         { length: 31 },
         (_, index) =>
-          `PEDAGOGY_SPEC_${String(index + 40).padStart(3, '0')}.json`,
+          `content/fondamentaux-psychologie/specs/PEDAGOGY_SPEC_${String(index + 40).padStart(3, '0')}.json`,
       ),
       ...Array.from(
         { length: 5 },
         (_, index) =>
-          `PEDAGOGY_STAGE_ASSESSMENT_${String(index + 9).padStart(3, '0')}.json`,
+          `content/fondamentaux-psychologie/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(index + 9).padStart(3, '0')}.json`,
       ),
     ];
     const artifacts = await Promise.all(
@@ -1050,9 +1052,18 @@ describe('sample program seed', () => {
       };
     };
     const [domains, professions, assessment] = await Promise.all([
-      readFile('PEDAGOGY_SPEC_002.json', 'utf8'),
-      readFile('PEDAGOGY_SPEC_003.json', 'utf8'),
-      readFile('PEDAGOGY_STAGE_ASSESSMENT_002.json', 'utf8'),
+      readFile(
+        'content/fondamentaux-psychologie/specs/PEDAGOGY_SPEC_002.json',
+        'utf8',
+      ),
+      readFile(
+        'content/fondamentaux-psychologie/specs/PEDAGOGY_SPEC_003.json',
+        'utf8',
+      ),
+      readFile(
+        'content/fondamentaux-psychologie/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_002.json',
+        'utf8',
+      ),
     ]);
     const lessonSidecars = [domains, professions].map(
       (source) => JSON.parse(source) as LessonSidecar,
@@ -1117,9 +1128,9 @@ describe('sample program seed', () => {
 
     expect(canonicalTasks).toHaveLength(8);
     expect(canonicalExercises).toHaveLength(202);
-    expect(
-      canonicalTasks.every((task) => task.resourceKeys.length > 0),
-    ).toBe(true);
+    expect(canonicalTasks.every((task) => task.resourceKeys.length > 0)).toBe(
+      true,
+    );
     expect(
       canonicalExercises.every((task) => task.resourceKeys.length === 0),
     ).toBe(true);

@@ -4,6 +4,16 @@
 
 Construire LearnX comme une plateforme générique et modulaire de parcours d’apprentissage.
 
+## Routage documentaire
+
+- Lire `docs/INDEX.md` avant de charger une documentation supplémentaire.
+- Ne pas lire les archives V1/V2 pour une tâche courante, sauf demande
+  explicite ou recherche historique ciblée.
+- Pour un ticket V3, lire uniquement `BACKLOG_V3.md`, l'ADR ou la spécification
+  citée par le ticket, puis les fichiers de code concernés.
+- Pour une modification pédagogique, appliquer la liste dédiée ci-dessous ; ne
+  pas charger toutes les spécifications pédagogiques du programme.
+
 ## Commandes attendues
 
 ```bash
@@ -78,7 +88,8 @@ Un ticket est terminé lorsque :
 
 - Avant de créer ou modifier une `PEDAGOGY_SPEC_XXX`, lire intégralement
   `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`,
-  `CURRICULUM_BLUEPRINT.md` et `PEDAGOGY_CHANGE_POLICY.md`.
+  `content/fondamentaux-psychologie/CURRICULUM_BLUEPRINT.md` et
+  `PEDAGOGY_CHANGE_POLICY.md`.
 - Toute `PEDAGOGY_SPEC_XXX` doit respecter ces quatre documents ; les contrôles
   de publication applicables sont bloquants.
 - Distinguer systématiquement `editorial.references` (sources utilisées pour
@@ -98,4 +109,4 @@ Un ticket est terminé lorsque :
 - Les tentatives sont conservées.
 - Les règles de publication doivent bloquer les contenus pédagogiquement incomplets.
 - Une évolution éditoriale ne doit pas modifier implicitement l’architecture
-  technique, le schéma de données ou `BACKLOG_CODEX.md`.
+  technique, le schéma de données ou `BACKLOG_V3.md`.

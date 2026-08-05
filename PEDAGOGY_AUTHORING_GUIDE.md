@@ -2,7 +2,7 @@
 
 ## 1. Objet et source de vérité technique
 
-Ce guide définit le contrat exact des futures `PEDAGOGY_SPEC_XXX.json` du MVP.
+Ce guide définit le contrat exact des futures `PEDAGOGY_SPEC_XXX.json`.
 Il est aligné sur les schémas Zod de `prisma/seed.ts` au 3 août 2026.
 
 Une spécification contient deux couches :
@@ -26,21 +26,23 @@ En cas d’écart, `prisma/seed.ts` est la source de vérité pour le payload et
 
 ## 2. Nom et unité de livraison
 
-Le nom suit exactement :
+Les fichiers sont stockés dans
+`content/fondamentaux-psychologie/specs/`. Le nom suit exactement :
 
 ```text
 PEDAGOGY_SPEC_001.json
 PEDAGOGY_SPEC_002.json
 ```
 
-Le numéro est unique, croissant et sur trois chiffres. Une spécification MVP
+Le numéro est unique, croissant et sur trois chiffres. Une spécification
 décrit une seule leçon. Elle ne redéfinit ni le programme entier, ni l’étape, ni
 le module, ni le schéma de données.
 
 Les sélecteurs `programSlug`, `stageSlug` et `moduleSlug` doivent correspondre
 exactement à des objets existants dans `seed/sample-program.json`. Le
 `lesson.slug` cible une leçon existante ou, après validation explicite, une
-nouvelle leçon cohérente avec `CURRICULUM_BLUEPRINT.md`.
+nouvelle leçon cohérente avec
+`content/fondamentaux-psychologie/CURRICULUM_BLUEPRINT.md`.
 
 ## 3. Objet racine exact
 

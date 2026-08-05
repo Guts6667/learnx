@@ -14,7 +14,8 @@ fonctionnalités non bornées. Chaque ticket doit être reformulé et recevoir u
 validation spécifique avant tout code. Un ticket correspond idéalement à un
 commit autonome ; aucune implémentation du ticket suivant n'est anticipée.
 
-`BACKLOG_CODEX.md` et `BACKLOG_V2.md` restent les historiques V1 et V2.
+`docs/archive/v1/BACKLOG_CODEX.md` et `docs/archive/v2/BACKLOG_V2.md` restent
+les historiques V1 et V2 et ne constituent jamais des instructions actives.
 
 ## Cap V3
 

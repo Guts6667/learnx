@@ -1,15 +1,15 @@
-# LearnX — Kit de transmission Codex
+# LearnX
 
-LearnX est une PWA privée, mobile-first et modulaire permettant de suivre des parcours d’apprentissage autonomes.
+LearnX est une PWA mobile-first et modulaire permettant de suivre des parcours
+d’apprentissage autonomes. La V3 fait évoluer le produit vers un accès
+multi-utilisateur approuvé et des programmes publiés partageables.
 
 L’application n’est pas limitée à la psychologie. Chaque sujet est organisé sous forme de programme, lui-même découpé en étapes, modules et leçons.
 
-Le backlog V1 livré est conservé dans `BACKLOG_CODEX.md`. Les priorités issues
-de l’audit sécurité, intégrité, UX et production sont suivies dans
-`BACKLOG_V2.md`, centré sur la stabilité puis le polish UI/UX. Le parcours unifié
-centré sur la leçon est défini dans `LEARNING_FLOW_SPEC.md`. Les capacités métier
-reportées sont listées dans `V3_CANDIDATES.md` ; la validation scientifique
-optionnelle reste une vision future dans `SCIENTIFIC_REVIEW_SPEC.md`.
+La V2 est clôturée. Le travail courant est ordonné dans `BACKLOG_V3.md` et les
+documents à consulter par type de tâche sont répertoriés dans `docs/INDEX.md`.
+Les backlogs et rapports V1/V2 sont conservés sous `docs/archive/` à titre de
+preuve historique uniquement.
 
 ## Stack imposée
 
@@ -50,14 +50,13 @@ Les routes profondes conservent le fil d’Ariane et le sommaire de la leçon ; 
 route canonique d’un exercice est
 `/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
 
-## Démarrage avec Codex
+## Travail avec Codex
 
-1. Créer un repository vide.
-2. Copier le contenu de ce kit à la racine.
-3. Ouvrir le repository dans Codex.
-4. Donner à Codex le contenu de `CODEX_MASTER_PROMPT.md`.
-5. Lui demander de commencer par `TICKET-001` uniquement.
-6. Valider chaque ticket avant de poursuivre.
+1. Lire `AGENTS.md` et `docs/INDEX.md`.
+2. Identifier le ticket actif dans `BACKLOG_V3.md`.
+3. Charger uniquement l'ADR, la spécification et les fichiers concernés.
+4. Traiter un seul ticket et un seul périmètre par commit.
+5. Ne jamais utiliser les archives V1/V2 comme instructions actives.
 
 ## Base de données
 
@@ -73,8 +72,9 @@ pnpm prisma:check
 ```
 
 `prisma:check` exécute une requête de santé et requiert une `DATABASE_URL`
-valide. Le seed du ticket d’initialisation est volontairement vide ; le
-programme exemple est importé dans TICKET-008.
+valide. `pnpm prisma:seed` importe le bundle versionné
+`seed/sample-program.json`. Ne pas exécuter le seed sur une base partagée sans
+avoir vérifié la cible et le plan d'import.
 
 ## Déploiement Vercel
 
@@ -103,7 +103,6 @@ Production du projet Vercel :
 - `DIRECT_URL` : connexion Neon directe utilisée pendant les migrations ;
 - `ADMIN_EMAIL` : adresse du compte propriétaire utilisée uniquement par le
   seed manuel.
-
 `APP_URL` est réservée aux futurs liens absolus et peut être renseignée avec
 l’origine HTTPS stable lorsqu’un domaine définitif est attribué. Elle n’est pas
 lue par le runtime actuel.
@@ -247,6 +246,9 @@ et jamais sur une éventuelle validation scientifique.
 
 ## Documents
 
+- `docs/INDEX.md`
+- `BACKLOG_V3.md`
+- `ADR_001_MULTI_USER_ACCESS.md`
 - `PRODUCT_REQUIREMENTS.md`
 - `TECHNICAL_ARCHITECTURE.md`
 - `DATABASE_SCHEMA.md`
@@ -256,11 +258,15 @@ et jamais sur une éventuelle validation scientifique.
 - `ASSESSMENT_SPEC.md`
 - `EDITORIAL_GUIDELINES.md`
 - `PEDAGOGY_AUTHORING_GUIDE.md`
-- `CURRICULUM_BLUEPRINT.md`
 - `PEDAGOGY_CHANGE_POLICY.md`
-- `SAMPLE_PROGRAM_PSYCHOLOGY.md`
-- `BACKLOG_CODEX.md`
+- `content/fondamentaux-psychologie/CURRICULUM_BLUEPRINT.md`
+- `content/fondamentaux-psychologie/README.md`
+- `LEARNING_FLOW_V3_SPEC.md`
+- `SCIENTIFIC_REVIEW_SPEC.md`
 - `CODEX_MASTER_PROMPT.md`
 - `AGENTS.md`
 - `seed/sample-program.json`
 - `.env.example`
+
+Les documents V1/V2 se trouvent dans `docs/archive/` et ne sont pas chargés par
+défaut.

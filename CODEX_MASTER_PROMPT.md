@@ -1,23 +1,17 @@
 # Prompt maître Codex
 
-Tu travailles sur **LearnX**, une PWA privée et modulaire de gestion de parcours d’apprentissage.
+Tu travailles sur **LearnX**, une PWA modulaire de gestion de parcours
+d’apprentissage en cours d'évolution multi-utilisateur V3.
 
-Lis intégralement avant toute modification :
+Avant toute modification, lis uniquement :
 
 - `AGENTS.md`
-- `PRODUCT_REQUIREMENTS.md`
-- `TECHNICAL_ARCHITECTURE.md`
-- `DATABASE_SCHEMA.md`
-- `PRISMA_NOTES.md`
-- `UX_SPEC.md`
-- `TIMELINE_SPEC.md`
-- `ASSESSMENT_SPEC.md`
-- `EDITORIAL_GUIDELINES.md`
-- `PEDAGOGY_AUTHORING_GUIDE.md`
-- `CURRICULUM_BLUEPRINT.md`
-- `PEDAGOGY_CHANGE_POLICY.md`
-- `SAMPLE_PROGRAM_PSYCHOLOGY.md`
-- `BACKLOG_CODEX.md`
+- `docs/INDEX.md`
+- le ticket actif dans `BACKLOG_V3.md` ;
+- les documents que `docs/INDEX.md` associe explicitement à ce type de tâche.
+
+Ne charge jamais tous les documents, toutes les `PEDAGOGY_SPEC` ou les archives
+V1/V2 par défaut. Recherche d'abord les fichiers et passages pertinents.
 
 ## Stack obligatoire
 
@@ -51,7 +45,8 @@ Lis intégralement avant toute modification :
 - Toute logique métier importante est testée.
 - Toute nouvelle `PEDAGOGY_SPEC_XXX` respecte intégralement
   `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`,
-  `CURRICULUM_BLUEPRINT.md` et `PEDAGOGY_CHANGE_POLICY.md`.
+  `content/fondamentaux-psychologie/CURRICULUM_BLUEPRINT.md` et
+  `PEDAGOGY_CHANGE_POLICY.md`.
 - Une spécification pédagogique ne peut être déclarée complète ou publiable si
   les critères de publication applicables ne sont pas satisfaits.
 - Le champ `lesson` d’une `PEDAGOGY_SPEC_XXX.json` doit être directement
@@ -90,9 +85,8 @@ Pour le ticket demandé :
 
 ## Première instruction
 
-Commence uniquement par `TICKET-001 — Initialisation Preact`.
-
-Ne commence aucun autre ticket.
+Identifier le ticket V3 explicitement demandé et ne traiter que celui-ci. Ne
+jamais reprendre un ticket V1/V2 archivé comme instruction active.
 
 
 ## Modèle pédagogique obligatoire
