@@ -181,8 +181,10 @@ personnelle.
 
 Les contenus publiés possèdent une version immuable (`ProgramVersion`) avec
 snapshot canonique et checksum. La hiérarchie relationnelle reste la copie de
-travail ; la version suivie par un apprenant sera reliée par les enrollments du
-ticket V3-011.
+travail. `ProgramEnrollment` matérialise l'accès d'un apprenant et la version
+qu'il suit, indépendamment de la progression personnelle. La désinscription est
+réversible et ne supprime ni notes, ni tentatives, ni progression. Le chemin
+`ownerId` reste temporairement lu jusqu'à la centralisation de V3-012.
 
 ### Progression et planification
 

@@ -62,6 +62,13 @@ enum ProgramVisibility {
   @@map("program_visibility")
 }
 
+enum ProgramEnrollmentStatus {
+  ACTIVE    @map("active")
+  WITHDRAWN @map("withdrawn")
+
+  @@map("program_enrollment_status")
+}
+
 enum ContentBlockType {
   RICH_TEXT  @map("rich_text")
   OBJECTIVE  @map("objective")
@@ -252,6 +259,7 @@ model User {
   issuedAccessInvitations      AccessInvitation[]            @relation("AccessInvitationIssuer")
   auditEvents                  AuditEvent[]                  @relation("AuditEventActor")
   publishedProgramVersions     ProgramVersion[]              @relation("ProgramVersionPublisher")
+  programEnrollments           ProgramEnrollment[]
 
   @@map("users")
 }
@@ -369,6 +377,7 @@ model Program {
   owner                 User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   publishedVersion      ProgramVersion?   @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
   versions              ProgramVersion[]  @relation("ProgramVersions")
+  enrollments           ProgramEnrollment[]
   stages                Stage[]
   progress              ProgramProgress[]
   reviewItems           ReviewItem[]
@@ -391,12 +400,35 @@ model ProgramVersion {
   program           Program  @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
   publishedBy       User     @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
   currentForProgram Program? @relation("CurrentPublishedProgramVersion")
+  enrollments       ProgramEnrollment[]
 
   @@unique([programId, version])
   @@unique([programId, checksum])
+  @@unique([programId, id])
   @@index([programId, publishedAt])
   @@index([publishedByUserId, publishedAt])
   @@map("program_versions")
+}
+
+model ProgramEnrollment {
+  id               String                  @id @default(uuid()) @db.Uuid
+  userId           String                  @map("user_id") @db.Uuid
+  programId        String                  @map("program_id") @db.Uuid
+  programVersionId String                  @map("program_version_id") @db.Uuid
+  status           ProgramEnrollmentStatus @default(ACTIVE)
+  enrolledAt       DateTime                @default(now()) @map("enrolled_at")
+  withdrawnAt      DateTime?               @map("withdrawn_at")
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @updatedAt @map("updated_at")
+  user             User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program          Program                 @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programVersion   ProgramVersion          @relation(fields: [programVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([userId, status, updatedAt])
+  @@index([programId, status])
+  @@index([programVersionId])
+  @@map("program_enrollments")
 }
 
 model Stage {

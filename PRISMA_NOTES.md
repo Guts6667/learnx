@@ -58,7 +58,12 @@ pnpm prisma:seed
 - Les publications de programme produisent une `ProgramVersion` immuable dans
   la même transaction sérialisable que les changements de publication.
 - Le snapshot de version exclut les timestamps techniques de son checksum et
-  conserve les identifiants pédagogiques nécessaires aux futurs enrollments.
+  conserve les identifiants pédagogiques nécessaires aux enrollments.
+- Une `ProgramEnrollment` est unique par utilisateur et programme, pointe vers
+  une version du même programme et n'est jamais supprimée lors d'une
+  désinscription.
+- Une publication ultérieure ne change pas silencieusement la version suivie ;
+  la migration volontaire de version relève d'une opération séparée.
 - Le seed doit être idempotent.
 - Les accès utilisateurs doivent toujours inclure un filtre par `userId`.
 - Les limites d’authentification partagées utilisent `login_rate_limits` et une

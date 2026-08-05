@@ -40,7 +40,7 @@ describe('V3 access lifecycle schema', () => {
     expect(schema).toContain('model AccessRequest {');
     expect(schema).toContain('model EmailVerification {');
     expect(schema).toContain('model AccessInvitation {');
-    expect(schema).not.toContain('model ProgramEnrollment {');
+    expect(migration).not.toContain('CREATE TABLE "program_enrollments"');
     expect(migration).not.toContain('CREATE TABLE "audit_events"');
   });
 

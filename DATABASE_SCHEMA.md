@@ -152,6 +152,30 @@ publication crée ou réutilise atomiquement un snapshot ; une republication
 strictement identique ne crée pas de doublon. Les programmes actifs antérieurs
 à V3-010 reçoivent une version legacy complète lors de la migration.
 
+### program_enrollments
+
+- id
+- user_id
+- program_id
+- program_version_id, version immuable suivie lors de l'inscription initiale
+- status : active | withdrawn
+- enrolled_at
+- withdrawn_at nullable, obligatoire lorsque le statut est withdrawn
+- created_at
+- updated_at
+- unique(user_id, program_id)
+
+Une désinscription conserve la ligne et toutes les données personnelles. Une
+réinscription réactive la même ligne et la même version ; elle ne déplace jamais
+implicitement l'apprenant vers une publication plus récente. La clé étrangère
+composite `(program_id, program_version_id)` interdit de rattacher une
+inscription à la version d'un autre programme.
+
+La migration V3-011 backfille les propriétaires des programmes déjà versionnés
+et les couples utilisateur/programme présents dans `program_progress`. Le
+chemin historique par propriété reste disponible jusqu'au basculement des
+autorisations de V3-012.
+
 ### stages
 
 - id
