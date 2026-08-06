@@ -64,15 +64,26 @@ export interface ModuleSummary {
   isPublished: boolean;
   lessons: LessonSummary[];
   position: number;
+  progress: {
+    percent: number;
+    status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
+  };
   slug: string;
   title: string;
 }
 
 export interface StageSummary {
+  description: string;
+  estimatedDurationDays: number | null;
+  estimatedMinutes: number | null;
   id: string;
   isPublished: boolean;
   modules: ModuleSummary[];
   position: number;
+  progress: {
+    percent: number;
+    status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS' | 'LOCKED';
+  };
   slug: string;
   timeline: TimelineSnapshot;
   title: string;
@@ -80,6 +91,7 @@ export interface StageSummary {
 
 export interface ProgramDetail extends ProgramSummary {
   stages: StageSummary[];
+  viewPreference: { expandedStageId: string | null };
 }
 
 export interface StageDetail extends StageSummary {
@@ -363,6 +375,65 @@ export function useProgramQuery(programSlug: string) {
     true,
     true,
   );
+}
+
+export function useProgramViewPreference(programSlug: string) {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+
+  const save = useCallback(
+    async (expandedStageId: string) => {
+      setError(undefined);
+      setIsPending(true);
+      const path = `/api/programs/${encodeURIComponent(programSlug)}/view-preference`;
+      const request = (requestPath: string) =>
+        apiRequest<{ viewPreference: { expandedStageId: string } }>(
+          requestPath,
+          {
+            body: JSON.stringify({ expandedStageId }),
+            headers: { 'content-type': 'application/json' },
+            method: 'PUT',
+          },
+        );
+
+      try {
+        let response;
+        try {
+          response = await request(path);
+        } catch (requestError) {
+          if (
+            !(requestError instanceof ApiClientError) ||
+            requestError.status !== 404
+          ) {
+            throw requestError;
+          }
+          response = await request(`${path}?preview=true`);
+        }
+        queryClient.setQueryData<{ program: ProgramDetail }>(
+          ['program', programSlug, 'accessible'],
+          (current) =>
+            current
+              ? {
+                  program: {
+                    ...current.program,
+                    viewPreference: response.viewPreference,
+                  },
+                }
+              : current,
+        );
+        return response.viewPreference;
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [programSlug, queryClient],
+  );
+
+  return { error, isPending, save };
 }
 
 export function useStageQuery(programSlug: string, stageSlug: string) {

@@ -49,15 +49,20 @@ const moduleSummary = {
   isPublished: true,
   lessons: [lessonSummary],
   position: 1,
+  progress: { percent: 0, status: 'AVAILABLE' },
   slug: 'module-e2e',
   title: 'Module E2E',
 };
 
 const stageSummary = {
+  description: 'Une étape compacte pour le parcours critique.',
+  estimatedDurationDays: 1,
+  estimatedMinutes: null,
   id: 'stage-1',
   isPublished: true,
   modules: [moduleSummary],
   position: 1,
+  progress: { percent: 0, status: 'AVAILABLE' },
   slug: 'stage-e2e',
   timeline,
   title: 'Étape E2E',
@@ -72,6 +77,7 @@ const program = {
   status: 'ACTIVE',
   timeline,
   title: 'Programme E2E',
+  viewPreference: { expandedStageId: 'stage-1' },
 };
 
 interface JourneyState {
@@ -488,6 +494,10 @@ async function openCriticalLesson(page: Page) {
     page.getByRole('heading', { level: 1, name: 'Programmes' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Commencer' }).click();
+  await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
+  await expect(
+    page.getByRole('heading', { level: 1, name: moduleSummary.title }),
+  ).toBeVisible();
   await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
   await expect(
     page.getByRole('heading', { level: 1, name: lessonSummary.title }),

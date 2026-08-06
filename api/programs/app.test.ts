@@ -2,10 +2,14 @@ import type { MiddlewareHandler } from 'hono';
 
 import type { PrismaClient, Role } from '../../generated/prisma/client';
 import type { AuthEnvironment } from '../../src/server/api/_lib/auth';
-import { createCurriculumApp } from '../../src/server/api/programs/app';
+import {
+  createCurriculumApp,
+  getRecommendedExpandedStageId,
+} from '../../src/server/api/programs/app';
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
+const stageId = '3a777cf7-8f6b-421c-88f4-d17c8d530e93';
 
 function createAuthentication(
   userId: string,
@@ -111,10 +115,14 @@ function createClient(
     title: 'Draft module',
   };
   const stage = {
-    id: 'stage-1',
+    description: 'Draft stage description',
+    estimatedDurationDays: 4,
+    estimatedMinutes: null,
+    id: stageId,
     isPublished: published,
     modules: [module],
     position: 1,
+    progress: [{ percent: 0, status: 'AVAILABLE' as const }],
     slug: 'draft-stage',
     title: 'Draft stage',
   };
@@ -215,6 +223,16 @@ function createClient(
       );
     return Boolean(statusAllowed && accessAllowed);
   }
+  let expandedStageId: string | null = null;
+  const preferenceFindUnique = vi.fn(async () =>
+    expandedStageId ? { expandedStageId } : null,
+  );
+  const preferenceUpsert = vi.fn(
+    async (input: { create: { expandedStageId: string } }) => {
+      expandedStageId = input.create.expandedStageId;
+      return { expandedStageId };
+    },
+  );
   const client = {
     module: {
       findMany: vi.fn(async (input: unknown) => {
@@ -244,6 +262,10 @@ function createClient(
         return canReadProgram(where) ? [program] : [];
       }),
     },
+    programViewPreference: {
+      findUnique: preferenceFindUnique,
+      upsert: preferenceUpsert,
+    },
     stage: {
       findMany: vi.fn(async (input: unknown) => {
         const where = (
@@ -260,8 +282,30 @@ function createClient(
     lesson: { findMany },
   } as unknown as PrismaClient;
 
-  return { client, findMany };
+  return { client, findMany, preferenceFindUnique, preferenceUpsert };
 }
+
+describe('program timeline preferences', () => {
+  it('recommande la première étape accessible non terminée', () => {
+    expect(
+      getRecommendedExpandedStageId([
+        { id: 'stage-1', progress: { status: 'COMPLETED' } },
+        { id: 'stage-2', progress: { status: 'LOCKED' } },
+        { id: 'stage-3', progress: { status: 'AVAILABLE' } },
+      ]),
+    ).toBe('stage-3');
+    expect(getRecommendedExpandedStageId([])).toBeNull();
+  });
+
+  it('retourne la dernière étape terminée quand le parcours est fini', () => {
+    expect(
+      getRecommendedExpandedStageId([
+        { id: 'stage-1', progress: { status: 'COMPLETED' } },
+        { id: 'stage-2', progress: { status: 'COMPLETED' } },
+      ]),
+    ).toBe('stage-2');
+  });
+});
 
 describe('curriculum draft preview authorization', () => {
   it('refuse une prévisualisation sans session', async () => {
@@ -364,6 +408,109 @@ describe('curriculum draft preview authorization', () => {
 
       expect(response.status, path).toBe(200);
     }
+  });
+
+  it('expose une préférence recommandée et la progression agrégée du module', async () => {
+    const { client, preferenceFindUnique } = createClient(ownerId, {
+      published: true,
+      visibility: 'PUBLIC',
+    });
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+      readProgramTimeline: async () => null,
+      readStageTimeline: async () => null,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/programs/draft-program',
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      program: {
+        stages: [
+          {
+            modules: [
+              { progress: { percent: 0, status: 'AVAILABLE' } },
+            ],
+            progress: { percent: 0, status: 'AVAILABLE' },
+          },
+        ],
+        viewPreference: { expandedStageId: stageId },
+      },
+    });
+    expect(preferenceFindUnique).toHaveBeenCalledWith({
+      select: { expandedStageId: true },
+      where: {
+        userId_programId: { programId: 'program-1', userId: otherUserId },
+      },
+    });
+  });
+
+  it('mémorise uniquement une étape visible du programme accessible', async () => {
+    const { client, preferenceUpsert } = createClient();
+    const app = createCurriculumApp({
+      authentication: createAuthentication(ownerId),
+      getClient: async () => client,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/programs/draft-program/view-preference?preview=true',
+      {
+        body: JSON.stringify({ expandedStageId: stageId }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PUT',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      viewPreference: { expandedStageId: stageId },
+    });
+    expect(preferenceUpsert).toHaveBeenCalledWith({
+      create: {
+        expandedStageId: stageId,
+        programId: 'program-1',
+        userId: ownerId,
+      },
+      update: { expandedStageId: stageId },
+      where: {
+        userId_programId: { programId: 'program-1', userId: ownerId },
+      },
+    });
+
+    const missingStage = await app.request(
+      'http://localhost/api/programs/draft-program/view-preference?preview=true',
+      {
+        body: JSON.stringify({
+          expandedStageId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PUT',
+      },
+    );
+    expect(missingStage.status).toBe(404);
+  });
+
+  it('refuse de mémoriser une étape brouillon pour un non-propriétaire', async () => {
+    const { client, preferenceUpsert } = createClient(ownerId);
+    const app = createCurriculumApp({
+      authentication: createAuthentication(otherUserId),
+      getClient: async () => client,
+    });
+
+    const response = await app.request(
+      'http://localhost/api/programs/draft-program/view-preference?preview=true',
+      {
+        body: JSON.stringify({ expandedStageId: stageId }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PUT',
+      },
+    );
+
+    expect(response.status).toBe(404);
+    expect(preferenceUpsert).not.toHaveBeenCalled();
   });
 
   it('masque le brouillon à un utilisateur non propriétaire', async () => {

@@ -359,6 +359,7 @@ describe('CurriculumPages', () => {
               temporalStatus: null,
             },
             title: 'Programme brouillon',
+            viewPreference: { expandedStageId: null },
           },
         }),
       );
@@ -374,6 +375,97 @@ describe('CurriculumPages', () => {
       '/api/programs/brouillon',
       '/api/programs/brouillon?preview=true',
     ]);
+  });
+
+  it('n’ouvre qu’une étape et mémorise le choix sans naviguer', async () => {
+    const timeline = {
+      actualPercent: 0,
+      completedAt: null,
+      expectedPercent: 0,
+      progressDelta: 0,
+      startedAt: null,
+      targetEndAt: null,
+      temporalStatus: null,
+    };
+    const createStage = (id: string, position: number, title: string) => ({
+      description: `Résumé ${title}`,
+      estimatedDurationDays: position,
+      estimatedMinutes: null,
+      id,
+      isPublished: true,
+      modules: [
+        {
+          id: `module-${position}`,
+          isPublished: true,
+          lessons: [],
+          position: 1,
+          progress: { percent: 0, status: 'AVAILABLE' },
+          slug: `module-${position}`,
+          title: `Module ${position}`,
+        },
+      ],
+      position,
+      progress: { percent: 0, status: 'AVAILABLE' },
+      slug: `etape-${position}`,
+      timeline,
+      title,
+    });
+    const fetchMock = vi.fn((_path: string, init?: RequestInit) => {
+      if (init?.method === 'PUT') {
+        return Promise.resolve(
+          jsonResponse({ viewPreference: { expandedStageId: 'stage-1' } }),
+        );
+      }
+      return Promise.resolve(
+        jsonResponse({
+          program: {
+            description: 'Un parcours compact.',
+            id: 'program-1',
+            slug: 'compact',
+            stages: [
+              createStage('stage-1', 1, 'Étape une'),
+              createStage('stage-2', 2, 'Étape deux'),
+            ],
+            status: 'ACTIVE',
+            timeline,
+            title: 'Programme compact',
+            viewPreference: { expandedStageId: 'stage-2' },
+          },
+        }),
+      );
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    renderPage(<ProgramPage programSlug="compact" />);
+
+    const firstStage = await screen.findByRole('button', {
+      name: /Étape une/,
+    });
+    const secondStage = screen.getByRole('button', { name: /Étape deux/ });
+    expect(firstStage).toHaveAttribute('aria-expanded', 'false');
+    expect(secondStage).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.queryByText('Résumé Étape une')).toBeNull();
+    expect(screen.getByText('Résumé Étape deux')).toBeVisible();
+
+    fireEvent.click(firstStage);
+
+    expect(
+      screen.getByRole('button', { name: /Étape une/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: /Étape deux/ }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('Résumé Étape une')).toBeVisible();
+    expect(screen.queryByText('Résumé Étape deux')).toBeNull();
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/programs/compact/view-preference',
+        expect.objectContaining({
+          body: JSON.stringify({ expandedStageId: 'stage-1' }),
+          method: 'PUT',
+        }),
+      ),
+    );
   });
 
   it('relie le programme, l’étape et le module à leurs contenus', async () => {
@@ -399,6 +491,7 @@ describe('CurriculumPages', () => {
       isPublished: false,
       lessons: [lesson],
       position: 1,
+      progress: { percent: 25, status: 'IN_PROGRESS' },
       slug: 'premiers-pas',
       title: 'Premiers pas',
     };
@@ -412,16 +505,31 @@ describe('CurriculumPages', () => {
               slug: 'bases',
               stages: [
                 {
+                  description: 'Comprendre les premiers repères.',
+                  estimatedDurationDays: 4,
+                  estimatedMinutes: null,
                   id: 'stage-1',
                   isPublished: false,
                   modules: [module],
                   position: 1,
+                  progress: { percent: 25, status: 'IN_PROGRESS' },
                   slug: 'introduction',
+                  timeline: null,
                   title: 'Introduction',
                 },
               ],
               status: 'ACTIVE',
+              timeline: {
+                actualPercent: 25,
+                completedAt: null,
+                expectedPercent: 20,
+                progressDelta: 5,
+                startedAt: null,
+                targetEndAt: null,
+                temporalStatus: 'ahead',
+              },
               title: 'Les bases',
+              viewPreference: { expandedStageId: 'stage-1' },
             },
           }),
         );
@@ -432,6 +540,8 @@ describe('CurriculumPages', () => {
           jsonResponse({
             stage: {
               estimatedDurationDays: null,
+              estimatedMinutes: null,
+              description: 'Comprendre les premiers repères.',
               id: 'stage-1',
               isPublished: false,
               modules: [
@@ -440,11 +550,13 @@ describe('CurriculumPages', () => {
                   isPublished: false,
                   lessons: [lesson],
                   position: 1,
+                  progress: { percent: 25, status: 'IN_PROGRESS' },
                   slug: 'premiers-pas',
                   title: 'Premiers pas',
                 },
               ],
               position: 1,
+              progress: { percent: 25, status: 'IN_PROGRESS' },
               slug: 'introduction',
               title: 'Introduction',
               validation: {
@@ -512,14 +624,19 @@ describe('CurriculumPages', () => {
 
     const programView = renderPage(<ProgramPage programSlug="bases" />);
     expect(
-      await screen.findByRole('link', { name: 'Prévisualiser' }),
-    ).toHaveAttribute('href', '/program/bases/lesson/demarrer');
-    expect(screen.getByText('10 min · 6 activités')).toBeInTheDocument();
+      await screen.findByRole('button', { name: /Introduction/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Comprendre les premiers repères.')).toBeVisible();
+    expect(screen.queryByText('Les notions essentielles.')).toBeNull();
+    expect(screen.queryByText(/6 activités/)).toBeNull();
+    expect(screen.getByRole('link', { name: 'Reprendre' })).toHaveAttribute(
+      'href',
+      '/program/bases/module/premiers-pas',
+    );
     expect(
-      screen.getByText('Prochaine activité : Reprendre l’activité en cours'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('progressbar', { name: 'Progression — 25 %' }),
+      screen.getByRole('progressbar', {
+        name: 'Progression du programme — 25 %',
+      }),
     ).toHaveAttribute('aria-valuenow', '25');
     expect(screen.getAllByText('Brouillon')).not.toHaveLength(0);
 

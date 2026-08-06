@@ -8,7 +8,7 @@
 - Date : 6 août 2026
 - Source de cadrage : décisions produit validées après clôture V2, audit UX et
   pédagogique de Claude, puis arbitrages du responsable produit
-- Dernier ticket finalisé : `V3-018`
+- Dernier ticket finalisé : `V3-019`
 
 Ce backlog remplace le brouillon V3 antérieur. Il ordonne la transformation de
 LearnX en plateforme multi-utilisateur sans transformer V3 en vague de
@@ -752,6 +752,9 @@ revue humaine requise avant toute publication.**
 ## V3-019 — Timeline et accordéon Programme compact
 
 **Priorité : P1. Dépendances : V3-014, V3-016 et agrégation serveur du module.**
+
+**Statut : finalisé — timeline compacte, préférence serveur par compte/programme
+et agrégation de progression des modules livrées.**
 
 ### Périmètre
 

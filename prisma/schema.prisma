@@ -269,6 +269,7 @@ model User {
   auditEvents                  AuditEvent[]                  @relation("AuditEventActor")
   publishedProgramVersions     ProgramVersion[]              @relation("ProgramVersionPublisher")
   programEnrollments           ProgramEnrollment[]
+  programViewPreferences       ProgramViewPreference[]
 
   @@map("users")
 }
@@ -387,6 +388,7 @@ model Program {
   publishedVersion      ProgramVersion?     @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
   versions              ProgramVersion[]    @relation("ProgramVersions")
   enrollments           ProgramEnrollment[]
+  viewPreferences       ProgramViewPreference[]
   stages                Stage[]
   progress              ProgramProgress[]
   reviewItems           ReviewItem[]
@@ -440,6 +442,22 @@ model ProgramEnrollment {
   @@map("program_enrollments")
 }
 
+model ProgramViewPreference {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  programId       String   @map("program_id") @db.Uuid
+  expandedStageId String   @map("expanded_stage_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program         Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  expandedStage   Stage    @relation(fields: [programId, expandedStageId], references: [programId, id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([programId, expandedStageId])
+  @@map("program_view_preferences")
+}
+
 model Stage {
   id                    String            @id @default(uuid()) @db.Uuid
   programId             String            @map("program_id") @db.Uuid
@@ -456,8 +474,10 @@ model Stage {
   modules               Module[]
   progress              StageProgress[]
   assessments           StageAssessment[]
+  expandedPreferences   ProgramViewPreference[]
 
   @@unique([programId, slug])
+  @@unique([programId, id])
   @@index([programId, position])
   @@map("stages")
 }

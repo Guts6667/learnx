@@ -22,10 +22,12 @@ import {
 } from '@/features/programs/queries';
 import {
   type LessonSummary,
+  type StageSummary,
   type StageValidation,
   useModuleQuery,
   useModuleRestart,
   useProgramQuery,
+  useProgramViewPreference,
   useStageQuery,
 } from '@/features/curriculum/queries';
 
@@ -142,6 +144,153 @@ function ProgressPlaceholder() {
 
 function DraftBadge() {
   return <Badge tone="warning">Brouillon</Badge>;
+}
+
+const compactProgressStatusLabels = {
+  AVAILABLE: 'Disponible',
+  COMPLETED: 'Terminée',
+  IN_PROGRESS: 'En cours',
+  LOCKED: 'Verrouillée',
+} as const;
+
+function formatStageDuration(stage: StageSummary): string {
+  if (stage.estimatedDurationDays !== null) {
+    return `${stage.estimatedDurationDays} j`;
+  }
+  if (stage.estimatedMinutes !== null) return `${stage.estimatedMinutes} min`;
+  return 'Durée non renseignée';
+}
+
+function getStageTargetModule(stage: StageSummary) {
+  return (
+    stage.modules.find(
+      ({ progress }) =>
+        progress.status !== 'COMPLETED' && progress.status !== 'LOCKED',
+    ) ??
+    [...stage.modules]
+      .reverse()
+      .find(({ progress }) => progress.status === 'COMPLETED') ??
+    stage.modules[0] ??
+    null
+  );
+}
+
+function StageTimelineItem({
+  isExpanded,
+  onExpand,
+  programSlug,
+  stage,
+}: {
+  isExpanded: boolean;
+  onExpand: () => void;
+  programSlug: string;
+  stage: StageSummary;
+}) {
+  const panelId = `program-stage-panel-${stage.id}`;
+  const targetModule = getStageTargetModule(stage);
+  const isLocked = stage.progress.status === 'LOCKED';
+  const actionLabel = isLocked
+    ? 'Voir les prérequis'
+    : stage.progress.status === 'COMPLETED'
+      ? 'Revoir'
+      : stage.progress.status === 'IN_PROGRESS'
+        ? 'Reprendre'
+        : 'Commencer';
+  const actionHref = isLocked
+    ? `/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`
+    : targetModule
+      ? `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(targetModule.slug)}`
+      : `/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`;
+
+  return (
+    <li class="relative pl-8 sm:pl-10">
+      <span
+        aria-hidden="true"
+        class="absolute -left-4 top-5 grid size-8 place-items-center rounded-full border border-cyan-500/60 bg-slate-950 text-sm font-semibold text-cyan-200"
+      >
+        {stage.position}
+      </span>
+      <Card class="overflow-hidden p-0">
+        <button
+          aria-controls={panelId}
+          aria-expanded={isExpanded}
+          class="flex min-h-20 w-full items-center gap-4 rounded-2xl px-4 py-4 text-left transition-colors hover:bg-slate-800/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cyan-300 motion-reduce:transition-none sm:px-5"
+          onClick={onExpand}
+          type="button"
+        >
+          <span class="min-w-0 flex-1">
+            <span class="flex flex-wrap items-center gap-2">
+              <span class="font-semibold text-slate-100">{stage.title}</span>
+              {stage.isPublished ? null : <DraftBadge />}
+            </span>
+            <span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
+              <span>{formatStageDuration(stage)}</span>
+              <span>{compactProgressStatusLabels[stage.progress.status]}</span>
+              <span>{Math.round(stage.progress.percent)} %</span>
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            class={`text-xl text-slate-300 transition-transform motion-reduce:transition-none ${
+              isExpanded ? 'rotate-180' : ''
+            }`}
+          >
+            ⌄
+          </span>
+        </button>
+        {isExpanded ? (
+          <div
+            aria-label={`Détails de l’étape ${stage.title}`}
+            class="space-y-5 border-t border-slate-800 px-4 py-5 sm:px-5"
+            id={panelId}
+            role="region"
+          >
+            <p class="leading-7 text-slate-300">{stage.description}</p>
+            <ProgressBar
+              label={`Progression de l’étape — ${Math.round(stage.progress.percent)} %`}
+              value={stage.progress.percent}
+            />
+            {stage.modules.length === 0 ? (
+              <p class="text-sm text-slate-400">Aucun module disponible.</p>
+            ) : (
+              <ul class="space-y-3" aria-label="Modules de l’étape">
+                {stage.modules.map((module) => (
+                  <li
+                    class="rounded-xl border border-slate-800 bg-slate-950/40 p-4"
+                    key={module.id}
+                  >
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <span class="font-medium text-slate-100">
+                        {module.title}
+                      </span>
+                      <Badge
+                        tone={
+                          module.progress.status === 'COMPLETED'
+                            ? 'success'
+                            : module.progress.status === 'LOCKED'
+                              ? 'warning'
+                              : 'info'
+                        }
+                      >
+                        {compactProgressStatusLabels[module.progress.status]}
+                      </Badge>
+                    </div>
+                    <div class="mt-3">
+                      <ProgressBar
+                        label={`Progression du module — ${Math.round(module.progress.percent)} %`}
+                        value={module.progress.percent}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <NavigationAction href={actionHref}>{actionLabel}</NavigationAction>
+          </div>
+        ) : null}
+      </Card>
+    </li>
+  );
 }
 
 const stageStatusLabels: Record<StageValidation['status'], string> = {
@@ -653,13 +802,17 @@ export function ProgramsPage() {
 
 export function ProgramPage({ programSlug }: { programSlug: string }) {
   const query = useProgramQuery(programSlug);
+  const preference = useProgramViewPreference(programSlug);
+  const [localPreference, setLocalPreference] = useState<{
+    expandedStageId: string | null;
+    programId: string;
+  } | null>(null);
   const state = getQueryState(query.error, query.isPending);
+  const program = query.data?.program;
 
   if (state) {
     return state;
   }
-
-  const program = query.data?.program;
 
   if (!program) {
     return (
@@ -669,6 +822,13 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
       />
     );
   }
+
+  const activeStageId =
+    localPreference?.programId === program.id
+      ? localPreference.expandedStageId
+      : (program.viewPreference?.expandedStageId ??
+        program.stages[0]?.id ??
+        null);
 
   return (
     <section aria-labelledby="program-title" class="page-shell">
@@ -684,46 +844,46 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         </div>
         <p class="mt-3 text-slate-300">{program.description}</p>
       </div>
-      <ProgressPlaceholder />
+      <ProgressBar
+        label={`Progression du programme — ${Math.round(program.timeline?.actualPercent ?? 0)} %`}
+        value={program.timeline?.actualPercent ?? 0}
+      />
       {program.stages.length === 0 ? (
         <EmptyState
           description="Les étapes publiées apparaîtront ici."
           title="Aucune étape disponible"
         />
       ) : (
-        <div class="grid gap-5 xl:grid-cols-2">
+        <ol class="ml-4 space-y-5 border-l border-cyan-900/80 py-1">
           {program.stages.map((stage) => (
-            <Card class="space-y-4" key={stage.id}>
-              <div class="flex flex-wrap items-center gap-2">
-                <h2 class="text-lg font-semibold">{stage.title}</h2>
-                {stage.isPublished ? null : <DraftBadge />}
-              </div>
-              {stage.modules.map((module) => (
-                <section class="space-y-3" key={module.id}>
-                  <div class="flex flex-wrap items-center justify-between gap-3">
-                    <h3 class="font-semibold text-slate-200">{module.title}</h3>
-                    <NavigationAction
-                      href={`/program/${program.slug}/module/${module.slug}`}
-                      size="sm"
-                      variant="ghost"
-                    >
-                      Voir le module
-                    </NavigationAction>
-                  </div>
-                  {module.lessons.map((lesson) => (
-                    <LessonSummaryCard
-                      key={lesson.id}
-                      lesson={lesson}
-                      programSlug={program.slug}
-                      stageSlug={stage.slug}
-                    />
-                  ))}
-                </section>
-              ))}
-            </Card>
+            <StageTimelineItem
+              isExpanded={activeStageId === stage.id}
+              key={stage.id}
+              onExpand={() => {
+                if (activeStageId === stage.id) return;
+                const previousStageId = activeStageId;
+                setLocalPreference({
+                  expandedStageId: stage.id,
+                  programId: program.id,
+                });
+                void preference.save(stage.id).catch(() => {
+                  setLocalPreference({
+                    expandedStageId: previousStageId,
+                    programId: program.id,
+                  });
+                });
+              }}
+              programSlug={program.slug}
+              stage={stage}
+            />
           ))}
-        </div>
+        </ol>
       )}
+      {preference.error ? (
+        <p aria-live="polite" class="text-sm text-rose-200" role="status">
+          L’étape ouverte n’a pas pu être mémorisée.
+        </p>
+      ) : null}
     </section>
   );
 }

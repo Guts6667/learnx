@@ -18,6 +18,7 @@ import {
   getStageTimeline,
 } from '../_lib/timeline-progress.js';
 import { getStageValidation } from '../_lib/stage-validation.js';
+import { calculateModuleProgress } from '../../../lib/module-progress.js';
 
 async function getPrismaClient(): Promise<PrismaClient> {
   const { prisma } = await import('../../prisma.js');
@@ -31,10 +32,16 @@ interface CurriculumAppOptions {
   readProgramTimeline?: typeof getProgramTimeline;
   readStageTimeline?: typeof getStageTimeline;
   readStageValidation?: typeof getStageValidation;
+  readProgramViewPreference?: typeof readProgramViewPreference;
+  saveProgramViewPreference?: typeof saveProgramViewPreference;
 }
 
 const previewQuerySchema = z.object({
   preview: z.enum(['true']).optional(),
+});
+
+const programViewPreferenceSchema = z.object({
+  expandedStageId: z.string().uuid(),
 });
 
 function notFound(): ApiError {
@@ -139,7 +146,7 @@ function getStageInclude(preview: boolean, userId: string) {
     progress: {
       where: { userId },
       take: 1,
-      select: { status: true },
+      select: { percent: true, status: true },
     },
   };
 }
@@ -175,12 +182,20 @@ function serializeModules<T extends { lessons: LessonSummaryRecord[] }>(
   modules: T[],
   isLocked = false,
 ) {
-  return modules.map((module) => ({
-    ...module,
-    lessons: module.lessons.map((lesson) =>
+  return modules.map((module) => {
+    const lessons = module.lessons.map((lesson) =>
       serializeLessonSummary(lesson, isLocked),
-    ),
-  }));
+    );
+
+    return {
+      ...module,
+      lessons,
+      progress: calculateModuleProgress(
+        lessons.map((lesson) => lesson.progress),
+        isLocked,
+      ),
+    };
+  });
 }
 
 function isStageLocked(stage: {
@@ -189,12 +204,83 @@ function isStageLocked(stage: {
   return stage.progress?.[0]?.status === StageProgressStatus.LOCKED;
 }
 
+function serializeStage<
+  T extends {
+    modules: Array<{ lessons: LessonSummaryRecord[] }>;
+    progress: Array<{ percent: number; status: StageProgressStatus }>;
+  },
+>(stage: T) {
+  const { progress, ...summary } = stage;
+  const stageProgress = progress[0] ?? {
+    percent: 0,
+    status: StageProgressStatus.AVAILABLE,
+  };
+
+  return {
+    ...summary,
+    modules: serializeModules(stage.modules, isStageLocked(stage)),
+    progress: stageProgress,
+  };
+}
+
+export function getRecommendedExpandedStageId(
+  stages: Array<{
+    id: string;
+    progress: { status: StageProgressStatus };
+  }>,
+): string | null {
+  if (stages.length === 0) return null;
+
+  const activeStage = stages.find(
+    ({ progress }) =>
+      progress.status !== StageProgressStatus.COMPLETED &&
+      progress.status !== StageProgressStatus.LOCKED,
+  );
+  if (activeStage) return activeStage.id;
+
+  const lastCompletedStage = [...stages]
+    .reverse()
+    .find(({ progress }) => progress.status === StageProgressStatus.COMPLETED);
+
+  return lastCompletedStage?.id ?? stages[0].id;
+}
+
+async function readProgramViewPreference(
+  prisma: PrismaClient,
+  userId: string,
+  programId: string,
+): Promise<string | null> {
+  const preference = await prisma.programViewPreference.findUnique({
+    where: { userId_programId: { programId, userId } },
+    select: { expandedStageId: true },
+  });
+
+  return preference?.expandedStageId ?? null;
+}
+
+async function saveProgramViewPreference(
+  prisma: PrismaClient,
+  userId: string,
+  programId: string,
+  expandedStageId: string,
+): Promise<void> {
+  await prisma.programViewPreference.upsert({
+    where: { userId_programId: { programId, userId } },
+    create: { expandedStageId, programId, userId },
+    update: { expandedStageId },
+  });
+}
+
 export function createCurriculumApp(options: CurriculumAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const getClient = options.getClient ?? getPrismaClient;
   const readProgramTimeline = options.readProgramTimeline ?? getProgramTimeline;
   const readStageTimeline = options.readStageTimeline ?? getStageTimeline;
   const readStageValidation = options.readStageValidation ?? getStageValidation;
+  const readViewPreference =
+    options.readProgramViewPreference ?? readProgramViewPreference;
+  const saveViewPreference =
+    options.saveProgramViewPreference ?? saveProgramViewPreference;
 
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
@@ -267,22 +353,71 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       (candidate) => candidate.ownerId,
     );
 
-    const [timeline, stages] = await Promise.all([
+    const [timeline, stages, storedExpandedStageId] = await Promise.all([
       readProgramTimeline(prisma, program.id, user.id),
       Promise.all(
         program.stages.map(async (stage) => {
-          const { progress, ...stageSummary } = stage;
-          void progress;
           return {
-            ...stageSummary,
-            modules: serializeModules(stage.modules, isStageLocked(stage)),
+            ...serializeStage(stage),
             timeline: await readStageTimeline(prisma, stage.id, user.id),
           };
         }),
       ),
+      readViewPreference(prisma, user.id, program.id),
     ]);
 
-    return context.json({ program: { ...program, stages, timeline } });
+    const visibleStageIds = new Set(stages.map(({ id }) => id));
+    const expandedStageId =
+      storedExpandedStageId && visibleStageIds.has(storedExpandedStageId)
+        ? storedExpandedStageId
+        : getRecommendedExpandedStageId(stages);
+
+    return context.json({
+      program: {
+        ...program,
+        stages,
+        timeline,
+        viewPreference: { expandedStageId },
+      },
+    });
+  });
+
+  app.put('/api/programs/:programSlug/view-preference', async (context) => {
+    const preview = isPreviewRequest(context.req.url);
+    const parsedBody = programViewPreferenceSchema.safeParse(
+      await context.req.json().catch(() => null),
+    );
+    if (!parsedBody.success) throw invalidRequest();
+
+    const prisma = await getClient();
+    const user = context.get('user');
+    const programs = await prisma.program.findMany({
+      where: {
+        ...getProgramAccessFilter(user.id, preview),
+        slug: context.req.param('programSlug'),
+      },
+      take: 3,
+      include: {
+        stages: {
+          where: getPublicationFilter(preview),
+          select: { id: true },
+        },
+      },
+    });
+    const program = selectAccessibleCandidate(
+      programs,
+      user.id,
+      (candidate) => candidate.ownerId,
+    );
+    const expandedStageId = parsedBody.data.expandedStageId;
+
+    if (!program.stages.some(({ id }) => id === expandedStageId)) {
+      throw notFound();
+    }
+
+    await saveViewPreference(prisma, user.id, program.id, expandedStageId);
+
+    return context.json({ viewPreference: { expandedStageId } });
   });
 
   app.get('/api/programs/:programSlug/stages/:stageSlug', async (context) => {
@@ -315,13 +450,11 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
       readStageValidation(prisma, stage.id, user.id, { preview }),
     ]);
 
-    const { program: _programAccess, progress, ...stageSummary } = stage;
+    const { program: _programAccess, ...stageWithAccess } = stage;
     void _programAccess;
-    void progress;
     return context.json({
       stage: {
-        ...stageSummary,
-        modules: serializeModules(stage.modules, isStageLocked(stage)),
+        ...serializeStage(stageWithAccess),
         timeline,
         validation,
       },
