@@ -2,13 +2,13 @@
 
 ## Statut et autorité
 
-- Version : 1.1.0
+- Version : 1.2.0
 - Statut : **plan V3 validé — implémentation ticket par ticket**
 - Baseline réauditée : `ba3c352` (`main`, `dev` et `staging` alignées)
-- Date : 5 août 2026
+- Date : 6 août 2026
 - Source de cadrage : décisions produit validées après clôture V2, audit UX et
   pédagogique de Claude, puis arbitrages du responsable produit
-- Dernier ticket livré sur `dev` : `V3-012` à `1002cff`
+- Dernier ticket finalisé : `V3-018`
 
 Ce backlog remplace le brouillon V3 antérieur. Il ordonne la transformation de
 LearnX en plateforme multi-utilisateur sans transformer V3 en vague de
@@ -680,6 +680,9 @@ V3-022. Aucune migration ni modification applicative.**
 
 **Priorité : P0. Dépendances : V3-010 et V3-016 approuvé.**
 
+**Statut : implémenté sur `dev` — séquence serveur et backfill V2 validés sur
+clone Neon.**
+
 ### Périmètre
 
 - Modéliser l'ordre global explicitement authoré de `CONTENT`, `RESOURCE`,
@@ -716,6 +719,9 @@ V3-022. Aucune migration ni modification applicative.**
 ## V3-018 — Réorganisation éditoriale du programme psychologie
 
 **Priorité : P1 éditoriale. Dépendances : V3-016 et V3-017.**
+
+**Statut : finalisé — 70 séquences psychologie authorées, specs et seed alignés,
+revue humaine requise avant toute publication.**
 
 ### Périmètre
 
