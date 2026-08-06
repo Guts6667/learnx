@@ -28,7 +28,8 @@
         "content": {
           "text": "Un neurone est une cellule excitable insérée dans un réseau, et non une unité isolée. Dans un schéma fonctionnel simplifié, les dendrites et le corps cellulaire reçoivent et intègrent de nombreux signaux ; l'axone conduit des potentiels d'action vers des terminaisons ; les synapses transmettent ou modulent l'influence sur d'autres cellules. La myéline produite par des cellules gliales accélère la conduction sur de nombreux axones. Ces rôles ne sont pas des compartiments absolus : la morphologie, les propriétés électriques et les interactions avec la glie varient selon le type cellulaire et le circuit.",
           "sourceKeys": ["openstax-psychology-2e-3-2"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -36,7 +37,8 @@
         "content": {
           "text": "La membrane maintient des gradients ioniques qui contribuent au potentiel de repos. Des entrées locales modifient le potentiel de membrane ; leur intégration peut atteindre un seuil et déclencher un potentiel d'action. Celui-ci est régénéré le long de l'axone selon un principe tout-ou-rien pour chaque événement : une entrée plus forte n'agrandit pas indéfiniment un potentiel d'action, mais peut notamment modifier la fréquence et le moment des décharges. Le signal neural pertinent réside donc dans des patrons d'activité de cellules et de populations, pas dans une impulsion qui contiendrait à elle seule une pensée ou une émotion.",
           "sourceKeys": ["openstax-psychology-2e-3-2", "ncbi-chemical-synapses"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "À une synapse chimique typique, l'arrivée d'un potentiel d'action ouvre des canaux calciques présynaptiques ; l'entrée de calcium favorise la fusion de vésicules et la libération d'un neurotransmetteur. Celui-ci se lie à des récepteurs, modifie des conductances ou des cascades intracellulaires, puis est éliminé, dégradé ou recapté selon le système. L'effet n'est pas contenu dans le seul nom du neurotransmetteur : il dépend du récepteur, de la cellule cible, des autres entrées, du moment et du circuit. « Excitateur » ou « inhibiteur » décrit un effet situé sur la probabilité d'activité, pas une valence psychologique bonne ou mauvaise.",
           "sourceKeys": ["ncbi-chemical-synapses", "openstax-psychology-2e-3-2"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -52,7 +55,8 @@
         "content": {
           "text": "La neuromodulation change les règles de fonctionnement d'une cellule ou d'un circuit : excitabilité intrinsèque, efficacité synaptique, gain, dynamique temporelle ou configuration fonctionnelle peuvent varier. Une même architecture anatomique peut ainsi produire plusieurs régimes d'activité selon les modulateurs et le contexte. Cela interdit l'équivalence « dopamine = plaisir », « sérotonine = bonheur » ou, plus généralement, « une molécule = un comportement ». Une molécule agit par plusieurs récepteurs, à plusieurs endroits et en interaction avec l'état du réseau ; un comportement résulte aussi de la tâche, de l'histoire, du corps et de l'environnement.",
           "sourceKeys": ["marder-neuromodulation-2012", "bargmann-connectome-neuromodulators-2012"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "rich_text",
@@ -60,7 +64,8 @@
         "content": {
           "text": "La plasticité désigne des changements dépendant de l'activité, de l'expérience, du développement, de l'état ou d'une lésion, à plusieurs échelles. Elle peut modifier l'efficacité de synapses, l'excitabilité d'une cellule, le nombre ou la forme de connexions, l'organisation de circuits et des propriétés de matière grise ou blanche. Des mécanismes associatifs comme certaines potentialisations ou dépressions coexistent avec des mécanismes homéostatiques qui tendent à stabiliser l'activité. Plasticité ne signifie donc ni changement illimité, ni amélioration garantie, ni effacement complet des contraintes biologiques ; un changement peut être transitoire, compensatoire, spécifique, insuffisant ou défavorable selon le critère étudié.",
           "sourceKeys": ["citri-malenka-plasticity-2008", "turrigiano-homeostatic-2012", "zatorre-fields-johansenberg-2012"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Pour interpréter une donnée biologique, préciser au minimum le niveau mesuré, la résolution temporelle et spatiale, la tâche, le contraste, la direction de l'effet et les alternatives. Une association entre un marqueur neural et une performance ne prouve ni que le marqueur cause la performance, ni qu'il représente à lui seul le processus psychologique. Même une intervention causale teste une nécessité ou une suffisance dans des conditions délimitées. Les mesures du comportement restent indispensables pour définir ce que l'organisme fait ; les niveaux cellulaire, circuitaire, cognitif et contextuel se contraignent mutuellement sans se remplacer.",
           "sourceKeys": ["krakauer-neuroscience-needs-behavior-2017", "zatorre-fields-johansenberg-2012", "bargmann-connectome-neuromodulators-2012"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -178,7 +184,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-3-2", "ncbi-chemical-synapses"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Excitabilité et transmission", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Excitabilité et transmission", "questionCount": 5,
+          "key": "concept-excitabilite-transmission-neuronales-assessment-1"
+        }
       },
       {
         "title": "Neuromodulation située",
@@ -188,7 +196,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["marder-neuromodulation-2012", "bargmann-connectome-neuromodulators-2012"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Neuromodulation", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Neuromodulation", "questionCount": 5,
+          "key": "concept-neuromodulation-situee-assessment-1"
+        }
       },
       {
         "title": "Plasticité multi-échelle et inférences",
@@ -198,7 +208,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["citri-malenka-plasticity-2008", "turrigiano-homeostatic-2012", "zatorre-fields-johansenberg-2012", "krakauer-neuroscience-needs-behavior-2017"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Plasticité et inférences", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Plasticité et inférences", "questionCount": 5,
+          "key": "concept-plasticite-multiechelle-inferences-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -208,7 +220,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Démonter une fiche neurotransmetteur",
@@ -216,7 +230,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer une affirmation de neuroplasticité",
@@ -224,18 +240,102 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-3-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ncbi-chemical-synapses"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-excitabilite-transmission-neuronales-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "marder-neuromodulation-2012"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bargmann-connectome-neuromodulators-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-neuromodulation-situee-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "citri-malenka-plasticity-2008"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "turrigiano-homeostatic-2012"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "zatorre-fields-johansenberg-2012"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "krakauer-neuroscience-needs-behavior-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-plasticite-multiechelle-inferences-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-022-OPENSTAX", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.2 Cells of the Nervous System", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-2-cells-of-the-nervous-system", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel ouvert pour l'organisation neuronale, le potentiel d'action et l'introduction à la synapse."},
@@ -317,7 +417,72 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "excitabilite-transmission-neuronales",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-3-2",
+            "ncbi-chemical-synapses"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-excitabilite-transmission-neuronales-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "neuromodulation-situee",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "marder-neuromodulation-2012",
+            "bargmann-connectome-neuromodulators-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-neuromodulation-situee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "plasticite-multiechelle-inferences",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "citri-malenka-plasticity-2008",
+            "turrigiano-homeostatic-2012",
+            "zatorre-fields-johansenberg-2012",
+            "krakauer-neuroscience-needs-behavior-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-plasticite-multiechelle-inferences-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

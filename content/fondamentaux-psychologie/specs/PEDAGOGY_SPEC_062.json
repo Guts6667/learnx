@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_062","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"interventions-applications","moduleSlug":"psychologie-appliquee",
   "lesson":{"title":"Éducation et apprentissage","slug":"education-apprentissage","summary":"Mobiliser des principes psychologiques pour concevoir et évaluer l’enseignement sans styles d’apprentissage, neuromythes ni recettes séparées du contenu, du contexte et de l’équité.","objectives":["Distinguer préférences, aptitudes, besoins d’accessibilité et prétendus styles d’apprentissage.","Expliquer l’intérêt et les limites de l’espacement, de la récupération et de la métacognition.","Évaluer une pratique éducative selon objectifs, contexte, mise en œuvre, équité et données d’apprentissage."],"prerequisites":["Distinguer apprentissage durable et performance immédiate.","Savoir lire un effet moyen et ses limites de généralisation."],"estimatedMinutes":115,"position":2,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Appliquer la psychologie à l’éducation consiste à formuler un objectif d’apprentissage, choisir des observations pertinentes, mobiliser des mécanismes plausibles puis vérifier les effets dans un contexte réel. Un principe de recherche n’est pas une recette universelle : son utilité dépend du contenu, de l’âge, des connaissances antérieures, du temps, de l’accompagnement, de la langue, de l’accessibilité et du type de résultat mesuré. Une pratique doit rester révisable et ne transforme pas une difficulté en aptitude fixe.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025","unesco-gem-technology-2023"]}},
-      {"type":"callout","position":2,"content":{"text":"Les personnes ont des préférences et des profils variés, mais l’hypothèse selon laquelle chacun apprendrait mieux si l’enseignement était apparié à un style visuel, auditif ou kinesthésique n’est pas étayée par les tests appropriés. Un questionnaire de préférence ne doit donc ni étiqueter un élève ni limiter les tâches proposées. Présenter une notion de plusieurs façons peut servir le contenu, la compréhension et l’accessibilité ; ce n’est pas la preuve d’un « style » stable ni une raison de créer trois versions appariées.","sourceKeys":["pashler-learning-styles-2008","newton-salvi-learning-styles-2020"]}},
-      {"type":"rich_text","position":3,"content":{"text":"Un neuromythe emprunte un vocabulaire cérébral à une affirmation éducative insuffisamment étayée. Les slogans « cerveau gauche ou droit », « seulement 10 % du cerveau » ou « période unique après laquelle on ne peut plus apprendre » simplifient abusivement des résultats. Le mot neurosciences, une image cérébrale ou une explication biologique ne démontre pas l’efficacité pédagogique. Il faut demander quelle intervention, quelle comparaison, quel apprentissage, quelle population, quelle durée et quelles réplications soutiennent la conclusion.","sourceKeys":["howard-jones-neuromyths-2014","newton-salvi-learning-styles-2020"]}},
-      {"type":"definition","position":4,"content":{"text":"La récupération active consiste à tenter de rappeler ou utiliser une connaissance ; l’espacement répartit les occasions d’apprentissage dans le temps. Ces pratiques peuvent soutenir la rétention et le transfert, surtout avec un retour informatif et plusieurs occasions de réussite. Elles ne signifient ni tester en permanence à fort enjeu, ni laisser l’élève échouer sans aide. La métacognition et l’autorégulation se développent lorsque l’enseignant explicite, modèle et guide la planification, le suivi et l’évaluation d’une stratégie dans une tâche disciplinaire précise.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025"]}},
-      {"type":"example","position":5,"content":{"text":"Pour enseigner un concept scientifique, une équipe remplace le test de « style » par un objectif observable, des explications verbales et schémas utiles au contenu, une démonstration accessible, des questions de récupération à faible enjeu, des reprises espacées et une réflexion guidée sur les erreurs. Elle prévoit alternatives pour handicap, langue et accès numérique, puis compare apprentissage différé, participation et charge selon les groupes. L’adaptation porte sur les besoins et les obstacles, pas sur une catégorie VAK.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025","unesco-gem-technology-2023","pashler-learning-styles-2008"]}},
-      {"type":"objective","position":6,"content":{"text":"Avant d’adopter une méthode, préciser le problème éducatif, l’objectif, la preuve disponible, les coûts, la formation requise et les conséquences possibles ; tester à petite échelle ; recueillir la voix des apprenants ; mesurer mise en œuvre, apprentissage différé, effets par groupe et effets indésirables. Une technologie ou un score prédictif ne doit pas remplacer le jugement pédagogique, accroître la surveillance ou enfermer un élève dans un profil. Cette leçon ne permet ni diagnostic d’apprentissage ni décision individuelle à fort enjeu.","sourceKeys":["unesco-gem-technology-2023","eef-metacognition-2025"]}}
+      {"type":"definition","position":1,"content":{"text":"Appliquer la psychologie à l’éducation consiste à formuler un objectif d’apprentissage, choisir des observations pertinentes, mobiliser des mécanismes plausibles puis vérifier les effets dans un contexte réel. Un principe de recherche n’est pas une recette universelle : son utilité dépend du contenu, de l’âge, des connaissances antérieures, du temps, de l’accompagnement, de la langue, de l’accessibilité et du type de résultat mesuré. Une pratique doit rester révisable et ne transforme pas une difficulté en aptitude fixe.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025","unesco-gem-technology-2023"]},
+        "key": "content-1"
+      },
+      {"type":"callout","position":2,"content":{"text":"Les personnes ont des préférences et des profils variés, mais l’hypothèse selon laquelle chacun apprendrait mieux si l’enseignement était apparié à un style visuel, auditif ou kinesthésique n’est pas étayée par les tests appropriés. Un questionnaire de préférence ne doit donc ni étiqueter un élève ni limiter les tâches proposées. Présenter une notion de plusieurs façons peut servir le contenu, la compréhension et l’accessibilité ; ce n’est pas la preuve d’un « style » stable ni une raison de créer trois versions appariées.","sourceKeys":["pashler-learning-styles-2008","newton-salvi-learning-styles-2020"]},
+        "key": "content-2"
+      },
+      {"type":"rich_text","position":3,"content":{"text":"Un neuromythe emprunte un vocabulaire cérébral à une affirmation éducative insuffisamment étayée. Les slogans « cerveau gauche ou droit », « seulement 10 % du cerveau » ou « période unique après laquelle on ne peut plus apprendre » simplifient abusivement des résultats. Le mot neurosciences, une image cérébrale ou une explication biologique ne démontre pas l’efficacité pédagogique. Il faut demander quelle intervention, quelle comparaison, quel apprentissage, quelle population, quelle durée et quelles réplications soutiennent la conclusion.","sourceKeys":["howard-jones-neuromyths-2014","newton-salvi-learning-styles-2020"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"La récupération active consiste à tenter de rappeler ou utiliser une connaissance ; l’espacement répartit les occasions d’apprentissage dans le temps. Ces pratiques peuvent soutenir la rétention et le transfert, surtout avec un retour informatif et plusieurs occasions de réussite. Elles ne signifient ni tester en permanence à fort enjeu, ni laisser l’élève échouer sans aide. La métacognition et l’autorégulation se développent lorsque l’enseignant explicite, modèle et guide la planification, le suivi et l’évaluation d’une stratégie dans une tâche disciplinaire précise.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025"]},
+        "key": "content-4"
+      },
+      {"type":"example","position":5,"content":{"text":"Pour enseigner un concept scientifique, une équipe remplace le test de « style » par un objectif observable, des explications verbales et schémas utiles au contenu, une démonstration accessible, des questions de récupération à faible enjeu, des reprises espacées et une réflexion guidée sur les erreurs. Elle prévoit alternatives pour handicap, langue et accès numérique, puis compare apprentissage différé, participation et charge selon les groupes. L’adaptation porte sur les besoins et les obstacles, pas sur une catégorie VAK.","sourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025","unesco-gem-technology-2023","pashler-learning-styles-2008"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Avant d’adopter une méthode, préciser le problème éducatif, l’objectif, la preuve disponible, les coûts, la formation requise et les conséquences possibles ; tester à petite échelle ; recueillir la voix des apprenants ; mesurer mise en œuvre, apprentissage différé, effets par groupe et effets indésirables. Une technologie ou un score prédictif ne doit pas remplacer le jugement pédagogique, accroître la surveillance ou enfermer un élève dans un profil. Cette leçon ne permet ni diagnostic d’apprentissage ni décision individuelle à fort enjeu.","sourceKeys":["unesco-gem-technology-2023","eef-metacognition-2025"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"pashler-learning-styles-2008","title":"Learning Styles: Concepts and Evidence","type":"article","url":"https://journals.sagepub.com/doi/pdf/10.1111/j.1539-6053.2009.01038.x","author":"Harold Pashler, Mark McDaniel, Doug Rohrer et Robert Bjork","citation":"Pashler, H., McDaniel, M., Rohrer, D., & Bjork, R. (2008). Learning styles: Concepts and evidence. Psychological Science in the Public Interest, 9(3), 105–119. https://doi.org/10.1111/j.1539-6053.2009.01038.x","description":"Lire la définition de l’hypothèse d’appariement et le type de plan nécessaire pour la tester.","isRequired":true,"estimatedMinutes":25,"position":1},
@@ -18,16 +30,106 @@
       {"key":"unesco-gem-technology-2023","title":"Global Education Monitoring Report 2023: Technology in education — A tool on whose terms?","type":"document","url":"https://gem-report-2023.unesco.org/technology-in-education/","author":"UNESCO Global Education Monitoring Report Team","citation":"UNESCO. (2023). Global Education Monitoring Report 2023: Technology in education — A tool on whose terms?","description":"Lire les sections preuve, contexte, équité et inclusion ; examiner qui bénéficie, qui est exclu et quelles données sont collectées.","isRequired":true,"estimatedMinutes":25,"position":6}
     ],
     "concepts":[
-      {"title":"Styles d’apprentissage et neuromythes","slug":"styles-apprentissage-neuromythes","description":"Préférences et différences existent, mais ni appariement VAK ni vocabulaire cérébral ne valident une méthode.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["pashler-learning-styles-2008","newton-salvi-learning-styles-2020","howard-jones-neuromyths-2014"],"assessment":{"type":"quiz","title":"Mini-évaluation — Déjouer les neuromythes","questionCount":5}},
-      {"title":"Espacement, récupération et métacognition","slug":"espacement-recuperation-metacognition","description":"Des principes soutenus par la recherche doivent être conçus avec objectif, contenu, retour, guidage et mesure différée.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Pratiques fondées et limites","questionCount":5}},
-      {"title":"Contexte, évaluation et équité éducative","slug":"contexte-evaluation-equite-educative","description":"Une pratique vaut par son adéquation au problème, sa mise en œuvre et ses effets distribués, pas par sa nouveauté.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["unesco-gem-technology-2023","eef-metacognition-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Adapter sans enfermer","questionCount":5}}
+      {"title":"Styles d’apprentissage et neuromythes","slug":"styles-apprentissage-neuromythes","description":"Préférences et différences existent, mais ni appariement VAK ni vocabulaire cérébral ne valident une méthode.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["pashler-learning-styles-2008","newton-salvi-learning-styles-2020","howard-jones-neuromyths-2014"],"assessment":{"type":"quiz","title":"Mini-évaluation — Déjouer les neuromythes","questionCount":5,
+        "key": "concept-styles-apprentissage-neuromythes-assessment-1"
+      }},
+      {"title":"Espacement, récupération et métacognition","slug":"espacement-recuperation-metacognition","description":"Des principes soutenus par la recherche doivent être conçus avec objectif, contenu, retour, guidage et mesure différée.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["carpenter-spacing-retrieval-2022","eef-metacognition-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Pratiques fondées et limites","questionCount":5,
+        "key": "concept-espacement-recuperation-metacognition-assessment-1"
+      }},
+      {"title":"Contexte, évaluation et équité éducative","slug":"contexte-evaluation-equite-educative","description":"Une pratique vaut par son adéquation au problème, sa mise en œuvre et ses effets distribués, pas par sa nouveauté.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["unesco-gem-technology-2023","eef-metacognition-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Adapter sans enfermer","questionCount":5,
+        "key": "concept-contexte-evaluation-equite-educative-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Auditer une affirmation éducative","description":"Pour huit slogans, distinguer préférence, mécanisme, résultat de recherche, neuromythe et affirmation commerciale ; préciser la preuve nécessaire.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Transformer une séquence VAK","description":"Réécrire une séquence fondée sur les styles en objectifs, représentations utiles au contenu, accessibilité, récupération, espacement et guidage métacognitif.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Préparer un pilote équitable","description":"Concevoir le pilote d’une pratique éducative avec comparaison, apprentissage différé, mise en œuvre, participation, accessibilité, sous-groupes et critères d’arrêt.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Auditer une affirmation éducative","description":"Pour huit slogans, distinguer préférence, mécanisme, résultat de recherche, neuromythe et affirmation commerciale ; préciser la preuve nécessaire.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Transformer une séquence VAK","description":"Réécrire une séquence fondée sur les styles en objectifs, représentations utiles au contenu, accessibilité, récupération, espacement et guidage métacognitif.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Préparer un pilote équitable","description":"Concevoir le pilote d’une pratique éducative avec comparaison, apprentissage différé, mise en œuvre, participation, accessibilité, sous-groupes et critères d’arrêt.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pashler-learning-styles-2008"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "newton-salvi-learning-styles-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "carpenter-spacing-retrieval-2022"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "eef-metacognition-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "unesco-gem-technology-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-styles-apprentissage-neuromythes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "howard-jones-neuromyths-2014"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-espacement-recuperation-metacognition-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-contexte-evaluation-equite-educative-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-062-PASHLER","type":"systematic_review","authors":["Pashler, H.","McDaniel, M.","Rohrer, D.","Bjork, R. A."],"organization":null,"title":"Learning Styles: Concepts and Evidence","year":2008,"edition":null,"publication":"Psychological Science in the Public Interest, 9(3), 105–119","doi":"10.1111/j.1539-6053.2009.01038.x","url":"https://journals.sagepub.com/doi/pdf/10.1111/j.1539-6053.2009.01038.x","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"PDF public ; droits Association for Psychological Science/SAGE","status":"verified","notes":"Revue classique définissant le test approprié de l’hypothèse d’appariement."},
       {"id":"REF-062-NEWTON-SALVI","type":"systematic_review","authors":["Newton, P. M.","Salvi, A."],"organization":null,"title":"How Common Is Belief in the Learning Styles Neuromyth, and Does It Matter? A Pragmatic Systematic Review","year":2020,"edition":null,"publication":"Frontiers in Education, 5, 602451","doi":"10.3389/feduc.2020.602451","url":"https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2020.602451/full","accessedAt":"2026-08-04","evidenceLevel":"A","peerReviewed":true,"language":"en","license":"CC BY 4.0","status":"verified","notes":"Documente la persistance de la croyance ; ne mesure pas directement tous ses effets pédagogiques."},
@@ -76,6 +178,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie cognitive, sciences de l’éducation, inclusion et évaluation requise.","L’étape interventions-applications et le module psychologie-appliquee sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Les styles d’apprentissage VAK et les neuromythes ne sont jamais présentés comme pratiques valides.","Espacement, récupération et métacognition restent des principes conditionnels, non des recettes universelles.","Contexte, handicap, langue, accès, équité, vie privée et effets distribués sont obligatoires avant adoption."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_learning_science_education_inclusion_and_neuromyths_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_learning_science_education_inclusion_and_neuromyths_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "styles-apprentissage-neuromythes",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "pashler-learning-styles-2008",
+            "newton-salvi-learning-styles-2020",
+            "carpenter-spacing-retrieval-2022",
+            "eef-metacognition-2025",
+            "unesco-gem-technology-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-styles-apprentissage-neuromythes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "espacement-recuperation-metacognition",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "howard-jones-neuromyths-2014"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-espacement-recuperation-metacognition-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "contexte-evaluation-equite-educative",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-contexte-evaluation-equite-educative-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

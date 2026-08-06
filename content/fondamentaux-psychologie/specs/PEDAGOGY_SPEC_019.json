@@ -28,7 +28,8 @@
         "content": {
           "text": "La mémoire peut être décrite par trois grandes fonctions : encoder transforme une information afin qu'elle puisse être utilisée, stocker ou maintenir conserve des traces au-delà de l'instant, et récupérer rend une information disponible pour une tâche. Ces fonctions interagissent. Un échec au rappel ne prouve pas qu'une trace a disparu : l'information a pu être peu encodée, concurrencée ou inaccessible avec les indices présents. Inversement, reconnaître une réponse parmi quatre options ne démontre pas que l'on pourrait la rappeler sans indice.",
           "sourceKeys": ["openstax-psychology-2e-8-1"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -39,7 +40,8 @@
             "openstax-psychology-2e-8-1",
             "baddeley-episodic-buffer-2000"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -50,7 +52,8 @@
             "openstax-psychology-2e-8-1",
             "baddeley-episodic-buffer-2000"
           ]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -58,7 +61,8 @@
         "content": {
           "text": "L'oubli a plusieurs sources. Une information non traitée attentivement peut subir un défaut d'encodage. Une trace disponible peut manquer d'un indice de récupération approprié. L'interférence proactive survient lorsque des apprentissages antérieurs gênent les nouveaux ; l'interférence rétroactive lorsque des apprentissages plus récents gênent les anciens. Le temps écoulé est souvent confondu avec ces changements de contexte et ces interférences : observer une baisse avec le délai ne permet pas, seul, d'attribuer l'oubli à une simple dégradation passive.",
           "sourceKeys": ["openstax-psychology-2e-8-3"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -69,7 +73,8 @@
             "openstax-psychology-2e-8-3",
             "roediger-mcdermott-false-memories-1995"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -81,7 +86,8 @@
             "cepeda-distributed-practice-2006",
             "openstax-psychology-2e-8-4"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -185,7 +191,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Processus et systèmes de mémoire",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-processus-systemes-memoire-assessment-1"
         }
       },
       {
@@ -202,7 +209,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Oubli et reconstruction",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-oubli-interference-reconstruction-assessment-1"
         }
       },
       {
@@ -220,7 +228,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Récupération et espacement",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-recuperation-pratique-distribuee-assessment-1"
         }
       }
     ],
@@ -231,7 +240,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Diagnostiquer prudemment six oublis",
@@ -239,7 +250,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Construire un protocole de révision",
@@ -247,18 +260,98 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-8-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "baddeley-episodic-buffer-2000"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-processus-systemes-memoire-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-8-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-oubli-interference-reconstruction-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "roediger-mcdermott-false-memories-1995"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "roediger-karpicke-test-enhanced-2006"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cepeda-distributed-practice-2006"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-8-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-recuperation-pratique-distribuee-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -977,7 +1070,71 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "processus-systemes-memoire",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-8-1",
+            "baddeley-episodic-buffer-2000"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-processus-systemes-memoire-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "oubli-interference-reconstruction",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-8-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-oubli-interference-reconstruction-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "recuperation-pratique-distribuee",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "roediger-mcdermott-false-memories-1995",
+            "roediger-karpicke-test-enhanced-2006",
+            "cepeda-distributed-practice-2006",
+            "openstax-psychology-2e-8-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-recuperation-pratique-distribuee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

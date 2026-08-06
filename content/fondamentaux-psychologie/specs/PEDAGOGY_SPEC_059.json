@@ -5,12 +5,24 @@
     "objectives":["Distinguer plusieurs familles par leurs hypothèses de changement et leurs pratiques typiques.","Expliquer pourquoi les frontières entre écoles sont poreuses et les formats variés.","Comparer les preuves pour une question, une population, un comparateur et un contexte précis plutôt que classer globalement les écoles."],
     "prerequisites":["Comprendre évaluation, formulation et décision partagée.","Distinguer mécanisme supposé, procédure et résultat observé."],
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Une psychothérapie est une intervention relationnelle et structurée qui mobilise des méthodes psychologiques avec un objectif discuté. Il existe de nombreuses écoles, mais leurs noms ne suffisent pas à décrire une séance : format individuel, familial ou groupal, durée, population, compétences du praticien, cible et contexte comptent. Une même étiquette recouvre des variantes, et un professionnel peut intégrer plusieurs méthodes. La carte qui suit sert à comparer, non à choisir un traitement pour soi ou autrui.","sourceKeys":["nimh-psychotherapies","apa-approaches"]}},
-      {"type":"definition","position":2,"content":{"text":"Les approches comportementales examinent les apprentissages, les situations et les conséquences qui entretiennent une conduite ; elles utilisent notamment exposition graduée, activation ou entraînement. Les approches cognitives étudient les liens entre interprétations, émotions et actions ; les thérapies cognitivo-comportementales combinent souvent ces niveaux avec objectifs, exercices et observation des changements. Les approches dites de troisième vague ajoutent selon les modèles acceptation, pleine conscience, valeurs ou rapport aux pensées. Ces termes ne désignent ni une technique unique ni une indication universelle.","sourceKeys":["nimh-psychotherapies","cuijpers-15-therapies-2020"]}},
-      {"type":"definition","position":3,"content":{"text":"Les approches psychodynamiques explorent les configurations relationnelles, affects, défenses, conflits et significations parfois peu accessibles, y compris dans la relation thérapeutique. Les approches humanistes et centrées sur la personne mettent l’accent sur l’expérience vécue, l’empathie, l’authenticité, les capacités de choix et les conditions facilitant le développement. Elles ne se réduisent respectivement ni à « parler du passé » ni à « écouter sans méthode » ; leurs variantes, cadres et niveaux de structuration diffèrent.","sourceKeys":["apa-approaches"]}},
-      {"type":"rich_text","position":4,"content":{"text":"Les approches systémiques et familiales considèrent les interactions, règles, rôles, transitions et contextes plutôt qu’un individu isolé ; la présence de plusieurs personnes n’est pas toujours requise. Les thérapies interpersonnelles ciblent des liens entre symptômes et deuil, conflits, transitions de rôle ou isolement. Les formats de couple, famille ou groupe peuvent redistribuer qui participe, ce qui est observé et quels objectifs sont négociés. Leur pertinence et leurs preuves varient selon le problème et la population.","sourceKeys":["carr-systemic-2019","cuijpers-15-therapies-2020"]}},
-      {"type":"callout","position":5,"content":{"text":"Les familles ne sont pas des boîtes étanches. Deux thérapies peuvent partager exposition, résolution de problèmes, attention aux émotions, récit, relation ou exercices tout en les justifiant différemment. « Intégratif » ne signifie pas assemblage arbitraire : il faut expliciter comment les éléments choisis s’articulent, et leur emploi dépend notamment de la formation du professionnel, du problème travaillé et des besoins de la personne. Une étiquette d’école ou de manuel ne suffit donc pas à établir la pertinence d’une méthode pour une question précise.","sourceKeys":["nimh-psychotherapies","apa-approaches"]}},
-      {"type":"objective","position":6,"content":{"text":"Aucun palmarès général ne permet d’affirmer qu’une famille gagne pour toute personne et tout problème ; affirmer que toutes sont toujours équivalentes serait tout aussi trompeur. Une comparaison valable précise la difficulté ciblée, la population, le format, la dose, le comparateur, les résultats et le suivi, puis examine qualité des études, attrition, accessibilité et préférences. Cette leçon présente des repères : elle ne recommande aucune approche ni aucun praticien à une personne précise.","sourceKeys":["cuijpers-15-therapies-2020","carr-systemic-2019","nimh-psychotherapies"]}}
+      {"type":"definition","position":1,"content":{"text":"Une psychothérapie est une intervention relationnelle et structurée qui mobilise des méthodes psychologiques avec un objectif discuté. Il existe de nombreuses écoles, mais leurs noms ne suffisent pas à décrire une séance : format individuel, familial ou groupal, durée, population, compétences du praticien, cible et contexte comptent. Une même étiquette recouvre des variantes, et un professionnel peut intégrer plusieurs méthodes. La carte qui suit sert à comparer, non à choisir un traitement pour soi ou autrui.","sourceKeys":["nimh-psychotherapies","apa-approaches"]},
+        "key": "content-1"
+      },
+      {"type":"definition","position":2,"content":{"text":"Les approches comportementales examinent les apprentissages, les situations et les conséquences qui entretiennent une conduite ; elles utilisent notamment exposition graduée, activation ou entraînement. Les approches cognitives étudient les liens entre interprétations, émotions et actions ; les thérapies cognitivo-comportementales combinent souvent ces niveaux avec objectifs, exercices et observation des changements. Les approches dites de troisième vague ajoutent selon les modèles acceptation, pleine conscience, valeurs ou rapport aux pensées. Ces termes ne désignent ni une technique unique ni une indication universelle.","sourceKeys":["nimh-psychotherapies","cuijpers-15-therapies-2020"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"Les approches psychodynamiques explorent les configurations relationnelles, affects, défenses, conflits et significations parfois peu accessibles, y compris dans la relation thérapeutique. Les approches humanistes et centrées sur la personne mettent l’accent sur l’expérience vécue, l’empathie, l’authenticité, les capacités de choix et les conditions facilitant le développement. Elles ne se réduisent respectivement ni à « parler du passé » ni à « écouter sans méthode » ; leurs variantes, cadres et niveaux de structuration diffèrent.","sourceKeys":["apa-approaches"]},
+        "key": "content-3"
+      },
+      {"type":"rich_text","position":4,"content":{"text":"Les approches systémiques et familiales considèrent les interactions, règles, rôles, transitions et contextes plutôt qu’un individu isolé ; la présence de plusieurs personnes n’est pas toujours requise. Les thérapies interpersonnelles ciblent des liens entre symptômes et deuil, conflits, transitions de rôle ou isolement. Les formats de couple, famille ou groupe peuvent redistribuer qui participe, ce qui est observé et quels objectifs sont négociés. Leur pertinence et leurs preuves varient selon le problème et la population.","sourceKeys":["carr-systemic-2019","cuijpers-15-therapies-2020"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"Les familles ne sont pas des boîtes étanches. Deux thérapies peuvent partager exposition, résolution de problèmes, attention aux émotions, récit, relation ou exercices tout en les justifiant différemment. « Intégratif » ne signifie pas assemblage arbitraire : il faut expliciter comment les éléments choisis s’articulent, et leur emploi dépend notamment de la formation du professionnel, du problème travaillé et des besoins de la personne. Une étiquette d’école ou de manuel ne suffit donc pas à établir la pertinence d’une méthode pour une question précise.","sourceKeys":["nimh-psychotherapies","apa-approaches"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Aucun palmarès général ne permet d’affirmer qu’une famille gagne pour toute personne et tout problème ; affirmer que toutes sont toujours équivalentes serait tout aussi trompeur. Une comparaison valable précise la difficulté ciblée, la population, le format, la dose, le comparateur, les résultats et le suivi, puis examine qualité des études, attrition, accessibilité et préférences. Cette leçon présente des repères : elle ne recommande aucune approche ni aucun praticien à une personne précise.","sourceKeys":["cuijpers-15-therapies-2020","carr-systemic-2019","nimh-psychotherapies"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"nimh-psychotherapies","title":"Psychotherapies","type":"website","url":"https://www.nimh.nih.gov/health/topics/psychotherapies","author":"National Institute of Mental Health","citation":"National Institute of Mental Health. (2024). Psychotherapies. Last reviewed February 2024.","description":"Lire la présentation générale des formats, éléments et choix contextualisés.","isRequired":true,"estimatedMinutes":18,"position":1},
@@ -19,18 +31,99 @@
       {"key":"carr-systemic-2019","title":"Couple therapy, family therapy and systemic interventions for adult-focused problems: the current evidence base","type":"article","url":"https://onlinelibrary.wiley.com/doi/10.1111/1467-6427.12225","author":"Alan Carr","citation":"Carr, A. (2019). Couple therapy, family therapy and systemic interventions for adult-focused problems: the current evidence base. Journal of Family Therapy, 41, 492–536. https://doi.org/10.1111/1467-6427.12225","description":"Lire le résumé et repérer la variation des résultats selon les problèmes ciblés.","isRequired":false,"estimatedMinutes":18,"position":4}
     ],
     "concepts":[
-      {"title":"Cognitif, comportemental et troisième vague","slug":"familles-cognitives-comportementales","description":"Ces approches articulent apprentissages, interprétations, actions et, selon les modèles, acceptation ou valeurs.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nimh-psychotherapies","cuijpers-15-therapies-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Méthodes et cibles","questionCount":5}},
-      {"title":"Psychodynamique, humaniste et systémique","slug":"familles-relationnelles-contextuelles","description":"Ces familles diffèrent par leurs cadres tout en partageant parfois travail relationnel, sens et contexte.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["apa-approaches","carr-systemic-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Cartographier sans caricaturer","questionCount":5}},
-      {"title":"Comparer sans palmarès global","slug":"comparaison-contextualisee-psychotherapies","description":"Une preuve répond à une indication, un comparateur, une population et des résultats définis.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["cuijpers-15-therapies-2020","carr-systemic-2019","nimh-psychotherapies"],"assessment":{"type":"quiz","title":"Mini-évaluation — Lire les comparaisons","questionCount":5}}
+      {"title":"Cognitif, comportemental et troisième vague","slug":"familles-cognitives-comportementales","description":"Ces approches articulent apprentissages, interprétations, actions et, selon les modèles, acceptation ou valeurs.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nimh-psychotherapies","cuijpers-15-therapies-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Méthodes et cibles","questionCount":5,
+        "key": "concept-familles-cognitives-comportementales-assessment-1"
+      }},
+      {"title":"Psychodynamique, humaniste et systémique","slug":"familles-relationnelles-contextuelles","description":"Ces familles diffèrent par leurs cadres tout en partageant parfois travail relationnel, sens et contexte.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["apa-approaches","carr-systemic-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Cartographier sans caricaturer","questionCount":5,
+        "key": "concept-familles-relationnelles-contextuelles-assessment-1"
+      }},
+      {"title":"Comparer sans palmarès global","slug":"comparaison-contextualisee-psychotherapies","description":"Une preuve répond à une indication, un comparateur, une population et des résultats définis.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["cuijpers-15-therapies-2020","carr-systemic-2019","nimh-psychotherapies"],"assessment":{"type":"quiz","title":"Mini-évaluation — Lire les comparaisons","questionCount":5,
+        "key": "concept-comparaison-contextualisee-psychotherapies-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Construire une carte comparée","description":"Pour six familles, relier hypothèse de changement, méthodes typiques, formats possibles et limites sans attribuer d’indication individuelle.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Corriger quatre caricatures","description":"Réécrire des affirmations réduisant TCC, psychodynamique, humanisme ou systémique à un slogan.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Auditer un classement de thérapies","description":"Repérer indication, population, comparateur, résultats, suivi et attrition manquants dans un faux palmarès.","type":"project","isRequired":true,"weight":2,"position":3}
+      {"title":"Construire une carte comparée","description":"Pour six familles, relier hypothèse de changement, méthodes typiques, formats possibles et limites sans attribuer d’indication individuelle.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Corriger quatre caricatures","description":"Réécrire des affirmations réduisant TCC, psychodynamique, humanisme ou systémique à un slogan.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Auditer un classement de thérapies","description":"Repérer indication, population, comparateur, résultats, suivi et attrition manquants dans un faux palmarès.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nimh-psychotherapies"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-approaches"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cuijpers-15-therapies-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-familles-cognitives-comportementales-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "carr-systemic-2019"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-familles-relationnelles-contextuelles-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-comparaison-contextualisee-psychotherapies-assessment-1"
+      }
     ]
   },
   "editorial":{
-    "version":"1.0.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+    "version":"1.1.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-059-NIMH","type":"official_fact_sheet","authors":[],"organization":"National Institute of Mental Health","title":"Psychotherapies","year":2024,"edition":"Last reviewed February 2024","publication":"NIMH","doi":null,"url":"https://www.nimh.nih.gov/health/topics/psychotherapies","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Domaine public hors images, sauf indication contraire","status":"verified","notes":"Panorama institutionnel révisé en février 2024."},
       {"id":"REF-059-APA-APPROACHES","type":"professional_resource","authors":[],"organization":"American Psychological Association","title":"Different approaches to psychotherapy","year":2009,"edition":null,"publication":"APA Topics","doi":null,"url":"https://www.apa.org/topics/psychotherapy/approaches","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Consultation publique ; droits APA","status":"verified","notes":"Typologie pédagogique historique, non guide d’indication."},
@@ -74,7 +167,68 @@
         {"type":"short_answer","prompt":"Quel élément compte les personnes qui interrompent ou quittent l’étude ?","explanation":"Il s’agit de l’attrition.","acceptedAnswers":["attrition","taux d’attrition","abandons","sorties d’étude"],"position":5,"options":[]}
       ]}
     ],
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychotherapy_families_and_evidence_review"}],
-    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine trans-théorique en psychothérapies requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Aucun classement global ni affirmation d’équivalence universelle ; aucune indication individuelle.","Vérifier avant publication terminologie, équilibre entre familles, accès aux sources et contexte réglementaire local."]}
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychotherapy_families_and_evidence_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine trans-théorique en psychothérapies requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Aucun classement global ni affirmation d’équivalence universelle ; aucune indication individuelle.","Vérifier avant publication terminologie, équilibre entre familles, accès aux sources et contexte réglementaire local."]},
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "familles-cognitives-comportementales",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nimh-psychotherapies",
+            "apa-approaches",
+            "cuijpers-15-therapies-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-familles-cognitives-comportementales-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "familles-relationnelles-contextuelles",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "carr-systemic-2019"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-familles-relationnelles-contextuelles-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "comparaison-contextualisee-psychotherapies",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-comparaison-contextualisee-psychotherapies-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

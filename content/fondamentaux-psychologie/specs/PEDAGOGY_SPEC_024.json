@@ -28,7 +28,8 @@
         "content": {
           "text": "Les grandes structures servent d'abord à s'orienter. Le cortex comprend des territoires frontaux, pariétaux, temporaux et occipitaux ; des structures sous-corticales comprennent notamment thalamus, hypothalamus, hippocampe, amygdale et noyaux gris centraux ; le cervelet et le tronc cérébral participent à des boucles avec le reste du système nerveux. Ces repères ont des spécialisations relatives, mais une étiquette comme « frontal = décision » ou « amygdale = peur » écrase la diversité des sous-régions, connexions, tâches et fonctions. Localiser une contribution n'équivaut pas à trouver un centre autonome.",
           "sourceKeys": ["openstax-psychology-2e-3-4", "pessoa-brain-networks-2014"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -36,7 +37,8 @@
         "content": {
           "text": "Une région peut contribuer à plusieurs fonctions, et une même fonction mobilise plusieurs régions : la relation structure–fonction est souvent plusieurs-à-plusieurs. Un réseau est un ensemble de nœuds et de relations défini à une échelle et par une méthode. Ce vocabulaire ne supprime pas les spécialisations locales ; il oblige à demander avec quels partenaires, dans quelle tâche et à quel moment une région contribue. Les réseaux ne sont pas davantage des boîtes psychologiques : leur découpage dépend des données, de la résolution et de l'algorithme.",
           "sourceKeys": ["pessoa-brain-networks-2014", "bassett-sporns-network-neuroscience-2017"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "La connectivité structurelle décrit des voies anatomiques estimées par des méthodes comme le traçage ou l'imagerie de diffusion. La connectivité fonctionnelle décrit une dépendance statistique entre signaux, sans établir à elle seule un lien direct ni une causalité. La connectivité effective modélise des influences dirigées sous des hypothèses explicites. Des parcellations de connectivité intrinsèque mettent en évidence des organisations reproductibles à l'échelle de groupes, mais ni leurs frontières ni le nombre de réseaux ne constituent une anatomie définitive : un atlas est une estimation utile, pas la vérité d'un cerveau individuel.",
           "sourceKeys": ["bassett-sporns-network-neuroscience-2017", "yeo-cortical-connectivity-2011", "gratton-network-variability-2018"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "example",
@@ -52,7 +55,8 @@
         "content": {
           "text": "Lorsqu'une personne maintient une consigne en mémoire tout en recherchant une cible, les notions d'attention et de mémoire étudiées précédemment restent définies par la tâche et la performance. Plusieurs systèmes sensoriels, mnésiques et de contrôle peuvent coopérer ; leur couplage varie avec la demande. Observer l'activation d'un nœud frontal ne permet donc pas de conclure automatiquement « mémoire de travail » ou « contrôle » : il faut comparer des conditions, analyser le réseau et vérifier le comportement. Cet exemple illustre un raisonnement multiniveau, il ne propose pas un réseau unique pour toute cognition.",
           "sourceKeys": ["petersen-sporns-cognitive-architectures-2015", "poldrack-reverse-inference-2006"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -60,7 +64,8 @@
         "content": {
           "text": "La latéralisation désigne une asymétrie relative entre hémisphères pour une mesure ou une fonction. Certaines composantes du langage présentent souvent un biais gauche et certaines opérations visuospatiales un biais droit, mais les deux hémisphères communiquent et contribuent aux tâches. Le sens et l'ampleur varient selon la composante étudiée, la tâche, l'indice calculé et les individus. Les données ne soutiennent pas deux types de personnalité globaux, « cerveau gauche logique » et « cerveau droit créatif » ; elles ne permettent pas non plus de déduire la latéralisation d'une personne à partir de sa seule préférence manuelle.",
           "sourceKeys": ["nielsen-left-right-hypothesis-2013", "vingerhoets-lateralisation-2019"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Structure et fonction se contraignent sans correspondance fixe. L'organisation des réseaux montre des régularités de groupe, des caractéristiques individuelles relativement stables et des modulations liées à la tâche ; développement, apprentissage et lésion peuvent aussi modifier les relations. Pour auditer une carte, identifier population, méthode, atlas, contraste, incertitude, comportement et alternatives. L'inférence allant d'une activité locale vers un état mental précis est d'autant plus faible que cette activité apparaît dans de nombreuses tâches. Une carte ne révèle donc ni un geste obligatoire, ni un trait de personnalité, ni la cause complète d'une conduite.",
           "sourceKeys": ["gratton-network-variability-2018", "pessoa-brain-networks-2014", "zatorre-fields-johansenberg-2012", "poldrack-reverse-inference-2006"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -202,7 +208,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-3-4", "pessoa-brain-networks-2014"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Structures et explication", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Structures et explication", "questionCount": 5,
+          "key": "concept-structures-niveaux-explication-assessment-1"
+        }
       },
       {
         "title": "Réseaux, connectivités et cognition",
@@ -212,7 +220,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["bassett-sporns-network-neuroscience-2017", "yeo-cortical-connectivity-2011", "petersen-sporns-cognitive-architectures-2015"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Réseaux et connectivités", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Réseaux et connectivités", "questionCount": 5,
+          "key": "concept-reseaux-connectivites-cognition-assessment-1"
+        }
       },
       {
         "title": "Latéralisation, variabilité et inférence",
@@ -222,7 +232,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["nielsen-left-right-hypothesis-2013", "vingerhoets-lateralisation-2019", "gratton-network-variability-2018", "zatorre-fields-johansenberg-2012", "poldrack-reverse-inference-2006"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Latéralisation et inférence", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Latéralisation et inférence", "questionCount": 5,
+          "key": "concept-lateralisation-variabilite-inference-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -232,7 +244,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Construire trois graphes de connectivité",
@@ -240,7 +254,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer un profil cerveau gauche–cerveau droit",
@@ -248,18 +264,110 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-3-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pessoa-brain-networks-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bassett-sporns-network-neuroscience-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-structures-niveaux-explication-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "yeo-cortical-connectivity-2011"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "petersen-sporns-cognitive-architectures-2015"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gratton-network-variability-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "poldrack-reverse-inference-2006"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-reseaux-connectivites-cognition-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nielsen-left-right-hypothesis-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "vingerhoets-lateralisation-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "zatorre-fields-johansenberg-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-lateralisation-variabilite-inference-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-024-OPENSTAX", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.4 The Brain and Spinal Cord", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-4-the-brain-and-spinal-cord", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Repères anatomiques introductifs ; les étiquettes fonctionnelles du manuel sont nuancées par les revues en réseaux."},
@@ -346,7 +454,74 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de dix ressources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de dix ressources, de trois exercices et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "structures-niveaux-explication",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-3-4",
+            "pessoa-brain-networks-2014",
+            "bassett-sporns-network-neuroscience-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-structures-niveaux-explication-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "reseaux-connectivites-cognition",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "yeo-cortical-connectivity-2011",
+            "petersen-sporns-cognitive-architectures-2015",
+            "gratton-network-variability-2018",
+            "poldrack-reverse-inference-2006"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-reseaux-connectivites-cognition-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "lateralisation-variabilite-inference",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "nielsen-left-right-hypothesis-2013",
+            "vingerhoets-lateralisation-2019",
+            "zatorre-fields-johansenberg-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-lateralisation-variabilite-inference-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

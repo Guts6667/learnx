@@ -24,7 +24,8 @@
         "content": {
           "text": "Un thème comme « le sommeil » est trop vaste pour guider seul une étude. Une question de recherche précise une population, des variables et, si nécessaire, un contexte ou une période : par exemple, « Chez des adultes travaillant de jour, la durée de sommeil déclarée est-elle associée au nombre d'erreurs dans une tâche d'attention le lendemain ? » La formulation annonce ce qui sera observé sans prétendre encore connaître le résultat.",
           "sourceKeys": ["openstax-psychology-2e-2-1", "price-basic-concepts"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -32,7 +33,8 @@
         "content": {
           "text": "Une théorie organise des idées pour expliquer des phénomènes. Une hypothèse en dérive une prédiction spécifique et testable. Elle doit pouvoir être mise en défaut par une observation concevable : annoncer que deux variables seront liées dans un sens défini est plus informatif qu'affirmer qu'elles « auront peut-être un rapport ». Un résultat compatible soutient provisoirement l'hypothèse ; il ne prouve pas définitivement toute la théorie.",
           "sourceKeys": ["openstax-psychology-2e-2-1"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "definition",
@@ -40,7 +42,8 @@
         "content": {
           "text": "Opérationnaliser consiste à indiquer exactement comment une variable sera observée, mesurée ou manipulée. La fatigue peut être définie par un score à une échelle nommée, un temps de réaction moyen dans une tâche décrite ou une durée d'éveil contrôlée. Ces indicateurs ne sont pas interchangeables : ils captent des facettes différentes et produisent des conclusions de portée différente.",
           "sourceKeys": ["openstax-psychology-2e-2-3", "price-basic-concepts"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "example",
@@ -48,7 +51,8 @@
         "content": {
           "text": "Pour étudier si une interruption réduit la concentration, une équipe compare une tâche de lecture sans interruption à la même tâche interrompue par trois notifications. Elle définit la concentration par le nombre de réponses correctes à cinq questions de compréhension. La manipulation est reproductible et la mesure est publique, mais elle n'autorise pas à conclure que les notifications diminuent toutes les formes de concentration dans tous les contextes.",
           "sourceKeys": ["openstax-psychology-2e-2-3"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -56,7 +60,8 @@
         "content": {
           "text": "Chaîne de contrôle : question délimitée → hypothèse réfutable → variables nommées → opérations précises → résultat attendu → résultat qui contredirait l'hypothèse. Une rupture dans cette chaîne rend l'étude ambiguë, même si la collecte produit beaucoup de données.",
           "sourceKeys": ["openstax-psychology-2e-2-1", "openstax-psychology-2e-2-3", "price-basic-concepts"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -106,7 +111,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-2-1", "price-basic-concepts"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question de recherche", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question de recherche", "questionCount": 5,
+          "key": "concept-question-recherche-delimitee-assessment-1"
+        }
       },
       {
         "title": "Hypothèse testable et réfutable",
@@ -116,7 +123,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-2-1"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Hypothèse testable", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Hypothèse testable", "questionCount": 5,
+          "key": "concept-hypothese-testable-refutable-assessment-1"
+        }
       },
       {
         "title": "Opérationnalisation des variables",
@@ -126,35 +135,101 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-2-3", "price-basic-concepts"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Opérationnalisation", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Opérationnalisation", "questionCount": 5,
+          "key": "concept-operationnalisation-variables-assessment-1"
+        }
       }
     ],
     "tasks": [
       {
         "title": "Réduire un thème en question",
         "description": "À partir du thème « réseaux sociaux et bien-être », rédiger une question précisant population, deux variables, contexte et période ; supprimer toute conclusion déjà contenue dans la question.",
-        "type": "writing", "isRequired": true, "weight": 1, "position": 1
+        "type": "writing", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Construire une hypothèse réfutable",
         "description": "Dériver de la question une prédiction directionnelle et écrire un résultat possible qui la contredirait clairement.",
-        "type": "practice", "isRequired": true, "weight": 1, "position": 2
+        "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Comparer trois indicateurs",
         "description": "Proposer pour le bien-être un autoquestionnaire, une mesure comportementale et une mesure physiologique ; préciser pour chacune ce qu'elle capte, une limite et le protocole de recueil.",
-        "type": "practice", "isRequired": true, "weight": 1, "position": 3
+        "type": "practice", "isRequired": true, "weight": 1, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-basic-concepts"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-question-recherche-delimitee-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-hypothese-testable-refutable-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-operationnalisation-variables-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -281,7 +356,65 @@
       "notes": ["Revue humaine en méthodologie de la recherche requise avant publication.", "Les exemples sont fictifs et ne constituent pas des résultats empiriques."]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "question-recherche-delimitee",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-1",
+            "price-basic-concepts"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-question-recherche-delimitee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "hypothese-testable-refutable",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-hypothese-testable-refutable-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "operationnalisation-variables",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-operationnalisation-variables-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

@@ -13,12 +13,24 @@
     "estimatedMinutes": 110,
     "position": 2,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "Un stéréotype est une croyance ou association généralisée concernant un groupe ; un préjugé est une évaluation ou attitude envers des personnes en raison de leur appartenance perçue ; une discrimination est un traitement, une règle ou une pratique produisant un désavantage lié à cette appartenance. Cette distinction sépare approximativement cognition, évaluation et conduite. Les trois phénomènes peuvent se renforcer, mais l’un ne prouve pas automatiquement les deux autres : il faut mesurer chacun avec des indicateurs adaptés.", "sourceKeys": ["openstax-prejudice"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "Les associations sociales sont apprises dans des environnements où circulent normes, images, répartitions de rôles et inégalités. Une personne peut connaître un stéréotype culturel sans l’approuver, exprimer une valeur égalitaire tout en agissant différemment sous certaines contraintes, ou participer à une procédure inéquitable sans intention hostile explicite. Parler d’automatique et de contrôlé décrit des processus et des conditions ; cela ne partage pas les personnes en catégories fixes de « biaisées » et « non biaisées ».", "sourceKeys": ["openstax-prejudice", "pager-shepherd-discrimination"]}},
-      {"type": "example", "position": 3, "content": {"text": "Une mesure implicite comme l’IAT compare des temps et erreurs dans des associations relatives entre catégories. Elle renseigne sur une performance dans une tâche, influencée par sa construction, les stimuli, l’ordre, le contexte et l’échantillonnage. Des méta-analyses trouvent des associations moyennes entre scores IAT et certains comportements intergroupes, avec une force variable selon les domaines et méthodes. Une corrélation moyenne n’identifie pas la cause du score et ne prédit pas avec certitude la conduite d’une personne.", "sourceKeys": ["kurdi-iat-meta", "oswald-iat-meta"]}},
-      {"type": "callout", "position": 4, "content": {"text": "Un score implicite isolé ne doit pas servir à déclarer qu’une personne « est raciste », sexiste ou dangereuse, à établir un diagnostic, ni à décider d’un recrutement, d’un soin ou d’une sanction. Sa validité prédictive individuelle est trop limitée pour ces usages. Une utilisation pédagogique prudente décrit la tâche et son incertitude, évite le profil moral, protège les données et privilégie des observations répétées de décisions, de pratiques et d’effets lorsque l’enjeu est réel.", "sourceKeys": ["oswald-iat-meta", "kurdi-iat-meta"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "La discrimination peut être personnellement médiée, institutionnelle ou structurelle. Une règle apparemment neutre peut créer des écarts répétés si elle interagit avec des conditions historiques, l’accès aux ressources ou des pratiques coordonnées. L’intention individuelle est une question possible, mais elle n’épuise pas l’analyse des résultats. Les études d’audit, comparaisons de trajectoires et données désagrégées peuvent documenter des écarts ; elles doivent aussi examiner sélection, mesure, mécanismes concurrents et intersection de plusieurs positions sociales.", "sourceKeys": ["jones-levels-racism", "pager-shepherd-discrimination"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Pour intervenir, on précise le niveau visé. Une formation peut agir sur connaissances et décisions, mais ne remplace pas l’audit d’une procédure. On peut standardiser des critères, réduire une discrétion non justifiée, tester l’accessibilité, comparer les taux à chaque étape, ouvrir un recours et réévaluer les effets. Les indicateurs doivent être choisis avant de conclure, protéger les personnes et ne pas réifier les groupes. Réduire un écart exige souvent des changements de règles, de ressources et de responsabilité, pas seulement une correction du psychisme individuel.", "sourceKeys": ["pager-shepherd-discrimination", "jones-levels-racism"]}}
+      {"type": "definition", "position": 1, "content": {"text": "Un stéréotype est une croyance ou association généralisée concernant un groupe ; un préjugé est une évaluation ou attitude envers des personnes en raison de leur appartenance perçue ; une discrimination est un traitement, une règle ou une pratique produisant un désavantage lié à cette appartenance. Cette distinction sépare approximativement cognition, évaluation et conduite. Les trois phénomènes peuvent se renforcer, mais l’un ne prouve pas automatiquement les deux autres : il faut mesurer chacun avec des indicateurs adaptés.", "sourceKeys": ["openstax-prejudice"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "Les associations sociales sont apprises dans des environnements où circulent normes, images, répartitions de rôles et inégalités. Une personne peut connaître un stéréotype culturel sans l’approuver, exprimer une valeur égalitaire tout en agissant différemment sous certaines contraintes, ou participer à une procédure inéquitable sans intention hostile explicite. Parler d’automatique et de contrôlé décrit des processus et des conditions ; cela ne partage pas les personnes en catégories fixes de « biaisées » et « non biaisées ».", "sourceKeys": ["openstax-prejudice", "pager-shepherd-discrimination"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "Une mesure implicite comme l’IAT compare des temps et erreurs dans des associations relatives entre catégories. Elle renseigne sur une performance dans une tâche, influencée par sa construction, les stimuli, l’ordre, le contexte et l’échantillonnage. Des méta-analyses trouvent des associations moyennes entre scores IAT et certains comportements intergroupes, avec une force variable selon les domaines et méthodes. Une corrélation moyenne n’identifie pas la cause du score et ne prédit pas avec certitude la conduite d’une personne.", "sourceKeys": ["kurdi-iat-meta", "oswald-iat-meta"]},
+        "key": "content-3"
+      },
+      {"type": "callout", "position": 4, "content": {"text": "Un score implicite isolé ne doit pas servir à déclarer qu’une personne « est raciste », sexiste ou dangereuse, à établir un diagnostic, ni à décider d’un recrutement, d’un soin ou d’une sanction. Sa validité prédictive individuelle est trop limitée pour ces usages. Une utilisation pédagogique prudente décrit la tâche et son incertitude, évite le profil moral, protège les données et privilégie des observations répétées de décisions, de pratiques et d’effets lorsque l’enjeu est réel.", "sourceKeys": ["oswald-iat-meta", "kurdi-iat-meta"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "La discrimination peut être personnellement médiée, institutionnelle ou structurelle. Une règle apparemment neutre peut créer des écarts répétés si elle interagit avec des conditions historiques, l’accès aux ressources ou des pratiques coordonnées. L’intention individuelle est une question possible, mais elle n’épuise pas l’analyse des résultats. Les études d’audit, comparaisons de trajectoires et données désagrégées peuvent documenter des écarts ; elles doivent aussi examiner sélection, mesure, mécanismes concurrents et intersection de plusieurs positions sociales.", "sourceKeys": ["jones-levels-racism", "pager-shepherd-discrimination"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Pour intervenir, on précise le niveau visé. Une formation peut agir sur connaissances et décisions, mais ne remplace pas l’audit d’une procédure. On peut standardiser des critères, réduire une discrétion non justifiée, tester l’accessibilité, comparer les taux à chaque étape, ouvrir un recours et réévaluer les effets. Les indicateurs doivent être choisis avant de conclure, protéger les personnes et ne pas réifier les groupes. Réduire un écart exige souvent des changements de règles, de ressources et de responsabilité, pas seulement une correction du psychisme individuel.", "sourceKeys": ["pager-shepherd-discrimination", "jones-levels-racism"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-prejudice", "title": "12.5 Prejudice and Discrimination", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/12-5-prejudice-and-discrimination", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 12.5 Prejudice and Discrimination. In Psychology 2e. OpenStax.", "description": "Définitions introductives de stéréotype, préjugé et discrimination.", "isRequired": true, "estimatedMinutes": 18, "position": 1},
@@ -28,18 +40,103 @@
       {"key": "pager-shepherd-discrimination", "title": "The Sociology of Discrimination", "type": "article", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2915460/", "author": "Devah Pager et Hana Shepherd", "citation": "Pager, D., & Shepherd, H. (2008). The Sociology of Discrimination: Racial Discrimination in Employment, Housing, Credit, and Consumer Markets. Annual Review of Sociology, 34, 181–209. https://doi.org/10.1146/annurev.soc.33.040406.131740", "description": "Revue des mécanismes et méthodes de mesure de la discrimination dans plusieurs institutions.", "isRequired": true, "estimatedMinutes": 28, "position": 5}
     ],
     "concepts": [
-      {"title": "Stéréotype, préjugé et discrimination", "slug": "stereotype-prejuge-discrimination", "description": "Croyance, attitude et traitement sont liés mais conceptuellement distincts et demandent des mesures propres.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prejudice"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Trois concepts", "questionCount": 5}},
-      {"title": "Mesures explicites et implicites", "slug": "mesures-explicites-implicites-limites", "description": "Une tâche implicite produit un indicateur relatif et incertain, impropre au diagnostic ou à la prédiction individuelle à fort enjeu.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["kurdi-iat-meta", "oswald-iat-meta"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Mesurer sans diagnostiquer", "questionCount": 5}},
-      {"title": "Discrimination institutionnelle et structurelle", "slug": "discrimination-niveaux-structurels", "description": "Les écarts peuvent résulter de pratiques et structures coordonnées, au-delà des intentions individuelles.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["jones-levels-racism", "pager-shepherd-discrimination"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Niveaux de discrimination", "questionCount": 5}}
+      {"title": "Stéréotype, préjugé et discrimination", "slug": "stereotype-prejuge-discrimination", "description": "Croyance, attitude et traitement sont liés mais conceptuellement distincts et demandent des mesures propres.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prejudice"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Trois concepts", "questionCount": 5,
+        "key": "concept-stereotype-prejuge-discrimination-assessment-1"
+      }},
+      {"title": "Mesures explicites et implicites", "slug": "mesures-explicites-implicites-limites", "description": "Une tâche implicite produit un indicateur relatif et incertain, impropre au diagnostic ou à la prédiction individuelle à fort enjeu.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["kurdi-iat-meta", "oswald-iat-meta"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Mesurer sans diagnostiquer", "questionCount": 5,
+        "key": "concept-mesures-explicites-implicites-limites-assessment-1"
+      }},
+      {"title": "Discrimination institutionnelle et structurelle", "slug": "discrimination-niveaux-structurels", "description": "Les écarts peuvent résulter de pratiques et structures coordonnées, au-delà des intentions individuelles.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["jones-levels-racism", "pager-shepherd-discrimination"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Niveaux de discrimination", "questionCount": 5,
+        "key": "concept-discrimination-niveaux-structurels-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Classer sans confondre", "description": "Classer douze énoncés ou situations fictives comme stéréotype, préjugé, discrimination, combinaison ou information insuffisante, puis justifier chaque réponse par l’indicateur observé.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Réviser un compte rendu d’IAT", "description": "Corriger un message qui transforme un score unique en profil moral : décrire la tâche, l’incertitude, la portée de groupe et les usages interdits.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer une procédure institutionnelle", "description": "Cartographier les étapes d’une sélection fictive, les écarts mesurables, mécanismes possibles, données manquantes, recours et changements à tester sans attribuer tout écart au biais individuel.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Classer sans confondre", "description": "Classer douze énoncés ou situations fictives comme stéréotype, préjugé, discrimination, combinaison ou information insuffisante, puis justifier chaque réponse par l’indicateur observé.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Réviser un compte rendu d’IAT", "description": "Corriger un message qui transforme un score unique en profil moral : décrire la tâche, l’incertitude, la portée de groupe et les usages interdits.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une procédure institutionnelle", "description": "Cartographier les étapes d’une sélection fictive, les écarts mesurables, mécanismes possibles, données manquantes, recours et changements à tester sans attribuer tout écart au biais individuel.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-prejudice"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pager-shepherd-discrimination"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-stereotype-prejuge-discrimination-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kurdi-iat-meta"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "oswald-iat-meta"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-mesures-explicites-implicites-limites-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "jones-levels-racism"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-discrimination-niveaux-structurels-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "status": "editorial_review", "version": "1.0.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "status": "editorial_review", "version": "1.1.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-050-OPENSTAX-125", "type": "textbook", "authors": ["Rose M. Spielman", "William J. Jenkins", "Marilyn D. Lovett"], "organization": "OpenStax", "title": "Psychology 2e — 12.5 Prejudice and Discrimination", "year": 2020, "edition": "2e", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/12-5-prejudice-and-discrimination", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Source pédagogique des distinctions de base."},
       {"id": "REF-050-KURDI-2019", "type": "meta_analysis", "authors": ["Benedek Kurdi", "Allison E. Seitchik", "Jordan R. Axt", "Timothy J. Carroll", "Arpi Karapetyan", "Neela Kaushik", "Diana Tomezsko", "Anthony G. Greenwald", "Mahzarin R. Banaji"], "organization": null, "title": "Relationship between the Implicit Association Test and intergroup behavior: A meta-analysis", "year": 2019, "edition": null, "publication": "American Psychologist, 74(5), 569–586", "doi": "10.1037/amp0000364", "url": "https://pubmed.ncbi.nlm.nih.gov/30550298/", "accessedAt": "2026-08-04", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Résumé bibliographique public", "status": "verified", "notes": "217 rapports, N = 36 071 ; hétérogénéité selon domaines et méthodes."},
@@ -86,6 +183,69 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie sociale, psychométrie et discrimination requise.", "L’étape psychologie-sociale et le module relations-groupes sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "Les mesures implicites sont présentées comme indicateurs limités, sans diagnostic, profil moral ni décision individuelle à fort enjeu.", "La discrimination institutionnelle et structurelle est traitée sans réduire les écarts au psychisme individuel.", "Les sources sur le racisme documentent une forme spécifique de discrimination et ne sont pas généralisées sans précaution à toutes les appartenances."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_psychometrics_and_discrimination"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_psychometrics_and_discrimination"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "stereotype-prejuge-discrimination",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-prejudice",
+            "pager-shepherd-discrimination"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-stereotype-prejuge-discrimination-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "mesures-explicites-implicites-limites",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "kurdi-iat-meta",
+            "oswald-iat-meta"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-mesures-explicites-implicites-limites-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "discrimination-niveaux-structurels",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "jones-levels-racism"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-discrimination-niveaux-structurels-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

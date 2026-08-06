@@ -13,11 +13,21 @@
     "estimatedMinutes": 125,
     "position": 2,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "Une corrélation indique que deux variables quantitatives varient ensemble. Le coefficient r va de -1 à +1 : son signe décrit la direction et sa valeur absolue la force de la relation linéaire. Une valeur proche de zéro indique une faible relation linéaire, mais n'exclut pas une relation non linéaire.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation", "price-basic-concepts-correlation"]}},
-      {"type": "example", "position": 2, "content": {"text": "Si le nombre d'heures de sommeil augmente tandis que la somnolence déclarée diminue, la corrélation est négative. Le signe ne dit rien de la valeur ou de la qualité de la relation : une corrélation négative peut être forte, et une corrélation positive peut être faible. Il ne dit pas non plus qu'une variable produit l'autre.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Trois obstacles empêchent une inférence causale immédiate. La direction peut être inversée : A influence B ou B influence A. Une variable tierce C peut influencer les deux. Enfin, une association peut résulter du hasard ou d'un biais de sélection ou de mesure. Mesurer davantage de variables aide à examiner certaines alternatives, mais ne transforme pas automatiquement une étude observationnelle en expérience.", "sourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Une expérience soutient mieux une conclusion causale lorsqu'elle manipule la variable indépendante, assigne aléatoirement les participants aux conditions, maintient les autres conditions comparables et mesure la variable dépendante. Même alors, la conclusion porte sur la manipulation, la population et le contexte réellement étudiés ; elle reste ouverte à la réplication et aux limites du protocole.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Avant d'écrire « cause », demander : la cause supposée précède-t-elle l'effet, les variables covarient-elles, et les explications alternatives importantes sont-elles contrôlées ? Si le plan ne répond pas aux trois questions, préférer « est associé à », nommer les alternatives et proposer le test supplémentaire nécessaire.", "sourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"]}}
+      {"type": "definition", "position": 1, "content": {"text": "Une corrélation indique que deux variables quantitatives varient ensemble. Le coefficient r va de -1 à +1 : son signe décrit la direction et sa valeur absolue la force de la relation linéaire. Une valeur proche de zéro indique une faible relation linéaire, mais n'exclut pas une relation non linéaire.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation", "price-basic-concepts-correlation"]},
+        "key": "content-1"
+      },
+      {"type": "example", "position": 2, "content": {"text": "Si le nombre d'heures de sommeil augmente tandis que la somnolence déclarée diminue, la corrélation est négative. Le signe ne dit rien de la valeur ou de la qualité de la relation : une corrélation négative peut être forte, et une corrélation positive peut être faible. Il ne dit pas non plus qu'une variable produit l'autre.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Trois obstacles empêchent une inférence causale immédiate. La direction peut être inversée : A influence B ou B influence A. Une variable tierce C peut influencer les deux. Enfin, une association peut résulter du hasard ou d'un biais de sélection ou de mesure. Mesurer davantage de variables aide à examiner certaines alternatives, mais ne transforme pas automatiquement une étude observationnelle en expérience.", "sourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Une expérience soutient mieux une conclusion causale lorsqu'elle manipule la variable indépendante, assigne aléatoirement les participants aux conditions, maintient les autres conditions comparables et mesure la variable dépendante. Même alors, la conclusion porte sur la manipulation, la population et le contexte réellement étudiés ; elle reste ouverte à la réplication et aux limites du protocole.", "sourceKeys": ["openstax-psychology-2e-2-3-correlation"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Avant d'écrire « cause », demander : la cause supposée précède-t-elle l'effet, les variables covarient-elles, et les explications alternatives importantes sont-elles contrôlées ? Si le plan ne répond pas aux trois questions, préférer « est associé à », nommer les alternatives et proposer le test supplémentaire nécessaire.", "sourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "openstax-psychology-2e-2-2", "type": "book_chapter", "title": "Psychology 2e — 2.2 Approaches to Research", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax.", "description": "Lire l'introduction et les passages sur recherche corrélationnelle ; relever pour chaque méthode ce qu'elle décrit et ce qu'elle ne permet pas d'inférer.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -25,18 +35,91 @@
       {"key": "price-basic-concepts-correlation", "type": "book_chapter", "title": "Research Methods in Psychology — Basic Concepts", "author": "Paul C. Price, Rajiv S. Jhangiani et I-Chant A. Chiang", "url": "https://opentextbc.ca/researchmethods/chapter/basic-concepts/", "citation": "Price, P. C., Jhangiani, R. S., & Chiang, I.-C. A. (2015). Basic Concepts. In Research Methods in Psychology (2nd Canadian ed.). BCcampus.", "description": "Lire « Statistical Relationships Between Variables » et distinguer différences entre groupes, corrélations et affirmations causales.", "isRequired": false, "estimatedMinutes": 20, "position": 3}
     ],
     "concepts": [
-      {"title": "Direction et force d'une corrélation", "slug": "direction-force-correlation", "description": "Le signe de r indique la direction et sa valeur absolue la force d'une relation linéaire, sans indiquer de causalité.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-3-correlation", "price-basic-concepts-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Lire une corrélation", "questionCount": 5}},
-      {"title": "Association et causalité", "slug": "association-vs-causalite", "description": "Une association devient un argument causal seulement si la temporalité et le plan permettent d'écarter raisonnablement des explications alternatives.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Association et causalité", "questionCount": 5}},
-      {"title": "Causalité inverse et variable tierce", "slug": "causalite-inverse-variable-tierce", "description": "Une corrélation peut refléter l'influence de B sur A ou l'action d'une troisième variable sur A et B.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Explications alternatives", "questionCount": 5}}
+      {"title": "Direction et force d'une corrélation", "slug": "direction-force-correlation", "description": "Le signe de r indique la direction et sa valeur absolue la force d'une relation linéaire, sans indiquer de causalité.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-3-correlation", "price-basic-concepts-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Lire une corrélation", "questionCount": 5,
+        "key": "concept-direction-force-correlation-assessment-1"
+      }},
+      {"title": "Association et causalité", "slug": "association-vs-causalite", "description": "Une association devient un argument causal seulement si la temporalité et le plan permettent d'écarter raisonnablement des explications alternatives.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Association et causalité", "questionCount": 5,
+        "key": "concept-association-vs-causalite-assessment-1"
+      }},
+      {"title": "Causalité inverse et variable tierce", "slug": "causalite-inverse-variable-tierce", "description": "Une corrélation peut refléter l'influence de B sur A ou l'action d'une troisième variable sur A et B.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2", "openstax-psychology-2e-2-3-correlation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Explications alternatives", "questionCount": 5,
+        "key": "concept-causalite-inverse-variable-tierce-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Lire quatre coefficients", "description": "Pour r = +0,72, -0,61, +0,08 et -0,25, décrire séparément direction, force relative et ce qui reste inconnu sur la causalité.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Construire trois scénarios causaux", "description": "Pour l'association entre stress et sommeil, dessiner A→B, B→A et C→A plus C→B, puis proposer une donnée qui aiderait à départager chaque scénario.", "type": "practice", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Réécrire un titre trompeur", "description": "Transformer « Les réseaux sociaux causent la solitude » en conclusion compatible avec une enquête transversale, puis décrire une étude apportant un argument causal plus fort.", "type": "writing", "isRequired": true, "weight": 1, "position": 3}
+      {"title": "Lire quatre coefficients", "description": "Pour r = +0,72, -0,61, +0,08 et -0,25, décrire séparément direction, force relative et ce qui reste inconnu sur la causalité.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Construire trois scénarios causaux", "description": "Pour l'association entre stress et sommeil, dessiner A→B, B→A et C→A plus C→B, puis proposer une donnée qui aiderait à départager chaque scénario.", "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Réécrire un titre trompeur", "description": "Transformer « Les réseaux sociaux causent la solitude » en conclusion compatible avec une enquête transversale, puis décrire une étude apportant un argument causal plus fort.", "type": "writing", "isRequired": true, "weight": 1, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-3-correlation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-basic-concepts-correlation"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-direction-force-correlation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-association-vs-causalite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-causalite-inverse-variable-tierce-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-008-OPENSTAX-2-2", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.2 Approaches to Research", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Méthodes observationnelles, corrélation et limites causales."},
       {"id": "REF-008-OPENSTAX-2-3", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.3 Analyzing Findings", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Coefficient de corrélation, corrélations illusoires et critères expérimentaux."},
@@ -78,6 +161,65 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en méthodologie et statistiques requise avant publication.", "La leçon évite explicitement toute conversion automatique d'une corrélation en causalité."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "direction-force-correlation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-3-correlation",
+            "price-basic-concepts-correlation"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-direction-force-correlation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "association-vs-causalite",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-2"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-association-vs-causalite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "causalite-inverse-variable-tierce",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-causalite-inverse-variable-tierce-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

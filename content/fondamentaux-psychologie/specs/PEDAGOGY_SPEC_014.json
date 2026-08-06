@@ -13,11 +13,21 @@
     "estimatedMinutes": 150,
     "position": 3,
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Il n'existe pas une pyramide universelle valable pour toutes les questions. Pour estimer l'effet d'une intervention, un essai randomisé réduit certaines différences initiales entre groupes et une revue systématique de tels essais peut synthétiser plusieurs résultats. Pour décrire une prévalence, un échantillon représentatif est plus pertinent ; pour comprendre une expérience vécue, une étude qualitative peut être adaptée. La première question n'est donc pas « quel plan est le plus haut ? », mais « quel plan répond à cette question ? ».", "sourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016"]}},
-      {"type": "definition", "position": 2, "content": {"text": "Une étude primaire produit ou analyse directement des données. Une revue systématique formule une question, recherche les études selon une méthode explicite, applique des critères de sélection et synthétise leurs résultats. Une méta-analyse est une méthode statistique qui combine des estimations lorsque les études sont suffisamment comparables ; une revue systématique peut ne pas comporter de méta-analyse, et une combinaison numérique n'efface ni les biais ni les différences entre études.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "murad-new-evidence-pyramid-2016"]}},
-      {"type": "example", "position": 3, "content": {"text": "Deux sources examinent un programme de réduction du stress. La première est un essai randomisé bien conduit mais petit et limité à un contexte professionnel. La seconde est une méta-analyse qui combine douze études, dont plusieurs présentent des abandons importants et des interventions très différentes. Le mot « méta-analyse » ne tranche pas automatiquement : il faut examiner les études incluses, le risque de biais, l'hétérogénéité, la précision et l'adéquation avec la population visée.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "murad-new-evidence-pyramid-2016"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "La confiance dans une preuve dépend de plusieurs dimensions : validité du plan pour la question, risque de biais dans la conduite et le compte rendu, précision des estimations, cohérence entre études, pertinence des populations et mesures, transparence des décisions et possibilité de biais de publication. Une grande taille d'échantillon réduit parfois l'incertitude aléatoire, mais ne corrige pas une mesure inadéquate ou un biais systématique.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "ocebm-levels-evidence-2011"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Une conclusion fondée sur les preuves indique ce qui converge, dans quelles conditions, avec quelle incertitude et quelles limites. Elle peut être forte malgré l'absence d'un plan idéal lorsque plusieurs sources complémentaires convergent ; elle peut rester faible malgré un plan réputé élevé si les études sont biaisées, imprécises ou peu pertinentes. La hiérarchie sert de point de départ pour chercher, jamais de verdict automatique.", "sourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016", "cochrane-handbook-6-5-chapter-10"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Il n'existe pas une pyramide universelle valable pour toutes les questions. Pour estimer l'effet d'une intervention, un essai randomisé réduit certaines différences initiales entre groupes et une revue systématique de tels essais peut synthétiser plusieurs résultats. Pour décrire une prévalence, un échantillon représentatif est plus pertinent ; pour comprendre une expérience vécue, une étude qualitative peut être adaptée. La première question n'est donc pas « quel plan est le plus haut ? », mais « quel plan répond à cette question ? ».", "sourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016"]},
+        "key": "content-1"
+      },
+      {"type": "definition", "position": 2, "content": {"text": "Une étude primaire produit ou analyse directement des données. Une revue systématique formule une question, recherche les études selon une méthode explicite, applique des critères de sélection et synthétise leurs résultats. Une méta-analyse est une méthode statistique qui combine des estimations lorsque les études sont suffisamment comparables ; une revue systématique peut ne pas comporter de méta-analyse, et une combinaison numérique n'efface ni les biais ni les différences entre études.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "murad-new-evidence-pyramid-2016"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "Deux sources examinent un programme de réduction du stress. La première est un essai randomisé bien conduit mais petit et limité à un contexte professionnel. La seconde est une méta-analyse qui combine douze études, dont plusieurs présentent des abandons importants et des interventions très différentes. Le mot « méta-analyse » ne tranche pas automatiquement : il faut examiner les études incluses, le risque de biais, l'hétérogénéité, la précision et l'adéquation avec la population visée.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "murad-new-evidence-pyramid-2016"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "La confiance dans une preuve dépend de plusieurs dimensions : validité du plan pour la question, risque de biais dans la conduite et le compte rendu, précision des estimations, cohérence entre études, pertinence des populations et mesures, transparence des décisions et possibilité de biais de publication. Une grande taille d'échantillon réduit parfois l'incertitude aléatoire, mais ne corrige pas une mesure inadéquate ou un biais systématique.", "sourceKeys": ["cochrane-handbook-6-5-chapter-10", "ocebm-levels-evidence-2011"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Une conclusion fondée sur les preuves indique ce qui converge, dans quelles conditions, avec quelle incertitude et quelles limites. Elle peut être forte malgré l'absence d'un plan idéal lorsque plusieurs sources complémentaires convergent ; elle peut rester faible malgré un plan réputé élevé si les études sont biaisées, imprécises ou peu pertinentes. La hiérarchie sert de point de départ pour chercher, jamais de verdict automatique.", "sourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016", "cochrane-handbook-6-5-chapter-10"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "ocebm-levels-evidence-2011", "type": "document", "title": "OCEBM Levels of Evidence", "author": "OCEBM Levels of Evidence Working Group", "url": "https://www.cebm.ox.ac.uk/resources/levels-of-evidence/ocebm-levels-of-evidence", "citation": "OCEBM Levels of Evidence Working Group. (2011). The Oxford Levels of Evidence 2 (version 2.1). Oxford Centre for Evidence-Based Medicine.", "description": "Lire l'introduction avant le tableau, puis comparer les plans proposés pour une question de traitement, de diagnostic et de prévalence.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -25,18 +35,95 @@
       {"key": "cochrane-handbook-6-5-chapter-10", "type": "book_chapter", "title": "Cochrane Handbook — Chapter 10: Analysing data and undertaking meta-analyses", "author": "Jonathan J. Deeks, Julian P. T. Higgins, Douglas G. Altman, Joanne E. McKenzie et Areti Angeliki Veroniki", "url": "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10", "citation": "Deeks, J. J., Higgins, J. P. T., Altman, D. G., McKenzie, J. E., & Veroniki, A. A. (2024). Chapter 10: Analysing data and undertaking meta-analyses. In Cochrane Handbook for Systematic Reviews of Interventions (Version 6.5). Cochrane.", "description": "Lire l'introduction et la section 10.10 sur l'hétérogénéité ; expliquer pourquoi toutes les études ne doivent pas être combinées.", "isRequired": false, "estimatedMinutes": 35, "position": 3}
     ],
     "concepts": [
-      {"title": "Adéquation entre question et plan", "slug": "adequation-question-plan", "description": "La valeur informative d'un plan dépend de la question : intervention, diagnostic, fréquence, pronostic, mécanisme ou expérience vécue.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Question et plan", "questionCount": 5}},
-      {"title": "Étude primaire et synthèse", "slug": "etude-primaire-synthese", "description": "Une revue systématique recherche et évalue des études selon une méthode explicite ; une méta-analyse combine certaines estimations sans garantir leur qualité.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["murad-new-evidence-pyramid-2016", "cochrane-handbook-6-5-chapter-10"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Étude et synthèse", "questionCount": 5}},
-      {"title": "Qualité, biais et convergence", "slug": "qualite-biais-convergence", "description": "La confiance dépend du risque de biais, de la précision, de la cohérence, de la pertinence et de la transparence, pas seulement de l'étiquette du plan.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ocebm-levels-evidence-2011", "cochrane-handbook-6-5-chapter-10"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité et convergence", "questionCount": 5}}
+      {"title": "Adéquation entre question et plan", "slug": "adequation-question-plan", "description": "La valeur informative d'un plan dépend de la question : intervention, diagnostic, fréquence, pronostic, mécanisme ou expérience vécue.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ocebm-levels-evidence-2011", "murad-new-evidence-pyramid-2016"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Question et plan", "questionCount": 5,
+        "key": "concept-adequation-question-plan-assessment-1"
+      }},
+      {"title": "Étude primaire et synthèse", "slug": "etude-primaire-synthese", "description": "Une revue systématique recherche et évalue des études selon une méthode explicite ; une méta-analyse combine certaines estimations sans garantir leur qualité.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["murad-new-evidence-pyramid-2016", "cochrane-handbook-6-5-chapter-10"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Étude et synthèse", "questionCount": 5,
+        "key": "concept-etude-primaire-synthese-assessment-1"
+      }},
+      {"title": "Qualité, biais et convergence", "slug": "qualite-biais-convergence", "description": "La confiance dépend du risque de biais, de la précision, de la cohérence, de la pertinence et de la transparence, pas seulement de l'étiquette du plan.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ocebm-levels-evidence-2011", "cochrane-handbook-6-5-chapter-10"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité et convergence", "questionCount": 5,
+        "key": "concept-qualite-biais-convergence-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Associer question et plan", "description": "Pour huit questions fictives, choisir le plan le plus informatif parmi essai, cohorte, étude transversale, étude diagnostique, étude qualitative et revue systématique ; justifier chaque choix en une phrase.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Auditer une synthèse", "description": "Sur le résumé d'une revue fictive, relever question, recherche, critères d'inclusion, plans inclus, risque de biais, hétérogénéité et limites ; marquer les informations absentes.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Rédiger une conclusion proportionnée", "description": "Comparer trois études contradictoires et rédiger 300 à 400 mots indiquant convergence, précision, biais, pertinence et données supplémentaires nécessaires, sans attribuer un verdict au seul type d'étude.", "type": "writing", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Associer question et plan", "description": "Pour huit questions fictives, choisir le plan le plus informatif parmi essai, cohorte, étude transversale, étude diagnostique, étude qualitative et revue systématique ; justifier chaque choix en une phrase.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une synthèse", "description": "Sur le résumé d'une revue fictive, relever question, recherche, critères d'inclusion, plans inclus, risque de biais, hétérogénéité et limites ; marquer les informations absentes.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": [
+          "ocebm-levels-evidence-2011",
+          "murad-new-evidence-pyramid-2016",
+          "cochrane-handbook-6-5-chapter-10"
+        ]
+      },
+      {"title": "Rédiger une conclusion proportionnée", "description": "Comparer trois études contradictoires et rédiger 300 à 400 mots indiquant convergence, précision, biais, pertinence et données supplémentaires nécessaires, sans attribuer un verdict au seul type d'étude.", "type": "writing", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ocebm-levels-evidence-2011"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "murad-new-evidence-pyramid-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cochrane-handbook-6-5-chapter-10"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-adequation-question-plan-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-etude-primaire-synthese-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-qualite-biais-convergence-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-014-OCEBM", "type": "evidence_framework", "authors": ["OCEBM Levels of Evidence Working Group"], "organization": "Oxford Centre for Evidence-Based Medicine, University of Oxford", "title": "The Oxford Levels of Evidence 2", "year": 2011, "edition": "Version 2.1", "publication": "Oxford Centre for Evidence-Based Medicine", "doi": null, "url": "https://www.cebm.ox.ac.uk/resources/levels-of-evidence/ocebm-levels-of-evidence", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Le site exige explicitement de lire le tableau avec le document introductif et avertit contre un usage inflexible."},
       {"id": "REF-014-MURAD", "type": "methodological_article", "authors": ["Murad, M. H.", "Asi, N.", "Alsawas, M.", "Alahdab, F."], "organization": "BMJ", "title": "New evidence pyramid", "year": 2016, "edition": null, "publication": "BMJ Evidence-Based Medicine, 21(4), 125–127", "doi": "https://doi.org/10.1136/ebmed-2016-110401", "url": "https://ebm.bmj.com/content/21/4/125", "accessedAt": "2026-08-03", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Article ouvert via BMJ/PMC", "status": "verified", "notes": "Article méthodologique utilisé pour déconstruire une lecture rigide de la pyramide."},
@@ -78,6 +165,64 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine de méthodologie et de synthèse des preuves requise avant publication.", "La leçon refuse explicitement une pyramide universelle et sépare plan, qualité et pertinence."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "adequation-question-plan",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "ocebm-levels-evidence-2011",
+            "murad-new-evidence-pyramid-2016",
+            "cochrane-handbook-6-5-chapter-10"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-adequation-question-plan-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "etude-primaire-synthese",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-etude-primaire-synthese-assessment-1",
+          "rationale": "La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "qualite-biais-convergence",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-qualite-biais-convergence-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

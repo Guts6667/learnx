@@ -27,7 +27,8 @@
         "content": {
         "text": "En France, l’usage professionnel du titre de psychologue est protégé par la loi et dépend de diplômes ou autorisations déterminés. Le psychiatre est un médecin spécialisé : il peut établir un diagnostic médical et prescrire des médicaments. Le psychologue n’est pas médecin du seul fait de son titre et ne prescrit pas de médicaments à ce titre. Les deux professions peuvent travailler dans le soin, la recherche, l’enseignement ou d’autres contextes selon leur formation et leur poste.",
         "sourceKeys": ["legifrance-titre-psychologue-article-44", "service-public-psychologue-psychiatre"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -35,7 +36,8 @@
         "content": {
         "text": "Le titre de psychothérapeute fait lui aussi l’objet d’un cadre légal et d’un enregistrement ; il ne doit pas être confondu avec le titre de psychologue ou la spécialité médicale de psychiatrie. Une personne se présentant comme psychanalyste peut également être psychologue ou psychiatre, mais ce n’est pas automatique. Face à une appellation, il faut donc vérifier séparément le titre protégé, la formation, l’enregistrement applicable, la méthode annoncée et le champ réel de compétence.",
         "sourceKeys": ["service-public-psychologue-psychiatre"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -43,7 +45,8 @@
         "content": {
         "text": "Exemple inventé : une psychologue du travail reçoit une salariée qui décrit des attaques de panique et un risque immédiat pour sa sécurité. La psychologue peut écouter, évaluer la situation dans les limites de sa fonction et orienter vers les services adaptés ; elle ne doit pas laisser croire que sa spécialité couvre automatiquement toute prise en charge clinique ou médicale. Reconnaître une limite et organiser une orientation fait partie d’une pratique compétente.",
         "sourceKeys": ["cncdp-code-deontologie-2021"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -51,7 +54,8 @@
         "content": {
         "text": "La déontologie organise la responsabilité envers les personnes. Le Code français de 2021 met notamment en avant le respect des droits et de la dignité, l’autonomie, l’information, la vie privée, le secret professionnel et la confidentialité. Ces principes exigent d’expliquer le cadre et la finalité de l’intervention, de rechercher un consentement libre et éclairé, de protéger les informations et de limiter leur partage à ce qui est justifié. Les obligations légales applicables restent prioritaires et doivent être examinées selon la situation.",
         "sourceKeys": ["cncdp-code-deontologie-2021"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
         "text": "Un titre ne garantit ni une compétence universelle ni la qualité d’une intervention précise. Avant d’accorder sa confiance, on peut demander le titre exact, la formation pertinente, le cadre de confidentialité, le but et les limites de l’intervention, les modalités de consentement et les possibilités d’orientation. Un refus d’expliquer le cadre, une promesse certaine, une pression à poursuivre ou une demande d’informations sans finalité claire constituent des signaux d’alerte.",
         "sourceKeys": ["cncdp-code-deontologie-2021", "legifrance-titre-psychologue-article-44"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -115,7 +120,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Titres et rôles",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-titres-et-roles-france-assessment-1"
         }
       },
       {
@@ -132,7 +138,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Compétence et orientation",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-competence-limites-orientation-assessment-1"
         }
       },
       {
@@ -149,7 +156,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Droits et confidentialité",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-droits-consentement-confidentialite-assessment-1"
         }
       }
     ],
@@ -160,7 +168,13 @@
         "type": "reading",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "legifrance-titre-psychologue-article-44",
+          "cncdp-code-deontologie-2021"
+        ]
       },
       {
         "title": "Décider d’une orientation",
@@ -168,7 +182,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Repérer les enjeux déontologiques",
@@ -176,18 +192,78 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "service-public-psychologue-psychiatre"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "legifrance-titre-psychologue-article-44"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cncdp-code-deontologie-2021"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-titres-et-roles-france-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-competence-limites-orientation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-droits-consentement-confidentialite-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-02-03",
     "references": [
       {
@@ -630,7 +706,64 @@
         "author": "LearnX",
         "change": "Création du cours, des tâches, des sources et de 15 questions corrigées.",
         "reviewRequired": "editorial_subject_and_legal"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "titres-et-roles-france",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "service-public-psychologue-psychiatre",
+            "legifrance-titre-psychologue-article-44",
+            "cncdp-code-deontologie-2021"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-titres-et-roles-france-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "competence-limites-orientation",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-competence-limites-orientation-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "droits-consentement-confidentialite",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-droits-consentement-confidentialite-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

@@ -17,12 +17,24 @@
     ],
     "prerequisites": ["Distinguer observation, mesure et interprétation.", "Connaître les limites d’un diagnostic et d’un score isolé."],
     "contentBlocks": [
-      {"type":"definition","position":1,"content":{"text":"Une évaluation psychologique est un processus orienté par une question, pas l’administration d’un test unique. Elle peut combiner entretien, observations, histoire développementale et sociale, mesures standardisées, informations consenties de tiers et données médicales pertinentes. Chaque source a des limites ; leur convergence, leurs divergences et les conditions de recueil doivent être examinées. Un score décrit une performance dans un cadre donné : il ne résume ni la personne ni, à lui seul, un diagnostic ou une décision.","sourceKeys":["bps-assessment-2025"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Avant de mesurer, on clarifie avec la personne la demande, les destinataires, les usages possibles, la confidentialité et ses limites. On choisit des outils adaptés à l’objectif, à la langue, à l’âge, au handicap, au contexte culturel et à leurs qualités psychométriques. On recherche aussi les forces, soutiens, contraintes matérielles et explications concurrentes. L’évaluation reste proportionnée : recueillir davantage de données n’est pas toujours plus juste, surtout si elles ne peuvent pas modifier la compréhension ou la décision.","sourceKeys":["bps-assessment-2025"]}},
-      {"type":"definition","position":3,"content":{"text":"La formulation est une mise en sens provisoire : elle organise ce qui prédispose, précipite, maintient ou protège, en s’appuyant sur le récit de la personne, la théorie et les données disponibles. Elle n’est ni une vérité cachée ni un synonyme de diagnostic. Elle doit être collaborative, compréhensible, attentive aux relations de pouvoir et ouverte à la révision lorsque de nouvelles informations, un autre contexte ou la réponse à une intervention contredisent l’hypothèse initiale.","sourceKeys":["bps-formulation-2025"]}},
-      {"type":"example","position":4,"content":{"text":"Une baisse de participation au travail peut être reliée à plusieurs hypothèses : humeur dépressive, anxiété, épuisement, conflit, discrimination, maladie, contraintes familiales ou environnement inaccessible. Une formulation prudente sépare faits, significations et inconnues, inclut ressources et préférences, puis indique ce qui permettrait de départager les hypothèses. Elle évite de transformer une réaction contextuelle en trait fixe et peut conclure qu’une autre évaluation ou une action sociale est prioritaire.","sourceKeys":["bps-assessment-2025","bps-formulation-2025"]}},
-      {"type":"callout","position":5,"content":{"text":"La décision partagée ne consiste ni à imposer l’option du professionnel ni à transférer seul le poids du choix à la personne. Elle rend visible qu’un choix existe, présente les options raisonnables — y compris attendre ou ne pas intervenir lorsqu’elles sont sûres —, compare bénéfices, risques, contraintes et incertitudes, puis explore ce qui compte pour la personne. Son souhait d’impliquer un proche ou un interprète se demande ; son refus ou sa préférence doivent être entendus dans les limites du cadre légal et de la sécurité.","sourceKeys":["nice-sdm-2021","elwyn-sdm-2012"]}},
-      {"type":"objective","position":6,"content":{"text":"Évaluation, formulation et décision forment une boucle : définir la question, recueillir des informations proportionnées, proposer une compréhension, choisir ensemble un objectif et vérifier ce qui change. Une décision peut être différée ou révisée ; une mesure de suivi soutient le dialogue sans remplacer l’expérience de la personne. Cette leçon n’autorise ni auto-évaluation clinique, ni diagnostic d’autrui, ni choix d’une psychothérapie ou d’un traitement individualisé ; ces décisions demandent un professionnel qualifié et le contexte réel.","sourceKeys":["bps-formulation-2025","nice-sdm-2021"]}}
+      {"type":"definition","position":1,"content":{"text":"Une évaluation psychologique est un processus orienté par une question, pas l’administration d’un test unique. Elle peut combiner entretien, observations, histoire développementale et sociale, mesures standardisées, informations consenties de tiers et données médicales pertinentes. Chaque source a des limites ; leur convergence, leurs divergences et les conditions de recueil doivent être examinées. Un score décrit une performance dans un cadre donné : il ne résume ni la personne ni, à lui seul, un diagnostic ou une décision.","sourceKeys":["bps-assessment-2025"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Avant de mesurer, on clarifie avec la personne la demande, les destinataires, les usages possibles, la confidentialité et ses limites. On choisit des outils adaptés à l’objectif, à la langue, à l’âge, au handicap, au contexte culturel et à leurs qualités psychométriques. On recherche aussi les forces, soutiens, contraintes matérielles et explications concurrentes. L’évaluation reste proportionnée : recueillir davantage de données n’est pas toujours plus juste, surtout si elles ne peuvent pas modifier la compréhension ou la décision.","sourceKeys":["bps-assessment-2025"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"La formulation est une mise en sens provisoire : elle organise ce qui prédispose, précipite, maintient ou protège, en s’appuyant sur le récit de la personne, la théorie et les données disponibles. Elle n’est ni une vérité cachée ni un synonyme de diagnostic. Elle doit être collaborative, compréhensible, attentive aux relations de pouvoir et ouverte à la révision lorsque de nouvelles informations, un autre contexte ou la réponse à une intervention contredisent l’hypothèse initiale.","sourceKeys":["bps-formulation-2025"]},
+        "key": "content-3"
+      },
+      {"type":"example","position":4,"content":{"text":"Une baisse de participation au travail peut être reliée à plusieurs hypothèses : humeur dépressive, anxiété, épuisement, conflit, discrimination, maladie, contraintes familiales ou environnement inaccessible. Une formulation prudente sépare faits, significations et inconnues, inclut ressources et préférences, puis indique ce qui permettrait de départager les hypothèses. Elle évite de transformer une réaction contextuelle en trait fixe et peut conclure qu’une autre évaluation ou une action sociale est prioritaire.","sourceKeys":["bps-assessment-2025","bps-formulation-2025"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"La décision partagée ne consiste ni à imposer l’option du professionnel ni à transférer seul le poids du choix à la personne. Elle rend visible qu’un choix existe, présente les options raisonnables — y compris attendre ou ne pas intervenir lorsqu’elles sont sûres —, compare bénéfices, risques, contraintes et incertitudes, puis explore ce qui compte pour la personne. Son souhait d’impliquer un proche ou un interprète se demande ; son refus ou sa préférence doivent être entendus dans les limites du cadre légal et de la sécurité.","sourceKeys":["nice-sdm-2021","elwyn-sdm-2012"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Évaluation, formulation et décision forment une boucle : définir la question, recueillir des informations proportionnées, proposer une compréhension, choisir ensemble un objectif et vérifier ce qui change. Une décision peut être différée ou révisée ; une mesure de suivi soutient le dialogue sans remplacer l’expérience de la personne. Cette leçon n’autorise ni auto-évaluation clinique, ni diagnostic d’autrui, ni choix d’une psychothérapie ou d’un traitement individualisé ; ces décisions demandent un professionnel qualifié et le contexte réel.","sourceKeys":["bps-formulation-2025","nice-sdm-2021"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key":"bps-assessment-2025","title":"Assessment — Assessment, formulation, and diagnosis guidelines (adults)","type":"document","url":"https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.5","author":"British Psychological Society","citation":"British Psychological Society. (2025). Assessment. In Assessment, formulation, and diagnosis guidelines (adults). https://doi.org/10.53841/bpsrep.2025.rep188.5","description":"Lire les principes d’une évaluation proportionnée, contextualisée et multiméthode.","isRequired":true,"estimatedMinutes":20,"position":1},
@@ -31,18 +43,99 @@
       {"key":"elwyn-sdm-2012","title":"Shared Decision Making: A Model for Clinical Practice","type":"article","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3445676/","author":"Glyn Elwyn et collaborateurs","citation":"Elwyn, G., et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6","description":"Lire le modèle conversationnel choix-options-décision et ses limites.","isRequired":false,"estimatedMinutes":15,"position":4}
     ],
     "concepts": [
-      {"title":"Évaluation multiméthode et proportionnée","slug":"evaluation-multimethode-proportionnee","description":"Une évaluation répond à une question en croisant des données dont les limites restent visibles.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["bps-assessment-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Évaluer sans réduire","questionCount":5}},
-      {"title":"Formulation collaborative et révisable","slug":"formulation-collaborative-revisable","description":"Une formulation organise des hypothèses contextualisées avec la personne et reste ouverte à la contradiction.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["bps-formulation-2025","bps-assessment-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Formuler sans figer","questionCount":5}},
-      {"title":"Décision partagée et autonomie","slug":"decision-partagee-autonomie","description":"La décision partagée articule données, options, incertitudes et préférences sans abandon ni contrainte.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nice-sdm-2021","elwyn-sdm-2012"],"assessment":{"type":"quiz","title":"Mini-évaluation — Choisir ensemble","questionCount":5}}
+      {"title":"Évaluation multiméthode et proportionnée","slug":"evaluation-multimethode-proportionnee","description":"Une évaluation répond à une question en croisant des données dont les limites restent visibles.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["bps-assessment-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Évaluer sans réduire","questionCount":5,
+        "key": "concept-evaluation-multimethode-proportionnee-assessment-1"
+      }},
+      {"title":"Formulation collaborative et révisable","slug":"formulation-collaborative-revisable","description":"Une formulation organise des hypothèses contextualisées avec la personne et reste ouverte à la contradiction.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["bps-formulation-2025","bps-assessment-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Formuler sans figer","questionCount":5,
+        "key": "concept-formulation-collaborative-revisable-assessment-1"
+      }},
+      {"title":"Décision partagée et autonomie","slug":"decision-partagee-autonomie","description":"La décision partagée articule données, options, incertitudes et préférences sans abandon ni contrainte.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nice-sdm-2021","elwyn-sdm-2012"],"assessment":{"type":"quiz","title":"Mini-évaluation — Choisir ensemble","questionCount":5,
+        "key": "concept-decision-partagee-autonomie-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title":"Auditer une évaluation par test unique","description":"Repérer ce qu’un score permet et ne permet pas de conclure, puis proposer des sources d’information complémentaires proportionnées.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Construire une formulation provisoire","description":"À partir d’une vignette, séparer faits, significations, hypothèses, ressources, contexte et informations manquantes sans poser de diagnostic.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Simuler une conversation de décision partagée","description":"Présenter plusieurs options avec bénéfices, risques, contraintes et incertitudes, puis faire expliciter préférences et conditions de révision.","type":"project","isRequired":true,"weight":2,"position":3}
+      {"title":"Auditer une évaluation par test unique","description":"Repérer ce qu’un score permet et ne permet pas de conclure, puis proposer des sources d’information complémentaires proportionnées.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Construire une formulation provisoire","description":"À partir d’une vignette, séparer faits, significations, hypothèses, ressources, contexte et informations manquantes sans poser de diagnostic.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Simuler une conversation de décision partagée","description":"Présenter plusieurs options avec bénéfices, risques, contraintes et incertitudes, puis faire expliciter préférences et conditions de révision.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bps-assessment-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-evaluation-multimethode-proportionnee-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bps-formulation-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-formulation-collaborative-revisable-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nice-sdm-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "elwyn-sdm-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-decision-partagee-autonomie-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version":"1.0.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+    "version":"1.1.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references": [
       {"id":"REF-058-BPS-ASSESSMENT","type":"professional_guideline","authors":[],"organization":"British Psychological Society","title":"Assessment, formulation, and diagnosis guidelines (adults): Assessment","year":2025,"edition":"2025","publication":"British Psychological Society","doi":"10.53841/bpsrep.2025.rep188.5","url":"https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.5","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Consultation publique ; droits BPS","status":"verified","notes":"Guide professionnel récent pour adultes."},
       {"id":"REF-058-BPS-FORMULATION","type":"professional_guideline","authors":[],"organization":"British Psychological Society","title":"Assessment, formulation, and diagnosis guidelines (adults): Formulation","year":2025,"edition":"2025","publication":"British Psychological Society","doi":"10.53841/bpsrep.2025.rep188.6","url":"https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.6","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Consultation publique ; droits BPS","status":"verified","notes":"Définit la formulation comme mise en sens collaborative et révisable."},
@@ -86,7 +179,69 @@
         {"type":"short_answer","prompt":"Quel terme désigne la prise en compte conjointe des données et préférences ?","explanation":"Il s’agit de la décision partagée.","acceptedAnswers":["décision partagée","decision partagee","prise de décision partagée","prise de decision partagee"],"position":5,"options":[]}
       ]}
     ],
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_assessment_formulation_and_shared_decision_review"}],
-    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en évaluation psychologique, formulation et décision partagée requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Leçon non prescriptive : aucun test, diagnostic ou choix de traitement individualisé.","Vérifier avant publication accessibilité, autonomie, confidentialité, culture et cadre légal local."]}
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_assessment_formulation_and_shared_decision_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en évaluation psychologique, formulation et décision partagée requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Leçon non prescriptive : aucun test, diagnostic ou choix de traitement individualisé.","Vérifier avant publication accessibilité, autonomie, confidentialité, culture et cadre légal local."]},
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "evaluation-multimethode-proportionnee",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "bps-assessment-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-evaluation-multimethode-proportionnee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "formulation-collaborative-revisable",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "bps-formulation-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-formulation-collaborative-revisable-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "decision-partagee-autonomie",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "nice-sdm-2021",
+            "elwyn-sdm-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-decision-partagee-autonomie-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

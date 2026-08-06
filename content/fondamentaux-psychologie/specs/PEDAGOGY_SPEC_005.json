@@ -27,7 +27,8 @@
         "content": {
           "text": "Au début du XXe siècle, John B. Watson défend une psychologie centrée sur les comportements observables et les relations entre stimuli et réponses. Ce projet refuse de faire d'états mentaux privés la base indispensable de l'explication scientifique. Il favorise des définitions opérationnelles, des protocoles contrôlés et des prédictions publiques. Le behaviorisme ne désigne toutefois pas une doctrine unique : les positions de Watson, de Skinner et des recherches contemporaines sur l'apprentissage ne sont pas interchangeables.",
           "sourceKeys": ["openstax-psychology-2e-1-2-behaviorism", "watson-1913-behaviorist-views"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -35,7 +36,8 @@
         "content": {
           "text": "Dans le conditionnement classique, un organisme apprend une relation entre des événements. Un stimulus initialement neutre, régulièrement associé à un stimulus qui provoque déjà une réponse, peut finir par déclencher une réponse conditionnée. Le mécanisme porte d'abord sur la valeur prédictive des stimuli ; il ne suppose pas que la personne décide volontairement de produire la réponse.",
           "sourceKeys": ["openstax-psychology-2e-6-2"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "definition",
@@ -43,7 +45,8 @@
         "content": {
           "text": "Dans le conditionnement opérant, la probabilité future d'un comportement varie selon ses conséquences. Un renforcement augmente le comportement ; une punition le diminue. Positif signifie qu'un événement est ajouté et négatif qu'il est retiré. Ainsi, un renforcement négatif n'est pas une punition : il augmente un comportement parce qu'un événement aversif disparaît.",
           "sourceKeys": ["openstax-psychology-2e-6-3"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "example",
@@ -51,7 +54,8 @@
         "content": {
           "text": "Une application de révision félicite immédiatement l'utilisateur après dix minutes de travail et lui attribue un point. Si la fréquence des sessions augmente, le point ou la félicitation fonctionne comme renforcement positif. Si l'utilisateur révise pour faire cesser une alerte désagréable et que cette stratégie augmente, la disparition de l'alerte peut fonctionner comme renforcement négatif. La catégorie dépend de l'effet observé sur le comportement, pas de l'intention du concepteur ni du caractère moralement agréable de la conséquence.",
           "sourceKeys": ["openstax-psychology-2e-6-3"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
           "text": "À retenir : les approches behavioristes ont produit des méthodes puissantes pour étudier l'apprentissage et modifier des comportements définis. Elles ne suffisent pas à elles seules à expliquer tout apprentissage humain, notamment lorsque les attentes, la mémoire, l'observation d'autrui, les buts ou le contexte social modifient la conduite. Une explication utile précise donc ce que le modèle prédit et ce qu'il laisse hors champ.",
           "sourceKeys": ["openstax-psychology-2e-1-2-behaviorism", "openstax-psychology-2e-6-2", "openstax-psychology-2e-6-3"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -127,7 +132,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Projet behavioriste",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-projet-behavioriste-assessment-1"
         }
       },
       {
@@ -143,7 +149,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Conditionnement classique",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-conditionnement-classique-assessment-1"
         }
       },
       {
@@ -159,7 +166,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Conditionnement opérant",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-conditionnement-operant-assessment-1"
         }
       }
     ],
@@ -170,7 +178,12 @@
         "type": "reading",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-behaviorism",
+          "watson-1913-behaviorist-views"
+        ]
       },
       {
         "title": "Cartographier un conditionnement classique",
@@ -178,7 +191,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Analyser des conséquences sans se fier aux mots courants",
@@ -186,18 +201,82 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2-behaviorism"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-6-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "watson-1913-behaviorist-views"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-projet-behavioriste-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-6-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-conditionnement-classique-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-conditionnement-operant-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -603,7 +682,66 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "projet-behavioriste",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2-behaviorism",
+            "openstax-psychology-2e-6-2",
+            "watson-1913-behaviorist-views"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-projet-behavioriste-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "conditionnement-classique",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-6-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-conditionnement-classique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "conditionnement-operant",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-conditionnement-operant-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

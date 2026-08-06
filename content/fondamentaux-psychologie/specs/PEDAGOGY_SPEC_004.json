@@ -26,7 +26,8 @@
         "content": {
           "text": "Au XIXe siècle, les questions sur l'esprit ne quittent pas soudainement la philosophie pour devenir scientifiques. Des travaux en physiologie, psychophysique et mesure du temps de réaction rendent progressivement certains phénomènes accessibles à des observations contrôlées. La création par Wilhelm Wundt d'un laboratoire à Leipzig en 1879 sert souvent de repère, car elle matérialise une organisation durable de la recherche et de la formation. Ce repère ne signifie ni qu'aucune expérience psychologique n'existait auparavant, ni qu'une seule personne a créé toute la discipline.",
           "sourceKeys": ["openstax-psychology-2e-1-2", "wozniak-wundt-physiological-psychology"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -34,7 +35,8 @@
         "content": {
           "text": "Une démarche expérimentale fait varier ou contrôle des conditions afin d'observer leurs effets sur une réponse définie. Dans les premiers laboratoires, on pouvait présenter un son ou une lumière, mesurer un temps de réaction et comparer des conditions répétées. Les comptes rendus de l'expérience consciente pouvaient aussi être recueillis, mais sous des conditions réglées ; ils ne se confondaient pas avec une auto-observation libre et invérifiable.",
           "sourceKeys": ["wundt-outlines-psychology-1897", "wozniak-wundt-physiological-psychology"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -42,7 +44,8 @@
         "content": {
           "text": "Dans une tâche simple, une personne appuie sur un bouton lorsqu'une lumière apparaît. Le chercheur définit le stimulus, enregistre le délai en millisecondes, répète les essais et compare par exemple une condition prévisible à une condition imprévisible. Le temps de réaction ne révèle pas directement toute la pensée de la personne, mais fournit un indicateur public et reproductible d'un processus délimité.",
           "sourceKeys": ["openstax-psychology-2e-1-2"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -50,7 +53,8 @@
         "content": {
           "text": "Le structuralisme, surtout associé à Edward Titchener, cherchait à décrire les éléments de l'expérience consciente. Le fonctionnalisme, associé notamment à William James, demandait plutôt à quoi servent les activités mentales et comment elles contribuent à l'adaptation. Les deux orientations ont utilisé l'introspection, mais avec des buts différents et aux côtés d'autres observations. Assimiler entièrement Wundt au structuralisme ultérieur de Titchener efface des différences historiques importantes.",
           "sourceKeys": ["openstax-psychology-2e-1-2", "wundt-outlines-psychology-1897"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -58,7 +62,8 @@
         "content": {
           "text": "À retenir : une discipline se construit par des institutions, des instruments, des méthodes et des débats. Les repères comme Leipzig en 1879 sont utiles à condition de ne pas transformer l'histoire en récit d'un inventeur unique, d'une méthode unique ou d'une progression inévitable vers les conceptions actuelles.",
           "sourceKeys": ["openstax-psychology-2e-1-2", "wozniak-wundt-physiological-psychology"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -114,7 +119,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Institutionnalisation de la psychologie",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-institutionnalisation-psychologie-scientifique-assessment-1"
         }
       },
       {
@@ -131,7 +137,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Expérimentation et mesure",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-experimentation-mesure-introspection-assessment-1"
         }
       },
       {
@@ -147,7 +154,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Structuralisme et fonctionnalisme",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-structuralisme-fonctionnalisme-assessment-1"
         }
       }
     ],
@@ -158,7 +166,11 @@
         "type": "reading",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2"
+        ]
       },
       {
         "title": "Décomposer une expérience de temps de réaction",
@@ -166,7 +178,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Comparer deux questions historiques",
@@ -174,18 +188,78 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wundt-outlines-psychology-1897"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wozniak-wundt-physiological-psychology"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-institutionnalisation-psychologie-scientifique-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-experimentation-mesure-introspection-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-structuralisme-fonctionnalisme-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -558,7 +632,64 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "institutionnalisation-psychologie-scientifique",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2",
+            "wundt-outlines-psychology-1897",
+            "wozniak-wundt-physiological-psychology"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-institutionnalisation-psychologie-scientifique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "experimentation-mesure-introspection",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-experimentation-mesure-introspection-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "structuralisme-fonctionnalisme",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-structuralisme-fonctionnalisme-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

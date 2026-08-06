@@ -28,7 +28,8 @@
         "content": {
           "text": "La psychologie du développement étudie les changements et les stabilités de la conception à la fin de la vie, dans des domaines physiques, cognitifs et psychosociaux qui peuvent évoluer ensemble ou différemment. Le mot développement ne signifie donc ni progrès uniforme ni simple croissance de l'enfant. Une même personne peut gagner une stratégie, perdre de la vitesse dans une autre tâche et conserver certaines préférences. Avant d'expliquer une évolution, il faut nommer le construit observé, la période, la population, la méthode et le contexte historique.",
           "sourceKeys": ["openstax-lifespan-1-1", "baltes-lifespan-1987"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -36,7 +37,8 @@
         "content": {
           "text": "Un changement est dit continu lorsque la variable mesurée évolue graduellement à l'échelle choisie ; une discontinuité correspond à une réorganisation ou à une différence qualitative proposée. Un stade est un modèle qui ordonne des configurations et avance des critères de transition. Ce n'est pas une étiquette naturelle automatiquement visible, une norme morale ni une date limite universelle. Le même phénomène peut sembler graduel avec une mesure fine et discontinu avec des catégories grossières. Une théorie de stades doit donc préciser domaine, séquence, mécanisme, variations attendues et observations capables de la contredire.",
           "sourceKeys": ["openstax-lifespan-1-2", "baltes-lifespan-1987", "bornstein-specificity-2017"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "Une trajectoire décrit la forme du changement au fil d'observations répétées : niveau initial, direction, rythme, fluctuations et éventuels tournants. La courbe moyenne d'un groupe ne constitue pas le parcours d'un individu ; deux personnes peuvent produire la même moyenne avec des chemins opposés. La perspective du cours de la vie ajoute que le développement est multidimensionnel et multidirectionnel, avec gains, pertes et réorganisations. La plasticité désigne une capacité de modification, mais elle possède des contraintes biologiques, expérientielles et institutionnelles et peut varier selon la période, le domaine et la personne.",
           "sourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-1-1"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -52,7 +55,8 @@
         "content": {
           "text": "L'équifinalité signifie que des chemins différents peuvent aboutir à une issue ressemblante ; la multifinalité signifie qu'une condition initiale semblable peut être suivie d'issues différentes. Ces principes rendent insuffisant tout raisonnement du type « événement précoce donc résultat certain ». Un facteur peut modifier une probabilité sans être nécessaire ni suffisant. Pour interpréter un risque ou une protection, il faut examiner combinaison, intensité, durée, moment, ressources, réponses de la personne, contexte culturel et résultat précisément mesuré. Ces concepts viennent notamment de la psychopathologie développementale, mais ils servent ici à raisonner sur des trajectoires sans pathologiser la variation ordinaire.",
           "sourceKeys": ["cicchetti-rogosch-1996", "baltes-lifespan-1987", "bornstein-specificity-2017"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "objective",
@@ -60,7 +64,8 @@
         "content": {
           "text": "Une cascade développementale est l'hypothèse qu'un changement dans un domaine ou un système contribue, directement ou indirectement, à des changements ultérieurs dans d'autres domaines. Une succession temporelle ou une corrélation ne suffit pas : il faut des mesures répétées, des alternatives plausibles, la stabilité antérieure des variables, des facteurs communs et, si possible, des réplications ou interventions convergentes. Une cascade peut aussi être réciproque : l'enfant transforme ses occasions d'apprendre tandis que son environnement répond à ses actions. Elle formule un programme de recherche, pas une chaîne causale acquise d'avance.",
           "sourceKeys": ["masten-cicchetti-2010", "openstax-lifespan-1-4"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "callout",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Les trajectoires sont situées. Les relations proches, institutions, conditions matérielles, normes culturelles et événements historiques créent ou restreignent des occasions, et la personne agit dans ces contextes. Une conclusion responsable précise donc de qui, de quel processus, de quel domaine, de quel lieu et de quelle période elle parle. Elle recherche des variations plutôt que de traiter un échantillon comme universel. Pour comparer réellement des trajectoires, la leçon suivante examinera les plans transversaux, longitudinaux et séquentiels qui séparent imparfaitement âge, cohorte et moment de mesure.",
           "sourceKeys": ["openstax-lifespan-1-4", "bornstein-specificity-2017", "baltes-lifespan-1987"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -166,7 +172,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-lifespan-1-1", "openstax-lifespan-1-2", "baltes-lifespan-1987"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Continuité et stades", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Continuité et stades", "questionCount": 5,
+          "key": "concept-continuite-discontinuite-stades-assessment-1"
+        }
       },
       {
         "title": "Trajectoires, plasticité et multidirectionnalité",
@@ -176,7 +184,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-1-1"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Trajectoires et plasticité", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Trajectoires et plasticité", "questionCount": 5,
+          "key": "concept-trajectoires-plasticite-multidirectionnelle-assessment-1"
+        }
       },
       {
         "title": "Équifinalité, multifinalité et contextes",
@@ -186,7 +196,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["cicchetti-rogosch-1996", "masten-cicchetti-2010", "openstax-lifespan-1-4", "bornstein-specificity-2017"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Chemins et contextes", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Chemins et contextes", "questionCount": 5,
+          "key": "concept-equifinalite-multifinalite-contextes-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -196,7 +208,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Comparer trois trajectoires",
@@ -204,7 +218,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Corriger une prédiction déterministe",
@@ -212,18 +228,98 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-1-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-1-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "baltes-lifespan-1987"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bornstein-specificity-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-continuite-discontinuite-stades-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cicchetti-rogosch-1996"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-trajectoires-plasticite-multidirectionnelle-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-1-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "masten-cicchetti-2010"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-equifinalite-multifinalite-contextes-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {"id":"REF-028-OPENSTAX-11","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.1 Psychology and Human Development","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-1-psychology-and-human-development","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Manuel universitaire ouvert utilisé pour le vocabulaire introductif ; les généralisations sont encadrées par les sources spécialisées."},
@@ -305,7 +401,71 @@
       ]
     },
     "changeLog": [
-      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de sept ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_and_cultural"}
-    ]
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de sept ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_and_cultural"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "continuite-discontinuite-stades",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-lifespan-1-1",
+            "openstax-lifespan-1-2",
+            "baltes-lifespan-1987",
+            "bornstein-specificity-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-continuite-discontinuite-stades-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "trajectoires-plasticite-multidirectionnelle",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "cicchetti-rogosch-1996"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-trajectoires-plasticite-multidirectionnelle-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "equifinalite-multifinalite-contextes",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "openstax-lifespan-1-4",
+            "masten-cicchetti-2010"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-equifinalite-multifinalite-contextes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

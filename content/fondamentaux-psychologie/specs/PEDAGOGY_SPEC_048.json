@@ -27,7 +27,8 @@
         "content": {
           "text": "Un groupe peut réunir des connaissances, détecter des erreurs et rendre une décision plus légitime. Il peut aussi perdre de l’information par coordination insuffisante, domination, effort inégal ou agrégation inadéquate. La performance dépend de la tâche, de la distribution de l’expertise, des incitations et de la procédure : un groupe n’est ni naturellement plus sage ni naturellement moins rationnel qu’un individu.",
           "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -35,7 +36,8 @@
         "content": {
           "text": "Avant une réunion, certains faits sont connus de tous et d’autres seulement de quelques membres. La discussion tend à répéter l’information partagée, surtout quand une préférence est annoncée tôt ou qu’un statut oriente la parole. Dans une tâche à profil caché, la meilleure option n’apparaît qu’après mise en commun des indices uniques. Il faut donc suivre ce qui a été apporté, pas seulement qui a parlé ou combien d’arguments ont été répétés.",
           "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -43,7 +45,8 @@
         "content": {
           "text": "Le groupthink est un modèle proposé pour décrire certaines décisions où recherche d’accord, fermeture aux objections et défaut de procédure contribuent à une analyse pauvre. La recherche n’en fait pas une loi générale : les tests empiriques sont hétérogènes, les reconstructions historiques exposées au raisonnement rétrospectif et la cohésion seule n’est ni une preuve ni une cause suffisante. Le terme sert de grille d’hypothèses à vérifier, jamais d’étiquette après un échec.",
           "sourceKeys": ["esser-1998", "openstax-influence-12-4"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "definition",
@@ -51,7 +54,8 @@
         "content": {
           "text": "La polarisation de groupe désigne un déplacement moyen, après discussion, vers une direction déjà favorisée initialement. Comparaison sociale, arguments nouveaux et identification au groupe peuvent y contribuer. Ce phénomène n’apparaît pas dans toute discussion, ne signifie pas nécessairement extrémisme et dépend de la mesure, de la composition du groupe et du sujet. Il faut comparer les positions avant et après, ainsi que leur dispersion.",
           "sourceKeys": ["openstax-influence-12-4", "kerr-tindale-2004"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
           "text": "La sagesse des foules exige au minimum des jugements suffisamment divers, une certaine indépendance et une règle d’agrégation adaptée. Dans une expérience d’estimation, Lorenz et ses collègues ont montré qu’une influence sociale même modérée pouvait réduire la diversité et accroître la confiance sans améliorer l’exactitude. Ce résultat porte sur une tâche et un dispositif précis : il alerte sur une condition de l’agrégation, sans établir que toute communication dégrade une foule.",
           "sourceKeys": ["bang-frith-2017", "lorenz-et-al-2011"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -67,7 +72,8 @@
         "content": {
           "text": "Une procédure robuste peut recueillir les estimations avant discussion, demander chaque information unique, associer expertise et confiance calibrée, distribuer la parole, protéger un désaccord argumenté, solliciter une revue externe et conserver un journal des hypothèses et révisions. Selon la tâche, vote, moyenne, débat contradictoire ou délégation experte ne produisent pas le même résultat. Aucun rituel ne garantit une bonne décision : il faut définir le critère, tester la procédure et autoriser la correction.",
           "sourceKeys": ["bang-frith-2017", "kerr-tindale-2004", "lorenz-et-al-2011"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -141,7 +147,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["bang-frith-2017", "kerr-tindale-2004"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Information collective", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Information collective", "questionCount": 5,
+          "key": "concept-gains-pertes-information-partagee-assessment-1"
+        }
       },
       {
         "title": "Groupthink, polarisation et limites",
@@ -151,7 +159,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-influence-12-4", "esser-1998", "kerr-tindale-2004"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Dynamiques de groupe", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Dynamiques de groupe", "questionCount": 5,
+          "key": "concept-groupthink-polarisation-limites-assessment-1"
+        }
       },
       {
         "title": "Procédures de décision collective",
@@ -161,7 +171,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["bang-frith-2017", "lorenz-et-al-2011"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Procédures collectives", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Procédures collectives", "questionCount": 5,
+          "key": "concept-procedures-decision-collective-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -171,7 +183,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Simuler un profil caché",
@@ -179,7 +193,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Concevoir un protocole collectif",
@@ -187,18 +203,90 @@
         "type": "project",
         "isRequired": true,
         "weight": 1,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bang-frith-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kerr-tindale-2004"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-gains-pertes-information-partagee-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-influence-12-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "esser-1998"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-groupthink-polarisation-limites-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "lorenz-et-al-2011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-procedures-decision-collective-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr-FR",
     "audience": "Adulte débutant en psychologie",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -384,7 +472,69 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_and_group_decision"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_and_group_decision"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "gains-pertes-information-partagee",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "bang-frith-2017",
+            "kerr-tindale-2004"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-gains-pertes-information-partagee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "groupthink-polarisation-limites",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-influence-12-4",
+            "esser-1998"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-groupthink-polarisation-limites-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "procedures-decision-collective",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "lorenz-et-al-2011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-procedures-decision-collective-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

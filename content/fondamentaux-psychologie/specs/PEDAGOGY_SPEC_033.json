@@ -19,12 +19,24 @@
     "estimatedMinutes": 180,
     "position": 3,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "La perspective développementale sur la vie entière étudie constance et changement de la naissance à la fin de vie. Le développement est multidimensionnel et multidirectionnel : un domaine peut progresser tandis qu’un autre reste stable ou devient plus coûteux. Plasticité ne signifie pas transformation illimitée ; elle désigne une marge de changement sous des contraintes biologiques, historiques et sociales. Âge chronologique, moment historique, cohorte et événements de vie ne sont pas interchangeables.", "sourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-11-4", "openstax-lifespan-15-3"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "L’adolescence combine puberté, réorganisation de contextes sociaux, approfondissement du raisonnement et sensibilité accrue à certaines expériences. Les changements cérébraux ne produisent pas mécaniquement une conduite : famille, pairs, école, culture, discrimination et possibilités structurent les choix. Les conduites d’exploration peuvent créer des risques dans certaines conditions et soutenir apprentissage, autonomie ou engagement dans d’autres. Parler de « cerveau adolescent déficient » transforme des moyennes et hypothèses en jugement global et masque les inégalités d’opportunité.", "sourceKeys": ["nasem-promise-adolescence-2019", "blakemore-mills-adolescence-2014", "openstax-lifespan-9-3"]}},
-      {"type": "example", "position": 3, "content": {"text": "L’entrée dans l’âge adulte ne suit pas une horloge universelle. Études, emploi, logement, soin de proches, parentalité, couple, migration et engagement communautaire s’ordonnent différemment selon ressources, droits, genre, santé, culture et période historique. L’« émergence de l’âge adulte » décrit utilement certains contextes où exploration et dépendance se prolongent, mais ne constitue pas une étape que toute personne doit vivre. Retarder un jalon social ne prouve ni retard psychologique ni échec.", "sourceKeys": ["ncbi-emerging-adulthood-2018", "openstax-lifespan-12-3", "baltes-lifespan-1987"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Les capacités adultes ne culminent pas ensemble. Vitesse de traitement, mémoire de travail, connaissances, vocabulaire, expertise et résolution de problèmes suivent des trajectoires différentes et dépendent de la tâche, de la santé, de la pratique et du contexte. L’expérience peut soutenir des stratégies efficaces dans des domaines familiers même lorsque certaines opérations deviennent plus lentes. Comparer des groupes d’âge ne montre pas à lui seul comment une personne change : cohorte, scolarisation, familiarité technologique et sélection de l’échantillon peuvent expliquer une partie des écarts.", "sourceKeys": ["openstax-lifespan-11-4", "openstax-lifespan-15-3", "harada-normal-cognitive-aging-2013"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Le vieillissement cognitif ordinaire est hétérogène. Une baisse moyenne est fréquente pour la vitesse de traitement et certaines formes de mémoire épisodique, tandis que vocabulaire, connaissances sémantiques et compétences exercées peuvent rester stables ou progresser longtemps. Un oubli occasionnel existe à tout âge et ne suffit pas à diagnostiquer un trouble ; inversement, une modification persistante qui gêne les activités mérite une évaluation professionnelle. Les normes doivent tenir compte de langue, littératie, culture, santé sensorielle, éducation et conditions de passation.", "sourceKeys": ["harada-normal-cognitive-aging-2013", "openstax-lifespan-15-3", "nasem-cognitive-aging-2015"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Le vieillissement socioémotionnel n’est pas un isolement ou un mal-être inévitable. Les buts et réseaux sociaux peuvent devenir plus sélectifs, certaines expériences émotionnelles s’améliorer en moyenne et les pertes, contraintes de santé ou discriminations créer simultanément des difficultés. L’âgisme transforme l’âge réel ou perçu en stéréotype, préjugé ou discrimination et peut toucher toutes les générations. Une communication rigoureuse décrit la mesure et la variabilité, respecte l’autonomie et ne présente ni jeunesse ni grand âge comme une essence psychologique.", "sourceKeys": ["charles-carstensen-aging-2010", "who-ageism-2021", "openstax-lifespan-12-3"]}}
+      {"type": "definition", "position": 1, "content": {"text": "La perspective développementale sur la vie entière étudie constance et changement de la naissance à la fin de vie. Le développement est multidimensionnel et multidirectionnel : un domaine peut progresser tandis qu’un autre reste stable ou devient plus coûteux. Plasticité ne signifie pas transformation illimitée ; elle désigne une marge de changement sous des contraintes biologiques, historiques et sociales. Âge chronologique, moment historique, cohorte et événements de vie ne sont pas interchangeables.", "sourceKeys": ["baltes-lifespan-1987", "openstax-lifespan-11-4", "openstax-lifespan-15-3"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "L’adolescence combine puberté, réorganisation de contextes sociaux, approfondissement du raisonnement et sensibilité accrue à certaines expériences. Les changements cérébraux ne produisent pas mécaniquement une conduite : famille, pairs, école, culture, discrimination et possibilités structurent les choix. Les conduites d’exploration peuvent créer des risques dans certaines conditions et soutenir apprentissage, autonomie ou engagement dans d’autres. Parler de « cerveau adolescent déficient » transforme des moyennes et hypothèses en jugement global et masque les inégalités d’opportunité.", "sourceKeys": ["nasem-promise-adolescence-2019", "blakemore-mills-adolescence-2014", "openstax-lifespan-9-3"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "L’entrée dans l’âge adulte ne suit pas une horloge universelle. Études, emploi, logement, soin de proches, parentalité, couple, migration et engagement communautaire s’ordonnent différemment selon ressources, droits, genre, santé, culture et période historique. L’« émergence de l’âge adulte » décrit utilement certains contextes où exploration et dépendance se prolongent, mais ne constitue pas une étape que toute personne doit vivre. Retarder un jalon social ne prouve ni retard psychologique ni échec.", "sourceKeys": ["ncbi-emerging-adulthood-2018", "openstax-lifespan-12-3", "baltes-lifespan-1987"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Les capacités adultes ne culminent pas ensemble. Vitesse de traitement, mémoire de travail, connaissances, vocabulaire, expertise et résolution de problèmes suivent des trajectoires différentes et dépendent de la tâche, de la santé, de la pratique et du contexte. L’expérience peut soutenir des stratégies efficaces dans des domaines familiers même lorsque certaines opérations deviennent plus lentes. Comparer des groupes d’âge ne montre pas à lui seul comment une personne change : cohorte, scolarisation, familiarité technologique et sélection de l’échantillon peuvent expliquer une partie des écarts.", "sourceKeys": ["openstax-lifespan-11-4", "openstax-lifespan-15-3", "harada-normal-cognitive-aging-2013"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Le vieillissement cognitif ordinaire est hétérogène. Une baisse moyenne est fréquente pour la vitesse de traitement et certaines formes de mémoire épisodique, tandis que vocabulaire, connaissances sémantiques et compétences exercées peuvent rester stables ou progresser longtemps. Un oubli occasionnel existe à tout âge et ne suffit pas à diagnostiquer un trouble ; inversement, une modification persistante qui gêne les activités mérite une évaluation professionnelle. Les normes doivent tenir compte de langue, littératie, culture, santé sensorielle, éducation et conditions de passation.", "sourceKeys": ["harada-normal-cognitive-aging-2013", "openstax-lifespan-15-3", "nasem-cognitive-aging-2015"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Le vieillissement socioémotionnel n’est pas un isolement ou un mal-être inévitable. Les buts et réseaux sociaux peuvent devenir plus sélectifs, certaines expériences émotionnelles s’améliorer en moyenne et les pertes, contraintes de santé ou discriminations créer simultanément des difficultés. L’âgisme transforme l’âge réel ou perçu en stéréotype, préjugé ou discrimination et peut toucher toutes les générations. Une communication rigoureuse décrit la mesure et la variabilité, respecte l’autonomie et ne présente ni jeunesse ni grand âge comme une essence psychologique.", "sourceKeys": ["charles-carstensen-aging-2010", "who-ageism-2021", "openstax-lifespan-12-3"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "baltes-lifespan-1987", "type": "article", "title": "Theoretical Propositions of Life-Span Developmental Psychology", "author": "Paul B. Baltes", "url": "https://www.imprs-life.mpg.de/25277/022_baltes_1987.pdf", "citation": "Baltes, P. B. (1987). Theoretical propositions of life-span developmental psychology: On the dynamics between growth and decline. Developmental Psychology, 23(5), 611–626. https://doi.org/10.1037/0012-1649.23.5.611", "description": "Lire les propositions sur multidirectionnalité, plasticité et contexte ; appliquer chacune à un exemple qui comporte gain et contrainte.", "isRequired": true, "estimatedMinutes": 25, "position": 1},
@@ -41,18 +53,131 @@
       {"key": "who-ageism-2021", "type": "document", "title": "Global Report on Ageism", "author": "World Health Organization", "url": "https://www.who.int/publications-detail-redirect/9789240016866", "citation": "World Health Organization. (2021). Global report on ageism. World Health Organization. ISBN 978-92-4-001686-6.", "description": "Lire le résumé exécutif ; repérer stéréotype, préjugé, discrimination et une correction possible dans quatre situations.", "isRequired": true, "estimatedMinutes": 20, "position": 12}
     ],
     "concepts": [
-      {"title": "Adolescence, opportunités et contextes", "slug": "adolescence-opportunites-contextes", "description": "Les changements adolescents ouvrent des possibilités et sensibilités dont les effets dépendent des relations, institutions et inégalités ; ils ne déterminent pas une conduite unique.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["nasem-promise-adolescence-2019", "blakemore-mills-adolescence-2014", "openstax-lifespan-9-3"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Adolescence et contextes", "questionCount": 5}},
-      {"title": "Transitions et pluralité des vies adultes", "slug": "transitions-pluralite-vies-adultes", "description": "Les rôles, relations et capacités adultes se transforment selon des séquences culturellement et matériellement situées ; aucune liste de jalons ne définit la maturité de tous.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["baltes-lifespan-1987", "ncbi-emerging-adulthood-2018", "openstax-lifespan-12-3", "openstax-lifespan-11-4"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Trajectoires adultes", "questionCount": 5}},
-      {"title": "Vieillissement hétérogène et âgisme", "slug": "vieillissement-heterogene-agisme", "description": "Cognition et vie socioémotionnelle présentent gains, stabilités, déclins et adaptations variables ; une moyenne d’âge ne diagnostique personne et les stéréotypes produisent de l’âgisme.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-15-3", "harada-normal-cognitive-aging-2013", "nasem-cognitive-aging-2015", "charles-carstensen-aging-2010", "who-ageism-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Vieillissement sans âgisme", "questionCount": 5}}
+      {"title": "Adolescence, opportunités et contextes", "slug": "adolescence-opportunites-contextes", "description": "Les changements adolescents ouvrent des possibilités et sensibilités dont les effets dépendent des relations, institutions et inégalités ; ils ne déterminent pas une conduite unique.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["nasem-promise-adolescence-2019", "blakemore-mills-adolescence-2014", "openstax-lifespan-9-3"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Adolescence et contextes", "questionCount": 5,
+        "key": "concept-adolescence-opportunites-contextes-assessment-1"
+      }},
+      {"title": "Transitions et pluralité des vies adultes", "slug": "transitions-pluralite-vies-adultes", "description": "Les rôles, relations et capacités adultes se transforment selon des séquences culturellement et matériellement situées ; aucune liste de jalons ne définit la maturité de tous.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["baltes-lifespan-1987", "ncbi-emerging-adulthood-2018", "openstax-lifespan-12-3", "openstax-lifespan-11-4"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Trajectoires adultes", "questionCount": 5,
+        "key": "concept-transitions-pluralite-vies-adultes-assessment-1"
+      }},
+      {"title": "Vieillissement hétérogène et âgisme", "slug": "vieillissement-heterogene-agisme", "description": "Cognition et vie socioémotionnelle présentent gains, stabilités, déclins et adaptations variables ; une moyenne d’âge ne diagnostique personne et les stéréotypes produisent de l’âgisme.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-15-3", "harada-normal-cognitive-aging-2013", "nasem-cognitive-aging-2015", "charles-carstensen-aging-2010", "who-ageism-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Vieillissement sans âgisme", "questionCount": 5,
+        "key": "concept-vieillissement-heterogene-agisme-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Réviser un récit du cerveau adolescent", "description": "Auditer un article fictif affirmant que les adolescents sont irrationnels : séparer changement moyen, tâche, contexte social, opportunité, risque, variation et causalité, puis produire un titre et un résumé corrigés.", "type": "writing", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Cartographier trois trajectoires adultes", "description": "Construire trois chronologies fictives combinant formation, travail, logement, relations et soin de proches ; identifier contraintes, ressources et tournants sans utiliser mariage, parentalité ou départ du foyer comme tests universels de maturité.", "type": "practice", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer un bilan cognitif âgiste", "description": "À partir de scores fictifs de vitesse, mémoire, vocabulaire et activité quotidienne, distinguer moyenne de groupe et personne, demander normes et mesures utiles, identifier les stéréotypes et rédiger une communication non diagnostique de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Réviser un récit du cerveau adolescent", "description": "Auditer un article fictif affirmant que les adolescents sont irrationnels : séparer changement moyen, tâche, contexte social, opportunité, risque, variation et causalité, puis produire un titre et un résumé corrigés.", "type": "writing", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Cartographier trois trajectoires adultes", "description": "Construire trois chronologies fictives combinant formation, travail, logement, relations et soin de proches ; identifier contraintes, ressources et tournants sans utiliser mariage, parentalité ou départ du foyer comme tests universels de maturité.", "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer un bilan cognitif âgiste", "description": "À partir de scores fictifs de vitesse, mémoire, vocabulaire et activité quotidienne, distinguer moyenne de groupe et personne, demander normes et mesures utiles, identifier les stéréotypes et rédiger une communication non diagnostique de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "baltes-lifespan-1987"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nasem-promise-adolescence-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "blakemore-mills-adolescence-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-9-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-11-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-15-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-adolescence-opportunites-contextes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ncbi-emerging-adulthood-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-12-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "harada-normal-cognitive-aging-2013"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-transitions-pluralite-vies-adultes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nasem-cognitive-aging-2015"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "charles-carstensen-aging-2010"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-ageism-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-vieillissement-heterogene-agisme-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-033-BALTES", "type": "theoretical_article", "authors": ["Baltes, P. B."], "organization": "American Psychological Association", "title": "Theoretical Propositions of Life-Span Developmental Psychology", "year": 1987, "edition": null, "publication": "Developmental Psychology, 23(5), 611–626", "doi": "https://doi.org/10.1037/0012-1649.23.5.611", "url": "https://www.imprs-life.mpg.de/25277/022_baltes_1987.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Copie auteur ouverte ; droits APA applicables", "status": "verified", "notes": "Source théorique historique pour multidirectionnalité, plasticité et contextualisme."},
       {"id": "REF-033-NASEM-ADO", "type": "consensus_report", "authors": ["National Academies of Sciences, Engineering, and Medicine"], "organization": "National Academies", "title": "The Promise of Adolescence: Realizing Opportunity for All Youth", "year": 2019, "edition": null, "publication": "National Academies Press", "doi": "https://doi.org/10.17226/25388", "url": "https://www.ncbi.nlm.nih.gov/books/NBK545481/", "accessedAt": "2026-08-04", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Lecture intégrale ouverte via NCBI Bookshelf", "status": "verified", "notes": "Consensus multidisciplinaire présentant l’adolescence comme période d’opportunité et de sensibilité contextuelle."},
@@ -113,6 +238,76 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie du développement de l’adolescence, de l’âge adulte et du vieillissement, avec expertise méthodologique et en âgisme, requise avant validation scientifique.", "L’étape developpement-vie et le module fonctions-relations-vie sont planifiés mais absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n’est autorisée.", "L’adolescence est présentée comme période d’opportunités et de sensibilités contextuelles, jamais comme déficience globale.", "Les transitions adultes ne sont pas ordonnées en calendrier universel et aucune structure familiale n’est traitée comme critère de maturité.", "Vieillissement ordinaire, difficulté fonctionnelle et pathologie sont séparés ; aucune performance isolée ne fonde un diagnostic et tout âgisme est explicitement corrigé.", "Les sept ressources obligatoires sont ouvertes ; les ressources facultatives fermées au texte intégral disposent d’un résumé ouvert ou d’une alternative complète."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de douze ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de douze ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "adolescence-opportunites-contextes",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "baltes-lifespan-1987",
+            "nasem-promise-adolescence-2019",
+            "blakemore-mills-adolescence-2014",
+            "openstax-lifespan-9-3",
+            "openstax-lifespan-11-4",
+            "openstax-lifespan-15-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-adolescence-opportunites-contextes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "transitions-pluralite-vies-adultes",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "ncbi-emerging-adulthood-2018",
+            "openstax-lifespan-12-3",
+            "harada-normal-cognitive-aging-2013"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-transitions-pluralite-vies-adultes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "vieillissement-heterogene-agisme",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "nasem-cognitive-aging-2015",
+            "charles-carstensen-aging-2010",
+            "who-ageism-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-vieillissement-heterogene-agisme-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

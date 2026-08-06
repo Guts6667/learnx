@@ -31,7 +31,8 @@
             "gross-status-2015",
             "openstax-emotion-10-4"
           ]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -42,7 +43,8 @@
             "gross-status-2015",
             "cutuli-reappraisal-suppression-2014"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -53,7 +55,8 @@
             "cutuli-reappraisal-suppression-2014",
             "flexible-regulation-2019"
           ]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -64,7 +67,8 @@
             "flexible-regulation-2019",
             "regulation-systematic-2024"
           ]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -75,7 +79,8 @@
             "flexible-regulation-2019",
             "gross-status-2015"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -86,7 +91,8 @@
             "regulation-systematic-2024",
             "cutuli-reappraisal-suppression-2014"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -166,7 +172,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Processus de régulation",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-processus-buts-temporalite-regulation-assessment-1"
         }
       },
       {
@@ -183,7 +190,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Stratégies de régulation",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-strategies-effets-regulation-assessment-1"
         }
       },
       {
@@ -200,7 +208,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Flexibilité et contexte",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-flexibilite-culture-contexte-regulation-assessment-1"
         }
       }
     ],
@@ -211,7 +220,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Comparer suppression et réévaluation",
@@ -219,7 +230,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Concevoir un répertoire situé",
@@ -227,18 +240,90 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-emotion-10-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gross-status-2015"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cutuli-reappraisal-suppression-2014"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-processus-buts-temporalite-regulation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "flexible-regulation-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "regulation-systematic-2024"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-strategies-effets-regulation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-flexibilite-culture-contexte-regulation-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -948,7 +1033,68 @@
         "author": "LearnX",
         "change": "Création de la leçon et de ses évaluations.",
         "reviewRequired": "technical_editorial_and_affective_science"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "processus-buts-temporalite-regulation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-emotion-10-4",
+            "gross-status-2015",
+            "cutuli-reappraisal-suppression-2014"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-processus-buts-temporalite-regulation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "strategies-effets-regulation",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "flexible-regulation-2019",
+            "regulation-systematic-2024"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-strategies-effets-regulation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "flexibilite-culture-contexte-regulation",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-flexibilite-culture-contexte-regulation-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

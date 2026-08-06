@@ -6,12 +6,24 @@
     "objectives":["Décrire une boucle d'autorégulation reliant standard, suivi, écart, stratégie et retour.","Transformer une intention générale en plan si-alors observable avec solution de repli.","Définir une habitude comme association apprise entre indice contextuel et réponse, sans la confondre avec toute répétition.","Expliquer pourquoi aucun nombre universel de jours ne garantit une habitude et pourquoi une omission ne remet pas nécessairement le processus à zéro.","Évaluer persistance, révision et désengagement selon valeur du but, progrès, coûts, ressources et contraintes, sans moraliser la volonté."],
     "prerequisites":["Distinguer but de résultat et stratégie d'action.","Reconnaître qu'une intention n'est pas une conduite.","Distinguer moyenne d'échantillon et trajectoire individuelle."],"estimatedMinutes":180,"position":3,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"L'autorégulation regroupe les processus par lesquels une personne oriente pensées, émotions et conduites vers un standard ou un but. Une description minimale comprend le but, le suivi de l'état présent, la détection d'un écart, le choix d'une stratégie, l'action et un retour permettant d'ajuster but ou moyen. Des modèles différents insistent sur conflit, valeur, émotion, contrôle cognitif ou traits ; aucun ne réduit l'échec à un défaut moral. Fatigue, possibilités, relations et contraintes institutionnelles font partie de l'analyse.","sourceKeys":["inzlicht-self-regulation-2021","sheeran-webb-gap"]}},
-      {"type":"example","position":2,"content":{"text":"« Je veux étudier davantage » exprime une intention mais ne précise ni occasion ni réponse. Un plan d'implémentation prend la forme « si la situation Y apparaît, alors je ferai X » : « si je ferme mon ordinateur professionnel à 18 h 30, alors j'ouvre le cours pendant vingt minutes ». Ces plans améliorent en moyenne l'atteinte de buts, notamment en rendant l'indice et la réponse accessibles ; ils ne créent ni temps, ni sécurité, ni compétence. Il faut un but réellement endossé, un indice détectable, une action faisable, un suivi et un plan de repli.","sourceKeys":["sheeran-webb-gap","gollwitzer-sheeran-2006"]}},
-      {"type":"rich_text","position":3,"content":{"text":"Une habitude est une association apprise par laquelle un indice récurrent rend une réponse relativement automatique. Répéter souvent une conduite ne suffit donc pas à prouver qu'elle est habituelle : elle peut rester délibérée. Réciproquement, automaticité ne signifie ni absence totale de but ni impossibilité de changement. Les habitudes dépendent d'indices et de contextes ; elles se distinguent des compulsions et aucun auto-questionnaire ne pose un diagnostic clinique.","sourceKeys":["wood-runger-habit","lally-habit-2010"]}},
-      {"type":"callout","position":4,"content":{"text":"Il n'existe pas de durée universelle pour « installer » une habitude. Dans une étude de comportements quotidiens choisis, la croissance de l'automaticité suivait en général une courbe asymptotique, avec une médiane estimée de 66 jours mais une plage de 18 à 254 jours parmi les cas modélisables. Ce résultat d'un échantillon et de conduites spécifiques n'est ni une prescription de 66 jours ni une garantie. Une omission isolée n'a pas produit de coût détectable dans cette étude ; elle ne remet donc pas automatiquement le compteur à zéro.","sourceKeys":["lally-habit-2010"]}},
-      {"type":"rich_text","position":5,"content":{"text":"Persister est utile lorsque le but reste important, faisable et révisable, mais arrêter ou changer de voie peut être rationnel quand les coûts, les informations ou les priorités changent. La méta-analyse sur le grit trouve des liens modestes avec performance et rétention, une structure moins nette qu'annoncé et un fort recouvrement avec la conscienciosité ; la persévérance d'effort explique davantage que la constance des intérêts. Aucun score ne justifie d'ignorer pauvreté, handicap, discrimination, charge de soin ou but devenu nocif.","sourceKeys":["crede-grit-2017","inzlicht-self-regulation-2021"]}},
-      {"type":"objective","position":6,"content":{"text":"La métaphore d'une réserve unique de volonté qui s'épuise n'est pas un fait établi : une réplication préenregistrée menée dans 23 laboratoires a estimé un effet proche de zéro pour le protocole testé, sans régler toutes les variantes du débat. Plutôt que compter uniquement sur une lutte intérieure, on peut réduire l'exposition aux tentations, modifier friction et indices, préparer l'action, chercher du soutien et suivre les résultats. Une étude en vie quotidienne associe davantage l'atteinte des buts à l'expérience de tentations qu'à leur résistance laborieuse ; ce résultat reste observationnel et non une solution clinique.","sourceKeys":["hagger-ego-2016","milyavskaya-self-control-2017","inzlicht-self-regulation-2021"]}}
+      {"type":"definition","position":1,"content":{"text":"L'autorégulation regroupe les processus par lesquels une personne oriente pensées, émotions et conduites vers un standard ou un but. Une description minimale comprend le but, le suivi de l'état présent, la détection d'un écart, le choix d'une stratégie, l'action et un retour permettant d'ajuster but ou moyen. Des modèles différents insistent sur conflit, valeur, émotion, contrôle cognitif ou traits ; aucun ne réduit l'échec à un défaut moral. Fatigue, possibilités, relations et contraintes institutionnelles font partie de l'analyse.","sourceKeys":["inzlicht-self-regulation-2021","sheeran-webb-gap"]},
+        "key": "content-1"
+      },
+      {"type":"example","position":2,"content":{"text":"« Je veux étudier davantage » exprime une intention mais ne précise ni occasion ni réponse. Un plan d'implémentation prend la forme « si la situation Y apparaît, alors je ferai X » : « si je ferme mon ordinateur professionnel à 18 h 30, alors j'ouvre le cours pendant vingt minutes ». Ces plans améliorent en moyenne l'atteinte de buts, notamment en rendant l'indice et la réponse accessibles ; ils ne créent ni temps, ni sécurité, ni compétence. Il faut un but réellement endossé, un indice détectable, une action faisable, un suivi et un plan de repli.","sourceKeys":["sheeran-webb-gap","gollwitzer-sheeran-2006"]},
+        "key": "content-2"
+      },
+      {"type":"rich_text","position":3,"content":{"text":"Une habitude est une association apprise par laquelle un indice récurrent rend une réponse relativement automatique. Répéter souvent une conduite ne suffit donc pas à prouver qu'elle est habituelle : elle peut rester délibérée. Réciproquement, automaticité ne signifie ni absence totale de but ni impossibilité de changement. Les habitudes dépendent d'indices et de contextes ; elles se distinguent des compulsions et aucun auto-questionnaire ne pose un diagnostic clinique.","sourceKeys":["wood-runger-habit","lally-habit-2010"]},
+        "key": "content-3"
+      },
+      {"type":"callout","position":4,"content":{"text":"Il n'existe pas de durée universelle pour « installer » une habitude. Dans une étude de comportements quotidiens choisis, la croissance de l'automaticité suivait en général une courbe asymptotique, avec une médiane estimée de 66 jours mais une plage de 18 à 254 jours parmi les cas modélisables. Ce résultat d'un échantillon et de conduites spécifiques n'est ni une prescription de 66 jours ni une garantie. Une omission isolée n'a pas produit de coût détectable dans cette étude ; elle ne remet donc pas automatiquement le compteur à zéro.","sourceKeys":["lally-habit-2010"]},
+        "key": "content-4"
+      },
+      {"type":"rich_text","position":5,"content":{"text":"Persister est utile lorsque le but reste important, faisable et révisable, mais arrêter ou changer de voie peut être rationnel quand les coûts, les informations ou les priorités changent. La méta-analyse sur le grit trouve des liens modestes avec performance et rétention, une structure moins nette qu'annoncé et un fort recouvrement avec la conscienciosité ; la persévérance d'effort explique davantage que la constance des intérêts. Aucun score ne justifie d'ignorer pauvreté, handicap, discrimination, charge de soin ou but devenu nocif.","sourceKeys":["crede-grit-2017","inzlicht-self-regulation-2021"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"La métaphore d'une réserve unique de volonté qui s'épuise n'est pas un fait établi : une réplication préenregistrée menée dans 23 laboratoires a estimé un effet proche de zéro pour le protocole testé, sans régler toutes les variantes du débat. Plutôt que compter uniquement sur une lutte intérieure, on peut réduire l'exposition aux tentations, modifier friction et indices, préparer l'action, chercher du soutien et suivre les résultats. Une étude en vie quotidienne associe davantage l'atteinte des buts à l'expérience de tentations qu'à leur résistance laborieuse ; ce résultat reste observationnel et non une solution clinique.","sourceKeys":["hagger-ego-2016","milyavskaya-self-control-2017","inzlicht-self-regulation-2021"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"inzlicht-self-regulation-2021","type":"article","title":"Integrating Models of Self-Regulation","author":"Michael Inzlicht, Kaitlyn M. Werner, Julia L. Briskin et Brent W. Roberts","url":"https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3779756","citation":"Inzlicht, M., Werner, K. M., Briskin, J. L., & Roberts, B. W. (2021). Integrating models of self-regulation. Annual Review of Psychology, 72, 319–345. https://doi.org/10.1146/annurev-psych-061020-105721","description":"Lire le résumé intégratif ; cartographier niveaux d'analyse, conflit, émotion et cognition sans choisir une cause unique.","isRequired":true,"estimatedMinutes":30,"position":1},
@@ -24,18 +36,115 @@
       {"key":"milyavskaya-self-control-2017","type":"article","title":"What's So Great About Self-Control?","author":"Marina Milyavskaya et Michael Inzlicht","url":"https://journals.sagepub.com/doi/10.1177/1948550616679237","citation":"Milyavskaya, M., & Inzlicht, M. (2017). What's so great about self-control? Social Psychological and Personality Science, 8(6), 603–611. https://doi.org/10.1177/1948550616679237","description":"Lire le résumé ; séparer tentations vécues, résistance déclarée, épuisement et atteinte des buts sans causalité automatique.","isRequired":false,"estimatedMinutes":15,"position":8}
     ],
     "concepts":[
-      {"title":"Boucle d'autorégulation et passage à l'action","slug":"boucle-autoregulation-intention-action","description":"Un but devient action par suivi, stratégies et ajustements ; les plans si-alors relient un indice précis à une réponse faisable sans garantir le résultat.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["inzlicht-self-regulation-2021","sheeran-webb-gap","gollwitzer-sheeran-2006"],"assessment":{"type":"quiz","title":"Mini-évaluation — Intention et action","questionCount":5}},
-      {"title":"Habitudes, indices et automaticité","slug":"habitudes-indices-automaticite","description":"Une habitude est une réponse rendue relativement automatique par des indices récurrents ; sa formation varie selon personne, conduite et contexte.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["wood-runger-habit","lally-habit-2010"],"assessment":{"type":"quiz","title":"Mini-évaluation — Habitudes sans recette","questionCount":5}},
-      {"title":"Persistance flexible et contexte","slug":"persistance-flexible-contexte","description":"Persister, réviser ou arrêter sont des décisions à évaluer par valeur, progrès, coûts, ressources et contraintes ; la volonté n'est ni une vertu mesurée ni une réserve établie.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["crede-grit-2017","hagger-ego-2016","milyavskaya-self-control-2017","inzlicht-self-regulation-2021"],"assessment":{"type":"quiz","title":"Mini-évaluation — Persister, pivoter ou arrêter","questionCount":5}}
+      {"title":"Boucle d'autorégulation et passage à l'action","slug":"boucle-autoregulation-intention-action","description":"Un but devient action par suivi, stratégies et ajustements ; les plans si-alors relient un indice précis à une réponse faisable sans garantir le résultat.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["inzlicht-self-regulation-2021","sheeran-webb-gap","gollwitzer-sheeran-2006"],"assessment":{"type":"quiz","title":"Mini-évaluation — Intention et action","questionCount":5,
+        "key": "concept-boucle-autoregulation-intention-action-assessment-1"
+      }},
+      {"title":"Habitudes, indices et automaticité","slug":"habitudes-indices-automaticite","description":"Une habitude est une réponse rendue relativement automatique par des indices récurrents ; sa formation varie selon personne, conduite et contexte.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["wood-runger-habit","lally-habit-2010"],"assessment":{"type":"quiz","title":"Mini-évaluation — Habitudes sans recette","questionCount":5,
+        "key": "concept-habitudes-indices-automaticite-assessment-1"
+      }},
+      {"title":"Persistance flexible et contexte","slug":"persistance-flexible-contexte","description":"Persister, réviser ou arrêter sont des décisions à évaluer par valeur, progrès, coûts, ressources et contraintes ; la volonté n'est ni une vertu mesurée ni une réserve établie.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["crede-grit-2017","hagger-ego-2016","milyavskaya-self-control-2017","inzlicht-self-regulation-2021"],"assessment":{"type":"quiz","title":"Mini-évaluation — Persister, pivoter ou arrêter","questionCount":5,
+        "key": "concept-persistance-flexible-contexte-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Construire un plan si-alors testable","description":"Transformer une intention vague en but endossé, indice observable, réponse faisable, solution de repli et mesure hebdomadaire ; identifier une contrainte que le plan ne peut pas résoudre.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Redessiner un contexte d'habitude","description":"Cartographier pour une conduite fictive indices, réponse, conséquences, friction et variabilité ; proposer une modification de contexte et un protocole de suivi sans promettre de délai fixe.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Décider de persister, pivoter ou arrêter","description":"Analyser un projet fictif en échec avec valeur, progrès, coûts, ressources, santé et contraintes structurelles ; comparer trois options, exclure le blâme moral et rédiger une décision révisable de 600 à 800 mots.","type":"project","isRequired":true,"weight":2,"position":3}
+      {"title":"Construire un plan si-alors testable","description":"Transformer une intention vague en but endossé, indice observable, réponse faisable, solution de repli et mesure hebdomadaire ; identifier une contrainte que le plan ne peut pas résoudre.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Redessiner un contexte d'habitude","description":"Cartographier pour une conduite fictive indices, réponse, conséquences, friction et variabilité ; proposer une modification de contexte et un protocole de suivi sans promettre de délai fixe.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Décider de persister, pivoter ou arrêter","description":"Analyser un projet fictif en échec avec valeur, progrès, coûts, ressources, santé et contraintes structurelles ; comparer trois options, exclure le blâme moral et rédiger une décision révisable de 600 à 800 mots.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "inzlicht-self-regulation-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "sheeran-webb-gap"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gollwitzer-sheeran-2006"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-boucle-autoregulation-intention-action-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wood-runger-habit"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "lally-habit-2010"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-habitudes-indices-automaticite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "crede-grit-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "hagger-ego-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "milyavskaya-self-control-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-persistance-flexible-contexte-assessment-1"
+      }
     ]
   },
   "editorial":{
-    "version":"1.0.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+    "version":"1.1.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-036-INZLICHT","type":"review_article","authors":["Inzlicht, M.","Werner, K. M.","Briskin, J. L.","Roberts, B. W."],"organization":"Annual Reviews","title":"Integrating Models of Self-Regulation","year":2021,"edition":null,"publication":"Annual Review of Psychology, 72, 319–345","doi":"https://doi.org/10.1146/annurev-psych-061020-105721","url":"https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3779756","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Manuscrit accessible via SSRN ; droits Annual Reviews applicables","status":"verified","notes":"Revue intégrative de modèles concurrents, sans modèle unique consacré."},
       {"id":"REF-036-SHEERAN","type":"review_article","authors":["Sheeran, P.","Webb, T. L."],"organization":"Wiley","title":"The Intention–Behavior Gap","year":2016,"edition":null,"publication":"Social and Personality Psychology Compass, 10(9), 503–518","doi":"https://doi.org/10.1111/spc3.12265","url":"https://eprints.whiterose.ac.uk/id/eprint/107519/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Manuscrit accepté ouvert en dépôt universitaire","status":"verified","notes":"Synthèse du décalage intention-conduite et de ses phases."},
@@ -88,6 +197,72 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en autorégulation, habitudes et méthodes de réplication requise avant validation scientifique.","L'étape motivation-emotion-stress et le module motivation-action sont planifiés mais absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n'est autorisée.","Aucun délai universel de formation d'habitude n'est enseigné ; 66 jours est correctement décrit comme médiane estimée dans une étude limitée.","La volonté n'est jamais moralisée ; contraintes matérielles, sociales et institutionnelles font partie de l'explication.","L'épuisement de l'ego est présenté comme débat empirique avec résultat borné au protocole répliqué, non comme phénomène inexistant ou loi établie.","Les cinq ressources obligatoires sont ouvertes ; les trois ressources facultatives fermées disposent d'un résumé ouvert et d'une alternative." ]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la troisième leçon planifiée du module Motivation et action, avec six blocs sourcés, huit ressources, trois tâches et quinze questions corrigées, sans modification du seed.","reviewRequired":"technical_editorial_and_subject"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la troisième leçon planifiée du module Motivation et action, avec six blocs sourcés, huit ressources, trois tâches et quinze questions corrigées, sans modification du seed.","reviewRequired":"technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "boucle-autoregulation-intention-action",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "inzlicht-self-regulation-2021",
+            "sheeran-webb-gap",
+            "gollwitzer-sheeran-2006"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-boucle-autoregulation-intention-action-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "habitudes-indices-automaticite",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "wood-runger-habit",
+            "lally-habit-2010"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-habitudes-indices-automaticite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "persistance-flexible-contexte",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "crede-grit-2017",
+            "hagger-ego-2016",
+            "milyavskaya-self-control-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-persistance-flexible-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

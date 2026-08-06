@@ -27,7 +27,8 @@
         "content": {
           "text": "Un thème comme « stress au travail » n’est pas encore une question. Une question délimitée nomme ce que l’on veut comprendre, auprès de qui, dans quel contexte et pour quel usage. Elle distingue la connaissance recherchée de la décision qui pourrait ensuite être prise : établir une fréquence, décrire une expérience, examiner une association ou estimer un effet ne mobilise ni les mêmes données ni les mêmes méthodes.",
           "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -35,7 +36,8 @@
         "content": {
           "text": "Commencer par écrire une phrase libre : population ou groupe concerné, phénomène ou intervention, résultat ou expérience d’intérêt, contexte et horizon. Ajouter ensuite la nature de la relation recherchée — description, association, expérience vécue ou effet causal — et la décision que le dossier doit éclairer. Cette première version rend visibles les termes ambigus et les informations manquantes.",
           "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -43,7 +45,8 @@
         "content": {
           "text": "PICO organise population, intervention, comparaison et résultat ; PECO remplace l’intervention par une exposition ; SPIDER aide à penser échantillon, phénomène d’intérêt, design, évaluation et type de recherche dans certains projets qualitatifs ou mixtes. Ce sont des aides de cadrage, pas des formulaires à remplir intégralement. Un élément peut rester ouvert s’il n’est pas pertinent, et un autre cadre — par exemple PCC pour une revue exploratoire — peut mieux convenir au type de synthèse.",
           "sourceKeys": ["cochrane-handbook-ch2-2024", "ohat-handbook-2019", "cooke-spider-2012", "jbi-manual-question-2024"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -51,7 +54,8 @@
         "content": {
           "text": "La précision utile n’est pas l’accumulation de critères. Une question trop large rend la recherche et la comparaison incohérentes ; une question trop étroite peut exclure des populations, mesures ou contextes pertinents et produire une illusion de certitude. Les termes normatifs comme « efficace », « normal » ou « résilient » doivent être définis par des observations ou indicateurs et non supposés partagés.",
           "sourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "example",
@@ -59,7 +63,8 @@
         "content": {
           "text": "Tester la question par une recherche exploratoire courte : les concepts sont-ils utilisés de la même manière ? Les résultats possibles répondraient-ils réellement à la question ? Les populations et contextes sont-ils comparables ? Noter toute reformulation avec sa raison. Affiner une question après exploration est légitime si le changement reste transparent et ne sert pas à sélectionner rétrospectivement une réponse favorable.",
           "sourceKeys": ["cochrane-handbook-ch2-2024"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "rich_text",
@@ -67,7 +72,8 @@
         "content": {
           "text": "La version prête à enquêter tient en une phrase, accompagnée d’un périmètre : inclusions, exclusions, concepts à opérationnaliser, type de preuve attendu, contraintes éthiques et limites d’usage. Elle indique aussi ce que le dossier ne permettra pas de conclure. Une bonne question est suffisamment stable pour guider la recherche, mais explicitement révisable si la littérature révèle un problème de faisabilité ou de pertinence.",
           "sourceKeys": ["cochrane-handbook-ch2-2024", "ohat-handbook-2019", "jbi-manual-question-2024"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -129,7 +135,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question et périmètre", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Question et périmètre", "questionCount": 5,
+          "key": "concept-question-visee-perimetre-assessment-1"
+        }
       },
       {
         "title": "Cadres de formulation flexibles",
@@ -139,7 +147,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["ohat-handbook-2019", "cooke-spider-2012", "jbi-manual-question-2024"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un cadre", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un cadre", "questionCount": 5,
+          "key": "concept-cadres-formulation-flexibles-assessment-1"
+        }
       },
       {
         "title": "Délimitation révisable",
@@ -149,7 +159,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["cochrane-handbook-ch2-2024", "jbi-manual-question-2024"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Tester la délimitation", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Tester la délimitation", "questionCount": 5,
+          "key": "concept-delimitation-revisable-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -159,7 +171,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Choisir sans forcer un cadre",
@@ -167,7 +181,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Rédiger la question du projet",
@@ -175,18 +191,86 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cochrane-handbook-ch2-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "jbi-manual-question-2024"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-question-visee-perimetre-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ohat-handbook-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cooke-spider-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cadres-formulation-flexibles-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-delimitation-revisable-assessment-1"
       }
     ]
   },
   "editorial": {
     "status": "editorial_review",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "language": "fr",
     "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -317,7 +401,14 @@
       }
     ],
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_research_question_and_evidence_synthesis_review"}
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_research_question_and_evidence_synthesis_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
     ],
     "review": {
       "editorialReviewer": null,
@@ -333,6 +424,59 @@
         "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.",
         "PICO, PECO, SPIDER et les autres cadres restent des outils flexibles, jamais des quotas à remplir.",
         "La question et ses révisions doivent conserver une trace explicite et ne pas être ajustées au résultat souhaité."
+      ]
+    },
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "question-visee-perimetre",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "cochrane-handbook-ch2-2024",
+            "jbi-manual-question-2024"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-question-visee-perimetre-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "cadres-formulation-flexibles",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "ohat-handbook-2019",
+            "cooke-spider-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-cadres-formulation-flexibles-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "delimitation-revisable",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-delimitation-revisable-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
       ]
     }
   }

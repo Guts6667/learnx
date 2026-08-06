@@ -7,12 +7,24 @@
     "prerequisites": ["Distinguer besoin, incitation et but.", "Reconnaître qu'une même action peut avoir plusieurs raisons simultanées.", "Distinguer association, mécanisme proposé et conclusion causale."],
     "estimatedMinutes": 180, "position": 2,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "Une activité est dite intrinsèquement motivée lorsqu'elle est réalisée pour l'intérêt, le plaisir ou le défi qu'elle procure ; elle est extrinsèquement motivée lorsqu'elle vise une conséquence séparable. Extrinsèque ne signifie pourtant ni artificiel ni mauvais : travailler pour un salaire, étudier une règle utile ou accomplir une tâche peu plaisante peuvent être raisonnables. Les raisons se combinent et changent avec la situation ; ces catégories décrivent une régulation à un moment donné, pas l'identité d'une personne.", "sourceKeys": ["ryan-deci-2000", "ryan-deci-2020", "openstax-motivation"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "La théorie de l'autodétermination distingue plusieurs régulations extrinsèques. La régulation externe dépend d'une récompense, sanction ou demande ; l'introjection agit sous pression interne, par exemple éviter la honte ou protéger son estime ; l'identification reconnaît personnellement la valeur de l'activité ; l'intégration rend cette valeur cohérente avec d'autres engagements. Identification et intégration restent extrinsèques car l'activité sert un résultat, mais elles sont plus autonomes. L'amotivation désigne l'absence d'intention, parfois liée à une faible valeur ou à un sentiment d'inefficacité.", "sourceKeys": ["ryan-deci-2000", "ryan-deci-2020"]}},
-      {"type": "callout", "position": 3, "content": {"text": "Dans ce modèle, autonomie signifie agir avec un sentiment de volition ou d'endossement ; elle ne signifie ni agir seul, ni recevoir un choix illimité, ni refuser toute règle. La compétence renvoie au sentiment de pouvoir agir efficacement et progresser, non à une valeur personnelle globale. L'appartenance renvoie au lien, au respect et au fait de compter pour autrui. Une structure claire, un défi ajusté, un retour informatif et des relations respectueuses peuvent soutenir ces expériences ensemble.", "sourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020", "chirkov-autonomy-culture"]}},
-      {"type": "example", "position": 4, "content": {"text": "Deux personnes suivent le même cours demandé par leur employeur. L'une le fait uniquement pour éviter une sanction ; l'autre n'aime pas tout le contenu mais en reconnaît l'utilité pour mieux servir ses collègues. La conséquence externe est identique, la qualité de régulation diffère. Une obligation culturelle ou relationnelle peut aussi être pleinement endossée : opposer autonomie occidentale et appartenance collective confondrait autonomie avec individualisme. Les formes d'expression et les contraintes varient toutefois, et les échantillons étudiés ne représentent pas toutes les cultures.", "sourceKeys": ["ryan-deci-2000", "chirkov-autonomy-culture", "vansteenkiste-needs-2020"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "Dire que « les récompenses détruisent la motivation » est excessif. Une méta-analyse d'expériences rapporte une baisse de certains indicateurs de motivation intrinsèque surtout pour des récompenses tangibles attendues et contingentes à l'engagement, l'achèvement ou la performance sur des activités initialement intéressantes ; le retour verbal positif peut avoir d'autres effets. Une autre méta-analyse montre que motivation intrinsèque et incitations prédisent conjointement la performance : la première davantage sa qualité, les incitations davantage sa quantité, selon leur contingence. Population, mesure, tâche et durée limitent toute généralisation.", "sourceKeys": ["deci-rewards-1999", "cerasoli-incentives-2014", "openstax-motivation"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Soutenir une motivation de meilleure qualité ne consiste pas à supprimer objectifs, rémunération ou cadre. On peut expliciter une raison honnête, offrir des choix pertinents, écouter les résistances, calibrer le défi, fournir des critères et un retour utilisable, et protéger l'appartenance. Il faut aussi examiner les contraintes matérielles et institutionnelles : un discours sur l'autonomie ne compense pas une charge impossible ou une sanction cachée. Ces principes guident une conception à tester, non une technique de manipulation ni une solution clinique.", "sourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020"]}}
+      {"type": "definition", "position": 1, "content": {"text": "Une activité est dite intrinsèquement motivée lorsqu'elle est réalisée pour l'intérêt, le plaisir ou le défi qu'elle procure ; elle est extrinsèquement motivée lorsqu'elle vise une conséquence séparable. Extrinsèque ne signifie pourtant ni artificiel ni mauvais : travailler pour un salaire, étudier une règle utile ou accomplir une tâche peu plaisante peuvent être raisonnables. Les raisons se combinent et changent avec la situation ; ces catégories décrivent une régulation à un moment donné, pas l'identité d'une personne.", "sourceKeys": ["ryan-deci-2000", "ryan-deci-2020", "openstax-motivation"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "La théorie de l'autodétermination distingue plusieurs régulations extrinsèques. La régulation externe dépend d'une récompense, sanction ou demande ; l'introjection agit sous pression interne, par exemple éviter la honte ou protéger son estime ; l'identification reconnaît personnellement la valeur de l'activité ; l'intégration rend cette valeur cohérente avec d'autres engagements. Identification et intégration restent extrinsèques car l'activité sert un résultat, mais elles sont plus autonomes. L'amotivation désigne l'absence d'intention, parfois liée à une faible valeur ou à un sentiment d'inefficacité.", "sourceKeys": ["ryan-deci-2000", "ryan-deci-2020"]},
+        "key": "content-2"
+      },
+      {"type": "callout", "position": 3, "content": {"text": "Dans ce modèle, autonomie signifie agir avec un sentiment de volition ou d'endossement ; elle ne signifie ni agir seul, ni recevoir un choix illimité, ni refuser toute règle. La compétence renvoie au sentiment de pouvoir agir efficacement et progresser, non à une valeur personnelle globale. L'appartenance renvoie au lien, au respect et au fait de compter pour autrui. Une structure claire, un défi ajusté, un retour informatif et des relations respectueuses peuvent soutenir ces expériences ensemble.", "sourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020", "chirkov-autonomy-culture"]},
+        "key": "content-3"
+      },
+      {"type": "example", "position": 4, "content": {"text": "Deux personnes suivent le même cours demandé par leur employeur. L'une le fait uniquement pour éviter une sanction ; l'autre n'aime pas tout le contenu mais en reconnaît l'utilité pour mieux servir ses collègues. La conséquence externe est identique, la qualité de régulation diffère. Une obligation culturelle ou relationnelle peut aussi être pleinement endossée : opposer autonomie occidentale et appartenance collective confondrait autonomie avec individualisme. Les formes d'expression et les contraintes varient toutefois, et les échantillons étudiés ne représentent pas toutes les cultures.", "sourceKeys": ["ryan-deci-2000", "chirkov-autonomy-culture", "vansteenkiste-needs-2020"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "Dire que « les récompenses détruisent la motivation » est excessif. Une méta-analyse d'expériences rapporte une baisse de certains indicateurs de motivation intrinsèque surtout pour des récompenses tangibles attendues et contingentes à l'engagement, l'achèvement ou la performance sur des activités initialement intéressantes ; le retour verbal positif peut avoir d'autres effets. Une autre méta-analyse montre que motivation intrinsèque et incitations prédisent conjointement la performance : la première davantage sa qualité, les incitations davantage sa quantité, selon leur contingence. Population, mesure, tâche et durée limitent toute généralisation.", "sourceKeys": ["deci-rewards-1999", "cerasoli-incentives-2014", "openstax-motivation"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Soutenir une motivation de meilleure qualité ne consiste pas à supprimer objectifs, rémunération ou cadre. On peut expliciter une raison honnête, offrir des choix pertinents, écouter les résistances, calibrer le défi, fournir des critères et un retour utilisable, et protéger l'appartenance. Il faut aussi examiner les contraintes matérielles et institutionnelles : un discours sur l'autonomie ne compense pas une charge impossible ou une sanction cachée. Ces principes guident une conception à tester, non une technique de manipulation ni une solution clinique.", "sourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "ryan-deci-2000", "type": "article", "title": "Intrinsic and Extrinsic Motivations: Classic Definitions and New Directions", "author": "Richard M. Ryan et Edward L. Deci", "url": "https://selfdeterminationtheory.org/wp-content/uploads/2014/04/2000_RyanDeci_IntExtDefs.pdf", "citation": "Ryan, R. M., & Deci, E. L. (2000). Intrinsic and extrinsic motivations: Classic definitions and new directions. Contemporary Educational Psychology, 25(1), 54–67. https://doi.org/10.1006/ceps.1999.1020", "description": "Lire les définitions et le continuum de régulation ; classer des raisons plutôt que des personnes.", "isRequired": true, "estimatedMinutes": 25, "position": 1},
@@ -24,18 +36,111 @@
       {"key": "openstax-motivation", "type": "book_chapter", "title": "Psychology 2e — 10.1 Motivation", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "url": "https://openstax.org/books/psychology-2e/pages/10-1-motivation", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 10.1: Motivation. OpenStax, Rice University.", "description": "Relire les exemples introductifs et les corriger avec le continuum de régulation et les modérateurs.", "isRequired": false, "estimatedMinutes": 15, "position": 7}
     ],
     "concepts": [
-      {"title": "Raisons intrinsèques et régulations extrinsèques", "slug": "motivation-intrinseque-extrinseque-regulations", "description": "L'intérêt inhérent se distingue des conséquences séparables ; les régulations extrinsèques varient de la contrainte externe à la valeur intégrée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ryan-deci-2000", "ryan-deci-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité de régulation", "questionCount": 5}},
-      {"title": "Autonomie, compétence et appartenance", "slug": "autonomie-competence-appartenance", "description": "Ces besoins désignent volition, efficacité et lien ; ils peuvent être soutenus ensemble par choix pertinent, structure, retour et respect.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020", "chirkov-autonomy-culture"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Besoins psychologiques", "questionCount": 5}},
-      {"title": "Récompenses et qualité de motivation", "slug": "recompenses-qualite-motivation-contexte", "description": "L'effet d'une récompense dépend de son anticipation, sa matérialité, sa contingence, son sens et de la tâche ; performance et motivation ne sont pas le même résultat.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["deci-rewards-1999", "cerasoli-incentives-2014", "openstax-motivation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Récompenses sans slogan", "questionCount": 5}}
+      {"title": "Raisons intrinsèques et régulations extrinsèques", "slug": "motivation-intrinseque-extrinseque-regulations", "description": "L'intérêt inhérent se distingue des conséquences séparables ; les régulations extrinsèques varient de la contrainte externe à la valeur intégrée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ryan-deci-2000", "ryan-deci-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité de régulation", "questionCount": 5,
+        "key": "concept-motivation-intrinseque-extrinseque-regulations-assessment-1"
+      }},
+      {"title": "Autonomie, compétence et appartenance", "slug": "autonomie-competence-appartenance", "description": "Ces besoins désignent volition, efficacité et lien ; ils peuvent être soutenus ensemble par choix pertinent, structure, retour et respect.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["ryan-deci-2020", "vansteenkiste-needs-2020", "chirkov-autonomy-culture"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Besoins psychologiques", "questionCount": 5,
+        "key": "concept-autonomie-competence-appartenance-assessment-1"
+      }},
+      {"title": "Récompenses et qualité de motivation", "slug": "recompenses-qualite-motivation-contexte", "description": "L'effet d'une récompense dépend de son anticipation, sa matérialité, sa contingence, son sens et de la tâche ; performance et motivation ne sont pas le même résultat.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["deci-rewards-1999", "cerasoli-incentives-2014", "openstax-motivation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Récompenses sans slogan", "questionCount": 5,
+        "key": "concept-recompenses-qualite-motivation-contexte-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Classer des raisons, pas des personnes", "description": "Pour huit vignettes, identifier intérêt, régulation externe, introjection, identification, intégration ou amotivation ; justifier chaque réponse et signaler les informations manquantes ou les raisons mixtes.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Réécrire un dispositif contrôlant", "description": "Transformer un programme de formation fondé sur menace et classement en dispositif qui conserve les exigences tout en ajoutant raison, choix pertinent, structure, retour et appartenance ; préciser les contraintes qui restent.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer une affirmation sur les récompenses", "description": "Évaluer l'affirmation « payer détruit la motivation » avec population, activité initialement intéressante, type et contingence de récompense, mesure, horizon et résultat qualité-quantité ; rédiger une conclusion conditionnelle de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Classer des raisons, pas des personnes", "description": "Pour huit vignettes, identifier intérêt, régulation externe, introjection, identification, intégration ou amotivation ; justifier chaque réponse et signaler les informations manquantes ou les raisons mixtes.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Réécrire un dispositif contrôlant", "description": "Transformer un programme de formation fondé sur menace et classement en dispositif qui conserve les exigences tout en ajoutant raison, choix pertinent, structure, retour et appartenance ; préciser les contraintes qui restent.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une affirmation sur les récompenses", "description": "Évaluer l'affirmation « payer détruit la motivation » avec population, activité initialement intéressante, type et contingence de récompense, mesure, horizon et résultat qualité-quantité ; rédiger une conclusion conditionnelle de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ryan-deci-2000"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ryan-deci-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-motivation"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-motivation-intrinseque-extrinseque-regulations-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "vansteenkiste-needs-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "chirkov-autonomy-culture"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-autonomie-competence-appartenance-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "deci-rewards-1999"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cerasoli-incentives-2014"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-recompenses-qualite-motivation-contexte-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id":"REF-035-RD2000","type":"review_article","authors":["Ryan, R. M.","Deci, E. L."],"organization":"Elsevier","title":"Intrinsic and Extrinsic Motivations: Classic Definitions and New Directions","year":2000,"edition":null,"publication":"Contemporary Educational Psychology, 25(1), 54–67","doi":"https://doi.org/10.1006/ceps.1999.1020","url":"https://selfdeterminationtheory.org/wp-content/uploads/2014/04/2000_RyanDeci_IntExtDefs.pdf","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Copie auteur ouverte ; droits Elsevier applicables","status":"verified","notes":"Revue définissant les régulations extrinsèques et l'internalisation."},
       {"id":"REF-035-RD2020","type":"review_article","authors":["Ryan, R. M.","Deci, E. L."],"organization":"Elsevier","title":"Intrinsic and Extrinsic Motivation from a Self-Determination Theory Perspective","year":2020,"edition":null,"publication":"Contemporary Educational Psychology, 61, 101860","doi":"https://doi.org/10.1016/j.cedpsych.2020.101860","url":"https://msofc.org/wp-content/uploads/2022/08/2020-Intrinsic-and-Extrinsic-Motivation-from-a-Self-Determination-Theory-Perspective.pdf","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Copie ouverte ; droits Elsevier applicables","status":"verified","notes":"Synthèse récente centrée sur l'éducation ; théorie et auteurs ne constituent pas un consensus universel."},
@@ -86,6 +191,71 @@
       ]}
     ],
     "review": {"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie de la motivation, méthodes expérimentales et diversité culturelle requise avant validation scientifique.","L'étape motivation-emotion-stress et le module motivation-action sont planifiés mais absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n'est autorisée.","La théorie de l'autodétermination est présentée comme un cadre de recherche situé, non comme une loi universelle ou un diagnostic.","Autonomie est distincte d'indépendance et d'absence de structure ; les formes relationnelles et collectives sont explicitement incluses.","Les récompenses sont traitées par modérateurs, mesures et résultats, jamais par le slogan qu'elles seraient toujours bonnes ou mauvaises.","Les cinq ressources obligatoires et les deux ressources facultatives sont accessibles ouvertement." ]},
-    "changeLog": [{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la deuxième leçon planifiée du module Motivation et action, avec six blocs sourcés, sept ressources, trois tâches et quinze questions corrigées, sans modification du seed.","reviewRequired":"technical_editorial_and_subject"}]
+    "changeLog": [{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la deuxième leçon planifiée du module Motivation et action, avec six blocs sourcés, sept ressources, trois tâches et quinze questions corrigées, sans modification du seed.","reviewRequired":"technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "motivation-intrinseque-extrinseque-regulations",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "ryan-deci-2000",
+            "ryan-deci-2020",
+            "openstax-motivation"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-motivation-intrinseque-extrinseque-regulations-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "autonomie-competence-appartenance",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "vansteenkiste-needs-2020",
+            "chirkov-autonomy-culture"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-autonomie-competence-appartenance-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "recompenses-qualite-motivation-contexte",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "deci-rewards-1999",
+            "cerasoli-incentives-2014"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-recompenses-qualite-motivation-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

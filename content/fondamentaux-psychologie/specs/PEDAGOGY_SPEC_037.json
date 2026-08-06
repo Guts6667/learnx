@@ -31,7 +31,8 @@
             "openstax-emotion-10-4",
             "scherer-component-process-2009"
           ]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -42,7 +43,8 @@
             "openstax-emotion-10-4",
             "scherer-component-process-2009"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -53,7 +55,8 @@
             "moors-appraisal-2013",
             "scherer-component-process-2009"
           ]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -65,7 +68,8 @@
             "cowen-keltner-2017",
             "lindquist-brain-emotion-2012"
           ]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -75,7 +79,8 @@
           "sourceKeys": [
             "barrett-expressions-2019"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -86,7 +91,8 @@
             "lindquist-brain-emotion-2012",
             "scherer-component-process-2009"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -178,7 +184,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Composantes émotionnelles",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-composantes-mesures-emotionnelles-assessment-1"
         }
       },
       {
@@ -196,7 +203,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Théories de l’émotion",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-modeles-predictions-emotion-assessment-1"
         }
       },
       {
@@ -213,7 +221,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Expression et culture",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-expression-culture-inference-emotion-assessment-1"
         }
       }
     ],
@@ -224,7 +233,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Comparer deux modèles",
@@ -232,7 +243,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer un détecteur d’émotions",
@@ -240,18 +253,94 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-emotion-10-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "scherer-component-process-2009"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-composantes-mesures-emotionnelles-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "moors-appraisal-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "lindquist-brain-emotion-2012"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cowen-keltner-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-modeles-predictions-emotion-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "barrett-expressions-2019"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-expression-culture-inference-emotion-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -1007,7 +1096,70 @@
         "author": "LearnX",
         "change": "Création de la leçon, de ses sources, activités et banques d’évaluation.",
         "reviewRequired": "technical_editorial_and_affective_science"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "composantes-mesures-emotionnelles",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-emotion-10-4",
+            "scherer-component-process-2009"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-composantes-mesures-emotionnelles-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "modeles-predictions-emotion",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "moors-appraisal-2013",
+            "lindquist-brain-emotion-2012",
+            "cowen-keltner-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-modeles-predictions-emotion-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "expression-culture-inference-emotion",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "barrett-expressions-2019"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-expression-culture-inference-emotion-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

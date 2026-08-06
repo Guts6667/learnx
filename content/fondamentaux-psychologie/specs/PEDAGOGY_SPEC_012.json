@@ -27,7 +27,8 @@
         "content": {
           "text": "Un article de recherche est à la fois un compte rendu et un argument. Son titre et son abstract permettent une première orientation, mais ils condensent nécessairement l'étude. Dans un article quantitatif courant, l'introduction délimite le problème et les hypothèses, la méthode décrit l'échantillon, les mesures, le plan et la procédure, les résultats rapportent les analyses, puis la discussion interprète ces résultats et en examine les limites. Cette organisation, souvent résumée par IMRaD, varie selon la méthode, la revue et le type d'article : il faut reconnaître la fonction d'une section plutôt que mémoriser un ordre rigide.",
           "sourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -35,7 +36,8 @@
         "content": {
           "text": "La méthode répond à la question « comment cette affirmation a-t-elle été mise à l'épreuve ? ». Pour une étude quantitative, le lecteur recherche au minimum la population et le recrutement, la taille de l'échantillon, les critères d'inclusion, les variables et instruments, les conditions comparées, la procédure, les exclusions et le plan d'analyse. Une description transparente permet d'évaluer la validité de l'étude et facilite une réplication ; elle ne garantit pas, à elle seule, que les choix étaient appropriés.",
           "sourceKeys": ["apa-jars-quant-2018"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -43,7 +45,8 @@
         "content": {
           "text": "Un article annonce dans son abstract qu'une courte pause « améliore la mémoire ». La méthode montre que 48 étudiants volontaires ont été répartis entre une pause de cinq minutes et une tâche distractive ; la mémoire est mesurée par le nombre de mots rappelés immédiatement. Ces précisions limitent déjà la portée : l'étude porte sur ce protocole, cette mesure immédiate et cet échantillon, non sur toute forme de mémoire ni sur toute population.",
           "sourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -51,7 +54,8 @@
         "content": {
           "text": "La section Résultats expose ce qui a été observé et les analyses réalisées ; la Discussion propose ce que ces observations signifient au regard de la question et des travaux antérieurs. Une phrase comme « le groupe pause rappelle en moyenne davantage de mots » décrit un résultat. « La pause restaure les ressources attentionnelles » est une interprétation qui exige un lien argumenté et reste compatible avec des explications alternatives. Les tableaux et figures permettent de contrôler les ordres de grandeur, la variabilité et parfois des résultats que le résumé verbal simplifie.",
           "sourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
           "text": "Avant de retenir une conclusion, reconstruire une chaîne courte : question → participants ou données → comparaison → mesure → résultat → interprétation → limite. Consulter aussi les références pour situer l'étude et les annexes ou suppléments lorsqu'ils contiennent le matériel, des analyses ou des informations de transparence. Un article bien structuré peut néanmoins décrire une étude faible ; la qualité du compte rendu et la qualité de la preuve sont liées mais distinctes.",
           "sourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -109,7 +114,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-biology-2e-1-1-imrad", "apa-jars-quant-2018"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Architecture d’un article", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Architecture d’un article", "questionCount": 5,
+          "key": "concept-architecture-fonctionnelle-article-assessment-1"
+        }
       },
       {
         "title": "Méthode et transparence",
@@ -119,7 +126,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["apa-jars-quant-2018", "openstax-psychology-2e-2-3"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Méthode et transparence", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Méthode et transparence", "questionCount": 5,
+          "key": "concept-methode-transparence-assessment-1"
+        }
       },
       {
         "title": "Résultat, interprétation et portée",
@@ -129,23 +138,95 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-biology-2e-1-1-imrad", "openstax-psychology-2e-2-3"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Résultat et interprétation", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Résultat et interprétation", "questionCount": 5,
+          "key": "concept-resultat-interpretation-portee-assessment-1"
+        }
       }
     ],
     "tasks": [
-      {"title": "Cartographier un article", "description": "Sur un article fourni, produire une carte en sept cases : question, hypothèse, échantillon, procédure, mesure principale, résultat principal et limite principale ; indiquer la section et la page de chaque information.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Auditer une méthode", "description": "Compléter une grille indiquant population, recrutement, taille d'échantillon, variables, instruments, conditions, exclusions et analyse ; marquer explicitement toute information introuvable.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Séparer observation et interprétation", "description": "Classer dix phrases fictives en résultat, interprétation ou limite, puis réécrire deux conclusions trop larges afin qu'elles correspondent au protocole décrit.", "type": "practice", "isRequired": true, "weight": 1, "position": 3}
+      {"title": "Cartographier un article", "description": "Sur un article fourni, produire une carte en sept cases : question, hypothèse, échantillon, procédure, mesure principale, résultat principal et limite principale ; indiquer la section et la page de chaque information.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une méthode", "description": "Compléter une grille indiquant population, recrutement, taille d'échantillon, variables, instruments, conditions, exclusions et analyse ; marquer explicitement toute information introuvable.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": [
+          "openstax-biology-2e-1-1-imrad",
+          "apa-jars-quant-2018"
+        ]
+      },
+      {"title": "Séparer observation et interprétation", "description": "Classer dix phrases fictives en résultat, interprétation ou limite, puis réécrire deux conclusions trop larges afin qu'elles correspondent au protocole décrit.", "type": "practice", "isRequired": true, "weight": 1, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-biology-2e-1-1-imrad"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-jars-quant-2018"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-architecture-fonctionnelle-article-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-3"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-methode-transparence-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-resultat-interpretation-portee-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-012-OPENSTAX-BIOLOGY", "type": "textbook", "authors": ["Clark, M. A.", "Douglas, M.", "Choi, J."], "organization": "OpenStax", "title": "Biology 2e — 1.1 The Science of Biology", "year": 2018, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/biology-2e/pages/1-1-the-science-of-biology", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Manuel ouvert utilisé pour la fonction des sections IMRaD ; la variabilité des formats est explicitement conservée."},
@@ -188,6 +269,65 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine de méthodologie en psychologie requise avant publication.", "Le statut corrected de JARS-Quant impose de contrôler la correction associée lors de la revue de domaine."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "architecture-fonctionnelle-article",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-biology-2e-1-1-imrad",
+            "apa-jars-quant-2018"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-architecture-fonctionnelle-article-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "methode-transparence",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-3"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-methode-transparence-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "resultat-interpretation-portee",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-resultat-interpretation-portee-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

@@ -28,7 +28,8 @@
         "content": {
           "text": "Le système nerveux central (SNC) comprend l'encéphale et la moelle épinière. Le système nerveux périphérique (SNP) comprend les nerfs et ganglions qui relient le SNC aux récepteurs sensoriels, muscles, glandes et organes. Cette distinction est anatomique, pas une séparation entre un centre qui commanderait seul et une périphérie passive : des voies afférentes transportent des informations vers le SNC, des voies efférentes modifient l'activité des effecteurs, et des circuits périphériques participent aussi à la régulation. Un comportement résulte donc de boucles de circulation de l'information plutôt que d'une chaîne uniquement descendante.",
           "sourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -36,7 +37,8 @@
         "content": {
           "text": "Dans les voies efférentes du SNP, la division somatique innerve principalement les muscles squelettiques, tandis que la division autonome régule notamment les muscles lisses, le muscle cardiaque et les glandes. L'étiquette « volontaire » aide à introduire le somatique, mais elle n'est pas absolue : une voie somatique comprend aussi des réflexes et des afférences sensorielles, tandis que « autonome » désigne surtout la régulation des viscères, du cœur et des glandes. Le système autonome comprend des voies sympathiques, parasympathiques et entériques, avec des entrées sensorielles viscérales qui participent aux réflexes.",
           "sourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "callout",
@@ -44,7 +46,8 @@
         "content": {
           "text": "« Sympathique = stress » et « parasympathique = repos » sont des raccourcis, pas deux états globaux qui s'allument l'un après l'autre. Les deux branches possèdent une activité tonique et des variations phasiques. Elles peuvent exercer des effets opposés sur une fonction, agir surtout par une seule branche sur une autre, ou coopérer dans une séquence. Leur organisation et leurs effets diffèrent selon les organes, récepteurs et moments. Une fréquence cardiaque seule ne mesure donc ni un prétendu niveau sympathique général ni l'état complet du système autonome.",
           "sourceKeys": ["statpearls-autonomic-anatomy-2025", "karemaker-autonomic-function-2017"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -52,7 +55,8 @@
         "content": {
           "text": "La communication endocrine repose sur des hormones libérées dans la circulation et reconnues par des récepteurs de cellules cibles. Elle est coordonnée avec le système nerveux, notamment par l'hypothalamus et l'hypophyse. Comparées à une transmission synaptique locale, de nombreuses réponses endocrines commencent plus lentement et durent plus longtemps, mais il ne s'agit pas de deux horloges uniformes : la synthèse, la libération pulsatile, le transport, la demi-vie, le type de récepteur et les cascades intracellulaires modifient le délai et la durée de chaque effet.",
           "sourceKeys": ["openstax-psychology-2e-3-5", "ncbi-principles-endocrinology"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "example",
@@ -60,7 +64,8 @@
         "content": {
           "text": "Dans l'axe hypothalamo-hypophyso-surrénalien, certains stresseurs activent des neurones hypothalamiques qui libèrent la CRH ; celle-ci favorise la libération d'ACTH par l'hypophyse antérieure ; l'ACTH stimule ensuite la production de glucocorticoïdes par le cortex surrénalien. Chez l'humain, le cortisol contribue à mobiliser des ressources et agit aussi sur des récepteurs cérébraux et périphériques. Son augmentation est retardée par rapport à certaines réponses nerveuses rapides, puis des rétroactions contribuent à limiter l'activité de l'axe. Le profil dépend du type, de l'intensité, de la durée et de l'anticipation du stresseur : mesurer le cortisol à un instant ne résume ni tout l'axe ni tout l'état psychologique.",
           "sourceKeys": ["herman-hpa-regulation-2016"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Pour analyser une affirmation du type « cette hormone provoque ce comportement », vérifier au minimum la population et le contexte, le moment du prélèvement, la dynamique plutôt qu'une valeur isolée, les tissus et récepteurs concernés, les autres signaux de la boucle, la direction causale et les explications concurrentes. Une hormone peut moduler la probabilité ou l'intensité d'une réponse sans déterminer à elle seule une conduite. Le comportement et le contexte peuvent en retour modifier l'activité endocrine : l'explication attendue est multiniveau et bidirectionnelle, non « hormone = destin ».",
           "sourceKeys": ["ncbi-principles-endocrinology", "hau-goymann-endocrine-plasticity-2015", "herman-hpa-regulation-2016"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -166,7 +172,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-3-3", "statpearls-autonomic-anatomy-2025"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Organisation SNC-SNP", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Organisation SNC-SNP", "questionCount": 5,
+          "key": "concept-organisation-snc-snp-voies-assessment-1"
+        }
       },
       {
         "title": "Régulation autonome distribuée",
@@ -176,7 +184,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["statpearls-autonomic-anatomy-2025", "karemaker-autonomic-function-2017"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Régulation autonome", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Régulation autonome", "questionCount": 5,
+          "key": "concept-regulation-autonome-distribuee-assessment-1"
+        }
       },
       {
         "title": "Coordination neuroendocrine et rétroaction",
@@ -186,7 +196,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-psychology-2e-3-5", "ncbi-principles-endocrinology", "herman-hpa-regulation-2016", "hau-goymann-endocrine-plasticity-2015"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Coordination neuroendocrine", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Coordination neuroendocrine", "questionCount": 5,
+          "key": "concept-coordination-neuroendocrine-retroaction-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -196,7 +208,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Démonter une balance autonome unique",
@@ -204,7 +218,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Analyser une affirmation hormone-comportement",
@@ -212,18 +228,98 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-3-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "statpearls-autonomic-anatomy-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-organisation-snc-snp-voies-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "karemaker-autonomic-function-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-3-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ncbi-principles-endocrinology"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-regulation-autonome-distribuee-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "herman-hpa-regulation-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "hau-goymann-endocrine-plasticity-2015"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-coordination-neuroendocrine-retroaction-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-023-OPENSTAX-3-3", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 3.3 Parts of the Nervous System", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-3-parts-of-the-nervous-system", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel introductif ouvert pour l'organisation générale ; les limites des oppositions simplifiées sont complétées par des revues spécialisées."},
@@ -305,7 +401,71 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_and_subject"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de ses sources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "organisation-snc-snp-voies",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-3-3",
+            "statpearls-autonomic-anatomy-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-organisation-snc-snp-voies-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "regulation-autonome-distribuee",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "karemaker-autonomic-function-2017",
+            "openstax-psychology-2e-3-5",
+            "ncbi-principles-endocrinology"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-regulation-autonome-distribuee-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "coordination-neuroendocrine-retroaction",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "herman-hpa-regulation-2016",
+            "hau-goymann-endocrine-plasticity-2015"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-coordination-neuroendocrine-retroaction-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

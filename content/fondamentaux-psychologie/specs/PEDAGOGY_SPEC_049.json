@@ -17,12 +17,24 @@
     "estimatedMinutes": 105,
     "position": 1,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "Une identité sociale est la part de la définition de soi liée à des appartenances socialement significatives : métier, génération, territoire, langue, engagement ou autre collectif. Elle ne remplace ni l’identité personnelle ni la singularité. Une même personne possède plusieurs appartenances, dont l’importance ressentie varie selon la comparaison, la situation, les normes et les rapports sociaux. Une catégorie utile pour analyser un contexte n’est donc pas une essence naturelle ou immuable.", "sourceKeys": ["openstax-prejudice", "tajfel-individuals-groups"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "Catégoriser simplifie un environnement social complexe en faisant ressortir ressemblances et différences. Selon le contexte, le « nous » pertinent peut être une équipe, une profession, un quartier ou un ensemble plus large. Cette saillance peut modifier attentes et conduites, mais elle ne permet pas de déduire ce que pense chaque membre. Les frontières, prototypes et significations des groupes sont appris, discutés et transformés : décrire une catégorie ne justifie pas d’attribuer les mêmes propriétés à toutes les personnes qui y sont associées.", "sourceKeys": ["tajfel-individuals-groups", "openstax-prejudice"]}},
-      {"type": "example", "position": 3, "content": {"text": "Dans les expériences dites de groupes minimaux, une classification sans histoire commune ni conflit matériel a parfois suffi pour faire apparaître une allocation plus favorable à l’endogroupe. Ce dispositif montre qu’une catégorisation peut contribuer à un biais dans une tâche précise. Il ne démontre ni une hostilité inévitable envers tout exogroupe, ni un trait stable de chaque participant, ni l’explication complète des conflits réels. Généraliser exige d’examiner réplications, mesure, population et contexte.", "sourceKeys": ["tajfel-minimal-groups"]}},
-      {"type": "callout", "position": 4, "content": {"text": "Favoriser son groupe et dénigrer l’autre ne sont pas synonymes. Un écart entre groupes peut venir d’un avantage accordé à l’endogroupe sans agression directe de l’exogroupe ; inversement, des institutions peuvent produire des écarts sans attachement conscient à un groupe. Pour comprendre une situation réelle, il faut ajouter les statuts, règles, ressources, sanctions, récits historiques et possibilités de contestation. L’identité sociale est un niveau d’explication, pas une cause universelle qui annule les autres.", "sourceKeys": ["tajfel-minimal-groups", "tajfel-individuals-groups"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "Les appartenances d’une personne se recouvrent partiellement. La complexité de l’identité sociale décrit la manière dont elle se représente ces recouvrements : tous ses endogroupes ne réunissent pas exactement les mêmes personnes. Reconnaître cette pluralité peut élargir le « nous » pertinent et empêcher une frontière unique de résumer autrui. Ce modèle reste une proposition théorique soutenue par des travaux empiriques ; il ne constitue pas une échelle de maturité ni une obligation de dévoiler ses appartenances.", "sourceKeys": ["roccas-brewer-complexity"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Une analyse responsable pose successivement : quelle catégorie devient saillante, pour qui, dans quelle situation et par quelles normes ? Quels comportements sont réellement observés ? Quels statuts, pouvoirs, ressources et précédents structurent l’échange ? Quelles identités se croisent ou ouvrent d’autres coalitions ? On formule ensuite des hypothèses concurrentes et des données nécessaires. On évite de diagnostiquer une personne à partir de son groupe, de naturaliser les catégories ou de présenter un résultat expérimental comme une loi hors contexte.", "sourceKeys": ["tajfel-individuals-groups", "roccas-brewer-complexity", "openstax-social-psychology"]}}
+      {"type": "definition", "position": 1, "content": {"text": "Une identité sociale est la part de la définition de soi liée à des appartenances socialement significatives : métier, génération, territoire, langue, engagement ou autre collectif. Elle ne remplace ni l’identité personnelle ni la singularité. Une même personne possède plusieurs appartenances, dont l’importance ressentie varie selon la comparaison, la situation, les normes et les rapports sociaux. Une catégorie utile pour analyser un contexte n’est donc pas une essence naturelle ou immuable.", "sourceKeys": ["openstax-prejudice", "tajfel-individuals-groups"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "Catégoriser simplifie un environnement social complexe en faisant ressortir ressemblances et différences. Selon le contexte, le « nous » pertinent peut être une équipe, une profession, un quartier ou un ensemble plus large. Cette saillance peut modifier attentes et conduites, mais elle ne permet pas de déduire ce que pense chaque membre. Les frontières, prototypes et significations des groupes sont appris, discutés et transformés : décrire une catégorie ne justifie pas d’attribuer les mêmes propriétés à toutes les personnes qui y sont associées.", "sourceKeys": ["tajfel-individuals-groups", "openstax-prejudice"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "Dans les expériences dites de groupes minimaux, une classification sans histoire commune ni conflit matériel a parfois suffi pour faire apparaître une allocation plus favorable à l’endogroupe. Ce dispositif montre qu’une catégorisation peut contribuer à un biais dans une tâche précise. Il ne démontre ni une hostilité inévitable envers tout exogroupe, ni un trait stable de chaque participant, ni l’explication complète des conflits réels. Généraliser exige d’examiner réplications, mesure, population et contexte.", "sourceKeys": ["tajfel-minimal-groups"]},
+        "key": "content-3"
+      },
+      {"type": "callout", "position": 4, "content": {"text": "Favoriser son groupe et dénigrer l’autre ne sont pas synonymes. Un écart entre groupes peut venir d’un avantage accordé à l’endogroupe sans agression directe de l’exogroupe ; inversement, des institutions peuvent produire des écarts sans attachement conscient à un groupe. Pour comprendre une situation réelle, il faut ajouter les statuts, règles, ressources, sanctions, récits historiques et possibilités de contestation. L’identité sociale est un niveau d’explication, pas une cause universelle qui annule les autres.", "sourceKeys": ["tajfel-minimal-groups", "tajfel-individuals-groups"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "Les appartenances d’une personne se recouvrent partiellement. La complexité de l’identité sociale décrit la manière dont elle se représente ces recouvrements : tous ses endogroupes ne réunissent pas exactement les mêmes personnes. Reconnaître cette pluralité peut élargir le « nous » pertinent et empêcher une frontière unique de résumer autrui. Ce modèle reste une proposition théorique soutenue par des travaux empiriques ; il ne constitue pas une échelle de maturité ni une obligation de dévoiler ses appartenances.", "sourceKeys": ["roccas-brewer-complexity"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Une analyse responsable pose successivement : quelle catégorie devient saillante, pour qui, dans quelle situation et par quelles normes ? Quels comportements sont réellement observés ? Quels statuts, pouvoirs, ressources et précédents structurent l’échange ? Quelles identités se croisent ou ouvrent d’autres coalitions ? On formule ensuite des hypothèses concurrentes et des données nécessaires. On évite de diagnostiquer une personne à partir de son groupe, de naturaliser les catégories ou de présenter un résultat expérimental comme une loi hors contexte.", "sourceKeys": ["tajfel-individuals-groups", "roccas-brewer-complexity", "openstax-social-psychology"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-prejudice", "title": "12.5 Prejudice and Discrimination", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/12-5-prejudice-and-discrimination", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 12.5 Prejudice and Discrimination. In Psychology 2e. OpenStax.", "description": "Introduction accessible aux identités sociales, aux appartenances multiples et aux relations entre groupes.", "isRequired": true, "estimatedMinutes": 18, "position": 1},
@@ -32,18 +44,103 @@
       {"key": "openstax-social-psychology", "title": "12.1 What Is Social Psychology?", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/12-1-what-is-social-psychology", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 12.1 What Is Social Psychology? In Psychology 2e. OpenStax.", "description": "Rappel des influences personnelles et situationnelles dans l’explication du comportement social.", "isRequired": false, "estimatedMinutes": 12, "position": 5}
     ],
     "concepts": [
-      {"title": "Identité sociale et catégorisation contextuelle", "slug": "identite-sociale-categorisation-contextuelle", "description": "Les appartenances contribuent à une définition de soi multiple dont la saillance dépend du contexte, sans constituer une essence.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prejudice", "tajfel-individuals-groups"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Identité située", "questionCount": 5}},
-      {"title": "Endogroupe, exogroupe et favoritisme", "slug": "endogroupe-exogroupe-favoritisme", "description": "La catégorisation peut favoriser l’endogroupe dans certaines conditions sans prouver hostilité, fatalité ou trait individuel.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["tajfel-minimal-groups", "tajfel-individuals-groups"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Groupes minimaux", "questionCount": 5}},
-      {"title": "Identités multiples et analyse intergroupe", "slug": "identites-multiples-relations-intergroupes", "description": "Les appartenances se recouvrent et les relations intergroupes articulent normes, pouvoir, ressources, histoire et coalitions possibles.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["roccas-brewer-complexity", "openstax-social-psychology"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Analyse multinéiveau", "questionCount": 5}}
+      {"title": "Identité sociale et catégorisation contextuelle", "slug": "identite-sociale-categorisation-contextuelle", "description": "Les appartenances contribuent à une définition de soi multiple dont la saillance dépend du contexte, sans constituer une essence.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prejudice", "tajfel-individuals-groups"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Identité située", "questionCount": 5,
+        "key": "concept-identite-sociale-categorisation-contextuelle-assessment-1"
+      }},
+      {"title": "Endogroupe, exogroupe et favoritisme", "slug": "endogroupe-exogroupe-favoritisme", "description": "La catégorisation peut favoriser l’endogroupe dans certaines conditions sans prouver hostilité, fatalité ou trait individuel.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["tajfel-minimal-groups", "tajfel-individuals-groups"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Groupes minimaux", "questionCount": 5,
+        "key": "concept-endogroupe-exogroupe-favoritisme-assessment-1"
+      }},
+      {"title": "Identités multiples et analyse intergroupe", "slug": "identites-multiples-relations-intergroupes", "description": "Les appartenances se recouvrent et les relations intergroupes articulent normes, pouvoir, ressources, histoire et coalitions possibles.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["roccas-brewer-complexity", "openstax-social-psychology"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Analyse multinéiveau", "questionCount": 5,
+        "key": "concept-identites-multiples-relations-intergroupes-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Cartographier des identités selon le contexte", "description": "À partir d’un personnage fictif, comparer trois situations et indiquer quelles appartenances pourraient devenir pertinentes, sans lui attribuer une pensée ou un comportement automatique.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Auditer une affirmation sur les groupes minimaux", "description": "Réécrire une affirmation exagérée en séparant résultat observé, conditions expérimentales, interprétation possible et limites de généralisation.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Construire une analyse intergroupe", "description": "Étudier un conflit fictif en documentant catégories saillantes, normes, statuts, ressources, histoire, identités croisées, hypothèses concurrentes et données manquantes.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Cartographier des identités selon le contexte", "description": "À partir d’un personnage fictif, comparer trois situations et indiquer quelles appartenances pourraient devenir pertinentes, sans lui attribuer une pensée ou un comportement automatique.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une affirmation sur les groupes minimaux", "description": "Réécrire une affirmation exagérée en séparant résultat observé, conditions expérimentales, interprétation possible et limites de généralisation.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Construire une analyse intergroupe", "description": "Étudier un conflit fictif en documentant catégories saillantes, normes, statuts, ressources, histoire, identités croisées, hypothèses concurrentes et données manquantes.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-prejudice"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "tajfel-individuals-groups"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-identite-sociale-categorisation-contextuelle-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "tajfel-minimal-groups"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-endogroupe-exogroupe-favoritisme-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "roccas-brewer-complexity"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-social-psychology"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-identites-multiples-relations-intergroupes-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "status": "editorial_review", "version": "1.0.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "status": "editorial_review", "version": "1.1.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-049-OPENSTAX-125", "type": "textbook", "authors": ["Rose M. Spielman", "William J. Jenkins", "Marilyn D. Lovett"], "organization": "OpenStax", "title": "Psychology 2e — 12.5 Prejudice and Discrimination", "year": 2020, "edition": "2e", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/12-5-prejudice-and-discrimination", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Synthèse introductive ; ne remplace pas les articles primaires."},
       {"id": "REF-049-TAJFEL-1971", "type": "primary_study", "authors": ["Henri Tajfel", "Michael G. Billig", "Robert P. Bundy", "Claude Flament"], "organization": null, "title": "Social categorization and intergroup behaviour", "year": 1971, "edition": null, "publication": "European Journal of Social Psychology, 1, 149–178", "doi": "10.1002/ejsp.2420010202", "url": "https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.2420010202", "accessedAt": "2026-08-04", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Copyright Wiley; résumé public", "status": "verified", "notes": "Études fondatrices du paradigme des groupes minimaux."},
@@ -90,6 +187,69 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie sociale et relations intergroupes requise.", "L’étape psychologie-sociale et le module relations-groupes sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "Les catégories sont contextuelles et ne permettent aucun diagnostic ou profilage individuel.", "Les résultats de groupes minimaux ne sont présentés ni comme une fatalité ni comme une explication exhaustive des conflits."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_and_social_psychology"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_and_social_psychology"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "identite-sociale-categorisation-contextuelle",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-prejudice",
+            "tajfel-individuals-groups"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-identite-sociale-categorisation-contextuelle-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "endogroupe-exogroupe-favoritisme",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "tajfel-minimal-groups"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-endogroupe-exogroupe-favoritisme-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "identites-multiples-relations-intergroupes",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "roccas-brewer-complexity",
+            "openstax-social-psychology"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-identites-multiples-relations-intergroupes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

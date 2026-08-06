@@ -28,7 +28,8 @@
         "content": {
           "text": "L'âge chronologique, la cohorte de naissance et le moment de mesure sont trois dimensions liées mais distinctes. Une personne de 20 ans mesurée en 2026 appartient à une autre cohorte qu'une personne de 20 ans mesurée en 1996 ; elles ont aussi rencontré des institutions, technologies et événements différents. Avec une seule comparaison, âge et cohorte sont confondus. Le temps de mesure peut introduire un événement commun à plusieurs âges. Avant d'appeler une différence « développementale », il faut donc demander quelles dimensions varient ensemble et quelles explications historiques ou de sélection restent possibles.",
           "sourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -36,7 +37,8 @@
         "content": {
           "text": "Un plan transversal mesure à peu près au même moment des groupes d'âges différents. Il est rapide, évite la perte de participants sur plusieurs années et décrit des différences d'âge présentes dans l'échantillon. Il ne mesure toutefois pas directement le changement des mêmes personnes. Une différence peut refléter l'âge, la cohorte, le recrutement, la survie sélective ou une mesure qui n'a pas le même sens selon les groupes. Le plan transversal convient à une photographie comparative ; il ne suffit pas pour reconstituer à lui seul une trajectoire individuelle ni attribuer une différence à l'effet causal du vieillissement.",
           "sourceKeys": ["openstax-lifespan-1-5", "salthouse-age-relations-2014", "putnick-invariance-2016"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "Un plan longitudinal réévalue les mêmes personnes. Il permet d'estimer stabilité, changement intra-individuel, ordre temporel et diversité des pentes. Mais le temps écoulé n'est pas randomisé : période historique, maturation, événements et sélection peuvent coïncider. Les répétitions entraînent parfois apprentissage ou familiarité ; les instruments et enquêteurs changent ; les personnes qui restent peuvent différer de celles qui quittent l'étude. Le taux d'attrition seul ne dit pas tout : il faut comparer les profils de suivi, décrire les données manquantes, documenter les raisons et tester la sensibilité des résultats.",
           "sourceKeys": ["openstax-lifespan-1-5", "salthouse-age-relations-2014", "gustavson-attrition-2012"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -52,7 +55,8 @@
         "content": {
           "text": "Un plan séquentiel combine plusieurs cohortes et plusieurs temps : par exemple, recruter des groupes de 10, 20 et 30 ans, puis les suivre avec des vagues qui se chevauchent. Les chevauchements offrent des comparaisons partielles entre personnes du même âge observées à des moments ou dans des cohortes différentes. Ils aident à examiner âge, cohorte et temps, sans les rendre magiquement indépendants. Le coût, la durée, les modèles et les données manquantes augmentent ; les conclusions dépendent encore de la couverture des cohortes, de la comparabilité des mesures et des hypothèses statistiques.",
           "sourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "objective",
@@ -60,7 +64,8 @@
         "content": {
           "text": "Comparer des scores suppose que l'instrument représente suffisamment le même construit selon l'âge, le groupe culturel ou le temps. Si le vocabulaire, les tâches, les informateurs ou la manière de répondre changent, une différence chiffrée peut refléter la mesure plutôt que le développement. L'invariance de mesure examine cette équivalence à plusieurs niveaux ; elle n'est pas une formalité binaire ni toujours parfaite. Pour un public débutant, la règle est : définir le construit, justifier les adaptations, tester la comparabilité, rapporter les écarts et limiter la comparaison au niveau que les données soutiennent.",
           "sourceKeys": ["putnick-invariance-2016", "openstax-lifespan-1-5"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "callout",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Un devis temporel ne transforme pas automatiquement une association en causalité : âge et exposition ne sont généralement pas assignés au hasard. Il faut expliciter alternatives, temporalité, variables communes, analyses de sensibilité et portée de l'échantillon. Avec des mineurs, l'autorisation d'un adulte ne remplace pas l'assentiment adapté à l'enfant ; le refus ou le retrait doivent rester possibles, et le consentement se poursuit pendant l'étude. Risques, charge, incitations, confidentialité, retour des résultats et inclusion équitable doivent être proportionnés au développement, à la culture et au rapport de pouvoir.",
           "sourceKeys": ["srcd-ethics-2021", "openstax-lifespan-1-5"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -154,7 +160,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965", "salthouse-age-relations-2014"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Âge, cohorte et période", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Âge, cohorte et période", "questionCount": 5,
+          "key": "concept-age-cohorte-temps-mesure-assessment-1"
+        }
       },
       {
         "title": "Plans transversal, longitudinal et séquentiel",
@@ -164,7 +172,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-lifespan-1-5", "schaie-general-model-1965", "salthouse-age-relations-2014"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un plan", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Choisir un plan", "questionCount": 5,
+          "key": "concept-plans-transversal-longitudinal-sequentiel-assessment-1"
+        }
       },
       {
         "title": "Attrition, mesure et éthique",
@@ -174,7 +184,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["gustavson-attrition-2012", "putnick-invariance-2016", "srcd-ethics-2021", "openstax-lifespan-1-5"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité et éthique du suivi", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Qualité et éthique du suivi", "questionCount": 5,
+          "key": "concept-attrition-mesure-ethique-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -184,7 +196,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Démêler âge, cohorte et retest",
@@ -192,7 +206,9 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer un suivi avec mineurs",
@@ -200,18 +216,94 @@
         "type": "writing",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-1-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "schaie-general-model-1965"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "salthouse-age-relations-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "putnick-invariance-2016"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-age-cohorte-temps-mesure-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gustavson-attrition-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-plans-transversal-longitudinal-sequentiel-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "srcd-ethics-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-attrition-mesure-ethique-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {"id":"REF-029-OPENSTAX","type":"textbook","authors":["Riser, D.","Spielman, R.","Biek, D."],"organization":"OpenStax","title":"Lifespan Development — 1.5 Lifespan Development as a Science: Research Methods","year":2024,"edition":"1e","publication":"Lifespan Development","doi":null,"url":"https://openstax.org/books/lifespan-development/pages/1-5-lifespan-development-as-a-science-research-methods","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Introduction ouverte aux plans ; les tableaux simplifiés sont encadrés par Schaie, Salthouse et les revues méthodologiques."},
@@ -292,7 +384,70 @@
       ]
     },
     "changeLog": [
-      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de six ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_psychometric_and_ethics"}
-    ]
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon planifiée, de six ressources, de trois tâches observables et de quinze questions corrigées.","reviewRequired":"technical_editorial_scientific_psychometric_and_ethics"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "age-cohorte-temps-mesure",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-lifespan-1-5",
+            "schaie-general-model-1965",
+            "salthouse-age-relations-2014",
+            "putnick-invariance-2016"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-age-cohorte-temps-mesure-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "plans-transversal-longitudinal-sequentiel",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "gustavson-attrition-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-plans-transversal-longitudinal-sequentiel-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        },
+        {
+          "conceptSlug": "attrition-mesure-ethique",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "srcd-ethics-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-attrition-mesure-ethique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

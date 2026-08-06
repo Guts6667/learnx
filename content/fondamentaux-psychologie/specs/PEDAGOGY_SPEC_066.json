@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_066","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"integration-preuves","moduleSlug":"science-cumulative-controverses",
   "lesson":{"title":"Communication publique, désinformation et limites de l’expertise","slug":"communication-publique-desinformation-limites-expertise","summary":"Communiquer une preuve, une incertitude ou une correction en respectant le poids des données, les publics et le domaine réel de l’expertise, sans fausse balance ni recette universelle.","objectives":["Distinguer information erronée, désinformation et désaccord scientifique sans attribuer une intention sans preuve.","Concevoir une correction contextualisée sans supposer un effet boomerang universel.","Délimiter expertise, incertitude, valeurs et conflits d’intérêts dans une communication publique."],"prerequisites":["Savoir distinguer source primaire, synthèse et opinion.","Comprendre preuve cumulative, incertitude et conflit d’intérêts."],"estimatedMinutes":120,"position":3,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Une information erronée est fausse ou trompeuse indépendamment de l’intention de la personne qui la partage ; la désinformation implique une intention de tromper, qui doit être étayée et non supposée. Un désaccord scientifique peut au contraire porter sur méthodes, données ou interprétations selon des normes explicites. Avant de communiquer, il faut définir l’objectif — compréhension, décision, dialogue ou correction —, le public, son contexte informationnel et l’action réaliste attendue. Transmettre davantage de faits sans écouter ces besoins n’est pas une stratégie universelle.","sourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Les corrections améliorent souvent l’exactitude, sans toujours effacer l’influence persistante d’une information ni modifier une attitude. Les effets dépendent notamment du contenu, de la source, du moment, de la répétition et du public. Les expériences de Wood et Porter n’ont pas retrouvé un effet boomerang systématique : dire qu’une correction renforce généralement la croyance fausse est donc injustifié. Une correction utile affirme d’abord le fait, signale précisément l’erreur, explique le raisonnement ou propose une alternative causale, cite ses sources et évalue ses effets plutôt que promettre une réaction garantie.","sourceKeys":["ecker-misinformation-review-2022","wood-porter-backfire-2019"]}},
-      {"type":"definition","position":3,"content":{"text":"L’expertise est relationnelle : une personne est experte sur certaines questions grâce à des compétences et une pratique pertinentes, pas sur tout sujet voisin. Il faut distinguer ce que les données décrivent, ce qu’un spécialiste infère dans son domaine, et les choix de politique ou de valeur qui exigent d’autres expertises et une délibération légitime. Un titre prestigieux ne remplace pas les preuves ; inversement, une limite déclarée n’annule pas la compétence. Lorsque la question déborde un champ, une équipe interdisciplinaire ou une synthèse pluraliste est préférable à une autorité solitaire.","sourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023"]}},
-      {"type":"callout","position":4,"content":{"text":"Communiquer l’incertitude signifie préciser sa source — mesure, échantillonnage, modèle, scénario, transfert ou ignorance — et son incidence sur la conclusion. « Incertain » ne veut pas dire « 50–50 », et une mise à jour n’est pas en soi une contradiction fautive. Déclarer financement, affiliations, rôles et conflits d’intérêts permet d’évaluer des influences possibles ; un conflit n’invalide pas automatiquement un résultat, mais le dissimuler empêche l’examen. L’intégrité exige honnêteté sur les limites, corrections rapides et distinction entre communication scientifique et plaidoyer.","sourceKeys":["nasem-communicating-science-2017","allea-research-integrity-2023","oecd-responsible-science-communication-2023"]}},
-      {"type":"callout","position":5,"content":{"text":"L’équilibre journalistique ne consiste pas à donner le même poids à toutes les affirmations. La fausse balance survient lorsque deux positions sont présentées comme également étayées malgré un poids de preuve très asymétrique. On peut exposer une controverse réelle, les limites d’un consensus et des perspectives sociales diverses tout en indiquant clairement quantité, qualité et convergence des preuves. Des stratégies de poids de preuve ou d’avertissement ont réduit l’influence du déni scientifique dans certaines expériences ; leur efficacité doit être testée auprès d’autres publics et sujets.","sourceKeys":["schmid-weight-of-evidence-2020","nasem-communicating-science-2017"]}},
-      {"type":"example","position":6,"content":{"text":"Une vidéo virale affirme qu’« une étude prouve que les écrans détruisent l’attention ». La réponse responsable identifie l’étude et la population, remplace « prouve » par l’estimation réellement obtenue, distingue association et causalité, donne l’ordre de grandeur et l’incertitude, situe le résultat dans les synthèses disponibles et déclare les liens d’intérêts pertinents. Elle corrige sans répéter inutilement le slogan, n’accuse pas l’auteur de tromperie sans preuve, et précise quelles questions relèvent d’un spécialiste de l’attention, d’un pédiatre, d’un éducateur ou d’un choix familial et public.","sourceKeys":["ecker-misinformation-review-2022","oecd-responsible-science-communication-2023","allea-research-integrity-2023"]}}
+      {"type":"definition","position":1,"content":{"text":"Une information erronée est fausse ou trompeuse indépendamment de l’intention de la personne qui la partage ; la désinformation implique une intention de tromper, qui doit être étayée et non supposée. Un désaccord scientifique peut au contraire porter sur méthodes, données ou interprétations selon des normes explicites. Avant de communiquer, il faut définir l’objectif — compréhension, décision, dialogue ou correction —, le public, son contexte informationnel et l’action réaliste attendue. Transmettre davantage de faits sans écouter ces besoins n’est pas une stratégie universelle.","sourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Les corrections améliorent souvent l’exactitude, sans toujours effacer l’influence persistante d’une information ni modifier une attitude. Les effets dépendent notamment du contenu, de la source, du moment, de la répétition et du public. Les expériences de Wood et Porter n’ont pas retrouvé un effet boomerang systématique : dire qu’une correction renforce généralement la croyance fausse est donc injustifié. Une correction utile affirme d’abord le fait, signale précisément l’erreur, explique le raisonnement ou propose une alternative causale, cite ses sources et évalue ses effets plutôt que promettre une réaction garantie.","sourceKeys":["ecker-misinformation-review-2022","wood-porter-backfire-2019"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"L’expertise est relationnelle : une personne est experte sur certaines questions grâce à des compétences et une pratique pertinentes, pas sur tout sujet voisin. Il faut distinguer ce que les données décrivent, ce qu’un spécialiste infère dans son domaine, et les choix de politique ou de valeur qui exigent d’autres expertises et une délibération légitime. Un titre prestigieux ne remplace pas les preuves ; inversement, une limite déclarée n’annule pas la compétence. Lorsque la question déborde un champ, une équipe interdisciplinaire ou une synthèse pluraliste est préférable à une autorité solitaire.","sourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023"]},
+        "key": "content-3"
+      },
+      {"type":"callout","position":4,"content":{"text":"Communiquer l’incertitude signifie préciser sa source — mesure, échantillonnage, modèle, scénario, transfert ou ignorance — et son incidence sur la conclusion. « Incertain » ne veut pas dire « 50–50 », et une mise à jour n’est pas en soi une contradiction fautive. Déclarer financement, affiliations, rôles et conflits d’intérêts permet d’évaluer des influences possibles ; un conflit n’invalide pas automatiquement un résultat, mais le dissimuler empêche l’examen. L’intégrité exige honnêteté sur les limites, corrections rapides et distinction entre communication scientifique et plaidoyer.","sourceKeys":["nasem-communicating-science-2017","allea-research-integrity-2023","oecd-responsible-science-communication-2023"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"L’équilibre journalistique ne consiste pas à donner le même poids à toutes les affirmations. La fausse balance survient lorsque deux positions sont présentées comme également étayées malgré un poids de preuve très asymétrique. On peut exposer une controverse réelle, les limites d’un consensus et des perspectives sociales diverses tout en indiquant clairement quantité, qualité et convergence des preuves. Des stratégies de poids de preuve ou d’avertissement ont réduit l’influence du déni scientifique dans certaines expériences ; leur efficacité doit être testée auprès d’autres publics et sujets.","sourceKeys":["schmid-weight-of-evidence-2020","nasem-communicating-science-2017"]},
+        "key": "content-5"
+      },
+      {"type":"example","position":6,"content":{"text":"Une vidéo virale affirme qu’« une étude prouve que les écrans détruisent l’attention ». La réponse responsable identifie l’étude et la population, remplace « prouve » par l’estimation réellement obtenue, distingue association et causalité, donne l’ordre de grandeur et l’incertitude, situe le résultat dans les synthèses disponibles et déclare les liens d’intérêts pertinents. Elle corrige sans répéter inutilement le slogan, n’accuse pas l’auteur de tromperie sans preuve, et précise quelles questions relèvent d’un spécialiste de l’attention, d’un pédiatre, d’un éducateur ou d’un choix familial et public.","sourceKeys":["ecker-misinformation-review-2022","oecd-responsible-science-communication-2023","allea-research-integrity-2023"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"nasem-communicating-science-2017","title":"Communicating Science Effectively: A Research Agenda","type":"document","url":"https://www.nationalacademies.org/projects/DBASSE-DBASSE-15-01/publication/23674","author":"National Academies of Sciences, Engineering, and Medicine","citation":"National Academies of Sciences, Engineering, and Medicine. (2017). Communicating science effectively: A research agenda. National Academies Press. https://doi.org/10.17226/23674","description":"Lire résumé et chapitres 2–3 ; relier objectifs, publics, incertitude, croyances et contexte.","isRequired":true,"estimatedMinutes":30,"position":1},
@@ -18,16 +30,106 @@
       {"key":"schmid-weight-of-evidence-2020","title":"Weight-of-Evidence Strategies to Mitigate the Influence of Messages of Science Denialism in Public Discussions","type":"article","url":"https://journalofcognition.org/articles/10.5334/joc.125","author":"Philipp Schmid, Marius Schwarzer et Cornelia Betsch","citation":"Schmid, P., Schwarzer, M., & Betsch, C. (2020). Weight-of-evidence strategies to mitigate the influence of messages of science denialism in public discussions. Journal of Cognition, 3(1), 36. https://doi.org/10.5334/joc.125","description":"Lire expériences sur avertissement et poids de preuve ; relever échantillons, sujets et limites de généralisation.","isRequired":false,"estimatedMinutes":22,"position":6}
     ],
     "concepts":[
-      {"title":"Information erronée et correction","slug":"information-erronee-correction","description":"Une correction peut améliorer l’exactitude sans effet garanti ; intention, contexte et influence persistante doivent être distingués.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["ecker-misinformation-review-2022","wood-porter-backfire-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Corriger sans recette magique","questionCount":5}},
-      {"title":"Expertise, incertitude et intérêts","slug":"expertise-incertitude-interets","description":"Une expertise vaut dans un domaine délimité et se communique avec preuves, incertitudes, rôles, valeurs et intérêts pertinents.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023","allea-research-integrity-2023"],"assessment":{"type":"quiz","title":"Mini-évaluation — Qui peut conclure quoi ?","questionCount":5}},
-      {"title":"Poids de preuve et débat public","slug":"poids-preuve-debat-public","description":"Représenter la diversité des perspectives ne suppose pas d’accorder un poids égal à des preuves inégales.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["schmid-weight-of-evidence-2020","nasem-communicating-science-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Éviter la fausse balance","questionCount":5}}
+      {"title":"Information erronée et correction","slug":"information-erronee-correction","description":"Une correction peut améliorer l’exactitude sans effet garanti ; intention, contexte et influence persistante doivent être distingués.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["ecker-misinformation-review-2022","wood-porter-backfire-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Corriger sans recette magique","questionCount":5,
+        "key": "concept-information-erronee-correction-assessment-1"
+      }},
+      {"title":"Expertise, incertitude et intérêts","slug":"expertise-incertitude-interets","description":"Une expertise vaut dans un domaine délimité et se communique avec preuves, incertitudes, rôles, valeurs et intérêts pertinents.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nasem-communicating-science-2017","oecd-responsible-science-communication-2023","allea-research-integrity-2023"],"assessment":{"type":"quiz","title":"Mini-évaluation — Qui peut conclure quoi ?","questionCount":5,
+        "key": "concept-expertise-incertitude-interets-assessment-1"
+      }},
+      {"title":"Poids de preuve et débat public","slug":"poids-preuve-debat-public","description":"Représenter la diversité des perspectives ne suppose pas d’accorder un poids égal à des preuves inégales.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["schmid-weight-of-evidence-2020","nasem-communicating-science-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Éviter la fausse balance","questionCount":5,
+        "key": "concept-poids-preuve-debat-public-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Diagnostiquer une affirmation virale","description":"Séparer fait vérifiable, interprétation, incertitude et intention inconnue dans cinq messages fictifs, puis choisir lesquels corriger et pourquoi.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Écrire une correction graduée","description":"Rédiger un format court puis détaillé qui affirme le fait, localise l’erreur, explique l’alternative, cite les sources et annonce les limites sans promettre l’adhésion.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Préparer un briefing public responsable","description":"Pour une controverse fictive, cartographier expertise, poids des preuves, incertitudes, valeurs, intérêts, publics et critères d’évaluation de la communication.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Diagnostiquer une affirmation virale","description":"Séparer fait vérifiable, interprétation, incertitude et intention inconnue dans cinq messages fictifs, puis choisir lesquels corriger et pourquoi.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Écrire une correction graduée","description":"Rédiger un format court puis détaillé qui affirme le fait, localise l’erreur, explique l’alternative, cite les sources et annonce les limites sans promettre l’adhésion.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Préparer un briefing public responsable","description":"Pour une controverse fictive, cartographier expertise, poids des preuves, incertitudes, valeurs, intérêts, publics et critères d’évaluation de la communication.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nasem-communicating-science-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ecker-misinformation-review-2022"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wood-porter-backfire-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "oecd-responsible-science-communication-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-information-erronee-correction-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "allea-research-integrity-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-expertise-incertitude-interets-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "schmid-weight-of-evidence-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-poids-preuve-debat-public-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-066-NASEM","type":"consensus_report","authors":["National Academies of Sciences, Engineering, and Medicine"],"organization":"National Academies of Sciences, Engineering, and Medicine","title":"Communicating Science Effectively: A Research Agenda","year":2017,"edition":"1st ed.","publication":"National Academies Press","doi":"10.17226/23674","url":"https://www.nationalacademies.org/projects/DBASSE-DBASSE-15-01/publication/23674","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":true,"language":"en","license":"Lecture en ligne et PDF gratuit selon conditions NAP","status":"verified","notes":"Rapport de consensus centré sur objectifs, publics et agenda de recherche ; ne fournit pas une recette universelle."},
       {"id":"REF-066-ECKER","type":"peer_reviewed_review","authors":["Ecker, U. K. H.","Lewandowsky, S.","Cook, J.","et al."],"organization":null,"title":"The psychological drivers of misinformation belief and its resistance to correction","year":2022,"edition":null,"publication":"Nature Reviews Psychology, 1, 13–29","doi":"10.1038/s44159-021-00006-y","url":"https://www.nature.com/articles/s44159-021-00006-y","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Lecture HTML publique selon conditions Nature","status":"verified","notes":"Revue large ; effets moyens et mécanismes ne garantissent pas l’efficacité dans chaque contexte."},
@@ -76,6 +178,70 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie cognitive, communication scientifique, information et intégrité de la recherche requise.","L’étape integration-preuves et le module science-cumulative-controverses sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Aucun effet boomerang universel n’est affirmé ; efficacité et limites des corrections sont contextualisées.","Expertise, incertitude, valeurs et conflits d’intérêts sont distingués ; la diversité du débat ne devient pas une fausse équivalence des preuves."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_science_communication_misinformation_research_integrity_and_public_reasoning_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_science_communication_misinformation_research_integrity_and_public_reasoning_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "information-erronee-correction",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nasem-communicating-science-2017",
+            "ecker-misinformation-review-2022",
+            "wood-porter-backfire-2019",
+            "oecd-responsible-science-communication-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-information-erronee-correction-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "expertise-incertitude-interets",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "allea-research-integrity-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-expertise-incertitude-interets-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "poids-preuve-debat-public",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "schmid-weight-of-evidence-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-poids-preuve-debat-public-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

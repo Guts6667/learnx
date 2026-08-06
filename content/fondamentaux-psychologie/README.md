@@ -16,10 +16,13 @@ Ce dossier contient les artefacts éditoriaux versionnés du programme.
 ## Source de vérité actuelle
 
 Le seed reste l'autorité technique de l'import. Les fichiers éditoriaux restent
-indispensables pour l'audit et la maintenance scientifique. Ils ne doivent pas
-être supprimés au motif que leur projection existe en base.
+indispensables pour l'audit, la justification des séquences et la maintenance
+scientifique. Ils ne doivent pas être supprimés au motif que leur projection
+existe en base.
 
-La consolidation n'est pas encore entièrement générée : la première leçon du
-seed ne possède pas encore de `PEDAGOGY_SPEC_001.json`. Avant d'automatiser
-`specs -> seed`, créer et valider cette source manquante, puis ajouter un
-générateur déterministe et un contrôle de dérive en CI.
+Les 70 leçons du seed possèdent désormais une source éditoriale numérotée de
+`PEDAGOGY_SPEC_001.json` à `PEDAGOGY_SPEC_070.json`. Le contrôle automatisé
+vérifie leurs identités, leurs clés, leurs sources et l'égalité exacte de leur
+séquence avec le seed. Le seed demeure le bundle importable ; toute modification
+éditoriale doit être portée dans la spec correspondante et réconciliée avec lui
+dans le même changement.

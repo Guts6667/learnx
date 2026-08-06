@@ -28,7 +28,8 @@
         "content": {
           "text": "Opposer nature et culture comme deux causes séparées est trompeur. Un phénotype psychologique se développe dans un organisme qui reçoit des variantes génétiques, mais aussi des milieux physiques, familiaux, scolaires, sociaux et historiques. Les effets possibles dépendent du moment, de la durée et de la mesure de ces environnements ; les comportements peuvent à leur tour modifier les environnements rencontrés. Pour les traits complexes, parler d'un « gène de l'intelligence », de l'impulsivité ou de la dépression confond une association statistique avec un mécanisme unique. La plasticité signifie qu'une trajectoire peut répondre aux expériences ; elle ne promet ni changement illimité ni résultat identique pour tous.",
           "sourceKeys": ["openstax-human-genetics-2020", "harden-behavior-genetics-2021", "lenroot-developmental-gxe-2011"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -36,7 +37,8 @@
         "content": {
           "text": "L'héritabilité estime, selon un modèle, la part de la variance observée d'un phénotype qui est associée à des différences génétiques dans une population, un environnement et une période définis. Elle ne dit pas quel pourcentage du trait d'une personne est « génétique », ne mesure pas la valeur d'un trait et ne garantit ni stabilité ni universalité. Une forte héritabilité reste compatible avec un effet environnemental important sur le niveau moyen ou avec une intervention efficace. Si la diversité génétique ou environnementale change, l'estimation peut changer. Comparer mécaniquement des héritabilités obtenues dans des populations ou à des âges différents est donc invalide.",
           "sourceKeys": ["visscher-heritability-2008", "harden-behavior-genetics-2021", "plomin-replicated-findings-2016"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "Les études de jumeaux comparent notamment la ressemblance de jumeaux monozygotes et dizygotes ; les études d'adoption comparent des personnes qui partagent différemment apparentement génétique et milieu d'éducation. Elles permettent de modéliser des composantes de variance, mais aucune famille ne constitue une expérience parfaite. Les estimations dépendent de la représentativité, de la fidélité des mesures, de l'appariement assortatif, de l'hypothèse d'environnements pertinents comparables entre types de jumeaux et, pour l'adoption, du placement sélectif et de la restriction des milieux. Ces devis renseignent la variance d'une population ; ils n'identifient pas automatiquement les gènes, les environnements ni les mécanismes causaux concernés.",
           "sourceKeys": ["plomin-replicated-findings-2016", "harden-behavior-genetics-2021", "visscher-heritability-2008"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -52,7 +55,8 @@
         "content": {
           "text": "Une corrélation gène-environnement, ou rGE, signifie que des différences génétiques sont statistiquement liées aux environnements rencontrés. Elle peut être passive lorsque les parents transmettent des variantes et organisent le milieu, évocative lorsque des comportements influencés en partie génétiquement suscitent des réponses, ou active lorsque la personne sélectionne des activités et relations. Une interaction gène-environnement, ou G×E, signifie que l'association d'un facteur avec le phénotype varie selon l'environnement, ou réciproquement. L'échelle choisie, la mesure de l'exposition, la puissance et la réplication peuvent changer l'interaction observée. rGE et G×E décrivent des structures statistiques : elles ne démontrent pas seules une chaîne moléculaire causale. Leur expression peut évoluer avec l'âge et les possibilités de choisir son milieu.",
           "sourceKeys": ["dick-gxe-2011", "lenroot-developmental-gxe-2011", "harden-behavior-genetics-2021"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "objective",
@@ -60,7 +64,8 @@
         "content": {
           "text": "Une étude d'association pangénomique, ou GWAS, teste de très nombreux variants pour repérer leurs associations avec un phénotype dans un échantillon. Pour les traits complexes, les effets associés sont généralement distribués entre de nombreux variants et chacun explique peu. Un locus associé peut baliser une région liée à un variant causal sans être lui-même le mécanisme. Structure de population, déséquilibre de liaison, phénotype mal défini, effets sociaux indirects et autres confusions compliquent l'interprétation. Les grands échantillons, réplications et analyses familiales ou fonctionnelles renforcent l'enquête, mais association génomique ne signifie toujours ni causalité biologique directe ni détermination individuelle.",
           "sourceKeys": ["visscher-gwas-2017", "harden-behavior-genetics-2021", "plomin-replicated-findings-2016"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "callout",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Un score polygénique additionne des allèles pondérés par les associations estimées dans une GWAS. Il produit une prédiction probabiliste relative aux données, au phénotype et au modèle utilisés ; ce n'est ni un diagnostic, ni une cause, ni un destin. Avant de l'appliquer, il faut documenter échantillon d'apprentissage et de validation, ascendance génétique, âge, contexte, définition du résultat, performance, calibration, valeur ajoutée au-delà des prédicteurs usuels et incertitude. La précision diminue souvent lorsque la cible diffère de l'échantillon d'apprentissage, notamment le long du continuum d'ascendance, en raison des fréquences alléliques, du déséquilibre de liaison, des effets et des contextes. Race et ethnicité ne sont pas des substituts précis à l'ascendance génétique. Une décision responsable exige validation externe, langage non essentialiste, analyse des conséquences et convergence avec les méthodes causales et développementales des étapes 3 et 7.",
           "sourceKeys": ["kachuri-prs-transfer-2024", "nasem-population-descriptors-2023", "harden-behavior-genetics-2021"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -190,7 +196,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-human-genetics-2020", "visscher-heritability-2008", "plomin-replicated-findings-2016", "harden-behavior-genetics-2021"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Héritabilité", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Héritabilité", "questionCount": 5,
+          "key": "concept-heritabilite-variance-population-assessment-1"
+        }
       },
       {
         "title": "Corrélation et interaction gène-environnement",
@@ -200,7 +208,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["dick-gxe-2011", "lenroot-developmental-gxe-2011", "harden-behavior-genetics-2021"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Transactions gènes-environnements", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Transactions gènes-environnements", "questionCount": 5,
+          "key": "concept-correlation-interaction-gene-environnement-assessment-1"
+        }
       },
       {
         "title": "GWAS, scores polygéniques et portabilité",
@@ -210,7 +220,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["visscher-gwas-2017", "harden-behavior-genetics-2021", "kachuri-prs-transfer-2024", "nasem-population-descriptors-2023"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — GWAS et prédiction polygénique", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — GWAS et prédiction polygénique", "questionCount": 5,
+          "key": "concept-gwas-scores-polygeniques-portabilite-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -220,7 +232,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Séparer rGE, G×E et causalité",
@@ -228,7 +242,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer une offre de score polygénique",
@@ -236,18 +252,106 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-human-genetics-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "visscher-heritability-2008"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "plomin-replicated-findings-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "harden-behavior-genetics-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "lenroot-developmental-gxe-2011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-heritabilite-variance-population-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "dick-gxe-2011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-correlation-interaction-gene-environnement-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "visscher-gwas-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kachuri-prs-transfer-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nasem-population-descriptors-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-gwas-scores-polygeniques-portabilite-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-027-OPENSTAX", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 3.1 Human Genetics", "year": 2020, "edition": "2e", "publication": "Psychology 2e", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/3-1-human-genetics", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Ressource d'introduction ouverte ; ses exemples sont encadrés par les revues spécialisées et aucune plage génétique fixe n'est reprise."},
@@ -335,7 +439,73 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_scientific_and_ethics"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées.", "reviewRequired": "technical_editorial_scientific_and_ethics"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "heritabilite-variance-population",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-human-genetics-2020",
+            "visscher-heritability-2008",
+            "plomin-replicated-findings-2016",
+            "harden-behavior-genetics-2021",
+            "lenroot-developmental-gxe-2011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-heritabilite-variance-population-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "correlation-interaction-gene-environnement",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "dick-gxe-2011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-correlation-interaction-gene-environnement-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "gwas-scores-polygeniques-portabilite",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "visscher-gwas-2017",
+            "kachuri-prs-transfer-2024",
+            "nasem-population-descriptors-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-gwas-scores-polygeniques-portabilite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

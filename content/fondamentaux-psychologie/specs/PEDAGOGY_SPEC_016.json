@@ -27,7 +27,8 @@
         "content": {
           "text": "Une distribution décrit comment les valeurs se répartissent. On examine ensemble sa position, sa dispersion et sa forme : symétrie ou asymétrie, concentration, queues, valeurs atypiques et présence éventuelle de plusieurs groupes. Deux séries peuvent avoir la même moyenne et le même écart-type tout en présentant des formes différentes. Un graphique adapté reste donc nécessaire avant d'appliquer un résumé ou un modèle ; la forme en cloche n'est jamais une hypothèse par défaut imposée aux données.",
           "sourceKeys": ["nist-distribution-location-spread-shape", "openstax-intro-stats-2e-2-7"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -35,7 +36,8 @@
         "content": {
           "text": "La dispersion décrit l'éloignement des observations entre elles ou autour d'un centre. L'écart-type s'exprime dans l'unité des données et augmente généralement lorsque les valeurs s'étalent davantage autour de la moyenne. Il est sensible aux valeurs extrêmes et doit être lu avec la forme de la distribution. Il ne mesure ni la qualité d'une étude ni l'incertitude de la moyenne : une population peut être très hétérogène tout en permettant une estimation précise de sa moyenne si l'échantillonnage est approprié et suffisamment informatif.",
           "sourceKeys": ["openstax-intro-stats-2e-2-7", "nist-distribution-location-spread-shape"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "definition",
@@ -43,7 +45,8 @@
         "content": {
           "text": "Si l'on tirait de nombreux échantillons de même taille selon le même protocole et calculait leur moyenne, ces moyennes formeraient une distribution d'échantillonnage. Son écart-type est l'erreur standard de la moyenne. Sous un échantillonnage aléatoire indépendant, elle vaut σ/√n lorsque l'écart-type de la population σ est connu ; en pratique, σ est souvent estimé. Augmenter n réduit alors l'erreur standard selon une racine carrée : multiplier la taille par quatre la divise approximativement par deux. Cela réduit l'incertitude aléatoire, pas un biais de sélection ou de mesure.",
           "sourceKeys": ["openstax-intro-stats-2e-7-1"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "example",
@@ -51,7 +54,8 @@
         "content": {
           "text": "Une population de scores possède une moyenne inconnue. Deux équipes appliquent le même échantillonnage aléatoire : A interroge 25 personnes et B en interroge 100. À dispersion de population comparable, l'erreur standard de la moyenne de B est environ la moitié de celle de A, car √100 vaut deux fois √25. Si B recrute uniquement des volontaires très motivés, sa moyenne peut néanmoins rester systématiquement décalée : une petite erreur standard autour d'une estimation biaisée ne rend pas l'estimation valide pour toute la population.",
           "sourceKeys": ["openstax-intro-stats-2e-7-1"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
           "text": "Un intervalle de confiance associe une estimation ponctuelle à une marge d'incertitude calculée selon un modèle et des conditions. Pour une procédure à 95 %, si l'on répétait correctement l'échantillonnage et le calcul un grand nombre de fois, environ 95 % des intervalles ainsi produits contiendraient le paramètre fixe. Après calcul, l'intervalle obtenu contient ou non ce paramètre : le niveau de 95 % ne signifie ni que 95 % des individus sont dans l'intervalle, ni que le paramètre a 95 % de probabilité d'y être. Sa largeur renseigne sur la précision conditionnelle, sans garantir représentativité, absence de biais ou importance pratique.",
           "sourceKeys": ["nist-confidence-intervals-7-1-4", "openstax-intro-stats-2e-7-1"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -121,7 +126,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["nist-distribution-location-spread-shape", "openstax-intro-stats-2e-2-7"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Distribution et variabilité", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Distribution et variabilité", "questionCount": 5,
+          "key": "concept-forme-variabilite-distribution-assessment-1"
+        }
       },
       {
         "title": "Échantillonnage et erreur standard",
@@ -131,7 +138,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-intro-stats-2e-7-1"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Erreur standard", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Erreur standard", "questionCount": 5,
+          "key": "concept-echantillonnage-erreur-standard-assessment-1"
+        }
       },
       {
         "title": "Intervalle de confiance et limites",
@@ -141,7 +150,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["nist-confidence-intervals-7-1-4", "openstax-intro-stats-2e-7-1"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Intervalle de confiance", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Intervalle de confiance", "questionCount": 5,
+          "key": "concept-intervalle-confiance-limites-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -151,7 +162,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Simuler quatre tailles d’échantillon",
@@ -159,7 +172,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Corriger des interprétations d’intervalle",
@@ -167,18 +182,82 @@
         "type": "writing",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-distribution-location-spread-shape"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-2-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-forme-variabilite-distribution-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-7-1"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-echantillonnage-erreur-standard-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-confidence-intervals-7-1-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-intervalle-confiance-limites-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -576,7 +655,67 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "forme-variabilite-distribution",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nist-distribution-location-spread-shape",
+            "openstax-intro-stats-2e-2-7"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-forme-variabilite-distribution-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "echantillonnage-erreur-standard",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-intro-stats-2e-7-1"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-echantillonnage-erreur-standard-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "intervalle-confiance-limites",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [
+            "nist-confidence-intervals-7-1-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-intervalle-confiance-limites-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

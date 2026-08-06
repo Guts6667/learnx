@@ -28,7 +28,8 @@
         "content": {
           "text": "Une explication de la personnalité peut porter sur des dispositions générales, des adaptations caractéristiques comme buts et valeurs, ou une identité narrative. Elle peut aussi examiner systèmes biologiques, apprentissages, relations, institutions et culture. Ces niveaux posent des questions différentes. Une corrélation biologique ne remplace pas une histoire sociale ; un récit de soi ne remplace pas la mesure des conduites. Les articuler est plus informatif que chercher une cause souveraine.",
           "sourceKeys": ["mcadams-pals-2006", "openstax-biology-11-6", "openstax-learning-11-4"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "callout",
@@ -36,7 +37,8 @@
         "content": {
           "text": "L’héritabilité estime, dans une population et des environnements donnés, une part de variation statistiquement associée à des différences génétiques. Elle ne dit pas quelle proportion de la personnalité d’un individu est « génétique », ne mesure pas l’inchangeabilité et peut varier lorsque les environnements changent. Les études de jumeaux et d’adoption reposent sur des hypothèses ; corrélations et interactions gènes–environnements rendent toute opposition nature/culture trop simple.",
           "sourceKeys": ["vukasovic-heritability-2015", "openstax-biology-11-6"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -44,7 +46,8 @@
         "content": {
           "text": "Tempérament, réactivité physiologique, réseaux cérébraux et hormones peuvent covarier avec des tendances comportementales, mais les résultats sont distribués, modestes et dépendants des méthodes. Un marqueur n’est ni un « gène de la personnalité » ni une cause suffisante. Le développement biologique se déroule dans des environnements qui sélectionnent, renforcent ou contraignent les expériences. Parler de prédisposition signifie modifier des probabilités, pas programmer un résultat.",
           "sourceKeys": ["openstax-biology-11-6", "vukasovic-heritability-2015"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "example",
@@ -52,7 +55,8 @@
         "content": {
           "text": "Dans une perspective sociale-cognitive, personne, conduite et environnement s’influencent réciproquement. Une étudiante évite de prendre la parole après des expériences de sanction ; cette conduite réduit les occasions de réussite et confirme ses attentes. Un groupe sécurisant, un modèle proche et des réussites progressives peuvent modifier attentes et sentiment d’efficacité. L’agence existe sous formes directe, collective ou déléguée, mais elle s’exerce toujours avec des ressources et contraintes sociales.",
           "sourceKeys": ["openstax-learning-11-4", "bandura-agentic-2001"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "rich_text",
@@ -60,7 +64,8 @@
         "content": {
           "text": "L’identité narrative est l’histoire de vie intériorisée et évolutive qui relie un passé reconstruit à un futur imaginé pour produire unité et sens. Elle sélectionne, ordonne et interprète des épisodes ; elle n’est donc ni archive exhaustive ni vérité clinique cachée. Les récits changent avec le moment, le public, les rôles et les répertoires culturels. Un même événement peut recevoir plusieurs significations plausibles sans que l’une révèle à elle seule la personnalité entière.",
           "sourceKeys": ["mcadams-mclean-2013", "mcadams-pals-2006"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Une formulation intégrative distingue ce qui est observé, le niveau auquel chaque hypothèse s’applique et les données qui la testeraient. Elle peut combiner tendance générale, apprentissage, rôle social, ressources, situation et récit, sans transformer vulnérabilité en destin ni difficulté en faute individuelle. Elle formule des influences probabilistes et bidirectionnelles, reconnaît les structures sociales et refuse tout diagnostic à partir d’un gène, d’un cerveau, d’un trait ou d’une histoire racontée.",
           "sourceKeys": ["mcadams-pals-2006", "bandura-agentic-2001", "mcadams-mclean-2013"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -154,7 +160,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-biology-11-6", "vukasovic-heritability-2015"],
-        "assessment": {"type":"quiz","title":"Mini-évaluation — Biologie sans déterminisme","questionCount":5}
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Biologie sans déterminisme","questionCount":5,
+          "key": "concept-biologie-heritabilite-non-determinisme-assessment-1"
+        }
       },
       {
         "title": "Apprentissage, agence et contexte social",
@@ -164,7 +172,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-learning-11-4", "bandura-agentic-2001"],
-        "assessment": {"type":"quiz","title":"Mini-évaluation — Agence et contexte","questionCount":5}
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Agence et contexte","questionCount":5,
+          "key": "concept-apprentissage-agence-contexte-social-assessment-1"
+        }
       },
       {
         "title": "Identité narrative et niveaux d’analyse",
@@ -174,23 +184,108 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["mcadams-pals-2006", "mcadams-mclean-2013"],
-        "assessment": {"type":"quiz","title":"Mini-évaluation — Récits et intégration","questionCount":5}
+        "assessment": {"type":"quiz","title":"Mini-évaluation — Récits et intégration","questionCount":5,
+          "key": "concept-identite-narrative-integration-niveaux-assessment-1"
+        }
       }
     ],
     "tasks": [
-      {"title":"Corriger un titre sur l’héritabilité","description":"Réécrire un article affirmant « la personnalité est génétique » en précisant unité, population, environnements, hypothèses et limites individuelles.","type":"writing","isRequired":true,"weight":1,"position":1},
-      {"title":"Cartographier une boucle sociale-cognitive","description":"À partir d’un cas fictif, représenter attentes, conduite, conséquences, modèles, ressources et contraintes, puis proposer deux observations testables.","type":"practice","isRequired":true,"weight":1,"position":2},
-      {"title":"Construire une formulation multiniveau","description":"Comparer deux récits plausibles d’un même événement et produire une formulation séparant traits, apprentissages, rôles, contexte et identité narrative.","type":"project","isRequired":true,"weight":2,"position":3}
+      {"title":"Corriger un titre sur l’héritabilité","description":"Réécrire un article affirmant « la personnalité est génétique » en précisant unité, population, environnements, hypothèses et limites individuelles.","type":"writing","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Cartographier une boucle sociale-cognitive","description":"À partir d’un cas fictif, représenter attentes, conduite, conséquences, modèles, ressources et contraintes, puis proposer deux observations testables.","type":"practice","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Construire une formulation multiniveau","description":"Comparer deux récits plausibles d’un même événement et produire une formulation séparant traits, apprentissages, rôles, contexte et identité narrative.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "mcadams-pals-2006"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-biology-11-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "vukasovic-heritability-2015"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-learning-11-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-biologie-heritabilite-non-determinisme-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bandura-agentic-2001"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-apprentissage-agence-contexte-social-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "mcadams-mclean-2013"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-identite-narrative-integration-niveaux-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version":"1.0.0",
+    "version":"1.1.0",
     "status":"editorial_review",
     "language":"fr",
     "audience":"Adulte débutant sans prérequis universitaire",
     "owner":"LearnX",
     "createdAt":"2026-08-04",
-    "lastReviewedAt":"2026-08-04",
+    "lastReviewedAt":"2026-08-06",
     "nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-041-MCADAMS-PALS","type":"theoretical_article","authors":["McAdams, D. P.","Pals, J. L."],"organization":"American Psychological Association","title":"A New Big Five: Fundamental Principles for an Integrative Science of Personality","year":2006,"edition":null,"publication":"American Psychologist, 61(3), 204–217","doi":"https://doi.org/10.1037/0003-066X.61.3.204","url":"https://www.elaborer.org/cours/psy7124/lectures/McAdams2006.pdf","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Copie académique ouverte","status":"verified","notes":"Cadre intégratif des niveaux de personnalité."},
@@ -263,7 +358,70 @@
       ]
     },
     "changeLog":[
-      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_behavioral_genetics_and_cultural_psychology"}
-    ]
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_behavioral_genetics_and_cultural_psychology"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "biologie-heritabilite-non-determinisme",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "mcadams-pals-2006",
+            "openstax-biology-11-6",
+            "vukasovic-heritability-2015",
+            "openstax-learning-11-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-biologie-heritabilite-non-determinisme-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "apprentissage-agence-contexte-social",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "bandura-agentic-2001"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-apprentissage-agence-contexte-social-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "identite-narrative-integration-niveaux",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "mcadams-mclean-2013"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-identite-narrative-integration-niveaux-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

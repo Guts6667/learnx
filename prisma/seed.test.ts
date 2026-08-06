@@ -1373,10 +1373,12 @@ describe('sample program seed', () => {
     expect(sequences).toHaveLength(70);
     expect(
       [...sequences.values()].reduce((total, items) => total + items.length, 0),
-    ).toBe(823);
+    ).toBe(1_223);
     expect(
-      [...sequences.values()].flat().some((item) => item.kind === 'RESOURCE'),
-    ).toBe(false);
+      [...sequences.values()]
+        .flat()
+        .filter((item) => item.kind === 'RESOURCE'),
+    ).toHaveLength(400);
     expect([...tasks.keys()].some((key) => exercises.has(key))).toBe(false);
     expect(
       [...conceptResources.values()].reduce(

@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_054","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"psychopathologie","moduleSlug":"definir-classifier",
   "lesson":{"title":"Modèles biopsychosociaux et trajectoires","slug":"modeles-biopsychosociaux-trajectoires","summary":"Construire des hypothèses multiniveaux et probabilistes sur des trajectoires, facteurs de risque et protections sans réduire, blâmer ni diagnostiquer.","objectives":["Articuler niveaux biologiques, psychologiques, relationnels et sociaux sans liste additive ni cause unique.","Interpréter facteurs de risque et de protection comme probabilités conditionnelles.","Utiliser équifinalité, multifinalité et résilience pour décrire des trajectoires ouvertes."],"prerequisites":["Distinguer diagnostic et formulation.","Comprendre qu’une association statistique n’établit pas seule une cause individuelle."],"estimatedMinutes":135,"position":3,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Un modèle biopsychosocial examine plusieurs niveaux d’explication : processus corporels et développementaux, apprentissages et interprétations, relations, conditions matérielles, institutions et culture. Il ne consiste pas à cocher une cause « bio », une cause « psycho » et une cause « sociale ». Il cherche des mécanismes et interactions situés dans le temps. Aucun niveau n’est automatiquement premier, et une explication biologique ne rend pas le contexte superflu.","sourceKeys":["engel-bps-1977","kendler-levels-2012"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Une formulation biopsychosociale est une carte d’hypothèses révisables, pas un diagnostic supplémentaire. Elle peut distinguer conditions de vulnérabilité, événements proches d’un changement, processus qui entretiennent une difficulté et protections disponibles. Ces rôles dépendent de la question et du moment : un même facteur peut être absent, corrélé, médiateur, modérateur ou conséquence. Il faut préciser les données, les alternatives et ce qui permettrait de réviser chaque hypothèse.","sourceKeys":["kendler-levels-2012","engel-bps-1977"]}},
-      {"type":"callout","position":3,"content":{"text":"Un facteur de risque est associé à une probabilité plus élevée dans une population et des conditions définies ; cette association n’établit pas à elle seule une cause et n’annonce pas le destin d’une personne. Un facteur protecteur est associé à une probabilité plus faible ou atténue un risque dans certaines conditions ; il ne garantit pas l’absence de difficulté. La qualité des preuves varie fortement, la causalité inverse et les facteurs confondants restent possibles. Ni risque ni protection ne doivent devenir une faute individuelle ou familiale.","sourceKeys":["arango-risk-atlas-2021","who-mental-health-report-2022"]}},
-      {"type":"definition","position":4,"content":{"text":"L’équifinalité signifie que des trajectoires différentes peuvent conduire à une issue ressemblante ; la multifinalité qu’une condition initiale semblable peut être suivie d’issues différentes. Le moment, la durée, les combinaisons de facteurs, les transitions, les soutiens et les réponses de la personne contribuent à ces divergences. Ces principes interdisent les raisonnements « facteur X donc trouble Y » et invitent à étudier le changement dans le temps.","sourceKeys":["cicchetti-rogosch-1996"]}},
-      {"type":"rich_text","position":5,"content":{"text":"La résilience décrit une adaptation relativement favorable face à une adversité significative ; elle est dynamique, dépend des domaines et s’appuie souvent sur des systèmes ordinaires de soutien, de régulation et d’opportunités. Elle ne signifie ni invulnérabilité, ni absence de souffrance, ni mérite supérieur. Une personne peut bien fonctionner dans un domaine et avoir besoin d’aide dans un autre. Renforcer les environnements protecteurs vaut mieux que sommer une personne d’être résiliente.","sourceKeys":["masten-resilience-2001","who-mental-health-report-2022"]}},
-      {"type":"objective","position":6,"content":{"text":"Pour un cas fictif, une formulation responsable décrit chronologie, difficultés, fonctionnement et ressources ; organise des hypothèses biologiques, psychologiques et sociales ; identifie risque, protection et incertitude ; puis recherche explications concurrentes et données manquantes. Elle ne nomme pas de trouble et ne prescrit rien. Dans la vie réelle, une inquiétude clinique appelle un professionnel qualifié ; une situation de danger immédiat appelle les services d’urgence locaux ou une aide de confiance.","sourceKeys":["kendler-levels-2012","arango-risk-atlas-2021","who-mental-health-report-2022"]}}
+      {"type":"definition","position":1,"content":{"text":"Un modèle biopsychosocial examine plusieurs niveaux d’explication : processus corporels et développementaux, apprentissages et interprétations, relations, conditions matérielles, institutions et culture. Il ne consiste pas à cocher une cause « bio », une cause « psycho » et une cause « sociale ». Il cherche des mécanismes et interactions situés dans le temps. Aucun niveau n’est automatiquement premier, et une explication biologique ne rend pas le contexte superflu.","sourceKeys":["engel-bps-1977","kendler-levels-2012"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Une formulation biopsychosociale est une carte d’hypothèses révisables, pas un diagnostic supplémentaire. Elle peut distinguer conditions de vulnérabilité, événements proches d’un changement, processus qui entretiennent une difficulté et protections disponibles. Ces rôles dépendent de la question et du moment : un même facteur peut être absent, corrélé, médiateur, modérateur ou conséquence. Il faut préciser les données, les alternatives et ce qui permettrait de réviser chaque hypothèse.","sourceKeys":["kendler-levels-2012","engel-bps-1977"]},
+        "key": "content-2"
+      },
+      {"type":"callout","position":3,"content":{"text":"Un facteur de risque est associé à une probabilité plus élevée dans une population et des conditions définies ; cette association n’établit pas à elle seule une cause et n’annonce pas le destin d’une personne. Un facteur protecteur est associé à une probabilité plus faible ou atténue un risque dans certaines conditions ; il ne garantit pas l’absence de difficulté. La qualité des preuves varie fortement, la causalité inverse et les facteurs confondants restent possibles. Ni risque ni protection ne doivent devenir une faute individuelle ou familiale.","sourceKeys":["arango-risk-atlas-2021","who-mental-health-report-2022"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"L’équifinalité signifie que des trajectoires différentes peuvent conduire à une issue ressemblante ; la multifinalité qu’une condition initiale semblable peut être suivie d’issues différentes. Le moment, la durée, les combinaisons de facteurs, les transitions, les soutiens et les réponses de la personne contribuent à ces divergences. Ces principes interdisent les raisonnements « facteur X donc trouble Y » et invitent à étudier le changement dans le temps.","sourceKeys":["cicchetti-rogosch-1996"]},
+        "key": "content-4"
+      },
+      {"type":"rich_text","position":5,"content":{"text":"La résilience décrit une adaptation relativement favorable face à une adversité significative ; elle est dynamique, dépend des domaines et s’appuie souvent sur des systèmes ordinaires de soutien, de régulation et d’opportunités. Elle ne signifie ni invulnérabilité, ni absence de souffrance, ni mérite supérieur. Une personne peut bien fonctionner dans un domaine et avoir besoin d’aide dans un autre. Renforcer les environnements protecteurs vaut mieux que sommer une personne d’être résiliente.","sourceKeys":["masten-resilience-2001","who-mental-health-report-2022"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Pour un cas fictif, une formulation responsable décrit chronologie, difficultés, fonctionnement et ressources ; organise des hypothèses biologiques, psychologiques et sociales ; identifie risque, protection et incertitude ; puis recherche explications concurrentes et données manquantes. Elle ne nomme pas de trouble et ne prescrit rien. Dans la vie réelle, une inquiétude clinique appelle un professionnel qualifié ; une situation de danger immédiat appelle les services d’urgence locaux ou une aide de confiance.","sourceKeys":["kendler-levels-2012","arango-risk-atlas-2021","who-mental-health-report-2022"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"engel-bps-1977","title":"The Need for a New Medical Model: A Challenge for Biomedicine","type":"article","url":"https://pubmed.ncbi.nlm.nih.gov/847460/","author":"George L. Engel","citation":"Engel, G. L. (1977). The need for a new medical model. Science, 196(4286), 129–136. https://doi.org/10.1126/science.847460","description":"Lire le résumé et identifier la critique du réductionnisme ; ne pas traiter ce texte historique comme validation de toute formulation.","isRequired":true,"estimatedMinutes":18,"position":1},
@@ -18,16 +30,106 @@
       {"key":"who-mental-health-report-2022","title":"World mental health report: Transforming mental health for all","type":"document","url":"https://www.who.int/publications-detail-redirect/9789240049338","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2022). World mental health report: Transforming mental health for all.","description":"Consulter le résumé sur déterminants, environnements et systèmes de soutien.","isRequired":true,"estimatedMinutes":18,"position":6}
     ],
     "concepts":[
-      {"title":"Niveaux biopsychosociaux et formulation","slug":"niveaux-biopsychosociaux-formulation","description":"Une formulation relie des mécanismes multiniveaux en hypothèses révisables sans cause unique.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["engel-bps-1977","kendler-levels-2012"],"assessment":{"type":"quiz","title":"Mini-évaluation — Expliquer sans réduire","questionCount":5}},
-      {"title":"Risque, protection et incertitude","slug":"risque-protection-incertitude","description":"Les facteurs sont associés à des probabilités sous conditions et ne déterminent ni destin ni culpabilité.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["arango-risk-atlas-2021","who-mental-health-report-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Probabilités, pas destins","questionCount":5}},
-      {"title":"Trajectoires, équifinalité et résilience","slug":"trajectoires-equifinalite-resilience","description":"Les chemins divergent ou convergent ; la résilience est un processus situé soutenu par des systèmes ordinaires.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["cicchetti-rogosch-1996","masten-resilience-2001"],"assessment":{"type":"quiz","title":"Mini-évaluation — Trajectoires ouvertes","questionCount":5}}
+      {"title":"Niveaux biopsychosociaux et formulation","slug":"niveaux-biopsychosociaux-formulation","description":"Une formulation relie des mécanismes multiniveaux en hypothèses révisables sans cause unique.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["engel-bps-1977","kendler-levels-2012"],"assessment":{"type":"quiz","title":"Mini-évaluation — Expliquer sans réduire","questionCount":5,
+        "key": "concept-niveaux-biopsychosociaux-formulation-assessment-1"
+      }},
+      {"title":"Risque, protection et incertitude","slug":"risque-protection-incertitude","description":"Les facteurs sont associés à des probabilités sous conditions et ne déterminent ni destin ni culpabilité.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["arango-risk-atlas-2021","who-mental-health-report-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Probabilités, pas destins","questionCount":5,
+        "key": "concept-risque-protection-incertitude-assessment-1"
+      }},
+      {"title":"Trajectoires, équifinalité et résilience","slug":"trajectoires-equifinalite-resilience","description":"Les chemins divergent ou convergent ; la résilience est un processus situé soutenu par des systèmes ordinaires.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["cicchetti-rogosch-1996","masten-resilience-2001"],"assessment":{"type":"quiz","title":"Mini-évaluation — Trajectoires ouvertes","questionCount":5,
+        "key": "concept-trajectoires-equifinalite-resilience-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Relier des niveaux sans les additionner","description":"Pour une situation fictive, proposer trois interactions entre niveaux et une donnée qui pourrait réfuter chacune.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Réviser une prédiction déterministe","description":"Transformer dix phrases « facteur donc trouble » en hypothèses probabilistes avec population, temporalité, alternatives et incertitude.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Construire deux trajectoires fictives","description":"Créer un exemple d’équifinalité et un de multifinalité, puis cartographier vulnérabilités, déclencheurs possibles, maintien, protections et données manquantes sans diagnostic.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Relier des niveaux sans les additionner","description":"Pour une situation fictive, proposer trois interactions entre niveaux et une donnée qui pourrait réfuter chacune.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Réviser une prédiction déterministe","description":"Transformer dix phrases « facteur donc trouble » en hypothèses probabilistes avec population, temporalité, alternatives et incertitude.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Construire deux trajectoires fictives","description":"Créer un exemple d’équifinalité et un de multifinalité, puis cartographier vulnérabilités, déclencheurs possibles, maintien, protections et données manquantes sans diagnostic.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "engel-bps-1977"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kendler-levels-2012"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-niveaux-biopsychosociaux-formulation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "arango-risk-atlas-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cicchetti-rogosch-1996"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-mental-health-report-2022"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-risque-protection-incertitude-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "masten-resilience-2001"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-trajectoires-equifinalite-resilience-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-054-ENGEL","type":"theoretical_article","authors":["Engel, G. L."],"organization":null,"title":"The Need for a New Medical Model: A Challenge for Biomedicine","year":1977,"edition":null,"publication":"Science, 196(4286), 129–136","doi":"10.1126/science.847460","url":"https://pubmed.ncbi.nlm.nih.gov/847460/","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Résumé PubMed public ; article selon accès","status":"verified","notes":"Texte historique fondateur, non preuve empirique suffisante à lui seul."},
       {"id":"REF-054-KENDLER","type":"review_article","authors":["Kendler, K. S."],"organization":null,"title":"Levels of explanation in psychiatric and substance use disorders","year":2012,"edition":null,"publication":"Molecular Psychiatry, 17(1), 11–21","doi":"10.1038/mp.2011.70","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3215837/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Libre accès via PubMed Central","status":"verified","notes":"Revue critique des niveaux étiologiques et de leurs limites."},
@@ -76,6 +178,70 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychopathologie développementale, épidémiologie et sécurité clinique requise.","L’étape psychopathologie et le module definir-classifier sont absents du seed actuel.","Formulation biopsychosociale probabiliste uniquement ; aucun diagnostic, conseil médical, blâme ou réductionnisme.","Risque et protection ne prédisent jamais le destin individuel.","Équifinalité, multifinalité et résilience sont présentées comme processus situés et ouverts."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_developmental_psychopathology_epidemiology_and_safety"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_developmental_psychopathology_epidemiology_and_safety"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "niveaux-biopsychosociaux-formulation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "engel-bps-1977",
+            "kendler-levels-2012"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-niveaux-biopsychosociaux-formulation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "risque-protection-incertitude",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "arango-risk-atlas-2021",
+            "cicchetti-rogosch-1996",
+            "who-mental-health-report-2022"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-risque-protection-incertitude-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "trajectoires-equifinalite-resilience",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "masten-resilience-2001"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-trajectoires-equifinalite-resilience-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

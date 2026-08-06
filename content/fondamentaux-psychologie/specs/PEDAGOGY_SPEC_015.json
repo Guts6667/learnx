@@ -13,11 +13,21 @@
     "estimatedMinutes": 165,
     "position": 1,
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Avant tout calcul, il faut identifier l'unité d'observation — ce que représente une ligne — et le sens de chaque colonne. Une variable catégorielle classe des observations, par exemple le type de tâche. Une variable quantitative discrète résulte d'un comptage, comme le nombre d'erreurs. Une variable quantitative continue résulte d'une mesure pouvant, en principe, prendre des valeurs intermédiaires, comme une durée. Un code numérique tel que 1 = groupe contrôle et 2 = intervention reste catégoriel : l'apparence numérique ne suffit pas à autoriser une moyenne.", "sourceKeys": ["openstax-intro-stats-2e-1-2"]}},
-      {"type": "callout", "position": 2, "content": {"text": "Un audit minimal précède le résumé : vérifier les unités, les catégories prévues, les valeurs manquantes, les doublons, les valeurs impossibles et les valeurs extrêmes. Une valeur surprenante n'est pas automatiquement une erreur : il faut revenir à la collecte ou à la source, documenter la décision et conserver la valeur si elle est plausible. Corriger silencieusement ou supprimer seulement ce qui gêne le résultat déforme les données.", "sourceKeys": ["openstax-intro-stats-2e-1-2"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Pour une variable catégorielle, un tableau de fréquences donne les effectifs et, lorsque les groupes n'ont pas le même total, les fréquences relatives ou pourcentages facilitent la comparaison ; un diagramme en barres conserve des barres séparées. Pour une variable quantitative, un tableau ordonné, un diagramme en points ou un histogramme montre la distribution. Dans un histogramme, les barres jointives représentent des intervalles numériques : modifier les bornes peut changer l'aspect, donc les axes, unités, effectifs et intervalles doivent être visibles.", "sourceKeys": ["openstax-intro-stats-2e-1-2", "openstax-intro-stats-2e-2-2"]}},
-      {"type": "definition", "position": 4, "content": {"text": "La moyenne additionne les valeurs et divise par leur nombre ; la médiane partage les données ordonnées en deux moitiés. Elles décrivent le centre mais pas la variabilité. L'étendue est la différence entre maximum et minimum. L'écart-type mesure la dispersion des valeurs autour de la moyenne et s'exprime dans la même unité que les données. Deux groupes peuvent donc avoir la même moyenne tout en présentant des dispersions très différentes.", "sourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"]}},
-      {"type": "example", "position": 5, "content": {"text": "Considérons les durées 4, 5, 5, 6 et 30 minutes. La moyenne est 10 minutes, tandis que la médiane est 5 minutes : la valeur 30 tire fortement la moyenne vers le haut. Le graphique révèle une distribution très asymétrique et une valeur éloignée. L'intervalle interquartile, égal à la différence entre le troisième et le premier quartile, décrit l'étendue de la moitié centrale des valeurs. Dans ce cas, médiane et intervalle interquartile décrivent plus robustement le centre et la dispersion ; pour une distribution approximativement symétrique sans valeur influente, moyenne et écart-type peuvent être plus informatifs. Le choix doit être justifié par les données et accompagné d'un graphique, jamais dicté par une règle automatique unique.", "sourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Avant tout calcul, il faut identifier l'unité d'observation — ce que représente une ligne — et le sens de chaque colonne. Une variable catégorielle classe des observations, par exemple le type de tâche. Une variable quantitative discrète résulte d'un comptage, comme le nombre d'erreurs. Une variable quantitative continue résulte d'une mesure pouvant, en principe, prendre des valeurs intermédiaires, comme une durée. Un code numérique tel que 1 = groupe contrôle et 2 = intervention reste catégoriel : l'apparence numérique ne suffit pas à autoriser une moyenne.", "sourceKeys": ["openstax-intro-stats-2e-1-2"]},
+        "key": "content-1"
+      },
+      {"type": "callout", "position": 2, "content": {"text": "Un audit minimal précède le résumé : vérifier les unités, les catégories prévues, les valeurs manquantes, les doublons, les valeurs impossibles et les valeurs extrêmes. Une valeur surprenante n'est pas automatiquement une erreur : il faut revenir à la collecte ou à la source, documenter la décision et conserver la valeur si elle est plausible. Corriger silencieusement ou supprimer seulement ce qui gêne le résultat déforme les données.", "sourceKeys": ["openstax-intro-stats-2e-1-2"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Pour une variable catégorielle, un tableau de fréquences donne les effectifs et, lorsque les groupes n'ont pas le même total, les fréquences relatives ou pourcentages facilitent la comparaison ; un diagramme en barres conserve des barres séparées. Pour une variable quantitative, un tableau ordonné, un diagramme en points ou un histogramme montre la distribution. Dans un histogramme, les barres jointives représentent des intervalles numériques : modifier les bornes peut changer l'aspect, donc les axes, unités, effectifs et intervalles doivent être visibles.", "sourceKeys": ["openstax-intro-stats-2e-1-2", "openstax-intro-stats-2e-2-2"]},
+        "key": "content-3"
+      },
+      {"type": "definition", "position": 4, "content": {"text": "La moyenne additionne les valeurs et divise par leur nombre ; la médiane partage les données ordonnées en deux moitiés. Elles décrivent le centre mais pas la variabilité. L'étendue est la différence entre maximum et minimum. L'écart-type mesure la dispersion des valeurs autour de la moyenne et s'exprime dans la même unité que les données. Deux groupes peuvent donc avoir la même moyenne tout en présentant des dispersions très différentes.", "sourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"]},
+        "key": "content-4"
+      },
+      {"type": "example", "position": 5, "content": {"text": "Considérons les durées 4, 5, 5, 6 et 30 minutes. La moyenne est 10 minutes, tandis que la médiane est 5 minutes : la valeur 30 tire fortement la moyenne vers le haut. Le graphique révèle une distribution très asymétrique et une valeur éloignée. L'intervalle interquartile, égal à la différence entre le troisième et le premier quartile, décrit l'étendue de la moitié centrale des valeurs. Dans ce cas, médiane et intervalle interquartile décrivent plus robustement le centre et la dispersion ; pour une distribution approximativement symétrique sans valeur influente, moyenne et écart-type peuvent être plus informatifs. Le choix doit être justifié par les données et accompagné d'un graphique, jamais dicté par une règle automatique unique.", "sourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "openstax-intro-stats-2e-1-2", "type": "book_chapter", "title": "Introductory Statistics 2e — 1.2 Data, Sampling, and Variation in Data and Sampling", "author": "Barbara Illowsky et Susan Dean", "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling", "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 1.2. OpenStax.", "description": "Lire les passages sur données qualitatives, quantitatives discrètes et continues, puis les exemples de tableaux et diagrammes en barres ; classer les variables du premier exercice.", "isRequired": true, "estimatedMinutes": 35, "position": 1},
@@ -26,18 +36,95 @@
       {"key": "openstax-intro-stats-2e-2-7", "type": "book_chapter", "title": "Introductory Statistics 2e — 2.7 Measures of the Spread of the Data", "author": "Barbara Illowsky et Susan Dean", "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-7-measures-of-the-spread-of-the-data", "citation": "Illowsky, B., & Dean, S. (2023). Introductory Statistics 2e, section 2.7. OpenStax.", "description": "Lire l'introduction sur l'étendue et l'écart-type ; comparer deux séries ayant le même centre mais des dispersions différentes.", "isRequired": true, "estimatedMinutes": 35, "position": 4}
     ],
     "concepts": [
-      {"title": "Types de variables et qualité des données", "slug": "types-variables-qualite-donnees", "description": "Le type d'une variable dépend de ce qu'elle représente, et toute analyse commence par un contrôle documenté des unités, valeurs manquantes, doublons, incohérences et valeurs extrêmes.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-1-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Variables et qualité", "questionCount": 5}},
-      {"title": "Tableaux et graphiques adaptés", "slug": "tableaux-graphiques-adaptes", "description": "Fréquences et barres décrivent des catégories, tandis que diagrammes en points et histogrammes montrent la distribution de valeurs quantitatives.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-1-2", "openstax-intro-stats-2e-2-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tableaux et graphiques", "questionCount": 5}},
-      {"title": "Centre, dispersion et forme", "slug": "centre-dispersion-forme", "description": "Un résumé pertinent associe un indicateur de centre et un indicateur de dispersion, choisis après examen de la forme et des valeurs influentes.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Centre et dispersion", "questionCount": 5}}
+      {"title": "Types de variables et qualité des données", "slug": "types-variables-qualite-donnees", "description": "Le type d'une variable dépend de ce qu'elle représente, et toute analyse commence par un contrôle documenté des unités, valeurs manquantes, doublons, incohérences et valeurs extrêmes.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-1-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Variables et qualité", "questionCount": 5,
+        "key": "concept-types-variables-qualite-donnees-assessment-1"
+      }},
+      {"title": "Tableaux et graphiques adaptés", "slug": "tableaux-graphiques-adaptes", "description": "Fréquences et barres décrivent des catégories, tandis que diagrammes en points et histogrammes montrent la distribution de valeurs quantitatives.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-1-2", "openstax-intro-stats-2e-2-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tableaux et graphiques", "questionCount": 5,
+        "key": "concept-tableaux-graphiques-adaptes-assessment-1"
+      }},
+      {"title": "Centre, dispersion et forme", "slug": "centre-dispersion-forme", "description": "Un résumé pertinent associe un indicateur de centre et un indicateur de dispersion, choisis après examen de la forme et des valeurs influentes.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-intro-stats-2e-2-5", "openstax-intro-stats-2e-2-7"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Centre et dispersion", "questionCount": 5,
+        "key": "concept-centre-dispersion-forme-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Auditer six observations", "description": "Jeu fictif : ID 01, 02, 02, 04, 05, 06 ; groupe A, A, A, B, B, B ; sommeil 7 h, 6 h, 6 h, vide, 25 h, 5 h ; erreurs 2, 4, 4, 3, -1, 6. Identifier l'unité d'observation, classer chaque variable, signaler doublon, données manquantes et valeurs impossibles ou à vérifier, puis produire un journal de décisions sans modifier silencieusement les données.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Passer des données au graphique", "description": "Jeu fictif de stratégie préférée : rappel, relecture, rappel, mixte, rappel, relecture, rappel, mixte, mixte, rappel. Construire le tableau des effectifs et pourcentages, choisir un diagramme en barres correctement légendé, puis expliquer pourquoi un histogramme ne convient pas à cette variable.", "type": "practice", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Comparer deux résumés", "description": "Pour A = [4, 5, 5, 6, 30] et B = [2, 4, 5, 6, 8], ordonner les valeurs, calculer moyenne, médiane et étendue, dessiner un diagramme en points, décrire forme et dispersion, puis choisir le résumé à communiquer pour chaque série. Vérifier les calculs et commenter l'effet de 30 dans A.", "type": "practice", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Auditer six observations", "description": "Jeu fictif : ID 01, 02, 02, 04, 05, 06 ; groupe A, A, A, B, B, B ; sommeil 7 h, 6 h, 6 h, vide, 25 h, 5 h ; erreurs 2, 4, 4, 3, -1, 6. Identifier l'unité d'observation, classer chaque variable, signaler doublon, données manquantes et valeurs impossibles ou à vérifier, puis produire un journal de décisions sans modifier silencieusement les données.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Passer des données au graphique", "description": "Jeu fictif de stratégie préférée : rappel, relecture, rappel, mixte, rappel, relecture, rappel, mixte, mixte, rappel. Construire le tableau des effectifs et pourcentages, choisir un diagramme en barres correctement légendé, puis expliquer pourquoi un histogramme ne convient pas à cette variable.", "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Comparer deux résumés", "description": "Pour A = [4, 5, 5, 6, 30] et B = [2, 4, 5, 6, 8], ordonner les valeurs, calculer moyenne, médiane et étendue, dessiner un diagramme en points, décrire forme et dispersion, puis choisir le résumé à communiquer pour chaque série. Vérifier les calculs et commenter l'effet de 30 dans A.", "type": "practice", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-1-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-types-variables-qualite-donnees-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-2-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-2-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-intro-stats-2e-2-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-tableaux-graphiques-adaptes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-centre-dispersion-forme-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-015-OPENSTAX-1-2", "type": "textbook", "authors": ["Illowsky, B.", "Dean, S."], "organization": "OpenStax", "title": "Introductory Statistics 2e — 1.2 Data, Sampling, and Variation in Data and Sampling", "year": 2023, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Édition publiée le 13 décembre 2023 ; sections consultées sur types de données, fréquences, graphiques, données manquantes et évaluation critique."},
       {"id": "REF-015-OPENSTAX-2-2", "type": "textbook", "authors": ["Illowsky, B.", "Dean, S."], "organization": "OpenStax", "title": "Introductory Statistics 2e — 2.2 Histograms, Frequency Polygons, and Time Series Graphs", "year": 2023, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/introductory-statistics-2e/pages/2-2-histograms-frequency-polygons-and-time-series-graphs", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Histogrammes, fréquences et lecture de la forme d'une distribution quantitative."},
@@ -81,6 +168,66 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en statistiques descriptives requise avant publication.", "Le choix moyenne-écart-type ou médiane-intervalle interquartile est présenté comme dépendant de la forme, des valeurs influentes et de l'objectif, non comme une règle automatique.", "Les trois petits jeux de données et leurs calculs doivent être revérifiés pendant la revue de domaine."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des quatre sources, des trois exercices et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des quatre sources, des trois exercices et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "types-variables-qualite-donnees",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-intro-stats-2e-1-2"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-types-variables-qualite-donnees-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "tableaux-graphiques-adaptes",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-intro-stats-2e-2-2",
+            "openstax-intro-stats-2e-2-5",
+            "openstax-intro-stats-2e-2-7"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-tableaux-graphiques-adaptes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "centre-dispersion-forme",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-centre-dispersion-forme-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

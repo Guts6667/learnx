@@ -327,6 +327,7 @@ Le sidecar n’est jamais copié dans `seed/sample-program.json`.
   "contentBlockSources": [],
   "resourceChecks": [],
   "assessmentBanks": [],
+  "sequenceRationale": {},
   "review": {
     "editorialReviewer": null,
     "subjectReviewer": null,
@@ -488,7 +489,51 @@ questions ne sont jamais copiées dans `lesson` : elles restent dans le groupe
 racine `conceptAssessmentBanks`, que `prisma/seed.ts` valide et importe de façon
 idempotente.
 
-### 5.5 Historique
+### 5.5 Justification de la séquence
+
+`editorial.sequenceRationale` rend l'ordre pédagogique auditable sans ajouter
+de donnée au moteur. Sa structure exacte est :
+
+```json
+{
+  "strategy": "Cycles notionnels : apports ciblés, application, puis mini-évaluation.",
+  "cycles": [
+    {
+      "conceptSlug": "demarche-empirique",
+      "contentKeys": ["content-1", "content-2"],
+      "resourceKeys": ["openstax-psychology-2e-2-1"],
+      "activity": { "kind": "EXERCISE", "key": "activity-1" },
+      "assessmentKey": "concept-demarche-empirique-assessment-1",
+      "rationale": "L'application rend la notion observable avant sa validation ciblée."
+    }
+  ]
+}
+```
+
+Règles bloquantes :
+
+- les cycles suivent l'ordre des notions de la leçon et reconstruisent
+  exactement `lesson.sequence`, sans omission ni duplication ;
+- chaque cycle regroupe uniquement les apports utiles à sa notion, puis les
+  ressources explicitement reliées à ces apports, puis une activité
+  d'application ou une consultation guidée, puis la mini-évaluation
+  correspondante ;
+- l'alternance n'est pas mécanique : une autre forme reste possible lorsque le
+  responsable pédagogique la justifie explicitement ;
+- chaque ressource pédagogique possède exactement une place authorée dans la
+  séquence ; les sources bibliographiques restent attachées aux blocs et ne
+  deviennent jamais des éléments de parcours ;
+- une activité peut mobiliser plusieurs notions, mais sa place et le concept
+  auquel elle sert de transition doivent être explicités dans `rationale` ;
+- la séquence ne doit jamais être déduite automatiquement des types ou des
+  positions des collections.
+
+Pour le programme psychologie V3-018, la stratégie validée est celle de trois
+cycles notionnels par leçon. Elle remplace le regroupement V2 par type sans
+ajouter ni supprimer d'activité ou de ressource et conserve les clés techniques
+issues du backfill V3-017.
+
+### 5.6 Historique
 
 Chaque changement est résumé :
 

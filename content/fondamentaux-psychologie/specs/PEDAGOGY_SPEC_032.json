@@ -19,12 +19,24 @@
     "estimatedMinutes": 180,
     "position": 2,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "L’attachement désigne un système relationnel qui organise la recherche de proximité et de protection auprès d’une personne familière lorsque l’enfant est inquiet, fatigué ou menacé. Une relation peut soutenir l’exploration en servant de base de sécurité et le retour au calme en offrant un refuge. Un enfant peut former plusieurs relations d’attachement ; leur expression dépend de l’histoire de la relation, du contexte, de l’âge et des possibilités de soin, pas du seul lien biologique ni d’un type de famille particulier.", "sourceKeys": ["openstax-lifespan-4-4", "who-nurturing-care-2023"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "La Situation étrange observe, dans une procédure standardisée, exploration, réactions aux séparations et retrouvailles avec un caregiver. Les catégories sécurisé, évitant, résistant et désorganisé résument des organisations comportementales dans cette relation et cette procédure ; elles ne sont ni des personnalités, ni des mesures directes d’amour, ni des diagnostics. L’âge, la familiarité du laboratoire, les pratiques de séparation et les conventions culturelles influencent ce qui est observé. Toute interprétation exige formation au codage, fidélité et connaissance du contexte.", "sourceKeys": ["openstax-lifespan-4-4", "groh-attachment-social-competence-2014"]}},
-      {"type": "example", "position": 3, "content": {"text": "Les méta-analyses trouvent des associations moyennes entre sécurité précoce et compétence avec les pairs, et entre certaines formes d’insécurité et difficultés extériorisées. Ces effets sont modestes et variables : ils ne prédisent pas le destin d’un enfant et ne prouvent pas qu’une classification cause seule un résultat. Tempérament, conditions de vie, santé, relations ultérieures, qualité des mesures et soutien disponible peuvent médiatiser ou modérer les trajectoires. La transmission intergénérationnelle est elle aussi partielle, non une reproduction automatique.", "sourceKeys": ["groh-attachment-social-competence-2014", "fearon-attachment-externalizing-2010", "verhage-transmission-2016"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Le tempérament décrit des différences précoces de réactivité, d’affect et de contrôle qui présentent une certaine stabilité sans figer la personnalité. Le comportement résulte d’ajustements entre caractéristiques de l’enfant et environnement : une même intensité émotionnelle peut poser des demandes différentes selon les routines, attentes et ressources. Qualifier un enfant de « difficile » transforme facilement une description relationnelle en jugement. Une analyse rigoureuse décrit dimensions, situations, informateurs et changement au cours du temps.", "sourceKeys": ["openstax-lifespan-4-2", "openstax-lifespan-4-3"]}},
-      {"type": "callout", "position": 5, "content": {"text": "La régulation émotionnelle se développe d’abord avec autrui : apaisement, orientation de l’attention, mise en mots, routines et anticipation constituent des formes de corégulation. Les enfants participent activement à ces échanges ; leurs réactions modifient celles des caregivers. Expressions émotionnelles, discussions et réponses des adultes contribuent à la socialisation des émotions, mais leurs effets dépendent du tempérament, de l’âge, de la situation et des significations culturelles. Soutenir une émotion ne signifie ni accepter tout comportement ni imposer une stratégie unique.", "sourceKeys": ["morris-family-emotion-regulation-2007", "eisenberg-emotion-socialization-2020", "who-nurturing-care-2023"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Le développement socioémotionnel se déploie dans un réseau de relations : caregivers, fratrie, pairs, école, communauté et institutions. La sensibilité et la disponibilité ne sont pas des traits moraux isolés ; elles sont influencées par sommeil, santé, sécurité, travail, discrimination, pauvreté et soutien social. Les pratiques culturellement diverses peuvent répondre à des buts relationnels différents. Évaluer une trajectoire demande donc plusieurs relations, contextes, informateurs et moments, tout en évitant de prescrire une organisation familiale unique ou de diagnostiquer depuis un questionnaire populaire.", "sourceKeys": ["openstax-lifespan-4-5", "openstax-lifespan-6-4", "who-nurturing-care-2023", "eisenberg-emotion-socialization-2020"]}}
+      {"type": "definition", "position": 1, "content": {"text": "L’attachement désigne un système relationnel qui organise la recherche de proximité et de protection auprès d’une personne familière lorsque l’enfant est inquiet, fatigué ou menacé. Une relation peut soutenir l’exploration en servant de base de sécurité et le retour au calme en offrant un refuge. Un enfant peut former plusieurs relations d’attachement ; leur expression dépend de l’histoire de la relation, du contexte, de l’âge et des possibilités de soin, pas du seul lien biologique ni d’un type de famille particulier.", "sourceKeys": ["openstax-lifespan-4-4", "who-nurturing-care-2023"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "La Situation étrange observe, dans une procédure standardisée, exploration, réactions aux séparations et retrouvailles avec un caregiver. Les catégories sécurisé, évitant, résistant et désorganisé résument des organisations comportementales dans cette relation et cette procédure ; elles ne sont ni des personnalités, ni des mesures directes d’amour, ni des diagnostics. L’âge, la familiarité du laboratoire, les pratiques de séparation et les conventions culturelles influencent ce qui est observé. Toute interprétation exige formation au codage, fidélité et connaissance du contexte.", "sourceKeys": ["openstax-lifespan-4-4", "groh-attachment-social-competence-2014"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "Les méta-analyses trouvent des associations moyennes entre sécurité précoce et compétence avec les pairs, et entre certaines formes d’insécurité et difficultés extériorisées. Ces effets sont modestes et variables : ils ne prédisent pas le destin d’un enfant et ne prouvent pas qu’une classification cause seule un résultat. Tempérament, conditions de vie, santé, relations ultérieures, qualité des mesures et soutien disponible peuvent médiatiser ou modérer les trajectoires. La transmission intergénérationnelle est elle aussi partielle, non une reproduction automatique.", "sourceKeys": ["groh-attachment-social-competence-2014", "fearon-attachment-externalizing-2010", "verhage-transmission-2016"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Le tempérament décrit des différences précoces de réactivité, d’affect et de contrôle qui présentent une certaine stabilité sans figer la personnalité. Le comportement résulte d’ajustements entre caractéristiques de l’enfant et environnement : une même intensité émotionnelle peut poser des demandes différentes selon les routines, attentes et ressources. Qualifier un enfant de « difficile » transforme facilement une description relationnelle en jugement. Une analyse rigoureuse décrit dimensions, situations, informateurs et changement au cours du temps.", "sourceKeys": ["openstax-lifespan-4-2", "openstax-lifespan-4-3"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "La régulation émotionnelle se développe d’abord avec autrui : apaisement, orientation de l’attention, mise en mots, routines et anticipation constituent des formes de corégulation. Les enfants participent activement à ces échanges ; leurs réactions modifient celles des caregivers. Expressions émotionnelles, discussions et réponses des adultes contribuent à la socialisation des émotions, mais leurs effets dépendent du tempérament, de l’âge, de la situation et des significations culturelles. Soutenir une émotion ne signifie ni accepter tout comportement ni imposer une stratégie unique.", "sourceKeys": ["morris-family-emotion-regulation-2007", "eisenberg-emotion-socialization-2020", "who-nurturing-care-2023"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Le développement socioémotionnel se déploie dans un réseau de relations : caregivers, fratrie, pairs, école, communauté et institutions. La sensibilité et la disponibilité ne sont pas des traits moraux isolés ; elles sont influencées par sommeil, santé, sécurité, travail, discrimination, pauvreté et soutien social. Les pratiques culturellement diverses peuvent répondre à des buts relationnels différents. Évaluer une trajectoire demande donc plusieurs relations, contextes, informateurs et moments, tout en évitant de prescrire une organisation familiale unique ou de diagnostiquer depuis un questionnaire populaire.", "sourceKeys": ["openstax-lifespan-4-5", "openstax-lifespan-6-4", "who-nurturing-care-2023", "eisenberg-emotion-socialization-2020"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-lifespan-4-4", "type": "book_chapter", "title": "Lifespan Development — 4.4 Social Development in Infants and Toddlers", "author": "Diana Riser, Rose Spielman et David Biek", "url": "https://openstax.org/books/lifespan-development/pages/4-4-social-development-in-infants-and-toddlers", "citation": "Riser, D., Spielman, R., & Biek, D. (2024). Lifespan Development, section 4.4: Social development in infants and toddlers. Rice University.", "description": "Lire Attachment Theory, Strange Situation et variation culturelle ; distinguer relation, procédure, classification et diagnostic.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -40,18 +52,127 @@
       {"key": "openstax-lifespan-6-4", "type": "book_chapter", "title": "Lifespan Development — 6.4 Social Contexts: Peers, Play, and Friendship in Early Childhood", "author": "Diana Riser, Rose Spielman et David Biek", "url": "https://openstax.org/books/lifespan-development/pages/6-4-social-contexts-peers-play-and-friendship-in-early-childhood", "citation": "Riser, D., Spielman, R., & Biek, D. (2024). Lifespan Development, section 6.4: Social contexts: Peers, play, and friendship in early childhood. Rice University.", "description": "Lire Friendships in Development et Outcomes of Friendship ; relier contexte relationnel et compétence sociale sans causalité simple.", "isRequired": false, "estimatedMinutes": 15, "position": 11}
     ],
     "concepts": [
-      {"title": "Attachement relationnel et mesure", "slug": "attachement-relationnel-mesure", "description": "L’attachement organise protection et exploration dans une relation ; ses classifications issues de procédures standardisées ne sont ni personnalités ni diagnostics.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-4-4", "groh-attachment-social-competence-2014", "fearon-attachment-externalizing-2010", "verhage-transmission-2016"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Attachement et mesure", "questionCount": 5}},
-      {"title": "Tempérament, corégulation et émotions", "slug": "temperament-coregulation-emotions", "description": "Réactivité et contrôle précoces interagissent avec la corégulation et la socialisation des émotions ; les échanges sont bidirectionnels et situés.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-4-2", "openstax-lifespan-4-3", "morris-family-emotion-regulation-2007", "eisenberg-emotion-socialization-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tempérament et régulation", "questionCount": 5}},
-      {"title": "Relations, contextes et trajectoires socioémotionnelles", "slug": "relations-contextes-trajectoires-socioemotionnelles", "description": "Les trajectoires émergent de plusieurs relations et systèmes matériels et culturels ; les associations moyennes ne prescrivent ni famille idéale ni destin individuel.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["who-nurturing-care-2023", "openstax-lifespan-4-5", "openstax-lifespan-6-4", "eisenberg-emotion-socialization-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Contextes socioémotionnels", "questionCount": 5}}
+      {"title": "Attachement relationnel et mesure", "slug": "attachement-relationnel-mesure", "description": "L’attachement organise protection et exploration dans une relation ; ses classifications issues de procédures standardisées ne sont ni personnalités ni diagnostics.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-4-4", "groh-attachment-social-competence-2014", "fearon-attachment-externalizing-2010", "verhage-transmission-2016"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Attachement et mesure", "questionCount": 5,
+        "key": "concept-attachement-relationnel-mesure-assessment-1"
+      }},
+      {"title": "Tempérament, corégulation et émotions", "slug": "temperament-coregulation-emotions", "description": "Réactivité et contrôle précoces interagissent avec la corégulation et la socialisation des émotions ; les échanges sont bidirectionnels et situés.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-4-2", "openstax-lifespan-4-3", "morris-family-emotion-regulation-2007", "eisenberg-emotion-socialization-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tempérament et régulation", "questionCount": 5,
+        "key": "concept-temperament-coregulation-emotions-assessment-1"
+      }},
+      {"title": "Relations, contextes et trajectoires socioémotionnelles", "slug": "relations-contextes-trajectoires-socioemotionnelles", "description": "Les trajectoires émergent de plusieurs relations et systèmes matériels et culturels ; les associations moyennes ne prescrivent ni famille idéale ni destin individuel.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["who-nurturing-care-2023", "openstax-lifespan-4-5", "openstax-lifespan-6-4", "eisenberg-emotion-socialization-2020"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Contextes socioémotionnels", "questionCount": 5,
+        "key": "concept-relations-contextes-trajectoires-socioemotionnelles-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Coder une observation sans diagnostiquer", "description": "À partir d’une vignette de séparation–retrouvailles, distinguer comportements observés, fonction possible, relation, contexte et informations manquantes ; rédiger trois conclusions permises et trois interdites.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Construire une boucle de corégulation", "description": "Pour deux enfants présentant des profils de réactivité différents, tracer déclencheur, réaction, réponse du caregiver, effet immédiat et apprentissage possible ; proposer deux ajustements sans qualifier l’enfant ou le caregiver.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer un profil d’attachement populaire", "description": "Réviser un questionnaire fictif qui étiquette un enfant et blâme une famille : examiner mesure, relation, stabilité, culture, conditions matérielles, risque et protection, puis produire une communication non diagnostique de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Coder une observation sans diagnostiquer", "description": "À partir d’une vignette de séparation–retrouvailles, distinguer comportements observés, fonction possible, relation, contexte et informations manquantes ; rédiger trois conclusions permises et trois interdites.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Construire une boucle de corégulation", "description": "Pour deux enfants présentant des profils de réactivité différents, tracer déclencheur, réaction, réponse du caregiver, effet immédiat et apprentissage possible ; proposer deux ajustements sans qualifier l’enfant ou le caregiver.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer un profil d’attachement populaire", "description": "Réviser un questionnaire fictif qui étiquette un enfant et blâme une famille : examiner mesure, relation, stabilité, culture, conditions matérielles, risque et protection, puis produire une communication non diagnostique de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-4-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "groh-attachment-social-competence-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-nurturing-care-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-attachement-relationnel-mesure-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "fearon-attachment-externalizing-2010"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "verhage-transmission-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-4-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-4-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-temperament-coregulation-emotions-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "morris-family-emotion-regulation-2007"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "eisenberg-emotion-socialization-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-4-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-6-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-relations-contextes-trajectoires-socioemotionnelles-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-032-OPENSTAX-4-4", "type": "textbook_chapter", "authors": ["Riser, D.", "Spielman, R.", "Biek, D."], "organization": "OpenStax, Rice University", "title": "Lifespan Development — 4.4 Social Development in Infants and Toddlers", "year": 2024, "edition": "1re éd.", "publication": "Lifespan Development", "doi": null, "url": "https://openstax.org/books/lifespan-development/pages/4-4-social-development-in-infants-and-toddlers", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Introduction ouverte à l’attachement et à ses mesures ; nuancée par les méta-analyses."},
       {"id": "REF-032-GROH", "type": "meta_analysis", "authors": ["Groh, A. M.", "Fearon, R. P.", "Bakermans-Kranenburg, M. J.", "van IJzendoorn, M. H.", "Steele, R. D.", "Roisman, G. I."], "organization": "Taylor & Francis", "title": "The Significance of Attachment Security for Children’s Social Competence with Peers", "year": 2014, "edition": null, "publication": "Attachment & Human Development, 16(2), 103–136", "doi": "https://doi.org/10.1080/14616734.2014.883636", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4021853/", "accessedAt": "2026-08-04", "evidenceLevel": "A", "peerReviewed": true, "language": "en", "license": "Manuscrit auteur ouvert via PubMed Central", "status": "verified", "notes": "Méta-analyse de 80 échantillons ; association moyenne, non prédiction individuelle."},
@@ -110,6 +231,75 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie du développement socioémotionnel, attachement, culture et méthodologie observationnelle requise avant validation scientifique.", "L’étape developpement-vie et le module fonctions-relations-vie sont planifiés mais absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n’est autorisée par cette spécification.", "Les classifications d’attachement sont relationnelles et issues de procédures de recherche ; elles ne sont ni diagnostics, ni personnalités, ni verdicts sur les caregivers.", "Les résultats méta-analytiques sont présentés comme associations moyennes hétérogènes et non comme destin individuel.", "Les ressources obligatoires sont ouvertes ; aucune pratique familiale ou culturelle unique n’est prescrite."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de onze ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de onze ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "attachement-relationnel-mesure",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-lifespan-4-4",
+            "groh-attachment-social-competence-2014",
+            "who-nurturing-care-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-attachement-relationnel-mesure-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "temperament-coregulation-emotions",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "fearon-attachment-externalizing-2010",
+            "verhage-transmission-2016",
+            "openstax-lifespan-4-2",
+            "openstax-lifespan-4-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-temperament-coregulation-emotions-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "relations-contextes-trajectoires-socioemotionnelles",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "morris-family-emotion-regulation-2007",
+            "eisenberg-emotion-socialization-2020",
+            "openstax-lifespan-4-5",
+            "openstax-lifespan-6-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-relations-contextes-trajectoires-socioemotionnelles-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

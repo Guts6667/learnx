@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_053","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"psychopathologie","moduleSlug":"definir-classifier",
   "lesson":{"title":"Classification, diagnostic, comorbidité et limites","slug":"classification-diagnostic-comorbidite-limites","summary":"Comprendre les usages et limites des classifications cliniques, des seuils et de la comorbidité sans apprendre à attribuer un diagnostic.","objectives":["Distinguer classification, diagnostic clinique et formulation individualisée.","Distinguer fiabilité, validité et utilité d’une catégorie diagnostique.","Expliquer seuils, hétérogénéité et comorbidité comme limites des catégories simples."],"prerequisites":["Distinguer variation, souffrance et fonctionnement.","Savoir qu’une catégorie scientifique est un modèle révisable."],"estimatedMinutes":135,"position":2,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Une classification organise des phénomènes dans un langage commun ; un diagnostic est une conclusion clinique issue d’une évaluation ; une formulation organise, pour une personne et une question précises, les difficultés, ressources, trajectoire et contexte. Un code n’est ni une explication complète ni l’identité d’une personne. Cette leçon étudie ces outils : elle ne fournit ni entretien diagnostique ni moyen de diagnostiquer soi-même ou autrui.","sourceKeys":["who-cddr-2024","clark-classification-2017"]}},
-      {"type":"rich_text","position":2,"content":{"text":"La CIM-11 et le DSM-5-TR répondent à des usages qui se recouvrent sans être identiques : communication clinique, statistiques, recherche, accès aux services et décisions administratives. Leurs catégories et exigences ont une histoire, des priorités et des révisions ; le DSM-5-TR reçoit notamment des mises à jour officielles après sa publication. Des différences entre systèmes ou éditions ne prouvent pas que l’un est arbitraire ou que l’autre révèle une essence ; elles invitent à comparer objectif, population, preuves, conséquences et utilité.","sourceKeys":["who-cddr-2024","clark-classification-2017","apa-dsm5tr-updates-2025"]}},
-      {"type":"definition","position":3,"content":{"text":"La fiabilité concerne la reproductibilité d’une décision, par exemple l’accord obtenu lors d’évaluations répétées. La validité demande si l’interprétation et les frontières représentent correctement le phénomène visé. L’utilité demande ce que la catégorie permet de faire dans un contexte donné. Une catégorie peut être assez fiable et utile sans constituer une entité naturelle parfaitement délimitée ; une forte utilité ne démontre donc pas une cause unique.","sourceKeys":["kendell-jablensky-2003","regier-reliability-2013"]}},
-      {"type":"example","position":4,"content":{"text":"Un seuil transforme souvent une variation continue en décision catégorielle. Deux personnes proches du seuil peuvent recevoir des codes différents, tandis que deux personnes ayant le même code peuvent présenter des combinaisons, sévérités et besoins distincts. Les dimensions et spécificateurs peuvent conserver de l’information, mais ne suppriment pas tous les choix de mesure. Toute lecture doit distinguer score, seuil, incertitude, retentissement et finalité de la décision.","sourceKeys":["krueger-dimensional-2009","kendell-jablensky-2003"]}},
-      {"type":"callout","position":5,"content":{"text":"La comorbidité désigne l’attribution simultanée de plusieurs diagnostics. Elle peut refléter des difficultés réellement coexistantes, des facteurs partagés, des symptômes qui se chevauchent ou la manière dont la classification découpe les phénomènes. Elle ne signifie pas nécessairement plusieurs maladies indépendantes. Réciproquement, une même catégorie peut regrouper des profils très hétérogènes. Il faut décrire symptômes, temporalité, fonctionnement et relations entre problèmes au lieu d’additionner des étiquettes.","sourceKeys":["krueger-dimensional-2009","clark-classification-2017"]}},
-      {"type":"objective","position":6,"content":{"text":"Lire une classification de façon responsable consiste à vérifier l’édition et ses mises à jour, la population, la finalité, les exigences complètes, les exclusions, le contexte culturel, les effets du seuil et les conséquences du code. Un diagnostic exige une évaluation qualifiée et peut être révisé avec de nouvelles informations ; ce n’est ni un test de personnalité ni une prédiction certaine. Si une difficulté personnelle inquiète, demander une évaluation à un professionnel de santé plutôt que comparer des listes de critères.","sourceKeys":["who-cddr-2024","clark-classification-2017","regier-reliability-2013","apa-dsm5tr-updates-2025"]}}
+      {"type":"definition","position":1,"content":{"text":"Une classification organise des phénomènes dans un langage commun ; un diagnostic est une conclusion clinique issue d’une évaluation ; une formulation organise, pour une personne et une question précises, les difficultés, ressources, trajectoire et contexte. Un code n’est ni une explication complète ni l’identité d’une personne. Cette leçon étudie ces outils : elle ne fournit ni entretien diagnostique ni moyen de diagnostiquer soi-même ou autrui.","sourceKeys":["who-cddr-2024","clark-classification-2017"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"La CIM-11 et le DSM-5-TR répondent à des usages qui se recouvrent sans être identiques : communication clinique, statistiques, recherche, accès aux services et décisions administratives. Leurs catégories et exigences ont une histoire, des priorités et des révisions ; le DSM-5-TR reçoit notamment des mises à jour officielles après sa publication. Des différences entre systèmes ou éditions ne prouvent pas que l’un est arbitraire ou que l’autre révèle une essence ; elles invitent à comparer objectif, population, preuves, conséquences et utilité.","sourceKeys":["who-cddr-2024","clark-classification-2017","apa-dsm5tr-updates-2025"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"La fiabilité concerne la reproductibilité d’une décision, par exemple l’accord obtenu lors d’évaluations répétées. La validité demande si l’interprétation et les frontières représentent correctement le phénomène visé. L’utilité demande ce que la catégorie permet de faire dans un contexte donné. Une catégorie peut être assez fiable et utile sans constituer une entité naturelle parfaitement délimitée ; une forte utilité ne démontre donc pas une cause unique.","sourceKeys":["kendell-jablensky-2003","regier-reliability-2013"]},
+        "key": "content-3"
+      },
+      {"type":"example","position":4,"content":{"text":"Un seuil transforme souvent une variation continue en décision catégorielle. Deux personnes proches du seuil peuvent recevoir des codes différents, tandis que deux personnes ayant le même code peuvent présenter des combinaisons, sévérités et besoins distincts. Les dimensions et spécificateurs peuvent conserver de l’information, mais ne suppriment pas tous les choix de mesure. Toute lecture doit distinguer score, seuil, incertitude, retentissement et finalité de la décision.","sourceKeys":["krueger-dimensional-2009","kendell-jablensky-2003"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"La comorbidité désigne l’attribution simultanée de plusieurs diagnostics. Elle peut refléter des difficultés réellement coexistantes, des facteurs partagés, des symptômes qui se chevauchent ou la manière dont la classification découpe les phénomènes. Elle ne signifie pas nécessairement plusieurs maladies indépendantes. Réciproquement, une même catégorie peut regrouper des profils très hétérogènes. Il faut décrire symptômes, temporalité, fonctionnement et relations entre problèmes au lieu d’additionner des étiquettes.","sourceKeys":["krueger-dimensional-2009","clark-classification-2017"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Lire une classification de façon responsable consiste à vérifier l’édition et ses mises à jour, la population, la finalité, les exigences complètes, les exclusions, le contexte culturel, les effets du seuil et les conséquences du code. Un diagnostic exige une évaluation qualifiée et peut être révisé avec de nouvelles informations ; ce n’est ni un test de personnalité ni une prédiction certaine. Si une difficulté personnelle inquiète, demander une évaluation à un professionnel de santé plutôt que comparer des listes de critères.","sourceKeys":["who-cddr-2024","clark-classification-2017","regier-reliability-2013","apa-dsm5tr-updates-2025"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"who-cddr-2024","title":"ICD-11 Clinical Descriptions and Diagnostic Requirements","type":"document","url":"https://www.who.int/publications/i/item/9789240077263/","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2024). Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders.","description":"Lire l’introduction sur finalité, usagers et exigences ; ne pas parcourir les catégories pour s’évaluer.","isRequired":true,"estimatedMinutes":25,"position":1},
@@ -18,16 +30,106 @@
       {"key":"apa-dsm5tr-updates-2025","title":"Updates to DSM-5-TR Criteria and Text","type":"website","url":"https://www.psychiatry.org/psychiatrists/practice/dsm/updates-to-dsm/updates-to-dsm-5-tr-criteria-text","author":"American Psychiatric Association","citation":"American Psychiatric Association. (2025). Updates to DSM-5-TR criteria and text: September 2025 update.","description":"Vérifier l’édition actuelle et le caractère révisable du manuel ; ne pas utiliser les extraits comme outil diagnostique.","isRequired":false,"estimatedMinutes":10,"position":6}
     ],
     "concepts":[
-      {"title":"Classification, diagnostic et formulation","slug":"classification-diagnostic-formulation","description":"Un système organise, un diagnostic conclut après évaluation et une formulation individualise sans réduire la personne au code.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-cddr-2024","clark-classification-2017","apa-dsm5tr-updates-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Trois outils","questionCount":5}},
-      {"title":"Fiabilité, validité et utilité","slug":"fiabilite-validite-utilite","description":"Accord, adéquation du construit et usage pratique sont trois questions distinctes.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["kendell-jablensky-2003","regier-reliability-2013"],"assessment":{"type":"quiz","title":"Mini-évaluation — Qualité d’une catégorie","questionCount":5}},
-      {"title":"Seuils, dimensions et comorbidité","slug":"seuils-dimensions-comorbidite","description":"Les seuils simplifient des continuums ; cooccurrence et hétérogénéité révèlent les limites d’un découpage simple.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["krueger-dimensional-2009","clark-classification-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Frontières et cooccurrences","questionCount":5}}
+      {"title":"Classification, diagnostic et formulation","slug":"classification-diagnostic-formulation","description":"Un système organise, un diagnostic conclut après évaluation et une formulation individualise sans réduire la personne au code.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-cddr-2024","clark-classification-2017","apa-dsm5tr-updates-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Trois outils","questionCount":5,
+        "key": "concept-classification-diagnostic-formulation-assessment-1"
+      }},
+      {"title":"Fiabilité, validité et utilité","slug":"fiabilite-validite-utilite","description":"Accord, adéquation du construit et usage pratique sont trois questions distinctes.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["kendell-jablensky-2003","regier-reliability-2013"],"assessment":{"type":"quiz","title":"Mini-évaluation — Qualité d’une catégorie","questionCount":5,
+        "key": "concept-fiabilite-validite-utilite-assessment-1"
+      }},
+      {"title":"Seuils, dimensions et comorbidité","slug":"seuils-dimensions-comorbidite","description":"Les seuils simplifient des continuums ; cooccurrence et hétérogénéité révèlent les limites d’un découpage simple.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["krueger-dimensional-2009","clark-classification-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Frontières et cooccurrences","questionCount":5,
+        "key": "concept-seuils-dimensions-comorbidite-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Associer outil et finalité","description":"Classer quinze usages fictifs comme classification, diagnostic, formulation, recherche ou administration, puis signaler les confusions dangereuses.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Auditer une affirmation diagnostique","description":"Réécrire six affirmations qui confondent accord, validité, utilité et cause ; mentionner l’édition et la population.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Simuler l’effet d’un seuil","description":"Sur des données fictives, comparer décision catégorielle et profil dimensionnel, puis analyser deux cas proches du seuil et un cas comorbide sans les diagnostiquer.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Associer outil et finalité","description":"Classer quinze usages fictifs comme classification, diagnostic, formulation, recherche ou administration, puis signaler les confusions dangereuses.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Auditer une affirmation diagnostique","description":"Réécrire six affirmations qui confondent accord, validité, utilité et cause ; mentionner l’édition et la population.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Simuler l’effet d’un seuil","description":"Sur des données fictives, comparer décision catégorielle et profil dimensionnel, puis analyser deux cas proches du seuil et un cas comorbide sans les diagnostiquer.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-cddr-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "clark-classification-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-dsm5tr-updates-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-classification-diagnostic-formulation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kendell-jablensky-2003"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "regier-reliability-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "krueger-dimensional-2009"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-fiabilite-validite-utilite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-seuils-dimensions-comorbidite-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-053-WHO-CDDR","type":"official_manual","authors":["World Health Organization"],"organization":"World Health Organization","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","year":2024,"edition":"ICD-11 CDDR","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789240077263/","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-ND 3.0 IGO","status":"verified","notes":"Système officiel révisable, destiné à des usages professionnels."},
       {"id":"REF-053-CLARK","type":"review_article","authors":["Clark, L. A.","Cuthbert, B.","Lewis-Fernández, R.","Narrow, W. E.","Reed, G. M."],"organization":null,"title":"Three Approaches to Understanding and Classifying Mental Disorder","year":2017,"edition":null,"publication":"Psychological Science in the Public Interest, 18(2), 72–145","doi":"10.1177/1529100617727266","url":"https://journals.sagepub.com/doi/10.1177/1529100617727266","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Résumé public ; texte selon accès","status":"verified","notes":"Comparaison de la CIM-11, du DSM-5 et du cadre de recherche RDoC."},
@@ -76,6 +178,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychopathologie, nosologie et psychométrie requise.","L’étape psychopathologie et le module definir-classifier sont absents du seed actuel.","CIM et DSM sont présentés comme systèmes professionnels, historiques et révisables, jamais comme essences.","Aucun autodiagnostic, diagnostic d’autrui ou conseil médical n’est permis.","Fiabilité, validité, utilité, seuils, hétérogénéité et comorbidité sont explicitement distingués."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_nosology_and_psychometrics"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_nosology_and_psychometrics"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "classification-diagnostic-formulation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-cddr-2024",
+            "clark-classification-2017",
+            "apa-dsm5tr-updates-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-classification-diagnostic-formulation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "fiabilite-validite-utilite",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "kendell-jablensky-2003",
+            "regier-reliability-2013",
+            "krueger-dimensional-2009"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-fiabilite-validite-utilite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "seuils-dimensions-comorbidite",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-seuils-dimensions-comorbidite-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

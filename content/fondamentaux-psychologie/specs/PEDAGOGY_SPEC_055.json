@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_055","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"psychopathologie","moduleSlug":"familles-troubles",
   "lesson":{"title":"Troubles anxieux, obsessionnels et liés au stress","slug":"troubles-anxieux-obsessionnels-stress","summary":"Situer plusieurs familles où peur, inquiétude, intrusions, répétitions ou réponses au stress deviennent sources de détresse ou d’entrave, sans transformer leurs manifestations en autodiagnostic.","objectives":["Distinguer grandes familles anxieuses, obsessionnelles-compulsives et liées au stress.","Expliquer pourquoi une manifestation isolée ou une exposition traumatique ne suffit pas à diagnostiquer.","Construire une orientation générale fondée sur évolution, retentissement, contexte et sécurité."],"prerequisites":["Distinguer classification, formulation et diagnostic clinique.","Comprendre qu’un symptôme peut avoir plusieurs explications."],"estimatedMinutes":110,"position":1,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"La peur répond plutôt à une menace présente, l’anxiété anticipe une menace possible et l’inquiétude en développe verbalement les scénarios. Elles appartiennent à l’expérience ordinaire. Une famille de troubles anxieux est envisagée lorsque leur forme, leur persistance, l’évitement, la détresse et l’entrave dépassent ce qui est attendu dans le contexte. Panique, anxiété généralisée, anxiété sociale, agoraphobie ou phobies ne sont pas interchangeables ; une liste de sensations ne permet pas de choisir entre elles.","sourceKeys":["who-icd11-cddr","who-anxiety-2025"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Des palpitations, vertiges, troubles du sommeil, tension ou difficultés de concentration peuvent accompagner l’anxiété, mais aussi une maladie physique, une substance, un médicament, un manque de sommeil ou une autre difficulté psychique. L’évaluation examine début, durée, situations, retentissement, développement, consommations, santé somatique et contexte culturel. Elle recherche aussi comorbidités et diagnostics différentiels. Un score de questionnaire peut soutenir un échange ; il ne remplace pas l’entretien clinique ni l’examen approprié.","sourceKeys":["who-icd11-cddr","anxiety-primer-2017"]}},
-      {"type":"definition","position":3,"content":{"text":"Dans les troubles obsessionnels-compulsifs et apparentés, une obsession est une pensée, image ou impulsion intrusive et répétée ; une compulsion est un acte ou rituel mental répété, souvent accompli pour réduire une détresse ou prévenir un événement redouté. Avoir une pensée intrusive ou vérifier une fois est fréquent et ne suffit pas. Le contenu peut être honteux sans exprimer une intention. L’analyse porte sur le cycle, le temps, la souffrance, l’entrave, la résistance et les autres explications possibles, pas sur un thème isolé.","sourceKeys":["who-icd11-cddr","ocd-primer-2019"]}},
-      {"type":"example","position":4,"content":{"text":"Après un événement potentiellement traumatique, une détresse initiale est courante et la majorité des personnes ne développent pas de TSPT. Celui-ci associe un profil persistant de reviviscence dans le présent, évitement et sentiment durable de menace avec retentissement. D’autres réponses existent : deuil, trouble de l’adaptation, dépression, anxiété, dissociation, difficultés somatiques ou rétablissement spontané. Chez l’enfant, le développement modifie l’expression ; entre cultures, les mots, comportements et plaintes corporelles peuvent différer.","sourceKeys":["who-ptsd-2024","who-icd11-cddr"]}},
-      {"type":"callout","position":5,"content":{"text":"Éviter n’est pas toujours pathologique : s’éloigner d’un danger réel protège. Répéter n’est pas toujours compulsif : routine, pratique culturelle, jeu développemental ou précaution proportionnée peuvent l’expliquer. L’exposition à un événement difficile n’est pas en elle-même un diagnostic. On compare la réaction aux risques réels, aux normes pertinentes et au fonctionnement antérieur, sans imposer à la personne de raconter un trauma ni de réaliser seule une exposition ou d’interrompre un rituel.","sourceKeys":["who-icd11-cddr","who-ptsd-2024","ocd-primer-2019"]}},
-      {"type":"objective","position":6,"content":{"text":"Une orientation générale devient pertinente lorsque la détresse persiste, s’aggrave, entraîne évitement ou rituels envahissants, perturbe sommeil, études, travail ou relations, ou suscite un doute médical. On propose une consultation auprès d’un professionnel qualifié et on laisse la personne choisir ce qu’elle souhaite partager. En cas de danger immédiat, d’incapacité à rester en sécurité ou d’idées suicidaires imminentes, contacter sans attendre les services d’urgence locaux ou une aide de crise appropriée. Cette leçon ne recommande aucun traitement individualisé.","sourceKeys":["who-anxiety-2025","who-ptsd-2024","who-icd11-cddr"]}}
+      {"type":"definition","position":1,"content":{"text":"La peur répond plutôt à une menace présente, l’anxiété anticipe une menace possible et l’inquiétude en développe verbalement les scénarios. Elles appartiennent à l’expérience ordinaire. Une famille de troubles anxieux est envisagée lorsque leur forme, leur persistance, l’évitement, la détresse et l’entrave dépassent ce qui est attendu dans le contexte. Panique, anxiété généralisée, anxiété sociale, agoraphobie ou phobies ne sont pas interchangeables ; une liste de sensations ne permet pas de choisir entre elles.","sourceKeys":["who-icd11-cddr","who-anxiety-2025"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Des palpitations, vertiges, troubles du sommeil, tension ou difficultés de concentration peuvent accompagner l’anxiété, mais aussi une maladie physique, une substance, un médicament, un manque de sommeil ou une autre difficulté psychique. L’évaluation examine début, durée, situations, retentissement, développement, consommations, santé somatique et contexte culturel. Elle recherche aussi comorbidités et diagnostics différentiels. Un score de questionnaire peut soutenir un échange ; il ne remplace pas l’entretien clinique ni l’examen approprié.","sourceKeys":["who-icd11-cddr","anxiety-primer-2017"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"Dans les troubles obsessionnels-compulsifs et apparentés, une obsession est une pensée, image ou impulsion intrusive et répétée ; une compulsion est un acte ou rituel mental répété, souvent accompli pour réduire une détresse ou prévenir un événement redouté. Avoir une pensée intrusive ou vérifier une fois est fréquent et ne suffit pas. Le contenu peut être honteux sans exprimer une intention. L’analyse porte sur le cycle, le temps, la souffrance, l’entrave, la résistance et les autres explications possibles, pas sur un thème isolé.","sourceKeys":["who-icd11-cddr","ocd-primer-2019"]},
+        "key": "content-3"
+      },
+      {"type":"example","position":4,"content":{"text":"Après un événement potentiellement traumatique, une détresse initiale est courante et la majorité des personnes ne développent pas de TSPT. Celui-ci associe un profil persistant de reviviscence dans le présent, évitement et sentiment durable de menace avec retentissement. D’autres réponses existent : deuil, trouble de l’adaptation, dépression, anxiété, dissociation, difficultés somatiques ou rétablissement spontané. Chez l’enfant, le développement modifie l’expression ; entre cultures, les mots, comportements et plaintes corporelles peuvent différer.","sourceKeys":["who-ptsd-2024","who-icd11-cddr"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"Éviter n’est pas toujours pathologique : s’éloigner d’un danger réel protège. Répéter n’est pas toujours compulsif : routine, pratique culturelle, jeu développemental ou précaution proportionnée peuvent l’expliquer. L’exposition à un événement difficile n’est pas en elle-même un diagnostic. On compare la réaction aux risques réels, aux normes pertinentes et au fonctionnement antérieur, sans imposer à la personne de raconter un trauma ni de réaliser seule une exposition ou d’interrompre un rituel.","sourceKeys":["who-icd11-cddr","who-ptsd-2024","ocd-primer-2019"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Une orientation générale devient pertinente lorsque la détresse persiste, s’aggrave, entraîne évitement ou rituels envahissants, perturbe sommeil, études, travail ou relations, ou suscite un doute médical. On propose une consultation auprès d’un professionnel qualifié et on laisse la personne choisir ce qu’elle souhaite partager. En cas de danger immédiat, d’incapacité à rester en sécurité ou d’idées suicidaires imminentes, contacter sans attendre les services d’urgence locaux ou une aide de crise appropriée. Cette leçon ne recommande aucun traitement individualisé.","sourceKeys":["who-anxiety-2025","who-ptsd-2024","who-icd11-cddr"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"who-icd11-cddr","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","type":"document","url":"https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2024). Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders.","description":"Consulter les introductions et limites diagnostiques des familles étudiées ; ne pas utiliser comme questionnaire personnel.","isRequired":true,"estimatedMinutes":30,"position":1},
@@ -17,16 +29,102 @@
       {"key":"anxiety-primer-2017","title":"Anxiety disorders","type":"article","url":"https://pubmed.ncbi.nlm.nih.gov/28470168/","author":"Michelle G. Craske et collaborateurs","citation":"Craske, M. G., et al. (2017). Anxiety disorders. Nature Reviews Disease Primers, 3, 17024. https://doi.org/10.1038/nrdp.2017.24","description":"Consulter le résumé pour l’hétérogénéité des familles, facteurs et diagnostics différentiels.","isRequired":false,"estimatedMinutes":12,"position":5}
     ],
     "concepts":[
-      {"title":"Familles anxieuses et différentiel","slug":"familles-anxieuses-differentiel","description":"Peur, anxiété et évitement prennent sens par leur profil, leur contexte, leur durée et leur retentissement.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icd11-cddr","who-anxiety-2025","anxiety-primer-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Anxiété contextualisée","questionCount":5}},
-      {"title":"Obsessions, compulsions et limites","slug":"obsessions-compulsions-limites","description":"Intrusions et répétitions ne deviennent pas automatiquement un TOC ; le cycle, l’entrave et le différentiel comptent.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icd11-cddr","ocd-primer-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Cycle obsession-compulsion","questionCount":5}},
-      {"title":"Stress, trauma et orientation","slug":"stress-trauma-orientation","description":"Les réponses post-traumatiques sont diverses, culturellement et développementalement situées, et demandent une orientation proportionnée.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-ptsd-2024","who-icd11-cddr"],"assessment":{"type":"quiz","title":"Mini-évaluation — Stress et prudence","questionCount":5}}
+      {"title":"Familles anxieuses et différentiel","slug":"familles-anxieuses-differentiel","description":"Peur, anxiété et évitement prennent sens par leur profil, leur contexte, leur durée et leur retentissement.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icd11-cddr","who-anxiety-2025","anxiety-primer-2017"],"assessment":{"type":"quiz","title":"Mini-évaluation — Anxiété contextualisée","questionCount":5,
+        "key": "concept-familles-anxieuses-differentiel-assessment-1"
+      }},
+      {"title":"Obsessions, compulsions et limites","slug":"obsessions-compulsions-limites","description":"Intrusions et répétitions ne deviennent pas automatiquement un TOC ; le cycle, l’entrave et le différentiel comptent.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icd11-cddr","ocd-primer-2019"],"assessment":{"type":"quiz","title":"Mini-évaluation — Cycle obsession-compulsion","questionCount":5,
+        "key": "concept-obsessions-compulsions-limites-assessment-1"
+      }},
+      {"title":"Stress, trauma et orientation","slug":"stress-trauma-orientation","description":"Les réponses post-traumatiques sont diverses, culturellement et développementalement situées, et demandent une orientation proportionnée.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-ptsd-2024","who-icd11-cddr"],"assessment":{"type":"quiz","title":"Mini-évaluation — Stress et prudence","questionCount":5,
+        "key": "concept-stress-trauma-orientation-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Comparer trois profils sans diagnostiquer","description":"Pour trois vignettes, séparer manifestations, durée, contexte, retentissement, risques et informations manquantes ; proposer plusieurs familles ou explications possibles.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Démonter une checklist d’auto-étiquetage","description":"Réécrire une publication qui conclut à un trouble à partir de cinq signes, en ajoutant base temporelle, différentiel, culture, développement et limites.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Construire un arbre d’orientation général","description":"Distinguer information, consultation non urgente, avis somatique et urgence immédiate, sans prescrire ni imposer de récit traumatique.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Comparer trois profils sans diagnostiquer","description":"Pour trois vignettes, séparer manifestations, durée, contexte, retentissement, risques et informations manquantes ; proposer plusieurs familles ou explications possibles.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Démonter une checklist d’auto-étiquetage","description":"Réécrire une publication qui conclut à un trouble à partir de cinq signes, en ajoutant base temporelle, différentiel, culture, développement et limites.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Construire un arbre d’orientation général","description":"Distinguer information, consultation non urgente, avis somatique et urgence immédiate, sans prescrire ni imposer de récit traumatique.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-icd11-cddr"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-anxiety-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "anxiety-primer-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-familles-anxieuses-differentiel-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-ptsd-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ocd-primer-2019"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-obsessions-compulsions-limites-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-stress-trauma-orientation-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-055-WHO-CDDR","type":"diagnostic_manual","authors":[],"organization":"World Health Organization","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","year":2024,"edition":"ICD-11 CDDR","publication":"World Health Organization","doi":null,"url":"https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-ND 3.0 IGO","status":"verified","notes":"Manuel clinique officiel ; destiné aux professionnels, non à l’autodiagnostic."},
       {"id":"REF-055-WHO-ANXIETY","type":"official_fact_sheet","authors":[],"organization":"World Health Organization","title":"Anxiety disorders","year":2025,"edition":"8 September 2025","publication":"WHO Fact sheets","doi":null,"url":"https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Information publique OMS","status":"verified","notes":"Panorama actualisé et orientation générale."},
@@ -73,6 +171,68 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychopathologie clinique, trauma et diversité culturelle requise.","L’étape psychopathologie et le module familles-troubles sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Panorama non diagnostique : aucune checklist d’auto-étiquetage ni recommandation thérapeutique individualisée.","Les messages d’urgence restent généraux et doivent être adaptés au pays de l’utilisateur." ]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychopathology_trauma_and_cultural_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychopathology_trauma_and_cultural_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "familles-anxieuses-differentiel",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-icd11-cddr",
+            "who-anxiety-2025",
+            "anxiety-primer-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-familles-anxieuses-differentiel-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "obsessions-compulsions-limites",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "who-ptsd-2024",
+            "ocd-primer-2019"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-obsessions-compulsions-limites-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "stress-trauma-orientation",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-stress-trauma-orientation-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

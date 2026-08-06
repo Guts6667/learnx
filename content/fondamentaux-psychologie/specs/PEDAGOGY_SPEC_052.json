@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_052","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"psychopathologie","moduleSlug":"definir-classifier",
   "lesson":{"title":"Normalité, souffrance, handicap et contexte","slug":"normalite-souffrance-handicap-contexte","summary":"Distinguer variation humaine, souffrance, fonctionnement et trouble en tenant compte du contexte, sans transformer ces repères en outil d’autodiagnostic.","objectives":["Distinguer norme statistique, norme sociale, expérience de souffrance et fonctionnement.","Analyser le handicap comme interaction entre fonctionnement, activités, participation et environnement.","Situer une difficulté dans son contexte culturel et orienter vers une aide qualifiée sans conclure à un diagnostic."],"prerequisites":["Distinguer description, interprétation et jugement de valeur.","Comprendre qu’un indicateur isolé ne suffit pas à une conclusion clinique."],"estimatedMinutes":120,"position":1,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"La normalité n’est pas un seuil unique. « Fréquent » décrit une distribution ; « attendu » renvoie à une norme sociale ou développementale ; « souhaitable » exprime une valeur ; « sain » relève d’une appréciation clinique plus large. Une expérience rare n’est pas automatiquement pathologique, et une expérience fréquente peut être pénible ou invalidante. Toute conclusion doit préciser le repère utilisé, la période, la situation et la personne concernée.","sourceKeys":["stein-mental-disorder-2010","who-cddr-2024"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Souffrance subjective, altération du fonctionnement et risque sont des informations importantes, mais aucun de ces éléments ne constitue seul une règle universelle. Une réaction douloureuse peut être compréhensible après une perte ou une menace ; inversement, certaines difficultés limitent fortement la vie quotidienne sans être vécues de la même manière par chaque personne. Durée, intensité, contrôle, retentissement, développement, causes médicales possibles et contexte doivent être examinés par des professionnels formés lorsqu’une évaluation clinique est nécessaire.","sourceKeys":["stein-mental-disorder-2010","who-cddr-2024"]}},
-      {"type":"definition","position":3,"content":{"text":"La CIF décrit le fonctionnement et le handicap à travers fonctions et structures corporelles, activités, participation et facteurs environnementaux. Le handicap n’est donc pas déduit mécaniquement d’un diagnostic : il émerge d’interactions entre une condition, les tâches demandées, les soutiens, les obstacles et l’environnement. Deux personnes présentant une difficulté semblable peuvent rencontrer des restrictions très différentes, et modifier l’environnement peut modifier la participation.","sourceKeys":["who-icf"]}},
-      {"type":"callout","position":4,"content":{"text":"La culture influence les mots employés, ce qui est considéré comme préoccupant, la manière d’exprimer une souffrance, les explications proposées et les parcours d’aide. Tenir compte de la culture ne signifie ni tout relativiser ni attribuer un comportement à une origine supposée. Il faut demander le sens pour la personne, comparer avec son contexte de référence, examiner pouvoir et discrimination, et éviter de pathologiser une pratique culturellement reconnue sur sa seule différence.","sourceKeys":["gureje-culture-2020","who-cddr-2024"]}},
-      {"type":"example","position":5,"content":{"text":"Dans un cas fictif, « Sam dort peu, s’isole et manque des cours depuis trois semaines » ne suffit pas à nommer un trouble. Une analyse pédagogique sépare faits et interprétations, puis recherche chronologie, changement par rapport au fonctionnement habituel, souffrance, sécurité, santé physique, substances, contraintes matérielles, culture, soutiens et souhaits de Sam. Elle formule des questions et des besoins d’orientation, pas un verdict.","sourceKeys":["who-cddr-2024","who-icf","gureje-culture-2020"]}},
-      {"type":"objective","position":6,"content":{"text":"Cette leçon ne permet ni de s’autodiagnostiquer ni de diagnostiquer autrui. Face à une souffrance persistante, un retentissement important ou une inquiétude, l’action prudente est d’en parler à un professionnel de santé qualifié ou à un service local adapté. En cas de danger immédiat ou d’impossibilité de rester en sécurité, contacter sans attendre les services d’urgence locaux ou une personne de confiance capable d’aider. Ces repères généraux ne constituent pas un protocole médical.","sourceKeys":["who-cddr-2024","who-mental-health-report-2022"]}}
+      {"type":"definition","position":1,"content":{"text":"La normalité n’est pas un seuil unique. « Fréquent » décrit une distribution ; « attendu » renvoie à une norme sociale ou développementale ; « souhaitable » exprime une valeur ; « sain » relève d’une appréciation clinique plus large. Une expérience rare n’est pas automatiquement pathologique, et une expérience fréquente peut être pénible ou invalidante. Toute conclusion doit préciser le repère utilisé, la période, la situation et la personne concernée.","sourceKeys":["stein-mental-disorder-2010","who-cddr-2024"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Souffrance subjective, altération du fonctionnement et risque sont des informations importantes, mais aucun de ces éléments ne constitue seul une règle universelle. Une réaction douloureuse peut être compréhensible après une perte ou une menace ; inversement, certaines difficultés limitent fortement la vie quotidienne sans être vécues de la même manière par chaque personne. Durée, intensité, contrôle, retentissement, développement, causes médicales possibles et contexte doivent être examinés par des professionnels formés lorsqu’une évaluation clinique est nécessaire.","sourceKeys":["stein-mental-disorder-2010","who-cddr-2024"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"La CIF décrit le fonctionnement et le handicap à travers fonctions et structures corporelles, activités, participation et facteurs environnementaux. Le handicap n’est donc pas déduit mécaniquement d’un diagnostic : il émerge d’interactions entre une condition, les tâches demandées, les soutiens, les obstacles et l’environnement. Deux personnes présentant une difficulté semblable peuvent rencontrer des restrictions très différentes, et modifier l’environnement peut modifier la participation.","sourceKeys":["who-icf"]},
+        "key": "content-3"
+      },
+      {"type":"callout","position":4,"content":{"text":"La culture influence les mots employés, ce qui est considéré comme préoccupant, la manière d’exprimer une souffrance, les explications proposées et les parcours d’aide. Tenir compte de la culture ne signifie ni tout relativiser ni attribuer un comportement à une origine supposée. Il faut demander le sens pour la personne, comparer avec son contexte de référence, examiner pouvoir et discrimination, et éviter de pathologiser une pratique culturellement reconnue sur sa seule différence.","sourceKeys":["gureje-culture-2020","who-cddr-2024"]},
+        "key": "content-4"
+      },
+      {"type":"example","position":5,"content":{"text":"Dans un cas fictif, « Sam dort peu, s’isole et manque des cours depuis trois semaines » ne suffit pas à nommer un trouble. Une analyse pédagogique sépare faits et interprétations, puis recherche chronologie, changement par rapport au fonctionnement habituel, souffrance, sécurité, santé physique, substances, contraintes matérielles, culture, soutiens et souhaits de Sam. Elle formule des questions et des besoins d’orientation, pas un verdict.","sourceKeys":["who-cddr-2024","who-icf","gureje-culture-2020"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Cette leçon ne permet ni de s’autodiagnostiquer ni de diagnostiquer autrui. Face à une souffrance persistante, un retentissement important ou une inquiétude, l’action prudente est d’en parler à un professionnel de santé qualifié ou à un service local adapté. En cas de danger immédiat ou d’impossibilité de rester en sécurité, contacter sans attendre les services d’urgence locaux ou une personne de confiance capable d’aider. Ces repères généraux ne constituent pas un protocole médical.","sourceKeys":["who-cddr-2024","who-mental-health-report-2022"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"who-cddr-2024","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","type":"document","url":"https://www.who.int/publications/i/item/9789240077263/","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2024). Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders.","description":"Lire l’introduction générale uniquement : rôle clinique, exigences diagnostiques, contexte et limites d’usage.","isRequired":true,"estimatedMinutes":25,"position":1},
@@ -17,16 +29,102 @@
       {"key":"who-mental-health-report-2022","title":"World mental health report: Transforming mental health for all","type":"document","url":"https://www.who.int/publications-detail-redirect/9789240049338","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2022). World mental health report: Transforming mental health for all.","description":"Consulter le résumé sur environnements, droits, besoins et accès aux soutiens ; ne pas en tirer de protocole individuel.","isRequired":false,"estimatedMinutes":15,"position":5}
     ],
     "concepts":[
-      {"title":"Normalité et seuils contextualisés","slug":"normalite-seuils-contexte","description":"Fréquence, norme sociale, valeur et appréciation clinique sont des repères distincts.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["stein-mental-disorder-2010","who-cddr-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Normalité et seuils","questionCount":5}},
-      {"title":"Souffrance, fonctionnement et handicap","slug":"souffrance-fonctionnement-handicap","description":"Le retentissement se décrit dans les activités, la participation et l’environnement, sans se déduire d’une étiquette.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icf","who-cddr-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Fonctionnement situé","questionCount":5}},
-      {"title":"Culture, limites et orientation","slug":"culture-limites-orientation","description":"Le sens culturel et la sécurité orientent les questions et l’aide, jamais un diagnostic amateur.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["gureje-culture-2020","who-mental-health-report-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Contextualiser et orienter","questionCount":5}}
+      {"title":"Normalité et seuils contextualisés","slug":"normalite-seuils-contexte","description":"Fréquence, norme sociale, valeur et appréciation clinique sont des repères distincts.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["stein-mental-disorder-2010","who-cddr-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Normalité et seuils","questionCount":5,
+        "key": "concept-normalite-seuils-contexte-assessment-1"
+      }},
+      {"title":"Souffrance, fonctionnement et handicap","slug":"souffrance-fonctionnement-handicap","description":"Le retentissement se décrit dans les activités, la participation et l’environnement, sans se déduire d’une étiquette.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-icf","who-cddr-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Fonctionnement situé","questionCount":5,
+        "key": "concept-souffrance-fonctionnement-handicap-assessment-1"
+      }},
+      {"title":"Culture, limites et orientation","slug":"culture-limites-orientation","description":"Le sens culturel et la sécurité orientent les questions et l’aide, jamais un diagnostic amateur.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["gureje-culture-2020","who-mental-health-report-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Contextualiser et orienter","questionCount":5,
+        "key": "concept-culture-limites-orientation-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Distinguer quatre sens de normal","description":"Classer douze affirmations fictives selon fréquence, attente sociale, valeur ou appréciation clinique, puis expliciter les informations manquantes.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Cartographier fonctionnement et environnement","description":"Pour un cas fictif, séparer fonctions, activités, participation, obstacles et soutiens sans attribuer de diagnostic.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Rédiger une orientation prudente","description":"Transformer un message d’autodiagnostic en description factuelle, questions contextuelles, limites et invitation générale à consulter ; inclure une phrase de sécurité non thérapeutique.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Distinguer quatre sens de normal","description":"Classer douze affirmations fictives selon fréquence, attente sociale, valeur ou appréciation clinique, puis expliciter les informations manquantes.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Cartographier fonctionnement et environnement","description":"Pour un cas fictif, séparer fonctions, activités, participation, obstacles et soutiens sans attribuer de diagnostic.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Rédiger une orientation prudente","description":"Transformer un message d’autodiagnostic en description factuelle, questions contextuelles, limites et invitation générale à consulter ; inclure une phrase de sécurité non thérapeutique.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-cddr-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "stein-mental-disorder-2010"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-normalite-seuils-contexte-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-icf"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gureje-culture-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-souffrance-fonctionnement-handicap-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-mental-health-report-2022"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-culture-limites-orientation-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-052-WHO-CDDR","type":"official_manual","authors":["World Health Organization"],"organization":"World Health Organization","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","year":2024,"edition":"ICD-11 CDDR","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789240077263/","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-ND 3.0 IGO","status":"verified","notes":"Manuel destiné aux professionnels ; utilisé ici uniquement pour l’apprentissage conceptuel."},
       {"id":"REF-052-WHO-ICF","type":"official_classification","authors":["World Health Organization"],"organization":"World Health Organization","title":"International Classification of Functioning, Disability and Health","year":2001,"edition":"mise à jour en ligne 2026-01","publication":"World Health Organization","doi":null,"url":"https://www.who.int/classifications/international-classification-of-functioning-disability-and-health","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Usage régi par l’OMS","status":"verified","notes":"Cadre officiel du fonctionnement et du handicap contextualisés."},
@@ -73,6 +171,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine clinique, culturelle et droits des personnes requise.","L’étape psychopathologie et le module definir-classifier sont absents du seed actuel.","Apprentissage conceptuel uniquement : aucun autodiagnostic, diagnostic d’autrui ou conseil médical.","Souffrance, handicap et culture sont contextualisés ; aucune différence n’est pathologisée par principe.","L’orientation d’urgence reste générale et ne constitue pas un protocole thérapeutique."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_cultural_and_safety"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_cultural_and_safety"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "normalite-seuils-contexte",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-cddr-2024",
+            "stein-mental-disorder-2010"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-normalite-seuils-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "souffrance-fonctionnement-handicap",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "who-icf",
+            "gureje-culture-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-souffrance-fonctionnement-handicap-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "culture-limites-orientation",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "who-mental-health-report-2022"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-culture-limites-orientation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

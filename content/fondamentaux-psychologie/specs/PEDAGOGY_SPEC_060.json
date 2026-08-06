@@ -5,12 +5,24 @@
     "objectives":["Distinguer efficacité en conditions contrôlées et effectivité en conditions usuelles.","Interpréter comparateur, attrition, non-réponse, détérioration et effets indésirables.","Situer alliance, monitoring et adaptation culturelle comme processus contextualisés plutôt que garanties de résultat."],
     "prerequisites":["Savoir lire une comparaison et une taille d’effet.","Connaître les grandes familles de psychothérapies sans palmarès global."],
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"L’efficacité expérimentale demande si une intervention produit un bénéfice dans des conditions relativement contrôlées ; l’effectivité demande ce qu’elle produit dans des conditions plus proches de la pratique. Il s’agit d’un continuum, pas de deux boîtes. Pour interpréter une étude, on précise population, intervention, comparateur, résultats, durée et contexte. Être supérieur à une liste d’attente, aux soins usuels ou à une autre thérapie ne répond pas à la même question.","sourceKeys":["singal-efficacy-effectiveness-2014"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Une moyenne de groupe ne prédit pas le parcours d’une personne. Il faut examiner ampleur et incertitude de l’effet, importance clinique, maintien dans le temps, données manquantes et attrition. L’acceptabilité ne se confond pas avec l’efficacité : abandon, refus, charge temporelle, coût et accessibilité peuvent modifier l’usage réel. Les analyses selon les personnes ayant terminé et celles selon l’assignation initiale répondent aussi à des questions différentes.","sourceKeys":["singal-efficacy-effectiveness-2014","honkalampi-negative-effects-2025"]}},
-      {"type":"callout","position":3,"content":{"text":"Une psychothérapie peut s’accompagner d’une absence d’amélioration, d’une détérioration, d’événements indésirables ou d’un retrait précoce. Ces catégories ne sont pas interchangeables : l’attrition n’est pas à elle seule une preuve de dommage, et un événement survenant pendant une thérapie n’est pas automatiquement causé par elle. Inversement, l’absence de mesure n’est pas une preuve d’absence de risque. Les essais rapportent encore insuffisamment ces effets ; les définir à l’avance, les rechercher systématiquement et documenter leur temporalité et leur gravité relève de la sécurité.","sourceKeys":["honkalampi-negative-effects-2025"]}},
-      {"type":"definition","position":4,"content":{"text":"Le monitoring de routine recueille périodiquement des informations sur objectifs, fonctionnement, symptômes, qualité de vie, alliance ou effets indésirables, puis les restitue pour soutenir la discussion. Il peut aider à repérer stagnation ou détérioration, mais un score n’ordonne pas automatiquement de poursuivre, changer ou arrêter. La finalité, la fréquence, la confidentialité, la charge et l’interprétation doivent être expliquées ; retour de la personne et observation clinique restent nécessaires.","sourceKeys":["barkham-rom-2023","honkalampi-negative-effects-2025"]}},
-      {"type":"definition","position":5,"content":{"text":"L’alliance de travail renvoie notamment à un accord sur les objectifs et tâches et à un lien permettant la coopération. Les études montrent une association moyenne positive avec les résultats, mais une corrélation ne prouve pas une cause unique : amélioration précoce, attentes, compétences du thérapeute, caractéristiques de la personne et contexte peuvent interagir. L’alliance varie dans le temps ; les désaccords et ruptures doivent pouvoir être nommés et réparés, non utilisés pour attribuer l’échec à la personne.","sourceKeys":["fluckiger-alliance-2018","barkham-rom-2023"]}},
-      {"type":"objective","position":6,"content":{"text":"Adapter culturellement ne consiste pas à assigner une technique à une origine supposée. Cela implique de demander significations, langue, valeurs, spiritualité éventuelle, préférences, discriminations, ressources et contraintes, tout en vérifiant les données pour la population concernée. Accessibilité financière, géographique, sensorielle, cognitive et numérique conditionne l’équité. Une adaptation se co-construit, se surveille et se révise. Ces repères n’indiquent pas quelle thérapie une personne devrait entreprendre, poursuivre ou interrompre.","sourceKeys":["benish-cultural-adaptation-2011","bps-assessment-culture-2025"]}}
+      {"type":"definition","position":1,"content":{"text":"L’efficacité expérimentale demande si une intervention produit un bénéfice dans des conditions relativement contrôlées ; l’effectivité demande ce qu’elle produit dans des conditions plus proches de la pratique. Il s’agit d’un continuum, pas de deux boîtes. Pour interpréter une étude, on précise population, intervention, comparateur, résultats, durée et contexte. Être supérieur à une liste d’attente, aux soins usuels ou à une autre thérapie ne répond pas à la même question.","sourceKeys":["singal-efficacy-effectiveness-2014"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Une moyenne de groupe ne prédit pas le parcours d’une personne. Il faut examiner ampleur et incertitude de l’effet, importance clinique, maintien dans le temps, données manquantes et attrition. L’acceptabilité ne se confond pas avec l’efficacité : abandon, refus, charge temporelle, coût et accessibilité peuvent modifier l’usage réel. Les analyses selon les personnes ayant terminé et celles selon l’assignation initiale répondent aussi à des questions différentes.","sourceKeys":["singal-efficacy-effectiveness-2014","honkalampi-negative-effects-2025"]},
+        "key": "content-2"
+      },
+      {"type":"callout","position":3,"content":{"text":"Une psychothérapie peut s’accompagner d’une absence d’amélioration, d’une détérioration, d’événements indésirables ou d’un retrait précoce. Ces catégories ne sont pas interchangeables : l’attrition n’est pas à elle seule une preuve de dommage, et un événement survenant pendant une thérapie n’est pas automatiquement causé par elle. Inversement, l’absence de mesure n’est pas une preuve d’absence de risque. Les essais rapportent encore insuffisamment ces effets ; les définir à l’avance, les rechercher systématiquement et documenter leur temporalité et leur gravité relève de la sécurité.","sourceKeys":["honkalampi-negative-effects-2025"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"Le monitoring de routine recueille périodiquement des informations sur objectifs, fonctionnement, symptômes, qualité de vie, alliance ou effets indésirables, puis les restitue pour soutenir la discussion. Il peut aider à repérer stagnation ou détérioration, mais un score n’ordonne pas automatiquement de poursuivre, changer ou arrêter. La finalité, la fréquence, la confidentialité, la charge et l’interprétation doivent être expliquées ; retour de la personne et observation clinique restent nécessaires.","sourceKeys":["barkham-rom-2023","honkalampi-negative-effects-2025"]},
+        "key": "content-4"
+      },
+      {"type":"definition","position":5,"content":{"text":"L’alliance de travail renvoie notamment à un accord sur les objectifs et tâches et à un lien permettant la coopération. Les études montrent une association moyenne positive avec les résultats, mais une corrélation ne prouve pas une cause unique : amélioration précoce, attentes, compétences du thérapeute, caractéristiques de la personne et contexte peuvent interagir. L’alliance varie dans le temps ; les désaccords et ruptures doivent pouvoir être nommés et réparés, non utilisés pour attribuer l’échec à la personne.","sourceKeys":["fluckiger-alliance-2018","barkham-rom-2023"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Adapter culturellement ne consiste pas à assigner une technique à une origine supposée. Cela implique de demander significations, langue, valeurs, spiritualité éventuelle, préférences, discriminations, ressources et contraintes, tout en vérifiant les données pour la population concernée. Accessibilité financière, géographique, sensorielle, cognitive et numérique conditionne l’équité. Une adaptation se co-construit, se surveille et se révise. Ces repères n’indiquent pas quelle thérapie une personne devrait entreprendre, poursuivre ou interrompre.","sourceKeys":["benish-cultural-adaptation-2011","bps-assessment-culture-2025"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"singal-efficacy-effectiveness-2014","title":"A Primer on Effectiveness and Efficacy Trials","type":"article","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3912314/","author":"Amit G. Singal, Peter D. R. Higgins et Akbar K. Waljee","citation":"Singal, A. G., Higgins, P. D. R., & Waljee, A. K. (2014). A primer on effectiveness and efficacy trials. Clinical and Translational Gastroenterology, 5, e45. https://doi.org/10.1038/ctg.2013.13","description":"Distinguer conditions contrôlées, conditions usuelles et continuum pragmatique.","isRequired":true,"estimatedMinutes":18,"position":1},
@@ -21,18 +33,107 @@
       {"key":"bps-assessment-culture-2025","title":"Assessment — Assessment, formulation, and diagnosis guidelines (adults)","type":"document","url":"https://explore.bps.org.uk/content/report-guideline/bpsrep.2025.rep188/chapter/bpsrep.2025.rep188.5","author":"British Psychological Society","citation":"British Psychological Society. (2025). Assessment. In Assessment, formulation, and diagnosis guidelines (adults). https://doi.org/10.53841/bpsrep.2025.rep188.5","description":"Relier culture, langue, handicap, pouvoir et accessibilité à une pratique individualisée.","isRequired":true,"estimatedMinutes":18,"position":6}
     ],
     "concepts":[
-      {"title":"Efficacité, effectivité et comparateurs","slug":"efficacite-effectivite-comparateurs","description":"La portée d’un résultat dépend des conditions, du comparateur, des résultats et de l’attrition.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["singal-efficacy-effectiveness-2014","honkalampi-negative-effects-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Lire une efficacité","questionCount":5}},
-      {"title":"Sécurité, monitoring et alliance","slug":"securite-monitoring-alliance","description":"Suivi et alliance soutiennent l’ajustement sans devenir algorithmes ni causes uniques.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["honkalampi-negative-effects-2025","barkham-rom-2023","fluckiger-alliance-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Suivre sans automatiser","questionCount":5}},
-      {"title":"Adaptation culturelle, accès et équité","slug":"adaptation-culturelle-acces-equite","description":"L’adaptation se co-construit à partir de la personne et de ses contraintes, sans stéréotype.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["benish-cultural-adaptation-2011","bps-assessment-culture-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Adapter sans assigner","questionCount":5}}
+      {"title":"Efficacité, effectivité et comparateurs","slug":"efficacite-effectivite-comparateurs","description":"La portée d’un résultat dépend des conditions, du comparateur, des résultats et de l’attrition.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["singal-efficacy-effectiveness-2014","honkalampi-negative-effects-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Lire une efficacité","questionCount":5,
+        "key": "concept-efficacite-effectivite-comparateurs-assessment-1"
+      }},
+      {"title":"Sécurité, monitoring et alliance","slug":"securite-monitoring-alliance","description":"Suivi et alliance soutiennent l’ajustement sans devenir algorithmes ni causes uniques.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["honkalampi-negative-effects-2025","barkham-rom-2023","fluckiger-alliance-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Suivre sans automatiser","questionCount":5,
+        "key": "concept-securite-monitoring-alliance-assessment-1"
+      }},
+      {"title":"Adaptation culturelle, accès et équité","slug":"adaptation-culturelle-acces-equite","description":"L’adaptation se co-construit à partir de la personne et de ses contraintes, sans stéréotype.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["benish-cultural-adaptation-2011","bps-assessment-culture-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Adapter sans assigner","questionCount":5,
+        "key": "concept-adaptation-culturelle-acces-equite-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Déplier une affirmation d’efficacité","description":"Pour un résumé d’étude, préciser population, intervention, comparateur, résultats, suivi, attrition et limites de généralisation.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Créer un tableau de monitoring prudent","description":"Proposer objectifs, fonctionnement, expérience négative et alliance avec règles de discussion, confidentialité et révision, sans seuil automatisé de traitement.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Auditer une adaptation culturelle","description":"Transformer un protocole stéréotypé en questions ouvertes sur langue, significations, accès, discriminations, préférences et feedback.","type":"project","isRequired":true,"weight":2,"position":3}
+      {"title":"Déplier une affirmation d’efficacité","description":"Pour un résumé d’étude, préciser population, intervention, comparateur, résultats, suivi, attrition et limites de généralisation.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Créer un tableau de monitoring prudent","description":"Proposer objectifs, fonctionnement, expérience négative et alliance avec règles de discussion, confidentialité et révision, sans seuil automatisé de traitement.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Auditer une adaptation culturelle","description":"Transformer un protocole stéréotypé en questions ouvertes sur langue, significations, accès, discriminations, préférences et feedback.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "singal-efficacy-effectiveness-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "honkalampi-negative-effects-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-efficacite-effectivite-comparateurs-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "barkham-rom-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-securite-monitoring-alliance-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "fluckiger-alliance-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "benish-cultural-adaptation-2011"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bps-assessment-culture-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-adaptation-culturelle-acces-equite-assessment-1"
+      }
     ]
   },
   "editorial":{
-    "version":"1.0.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+    "version":"1.1.0","status":"editorial_review","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-060-SINGAL-2014","type":"methodological_article","authors":["Singal, A. G.","Higgins, P. D. R.","Waljee, A. K."],"organization":null,"title":"A Primer on Effectiveness and Efficacy Trials","year":2014,"edition":null,"publication":"Clinical and Translational Gastroenterology, 5, e45","doi":"10.1038/ctg.2013.13","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3912314/","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Article en libre accès via PMC","status":"verified","notes":"Méthodologie générale applicable aux interventions psychologiques."},
       {"id":"REF-060-HONKALAMPI-2025","type":"systematic_review","authors":["Honkalampi, K.","Urhonen, H.-R.","Virtanen, M."],"organization":null,"title":"Negative effects in randomized controlled trials of psychotherapies and psychological interventions: A systematic review","year":2025,"edition":null,"publication":"Psychotherapy Research, 35(1), 100–111","doi":"10.1080/10503307.2024.2301972","url":"https://pubmed.ncbi.nlm.nih.gov/38266653/","accessedAt":"2026-08-04","evidenceLevel":"A","peerReviewed":true,"language":"en","license":"CC BY 4.0","status":"verified","notes":"Montre que seuls 30 % des travaux examinés mentionnaient des résultats négatifs."},
@@ -80,7 +181,71 @@
         {"type":"short_answer","prompt":"Quel principe vise un accès juste malgré des obstacles différents ?","explanation":"Il s’agit de l’équité.","acceptedAnswers":["équité","equite","équité d’accès","equite d'acces"],"position":5,"options":[]}
       ]}
     ],
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychotherapy_effectiveness_safety_alliance_and_equity_review"}],
-    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en recherche sur les psychothérapies, sécurité et adaptation culturelle requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Aucune promesse d’efficacité ni recommandation de poursuivre, modifier ou interrompre une thérapie individuelle.","Vérifier avant publication causalité des formulations sur l’alliance, monitoring des effets négatifs, accessibilité et représentativité des preuves."]}
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_psychotherapy_effectiveness_safety_alliance_and_equity_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en recherche sur les psychothérapies, sécurité et adaptation culturelle requise.","L’étape interventions-applications et le module interventions-psychologiques sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Aucune promesse d’efficacité ni recommandation de poursuivre, modifier ou interrompre une thérapie individuelle.","Vérifier avant publication causalité des formulations sur l’alliance, monitoring des effets négatifs, accessibilité et représentativité des preuves."]},
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "efficacite-effectivite-comparateurs",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "singal-efficacy-effectiveness-2014",
+            "honkalampi-negative-effects-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-efficacite-effectivite-comparateurs-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "securite-monitoring-alliance",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "barkham-rom-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-securite-monitoring-alliance-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "adaptation-culturelle-acces-equite",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "fluckiger-alliance-2018",
+            "benish-cultural-adaptation-2011",
+            "bps-assessment-culture-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-adaptation-culturelle-acces-equite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

@@ -26,7 +26,8 @@
         "content": {
           "text": "Une manifestation psychotique peut concerner la perception, les convictions, la pensée, le langage, le comportement ou l'expérience de soi et du monde. Elle ne désigne pas automatiquement une schizophrénie : elle peut apparaître dans plusieurs troubles mentaux, sous l'effet de substances ou médicaments, lors d'une affection neurologique ou médicale, ou dans d'autres contextes. Durée, chronologie, fonctionnement, état physique, sommeil, consommations et signification culturelle doivent être examinés. Une expérience inhabituelle isolée ne permet pas un diagnostic.",
           "sourceKeys": ["who-icd11-cddr", "who-schizophrenia-2025"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "callout",
@@ -34,7 +35,8 @@
         "content": {
           "text": "Psychose ne signifie ni « double personnalité » ni violence. La grande majorité des personnes vivant avec un trouble psychotique ne commettent pas de violence. Un risque ne se déduit jamais d'une étiquette : il dépend d'une combinaison de facteurs, dont antécédents de violence, consommation récente de substances, état aigu et contexte social. Les personnes concernées peuvent aussi subir violence, exclusion et violations de leurs droits. On décrit des faits observables et une situation de sécurité, sans présumer dangerosité ou incapacité.",
           "sourceKeys": ["who-schizophrenia-2025", "youn-violence-fep-2026"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "definition",
@@ -42,7 +44,8 @@
         "content": {
           "text": "Les troubles neurodéveloppementaux commencent pendant la période développementale et concernent des profils variés de cognition, communication, attention, apprentissage, motricité ou comportement. Autisme et TDAH ne sont ni interchangeables, ni des déficits globaux, ni une maladie unique à « guérir ». Les aptitudes et besoins diffèrent fortement, peuvent évoluer et dépendent de l'environnement. L'évaluation replace les difficultés et ressources dans l'âge, le contexte, la culture et plusieurs lieux de vie ; elle recherche aussi les situations associées ou concurrentes. Le langage identitaire ou centré sur la personne doit respecter la préférence de chacun.",
           "sourceKeys": ["who-icd11-cddr", "who-autism-2025", "faraone-adhd-2021"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "definition",
@@ -50,7 +53,8 @@
         "content": {
           "text": "Un trouble de la personnalité ne correspond pas à un « mauvais caractère ». Dans la CIM-11, l'évaluation porte d'abord sur une perturbation durable du fonctionnement de soi et des relations, son étendue et sa gravité, puis peut préciser des domaines de traits. Un trait fréquent, un conflit ponctuel ou une conduite jugée déplaisante ne suffit pas. La stabilité dans le temps, la présence dans différents contextes, la souffrance ou le retentissement, le développement, la culture, un épisode aigu, les substances et d'autres troubles doivent être considérés. La personnalité et le fonctionnement peuvent changer : une catégorie n'est ni une identité morale ni une condamnation immuable.",
           "sourceKeys": ["who-icd11-cddr", "mulder-personality-2021"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "example",
@@ -58,7 +62,8 @@
         "content": {
           "text": "Devant une personne qui s'isole, dort peu et parle de façon inhabituelle, plusieurs hypothèses restent ouvertes. Il faut demander depuis quand, ce qui a changé, comment la personne comprend l'expérience, si elle prend des substances ou médicaments, présente une confusion ou un problème médical, et si elle peut satisfaire ses besoins essentiels. Une histoire développementale ancienne peut orienter vers des besoins neurodéveloppementaux ; une rupture récente du fonctionnement appelle d'autres vérifications. Aucun vocabulaire, intérêt intense, trait relationnel ou message sur un réseau social ne permet d'attribuer à distance autisme, psychose ou trouble de la personnalité.",
           "sourceKeys": ["who-icd11-cddr", "who-autism-2025"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -66,7 +71,8 @@
         "content": {
           "text": "On peut proposer calmement une évaluation qualifiée lorsque des expériences inhabituelles, difficultés développementales ou perturbations durables gênent la vie quotidienne. Une apparition brutale de psychose ou confusion, une incapacité à répondre aux besoins essentiels, un danger imminent ou une détresse extrême justifient une aide urgente locale. On écoute sans ridiculiser ni confirmer comme fait une conviction inhabituelle, utilise un langage concret, demande ce qui aiderait et respecte l'autonomie autant que la sécurité le permet. Cette leçon ne permet ni diagnostic d'autrui, ni estimation clinique du risque, ni recommandation de traitement individualisée.",
           "sourceKeys": ["who-schizophrenia-2025", "who-icd11-cddr"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -152,7 +158,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["who-icd11-cddr", "who-schizophrenia-2025", "youn-violence-fep-2026"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Psychose sans amalgame", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Psychose sans amalgame", "questionCount": 5,
+          "key": "concept-psychose-differentiel-stigmatisation-assessment-1"
+        }
       },
       {
         "title": "Neurodéveloppement, diversité et contexte",
@@ -162,7 +170,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["who-icd11-cddr", "who-autism-2025", "faraone-adhd-2021"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Développement sans réduction", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Développement sans réduction", "questionCount": 5,
+          "key": "concept-neurodeveloppement-diversite-contexte-assessment-1"
+        }
       },
       {
         "title": "Fonctionnement de la personnalité et dimensionalité",
@@ -172,7 +182,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["who-icd11-cddr", "mulder-personality-2021"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Personnalité sans étiquette", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Personnalité sans étiquette", "questionCount": 5,
+          "key": "concept-personnalite-fonctionnement-dimensionalite-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -182,7 +194,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Réécrire trois messages stigmatisants",
@@ -190,7 +204,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Construire un arbre d'orientation générale",
@@ -198,18 +214,94 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-icd11-cddr"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-schizophrenia-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "youn-violence-fep-2026"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-psychose-differentiel-stigmatisation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-autism-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "faraone-adhd-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "mulder-personality-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-neurodeveloppement-diversite-contexte-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-personnalite-fonctionnement-dimensionalite-assessment-1"
       }
     ]
   },
   "editorial": {
     "status": "editorial_review",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -645,7 +737,69 @@
         "author": "LearnX",
         "change": "Création de la leçon et de ses évaluations.",
         "reviewRequired": "technical_editorial_clinical_neurodevelopmental_personality_and_anti_stigma_review"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "psychose-differentiel-stigmatisation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-icd11-cddr",
+            "who-schizophrenia-2025",
+            "youn-violence-fep-2026"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-psychose-differentiel-stigmatisation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "neurodeveloppement-diversite-contexte",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "who-autism-2025",
+            "faraone-adhd-2021",
+            "mulder-personality-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-neurodeveloppement-diversite-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "personnalite-fonctionnement-dimensionalite",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-personnalite-fonctionnement-dimensionalite-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

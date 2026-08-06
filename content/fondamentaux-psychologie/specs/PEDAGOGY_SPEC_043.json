@@ -26,7 +26,8 @@
         "content": {
           "text": "Un score est le résultat d’une procédure appliquée dans des conditions données. Il ne révèle ni une essence ni une quantité parfaitement observable de personnalité. L’interprétation dépend du construit visé, des items, du contexte, de la population et de l’erreur de mesure. Deux scores différents peuvent donc refléter à la fois une différence entre personnes et une part d’incertitude. Toute conclusion doit préciser ce qui a été mesuré, comment et pour quel usage.",
           "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -34,7 +35,8 @@
         "content": {
           "text": "La fidélité décrit la cohérence ou la précision des scores dans un cadre défini : entre items, dans le temps, entre évaluateurs ou entre formes. Un coefficient élevé ne prouve ni l’unidimensionnalité, ni la validité, ni la stabilité absolue d’un trait. Le coefficient pertinent dépend de la source d’erreur et de la décision envisagée ; sa valeur doit être accompagnée du plan d’étude, de l’échantillon et, lorsque possible, d’un intervalle ou d’une erreur standard de mesure.",
           "sourceKeys": ["revelle-condon-2019", "testing-standards-2014"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -42,7 +44,8 @@
         "content": {
           "text": "La validité ne se résume pas à déclarer qu’un test est « valide ». Elle désigne un argument étayé par plusieurs familles de preuves pour interpréter les scores et les utiliser d’une certaine manière. Le contenu, les processus de réponse, la structure interne, les relations avec d’autres variables et les conséquences de l’usage peuvent contribuer à cet argument. Une preuve obtenue auprès d’étudiants anglophones pour la recherche ne suffit pas automatiquement à justifier une décision d’embauche en français.",
           "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -50,7 +53,8 @@
         "content": {
           "text": "La question utile est : « quelles preuves soutiennent cette interprétation de ces scores, dans cette population et pour cet usage ? » Une corrélation attendue ne suffit pas seule. Il faut aussi examiner les définitions du construit, les alternatives plausibles, la précision, les données manquantes, les conditions d’administration et les coûts d’une erreur. Plus la décision est importante pour une personne, plus l’argument de validité et le contrôle des conséquences doivent être exigeants.",
           "sourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "rich_text",
@@ -58,7 +62,8 @@
         "content": {
           "text": "Une norme situe un score dans la distribution d’un groupe de référence. Un percentile indique une position relative, pas un pourcentage de personnalité ni un seuil naturel. L’interprétation change si l’échantillon normatif est ancien, restreint, non représentatif ou différent de la personne évaluée. La taille, le recrutement, la langue, l’âge, le contexte et la date des normes doivent être documentés ; les catégories arbitraires ne doivent pas transformer une différence graduelle en identité fixe.",
           "sourceKeys": ["testing-standards-2014", "itc-adaptation-2017"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -66,7 +71,8 @@
         "content": {
           "text": "Comparer des groupes ou transposer un test entre langues suppose que le construit et le fonctionnement de la mesure restent suffisamment comparables. L’invariance de mesure, l’adaptation culturelle, l’accessibilité et les effets différenciés font partie de l’équité ; traduire mot à mot ne suffit pas. En cas de preuves insuffisantes, la bonne conclusion est limitée et conditionnelle : on suspend la comparaison, on collecte des données adaptées ou on choisit une autre méthode, sans profiler ni diagnostiquer.",
           "sourceKeys": ["putnick-bornstein-2016", "itc-adaptation-2017", "testing-standards-2014"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -140,7 +146,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["testing-standards-2014", "revelle-condon-2019"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Fidélité et précision", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Fidélité et précision", "questionCount": 5,
+          "key": "concept-fidelite-precision-scores-assessment-1"
+        }
       },
       {
         "title": "Validité d’une interprétation et d’un usage",
@@ -150,7 +158,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["testing-standards-2014", "flake-pek-hehman-2017"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Argument de validité", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Argument de validité", "questionCount": 5,
+          "key": "concept-validite-interpretation-usage-assessment-1"
+        }
       },
       {
         "title": "Normes, comparabilité et équité",
@@ -160,7 +170,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["putnick-bornstein-2016", "itc-adaptation-2017", "testing-standards-2014"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Normes et équité", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Normes et équité", "questionCount": 5,
+          "key": "concept-normes-comparabilite-equite-assessment-1"
+        }
       }
     ],
     "tasks": [
@@ -170,7 +182,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Construire un argument de validité",
@@ -178,7 +192,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Critiquer un rapport normatif",
@@ -186,18 +202,90 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "testing-standards-2014"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "revelle-condon-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "flake-pek-hehman-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-fidelite-precision-scores-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-validite-interpretation-usage-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "putnick-bornstein-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "itc-adaptation-2017"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-normes-comparabilite-equite-assessment-1"
       }
     ]
   },
   "editorial": {
     "status": "editorial_review",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {
@@ -364,7 +452,68 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_and_fairness"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_and_fairness"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "fidelite-precision-scores",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "testing-standards-2014",
+            "revelle-condon-2019",
+            "flake-pek-hehman-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-fidelite-precision-scores-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "validite-interpretation-usage",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-validite-interpretation-usage-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "normes-comparabilite-equite",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "putnick-bornstein-2016",
+            "itc-adaptation-2017"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-normes-comparabilite-equite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

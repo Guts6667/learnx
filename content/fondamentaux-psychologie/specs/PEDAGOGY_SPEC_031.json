@@ -23,12 +23,24 @@
     "estimatedMinutes": 180,
     "position": 1,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "Le développement cognitif désigne les changements et continuités de processus comme l’attention, la mémoire, le raisonnement, les fonctions exécutives, la représentation et le langage. Une moyenne d’âge résume un groupe dans une tâche et un contexte ; elle ne constitue ni une date limite, ni une norme individuelle absolue. Une trajectoire dépend de processus biologiques, d’expériences, d’outils culturels, de scolarisation, de langue et des caractéristiques de la mesure.", "sourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "Les stades de Piaget ont organisé des régularités qualitatives et l’idée que l’enfant construit activement ses connaissances. Toutefois, la réussite varie selon la formulation, les supports, les connaissances familières et les exigences de mémoire ou de langage. Les approches du traitement de l’information décrivent plutôt des changements graduels de vitesse, d’attention, de mémoire et de stratégie ; les approches socioculturelles étudient la participation guidée, les outils et les pratiques. Ces cadres posent des questions complémentaires, mais aucun ne transforme tous les enfants en une suite homogène d’étapes.", "sourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Les fonctions exécutives regroupent notamment inhibition, mémoire de travail et flexibilité cognitive, auxquelles s’articulent planification et contrôle de l’attention. Elles ne forment pas un muscle unique : les tâches sollicitent plusieurs processus et leur fidélité, leur difficulté et leur familiarité influencent la performance. Leur développement se prolonge au-delà de la petite enfance et dépend à la fois de changements neurobiologiques, de la pratique, du sommeil, du stress, de la santé et des possibilités offertes par l’environnement. Une erreur ponctuelle n’autorise donc ni étiquette fixe ni diagnostic.", "sourceKeys": ["diamond-executive-functions-2013", "openstax-lifespan-7-2"]}},
-      {"type": "example", "position": 4, "content": {"text": "Le langage articule phonologie, lexique, morphologie, syntaxe, sémantique et pragmatique dans des modalités parlées ou signées. Les productions changent rapidement pendant l’enfance, avec une grande variabilité dans l’âge et le chemin d’acquisition. Comparer un enfant à une liste de jalons peut orienter une question, mais ne mesure pas à lui seul ses connaissances, ses occasions de communiquer, son répertoire dans plusieurs langues ni ses besoins. Un cas préoccupant relève d’une évaluation professionnelle contextualisée, pas d’un diagnostic tiré d’un seul chiffre.", "sourceKeys": ["openstax-lifespan-5-4", "kuhl-language-acquisition-2004"]}},
-      {"type": "callout", "position": 5, "content": {"text": "L’acquisition du langage mobilise plusieurs mécanismes. Des expériences montrent que des nourrissons peuvent exploiter des régularités statistiques entre syllabes dans une tâche contrôlée ; d’autres travaux soulignent l’orientation vers la parole, l’engagement conjoint et la valeur des interactions sociales. Ces résultats ne prouvent pas qu’un seul mécanisme suffit dans la vie quotidienne. L’input linguistique est aussi une activité relationnelle située : quantité, contingence, diversité, sens partagé et pratiques culturelles se combinent avec les capacités de l’enfant.", "sourceKeys": ["saffran-statistical-learning-1996", "kuhl-language-acquisition-2004", "hoff-social-context-language-2006"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Grandir avec plusieurs langues est une trajectoire ordinaire. Le vocabulaire peut être réparti entre les langues selon les interlocuteurs et domaines ; l’alternance de langues peut manifester une compétence pragmatique plutôt qu’une confusion. La maîtrise dépend de l’exposition et des occasions d’usage, et une comparaison équitable considère le répertoire complet. Les synthèses ne soutiennent pas un avantage général et automatique des personnes bilingues dans toutes les fonctions exécutives : l’expérience bilingue apporte des compétences linguistiques et culturelles réelles sans devoir être justifiée par une supériorité cognitive universelle.", "sourceKeys": ["openstax-lifespan-5-4", "openstax-lifespan-7-5", "lehtonen-bilingual-executive-2018"]}}
+      {"type": "definition", "position": 1, "content": {"text": "Le développement cognitif désigne les changements et continuités de processus comme l’attention, la mémoire, le raisonnement, les fonctions exécutives, la représentation et le langage. Une moyenne d’âge résume un groupe dans une tâche et un contexte ; elle ne constitue ni une date limite, ni une norme individuelle absolue. Une trajectoire dépend de processus biologiques, d’expériences, d’outils culturels, de scolarisation, de langue et des caractéristiques de la mesure.", "sourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "Les stades de Piaget ont organisé des régularités qualitatives et l’idée que l’enfant construit activement ses connaissances. Toutefois, la réussite varie selon la formulation, les supports, les connaissances familières et les exigences de mémoire ou de langage. Les approches du traitement de l’information décrivent plutôt des changements graduels de vitesse, d’attention, de mémoire et de stratégie ; les approches socioculturelles étudient la participation guidée, les outils et les pratiques. Ces cadres posent des questions complémentaires, mais aucun ne transforme tous les enfants en une suite homogène d’étapes.", "sourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Les fonctions exécutives regroupent notamment inhibition, mémoire de travail et flexibilité cognitive, auxquelles s’articulent planification et contrôle de l’attention. Elles ne forment pas un muscle unique : les tâches sollicitent plusieurs processus et leur fidélité, leur difficulté et leur familiarité influencent la performance. Leur développement se prolonge au-delà de la petite enfance et dépend à la fois de changements neurobiologiques, de la pratique, du sommeil, du stress, de la santé et des possibilités offertes par l’environnement. Une erreur ponctuelle n’autorise donc ni étiquette fixe ni diagnostic.", "sourceKeys": ["diamond-executive-functions-2013", "openstax-lifespan-7-2"]},
+        "key": "content-3"
+      },
+      {"type": "example", "position": 4, "content": {"text": "Le langage articule phonologie, lexique, morphologie, syntaxe, sémantique et pragmatique dans des modalités parlées ou signées. Les productions changent rapidement pendant l’enfance, avec une grande variabilité dans l’âge et le chemin d’acquisition. Comparer un enfant à une liste de jalons peut orienter une question, mais ne mesure pas à lui seul ses connaissances, ses occasions de communiquer, son répertoire dans plusieurs langues ni ses besoins. Un cas préoccupant relève d’une évaluation professionnelle contextualisée, pas d’un diagnostic tiré d’un seul chiffre.", "sourceKeys": ["openstax-lifespan-5-4", "kuhl-language-acquisition-2004"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "L’acquisition du langage mobilise plusieurs mécanismes. Des expériences montrent que des nourrissons peuvent exploiter des régularités statistiques entre syllabes dans une tâche contrôlée ; d’autres travaux soulignent l’orientation vers la parole, l’engagement conjoint et la valeur des interactions sociales. Ces résultats ne prouvent pas qu’un seul mécanisme suffit dans la vie quotidienne. L’input linguistique est aussi une activité relationnelle située : quantité, contingence, diversité, sens partagé et pratiques culturelles se combinent avec les capacités de l’enfant.", "sourceKeys": ["saffran-statistical-learning-1996", "kuhl-language-acquisition-2004", "hoff-social-context-language-2006"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Grandir avec plusieurs langues est une trajectoire ordinaire. Le vocabulaire peut être réparti entre les langues selon les interlocuteurs et domaines ; l’alternance de langues peut manifester une compétence pragmatique plutôt qu’une confusion. La maîtrise dépend de l’exposition et des occasions d’usage, et une comparaison équitable considère le répertoire complet. Les synthèses ne soutiennent pas un avantage général et automatique des personnes bilingues dans toutes les fonctions exécutives : l’expérience bilingue apporte des compétences linguistiques et culturelles réelles sans devoir être justifiée par une supériorité cognitive universelle.", "sourceKeys": ["openstax-lifespan-5-4", "openstax-lifespan-7-5", "lehtonen-bilingual-executive-2018"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-lifespan-5-3", "type": "book_chapter", "title": "Lifespan Development — 5.3 Cognition in Early Childhood", "author": "Diana Riser, Rose Spielman et David Biek", "url": "https://openstax.org/books/lifespan-development/pages/5-3-cognition-in-early-childhood", "citation": "Riser, D., Spielman, R., & Biek, D. (2024). Lifespan Development, section 5.3: Cognition in early childhood. Rice University.", "description": "Lire les sections sur Piaget, perspectives socioculturelles et traitement de l’information ; construire un tableau question–apport–limite pour les trois cadres.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -42,18 +54,119 @@
       {"key": "lehtonen-bilingual-executive-2018", "type": "article", "title": "Is Bilingualism Associated with Enhanced Executive Functioning in Adults? A Meta-Analytic Review", "author": "Minna Lehtonen et collègues", "url": "https://eprints.whiterose.ac.uk/157474/1/Bilingual_meta_analysis.pdf", "citation": "Lehtonen, M., Soveri, A., Laine, A., Järvenpää, J., de Bruin, A., & Antfolk, J. (2018). Is bilingualism associated with enhanced executive functioning in adults? A meta-analytic review. Psychological Bulletin, 144(4), 394–425. https://doi.org/10.1037/bul0000142", "description": "Lire résumé, résultats corrigés du biais de publication et discussion ; rédiger une conclusion distincte des bénéfices linguistiques du bilinguisme.", "isRequired": true, "estimatedMinutes": 25, "position": 9}
     ],
     "concepts": [
-      {"title": "Modèles, tâches et trajectoires cognitives", "slug": "modeles-taches-trajectoires-cognitives", "description": "Les modèles par stades, traitement de l’information et participation socioculturelle éclairent des dimensions différentes ; une tâche mesure une performance située, non une compétence totale.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Modèles et trajectoires cognitives", "questionCount": 5}},
-      {"title": "Fonctions exécutives et variabilité", "slug": "fonctions-executives-variabilite", "description": "Inhibition, mémoire de travail et flexibilité se développent selon des trajectoires liées mais distinctes, sensibles à la tâche, à l’expérience et au contexte.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["diamond-executive-functions-2013", "openstax-lifespan-7-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Fonctions exécutives", "questionCount": 5}},
-      {"title": "Acquisition du langage et répertoires plurilingues", "slug": "acquisition-langage-repertoires-plurilingues", "description": "Le langage se construit par des capacités d’apprentissage et des interactions situées ; les répertoires plurilingues se répartissent selon les usages sans confusion ni avantage exécutif universel.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-5-4", "kuhl-language-acquisition-2004", "saffran-statistical-learning-1996", "hoff-social-context-language-2006", "openstax-lifespan-7-5", "lehtonen-bilingual-executive-2018"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Langage et plurilinguisme", "questionCount": 5}}
+      {"title": "Modèles, tâches et trajectoires cognitives", "slug": "modeles-taches-trajectoires-cognitives", "description": "Les modèles par stades, traitement de l’information et participation socioculturelle éclairent des dimensions différentes ; une tâche mesure une performance située, non une compétence totale.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-5-3", "openstax-lifespan-7-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Modèles et trajectoires cognitives", "questionCount": 5,
+        "key": "concept-modeles-taches-trajectoires-cognitives-assessment-1"
+      }},
+      {"title": "Fonctions exécutives et variabilité", "slug": "fonctions-executives-variabilite", "description": "Inhibition, mémoire de travail et flexibilité se développent selon des trajectoires liées mais distinctes, sensibles à la tâche, à l’expérience et au contexte.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["diamond-executive-functions-2013", "openstax-lifespan-7-2"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Fonctions exécutives", "questionCount": 5,
+        "key": "concept-fonctions-executives-variabilite-assessment-1"
+      }},
+      {"title": "Acquisition du langage et répertoires plurilingues", "slug": "acquisition-langage-repertoires-plurilingues", "description": "Le langage se construit par des capacités d’apprentissage et des interactions situées ; les répertoires plurilingues se répartissent selon les usages sans confusion ni avantage exécutif universel.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-lifespan-5-4", "kuhl-language-acquisition-2004", "saffran-statistical-learning-1996", "hoff-social-context-language-2006", "openstax-lifespan-7-5", "lehtonen-bilingual-executive-2018"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Langage et plurilinguisme", "questionCount": 5,
+        "key": "concept-acquisition-langage-repertoires-plurilingues-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Comparer trois explications d’une même réussite", "description": "À partir d’une tâche de conservation et d’une tâche de mémoire, produire un tableau Piaget–traitement de l’information–socioculturel indiquant question, prédiction, donnée utile, variable de tâche et limite pour chaque cadre.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Auditer une mesure de fonctions exécutives", "description": "Pour trois scores fictifs d’inhibition, mémoire de travail et flexibilité, distinguer construit et performance, identifier fidélité, difficulté, sommeil, familiarité et langage comme informations manquantes, puis rédiger une conclusion non diagnostique.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Réviser un profil langagier plurilingue", "description": "Un enfant utilise deux langues dans des contextes différents et obtient des vocabulaires inégaux. Construire une matrice du répertoire total, des interlocuteurs et occasions d’usage, proposer deux mesures complémentaires et corriger un communiqué affirmant confusion ou avantage cognitif général.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Comparer trois explications d’une même réussite", "description": "À partir d’une tâche de conservation et d’une tâche de mémoire, produire un tableau Piaget–traitement de l’information–socioculturel indiquant question, prédiction, donnée utile, variable de tâche et limite pour chaque cadre.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Auditer une mesure de fonctions exécutives", "description": "Pour trois scores fictifs d’inhibition, mémoire de travail et flexibilité, distinguer construit et performance, identifier fidélité, difficulté, sommeil, familiarité et langage comme informations manquantes, puis rédiger une conclusion non diagnostique.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Réviser un profil langagier plurilingue", "description": "Un enfant utilise deux langues dans des contextes différents et obtient des vocabulaires inégaux. Construire une matrice du répertoire total, des interlocuteurs et occasions d’usage, proposer deux mesures complémentaires et corriger un communiqué affirmant confusion ou avantage cognitif général.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-5-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-7-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-modeles-taches-trajectoires-cognitives-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "diamond-executive-functions-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-5-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "kuhl-language-acquisition-2004"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-fonctions-executives-variabilite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "saffran-statistical-learning-1996"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "hoff-social-context-language-2006"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-lifespan-7-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "lehtonen-bilingual-executive-2018"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-acquisition-langage-repertoires-plurilingues-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-031-OPENSTAX-5-3", "type": "textbook_chapter", "authors": ["Riser, D.", "Spielman, R.", "Biek, D."], "organization": "OpenStax, Rice University", "title": "Lifespan Development — 5.3 Cognition in Early Childhood", "year": 2024, "edition": "1re éd.", "publication": "Lifespan Development", "doi": null, "url": "https://openstax.org/books/lifespan-development/pages/5-3-cognition-in-early-childhood", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Manuel ouvert récent ; les âges et modèles sont utilisés comme repères descriptifs, non comme normes diagnostiques."},
       {"id": "REF-031-OPENSTAX-7-2", "type": "textbook_chapter", "authors": ["Riser, D.", "Spielman, R.", "Biek, D."], "organization": "OpenStax, Rice University", "title": "Lifespan Development — 7.2 Cognition in Middle Childhood", "year": 2024, "edition": "1re éd.", "publication": "Lifespan Development", "doi": null, "url": "https://openstax.org/books/lifespan-development/pages/7-2-cognition-in-middle-childhood", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Synthèse de la cognition, du traitement de l’information et des fonctions exécutives en enfance moyenne."},
@@ -108,6 +221,73 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie du développement cognitif, psycholinguistique et multilinguisme requise avant validation scientifique.", "L’étape developpement-vie et le module fonctions-relations-vie sont planifiés dans CURRICULUM_BLUEPRINT.md mais absents du seed actuel.", "Validation technique obligatoire avant toute intégration ; cette spécification n’autorise aucune modification de Prisma, de l’API, du seed ou du backlog.", "Les stades sont présentés comme modèles et non comme calendriers universels ; aucun score isolé ne fonde un diagnostic.", "Le développement plurilingue est traité comme un répertoire situé ; ni confusion automatique ni avantage exécutif général ne sont affirmés.", "Les cinq ressources obligatoires sont ouvertes ; les ressources facultatives à texte intégral limité ont une consigne réalisable depuis le résumé et une alternative ouverte."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon planifiée, de neuf ressources, de trois tâches et de quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "modeles-taches-trajectoires-cognitives",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-lifespan-5-3",
+            "openstax-lifespan-7-2"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-modeles-taches-trajectoires-cognitives-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "fonctions-executives-variabilite",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "diamond-executive-functions-2013",
+            "openstax-lifespan-5-4",
+            "kuhl-language-acquisition-2004"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-fonctions-executives-variabilite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "acquisition-langage-repertoires-plurilingues",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "saffran-statistical-learning-1996",
+            "hoff-social-context-language-2006",
+            "openstax-lifespan-7-5",
+            "lehtonen-bilingual-executive-2018"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-acquisition-langage-repertoires-plurilingues-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

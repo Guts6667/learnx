@@ -13,12 +13,24 @@
     "estimatedMinutes": 110,
     "position": 3,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "La coopération désigne des conduites coordonnées qui contribuent à un résultat partagé. Dans un dilemme social, chacun peut gagner à ne pas contribuer à court terme alors que le collectif bénéficie de contributions suffisantes. La conduite dépend alors des coûts, bénéfices, informations, attentes et possibilités de réponse. Coopérer une fois ne révèle pas un trait moral stable ; refuser peut aussi signaler un risque, une règle injuste ou un manque de confiance qu’il faut documenter.", "sourceKeys": ["rand-networks", "penner-prosocial"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "Répétition, réciprocité, réputation, communication, sanctions légitimes et structure du réseau peuvent modifier la coopération. Dans une expérience, permettre aux participants de réorganiser leurs liens a stabilisé davantage la coopération que certaines conditions statiques. Ce résultat montre l’effet possible d’une architecture relationnelle dans une tâche précise, non une recette universelle. En pratique, on examine qui peut choisir ses partenaires, qui supporte le coût, quelles informations circulent et si une sanction est équitable et contestable.", "sourceKeys": ["rand-networks"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Un comportement prosocial est une action volontaire visant à aider autrui. L’altruisme désigne plus précisément un motif d’aide où le bénéfice d’autrui prime malgré un coût personnel. Une même aide peut associer empathie, devoir, réciprocité, réputation, identité ou intérêt commun ; le comportement observé ne permet pas à lui seul de trancher le motif. L’analyse peut donc décrire l’acte, ses destinataires, son coût et son contexte sans distribuer des certificats de vertu.", "sourceKeys": ["openstax-prosocial", "penner-prosocial"]}},
-      {"type": "callout", "position": 4, "content": {"text": "Les normes et les contextes culturels influencent ce qui compte comme partage équitable, obligation, confiance ou sanction. Des expériences économiques menées dans quinze sociétés à petite échelle ont montré une forte variabilité entre populations et un lien avec l’organisation sociale et économique locale. Elles ne classent pas des cultures comme plus ou moins morales et leurs jeux ne résument pas la vie sociale. Comparer exige des procédures compréhensibles, des échantillons décrits et une interprétation située.", "sourceKeys": ["henrich-cross-cultural"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "Les conflits intergroupes impliquent parfois intérêts incompatibles, menaces perçues, statuts inégaux, récits historiques et institutions. Une méta-analyse trouve qu’en moyenne le contact entre groupes est associé à moins de préjugés ; égalité de statut dans la situation, objectifs communs, coopération et soutien institutionnel facilitent généralement cet effet. Ce résultat moyen ne garantit pas qu’un contact imposé soit sûr ou bénéfique. La sélection des participants, le pouvoir réel, les risques et la possibilité de se retirer doivent être examinés.", "sourceKeys": ["pettigrew-tropp-contact"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Une intervention responsable ne demande pas seulement aux groupes de « mieux s’entendre ». Elle définit un objectif commun concret, répartit voix, ressources et responsabilités, protège les personnes ciblées, prévoit médiation et recours, et mesure processus autant que résultats. Elle distingue davantage de coopération envers l’endogroupe d’une diminution de l’hostilité envers l’exogroupe. L’évaluation suit participation, sécurité, équité, comportements et effets durables, tout en recherchant les coûts déplacés vers les groupes les moins puissants.", "sourceKeys": ["pettigrew-tropp-contact", "balliet-ingroup-cooperation"]}}
+      {"type": "definition", "position": 1, "content": {"text": "La coopération désigne des conduites coordonnées qui contribuent à un résultat partagé. Dans un dilemme social, chacun peut gagner à ne pas contribuer à court terme alors que le collectif bénéficie de contributions suffisantes. La conduite dépend alors des coûts, bénéfices, informations, attentes et possibilités de réponse. Coopérer une fois ne révèle pas un trait moral stable ; refuser peut aussi signaler un risque, une règle injuste ou un manque de confiance qu’il faut documenter.", "sourceKeys": ["rand-networks", "penner-prosocial"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "Répétition, réciprocité, réputation, communication, sanctions légitimes et structure du réseau peuvent modifier la coopération. Dans une expérience, permettre aux participants de réorganiser leurs liens a stabilisé davantage la coopération que certaines conditions statiques. Ce résultat montre l’effet possible d’une architecture relationnelle dans une tâche précise, non une recette universelle. En pratique, on examine qui peut choisir ses partenaires, qui supporte le coût, quelles informations circulent et si une sanction est équitable et contestable.", "sourceKeys": ["rand-networks"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Un comportement prosocial est une action volontaire visant à aider autrui. L’altruisme désigne plus précisément un motif d’aide où le bénéfice d’autrui prime malgré un coût personnel. Une même aide peut associer empathie, devoir, réciprocité, réputation, identité ou intérêt commun ; le comportement observé ne permet pas à lui seul de trancher le motif. L’analyse peut donc décrire l’acte, ses destinataires, son coût et son contexte sans distribuer des certificats de vertu.", "sourceKeys": ["openstax-prosocial", "penner-prosocial"]},
+        "key": "content-3"
+      },
+      {"type": "callout", "position": 4, "content": {"text": "Les normes et les contextes culturels influencent ce qui compte comme partage équitable, obligation, confiance ou sanction. Des expériences économiques menées dans quinze sociétés à petite échelle ont montré une forte variabilité entre populations et un lien avec l’organisation sociale et économique locale. Elles ne classent pas des cultures comme plus ou moins morales et leurs jeux ne résument pas la vie sociale. Comparer exige des procédures compréhensibles, des échantillons décrits et une interprétation située.", "sourceKeys": ["henrich-cross-cultural"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "Les conflits intergroupes impliquent parfois intérêts incompatibles, menaces perçues, statuts inégaux, récits historiques et institutions. Une méta-analyse trouve qu’en moyenne le contact entre groupes est associé à moins de préjugés ; égalité de statut dans la situation, objectifs communs, coopération et soutien institutionnel facilitent généralement cet effet. Ce résultat moyen ne garantit pas qu’un contact imposé soit sûr ou bénéfique. La sélection des participants, le pouvoir réel, les risques et la possibilité de se retirer doivent être examinés.", "sourceKeys": ["pettigrew-tropp-contact"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Une intervention responsable ne demande pas seulement aux groupes de « mieux s’entendre ». Elle définit un objectif commun concret, répartit voix, ressources et responsabilités, protège les personnes ciblées, prévoit médiation et recours, et mesure processus autant que résultats. Elle distingue davantage de coopération envers l’endogroupe d’une diminution de l’hostilité envers l’exogroupe. L’évaluation suit participation, sécurité, équité, comportements et effets durables, tout en recherchant les coûts déplacés vers les groupes les moins puissants.", "sourceKeys": ["pettigrew-tropp-contact", "balliet-ingroup-cooperation"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-prosocial", "title": "12.7 Prosocial Behavior", "type": "book_chapter", "url": "https://openstax.org/books/psychology-2e/pages/12-7-prosocial-behavior", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 12.7 Prosocial Behavior. In Psychology 2e. OpenStax.", "description": "Introduction accessible au comportement prosocial, à l’altruisme et au débat sur les motifs.", "isRequired": true, "estimatedMinutes": 15, "position": 1},
@@ -29,18 +41,107 @@
       {"key": "balliet-ingroup-cooperation", "title": "Ingroup favoritism in cooperation: a meta-analysis", "type": "article", "url": "https://pubmed.ncbi.nlm.nih.gov/25222635/", "author": "Daniel Balliet, Junhui Wu et Carsten K. W. De Dreu", "citation": "Balliet, D., Wu, J., & De Dreu, C. K. W. (2014). Ingroup favoritism in cooperation: a meta-analysis. Psychological Bulletin, 140(6), 1556–1581. https://doi.org/10.1037/a0037737", "description": "Méta-analyse distinguant favoritisme pro-endogroupe et dénigrement de l’exogroupe dans les tâches de coopération.", "isRequired": false, "estimatedMinutes": 22, "position": 6}
     ],
     "concepts": [
-      {"title": "Coopération et interdépendance", "slug": "cooperation-dilemmes-interdependance", "description": "Incitations, attentes, répétition et architecture des relations modifient les choix dans un dilemme social.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["rand-networks", "penner-prosocial"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Conditions de coopération", "questionCount": 5}},
-      {"title": "Prosocialité, motifs, normes et culture", "slug": "prosocialite-motifs-normes-culture", "description": "L’aide observée peut avoir plusieurs motifs et prend sens dans des normes et contextes culturels situés.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prosocial", "penner-prosocial", "henrich-cross-cultural"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Aider sans lire les pensées", "questionCount": 5}},
-      {"title": "Conflit, contact et coopération intergroupes", "slug": "conflit-contact-cooperation-intergroupes", "description": "Le contact peut aider sous certaines conditions, mais pouvoir, sécurité, institutions et effets durables doivent être évalués.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["pettigrew-tropp-contact", "balliet-ingroup-cooperation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Coopération intergroupe", "questionCount": 5}}
+      {"title": "Coopération et interdépendance", "slug": "cooperation-dilemmes-interdependance", "description": "Incitations, attentes, répétition et architecture des relations modifient les choix dans un dilemme social.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["rand-networks", "penner-prosocial"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Conditions de coopération", "questionCount": 5,
+        "key": "concept-cooperation-dilemmes-interdependance-assessment-1"
+      }},
+      {"title": "Prosocialité, motifs, normes et culture", "slug": "prosocialite-motifs-normes-culture", "description": "L’aide observée peut avoir plusieurs motifs et prend sens dans des normes et contextes culturels situés.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-prosocial", "penner-prosocial", "henrich-cross-cultural"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Aider sans lire les pensées", "questionCount": 5,
+        "key": "concept-prosocialite-motifs-normes-culture-assessment-1"
+      }},
+      {"title": "Conflit, contact et coopération intergroupes", "slug": "conflit-contact-cooperation-intergroupes", "description": "Le contact peut aider sous certaines conditions, mais pouvoir, sécurité, institutions et effets durables doivent être évalués.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["pettigrew-tropp-contact", "balliet-ingroup-cooperation"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Coopération intergroupe", "questionCount": 5,
+        "key": "concept-conflit-contact-cooperation-intergroupes-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Redessiner un dilemme social", "description": "Modifier une situation fictive en agissant sur information, répétition, réciprocité, réseau et recours, puis prédire prudemment les effets et risques.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Décrire une aide sans lire les intentions", "description": "Analyser trois comportements prosociaux en séparant acte, bénéficiaire, coût, contexte, motifs possibles et données qui permettraient de les départager.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Concevoir une coopération intergroupe sûre", "description": "Proposer une intervention avec objectif commun, pouvoir partagé, soutien institutionnel, consentement, retrait, protection, recours et indicateurs d’équité et de durabilité.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Redessiner un dilemme social", "description": "Modifier une situation fictive en agissant sur information, répétition, réciprocité, réseau et recours, puis prédire prudemment les effets et risques.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Décrire une aide sans lire les intentions", "description": "Analyser trois comportements prosociaux en séparant acte, bénéficiaire, coût, contexte, motifs possibles et données qui permettraient de les départager.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Concevoir une coopération intergroupe sûre", "description": "Proposer une intervention avec objectif commun, pouvoir partagé, soutien institutionnel, consentement, retrait, protection, recours et indicateurs d’équité et de durabilité.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "penner-prosocial"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "rand-networks"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cooperation-dilemmes-interdependance-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-prosocial"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "henrich-cross-cultural"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-prosocialite-motifs-normes-culture-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pettigrew-tropp-contact"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "balliet-ingroup-cooperation"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-conflit-contact-cooperation-intergroupes-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "status": "editorial_review", "version": "1.0.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "status": "editorial_review", "version": "1.1.0", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-051-OPENSTAX-127", "type": "textbook", "authors": ["Rose M. Spielman", "William J. Jenkins", "Marilyn D. Lovett"], "organization": "OpenStax", "title": "Psychology 2e — 12.7 Prosocial Behavior", "year": 2020, "edition": "2e", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/12-7-prosocial-behavior", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Introduction pédagogique à prosocialité et altruisme."},
       {"id": "REF-051-PENNER-2005", "type": "narrative_review", "authors": ["Louis A. Penner", "John F. Dovidio", "Jane A. Piliavin", "David A. Schroeder"], "organization": null, "title": "Prosocial Behavior: Multilevel Perspectives", "year": 2005, "edition": null, "publication": "Annual Review of Psychology, 56, 365–392", "doi": "10.1146/annurev.psych.56.091103.070141", "url": "https://www.annualreviews.org/content/journals/10.1146/annurev.psych.56.091103.070141", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "Résumé public ; texte selon accès", "status": "verified", "notes": "Revue multinéiveau des comportements prosociaux."},
@@ -89,6 +190,70 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie sociale, coopération et relations intergroupes requise.", "L’étape psychologie-sociale et le module relations-groupes sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "Coopération et prosocialité sont présentées comme sensibles aux normes, cultures, incitations, réseaux et contextes.", "Aucun comportement observé n’est transformé en diagnostic moral individuel.", "Le contact intergroupe n’est jamais prescrit sans analyse du pouvoir, de la sécurité, du consentement, du retrait et des coûts déplacés."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_cooperation_and_intergroup_relations"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_social_psychology_cooperation_and_intergroup_relations"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "cooperation-dilemmes-interdependance",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "penner-prosocial",
+            "rand-networks"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-cooperation-dilemmes-interdependance-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "prosocialite-motifs-normes-culture",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-prosocial",
+            "henrich-cross-cultural"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-prosocialite-motifs-normes-culture-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "conflit-contact-cooperation-intergroupes",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "pettigrew-tropp-contact",
+            "balliet-ingroup-cooperation"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-conflit-contact-cooperation-intergroupes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

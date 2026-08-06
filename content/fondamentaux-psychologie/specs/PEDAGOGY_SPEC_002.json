@@ -27,7 +27,8 @@
         "content": {
         "text": "La psychologie n’est pas un bloc unique. Ses domaines se forment autour de questions, de populations, de niveaux d’analyse et de contextes différents. La psychologie cognitive étudie notamment l’attention, la mémoire, le langage et le raisonnement ; la psychologie du développement examine les changements au cours de la vie ; la psychologie sociale étudie l’influence d’autrui et des groupes ; la biopsychologie relie fonctionnement biologique et comportement. Cette carte est utile, mais elle n’est ni exhaustive ni composée de frontières étanches.",
         "sourceKeys": ["openstax-psychology-2e-1-3"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "definition",
@@ -35,7 +36,8 @@
         "content": {
         "text": "Un domaine désigne un ensemble de questions et de méthodes, tandis qu’un niveau d’explication indique sous quel angle un phénomène est étudié. Pour expliquer une difficulté de concentration, une recherche peut examiner le sommeil et le fonctionnement biologique, les mécanismes attentionnels, l’évolution avec l’âge ou l’influence de l’environnement social. Ces explications peuvent être complémentaires lorsqu’elles portent sur des mécanismes distincts.",
         "sourceKeys": ["openstax-psychology-2e-1-3", "yale-psyc110-lecture-1-domains"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -43,7 +45,8 @@
         "content": {
         "text": "Exemple inventé : une étudiante repousse régulièrement son travail. Une approche cognitive peut étudier la mémoire de travail et le contrôle attentionnel ; une approche développementale, l’évolution de l’autorégulation ; une approche sociale, les normes du groupe et la comparaison avec les pairs ; une approche de la santé, le sommeil et le stress. Nommer plusieurs domaines ne dispense pas de formuler ensuite des hypothèses testables et de recueillir des données.",
         "sourceKeys": ["openstax-psychology-2e-1-3"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -51,7 +54,8 @@
         "content": {
         "text": "La distinction entre recherche fondamentale et application porte sur le but immédiat du travail, pas sur une hiérarchie de valeur. Une étude fondamentale cherche d’abord à comprendre un mécanisme ; une activité appliquée mobilise ou évalue des connaissances dans la santé, l’éducation, le travail, la justice ou d’autres contextes. Un même domaine peut associer recherche et pratique : la psychologie clinique, du travail ou de la santé produit aussi des connaissances, tandis que des résultats cognitifs ou sociaux peuvent guider des interventions.",
         "sourceKeys": ["openstax-psychology-2e-1-3", "apa-subfields-careers-guide"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
         "text": "Erreur fréquente : confondre psychologie et psychothérapie. La clinique est un domaine important, mais la discipline étudie aussi le cerveau et le comportement, la perception, l’apprentissage, le développement, la personnalité, les relations sociales, la santé, l’éducation, le travail et de nombreux autres objets. Pour orienter une question, demandez d’abord quel phénomène est étudié, à quel niveau et dans quel but.",
         "sourceKeys": ["openstax-psychology-2e-1-3"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -115,7 +120,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Diversité des domaines",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-diversite-domaines-psychologiques-assessment-1"
         }
       },
       {
@@ -132,7 +138,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Niveaux d’explication",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-niveaux-explication-complementaires-assessment-1"
         }
       },
       {
@@ -149,7 +156,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Recherche et applications",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-recherche-et-applications-assessment-1"
         }
       }
     ],
@@ -160,7 +168,11 @@
         "type": "reading",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "openstax-psychology-2e-1-3"
+        ]
       },
       {
         "title": "Orienter six questions",
@@ -168,7 +180,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Construire une analyse multiniveau",
@@ -176,18 +190,78 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "yale-psyc110-lecture-1-domains"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-diversite-domaines-psychologiques-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-subfields-careers-guide"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-niveaux-explication-complementaires-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-recherche-et-applications-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -613,7 +687,65 @@
         "author": "LearnX",
         "change": "Création du cours, des tâches, des sources et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "diversite-domaines-psychologiques",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-3",
+            "yale-psyc110-lecture-1-domains"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-diversite-domaines-psychologiques-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "niveaux-explication-complementaires",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "apa-subfields-careers-guide"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-niveaux-explication-complementaires-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "recherche-et-applications",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-recherche-et-applications-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

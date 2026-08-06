@@ -13,29 +13,111 @@
     "estimatedMinutes": 135,
     "position": 2,
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Une lecture efficace commence par une intention explicite : sélectionner un article pertinent, comprendre son résultat principal, vérifier une méthode ou préparer une critique. L'objectif détermine le temps et la profondeur nécessaires. Lire chaque mot avec la même attention surcharge le débutant et masque souvent l'architecture de l'argument ; parcourir seulement l'abstract expose au risque de reprendre une conclusion condensée sans en contrôler les conditions.", "sourceKeys": ["statpearls-read-manuscript-2024", "keshav-how-read-paper-2007"]}},
-      {"type": "definition", "position": 2, "content": {"text": "La lecture par passages procède du global au précis. Premier passage : titre, abstract, intertitres, conclusion, figures et références pour décider de la pertinence et formuler les questions. Deuxième passage : introduction, résultats, figures et discussion pour reconstruire l'argument sans résoudre chaque détail. Troisième passage : méthode, analyses, suppléments et références clés pour évaluer les choix et les limites. Ce protocole s'adapte au but ; il ne constitue pas un ordre obligatoire.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]}},
-      {"type": "example", "position": 3, "content": {"text": "Lors d'un premier passage, le terme « modèle linéaire mixte » n'a pas besoin d'être maîtrisé pour noter la question, les groupes, la mesure principale et la direction du résultat. Au passage suivant, le lecteur vérifie ce que le modèle compare et si la conclusion dépend de cette analyse. Il recherche ensuite seulement les termes indispensables à l'interprétation. Une inconnue est donc étiquetée — centrale, utile ou périphérique — au lieu de provoquer l'abandon ou une compréhension feinte.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Une fiche critique courte conserve la trace de la lecture : référence complète, question, plan, échantillon, mesures, résultat principal avec ordre de grandeur, conclusion des auteurs, limites déclarées, limites repérées, conflits d'intérêts et questions ouvertes. Les formulations distinguent « les auteurs rapportent », « les auteurs interprètent » et « je ne peux pas encore évaluer ». Cette dernière catégorie est une information de travail, non un échec.", "sourceKeys": ["statpearls-read-manuscript-2024"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Savoir s'arrêter fait partie de la lecture critique. Un article peut être écarté après le premier passage s'il ne répond pas à la question, conservé avec une réserve si une information manque, ou approfondi si son résultat est décisif. Le lecteur ne comble jamais un manque par une supposition : il consulte le texte intégral, un supplément ou une source citée, puis note ce qui demeure indéterminé.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Une lecture efficace commence par une intention explicite : sélectionner un article pertinent, comprendre son résultat principal, vérifier une méthode ou préparer une critique. L'objectif détermine le temps et la profondeur nécessaires. Lire chaque mot avec la même attention surcharge le débutant et masque souvent l'architecture de l'argument ; parcourir seulement l'abstract expose au risque de reprendre une conclusion condensée sans en contrôler les conditions.", "sourceKeys": ["statpearls-read-manuscript-2024", "keshav-how-read-paper-2007"]},
+        "key": "content-1"
+      },
+      {"type": "definition", "position": 2, "content": {"text": "La lecture par passages procède du global au précis. Premier passage : titre, abstract, intertitres, conclusion, figures et références pour décider de la pertinence et formuler les questions. Deuxième passage : introduction, résultats, figures et discussion pour reconstruire l'argument sans résoudre chaque détail. Troisième passage : méthode, analyses, suppléments et références clés pour évaluer les choix et les limites. Ce protocole s'adapte au but ; il ne constitue pas un ordre obligatoire.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]},
+        "key": "content-2"
+      },
+      {"type": "example", "position": 3, "content": {"text": "Lors d'un premier passage, le terme « modèle linéaire mixte » n'a pas besoin d'être maîtrisé pour noter la question, les groupes, la mesure principale et la direction du résultat. Au passage suivant, le lecteur vérifie ce que le modèle compare et si la conclusion dépend de cette analyse. Il recherche ensuite seulement les termes indispensables à l'interprétation. Une inconnue est donc étiquetée — centrale, utile ou périphérique — au lieu de provoquer l'abandon ou une compréhension feinte.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Une fiche critique courte conserve la trace de la lecture : référence complète, question, plan, échantillon, mesures, résultat principal avec ordre de grandeur, conclusion des auteurs, limites déclarées, limites repérées, conflits d'intérêts et questions ouvertes. Les formulations distinguent « les auteurs rapportent », « les auteurs interprètent » et « je ne peux pas encore évaluer ». Cette dernière catégorie est une information de travail, non un échec.", "sourceKeys": ["statpearls-read-manuscript-2024"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Savoir s'arrêter fait partie de la lecture critique. Un article peut être écarté après le premier passage s'il ne répond pas à la question, conservé avec une réserve si une information manque, ou approfondi si son résultat est décisif. Le lecteur ne comble jamais un manque par une supposition : il consulte le texte intégral, un supplément ou une source citée, puis note ce qui demeure indéterminé.", "sourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "statpearls-read-manuscript-2024", "type": "book_chapter", "title": "How To Read A Scientific Manuscript", "author": "Tushar Dave, Saama Sabeti, Martin R. Huecker et Jacob Shreffler", "url": "https://www.ncbi.nlm.nih.gov/books/NBK564411/", "citation": "Dave, T., Sabeti, S., Huecker, M. R., & Shreffler, J. (2024). How To Read A Scientific Manuscript. In StatPearls. StatPearls Publishing.", "description": "Lire les sections Establishing an Objective et Efficient Manuscript Reading, puis transformer leurs questions en grille personnelle.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
       {"key": "keshav-how-read-paper-2007", "type": "article", "title": "How to Read a Paper", "author": "Srinivasan Keshav", "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/publications/htrap.html", "citation": "Keshav, S. (2007). How to read a paper. ACM SIGCOMM Computer Communication Review, 37(3), 83–84. https://doi.org/10.1145/1273445.1273458", "description": "Appliquer les trois passages à un article court et noter, après chaque passage, ce qui est établi et ce qui reste à vérifier.", "isRequired": true, "estimatedMinutes": 35, "position": 2}
     ],
     "concepts": [
-      {"title": "Objectif et passages de lecture", "slug": "objectif-passages-lecture", "description": "La profondeur et l'ordre de lecture s'adaptent à un objectif explicite et progressent d'une carte générale vers l'évaluation détaillée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["statpearls-read-manuscript-2024", "keshav-how-read-paper-2007"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Lecture par passages", "questionCount": 5}},
-      {"title": "Gestion des inconnues", "slug": "gestion-inconnues", "description": "Un terme ou une analyse inconnue est classé selon son importance pour la conclusion, puis recherché seulement lorsque cela est nécessaire.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Gestion des inconnues", "questionCount": 5}},
-      {"title": "Fiche critique traçable", "slug": "fiche-critique-tracable", "description": "Une fiche critique relie chaque jugement à une section de l'article et distingue information rapportée, interprétation et point non résolu.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["statpearls-read-manuscript-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Fiche critique", "questionCount": 5}}
+      {"title": "Objectif et passages de lecture", "slug": "objectif-passages-lecture", "description": "La profondeur et l'ordre de lecture s'adaptent à un objectif explicite et progressent d'une carte générale vers l'évaluation détaillée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["statpearls-read-manuscript-2024", "keshav-how-read-paper-2007"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Lecture par passages", "questionCount": 5,
+        "key": "concept-objectif-passages-lecture-assessment-1"
+      }},
+      {"title": "Gestion des inconnues", "slug": "gestion-inconnues", "description": "Un terme ou une analyse inconnue est classé selon son importance pour la conclusion, puis recherché seulement lorsque cela est nécessaire.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["keshav-how-read-paper-2007", "statpearls-read-manuscript-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Gestion des inconnues", "questionCount": 5,
+        "key": "concept-gestion-inconnues-assessment-1"
+      }},
+      {"title": "Fiche critique traçable", "slug": "fiche-critique-tracable", "description": "Une fiche critique relie chaque jugement à une section de l'article et distingue information rapportée, interprétation et point non résolu.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["statpearls-read-manuscript-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Fiche critique", "questionCount": 5,
+        "key": "concept-fiche-critique-tracable-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Trois passages chronométrés", "description": "Lire un article fourni pendant 5, 20 puis 35 minutes ; à chaque passage, consigner la question, le résultat principal, deux incertitudes et la décision de poursuivre ou non.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Trier les obstacles", "description": "Relever dix termes ou passages difficiles et les classer comme centraux, utiles ou périphériques ; justifier les trois recherches prioritaires.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Rédiger une fiche critique", "description": "Produire une fiche de 500 à 700 mots comportant question, méthode, résultat, conclusion, limites, conflits d'intérêts et trois formulations explicitement attribuées.", "type": "writing", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Trois passages chronométrés", "description": "Lire un article fourni pendant 5, 20 puis 35 minutes ; à chaque passage, consigner la question, le résultat principal, deux incertitudes et la décision de poursuivre ou non.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Trier les obstacles", "description": "Relever dix termes ou passages difficiles et les classer comme centraux, utiles ou périphériques ; justifier les trois recherches prioritaires.", "type": "checklist", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": [
+          "statpearls-read-manuscript-2024",
+          "keshav-how-read-paper-2007"
+        ]
+      },
+      {"title": "Rédiger une fiche critique", "description": "Produire une fiche de 500 à 700 mots comportant question, méthode, résultat, conclusion, limites, conflits d'intérêts et trois formulations explicitement attribuées.", "type": "writing", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "statpearls-read-manuscript-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "keshav-how-read-paper-2007"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-objectif-passages-lecture-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-gestion-inconnues-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-fiche-critique-tracable-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-013-STATPEARLS", "type": "handbook_chapter", "authors": ["Dave, T.", "Sabeti, S.", "Huecker, M. R.", "Shreffler, J."], "organization": "NCBI Bookshelf, National Library of Medicine", "title": "How To Read A Scientific Manuscript", "year": 2024, "edition": "StatPearls, mise à jour du 6 octobre 2024", "publication": "StatPearls Publishing", "doi": null, "url": "https://www.ncbi.nlm.nih.gov/books/NBK564411/", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Consultation ouverte via NCBI Bookshelf", "status": "verified", "notes": "Guide professionnel structuré ; ses conseils de lecture sont heuristiques et non des résultats expérimentaux."},
       {"id": "REF-013-KESHAV", "type": "methodological_article", "authors": ["Keshav, S."], "organization": "ACM SIGCOMM", "title": "How to Read a Paper", "year": 2007, "edition": null, "publication": "ACM SIGCOMM Computer Communication Review, 37(3), 83–84", "doi": "https://doi.org/10.1145/1273445.1273458", "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/publications/htrap.html", "accessedAt": "2026-08-03", "evidenceLevel": "E", "peerReviewed": false, "language": "en", "license": "Page auteur ouverte ; article ACM soumis aux droits de l'éditeur", "status": "verified", "notes": "Heuristique de lecture issue de l'informatique, adaptée ici sans prétendre à une validation universelle en psychologie ; le type exact de revue éditoriale n'est pas assimilé à une revue par les pairs."}
@@ -75,6 +157,63 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine de méthodologie requise avant publication.", "La méthode en trois passages est présentée comme une heuristique adaptable, pas comme une procédure validée universelle."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "objectif-passages-lecture",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "statpearls-read-manuscript-2024",
+            "keshav-how-read-paper-2007"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-objectif-passages-lecture-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "gestion-inconnues",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-gestion-inconnues-assessment-1",
+          "rationale": "La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "fiche-critique-tracable",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-fiche-critique-tracable-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

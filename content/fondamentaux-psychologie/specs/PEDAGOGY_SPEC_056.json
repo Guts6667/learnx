@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_056","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"psychopathologie","moduleSlug":"familles-troubles",
   "lesson":{"title":"Troubles dépressifs et bipolaires","slug":"troubles-depressifs-bipolaires","summary":"Distinguer épisodes dépressifs, maniaques et hypomaniaques dans une histoire longitudinale, sans confondre variations ordinaires de l’humeur et diagnostic.","objectives":["Distinguer humeur ordinaire, épisode dépressif, manie et hypomanie.","Expliquer pourquoi le diagnostic différentiel et la trajectoire dans le temps sont essentiels.","Formuler une orientation générale prudente, notamment face à un risque suicidaire ou une désorganisation aiguë."],"prerequisites":["Distinguer symptôme, syndrome et trouble.","Savoir qu’un diagnostic clinique mobilise plusieurs sources d’information."],"estimatedMinutes":110,"position":2,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Une humeur triste, une fatigue ou une baisse d’intérêt peuvent survenir sans trouble. Un épisode dépressif associe un ensemble persistant de manifestations affectives, cognitives, corporelles et comportementales, dont humeur dépressive ou perte d’intérêt, avec détresse ou retentissement. L’intensité, la durée et le changement par rapport au fonctionnement habituel comptent. L’irritabilité peut être saillante chez certaines personnes et selon l’âge ; la culture influence les mots employés et la place des plaintes corporelles.","sourceKeys":["who-depression-2025","who-icd11-cddr"]}},
-      {"type":"rich_text","position":2,"content":{"text":"La dépression n’est ni paresse, ni faiblesse, ni simple tristesse. Mais une checklist ne suffit pas : deuil, stress, trouble anxieux, substances, médicaments, maladie somatique, sommeil ou autre trouble de l’humeur peuvent produire des manifestations proches. L’évaluation explore chronologie, épisodes antérieurs, contexte, santé physique, consommations, capacités et sécurité. Elle distingue aussi un trouble dépressif d’un épisode dépressif inscrit dans un trouble bipolaire.","sourceKeys":["who-icd11-cddr","who-depression-2025"]}},
-      {"type":"definition","position":3,"content":{"text":"Un épisode maniaque implique une élévation, expansivité ou irritabilité marquée de l’humeur avec augmentation anormale d’énergie ou d’activité et d’autres changements, pouvant entraîner une forte altération du fonctionnement, un danger ou des manifestations psychotiques. L’hypomanie présente un changement net mais moins sévère, sans le même degré d’altération. Ni enthousiasme, ni productivité, ni humeur changeante ne suffisent. Le diagnostic bipolaire repose sur la nature et la trajectoire des épisodes, pas sur des « hauts et bas » quotidiens.","sourceKeys":["who-bipolar-2025","who-icd11-cddr","goes-bipolar-2023"]}},
-      {"type":"example","position":4,"content":{"text":"Deux personnes consultant pour une dépression actuelle peuvent avoir des trajectoires différentes : l’une sans épisode d’activation antérieur, l’autre avec une période distincte de besoin réduit de sommeil, activité accrue et décisions inhabituelles. Cette histoire doit être examinée sans conclure à partir d’un souvenir isolé. Substances, médicaments, affection médicale, privation de sommeil, développement, contexte périnatal et informations d’un proche consenties peuvent modifier le différentiel. Les limites entre catégories et présentations mixtes exigent un jugement clinique longitudinal.","sourceKeys":["who-icd11-cddr","goes-bipolar-2023"]}},
-      {"type":"callout","position":5,"content":{"text":"Les idées suicidaires ne permettent pas à elles seules de déterminer un diagnostic et le suicide a des déterminants multiples. Elles doivent néanmoins être prises au sérieux. On ne promet pas le secret si un danger immédiat existe, on n’argumente pas pour minimiser la souffrance et on ne laisse pas seule une personne en danger. En cas d’intention imminente, plan, moyens disponibles ou incapacité à rester en sécurité, contacter immédiatement les services d’urgence locaux ou une aide de crise appropriée.","sourceKeys":["who-suicide-2025","who-depression-2025"]}},
-      {"type":"objective","position":6,"content":{"text":"Une orientation non urgente peut proposer une évaluation qualifiée lorsque l’humeur, l’énergie, le sommeil, les pensées ou les conduites changent durablement ou gênent la vie quotidienne. Une agitation extrême, une désorganisation, des conduites dangereuses, des symptômes psychotiques ou un risque suicidaire peuvent nécessiter une aide urgente. On écoute, décrit des observations concrètes et respecte la personne. Cette leçon ne permet ni d’étiqueter un proche, ni de commencer, arrêter ou modifier un médicament, ni de choisir un traitement individualisé.","sourceKeys":["who-bipolar-2025","who-depression-2025","who-icd11-cddr"]}}
+      {"type":"definition","position":1,"content":{"text":"Une humeur triste, une fatigue ou une baisse d’intérêt peuvent survenir sans trouble. Un épisode dépressif associe un ensemble persistant de manifestations affectives, cognitives, corporelles et comportementales, dont humeur dépressive ou perte d’intérêt, avec détresse ou retentissement. L’intensité, la durée et le changement par rapport au fonctionnement habituel comptent. L’irritabilité peut être saillante chez certaines personnes et selon l’âge ; la culture influence les mots employés et la place des plaintes corporelles.","sourceKeys":["who-depression-2025","who-icd11-cddr"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"La dépression n’est ni paresse, ni faiblesse, ni simple tristesse. Mais une checklist ne suffit pas : deuil, stress, trouble anxieux, substances, médicaments, maladie somatique, sommeil ou autre trouble de l’humeur peuvent produire des manifestations proches. L’évaluation explore chronologie, épisodes antérieurs, contexte, santé physique, consommations, capacités et sécurité. Elle distingue aussi un trouble dépressif d’un épisode dépressif inscrit dans un trouble bipolaire.","sourceKeys":["who-icd11-cddr","who-depression-2025"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"Un épisode maniaque implique une élévation, expansivité ou irritabilité marquée de l’humeur avec augmentation anormale d’énergie ou d’activité et d’autres changements, pouvant entraîner une forte altération du fonctionnement, un danger ou des manifestations psychotiques. L’hypomanie présente un changement net mais moins sévère, sans le même degré d’altération. Ni enthousiasme, ni productivité, ni humeur changeante ne suffisent. Le diagnostic bipolaire repose sur la nature et la trajectoire des épisodes, pas sur des « hauts et bas » quotidiens.","sourceKeys":["who-bipolar-2025","who-icd11-cddr","goes-bipolar-2023"]},
+        "key": "content-3"
+      },
+      {"type":"example","position":4,"content":{"text":"Deux personnes consultant pour une dépression actuelle peuvent avoir des trajectoires différentes : l’une sans épisode d’activation antérieur, l’autre avec une période distincte de besoin réduit de sommeil, activité accrue et décisions inhabituelles. Cette histoire doit être examinée sans conclure à partir d’un souvenir isolé. Substances, médicaments, affection médicale, privation de sommeil, développement, contexte périnatal et informations d’un proche consenties peuvent modifier le différentiel. Les limites entre catégories et présentations mixtes exigent un jugement clinique longitudinal.","sourceKeys":["who-icd11-cddr","goes-bipolar-2023"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"Les idées suicidaires ne permettent pas à elles seules de déterminer un diagnostic et le suicide a des déterminants multiples. Elles doivent néanmoins être prises au sérieux. On ne promet pas le secret si un danger immédiat existe, on n’argumente pas pour minimiser la souffrance et on ne laisse pas seule une personne en danger. En cas d’intention imminente, plan, moyens disponibles ou incapacité à rester en sécurité, contacter immédiatement les services d’urgence locaux ou une aide de crise appropriée.","sourceKeys":["who-suicide-2025","who-depression-2025"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Une orientation non urgente peut proposer une évaluation qualifiée lorsque l’humeur, l’énergie, le sommeil, les pensées ou les conduites changent durablement ou gênent la vie quotidienne. Une agitation extrême, une désorganisation, des conduites dangereuses, des symptômes psychotiques ou un risque suicidaire peuvent nécessiter une aide urgente. On écoute, décrit des observations concrètes et respecte la personne. Cette leçon ne permet ni d’étiqueter un proche, ni de commencer, arrêter ou modifier un médicament, ni de choisir un traitement individualisé.","sourceKeys":["who-bipolar-2025","who-depression-2025","who-icd11-cddr"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"who-icd11-cddr","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","type":"document","url":"https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2024). Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders.","description":"Comparer les chapitres dépressif et bipolaire, leurs frontières et différentiels, sans s’auto-évaluer.","isRequired":true,"estimatedMinutes":30,"position":1},
@@ -17,16 +29,102 @@
       {"key":"who-suicide-2025","title":"Suicide","type":"website","url":"https://www.who.int/news-room/fact-sheets/detail/suicide","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2025). Suicide. Fact sheet, 25 March 2025.","description":"Lire les déterminants multiples et retenir les principes généraux d’orientation immédiate.","isRequired":true,"estimatedMinutes":12,"position":5}
     ],
     "concepts":[
-      {"title":"Épisode dépressif et différentiel","slug":"episode-depressif-differentiel","description":"Un épisode se définit par un profil persistant et un retentissement, après examen des autres explications.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-depression-2025","who-icd11-cddr"],"assessment":{"type":"quiz","title":"Mini-évaluation — Dépression sans raccourci","questionCount":5}},
-      {"title":"Manie, hypomanie et trajectoire bipolaire","slug":"manie-hypomanie-trajectoire-bipolaire","description":"Le trouble bipolaire dépend d’épisodes caractérisés dans le temps, non de simples variations d’humeur.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-bipolar-2025","who-icd11-cddr","goes-bipolar-2023"],"assessment":{"type":"quiz","title":"Mini-évaluation — Humeur et trajectoire","questionCount":5}},
-      {"title":"Sécurité et orientation générale","slug":"securite-orientation-humeur","description":"Risque suicidaire, désorganisation ou danger aigu appellent une réponse immédiate sans diagnostic amateur.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-suicide-2025","who-depression-2025","who-bipolar-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Orienter avec prudence","questionCount":5}}
+      {"title":"Épisode dépressif et différentiel","slug":"episode-depressif-differentiel","description":"Un épisode se définit par un profil persistant et un retentissement, après examen des autres explications.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-depression-2025","who-icd11-cddr"],"assessment":{"type":"quiz","title":"Mini-évaluation — Dépression sans raccourci","questionCount":5,
+        "key": "concept-episode-depressif-differentiel-assessment-1"
+      }},
+      {"title":"Manie, hypomanie et trajectoire bipolaire","slug":"manie-hypomanie-trajectoire-bipolaire","description":"Le trouble bipolaire dépend d’épisodes caractérisés dans le temps, non de simples variations d’humeur.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-bipolar-2025","who-icd11-cddr","goes-bipolar-2023"],"assessment":{"type":"quiz","title":"Mini-évaluation — Humeur et trajectoire","questionCount":5,
+        "key": "concept-manie-hypomanie-trajectoire-bipolaire-assessment-1"
+      }},
+      {"title":"Sécurité et orientation générale","slug":"securite-orientation-humeur","description":"Risque suicidaire, désorganisation ou danger aigu appellent une réponse immédiate sans diagnostic amateur.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-suicide-2025","who-depression-2025","who-bipolar-2025"],"assessment":{"type":"quiz","title":"Mini-évaluation — Orienter avec prudence","questionCount":5,
+        "key": "concept-securite-orientation-humeur-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Construire deux chronologies","description":"À partir de vignettes, tracer humeur, énergie, sommeil, activité, durée et retentissement, puis lister les informations manquantes sans poser de diagnostic.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Corriger le mythe des hauts et bas","description":"Réécrire un texte assimilant toute humeur changeante au trouble bipolaire et toute tristesse à une dépression.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Préparer une réponse de sécurité","description":"Pour trois niveaux de situation, formuler écoute, observations, consultation ou urgence, sans secret absolu ni conseil médicamenteux.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Construire deux chronologies","description":"À partir de vignettes, tracer humeur, énergie, sommeil, activité, durée et retentissement, puis lister les informations manquantes sans poser de diagnostic.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Corriger le mythe des hauts et bas","description":"Réécrire un texte assimilant toute humeur changeante au trouble bipolaire et toute tristesse à une dépression.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Préparer une réponse de sécurité","description":"Pour trois niveaux de situation, formuler écoute, observations, consultation ou urgence, sans secret absolu ni conseil médicamenteux.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-icd11-cddr"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-depression-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-episode-depressif-differentiel-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-bipolar-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "goes-bipolar-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-manie-hypomanie-trajectoire-bipolaire-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-suicide-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-securite-orientation-humeur-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-056-WHO-CDDR","type":"diagnostic_manual","authors":[],"organization":"World Health Organization","title":"Clinical descriptions and diagnostic requirements for ICD-11 mental, behavioural and neurodevelopmental disorders","year":2024,"edition":"ICD-11 CDDR","publication":"World Health Organization","doi":null,"url":"https://iris.who.int/bitstream/handle/10665/375767/9789240077263-eng.pdf","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-ND 3.0 IGO","status":"verified","notes":"Manuel clinique officiel ; non destiné à l’autodiagnostic."},
       {"id":"REF-056-WHO-DEPRESSION","type":"official_fact_sheet","authors":[],"organization":"World Health Organization","title":"Depressive disorder (depression)","year":2025,"edition":"29 August 2025","publication":"WHO Fact sheets","doi":null,"url":"https://www.who.int/news-room/fact-sheets/detail/depression","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Information publique OMS","status":"verified","notes":"Panorama actuel de la dépression."},
@@ -73,6 +171,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychopathologie de l’humeur et prévention du suicide requise.","L’étape psychopathologie et le module familles-troubles sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Panorama non diagnostique et non prescriptif ; aucune modification médicamenteuse ou thérapeutique individualisée.","Les messages d’urgence restent généraux et doivent être localisés avant publication." ]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_mood_disorders_and_suicide_prevention_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_clinical_mood_disorders_and_suicide_prevention_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "episode-depressif-differentiel",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-icd11-cddr",
+            "who-depression-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-episode-depressif-differentiel-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "manie-hypomanie-trajectoire-bipolaire",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "who-bipolar-2025",
+            "goes-bipolar-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-manie-hypomanie-trajectoire-bipolaire-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "securite-orientation-humeur",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "who-suicide-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-securite-orientation-humeur-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

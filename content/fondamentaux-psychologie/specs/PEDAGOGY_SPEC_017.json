@@ -30,7 +30,8 @@
             "asa-pvalues-2016",
             "openstax-stats-9-introduction"
           ]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "callout",
@@ -41,7 +42,8 @@
             "asa-pvalues-2016",
             "wasserstein-beyond-p-2019"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "definition",
@@ -52,7 +54,8 @@
             "openstax-stats-8-intervals",
             "wasserstein-beyond-p-2019"
           ]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -64,7 +67,8 @@
             "asa-pvalues-2016",
             "wasserstein-beyond-p-2019"
           ]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "example",
@@ -76,7 +80,8 @@
             "wasserstein-beyond-p-2019",
             "openstax-stats-8-intervals"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -87,7 +92,8 @@
             "asa-pvalues-2016",
             "wasserstein-beyond-p-2019"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -167,7 +173,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Test et valeur p",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-test-hypothese-valeur-p-assessment-1"
         }
       },
       {
@@ -184,7 +191,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Estimation et incertitude",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-estimation-taille-effet-incertitude-assessment-1"
         }
       },
       {
@@ -202,7 +210,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Erreurs et importance pratique",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-erreurs-multiplicite-importance-pratique-assessment-1"
         }
       }
     ],
@@ -213,7 +222,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Auditer les analyses multiples",
@@ -221,7 +232,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Rédiger une conclusion proportionnée",
@@ -229,18 +242,90 @@
         "type": "writing",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "asa-pvalues-2016"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wasserstein-beyond-p-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-stats-9-introduction"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-test-hypothese-valeur-p-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-stats-9-2-errors"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-stats-8-intervals"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-estimation-taille-effet-incertitude-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-erreurs-multiplicite-importance-pratique-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -768,7 +853,68 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, de trois exercices et de quinze questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "test-hypothese-valeur-p",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "asa-pvalues-2016",
+            "wasserstein-beyond-p-2019",
+            "openstax-stats-9-introduction"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-test-hypothese-valeur-p-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "estimation-taille-effet-incertitude",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-stats-9-2-errors",
+            "openstax-stats-8-intervals"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-estimation-taille-effet-incertitude-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "erreurs-multiplicite-importance-pratique",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-erreurs-multiplicite-importance-pratique-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

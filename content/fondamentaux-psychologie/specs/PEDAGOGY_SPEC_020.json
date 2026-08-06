@@ -30,7 +30,8 @@
             "openstax-psychology-2e-5-1",
             "gregory-perceptions-hypotheses-1980"
           ]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -41,7 +42,8 @@
             "openstax-psychology-2e-5-1",
             "egeth-yantis-visual-attention-1997"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -52,7 +54,8 @@
             "gregory-perceptions-hypotheses-1980",
             "openstax-psychology-2e-5-1"
           ]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -64,7 +67,8 @@
             "simons-chabris-gorillas-1999",
             "openstax-psychology-2e-5-1"
           ]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -75,7 +79,8 @@
             "simons-chabris-gorillas-1999",
             "simons-rensink-change-blindness-2005"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -86,7 +91,8 @@
             "pashler-dual-task-1994",
             "chun-golomb-turkbrowne-attention-2011"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -190,7 +196,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Sensation et perception",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-sensation-perception-inference-assessment-1"
         }
       },
       {
@@ -207,7 +214,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Traitements et contexte",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-traitements-ascendant-descendant-contexte-assessment-1"
         }
       },
       {
@@ -225,7 +233,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Attention et limites",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-selection-attentionnelle-limites-assessment-1"
         }
       }
     ],
@@ -236,7 +245,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Distinguer trois limites attentionnelles",
@@ -244,7 +255,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Auditer un slogan sur le multitâche",
@@ -252,18 +265,98 @@
         "type": "writing",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-5-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gregory-perceptions-hypotheses-1980"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "egeth-yantis-visual-attention-1997"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-sensation-perception-inference-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "simons-chabris-gorillas-1999"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-traitements-ascendant-descendant-contexte-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "simons-rensink-change-blindness-2005"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pashler-dual-task-1994"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "chun-golomb-turkbrowne-attention-2011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-selection-attentionnelle-limites-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -1016,7 +1109,71 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des trois exercices et de quinze questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "sensation-perception-inference",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-5-1",
+            "gregory-perceptions-hypotheses-1980",
+            "egeth-yantis-visual-attention-1997"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-sensation-perception-inference-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "traitements-ascendant-descendant-contexte",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "simons-chabris-gorillas-1999"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-traitements-ascendant-descendant-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "selection-attentionnelle-limites",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "simons-rensink-change-blindness-2005",
+            "pashler-dual-task-1994",
+            "chun-golomb-turkbrowne-attention-2011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-selection-attentionnelle-limites-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

@@ -26,7 +26,8 @@
         "content": {
           "text": "Un test fournit des scores destinés à soutenir certaines inférences. Il ne résume pas une personne et ne devrait jamais être traité comme une essence, une étiquette définitive ou un diagnostic autonome. La première décision éthique consiste parfois à ne pas tester : l’objectif doit être légitime, les données nécessaires, les preuves adaptées et les bénéfices proportionnés aux risques. À enjeu élevé, un score unique ne suffit pas pour décider de l’avenir d’une personne.",
           "sourceKeys": ["itc-test-use", "apa-ethics-code"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -34,7 +35,8 @@
         "content": {
           "text": "Un utilisateur compétent choisit le test, vérifie sa documentation, administre et interprète selon ses qualifications et sait quand demander une expertise. Une plateforme grand public ne confère pas une compétence clinique ou professionnelle. Les limites du construit, de la population, de la langue et de l’usage doivent être explicites. Si l’instrument exige une qualification absente ou si les preuves ne couvrent pas la décision envisagée, l’usage doit être suspendu ou réduit.",
           "sourceKeys": ["itc-test-use", "apa-ethics-code"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "callout",
@@ -42,7 +44,8 @@
         "content": {
           "text": "Le consentement éclairé à l’évaluation décrit la finalité, le caractère obligatoire ou facultatif, les destinataires, la durée, les conséquences possibles et les droits. Il ne doit pas être confondu avec la base juridique du traitement des données : au sens du RGPD, le consentement n’est qu’une base possible et doit notamment être libre pour être valable. La personne doit savoir ce qui se passe si elle refuse et pouvoir poser des questions. Les exceptions légales exigent une analyse spécifique ; une leçon générale ne remplace pas un avis juridique.",
           "sourceKeys": ["apa-ethics-code", "gdpr-chapter-3"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -50,7 +53,8 @@
         "content": {
           "text": "Confidentialité et minimisation commencent avant la passation : collecter seulement ce qui sert la finalité, limiter les accès, fixer une conservation, prévoir suppression ou rectification et, selon les risques, séparer les identifiants ou chiffrer. Les scores, réponses et commentaires peuvent révéler des informations personnelles sensibles même sans diagnostic. Un rapport ne doit pas circuler par défaut vers un manager, un proche ou un partenaire ; chaque destinataire et chaque réutilisation doivent avoir une base et une nécessité documentées.",
           "sourceKeys": ["gdpr-chapter-3", "itc-test-use"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "example",
@@ -58,7 +62,8 @@
         "content": {
           "text": "L’équité ne consiste pas seulement à administrer exactement la même chose. Accessibilité, langue, normes, fonctionnement différentiel, possibilités d’aménagement et conséquences doivent être examinés. En recrutement, une procédure nouvelle ou assistée par IA reste soumise aux mêmes exigences de validation et de surveillance que les méthodes classiques. On documente les performances et erreurs par groupes, sans transformer l’appartenance à un groupe en explication individuelle ni masquer un impact défavorable.",
           "sourceKeys": ["siop-ai-assessment-2023", "itc-test-use"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -66,7 +71,8 @@
         "content": {
           "text": "Le profilage évalue des aspects personnels pour analyser ou prédire une personne. Lorsqu’une décision exclusivement automatisée produit des effets juridiques ou comparables, l’article 22 du RGPD prévoit un encadrement particulier et, dans les cas autorisés, des garanties dont l’intervention humaine, l’expression du point de vue et la contestation. Une présence humaine purement symbolique ne suffit pas : elle doit pouvoir réexaminer la décision. Le résultat doit rester explicable, contestable et incertain, sans profilage clinique ni conseil thérapeutique.",
           "sourceKeys": ["cnil-profilage-2018", "gdpr-chapter-3"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -77,24 +83,109 @@
       {"key": "siop-ai-assessment-2023", "title": "Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection", "type": "document", "url": "https://www.siop.org/wp-content/uploads/legacy/SIOP%20Considerations%20and%20Recommendations%20for%20the%20Validation%20and%20Use%20of%20AI-Based%20Assessments%20for%20Employee%20Selection%20010323.pdf", "author": "Society for Industrial and Organizational Psychology", "citation": "Society for Industrial and Organizational Psychology. (2023). Considerations and Recommendations for the Validation and Use of AI-Based Assessments for Employee Selection.", "description": "Relever les exigences qui restent applicables aux évaluations assistées par IA et deux risques spécifiques à surveiller.", "isRequired": true, "estimatedMinutes": 22, "position": 5}
     ],
     "concepts": [
-      {"title": "Usage adapté et qualification", "slug": "usage-adapte-qualification", "description": "Le choix, l’administration et l’interprétation doivent correspondre à une finalité légitime, des preuves adaptées et des compétences réelles.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["itc-test-use", "apa-ethics-code"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Usage et compétence", "questionCount": 5}},
-      {"title": "Consentement, confidentialité et restitution", "slug": "consentement-confidentialite-restitution", "description": "Finalité, droits, destinataires, minimisation, sécurité et restitution compréhensible encadrent les données de test.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["apa-ethics-code", "gdpr-chapter-3", "itc-test-use"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Droits et données", "questionCount": 5}},
-      {"title": "Équité, profilage et décision responsable", "slug": "equite-profilage-decision", "description": "Les effets par groupes, l’accessibilité et les décisions automatisées exigent validation, surveillance, intervention humaine et contestabilité.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cnil-profilage-2018", "gdpr-chapter-3", "siop-ai-assessment-2023"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Équité et profilage", "questionCount": 5}}
+      {"title": "Usage adapté et qualification", "slug": "usage-adapte-qualification", "description": "Le choix, l’administration et l’interprétation doivent correspondre à une finalité légitime, des preuves adaptées et des compétences réelles.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["itc-test-use", "apa-ethics-code"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Usage et compétence", "questionCount": 5,
+        "key": "concept-usage-adapte-qualification-assessment-1"
+      }},
+      {"title": "Consentement, confidentialité et restitution", "slug": "consentement-confidentialite-restitution", "description": "Finalité, droits, destinataires, minimisation, sécurité et restitution compréhensible encadrent les données de test.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["apa-ethics-code", "gdpr-chapter-3", "itc-test-use"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Droits et données", "questionCount": 5,
+        "key": "concept-consentement-confidentialite-restitution-assessment-1"
+      }},
+      {"title": "Équité, profilage et décision responsable", "slug": "equite-profilage-decision", "description": "Les effets par groupes, l’accessibilité et les décisions automatisées exigent validation, surveillance, intervention humaine et contestabilité.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cnil-profilage-2018", "gdpr-chapter-3", "siop-ai-assessment-2023"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Équité et profilage", "questionCount": 5,
+        "key": "concept-equite-profilage-decision-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Décider s’il faut tester", "description": "Appliquer une checklist à trois demandes fictives : finalité, nécessité, preuves, qualifications, risques, alternatives et décision motivée d’utiliser, limiter ou refuser.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Concevoir une notice et un circuit de données", "description": "Rédiger une notice courte puis cartographier collecte, accès, conservation, restitution, rectification et suppression pour un usage personnel à faible enjeu.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer un recrutement automatisé", "description": "Réviser un cas fictif de présélection par score de personnalité : validité, groupes, accessibilité, information, intervention humaine, contestation et conclusions interdites.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Décider s’il faut tester", "description": "Appliquer une checklist à trois demandes fictives : finalité, nécessité, preuves, qualifications, risques, alternatives et décision motivée d’utiliser, limiter ou refuser.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Concevoir une notice et un circuit de données", "description": "Rédiger une notice courte puis cartographier collecte, accès, conservation, restitution, rectification et suppression pour un usage personnel à faible enjeu.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer un recrutement automatisé", "description": "Réviser un cas fictif de présélection par score de personnalité : validité, groupes, accessibilité, information, intervention humaine, contestation et conclusions interdites.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "itc-test-use"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-ethics-code"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-usage-adapte-qualification-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gdpr-chapter-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-consentement-confidentialite-restitution-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-profilage-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "siop-ai-assessment-2023"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-equite-profilage-decision-assessment-1"
+      }
     ]
   },
   "editorial": {
     "status": "editorial_review",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-045-ITC-USE", "type": "professional_guideline", "authors": [], "organization": "International Test Commission", "title": "ITC Guidelines on Test Use", "year": 2001, "edition": "Version 1.2", "publication": "International Test Commission", "doi": null, "url": "https://www.intestcom.org/files/guideline_test_use.pdf", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Copyright ITC; consultation publique", "status": "verified", "notes": "Guide international de compétence et d’usage responsable."},
@@ -171,7 +262,69 @@
       ]
     },
     "changeLog": [
-      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_ethics_and_data_protection"}
-    ]
+      {"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_psychometrics_ethics_and_data_protection"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "usage-adapte-qualification",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "itc-test-use",
+            "apa-ethics-code"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-usage-adapte-qualification-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "consentement-confidentialite-restitution",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "gdpr-chapter-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-consentement-confidentialite-restitution-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "equite-profilage-decision",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "cnil-profilage-2018",
+            "siop-ai-assessment-2023"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-equite-profilage-decision-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

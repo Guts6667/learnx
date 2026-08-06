@@ -21,12 +21,24 @@
       "Connaître les bases de l’évaluation du risque de biais."
     ],
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Un protocole de recherche proportionné note avant ou pendant la recherche : question, critères d’éligibilité, bases et autres sources consultées, requêtes complètes, dates, filtres, nombre de résultats, dédoublonnage et raisons de sélection. Dans un dossier pédagogique limité, l’objectif n’est pas de simuler une revue systématique exhaustive : il faut annoncer l’étendue, le temps disponible et ce qui n’a pas été couvert.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]}},
-      {"type": "example", "position": 2, "content": {"text": "La requête combine les concepts de la question, leurs synonymes, variantes et termes contrôlés quand la base en propose. Elle est testée sur quelques références sentinelles, puis ajustée en conservant l’historique. Une seule base, une requête non conservée ou des filtres non justifiés rendent la recherche difficile à vérifier ; une recherche proportionnée peut néanmoins être courte si ses limites sont explicites.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Hiérarchiser signifie ici attribuer un rôle. Une étude primaire permet d’examiner directement population, mesures et résultats ; une revue rassemble plusieurs études mais dépend de sa question, de sa recherche et de ses méthodes ; un guide traduit un corpus et des jugements en recommandations pour un contexte. Aucun type n’est toujours supérieur : la source la plus utile dépend de l’affirmation, et une source secondaire ne remplace pas l’inspection des études décisives.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]}},
-      {"type": "callout", "position": 4, "content": {"text": "Un article, une étude et un résultat ne sont pas synonymes. Une même étude peut produire plusieurs rapports ; les compter comme des études indépendantes crée un double comptage. À l’inverse, un préprint, un registre, un article et une correction peuvent documenter différentes étapes du même travail. Relier les identifiants, auteurs, échantillons et dates avant de compter les preuves.", "sourceKeys": ["cochrane-handbook-ch4-2025", "crossref-crossmark"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "Avant de retenir une source, vérifier sa version et son statut sur la page de l’éditeur, le DOI, Crossmark lorsqu’il est utilisé et les avis de correction ou de rétractation. Examiner financement et conflits déclarés comme contexte d’interprétation : leur présence ne rend pas automatiquement un résultat faux, et leur absence déclarée ne garantit pas l’indépendance. Consigner la date et la voie de vérification.", "sourceKeys": ["crossref-crossmark", "cope-retraction-guidelines-2019", "icmje-conflicts-current"]}},
-      {"type": "rich_text", "position": 6, "content": {"text": "Évaluer une revue ou un éditeur par un faisceau d’indices : identité et contact de l’éditeur, description du comité et de l’évaluation, frais annoncés, politique de correction, archivage, identifiants et exactitude des allégations d’indexation. Un signal isolé ne prouve pas une intention frauduleuse ; plusieurs incohérences non résolues justifient prudence, exclusion motivée ou recherche d’une source indépendante. La grille finale classe chaque source par rôle, pertinence, fiabilité et statut, pas par prestige seul.", "sourceKeys": ["think-check-submit-journals", "cope-retraction-guidelines-2019", "crossref-crossmark"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Un protocole de recherche proportionné note avant ou pendant la recherche : question, critères d’éligibilité, bases et autres sources consultées, requêtes complètes, dates, filtres, nombre de résultats, dédoublonnage et raisons de sélection. Dans un dossier pédagogique limité, l’objectif n’est pas de simuler une revue systématique exhaustive : il faut annoncer l’étendue, le temps disponible et ce qui n’a pas été couvert.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]},
+        "key": "content-1"
+      },
+      {"type": "example", "position": 2, "content": {"text": "La requête combine les concepts de la question, leurs synonymes, variantes et termes contrôlés quand la base en propose. Elle est testée sur quelques références sentinelles, puis ajustée en conservant l’historique. Une seule base, une requête non conservée ou des filtres non justifiés rendent la recherche difficile à vérifier ; une recherche proportionnée peut néanmoins être courte si ses limites sont explicites.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Hiérarchiser signifie ici attribuer un rôle. Une étude primaire permet d’examiner directement population, mesures et résultats ; une revue rassemble plusieurs études mais dépend de sa question, de sa recherche et de ses méthodes ; un guide traduit un corpus et des jugements en recommandations pour un contexte. Aucun type n’est toujours supérieur : la source la plus utile dépend de l’affirmation, et une source secondaire ne remplace pas l’inspection des études décisives.", "sourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"]},
+        "key": "content-3"
+      },
+      {"type": "callout", "position": 4, "content": {"text": "Un article, une étude et un résultat ne sont pas synonymes. Une même étude peut produire plusieurs rapports ; les compter comme des études indépendantes crée un double comptage. À l’inverse, un préprint, un registre, un article et une correction peuvent documenter différentes étapes du même travail. Relier les identifiants, auteurs, échantillons et dates avant de compter les preuves.", "sourceKeys": ["cochrane-handbook-ch4-2025", "crossref-crossmark"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "Avant de retenir une source, vérifier sa version et son statut sur la page de l’éditeur, le DOI, Crossmark lorsqu’il est utilisé et les avis de correction ou de rétractation. Examiner financement et conflits déclarés comme contexte d’interprétation : leur présence ne rend pas automatiquement un résultat faux, et leur absence déclarée ne garantit pas l’indépendance. Consigner la date et la voie de vérification.", "sourceKeys": ["crossref-crossmark", "cope-retraction-guidelines-2019", "icmje-conflicts-current"]},
+        "key": "content-5"
+      },
+      {"type": "rich_text", "position": 6, "content": {"text": "Évaluer une revue ou un éditeur par un faisceau d’indices : identité et contact de l’éditeur, description du comité et de l’évaluation, frais annoncés, politique de correction, archivage, identifiants et exactitude des allégations d’indexation. Un signal isolé ne prouve pas une intention frauduleuse ; plusieurs incohérences non résolues justifient prudence, exclusion motivée ou recherche d’une source indépendante. La grille finale classe chaque source par rôle, pertinence, fiabilité et statut, pas par prestige seul.", "sourceKeys": ["think-check-submit-journals", "cope-retraction-guidelines-2019", "crossref-crossmark"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "cochrane-handbook-ch4-2025", "title": "Cochrane Handbook — Chapter 4: Searching for and selecting studies", "type": "document", "url": "https://training.cochrane.org/handbook/current/chapter-04", "author": "Lefebvre C. et al.", "citation": "Lefebvre, C., et al. (2025). Chapter 4: Searching for and selecting studies. In Cochrane Handbook for Systematic Reviews of Interventions (Version 6.5.1; updated March 2025).", "description": "Lire la planification des recherches, la multiplicité des sources, la documentation et la distinction entre étude et rapport.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -37,18 +49,107 @@
       {"key": "think-check-submit-journals", "title": "Think. Check. Submit. — Journals checklist", "type": "document", "url": "https://thinkchecksubmit.org/journals/", "author": "Think. Check. Submit.", "citation": "Think. Check. Submit. (2023). Journals checklist (updated June 2023). Consulté le 4 août 2026.", "description": "Appliquer un faisceau de vérifications à une revue sans utiliser une liste noire comme verdict automatique.", "isRequired": false, "estimatedMinutes": 15, "position": 6}
     ],
     "concepts": [
-      {"title": "Recherche proportionnée et reproductible", "slug": "recherche-proportionnee-reproductible", "description": "Une recherche annonce sa portée, conserve ses requêtes et permet de reconstruire les décisions essentielles sans prétendre à une exhaustivité non réalisée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tracer la recherche", "questionCount": 5}},
-      {"title": "Rôle et unité des sources", "slug": "role-unite-sources", "description": "Études primaires, revues et guides répondent à des besoins différents ; plusieurs rapports peuvent provenir du même travail.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Hiérarchiser sans simplifier", "questionCount": 5}},
-      {"title": "Statut et intégrité éditoriale", "slug": "statut-integrite-editoriale", "description": "Corrections, rétractations, conflits et pratiques d’édition s’examinent par vérifications convergentes, datées et contextualisées.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["crossref-crossmark", "cope-retraction-guidelines-2019", "icmje-conflicts-current", "think-check-submit-journals"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Vérifier une source", "questionCount": 5}}
+      {"title": "Recherche proportionnée et reproductible", "slug": "recherche-proportionnee-reproductible", "description": "Une recherche annonce sa portée, conserve ses requêtes et permet de reconstruire les décisions essentielles sans prétendre à une exhaustivité non réalisée.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Tracer la recherche", "questionCount": 5,
+        "key": "concept-recherche-proportionnee-reproductible-assessment-1"
+      }},
+      {"title": "Rôle et unité des sources", "slug": "role-unite-sources", "description": "Études primaires, revues et guides répondent à des besoins différents ; plusieurs rapports peuvent provenir du même travail.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch4-2025", "prisma-s-2021"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Hiérarchiser sans simplifier", "questionCount": 5,
+        "key": "concept-role-unite-sources-assessment-1"
+      }},
+      {"title": "Statut et intégrité éditoriale", "slug": "statut-integrite-editoriale", "description": "Corrections, rétractations, conflits et pratiques d’édition s’examinent par vérifications convergentes, datées et contextualisées.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["crossref-crossmark", "cope-retraction-guidelines-2019", "icmje-conflicts-current", "think-check-submit-journals"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Vérifier une source", "questionCount": 5,
+        "key": "concept-statut-integrite-editoriale-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Produire un journal de recherche", "description": "Exécuter deux requêtes sur au moins deux sources documentaires, conserver chaînes, dates, filtres, volumes, doublons et limites de couverture.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Construire une carte des rôles", "description": "Pour huit références, relier chaque rapport à son étude, indiquer primaire, synthèse ou guide, puis noter l’affirmation que la source peut ou ne peut pas soutenir.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer les sources du projet", "description": "Vérifier DOI, version, corrections ou rétractations, financement, conflits et signaux éditoriaux ; produire une décision motivée retenir, contextualiser, remplacer ou exclure.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Produire un journal de recherche", "description": "Exécuter deux requêtes sur au moins deux sources documentaires, conserver chaînes, dates, filtres, volumes, doublons et limites de couverture.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Construire une carte des rôles", "description": "Pour huit références, relier chaque rapport à son étude, indiquer primaire, synthèse ou guide, puis noter l’affirmation que la source peut ou ne peut pas soutenir.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer les sources du projet", "description": "Vérifier DOI, version, corrections ou rétractations, financement, conflits et signaux éditoriaux ; produire une décision motivée retenir, contextualiser, remplacer ou exclure.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cochrane-handbook-ch4-2025"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "prisma-s-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-recherche-proportionnee-reproductible-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "crossref-crossmark"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-role-unite-sources-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cope-retraction-guidelines-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "icmje-conflicts-current"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "think-check-submit-journals"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-statut-integrite-editoriale-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "status": "editorial_review", "version": "1.0.0", "language": "fr", "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "status": "editorial_review", "version": "1.1.0", "language": "fr", "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-068-COCHRANE-CH4", "type": "official_handbook", "authors": ["Lefebvre C.", "Glanville J.", "Briscoe S.", "Featherstone R.", "Littlewood A.", "Metzendorf M.-I.", "Noel-Storr A.", "Paynter R.", "Rader T.", "Thomas J.", "Wieland L. S."], "organization": "Cochrane", "title": "Chapter 4: Searching for and selecting studies", "year": 2025, "edition": "Version 6.5.1; updated March 2025", "publication": "Cochrane Handbook for Systematic Reviews of Interventions", "doi": null, "url": "https://training.cochrane.org/handbook/current/chapter-04", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": false, "language": "en", "license": "Cochrane terms of use", "status": "verified", "notes": "Guide conçu pour les revues d’interventions ; le niveau d’exhaustivité doit être adapté et annoncé pour ce projet pédagogique."},
       {"id": "REF-068-PRISMA-S", "type": "methodological_guideline", "authors": ["Rethlefsen M. L. et al."], "organization": "PRISMA-S Group", "title": "PRISMA-S: An Extension to the PRISMA Statement for Reporting Literature Searches in Systematic Reviews", "year": 2021, "edition": null, "publication": "Systematic Reviews, 10, 39", "doi": "10.1186/s13643-020-01542-z", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7839230/", "accessedAt": "2026-08-04", "evidenceLevel": "D", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Guide de reporting d’une recherche de revue systématique, pas certificat de qualité ni obligation de prétendre à l’exhaustivité."},
@@ -97,7 +198,71 @@
         {"type": "short_answer", "prompt": "Quel document explique officiellement pourquoi un article a été retiré ?", "explanation": "Il s’agit de l’avis de rétractation.", "acceptedAnswers": ["avis de rétractation", "avis de retractation", "notice de rétractation", "retraction notice"], "position": 5, "options": []}
       ]}
     ],
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_information_retrieval_publication_ethics_and_source_appraisal_review"}],
-    "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en recherche documentaire, méthodologie et intégrité scientifique requise.", "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "La recherche est reproductible et proportionnée ; elle ne doit pas être présentée comme exhaustive si elle ne l’est pas.", "Études primaires, revues et guides sont hiérarchisés par fonction et pertinence, jamais par une pyramide automatique.", "Rétractations, conflits et signaux de revue prédatrice sont contextualisés et ne produisent aucun verdict binaire isolé."]}
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_information_retrieval_publication_ethics_and_source_appraisal_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en recherche documentaire, méthodologie et intégrité scientifique requise.", "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "La recherche est reproductible et proportionnée ; elle ne doit pas être présentée comme exhaustive si elle ne l’est pas.", "Études primaires, revues et guides sont hiérarchisés par fonction et pertinence, jamais par une pyramide automatique.", "Rétractations, conflits et signaux de revue prédatrice sont contextualisés et ne produisent aucun verdict binaire isolé."]},
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "recherche-proportionnee-reproductible",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "cochrane-handbook-ch4-2025",
+            "prisma-s-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-recherche-proportionnee-reproductible-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "role-unite-sources",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "crossref-crossmark"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-role-unite-sources-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "statut-integrite-editoriale",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "cope-retraction-guidelines-2019",
+            "icmje-conflicts-current",
+            "think-check-submit-journals"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-statut-integrite-editoriale-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

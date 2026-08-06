@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_064","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"integration-preuves","moduleSlug":"science-cumulative-controverses",
   "lesson":{"title":"Réplication, transparence et science ouverte","slug":"replication-transparence-science-ouverte","summary":"Comprendre comment réplication, reproductibilité, préenregistrement et transparence contribuent différemment à une science cumulative, sans transformer un résultat isolé en verdict ni l’ouverture en obligation sans limites.","objectives":["Distinguer reproductibilité computationnelle, réplication, robustesse et accumulation des preuves.","Évaluer ce que le préenregistrement et la transparence permettent réellement d’inférer.","Proposer une ouverture proportionnée qui protège confidentialité, droits, équité et soutenabilité."],"prerequisites":["Distinguer une étude, une estimation et une synthèse de preuves.","Connaître les notions de biais, incertitude et validité."],"estimatedMinutes":120,"position":1,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Dans le cadre des National Academies, la reproductibilité computationnelle consiste à retrouver des résultats cohérents avec les mêmes données, étapes, code et conditions d’analyse ; la réplication étudie la même question avec de nouvelles données. La robustesse demande si la conclusion résiste à des choix analytiques ou opérationnels raisonnables. Ces contrôles répondent à des questions différentes : partager un code n’est pas collecter un nouvel échantillon, et répéter une procédure n’épuise pas la validité d’un construit ou sa généralisation.","sourceKeys":["nasem-reproducibility-replicability-2019","nosek-replicability-review-2022"]}},
-      {"type":"callout","position":2,"content":{"text":"Une réplication n’est ni un vote définitif ni un jugement sur les personnes. Une différence entre études peut venir de l’incertitude d’échantillonnage, de la puissance, des mesures, de la mise en œuvre, du contexte ou d’un effet réellement variable. Une réplication convergente renforce une proposition délimitée ; une divergence oblige à examiner méthodes et modèles, idéalement avec plusieurs études et une synthèse. Qualifier une équipe d’incompétente ou de fraudeuse ne découle jamais d’un seul résultat divergent.","sourceKeys":["nosek-replicability-review-2022","nasem-reproducibility-replicability-2019"]}},
-      {"type":"definition","position":3,"content":{"text":"Le préenregistrement horodate questions, variables, exclusions et analyses avant de connaître les résultats pertinents. Il aide à distinguer analyses confirmatoires et exploratoires, mais ne garantit ni bonne théorie, ni mesure valide, ni adhésion au plan. Les écarts peuvent être nécessaires : ils doivent être datés, justifiés et distingués des décisions prévues. Une exploration transparente reste utile ; la présenter après coup comme une prédiction réduit son interprétabilité.","sourceKeys":["nosek-preregistration-2018","nosek-top-guidelines-2015"]}},
-      {"type":"rich_text","position":4,"content":{"text":"La transparence peut porter sur hypothèses, protocole, matériaux, données, code, décisions, résultats nuls et conflits d’intérêts. Les standards TOP proposent des niveaux plutôt qu’une règle unique, car disciplines, risques et ressources diffèrent. Une pratique ouverte facilite contrôle et réutilisation sans certifier automatiquement la qualité : un fichier accessible peut être incomplet, un code exécutable reproduire une analyse inadéquate, et un badge ne remplace pas l’examen du contenu.","sourceKeys":["nosek-top-guidelines-2015","nasem-reproducibility-replicability-2019"]}},
-      {"type":"callout","position":5,"content":{"text":"« Aussi ouvert que possible » ne signifie pas « tout publier ». Confidentialité, consentement, risque de réidentification, droits collectifs, connaissances sensibles, propriété intellectuelle et sécurité peuvent justifier un accès restreint ou médié. Les principes CARE rappellent que les données autochtones concernent aussi bénéfice collectif, autorité de contrôle, responsabilité et éthique. Les coûts d’archivage, de traduction, de documentation et de publication peuvent créer de nouvelles inégalités si les infrastructures et le crédit ne sont pas partagés.","sourceKeys":["unesco-open-science-2021","carroll-care-principles-2020"]}},
-      {"type":"example","position":6,"content":{"text":"Une équipe ne retrouve pas l’effet d’une étude célèbre et dépose données synthétiques, code et protocole. Une lecture responsable vérifie d’abord la question, les écarts de mesure, la précision, le contexte et la compatibilité des analyses ; elle décrit ce que cette étude ajoute au faisceau de preuves. Le plan d’ouverture publie matériaux et code, documente les écarts, place les données sensibles sous accès contrôlé et associe la communauté concernée aux usages secondaires. La conclusion porte sur une revendication délimitée, jamais sur la valeur morale des équipes.","sourceKeys":["nosek-replicability-review-2022","unesco-open-science-2021","carroll-care-principles-2020"]}}
+      {"type":"definition","position":1,"content":{"text":"Dans le cadre des National Academies, la reproductibilité computationnelle consiste à retrouver des résultats cohérents avec les mêmes données, étapes, code et conditions d’analyse ; la réplication étudie la même question avec de nouvelles données. La robustesse demande si la conclusion résiste à des choix analytiques ou opérationnels raisonnables. Ces contrôles répondent à des questions différentes : partager un code n’est pas collecter un nouvel échantillon, et répéter une procédure n’épuise pas la validité d’un construit ou sa généralisation.","sourceKeys":["nasem-reproducibility-replicability-2019","nosek-replicability-review-2022"]},
+        "key": "content-1"
+      },
+      {"type":"callout","position":2,"content":{"text":"Une réplication n’est ni un vote définitif ni un jugement sur les personnes. Une différence entre études peut venir de l’incertitude d’échantillonnage, de la puissance, des mesures, de la mise en œuvre, du contexte ou d’un effet réellement variable. Une réplication convergente renforce une proposition délimitée ; une divergence oblige à examiner méthodes et modèles, idéalement avec plusieurs études et une synthèse. Qualifier une équipe d’incompétente ou de fraudeuse ne découle jamais d’un seul résultat divergent.","sourceKeys":["nosek-replicability-review-2022","nasem-reproducibility-replicability-2019"]},
+        "key": "content-2"
+      },
+      {"type":"definition","position":3,"content":{"text":"Le préenregistrement horodate questions, variables, exclusions et analyses avant de connaître les résultats pertinents. Il aide à distinguer analyses confirmatoires et exploratoires, mais ne garantit ni bonne théorie, ni mesure valide, ni adhésion au plan. Les écarts peuvent être nécessaires : ils doivent être datés, justifiés et distingués des décisions prévues. Une exploration transparente reste utile ; la présenter après coup comme une prédiction réduit son interprétabilité.","sourceKeys":["nosek-preregistration-2018","nosek-top-guidelines-2015"]},
+        "key": "content-3"
+      },
+      {"type":"rich_text","position":4,"content":{"text":"La transparence peut porter sur hypothèses, protocole, matériaux, données, code, décisions, résultats nuls et conflits d’intérêts. Les standards TOP proposent des niveaux plutôt qu’une règle unique, car disciplines, risques et ressources diffèrent. Une pratique ouverte facilite contrôle et réutilisation sans certifier automatiquement la qualité : un fichier accessible peut être incomplet, un code exécutable reproduire une analyse inadéquate, et un badge ne remplace pas l’examen du contenu.","sourceKeys":["nosek-top-guidelines-2015","nasem-reproducibility-replicability-2019"]},
+        "key": "content-4"
+      },
+      {"type":"callout","position":5,"content":{"text":"« Aussi ouvert que possible » ne signifie pas « tout publier ». Confidentialité, consentement, risque de réidentification, droits collectifs, connaissances sensibles, propriété intellectuelle et sécurité peuvent justifier un accès restreint ou médié. Les principes CARE rappellent que les données autochtones concernent aussi bénéfice collectif, autorité de contrôle, responsabilité et éthique. Les coûts d’archivage, de traduction, de documentation et de publication peuvent créer de nouvelles inégalités si les infrastructures et le crédit ne sont pas partagés.","sourceKeys":["unesco-open-science-2021","carroll-care-principles-2020"]},
+        "key": "content-5"
+      },
+      {"type":"example","position":6,"content":{"text":"Une équipe ne retrouve pas l’effet d’une étude célèbre et dépose données synthétiques, code et protocole. Une lecture responsable vérifie d’abord la question, les écarts de mesure, la précision, le contexte et la compatibilité des analyses ; elle décrit ce que cette étude ajoute au faisceau de preuves. Le plan d’ouverture publie matériaux et code, documente les écarts, place les données sensibles sous accès contrôlé et associe la communauté concernée aux usages secondaires. La conclusion porte sur une revendication délimitée, jamais sur la valeur morale des équipes.","sourceKeys":["nosek-replicability-review-2022","unesco-open-science-2021","carroll-care-principles-2020"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"nasem-reproducibility-replicability-2019","title":"Reproducibility and Replicability in Science","type":"document","url":"https://www.nationalacademies.org/projects/DBASSE-BBCSS-17-03/publication/25303","author":"National Academies of Sciences, Engineering, and Medicine","citation":"National Academies of Sciences, Engineering, and Medicine. (2019). Reproducibility and replicability in science. National Academies Press. https://doi.org/10.17226/25303","description":"Lire le résumé et les définitions ; comparer mêmes données, nouvelles données et autres dimensions de validité.","isRequired":true,"estimatedMinutes":30,"position":1},
@@ -18,16 +30,106 @@
       {"key":"carroll-care-principles-2020","title":"The CARE Principles for Indigenous Data Governance","type":"article","url":"https://datascience.codata.org/articles/dsj-2020-043","author":"Stephanie Russo Carroll et collaborateurs","citation":"Carroll, S. R., Garba, I., Figueroa-Rodríguez, O. L., et al. (2020). The CARE Principles for Indigenous Data Governance. Data Science Journal, 19, 43. https://doi.org/10.5334/dsj-2020-043","description":"Lire CARE et sa complémentarité avec FAIR ; repérer autorité, bénéfice collectif et usages secondaires.","isRequired":false,"estimatedMinutes":20,"position":6}
     ],
     "concepts":[
-      {"title":"Reproductibilité, réplication et robustesse","slug":"reproductibilite-replication-robustesse","description":"Ces démarches utilisent mêmes ou nouvelles données et éprouvent des dimensions distinctes d’une revendication.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nasem-reproducibility-replicability-2019","nosek-replicability-review-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Ce que teste une répétition","questionCount":5}},
-      {"title":"Préenregistrement et transparence","slug":"preenregistrement-transparence","description":"Rendre visibles plans, écarts, données, code et résultats améliore l’évaluation sans garantir la qualité.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nosek-preregistration-2018","nosek-top-guidelines-2015"],"assessment":{"type":"quiz","title":"Mini-évaluation — Plans et traces","questionCount":5}},
-      {"title":"Ouverture responsable et équitable","slug":"ouverture-responsable-equitable","description":"L’accès doit être proportionné aux bénéfices, risques, droits, ressources et gouvernances concernées.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["unesco-open-science-2021","carroll-care-principles-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Ouvrir sans nuire","questionCount":5}}
+      {"title":"Reproductibilité, réplication et robustesse","slug":"reproductibilite-replication-robustesse","description":"Ces démarches utilisent mêmes ou nouvelles données et éprouvent des dimensions distinctes d’une revendication.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nasem-reproducibility-replicability-2019","nosek-replicability-review-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Ce que teste une répétition","questionCount":5,
+        "key": "concept-reproductibilite-replication-robustesse-assessment-1"
+      }},
+      {"title":"Préenregistrement et transparence","slug":"preenregistrement-transparence","description":"Rendre visibles plans, écarts, données, code et résultats améliore l’évaluation sans garantir la qualité.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["nosek-preregistration-2018","nosek-top-guidelines-2015"],"assessment":{"type":"quiz","title":"Mini-évaluation — Plans et traces","questionCount":5,
+        "key": "concept-preenregistrement-transparence-assessment-1"
+      }},
+      {"title":"Ouverture responsable et équitable","slug":"ouverture-responsable-equitable","description":"L’accès doit être proportionné aux bénéfices, risques, droits, ressources et gouvernances concernées.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["unesco-open-science-2021","carroll-care-principles-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Ouvrir sans nuire","questionCount":5,
+        "key": "concept-ouverture-responsable-equitable-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Classer six pratiques de vérification","description":"Pour six scénarios fictifs, identifier reproductibilité, réplication, robustesse ou synthèse, puis préciser ce que chaque résultat permet et ne permet pas de conclure.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Auditer un préenregistrement","description":"Comparer un plan fictif et son article, classer analyses prévues, écarts justifiés et explorations, sans assimiler écart déclaré à fraude.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Concevoir un plan d’ouverture proportionné","description":"Choisir pour protocole, matériaux, code et données un accès ouvert, contrôlé ou non partagé, avec justification de confidentialité, droits, coûts, crédit et gouvernance.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Classer six pratiques de vérification","description":"Pour six scénarios fictifs, identifier reproductibilité, réplication, robustesse ou synthèse, puis préciser ce que chaque résultat permet et ne permet pas de conclure.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Auditer un préenregistrement","description":"Comparer un plan fictif et son article, classer analyses prévues, écarts justifiés et explorations, sans assimiler écart déclaré à fraude.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Concevoir un plan d’ouverture proportionné","description":"Choisir pour protocole, matériaux, code et données un accès ouvert, contrôlé ou non partagé, avec justification de confidentialité, droits, coûts, crédit et gouvernance.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nasem-reproducibility-replicability-2019"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nosek-replicability-review-2022"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-reproductibilite-replication-robustesse-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nosek-preregistration-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nosek-top-guidelines-2015"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-preenregistrement-transparence-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "unesco-open-science-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "carroll-care-principles-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-ouverture-responsable-equitable-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-064-NASEM","type":"consensus_report","authors":["National Academies of Sciences, Engineering, and Medicine"],"organization":"National Academies of Sciences, Engineering, and Medicine","title":"Reproducibility and Replicability in Science","year":2019,"edition":"1st ed.","publication":"National Academies Press","doi":"10.17226/25303","url":"https://www.nationalacademies.org/projects/DBASSE-BBCSS-17-03/publication/25303","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":true,"language":"en","license":"Lecture en ligne et PDF gratuit selon conditions NAP","status":"verified","notes":"Rapport de consensus ; définitions explicites et recommandations interdisciplinaire."},
       {"id":"REF-064-NOSEK-REVIEW","type":"peer_reviewed_review","authors":["Nosek, B. A.","Hardwicke, T. E.","Moshontz, H.","et al."],"organization":null,"title":"Replicability, Robustness, and Reproducibility in Psychological Science","year":2022,"edition":null,"publication":"Annual Review of Psychology, 73, 719–748","doi":"10.1146/annurev-psych-020821-114157","url":"https://www.annualreviews.org/content/journals/10.1146/annurev-psych-020821-114157","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Résumé ouvert ; texte intégral selon accès","status":"verified","notes":"Revue de métascience ; vocabulaire et interprétation non binaire des réplications."},
@@ -76,6 +178,70 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en méthodologie, métascience, éthique des données et science ouverte requise.","L’étape integration-preuves et le module science-cumulative-controverses sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","La réplication est présentée comme information cumulative, jamais comme verdict binaire ni attaque personnelle.","Préenregistrement, transparence et ouverture sont distingués de la qualité scientifique et assortis de limites de confidentialité, droits, coûts et équité."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_methods_metascience_open_science_and_data_ethics_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_methods_metascience_open_science_and_data_ethics_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "reproductibilite-replication-robustesse",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nasem-reproducibility-replicability-2019",
+            "nosek-replicability-review-2022"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-reproductibilite-replication-robustesse-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "preenregistrement-transparence",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "nosek-preregistration-2018",
+            "nosek-top-guidelines-2015"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-preenregistrement-transparence-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "ouverture-responsable-equitable",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "unesco-open-science-2021",
+            "carroll-care-principles-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-ouverture-responsable-equitable-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

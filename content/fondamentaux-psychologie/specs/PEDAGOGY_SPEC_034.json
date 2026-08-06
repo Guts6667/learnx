@@ -19,12 +19,24 @@
     "estimatedMinutes": 180,
     "position": 1,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "La motivation désigne les processus invoqués pour décrire l'initiation, la direction, l'intensité ou la persistance d'une action. Un besoin renvoie, selon le modèle, à un état biologique, à une exigence psychologique ou à une condition valorisée ; une incitation est une propriété ou conséquence anticipée de la situation qui attire ou repousse ; un but est une représentation d'un état futur ou d'un standard à atteindre. Ces termes organisent des hypothèses : aucun n'est une petite force directement visible dans la personne.", "sourceKeys": ["openstax-motivation", "locke-latham-goals"]}},
-      {"type": "example", "position": 2, "content": {"text": "Une personne accepte une formation du soir. Le besoin d'appartenance peut rendre le groupe important, une prime constitue une incitation et réussir une certification forme un but. Mais l'action dépend aussi de la valeur accordée à chacun, de l'attente de réussite, du temps, du transport, des responsabilités familiales et des normes du milieu. La même prime peut attirer, sembler insuffisante ou être vécue comme une pression. Observer l'inscription ne permet donc pas d'identifier une cause unique.", "sourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"]}},
-      {"type": "callout", "position": 3, "content": {"text": "La « pyramide de Maslow » est un repère historique, pas une loi naturelle ni un test de personnalité. Maslow a proposé une prépondérance relative de certains besoins, mais l'icône pyramidale standard a été popularisée ensuite. Les recherches ne justifient pas une séquence rigide où un niveau devrait être entièrement satisfait avant le suivant : plusieurs besoins peuvent compter simultanément, leur satisfaction est graduelle et leurs formes d'expression varient avec les conditions culturelles et matérielles. Utiliser le modèle exige donc de nommer sa portée et ses limites.", "sourceKeys": ["maslow-1943", "bridgman-maslow", "tay-diener-needs", "openstax-motivation"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Une incitation n'agit pas mécaniquement. Son effet attendu dépend notamment de sa valeur, de sa probabilité perçue, de sa contingence, des expériences antérieures et de son sens social. Argent, note, reconnaissance ou évitement d'une sanction ne sont pas psychologiquement équivalents. Les comparaisons culturelles invitent aussi à ne pas confondre but personnel et but solitaire : soutenir sa famille ou son groupe peut être fortement choisi. Une étude corrélationnelle ou transversale peut repérer des liens, mais ne démontre pas à elle seule que l'incitation a causé la conduite.", "sourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"]}},
-      {"type": "rich_text", "position": 5, "content": {"text": "Dans de nombreuses tâches bien définies, des buts précis et difficiles sont associés à davantage d'attention, d'effort et de persistance que des consignes vagues, surtout si la personne s'engage, possède ou acquiert les compétences nécessaires et reçoit un retour utile. Un but d'apprentissage peut être préférable à un but de performance lorsque la stratégie reste à découvrir. Ces régularités ne signifient ni que tout but chiffré est bon, ni que l'échec prouve un manque de volonté : ressources, pouvoir de décision, complexité et obstacles structurels modèrent l'effet.", "sourceKeys": ["locke-latham-goals"]}},
-      {"type": "objective", "position": 6, "content": {"text": "Un audit de but vérifie à la fois la cible et ses conséquences. Un indicateur étroit peut déplacer l'attention, décourager l'apprentissage, augmenter la prise de risque ou favoriser des raccourcis contraires à l'éthique. Il faut préciser l'horizon, les moyens légitimes, les indicateurs de qualité, les garde-fous, le retour d'information et les conditions de révision ou d'abandon. Cette approche transforme les besoins, incitations et buts en variables à examiner plutôt qu'en recettes universelles ; la leçon suivante distinguera quantité et qualité de motivation.", "sourceKeys": ["locke-latham-goals", "ordonez-goals-gone-wild"]}}
+      {"type": "definition", "position": 1, "content": {"text": "La motivation désigne les processus invoqués pour décrire l'initiation, la direction, l'intensité ou la persistance d'une action. Un besoin renvoie, selon le modèle, à un état biologique, à une exigence psychologique ou à une condition valorisée ; une incitation est une propriété ou conséquence anticipée de la situation qui attire ou repousse ; un but est une représentation d'un état futur ou d'un standard à atteindre. Ces termes organisent des hypothèses : aucun n'est une petite force directement visible dans la personne.", "sourceKeys": ["openstax-motivation", "locke-latham-goals"]},
+        "key": "content-1"
+      },
+      {"type": "example", "position": 2, "content": {"text": "Une personne accepte une formation du soir. Le besoin d'appartenance peut rendre le groupe important, une prime constitue une incitation et réussir une certification forme un but. Mais l'action dépend aussi de la valeur accordée à chacun, de l'attente de réussite, du temps, du transport, des responsabilités familiales et des normes du milieu. La même prime peut attirer, sembler insuffisante ou être vécue comme une pression. Observer l'inscription ne permet donc pas d'identifier une cause unique.", "sourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"]},
+        "key": "content-2"
+      },
+      {"type": "callout", "position": 3, "content": {"text": "La « pyramide de Maslow » est un repère historique, pas une loi naturelle ni un test de personnalité. Maslow a proposé une prépondérance relative de certains besoins, mais l'icône pyramidale standard a été popularisée ensuite. Les recherches ne justifient pas une séquence rigide où un niveau devrait être entièrement satisfait avant le suivant : plusieurs besoins peuvent compter simultanément, leur satisfaction est graduelle et leurs formes d'expression varient avec les conditions culturelles et matérielles. Utiliser le modèle exige donc de nommer sa portée et ses limites.", "sourceKeys": ["maslow-1943", "bridgman-maslow", "tay-diener-needs", "openstax-motivation"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Une incitation n'agit pas mécaniquement. Son effet attendu dépend notamment de sa valeur, de sa probabilité perçue, de sa contingence, des expériences antérieures et de son sens social. Argent, note, reconnaissance ou évitement d'une sanction ne sont pas psychologiquement équivalents. Les comparaisons culturelles invitent aussi à ne pas confondre but personnel et but solitaire : soutenir sa famille ou son groupe peut être fortement choisi. Une étude corrélationnelle ou transversale peut repérer des liens, mais ne démontre pas à elle seule que l'incitation a causé la conduite.", "sourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"]},
+        "key": "content-4"
+      },
+      {"type": "rich_text", "position": 5, "content": {"text": "Dans de nombreuses tâches bien définies, des buts précis et difficiles sont associés à davantage d'attention, d'effort et de persistance que des consignes vagues, surtout si la personne s'engage, possède ou acquiert les compétences nécessaires et reçoit un retour utile. Un but d'apprentissage peut être préférable à un but de performance lorsque la stratégie reste à découvrir. Ces régularités ne signifient ni que tout but chiffré est bon, ni que l'échec prouve un manque de volonté : ressources, pouvoir de décision, complexité et obstacles structurels modèrent l'effet.", "sourceKeys": ["locke-latham-goals"]},
+        "key": "content-5"
+      },
+      {"type": "objective", "position": 6, "content": {"text": "Un audit de but vérifie à la fois la cible et ses conséquences. Un indicateur étroit peut déplacer l'attention, décourager l'apprentissage, augmenter la prise de risque ou favoriser des raccourcis contraires à l'éthique. Il faut préciser l'horizon, les moyens légitimes, les indicateurs de qualité, les garde-fous, le retour d'information et les conditions de révision ou d'abandon. Cette approche transforme les besoins, incitations et buts en variables à examiner plutôt qu'en recettes universelles ; la leçon suivante distinguera quantité et qualité de motivation.", "sourceKeys": ["locke-latham-goals", "ordonez-goals-gone-wild"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "openstax-motivation", "type": "book_chapter", "title": "Psychology 2e — 10.1 Motivation", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "url": "https://openstax.org/books/psychology-2e/pages/10-1-motivation", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 10.1: Motivation. OpenStax, Rice University.", "description": "Lire l'introduction et les sections sur les théories de la motivation ; relever pour chaque modèle ce qu'il explique et ce qu'il laisse ouvert.", "isRequired": true, "estimatedMinutes": 30, "position": 1},
@@ -35,18 +47,107 @@
       {"key": "ordonez-goals-gone-wild", "type": "article", "title": "Goals Gone Wild", "author": "Lisa D. Ordóñez, Maurice E. Schweitzer, Adam D. Galinsky et Max H. Bazerman", "url": "https://www.hbs.edu/ris/Publication%20Files/09-083.pdf", "citation": "Ordóñez, L. D., Schweitzer, M. E., Galinsky, A. D., & Bazerman, M. H. (2009). Goals gone wild: The systematic side effects of overprescribing goal setting. Academy of Management Perspectives, 23(1), 6–16. https://doi.org/10.5465/amp.2009.37007999", "description": "Lire les catégories d'effets secondaires et construire un contre-exemple où un indicateur détériore la qualité ou l'éthique.", "isRequired": true, "estimatedMinutes": 25, "position": 6}
     ],
     "concepts": [
-      {"title": "Besoins comme modèles situés", "slug": "besoins-modeles-situes", "description": "Les besoins sont définis différemment selon les théories ; leur importance peut être simultanée et leur expression dépend du contexte, sans ordre universel rigide.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-motivation", "maslow-1943", "bridgman-maslow", "tay-diener-needs"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Besoins et modèles", "questionCount": 5}},
-      {"title": "Incitations, valeur et contexte", "slug": "incitations-valeur-contexte", "description": "Une conséquence anticipée oriente l'action selon sa valeur, sa contingence, les attentes et son sens social ; elle n'est pas un déclencheur identique pour tous.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Incitations en contexte", "questionCount": 5}},
-      {"title": "Buts, engagement et effets secondaires", "slug": "buts-engagement-effets-secondaires", "description": "Les buts peuvent structurer l'effort sous certaines conditions, mais leur efficacité et leurs risques dépendent de la tâche, des moyens, du retour et des garde-fous.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["locke-latham-goals", "ordonez-goals-gone-wild"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Buts et garde-fous", "questionCount": 5}}
+      {"title": "Besoins comme modèles situés", "slug": "besoins-modeles-situes", "description": "Les besoins sont définis différemment selon les théories ; leur importance peut être simultanée et leur expression dépend du contexte, sans ordre universel rigide.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-motivation", "maslow-1943", "bridgman-maslow", "tay-diener-needs"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Besoins et modèles", "questionCount": 5,
+        "key": "concept-besoins-modeles-situes-assessment-1"
+      }},
+      {"title": "Incitations, valeur et contexte", "slug": "incitations-valeur-contexte", "description": "Une conséquence anticipée oriente l'action selon sa valeur, sa contingence, les attentes et son sens social ; elle n'est pas un déclencheur identique pour tous.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-motivation", "tay-diener-needs", "locke-latham-goals"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Incitations en contexte", "questionCount": 5,
+        "key": "concept-incitations-valeur-contexte-assessment-1"
+      }},
+      {"title": "Buts, engagement et effets secondaires", "slug": "buts-engagement-effets-secondaires", "description": "Les buts peuvent structurer l'effort sous certaines conditions, mais leur efficacité et leurs risques dépendent de la tâche, des moyens, du retour et des garde-fous.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["locke-latham-goals", "ordonez-goals-gone-wild"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Buts et garde-fous", "questionCount": 5,
+        "key": "concept-buts-engagement-effets-secondaires-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Déplier la pyramide", "description": "Comparer une infographie pyramidale au texte de Maslow et à l'analyse historique : relever cinq transformations ou simplifications, puis proposer une carte non hiérarchique montrant simultanéité, degré et contexte.", "type": "writing", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Comparer une même incitation", "description": "Analyser une prime de formation dans trois situations fictives différant par ressources, attentes, responsabilités et normes collectives ; produire pour chacune deux hypothèses concurrentes et les données nécessaires pour les départager.", "type": "practice", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer un but et ses dommages possibles", "description": "À partir d'un objectif chiffré fictif, préciser résultat, stratégie, engagement, retour et contraintes, puis ajouter indicateurs de qualité, garde-fous éthiques et règle de révision dans une note de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Déplier la pyramide", "description": "Comparer une infographie pyramidale au texte de Maslow et à l'analyse historique : relever cinq transformations ou simplifications, puis proposer une carte non hiérarchique montrant simultanéité, degré et contexte.", "type": "writing", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Comparer une même incitation", "description": "Analyser une prime de formation dans trois situations fictives différant par ressources, attentes, responsabilités et normes collectives ; produire pour chacune deux hypothèses concurrentes et les données nécessaires pour les départager.", "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer un but et ses dommages possibles", "description": "À partir d'un objectif chiffré fictif, préciser résultat, stratégie, engagement, retour et contraintes, puis ajouter indicateurs de qualité, garde-fous éthiques et règle de révision dans une note de 600 à 800 mots.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-motivation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "tay-diener-needs"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "locke-latham-goals"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-besoins-modeles-situes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "maslow-1943"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "bridgman-maslow"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-incitations-valeur-contexte-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ordonez-goals-gone-wild"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-buts-engagement-effets-secondaires-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-034-OPENSTAX", "type": "textbook_chapter", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax, Rice University", "title": "Psychology 2e — 10.1 Motivation", "year": 2020, "edition": "2e", "publication": "Psychology 2e", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/10-1-motivation", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY 4.0", "status": "verified", "notes": "Manuel universitaire récent pour le vocabulaire introductif ; ses simplifications sont corrigées par les articles spécialisés."},
       {"id": "REF-034-MASLOW", "type": "theoretical_article", "authors": ["Maslow, A. H."], "organization": "American Psychological Association", "title": "A Theory of Human Motivation", "year": 1943, "edition": null, "publication": "Psychological Review, 50(4), 370–396", "doi": "https://doi.org/10.1037/h0054346", "url": "https://psychclassics.yorku.ca/Maslow/motivation.htm", "accessedAt": "2026-08-04", "evidenceLevel": "C", "peerReviewed": true, "language": "en", "license": "Transcription ouverte à visée historique ; droits APA applicables", "status": "verified", "notes": "Source primaire historique, non preuve contemporaine d'une hiérarchie universelle."},
@@ -95,6 +196,70 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en psychologie de la motivation et méthodologie interculturelle requise avant validation scientifique.", "L'étape motivation-emotion-stress et le module motivation-action sont planifiés mais absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog n'est autorisée.", "Maslow est présenté comme modèle historique situé ; aucune pyramide rigide, séquence universelle ou lecture diagnostique n'est enseignée.", "Les effets des incitations et des buts sont décrits avec modérateurs, hypothèses concurrentes et limites causales.", "Les quatre ressources obligatoires sont ouvertes ; les ressources facultatives fermées disposent d'un résumé ouvert et d'une alternative." ]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la première leçon planifiée du module Motivation et action, avec six blocs sourcés, six ressources, trois tâches et quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la première leçon planifiée du module Motivation et action, avec six blocs sourcés, six ressources, trois tâches et quinze questions corrigées, sans modification du seed.", "reviewRequired": "technical_editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "besoins-modeles-situes",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-motivation",
+            "tay-diener-needs",
+            "locke-latham-goals"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-besoins-modeles-situes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "incitations-valeur-contexte",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "maslow-1943",
+            "bridgman-maslow"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-incitations-valeur-contexte-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "buts-engagement-effets-secondaires",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "ordonez-goals-gone-wild"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-buts-engagement-effets-secondaires-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

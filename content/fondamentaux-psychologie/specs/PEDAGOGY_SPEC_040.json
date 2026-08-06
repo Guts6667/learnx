@@ -28,7 +28,8 @@
         "content": {
           "text": "Un trait est une dimension sur laquelle les personnes diffèrent en moyenne : il résume une tendance probabiliste, pas une conduite constante. Un état est une expression momentanée qui dépend aussi de la situation. Classer une personne plus haut ou plus bas sur un continuum ne la transforme ni en type naturel, ni en essence, ni en cas clinique. Deux profils proches peuvent produire des conduites différentes selon les buts, les rôles et les contextes.",
           "sourceKeys": ["openstax-traits-11-7", "john-big-five-2008"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -36,7 +37,8 @@
         "content": {
           "text": "Le Big Five est une taxonomie descriptive issue notamment d’analyses du langage et de structures de covariance. Il regroupe ouverture à l’expérience, conscienciosité, extraversion, agréabilité et neuroticisme — parfois formulé comme faible stabilité émotionnelle. Les pôles ne sont pas bons ou mauvais en soi. Le modèle condense des régularités entre adjectifs et réponses ; il ne fournit pas cinq causes indépendantes cachées dans l’individu.",
           "sourceKeys": ["openstax-traits-11-7", "john-big-five-2008"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -44,7 +46,8 @@
         "content": {
           "text": "Les domaines larges se décomposent en facettes. Le BFI-2, par exemple, mesure trois facettes par domaine afin de conserver une vue d’ensemble tout en distinguant des nuances. Un score élevé d’extraversion peut ainsi masquer des niveaux différents de sociabilité, d’assurance et d’énergie. Un profil multidimensionnel reste plus fidèle qu’une étiquette unique, mais il ne raconte ni l’histoire de vie ni les compétences d’une personne.",
           "sourceKeys": ["soto-john-bfi2-2017", "john-big-five-2008"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "callout",
@@ -52,7 +55,8 @@
         "content": {
           "text": "Un score dépend des items, de la consigne, du moment, de la langue, du groupe normatif et du mode de réponse. Les autoquestionnaires sont exposés à l’acquiescement, à la désirabilité sociale et aux différences d’interprétation ; des évaluations par proches ou des observations peuvent compléter, non abolir, ces limites. Fiabilité, validité et incertitude doivent être documentées pour l’usage précis. Une mesure non clinique ne doit pas être lue comme diagnostic.",
           "sourceKeys": ["openstax-assessment-11-9", "soto-john-bfi2-2017"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "rich_text",
@@ -60,7 +64,8 @@
         "content": {
           "text": "Retrouver cinq facteurs dans certains échantillons ne garantit pas la même structure, les mêmes significations ni la même comparabilité partout. Traduction, familiarité avec les questionnaires, niveau de scolarisation, modes de vie et catégories locales influencent les réponses. Chez les Tsimané de Bolivie, la structure à cinq facteurs s’est mal reproduite malgré plusieurs vérifications. Une comparaison culturelle exige donc adaptation, invariance de mesure et approches locales, pas l’hypothèse d’universalité par défaut.",
           "sourceKeys": ["gurven-tsimane-2013", "openstax-culture-11-8"]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -68,7 +73,8 @@
         "content": {
           "text": "Une interprétation responsable formule des tendances conditionnelles : « dans cet instrument et ce groupe de référence, ce score suggère… ». Elle évite « vous êtes ce type », « ce trait explique tout » et toute décision automatique d’orientation, d’embauche ou de soin. Elle indique population, normes, précision, validité, finalité, droits de la personne et données complémentaires. Le Big Five décrit utilement ; il ne diagnostique pas et ne dispense jamais d’examiner le contexte.",
           "sourceKeys": ["soto-john-bfi2-2017", "openstax-assessment-11-9", "gurven-tsimane-2013"]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -154,7 +160,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-traits-11-7", "john-big-five-2008"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Traits et profils", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Traits et profils", "questionCount": 5,
+          "key": "concept-traits-dimensions-profils-assessment-1"
+        }
       },
       {
         "title": "Big Five, domaines et facettes",
@@ -164,7 +172,9 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["john-big-five-2008", "soto-john-bfi2-2017"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Domaines et facettes", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Domaines et facettes", "questionCount": 5,
+          "key": "concept-big-five-domaines-facettes-assessment-1"
+        }
       },
       {
         "title": "Mesure, culture et limites d’inférence",
@@ -174,23 +184,108 @@
         "isRequired": true,
         "masteryThreshold": 70,
         "resourceKeys": ["openstax-assessment-11-9", "gurven-tsimane-2013", "openstax-culture-11-8"],
-        "assessment": {"type": "quiz", "title": "Mini-évaluation — Mesure et culture", "questionCount": 5}
+        "assessment": {"type": "quiz", "title": "Mini-évaluation — Mesure et culture", "questionCount": 5,
+          "key": "concept-mesure-culture-limites-inference-assessment-1"
+        }
       }
     ],
     "tasks": [
-      {"title": "Démonter une typologie", "description": "Transformer six étiquettes de type en hypothèses dimensionnelles, situées et falsifiables, puis indiquer les informations manquantes.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Lire un profil avec prudence", "description": "Interpréter un profil fictif domaine–facettes en mentionnant norme, erreur, contexte, convergences et trois inférences interdites.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Auditer un inventaire interculturel", "description": "Évaluer traduction, échantillon, invariance, finalité, équité et données complémentaires avant tout usage dans une nouvelle population.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Démonter une typologie", "description": "Transformer six étiquettes de type en hypothèses dimensionnelles, situées et falsifiables, puis indiquer les informations manquantes.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Lire un profil avec prudence", "description": "Interpréter un profil fictif domaine–facettes en mentionnant norme, erreur, contexte, convergences et trois inférences interdites.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Auditer un inventaire interculturel", "description": "Évaluer traduction, échantillon, invariance, finalité, équité et données complémentaires avant tout usage dans une nouvelle population.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-traits-11-7"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "john-big-five-2008"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-traits-dimensions-profils-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "soto-john-bfi2-2017"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-assessment-11-9"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-big-five-domaines-facettes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "gurven-tsimane-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-culture-11-8"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-mesure-culture-limites-inference-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-04",
-    "lastReviewedAt": "2026-08-04",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-04",
     "references": [
       {"id":"REF-040-OPENSTAX-11-7","type":"textbook_chapter","authors":["Spielman, R. M.","Jenkins, W. J.","Lovett, M. D."],"organization":"OpenStax","title":"Psychology 2e — 11.7 Trait Theorists","year":2020,"edition":"2e éd.","publication":"Psychology 2e","doi":null,"url":"https://openstax.org/books/psychology-2e/pages/11-7-trait-theorists","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"CC BY-NC-SA 4.0","status":"verified","notes":"Introduction ouverte aux traits continus et au Big Five."},
@@ -263,7 +358,70 @@
       ]
     },
     "changeLog": [
-      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_psychology_and_psychometrics"}
-    ]
+      {"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_personality_psychology_and_psychometrics"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "traits-dimensions-profils",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-traits-11-7",
+            "john-big-five-2008"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-traits-dimensions-profils-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "big-five-domaines-facettes",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "soto-john-bfi2-2017",
+            "openstax-assessment-11-9"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-big-five-domaines-facettes-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "mesure-culture-limites-inference",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "gurven-tsimane-2013",
+            "openstax-culture-11-8"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-mesure-culture-limites-inference-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

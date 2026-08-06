@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_063","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"interventions-applications","moduleSlug":"psychologie-appliquee",
   "lesson":{"title":"Travail, ergonomie et organisations","slug":"travail-ergonomie-organisations","summary":"Analyser le travail comme un système à concevoir, prévenir les risques organisationnels et encadrer données, surveillance et sélection sans blâme ni diagnostic des salariés.","objectives":["Expliquer l’ergonomie comme conception des interactions entre personnes, tâches, outils, environnement et organisation.","Prioriser la prévention organisationnelle des risques physiques et psychosociaux sur le blâme individuel.","Évaluer surveillance et sélection algorithmique selon finalité, validité, confidentialité, équité et contrôle humain."],"prerequisites":["Distinguer corrélation, causalité, validité et utilité.","Savoir qu’un score ne résume ni une personne ni son contexte."],"estimatedMinutes":120,"position":3,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"L’ergonomie, ou facteurs humains, étudie les interactions entre les personnes et les autres éléments d’un système, puis applique connaissances et méthodes à la conception pour soutenir bien-être humain et performance globale. Elle ne consiste pas à apprendre au travailleur à supporter un système mal conçu. L’analyse relie activité réelle, objectifs, variabilité, outils, interfaces, espace, horaires, coordination, compétences et contraintes ; une amélioration locale doit être vérifiée à l’échelle du système pour éviter de déplacer le risque.","sourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022"]}},
-      {"type":"callout","position":2,"content":{"text":"Charge excessive, faible contrôle, horaires imprévisibles, insécurité, violence, discrimination, manque de soutien et conflits de rôle sont des risques liés à l’organisation du travail. La prévention commence par les évaluer avec les travailleurs puis modifier, réduire ou supprimer les conditions dangereuses. Formation au stress, sensibilisation ou soutien individuel peuvent compléter cette action ; ils ne doivent pas servir à rendre l’individu responsable d’un risque créé par la charge, les ressources, le management ou la politique de l’organisation.","sourceKeys":["who-mental-health-work-guideline-2022","who-ilo-mental-health-work-2022"]}},
-      {"type":"rich_text","position":3,"content":{"text":"Un responsable peut écouter, décrire les exigences du travail, orienter vers les dispositifs disponibles et discuter d’aménagements, mais il ne diagnostique pas un salarié. Les informations de santé et d’accompagnement sont limitées à une finalité légitime, accessibles aux seules personnes autorisées et séparées des décisions ordinaires de management lorsque la confidentialité l’exige. Consentement, volontariat et possibilité de retrait doivent être examinés avec le rapport de pouvoir : accepter sous menace explicite ou implicite n’est pas un choix libre.","sourceKeys":["who-ilo-mental-health-work-2022","ilo-worker-personal-data-1997"]}},
-      {"type":"definition","position":4,"content":{"text":"La surveillance numérique et la gestion algorithmique peuvent suivre temps, activité, localisation, communications, rythme ou signaux physiologiques. Une finalité annoncée ne suffit pas : il faut établir nécessité et proportionnalité, rechercher une solution moins intrusive, informer avant la collecte, minimiser données et durée, sécuriser les accès, empêcher les usages secondaires et prévoir explication, contestation et réparation. Un outil ne doit pas inférer émotion, santé mentale, loyauté ou personnalité à partir de signaux non validés, ni transformer une mesure de sécurité en contrôle permanent.","sourceKeys":["ilo-worker-personal-data-1997","oecd-algorithmic-management-2025"]}},
-      {"type":"rich_text","position":5,"content":{"text":"Une procédure de sélection, humaine ou algorithmique, doit partir d’une analyse du travail et d’un construit pertinent, démontrer une validité adaptée au poste, à la décision et à la population, puis suivre fiabilité, accessibilité et résultats par groupe. Des données historiques peuvent reproduire des exclusions ; une variable apparemment neutre peut agir comme proxy ; plusieurs définitions de l’équité peuvent entrer en tension. Une promesse fournisseur ou une précision globale ne remplace ni documentation, audit indépendant, comparaison avec une alternative, contrôle humain compétent, droit de recours et surveillance après déploiement.","sourceKeys":["siop-ai-selection-2023","raghavan-algorithmic-hiring-2020","oecd-algorithmic-management-2025"]}},
-      {"type":"example","position":6,"content":{"text":"Dans un entrepôt où les erreurs et douleurs augmentent, conclure à un manque de motivation serait prématuré. L’équipe observe le travail réel avec les opérateurs, puis examine cadence, objectifs incompatibles, interface, éclairage, manutention, pauses, effectifs, formation et coordination. Elle protège les signalements, teste plusieurs modifications et mesure sécurité, qualité, charge, incidents et effets par équipe. Les données individuelles ne servent pas à diagnostiquer ou sanctionner sans base valide ; si un algorithme alloue les tâches, ses règles, erreurs et possibilités de contestation entrent dans l’analyse.","sourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022","oecd-algorithmic-management-2025"]}}
+      {"type":"definition","position":1,"content":{"text":"L’ergonomie, ou facteurs humains, étudie les interactions entre les personnes et les autres éléments d’un système, puis applique connaissances et méthodes à la conception pour soutenir bien-être humain et performance globale. Elle ne consiste pas à apprendre au travailleur à supporter un système mal conçu. L’analyse relie activité réelle, objectifs, variabilité, outils, interfaces, espace, horaires, coordination, compétences et contraintes ; une amélioration locale doit être vérifiée à l’échelle du système pour éviter de déplacer le risque.","sourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022"]},
+        "key": "content-1"
+      },
+      {"type":"callout","position":2,"content":{"text":"Charge excessive, faible contrôle, horaires imprévisibles, insécurité, violence, discrimination, manque de soutien et conflits de rôle sont des risques liés à l’organisation du travail. La prévention commence par les évaluer avec les travailleurs puis modifier, réduire ou supprimer les conditions dangereuses. Formation au stress, sensibilisation ou soutien individuel peuvent compléter cette action ; ils ne doivent pas servir à rendre l’individu responsable d’un risque créé par la charge, les ressources, le management ou la politique de l’organisation.","sourceKeys":["who-mental-health-work-guideline-2022","who-ilo-mental-health-work-2022"]},
+        "key": "content-2"
+      },
+      {"type":"rich_text","position":3,"content":{"text":"Un responsable peut écouter, décrire les exigences du travail, orienter vers les dispositifs disponibles et discuter d’aménagements, mais il ne diagnostique pas un salarié. Les informations de santé et d’accompagnement sont limitées à une finalité légitime, accessibles aux seules personnes autorisées et séparées des décisions ordinaires de management lorsque la confidentialité l’exige. Consentement, volontariat et possibilité de retrait doivent être examinés avec le rapport de pouvoir : accepter sous menace explicite ou implicite n’est pas un choix libre.","sourceKeys":["who-ilo-mental-health-work-2022","ilo-worker-personal-data-1997"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"La surveillance numérique et la gestion algorithmique peuvent suivre temps, activité, localisation, communications, rythme ou signaux physiologiques. Une finalité annoncée ne suffit pas : il faut établir nécessité et proportionnalité, rechercher une solution moins intrusive, informer avant la collecte, minimiser données et durée, sécuriser les accès, empêcher les usages secondaires et prévoir explication, contestation et réparation. Un outil ne doit pas inférer émotion, santé mentale, loyauté ou personnalité à partir de signaux non validés, ni transformer une mesure de sécurité en contrôle permanent.","sourceKeys":["ilo-worker-personal-data-1997","oecd-algorithmic-management-2025"]},
+        "key": "content-4"
+      },
+      {"type":"rich_text","position":5,"content":{"text":"Une procédure de sélection, humaine ou algorithmique, doit partir d’une analyse du travail et d’un construit pertinent, démontrer une validité adaptée au poste, à la décision et à la population, puis suivre fiabilité, accessibilité et résultats par groupe. Des données historiques peuvent reproduire des exclusions ; une variable apparemment neutre peut agir comme proxy ; plusieurs définitions de l’équité peuvent entrer en tension. Une promesse fournisseur ou une précision globale ne remplace ni documentation, audit indépendant, comparaison avec une alternative, contrôle humain compétent, droit de recours et surveillance après déploiement.","sourceKeys":["siop-ai-selection-2023","raghavan-algorithmic-hiring-2020","oecd-algorithmic-management-2025"]},
+        "key": "content-5"
+      },
+      {"type":"example","position":6,"content":{"text":"Dans un entrepôt où les erreurs et douleurs augmentent, conclure à un manque de motivation serait prématuré. L’équipe observe le travail réel avec les opérateurs, puis examine cadence, objectifs incompatibles, interface, éclairage, manutention, pauses, effectifs, formation et coordination. Elle protège les signalements, teste plusieurs modifications et mesure sécurité, qualité, charge, incidents et effets par équipe. Les données individuelles ne servent pas à diagnostiquer ou sanctionner sans base valide ; si un algorithme alloue les tâches, ses règles, erreurs et possibilités de contestation entrent dans l’analyse.","sourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022","oecd-algorithmic-management-2025"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"iea-ergonomics-definition","title":"What Is Ergonomics (HFE)?","type":"website","url":"https://iea.cc/about/what-is-ergonomics/","author":"International Ergonomics Association","citation":"International Ergonomics Association. (2000). What is ergonomics (HFE)? Definition and applications.","description":"Lire définition, approche système et domaines ; construire un exemple où une optimisation locale déplace un risque.","isRequired":true,"estimatedMinutes":18,"position":1},
@@ -19,16 +31,110 @@
       {"key":"raghavan-algorithmic-hiring-2020","title":"Mitigating Bias in Algorithmic Hiring: Evaluating Claims and Practices","type":"article","url":"https://arxiv.org/abs/1906.09208","author":"Manish Raghavan, Solon Barocas, Jon Kleinberg et Karen Levy","citation":"Raghavan, M., Barocas, S., Kleinberg, J., & Levy, K. (2020). Mitigating bias in algorithmic hiring: Evaluating claims and practices. Proceedings of FAT* ’20, 469–481. https://doi.org/10.1145/3351095.3372828","description":"Lire les choix de cibles, données et mesures d’équité ; distinguer revendication commerciale et preuve documentée.","isRequired":false,"estimatedMinutes":22,"position":7}
     ],
     "concepts":[
-      {"title":"Ergonomie et conception du système","slug":"ergonomie-conception-systeme","description":"Le travail est conçu à partir de l’activité réelle, des interactions et de la variabilité plutôt qu’en corrigeant le salarié.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Concevoir le travail","questionCount":5}},
-      {"title":"Risques psychosociaux, participation et confidentialité","slug":"risques-psychosociaux-participation-confidentialite","description":"La prévention transforme l’organisation avec les travailleurs et protège strictement santé, volontariat et données.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-mental-health-work-guideline-2022","who-ilo-mental-health-work-2022","ilo-worker-personal-data-1997"],"assessment":{"type":"quiz","title":"Mini-évaluation — Prévenir sans blâmer","questionCount":5}},
-      {"title":"Surveillance, sélection et équité algorithmique","slug":"surveillance-selection-equite-algorithmique","description":"Les outils de management et sélection exigent nécessité, validité, minimisation, audit, contrôle humain et recours.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["oecd-algorithmic-management-2025","siop-ai-selection-2023","raghavan-algorithmic-hiring-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Gouverner les outils","questionCount":5}}
+      {"title":"Ergonomie et conception du système","slug":"ergonomie-conception-systeme","description":"Le travail est conçu à partir de l’activité réelle, des interactions et de la variabilité plutôt qu’en corrigeant le salarié.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["iea-ergonomics-definition","who-mental-health-work-guideline-2022"],"assessment":{"type":"quiz","title":"Mini-évaluation — Concevoir le travail","questionCount":5,
+        "key": "concept-ergonomie-conception-systeme-assessment-1"
+      }},
+      {"title":"Risques psychosociaux, participation et confidentialité","slug":"risques-psychosociaux-participation-confidentialite","description":"La prévention transforme l’organisation avec les travailleurs et protège strictement santé, volontariat et données.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-mental-health-work-guideline-2022","who-ilo-mental-health-work-2022","ilo-worker-personal-data-1997"],"assessment":{"type":"quiz","title":"Mini-évaluation — Prévenir sans blâmer","questionCount":5,
+        "key": "concept-risques-psychosociaux-participation-confidentialite-assessment-1"
+      }},
+      {"title":"Surveillance, sélection et équité algorithmique","slug":"surveillance-selection-equite-algorithmique","description":"Les outils de management et sélection exigent nécessité, validité, minimisation, audit, contrôle humain et recours.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["oecd-algorithmic-management-2025","siop-ai-selection-2023","raghavan-algorithmic-hiring-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Gouverner les outils","questionCount":5,
+        "key": "concept-surveillance-selection-equite-algorithmique-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Cartographier un système de travail","description":"Pour un cas fictif, relier tâche réelle, outils, espace, rythme, coordination, variabilité et effets ; proposer trois modifications sans blâme individuel.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Réaliser une analyse de confidentialité","description":"Auditer une surveillance fictive selon finalité, nécessité, proportionnalité, information, consentement, minimisation, accès, durée, contestation et droit local.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Auditer une sélection algorithmique","description":"Construire une grille couvrant analyse du poste, construit, validité, population, accessibilité, groupes, proxies, explicabilité, audit, recours et suivi.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Cartographier un système de travail","description":"Pour un cas fictif, relier tâche réelle, outils, espace, rythme, coordination, variabilité et effets ; proposer trois modifications sans blâme individuel.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Réaliser une analyse de confidentialité","description":"Auditer une surveillance fictive selon finalité, nécessité, proportionnalité, information, consentement, minimisation, accès, durée, contestation et droit local.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Auditer une sélection algorithmique","description":"Construire une grille couvrant analyse du poste, construit, validité, population, accessibilité, groupes, proxies, explicabilité, audit, recours et suivi.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "iea-ergonomics-definition"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-mental-health-work-guideline-2022"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-ilo-mental-health-work-2022"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-ergonomie-conception-systeme-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ilo-worker-personal-data-1997"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "oecd-algorithmic-management-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-risques-psychosociaux-participation-confidentialite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "siop-ai-selection-2023"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "raghavan-algorithmic-hiring-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-surveillance-selection-equite-algorithmique-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-063-IEA","type":"professional_definition","authors":["International Ergonomics Association"],"organization":"International Ergonomics Association","title":"What Is Ergonomics (HFE)?","year":2000,"edition":"page active consultée en 2026","publication":"International Ergonomics Association","doi":null,"url":"https://iea.cc/about/what-is-ergonomics/","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"Information institutionnelle publique","status":"verified","notes":"Définition internationale adoptée en 2000 ; page actuelle sur domaines et approche système."},
       {"id":"REF-063-WHO-GUIDELINE","type":"official_guideline","authors":["World Health Organization"],"organization":"World Health Organization","title":"Guidelines on mental health at work","year":2022,"edition":"1re éd.","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789240053052","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-SA 3.0 IGO","status":"verified","notes":"Recommandations fondées sur revues systématiques ; plusieurs certitudes faibles ou très faibles sont signalées."},
@@ -79,6 +185,71 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie du travail, ergonomie, santé au travail, psychométrie, protection des données et équité algorithmique requise.","L’étape interventions-applications et le module psychologie-appliquee sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Les risques sont analysés au niveau du système et de l’organisation ; aucune difficulté n’est réduite à un défaut individuel.","Managers et outils ne diagnostiquent jamais les salariés ; santé, consentement, confidentialité et droit applicable restent protégés.","Surveillance et sélection exigent nécessité, proportionnalité, validité, accessibilité, audit, contrôle humain, recours et suivi par groupe."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_work_psychology_ergonomics_privacy_selection_and_algorithmic_fairness_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_work_psychology_ergonomics_privacy_selection_and_algorithmic_fairness_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "ergonomie-conception-systeme",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "iea-ergonomics-definition",
+            "who-mental-health-work-guideline-2022",
+            "who-ilo-mental-health-work-2022"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-ergonomie-conception-systeme-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "risques-psychosociaux-participation-confidentialite",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "ilo-worker-personal-data-1997",
+            "oecd-algorithmic-management-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-risques-psychosociaux-participation-confidentialite-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "surveillance-selection-equite-algorithmique",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "siop-ai-selection-2023",
+            "raghavan-algorithmic-hiring-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-surveillance-selection-equite-algorithmique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

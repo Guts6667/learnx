@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_065","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"integration-preuves","moduleSlug":"science-cumulative-controverses",
   "lesson":{"title":"Généralisation, diversité des échantillons et contexte culturel","slug":"generalisation-diversite-echantillons-contexte-culturel","summary":"Délimiter à qui, à quoi et dans quelles conditions un résultat peut s’appliquer, en traitant diversité, mesure et contexte sans réduire les personnes à des catégories culturelles fixes.","objectives":["Formuler une cible de généralisation explicite pour populations, stimuli, tâches, lieux et périodes.","Analyser la diversité d’un échantillon sans utiliser WEIRD comme étiquette essentialiste.","Vérifier comparabilité des mesures, invariance et mécanismes contextuels avant de comparer des groupes."],"prerequisites":["Distinguer validité interne et validité externe.","Connaître échantillon, population, variable et incertitude."],"estimatedMinutes":120,"position":2,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"Généraliser consiste à étendre une inférence au-delà des observations produites. La cible doit être nommée : personnes, situations, stimuli, tâches, lieux, langues et périodes. Une étude peut estimer correctement un effet dans son échantillon tout en informant mal une autre population. La généralisation est donc conditionnelle aux similarités pertinentes, aux modificateurs d’effet, aux mesures et au modèle ; elle n’est ni automatique après une significativité statistique ni impossible dès qu’un échantillon est non représentatif.","sourceKeys":["yarkoni-generalizability-2022","appelbaum-jars-2018"]}},
-      {"type":"callout","position":2,"content":{"text":"WEIRD — Western, Educated, Industrialized, Rich and Democratic — a rendu visible la dépendance de la psychologie à des populations étroites. C’est un signal sur l’échantillonnage et la portée des affirmations, pas une théorie qui divise l’humanité en deux essences. Les lettres recouvrent des dimensions corrélées mais variables ; pays, nationalité ou continent ne sont pas des synonymes de culture. Les personnes ont des appartenances multiples et les contextes changent dans le temps.","sourceKeys":["henrich-weird-2010","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"]}},
-      {"type":"rich_text","position":3,"content":{"text":"Diversifier ne consiste pas seulement à ajouter un groupe à un protocole conçu ailleurs. Questions, concepts, traduction, recrutement, accès numérique, compensation, relations de pouvoir, équipes de recherche et interprétation façonnent ce qui devient observable. Une collaboration locale précoce peut révéler des construits absents, des tâches inadaptées ou des conséquences imprévues. Les catégories démographiques doivent être justifiées, décrites précisément et croisées avec les variables réellement pertinentes au mécanisme étudié.","sourceKeys":["apicella-beyond-weird-2020","appelbaum-jars-2018","schimmelpfennig-cultural-heterogeneity-2024"]}},
-      {"type":"definition","position":4,"content":{"text":"Comparer des scores suppose que l’instrument fonctionne de manière suffisamment comparable. L’invariance configurationnelle examine une structure commune ; l’invariance métrique, la comparabilité des relations entre items et construit ; l’invariance scalaire, celle des niveaux moyens latents. Une non-invariance peut signaler traduction, styles de réponse ou significations différentes : elle n’établit ni déficit d’un groupe ni différence biologique. L’invariance partielle et d’autres modèles existent ; leurs conditions et incertitudes doivent être rapportées.","sourceKeys":["putnick-invariance-2016"]}},
-      {"type":"example","position":5,"content":{"text":"Un questionnaire de « coopération » élaboré auprès d’étudiants urbains est traduit puis administré dans quatre pays. Avant de comparer les moyennes, l’équipe décrit recrutement, langue, niveau d’études, conditions de passation et incitations ; mène des entretiens cognitifs locaux ; teste la structure et l’invariance ; examine des mécanismes comme institutions, familiarité avec la tâche ou normes de réponse. Une différence observée devient une hypothèse contextualisée, pas un trait national fixe.","sourceKeys":["putnick-invariance-2016","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"]}},
-      {"type":"objective","position":6,"content":{"text":"Une conclusion responsable suit quatre mouvements : décrire précisément l’échantillon et le contexte ; nommer la population et les situations cibles ; identifier écarts pertinents et mécanismes plausibles ; annoncer ce qui reste incertain et les études nécessaires. Élargir le nombre de pays n’assure pas à lui seul la généralité si les participants restent étudiants, si les stimuli sont homogènes ou si la mesure change de sens. L’objectif n’est pas de produire une moyenne « humaine » hors contexte, mais des régularités et variations dont le domaine d’application est explicite.","sourceKeys":["yarkoni-generalizability-2022","henrich-weird-2010","appelbaum-jars-2018"]}}
+      {"type":"definition","position":1,"content":{"text":"Généraliser consiste à étendre une inférence au-delà des observations produites. La cible doit être nommée : personnes, situations, stimuli, tâches, lieux, langues et périodes. Une étude peut estimer correctement un effet dans son échantillon tout en informant mal une autre population. La généralisation est donc conditionnelle aux similarités pertinentes, aux modificateurs d’effet, aux mesures et au modèle ; elle n’est ni automatique après une significativité statistique ni impossible dès qu’un échantillon est non représentatif.","sourceKeys":["yarkoni-generalizability-2022","appelbaum-jars-2018"]},
+        "key": "content-1"
+      },
+      {"type":"callout","position":2,"content":{"text":"WEIRD — Western, Educated, Industrialized, Rich and Democratic — a rendu visible la dépendance de la psychologie à des populations étroites. C’est un signal sur l’échantillonnage et la portée des affirmations, pas une théorie qui divise l’humanité en deux essences. Les lettres recouvrent des dimensions corrélées mais variables ; pays, nationalité ou continent ne sont pas des synonymes de culture. Les personnes ont des appartenances multiples et les contextes changent dans le temps.","sourceKeys":["henrich-weird-2010","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"]},
+        "key": "content-2"
+      },
+      {"type":"rich_text","position":3,"content":{"text":"Diversifier ne consiste pas seulement à ajouter un groupe à un protocole conçu ailleurs. Questions, concepts, traduction, recrutement, accès numérique, compensation, relations de pouvoir, équipes de recherche et interprétation façonnent ce qui devient observable. Une collaboration locale précoce peut révéler des construits absents, des tâches inadaptées ou des conséquences imprévues. Les catégories démographiques doivent être justifiées, décrites précisément et croisées avec les variables réellement pertinentes au mécanisme étudié.","sourceKeys":["apicella-beyond-weird-2020","appelbaum-jars-2018","schimmelpfennig-cultural-heterogeneity-2024"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"Comparer des scores suppose que l’instrument fonctionne de manière suffisamment comparable. L’invariance configurationnelle examine une structure commune ; l’invariance métrique, la comparabilité des relations entre items et construit ; l’invariance scalaire, celle des niveaux moyens latents. Une non-invariance peut signaler traduction, styles de réponse ou significations différentes : elle n’établit ni déficit d’un groupe ni différence biologique. L’invariance partielle et d’autres modèles existent ; leurs conditions et incertitudes doivent être rapportées.","sourceKeys":["putnick-invariance-2016"]},
+        "key": "content-4"
+      },
+      {"type":"example","position":5,"content":{"text":"Un questionnaire de « coopération » élaboré auprès d’étudiants urbains est traduit puis administré dans quatre pays. Avant de comparer les moyennes, l’équipe décrit recrutement, langue, niveau d’études, conditions de passation et incitations ; mène des entretiens cognitifs locaux ; teste la structure et l’invariance ; examine des mécanismes comme institutions, familiarité avec la tâche ou normes de réponse. Une différence observée devient une hypothèse contextualisée, pas un trait national fixe.","sourceKeys":["putnick-invariance-2016","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Une conclusion responsable suit quatre mouvements : décrire précisément l’échantillon et le contexte ; nommer la population et les situations cibles ; identifier écarts pertinents et mécanismes plausibles ; annoncer ce qui reste incertain et les études nécessaires. Élargir le nombre de pays n’assure pas à lui seul la généralité si les participants restent étudiants, si les stimuli sont homogènes ou si la mesure change de sens. L’objectif n’est pas de produire une moyenne « humaine » hors contexte, mais des régularités et variations dont le domaine d’application est explicite.","sourceKeys":["yarkoni-generalizability-2022","henrich-weird-2010","appelbaum-jars-2018"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"yarkoni-generalizability-2022","title":"The generalizability crisis","type":"article","url":"https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/generalizability-crisis/AD386115BA539A759ACB3093760F4824","author":"Tal Yarkoni","citation":"Yarkoni, T. (2022). The generalizability crisis. Behavioral and Brain Sciences, 45, e1. https://doi.org/10.1017/S0140525X20001685","description":"Lire résumé et exemples ; lister personnes, stimuli, tâches et contextes implicitement généralisés.","isRequired":true,"estimatedMinutes":25,"position":1},
@@ -18,16 +30,106 @@
       {"key":"schimmelpfennig-cultural-heterogeneity-2024","title":"Methodological concerns underlying a lack of evidence for cultural heterogeneity in the replication of psychological effects","type":"article","url":"https://www.nature.com/articles/s44271-024-00135-z","author":"Robin Schimmelpfennig et collaborateurs","citation":"Schimmelpfennig, R., Spicer, R., White, C. J. M., et al. (2024). Methodological concerns underlying a lack of evidence for cultural heterogeneity in the replication of psychological effects. Communications Psychology, 2, 93. https://doi.org/10.1038/s44271-024-00135-z","description":"Lire les limites sur pays, culture et opérationnalisation de WEIRD ; distinguer site, origine et mécanisme culturel.","isRequired":false,"estimatedMinutes":20,"position":6}
     ],
     "concepts":[
-      {"title":"Cibles et conditions de généralisation","slug":"cibles-conditions-generalisation","description":"Toute extension d’un résultat exige une cible, des dimensions généralisées et des hypothèses de transport explicites.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["yarkoni-generalizability-2022","appelbaum-jars-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Jusqu’où conclure ?","questionCount":5}},
-      {"title":"Diversité sans essentialisme","slug":"diversite-sans-essentialisme","description":"WEIRD signale une base empirique étroite ; il ne transforme ni pays ni groupes en essences homogènes.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["henrich-weird-2010","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Décrire sans figer","questionCount":5}},
-      {"title":"Comparabilité des mesures et contexte","slug":"comparabilite-mesures-contexte","description":"Traduction, signification, passation et invariance conditionnent les comparaisons entre groupes et périodes.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["putnick-invariance-2016","appelbaum-jars-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Comparer des scores","questionCount":5}}
+      {"title":"Cibles et conditions de généralisation","slug":"cibles-conditions-generalisation","description":"Toute extension d’un résultat exige une cible, des dimensions généralisées et des hypothèses de transport explicites.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["yarkoni-generalizability-2022","appelbaum-jars-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Jusqu’où conclure ?","questionCount":5,
+        "key": "concept-cibles-conditions-generalisation-assessment-1"
+      }},
+      {"title":"Diversité sans essentialisme","slug":"diversite-sans-essentialisme","description":"WEIRD signale une base empirique étroite ; il ne transforme ni pays ni groupes en essences homogènes.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["henrich-weird-2010","apicella-beyond-weird-2020","schimmelpfennig-cultural-heterogeneity-2024"],"assessment":{"type":"quiz","title":"Mini-évaluation — Décrire sans figer","questionCount":5,
+        "key": "concept-diversite-sans-essentialisme-assessment-1"
+      }},
+      {"title":"Comparabilité des mesures et contexte","slug":"comparabilite-mesures-contexte","description":"Traduction, signification, passation et invariance conditionnent les comparaisons entre groupes et périodes.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["putnick-invariance-2016","appelbaum-jars-2018"],"assessment":{"type":"quiz","title":"Mini-évaluation — Comparer des scores","questionCount":5,
+        "key": "concept-comparabilite-mesures-contexte-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Tracer le domaine d’une affirmation","description":"À partir d’une étude fictive, dresser une matrice personnes, stimuli, tâches, lieux et périodes, puis reformuler l’affirmation au niveau réellement soutenu.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Réviser une description essentialiste","description":"Transformer un résumé qui oppose pays WEIRD et non-WEIRD en description de l’échantillon, des dimensions observées, des mécanismes possibles et des limites.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Concevoir une comparaison interculturelle","description":"Définir partenaires locaux, recrutement, traduction, entretiens cognitifs, tests d’invariance, analyses contextuelles et règles d’interprétation pour une étude fictive.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Tracer le domaine d’une affirmation","description":"À partir d’une étude fictive, dresser une matrice personnes, stimuli, tâches, lieux et périodes, puis reformuler l’affirmation au niveau réellement soutenu.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Réviser une description essentialiste","description":"Transformer un résumé qui oppose pays WEIRD et non-WEIRD en description de l’échantillon, des dimensions observées, des mécanismes possibles et des limites.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Concevoir une comparaison interculturelle","description":"Définir partenaires locaux, recrutement, traduction, entretiens cognitifs, tests d’invariance, analyses contextuelles et règles d’interprétation pour une étude fictive.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "yarkoni-generalizability-2022"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "henrich-weird-2010"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apicella-beyond-weird-2020"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "appelbaum-jars-2018"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "schimmelpfennig-cultural-heterogeneity-2024"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cibles-conditions-generalisation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "putnick-invariance-2016"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-diversite-sans-essentialisme-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-comparabilite-mesures-contexte-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-065-YARKONI","type":"peer_reviewed_target_article","authors":["Yarkoni, T."],"organization":null,"title":"The generalizability crisis","year":2022,"edition":null,"publication":"Behavioral and Brain Sciences, 45, e1","doi":"10.1017/S0140525X20001685","url":"https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/generalizability-crisis/AD386115BA539A759ACB3093760F4824","accessedAt":"2026-08-04","evidenceLevel":"C","peerReviewed":true,"language":"en","license":"Résumé ouvert ; texte intégral selon accès","status":"verified","notes":"Article cible accompagné de commentaires contradictoires ; thèse méthodologique à ne pas traiter comme consensus total."},
       {"id":"REF-065-HENRICH","type":"peer_reviewed_review","authors":["Henrich, J.","Heine, S. J.","Norenzayan, A."],"organization":null,"title":"The weirdest people in the world?","year":2010,"edition":null,"publication":"Behavioral and Brain Sciences, 33(2–3), 61–83","doi":"10.1017/S0140525X0999152X","url":"https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/weirdest-people-in-the-world/BF84F7517D56AFF7B7EB58411A554C17","accessedAt":"2026-08-04","evidenceLevel":"B","peerReviewed":true,"language":"en","license":"Résumé ouvert ; texte intégral selon accès","status":"verified","notes":"Revue fondatrice sur surreprésentation ; ne justifie pas une dichotomie culturelle fixe."},
@@ -76,6 +178,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie culturelle, psychométrie, échantillonnage et méthodes quantitatives requise.","L’étape integration-preuves et le module science-cumulative-controverses sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","WEIRD est utilisé comme critique de portée et non comme classification essentielle des personnes ou des pays.","Les comparaisons exigent description, adaptation, invariance et contexte ; aucune différence observée n’est transformée en diagnostic ou hiérarchie de groupes."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_cultural_psychology_sampling_psychometrics_and_equity_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_cultural_psychology_sampling_psychometrics_and_equity_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "cibles-conditions-generalisation",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "yarkoni-generalizability-2022",
+            "henrich-weird-2010",
+            "apicella-beyond-weird-2020",
+            "appelbaum-jars-2018",
+            "schimmelpfennig-cultural-heterogeneity-2024"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-cibles-conditions-generalisation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "diversite-sans-essentialisme",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "putnick-invariance-2016"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-diversite-sans-essentialisme-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "comparabilite-mesures-contexte",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-comparabilite-mesures-contexte-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

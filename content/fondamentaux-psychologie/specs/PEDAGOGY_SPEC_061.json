@@ -2,12 +2,24 @@
   "specId":"PEDAGOGY_SPEC_061","schemaVersion":1,"programSlug":"fondamentaux-psychologie","stageSlug":"interventions-applications","moduleSlug":"psychologie-appliquee",
   "lesson":{"title":"Santé et prévention","slug":"sante-prevention","summary":"Distinguer promotion de la santé, prévention populationnelle et soin individuel, puis évaluer une action sans culpabiliser ni transformer des résultats moyens en conseil médical.","objectives":["Distinguer promotion de la santé, prévention universelle, sélective ou indiquée et traitement.","Relier les actions aux déterminants sociaux, aux environnements et aux inégalités de santé.","Construire une évaluation proportionnée portant sur effets, mise en œuvre, équité et effets indésirables."],"prerequisites":["Distinguer association, causalité et généralisation.","Savoir qu’un résultat populationnel ne prédit pas le cas individuel."],"estimatedMinutes":110,"position":1,
     "contentBlocks":[
-      {"type":"definition","position":1,"content":{"text":"La promotion de la santé vise à renforcer la capacité des personnes et des collectivités à agir sur leur santé et ses déterminants ; elle ne se limite pas à éviter une maladie. La prévention cherche à réduire la probabilité, l’apparition ou les conséquences d’un problème défini. Le traitement et le soin répondent à une situation clinique individuelle. Ces finalités peuvent se compléter, mais une campagne, une politique ou un atelier populationnel ne devient pas une consultation médicale et ne permet pas de choisir un traitement pour une personne.","sourceKeys":["who-health-promotion-glossary-2021","who-world-mental-health-report-2022"]}},
-      {"type":"rich_text","position":2,"content":{"text":"Une action universelle s’adresse à toute une population ou un milieu ; une action sélective à un groupe exposé à une probabilité plus élevée ; une action indiquée à des personnes présentant des signes précoces ou un risque accru sans que cela équivaille nécessairement à un diagnostic. Le ciblage doit reposer sur une finalité explicite, des données proportionnées, des règles transparentes et un accès équitable. Il peut produire stigmatisation, faux positifs, exclusion ou déplacement de ressources : ces conséquences doivent être anticipées et mesurées.","sourceKeys":["who-hat-guideline-2020","who-world-mental-health-report-2022"]}},
-      {"type":"callout","position":3,"content":{"text":"Les comportements de santé se développent dans des conditions matérielles, relationnelles, culturelles et institutionnelles : revenu, logement, éducation, discrimination, sécurité, travail, services disponibles et politiques publiques comptent. Informer peut être utile, mais ne crée ni temps, ni revenu, ni accessibilité. Une prévention responsable agit aussi sur les environnements et ne présente jamais maladie, détresse ou non-participation comme une faute personnelle. Les personnes concernées participent à la définition des besoins et des solutions.","sourceKeys":["who-world-mental-health-report-2022","who-health-promotion-glossary-2021"]}},
-      {"type":"definition","position":4,"content":{"text":"Évaluer une intervention complexe commence par une théorie de programme : pour qui, par quels mécanismes, dans quel contexte et avec quelles ressources un changement est-il attendu ? L’évaluation distingue faisabilité, portée réelle, fidélité et adaptations, effets utiles, effets indésirables, coûts et distribution des effets. Elle compare des alternatives crédibles et documente l’incertitude. Un effet moyen ne suffit pas si l’action n’atteint pas les groupes visés, aggrave une inégalité ou dépend d’un contexte absent ailleurs.","sourceKeys":["skivington-complex-interventions-2021","who-world-mental-health-report-2022"]}},
-      {"type":"example","position":5,"content":{"text":"Une ville propose une application gratuite de gestion du stress et annonce qu’elle « prévient les troubles mentaux ». Avant de conclure, il faut préciser l’objectif, la population, la comparaison et la durée ; mesurer inscription, usage, abandon, bien-être et recours à l’aide ; vérifier accessibilité numérique, langues, confidentialité et effets par groupe ; rechercher pression à participer, culpabilisation ou retard de soins. Une amélioration chez les utilisateurs volontaires ne prouve ni efficacité populationnelle ni prévention d’un diagnostic.","sourceKeys":["skivington-complex-interventions-2021","who-hat-guideline-2020"]}},
-      {"type":"objective","position":6,"content":{"text":"Une recommandation populationnelle décrit une action, un public, un niveau de preuve et des limites ; elle n’ordonne pas à une personne de commencer, arrêter ou remplacer un soin. Devant une difficulté personnelle persistante ou un retentissement important, l’orientation prudente est de solliciter un professionnel qualifié ou un service local adapté. En cas de danger immédiat ou d’impossibilité de rester en sécurité, contacter sans attendre les urgences locales ou une aide de crise appropriée. Cette leçon ne fournit aucun conseil médical individualisé.","sourceKeys":["who-world-mental-health-report-2022","who-hat-guideline-2020"]}}
+      {"type":"definition","position":1,"content":{"text":"La promotion de la santé vise à renforcer la capacité des personnes et des collectivités à agir sur leur santé et ses déterminants ; elle ne se limite pas à éviter une maladie. La prévention cherche à réduire la probabilité, l’apparition ou les conséquences d’un problème défini. Le traitement et le soin répondent à une situation clinique individuelle. Ces finalités peuvent se compléter, mais une campagne, une politique ou un atelier populationnel ne devient pas une consultation médicale et ne permet pas de choisir un traitement pour une personne.","sourceKeys":["who-health-promotion-glossary-2021","who-world-mental-health-report-2022"]},
+        "key": "content-1"
+      },
+      {"type":"rich_text","position":2,"content":{"text":"Une action universelle s’adresse à toute une population ou un milieu ; une action sélective à un groupe exposé à une probabilité plus élevée ; une action indiquée à des personnes présentant des signes précoces ou un risque accru sans que cela équivaille nécessairement à un diagnostic. Le ciblage doit reposer sur une finalité explicite, des données proportionnées, des règles transparentes et un accès équitable. Il peut produire stigmatisation, faux positifs, exclusion ou déplacement de ressources : ces conséquences doivent être anticipées et mesurées.","sourceKeys":["who-hat-guideline-2020","who-world-mental-health-report-2022"]},
+        "key": "content-2"
+      },
+      {"type":"callout","position":3,"content":{"text":"Les comportements de santé se développent dans des conditions matérielles, relationnelles, culturelles et institutionnelles : revenu, logement, éducation, discrimination, sécurité, travail, services disponibles et politiques publiques comptent. Informer peut être utile, mais ne crée ni temps, ni revenu, ni accessibilité. Une prévention responsable agit aussi sur les environnements et ne présente jamais maladie, détresse ou non-participation comme une faute personnelle. Les personnes concernées participent à la définition des besoins et des solutions.","sourceKeys":["who-world-mental-health-report-2022","who-health-promotion-glossary-2021"]},
+        "key": "content-3"
+      },
+      {"type":"definition","position":4,"content":{"text":"Évaluer une intervention complexe commence par une théorie de programme : pour qui, par quels mécanismes, dans quel contexte et avec quelles ressources un changement est-il attendu ? L’évaluation distingue faisabilité, portée réelle, fidélité et adaptations, effets utiles, effets indésirables, coûts et distribution des effets. Elle compare des alternatives crédibles et documente l’incertitude. Un effet moyen ne suffit pas si l’action n’atteint pas les groupes visés, aggrave une inégalité ou dépend d’un contexte absent ailleurs.","sourceKeys":["skivington-complex-interventions-2021","who-world-mental-health-report-2022"]},
+        "key": "content-4"
+      },
+      {"type":"example","position":5,"content":{"text":"Une ville propose une application gratuite de gestion du stress et annonce qu’elle « prévient les troubles mentaux ». Avant de conclure, il faut préciser l’objectif, la population, la comparaison et la durée ; mesurer inscription, usage, abandon, bien-être et recours à l’aide ; vérifier accessibilité numérique, langues, confidentialité et effets par groupe ; rechercher pression à participer, culpabilisation ou retard de soins. Une amélioration chez les utilisateurs volontaires ne prouve ni efficacité populationnelle ni prévention d’un diagnostic.","sourceKeys":["skivington-complex-interventions-2021","who-hat-guideline-2020"]},
+        "key": "content-5"
+      },
+      {"type":"objective","position":6,"content":{"text":"Une recommandation populationnelle décrit une action, un public, un niveau de preuve et des limites ; elle n’ordonne pas à une personne de commencer, arrêter ou remplacer un soin. Devant une difficulté personnelle persistante ou un retentissement important, l’orientation prudente est de solliciter un professionnel qualifié ou un service local adapté. En cas de danger immédiat ou d’impossibilité de rester en sécurité, contacter sans attendre les urgences locales ou une aide de crise appropriée. Cette leçon ne fournit aucun conseil médical individualisé.","sourceKeys":["who-world-mental-health-report-2022","who-hat-guideline-2020"]},
+        "key": "content-6"
+      }
     ],
     "resources":[
       {"key":"who-health-promotion-glossary-2021","title":"Health Promotion Glossary of Terms 2021","type":"document","url":"https://www.who.int/publications/i/item/9789240038349","author":"Organisation mondiale de la Santé","citation":"World Health Organization. (2021). Health Promotion Glossary of Terms 2021.","description":"Lire les entrées health promotion, empowerment, determinants et equity ; distinguer concepts et conseils individuels.","isRequired":true,"estimatedMinutes":20,"position":1},
@@ -17,16 +29,102 @@
       {"key":"who-unicef-hat-toolkit-2021","title":"Helping Adolescents Thrive Toolkit","type":"document","url":"https://www.who.int/westernpacific/publications/i/item/9789240025554","author":"Organisation mondiale de la Santé et UNICEF","citation":"World Health Organization & UNICEF. (2021). Helping Adolescents Thrive Toolkit.","description":"Consulter les stratégies sur lois, environnements et participation ; identifier une condition de mise en œuvre et une limite de transfert.","isRequired":false,"estimatedMinutes":18,"position":5}
     ],
     "concepts":[
-      {"title":"Promotion, prévention et soin","slug":"promotion-prevention-soin","description":"Les niveaux d’action diffèrent par finalité, population et décision ; une intervention populationnelle n’est pas un traitement individuel.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-health-promotion-glossary-2021","who-hat-guideline-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Niveaux d’action","questionCount":5}},
-      {"title":"Déterminants sociaux et équité","slug":"determinants-sociaux-equite-sante","description":"Conditions de vie, pouvoir et accès façonnent les possibilités de santé ; la prévention ne doit ni blâmer ni exclure.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-world-mental-health-report-2022","who-unicef-hat-toolkit-2021"],"assessment":{"type":"quiz","title":"Mini-évaluation — Prévenir sans culpabiliser","questionCount":5}},
-      {"title":"Évaluation et mise en œuvre","slug":"evaluation-mise-en-oeuvre-prevention","description":"Effets, portée, mécanismes, contexte, coûts, équité et dommages possibles doivent être examinés ensemble.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["skivington-complex-interventions-2021","who-hat-guideline-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Évaluer une action","questionCount":5}}
+      {"title":"Promotion, prévention et soin","slug":"promotion-prevention-soin","description":"Les niveaux d’action diffèrent par finalité, population et décision ; une intervention populationnelle n’est pas un traitement individuel.","position":1,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-health-promotion-glossary-2021","who-hat-guideline-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Niveaux d’action","questionCount":5,
+        "key": "concept-promotion-prevention-soin-assessment-1"
+      }},
+      {"title":"Déterminants sociaux et équité","slug":"determinants-sociaux-equite-sante","description":"Conditions de vie, pouvoir et accès façonnent les possibilités de santé ; la prévention ne doit ni blâmer ni exclure.","position":2,"isRequired":true,"masteryThreshold":70,"resourceKeys":["who-world-mental-health-report-2022","who-unicef-hat-toolkit-2021"],"assessment":{"type":"quiz","title":"Mini-évaluation — Prévenir sans culpabiliser","questionCount":5,
+        "key": "concept-determinants-sociaux-equite-sante-assessment-1"
+      }},
+      {"title":"Évaluation et mise en œuvre","slug":"evaluation-mise-en-oeuvre-prevention","description":"Effets, portée, mécanismes, contexte, coûts, équité et dommages possibles doivent être examinés ensemble.","position":3,"isRequired":true,"masteryThreshold":70,"resourceKeys":["skivington-complex-interventions-2021","who-hat-guideline-2020"],"assessment":{"type":"quiz","title":"Mini-évaluation — Évaluer une action","questionCount":5,
+        "key": "concept-evaluation-mise-en-oeuvre-prevention-assessment-1"
+      }}
     ],
     "tasks":[
-      {"title":"Classer des actions de santé","description":"Classer douze situations fictives comme promotion, prévention universelle, sélective ou indiquée, soin ou combinaison, puis justifier la population et la finalité.","type":"practice","isRequired":true,"weight":1,"position":1},
-      {"title":"Réaliser un audit d’équité","description":"Pour une campagne fictive, cartographier obstacles matériels, accès, stigmatisation, participation et effets possibles par groupe sans attribuer de faute individuelle.","type":"writing","isRequired":true,"weight":1,"position":2},
-      {"title":"Concevoir une évaluation prudente","description":"Définir théorie de programme, comparaison, portée, mise en œuvre, résultats, effets indésirables et critères d’équité d’une intervention fictive.","type":"project","isRequired":true,"weight":2,"position":3}
-    ]},
-  "editorial":{"status":"editorial_review","version":"1.0.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-04","nextReviewAt":"2027-08-04",
+      {"title":"Classer des actions de santé","description":"Classer douze situations fictives comme promotion, prévention universelle, sélective ou indiquée, soin ou combinaison, puis justifier la population et la finalité.","type":"practice","isRequired":true,"weight":1,"position":1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title":"Réaliser un audit d’équité","description":"Pour une campagne fictive, cartographier obstacles matériels, accès, stigmatisation, participation et effets possibles par groupe sans attribuer de faute individuelle.","type":"writing","isRequired":true,"weight":1,"position":2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title":"Concevoir une évaluation prudente","description":"Définir théorie de programme, comparaison, portée, mise en œuvre, résultats, effets indésirables et critères d’équité d’une intervention fictive.","type":"project","isRequired":true,"weight":2,"position":3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-health-promotion-glossary-2021"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-world-mental-health-report-2022"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-hat-guideline-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-promotion-prevention-soin-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "skivington-complex-interventions-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-determinants-sociaux-equite-sante-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "who-unicef-hat-toolkit-2021"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-evaluation-mise-en-oeuvre-prevention-assessment-1"
+      }
+    ]
+  },
+  "editorial":{"status":"editorial_review","version":"1.1.0","language":"fr","audience":"Adulte débutant sans prérequis universitaire","owner":"LearnX","createdAt":"2026-08-04","lastReviewedAt":"2026-08-06","nextReviewAt":"2027-08-04",
     "references":[
       {"id":"REF-061-WHO-GLOSSARY","type":"official_glossary","authors":["World Health Organization"],"organization":"World Health Organization","title":"Health Promotion Glossary of Terms 2021","year":2021,"edition":"2021","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789240038349","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-SA 3.0 IGO","status":"verified","notes":"Définitions institutionnelles concises, à replacer dans leurs sources."},
       {"id":"REF-061-WHO-WMHR","type":"official_report","authors":["World Health Organization"],"organization":"World Health Organization","title":"World mental health report: Transforming mental health for all","year":2022,"edition":"1re éd.","publication":"World Health Organization","doi":null,"url":"https://www.who.int/publications/i/item/9789240049338","accessedAt":"2026-08-04","evidenceLevel":"D","peerReviewed":false,"language":"en","license":"CC BY-NC-SA 3.0 IGO","status":"verified","notes":"Rapport mondial sur déterminants, environnements et systèmes."},
@@ -73,6 +171,69 @@
       ]}
     ],
     "review":{"editorialReviewer":null,"subjectReviewer":null,"scientificAccuracy":false,"pedagogicalAlignment":true,"seedCompatibility":false,"linksAndMedia":true,"readyForPublication":false,"notes":["Revue humaine en psychologie de la santé, santé publique, prévention et évaluation requise.","L’étape interventions-applications et le module psychologie-appliquee sont absents du seed actuel.","Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.","Prévention et promotion restent populationnelles et contextualisées ; aucun conseil médical ou traitement individualisé.","Déterminants sociaux, participation, équité, stigmatisation, effets indésirables et non-recours sont explicitement examinés.","Les messages d’urgence sont généraux et doivent être localisés avant publication."]},
-    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_health_psychology_public_health_and_prevention_review"}]
+    "changeLog":[{"version":"1.0.0","date":"2026-08-04","author":"LearnX","change":"Création de la leçon et de ses évaluations.","reviewRequired":"technical_editorial_health_psychology_public_health_and_prevention_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "promotion-prevention-soin",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "who-health-promotion-glossary-2021",
+            "who-world-mental-health-report-2022",
+            "who-hat-guideline-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-promotion-prevention-soin-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "determinants-sociaux-equite-sante",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "skivington-complex-interventions-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-determinants-sociaux-equite-sante-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "evaluation-mise-en-oeuvre-prevention",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "who-unicef-hat-toolkit-2021"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-evaluation-mise-en-oeuvre-prevention-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

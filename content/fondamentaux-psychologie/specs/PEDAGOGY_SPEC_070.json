@@ -17,12 +17,24 @@
     ],
     "prerequisites": ["Avoir formulé une question délimitée.", "Disposer d’une recherche tracée et de sources vérifiées.", "Avoir comparé méthodes, estimands, résultats, hétérogénéité et biais."],
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Commencer la conclusion par une réponse directe à la question, puis séparer trois couches. Les faits sont les observations ou estimations rapportées par les études. Les inférences expliquent ce que ces résultats soutiennent sous certaines hypothèses. Les jugements mettent en balance importance, valeurs et contexte pour envisager une décision. Une conclusion transparente indique à quel moment elle passe d’une couche à l’autre et renvoie chaque affirmation factuelle aux sources qui la soutiennent.", "sourceKeys": ["cochrane-handbook-ch15-2024", "strobe-explanation-2007"]}},
-      {"type": "callout", "position": 2, "content": {"text": "Le vocabulaire causal doit correspondre à la question, au plan, à l’estimand et aux hypothèses. Une association, une corrélation temporelle ou une différence ajustée ne devient pas automatiquement « X provoque Y ». Même une étude randomisée n’autorise qu’une conclusion sur l’effet défini, la population étudiée, la mise en œuvre observée et les résultats mesurés. Nommer les confusions résiduelles, biais, événements intercurrents et autres explications plausibles.", "sourceKeys": ["strobe-explanation-2007", "cochrane-handbook-ch15-2024"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Présenter direction et magnitude avec leurs intervalles, puis la certitude du corpus. Risque de biais, incohérence, caractère indirect des preuves, imprécision et biais de diffusion peuvent réduire la confiance. Éviter « prouvé », « aucun effet » ou le duel significatif/non significatif. Préférer une formulation calibrée : « réduit probablement », « peut être associé », « l’estimation est compatible avec un bénéfice comme avec un effet nul ou un dommage », suivie des raisons de l’incertitude.", "sourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "L’applicabilité est une inférence distincte. Comparer population, contexte, intervention ou exposition, comparateur, résultats, horizon, ressources et mise en œuvre du corpus avec la situation cible. Une preuve indirecte n’est pas inutile, mais son transfert demande une justification et une incertitude supplémentaires. Signaler les groupes absents, les mesures substitutives et les conditions sans lesquelles le résultat pourrait changer.", "sourceKeys": ["grade-overview-2026", "strobe-explanation-2007", "cochrane-handbook-ch15-2024"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Une estimation d’effet ne décide pas seule de ce qu’il faut faire. Examiner bénéfices et dommages, valeurs divergentes, autonomie, confidentialité, charge, accessibilité, ressources, acceptabilité, faisabilité et équité. Une intervention moyenne favorable peut accroître les inégalités ou imposer un coût disproportionné. Ces considérations sont des jugements explicites à documenter ; elles ne doivent ni être présentées comme des résultats mesurés ni être effacées derrière l’étiquette « fondé sur les preuves ».", "sourceKeys": ["grade-etd-2026", "cochrane-handbook-ch15-2024"]}},
-      {"type": "rich_text", "position": 6, "content": {"text": "Une conclusion finale courte peut suivre six mouvements : réponse délimitée ; résultat principal avec magnitude ; certitude et raisons ; limites causales ; applicabilité ; implications prudentes et prochaine information utile. Elle précise les résultats indésirables et les désaccords du corpus, ne transforme pas l’absence de preuve en preuve d’absence, ne promet pas un résultat individuel et ne remplace pas une évaluation professionnelle. La force des verbes doit diminuer lorsque l’incertitude augmente.", "sourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026", "grade-etd-2026"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Commencer la conclusion par une réponse directe à la question, puis séparer trois couches. Les faits sont les observations ou estimations rapportées par les études. Les inférences expliquent ce que ces résultats soutiennent sous certaines hypothèses. Les jugements mettent en balance importance, valeurs et contexte pour envisager une décision. Une conclusion transparente indique à quel moment elle passe d’une couche à l’autre et renvoie chaque affirmation factuelle aux sources qui la soutiennent.", "sourceKeys": ["cochrane-handbook-ch15-2024", "strobe-explanation-2007"]},
+        "key": "content-1"
+      },
+      {"type": "callout", "position": 2, "content": {"text": "Le vocabulaire causal doit correspondre à la question, au plan, à l’estimand et aux hypothèses. Une association, une corrélation temporelle ou une différence ajustée ne devient pas automatiquement « X provoque Y ». Même une étude randomisée n’autorise qu’une conclusion sur l’effet défini, la population étudiée, la mise en œuvre observée et les résultats mesurés. Nommer les confusions résiduelles, biais, événements intercurrents et autres explications plausibles.", "sourceKeys": ["strobe-explanation-2007", "cochrane-handbook-ch15-2024"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Présenter direction et magnitude avec leurs intervalles, puis la certitude du corpus. Risque de biais, incohérence, caractère indirect des preuves, imprécision et biais de diffusion peuvent réduire la confiance. Éviter « prouvé », « aucun effet » ou le duel significatif/non significatif. Préférer une formulation calibrée : « réduit probablement », « peut être associé », « l’estimation est compatible avec un bénéfice comme avec un effet nul ou un dommage », suivie des raisons de l’incertitude.", "sourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "L’applicabilité est une inférence distincte. Comparer population, contexte, intervention ou exposition, comparateur, résultats, horizon, ressources et mise en œuvre du corpus avec la situation cible. Une preuve indirecte n’est pas inutile, mais son transfert demande une justification et une incertitude supplémentaires. Signaler les groupes absents, les mesures substitutives et les conditions sans lesquelles le résultat pourrait changer.", "sourceKeys": ["grade-overview-2026", "strobe-explanation-2007", "cochrane-handbook-ch15-2024"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Une estimation d’effet ne décide pas seule de ce qu’il faut faire. Examiner bénéfices et dommages, valeurs divergentes, autonomie, confidentialité, charge, accessibilité, ressources, acceptabilité, faisabilité et équité. Une intervention moyenne favorable peut accroître les inégalités ou imposer un coût disproportionné. Ces considérations sont des jugements explicites à documenter ; elles ne doivent ni être présentées comme des résultats mesurés ni être effacées derrière l’étiquette « fondé sur les preuves ».", "sourceKeys": ["grade-etd-2026", "cochrane-handbook-ch15-2024"]},
+        "key": "content-5"
+      },
+      {"type": "rich_text", "position": 6, "content": {"text": "Une conclusion finale courte peut suivre six mouvements : réponse délimitée ; résultat principal avec magnitude ; certitude et raisons ; limites causales ; applicabilité ; implications prudentes et prochaine information utile. Elle précise les résultats indésirables et les désaccords du corpus, ne transforme pas l’absence de preuve en preuve d’absence, ne promet pas un résultat individuel et ne remplace pas une évaluation professionnelle. La force des verbes doit diminuer lorsque l’incertitude augmente.", "sourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026", "grade-etd-2026"]},
+        "key": "content-6"
+      }
     ],
     "resources": [
       {"key": "cochrane-handbook-ch15-2024", "title": "Cochrane Handbook — Chapter 15: Interpreting results and drawing conclusions", "type": "document", "url": "https://training.cochrane.org/handbook/current/chapter-15", "author": "Schünemann H. J. et al.", "citation": "Schünemann, H. J., Vist, G. E., Higgins, J. P. T., Santesso, N., Deeks, J. J., Glasziou, P., Akl, E. A., & Guyatt, G. H. (2024). Chapter 15: Interpreting results and drawing conclusions. Cochrane Handbook, Version 6.5 (updated August 2023).", "description": "Étudier les effets et intervalles, la certitude, l’applicabilité, les bénéfices et dommages et les formulations de conclusion.", "isRequired": true, "estimatedMinutes": 35, "position": 1},
@@ -31,18 +43,99 @@
       {"key": "strobe-explanation-2007", "title": "STROBE: Explanation and Elaboration", "type": "article", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2020496/", "author": "Vandenbroucke J. P. et al.", "citation": "Vandenbroucke, J. P., et al. (2007). Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): Explanation and elaboration. PLoS Medicine, 4(10), e297. https://doi.org/10.1371/journal.pmed.0040297", "description": "Examiner l’interprétation prudente, les limites et la généralisation des études observationnelles.", "isRequired": false, "estimatedMinutes": 25, "position": 4}
     ],
     "concepts": [
-      {"title": "Faits, inférences et incertitude", "slug": "faits-inferences-incertitude", "description": "Une conclusion distingue ce que les études rapportent, ce que le raisonnement permet d’inférer et le degré de confiance accordé au corpus.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Séparer et calibrer", "questionCount": 5}},
-      {"title": "Portée causale et langage calibré", "slug": "portee-causale-langage", "description": "Les verbes et la force de l’affirmation restent proportionnés au plan, à l’estimand, aux hypothèses, aux biais et à la précision.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["strobe-explanation-2007", "cochrane-handbook-ch15-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Borner la conclusion", "questionCount": 5}},
-      {"title": "Applicabilité, valeurs et éthique", "slug": "applicabilite-valeurs-ethique", "description": "Le transfert et la décision exigent des jugements séparés sur contexte, dommages, valeurs, ressources, acceptabilité, faisabilité et équité.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["grade-overview-2026", "grade-etd-2026", "cochrane-handbook-ch15-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Passer des preuves aux implications", "questionCount": 5}}
+      {"title": "Faits, inférences et incertitude", "slug": "faits-inferences-incertitude", "description": "Une conclusion distingue ce que les études rapportent, ce que le raisonnement permet d’inférer et le degré de confiance accordé au corpus.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["cochrane-handbook-ch15-2024", "grade-overview-2026"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Séparer et calibrer", "questionCount": 5,
+        "key": "concept-faits-inferences-incertitude-assessment-1"
+      }},
+      {"title": "Portée causale et langage calibré", "slug": "portee-causale-langage", "description": "Les verbes et la force de l’affirmation restent proportionnés au plan, à l’estimand, aux hypothèses, aux biais et à la précision.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["strobe-explanation-2007", "cochrane-handbook-ch15-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Borner la conclusion", "questionCount": 5,
+        "key": "concept-portee-causale-langage-assessment-1"
+      }},
+      {"title": "Applicabilité, valeurs et éthique", "slug": "applicabilite-valeurs-ethique", "description": "Le transfert et la décision exigent des jugements séparés sur contexte, dommages, valeurs, ressources, acceptabilité, faisabilité et équité.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["grade-overview-2026", "grade-etd-2026", "cochrane-handbook-ch15-2024"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Passer des preuves aux implications", "questionCount": 5,
+        "key": "concept-applicabilite-valeurs-ethique-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Annoter les niveaux d’énoncé", "description": "Colorer une conclusion fictive selon faits, inférences et jugements ; attacher une source aux faits et une justification aux inférences et décisions.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Réécrire les suraffirmations", "description": "Réviser dix phrases contenant prouvé, cause, aucun effet, universel ou garanti ; choisir des verbes compatibles avec le plan, les intervalles, les biais et la certitude.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Rédiger la conclusion du projet", "description": "Produire une conclusion en six mouvements avec réponse, magnitude, certitude, limites causales, applicabilité, bénéfices et dommages, valeurs, équité et prochaine information utile.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Annoter les niveaux d’énoncé", "description": "Colorer une conclusion fictive selon faits, inférences et jugements ; attacher une source aux faits et une justification aux inférences et décisions.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Réécrire les suraffirmations", "description": "Réviser dix phrases contenant prouvé, cause, aucun effet, universel ou garanti ; choisir des verbes compatibles avec le plan, les intervalles, les biais et la certitude.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Rédiger la conclusion du projet", "description": "Produire une conclusion en six mouvements avec réponse, magnitude, certitude, limites causales, applicabilité, bénéfices et dommages, valeurs, équité et prochaine information utile.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cochrane-handbook-ch15-2024"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "strobe-explanation-2007"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-faits-inferences-incertitude-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "grade-overview-2026"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-portee-causale-langage-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "grade-etd-2026"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-applicabilite-valeurs-ethique-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "status": "editorial_review", "version": "1.0.0", "language": "fr", "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-04", "nextReviewAt": "2027-08-04",
+    "status": "editorial_review", "version": "1.1.0", "language": "fr", "audience": "Adultes débutants à intermédiaires étudiant les fondements de la psychologie", "owner": "LearnX", "createdAt": "2026-08-04", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-04",
     "references": [
       {"id": "REF-070-COCHRANE-CH15", "type": "official_handbook", "authors": ["Schünemann H. J.", "Vist G. E.", "Higgins J. P. T.", "Santesso N.", "Deeks J. J.", "Glasziou P.", "Akl E. A.", "Guyatt G. H."], "organization": "Cochrane", "title": "Chapter 15: Interpreting results and drawing conclusions", "year": 2024, "edition": "Version 6.5; updated August 2023", "publication": "Cochrane Handbook for Systematic Reviews of Interventions", "doi": null, "url": "https://training.cochrane.org/handbook/current/chapter-15", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": false, "language": "en", "license": "Cochrane terms of use", "status": "verified", "notes": "Guide d’interprétation des revues d’interventions ; les formulations sont adaptées à un dossier pédagogique non clinique et ne constituent pas des recommandations individuelles."},
       {"id": "REF-070-GRADE-OVERVIEW", "type": "official_living_handbook", "authors": ["Neumann I.", "Brennan S.", "Meerpohl J.", "Davoli M.", "Alonso Coello P.", "Akl E.", "Dahm P.", "Skoetz N.", "Xia J.", "Brozek J.", "Schünemann H. J."], "organization": "GRADE Working Group", "title": "Overview of the GRADE approach", "year": 2026, "edition": "Last modified May 12, 2026", "publication": "GRADE Book", "doi": null, "url": "https://book.gradepro.org/guideline/overview-of-the-grade-approach", "accessedAt": "2026-08-04", "evidenceLevel": "B", "peerReviewed": false, "language": "en", "license": "GRADE Working Group terms of use", "status": "verified", "notes": "GRADE s’applique à un corpus et à un résultat ; la leçon en retient les domaines sans prétendre réaliser une évaluation GRADE complète."},
@@ -87,7 +180,69 @@
         {"type": "short_answer", "prompt": "Quel critère examine si une action risque d’accroître ou réduire les inégalités ?", "explanation": "Il s’agit de l’équité.", "acceptedAnswers": ["équité", "equite", "impact sur l’équité", "health equity"], "position": 5, "options": []}
       ]}
     ],
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_evidence_interpretation_causal_inference_grade_applicability_and_ethics_review"}],
-    "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en interprétation des preuves, inférence causale, applicabilité et éthique requise.", "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "La conclusion sépare faits, inférences, incertitude, applicabilité et jugements de décision.", "Aucune association n’est transformée automatiquement en causalité et aucune preuve moyenne en promesse individuelle.", "Bénéfices, dommages, valeurs, autonomie, confidentialité, ressources, acceptabilité, faisabilité et équité restent explicites."]}
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-04", "author": "LearnX", "change": "Création de la leçon et de ses évaluations.", "reviewRequired": "technical_editorial_evidence_interpretation_causal_inference_grade_applicability_and_ethics_review"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": false, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en interprétation des preuves, inférence causale, applicabilité et éthique requise.", "L’étape integration-preuves et le module projet-integrateur sont absents du seed actuel.", "Validation technique obligatoire avant intégration ; aucune modification Prisma, API, seed ou backlog.", "La conclusion sépare faits, inférences, incertitude, applicabilité et jugements de décision.", "Aucune association n’est transformée automatiquement en causalité et aucune preuve moyenne en promesse individuelle.", "Bénéfices, dommages, valeurs, autonomie, confidentialité, ressources, acceptabilité, faisabilité et équité restent explicites."]},
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "faits-inferences-incertitude",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "cochrane-handbook-ch15-2024",
+            "strobe-explanation-2007"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-faits-inferences-incertitude-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "portee-causale-langage",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "grade-overview-2026"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-portee-causale-langage-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "applicabilite-valeurs-ethique",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "grade-etd-2026"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-applicabilite-valeurs-ethique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

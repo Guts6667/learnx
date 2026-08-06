@@ -13,11 +13,21 @@
     "estimatedMinutes": 150,
     "position": 5,
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Le rapport Belmont organise l'éthique de la recherche impliquant des personnes autour de trois principes. Le respect des personnes reconnaît l'autonomie et exige une protection adaptée lorsque celle-ci est diminuée. La bienfaisance demande de réduire les dommages possibles et de mettre en balance risques et bénéfices. La justice interroge la répartition équitable des charges et des bénéfices, notamment dans la sélection des participants.", "sourceKeys": ["belmont-report-ohrp"]}},
-      {"type": "definition", "position": 2, "content": {"text": "Un consentement éclairé est un processus, pas une signature isolée. La personne reçoit des informations compréhensibles sur le but, les procédures, les risques, les bénéfices attendus, l'usage des données, les contacts et son droit de refuser ou de se retirer sans pénalité. Le chercheur vérifie la compréhension et l'absence de coercition ou d'influence indue ; les protections sont adaptées aux capacités et à la situation.", "sourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"]}},
-      {"type": "rich_text", "position": 3, "content": {"text": "Le risque ne se limite pas aux blessures physiques : il peut être psychologique, social, juridique, économique ou lié à la confidentialité. Le protocole doit collecter seulement les données nécessaires, limiter les accès, prévoir stockage et suppression, et expliquer les limites de la protection. Anonymat signifie que l'identité ne peut pas être reliée aux données ; confidentialité signifie que cette liaison existe éventuellement mais qu'elle est protégée.", "sourceKeys": ["belmont-report-ohrp", "common-rule-ohrp"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Un comité d'éthique indépendant examine le rapport risques-bénéfices, le recrutement, le consentement et les protections avant le démarrage, selon le cadre applicable. Une approbation n'exonère pas l'équipe de surveiller les événements indésirables et de respecter le protocole. Dans le cadre américain présenté par les sources, les Institutional Review Boards remplissent cette fonction ; les noms et obligations juridiques varient selon les pays et institutions.", "sourceKeys": ["openstax-psychology-2e-2-4", "common-rule-ohrp"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Une information incomplète ou une tromperie ne se justifie pas par la seule commodité. Elle doit être nécessaire à la question, ne pas cacher un risque dépassant ce qui est acceptable, être examinée en amont et être suivie d'un débriefing adapté expliquant le vrai but, la raison de la procédure et l'usage des données. Les risques importants ne doivent jamais être dissimulés pour obtenir la participation.", "sourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Le rapport Belmont organise l'éthique de la recherche impliquant des personnes autour de trois principes. Le respect des personnes reconnaît l'autonomie et exige une protection adaptée lorsque celle-ci est diminuée. La bienfaisance demande de réduire les dommages possibles et de mettre en balance risques et bénéfices. La justice interroge la répartition équitable des charges et des bénéfices, notamment dans la sélection des participants.", "sourceKeys": ["belmont-report-ohrp"]},
+        "key": "content-1"
+      },
+      {"type": "definition", "position": 2, "content": {"text": "Un consentement éclairé est un processus, pas une signature isolée. La personne reçoit des informations compréhensibles sur le but, les procédures, les risques, les bénéfices attendus, l'usage des données, les contacts et son droit de refuser ou de se retirer sans pénalité. Le chercheur vérifie la compréhension et l'absence de coercition ou d'influence indue ; les protections sont adaptées aux capacités et à la situation.", "sourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"]},
+        "key": "content-2"
+      },
+      {"type": "rich_text", "position": 3, "content": {"text": "Le risque ne se limite pas aux blessures physiques : il peut être psychologique, social, juridique, économique ou lié à la confidentialité. Le protocole doit collecter seulement les données nécessaires, limiter les accès, prévoir stockage et suppression, et expliquer les limites de la protection. Anonymat signifie que l'identité ne peut pas être reliée aux données ; confidentialité signifie que cette liaison existe éventuellement mais qu'elle est protégée.", "sourceKeys": ["belmont-report-ohrp", "common-rule-ohrp"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Un comité d'éthique indépendant examine le rapport risques-bénéfices, le recrutement, le consentement et les protections avant le démarrage, selon le cadre applicable. Une approbation n'exonère pas l'équipe de surveiller les événements indésirables et de respecter le protocole. Dans le cadre américain présenté par les sources, les Institutional Review Boards remplissent cette fonction ; les noms et obligations juridiques varient selon les pays et institutions.", "sourceKeys": ["openstax-psychology-2e-2-4", "common-rule-ohrp"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Une information incomplète ou une tromperie ne se justifie pas par la seule commodité. Elle doit être nécessaire à la question, ne pas cacher un risque dépassant ce qui est acceptable, être examinée en amont et être suivie d'un débriefing adapté expliquant le vrai but, la raison de la procédure et l'usage des données. Les risques importants ne doivent jamais être dissimulés pour obtenir la participation.", "sourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "belmont-report-ohrp", "type": "document", "title": "The Belmont Report", "author": "National Commission for the Protection of Human Subjects of Biomedical and Behavioral Research", "url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/read-the-belmont-report/index.html", "citation": "National Commission for the Protection of Human Subjects of Biomedical and Behavioral Research. (1979). The Belmont Report. U.S. Department of Health and Human Services, Office for Human Research Protections.", "description": "Lire les trois principes et les sections sur consentement, risques-bénéfices et sélection ; appliquer chaque principe au cas fourni dans la tâche.", "isRequired": true, "estimatedMinutes": 40, "position": 1},
@@ -25,18 +35,91 @@
       {"key": "common-rule-ohrp", "type": "document", "title": "Federal Policy for the Protection of Human Subjects — Common Rule", "author": "U.S. Department of Health and Human Services, Office for Human Research Protections", "url": "https://www.hhs.gov/ohrp/regulations-and-policy/regulations/common-rule/index.html", "citation": "U.S. Department of Health and Human Services, Office for Human Research Protections. (2018). Federal Policy for the Protection of Human Subjects ('Common Rule'), 45 CFR 46, Subpart A.", "description": "Consulter la page de cadrage pour distinguer principe éthique, exigence réglementaire américaine et décision d'un comité compétent.", "isRequired": false, "estimatedMinutes": 20, "position": 3}
     ],
     "concepts": [
-      {"title": "Respect, bienfaisance et justice", "slug": "principes-ethiques-recherche", "description": "Ces principes guident autonomie et protection, réduction des risques et répartition équitable des charges et bénéfices.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["belmont-report-ohrp"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Principes éthiques", "questionCount": 5}},
-      {"title": "Consentement et protection des données", "slug": "consentement-protection-donnees", "description": "Un consentement valide combine information, compréhension et volontariat, avec des protections de données proportionnées aux risques.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Consentement et données", "questionCount": 5}},
-      {"title": "Revue indépendante, tromperie et débriefing", "slug": "revue-tromperie-debriefing", "description": "Une instance indépendante évalue le protocole ; toute information incomplète exige nécessité, risque limité, examen préalable et débriefing adapté.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-4", "common-rule-ohrp", "belmont-report-ohrp"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Revue et débriefing", "questionCount": 5}}
+      {"title": "Respect, bienfaisance et justice", "slug": "principes-ethiques-recherche", "description": "Ces principes guident autonomie et protection, réduction des risques et répartition équitable des charges et bénéfices.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["belmont-report-ohrp"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Principes éthiques", "questionCount": 5,
+        "key": "concept-principes-ethiques-recherche-assessment-1"
+      }},
+      {"title": "Consentement et protection des données", "slug": "consentement-protection-donnees", "description": "Un consentement valide combine information, compréhension et volontariat, avec des protections de données proportionnées aux risques.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["belmont-report-ohrp", "openstax-psychology-2e-2-4"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Consentement et données", "questionCount": 5,
+        "key": "concept-consentement-protection-donnees-assessment-1"
+      }},
+      {"title": "Revue indépendante, tromperie et débriefing", "slug": "revue-tromperie-debriefing", "description": "Une instance indépendante évalue le protocole ; toute information incomplète exige nécessité, risque limité, examen préalable et débriefing adapté.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-4", "common-rule-ohrp", "belmont-report-ohrp"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Revue et débriefing", "questionCount": 5,
+        "key": "concept-revue-tromperie-debriefing-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Auditer un protocole selon Belmont", "description": "Pour une étude fictive recrutant des salariés par leur manager, relever un enjeu de respect, de bienfaisance et de justice, puis proposer une protection observable pour chacun.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Réécrire un consentement insuffisant", "description": "Réviser une notice qui omet retrait, risques émotionnels et usage des données ; ajouter une question courte permettant de vérifier la compréhension.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Décider d'une information incomplète", "description": "Examiner un protocole qui cache le but exact d'une tâche sociale : juger nécessité, risques, alternatives, revue indépendante et contenu du débriefing, sans rendre une autorisation juridique.", "type": "project", "isRequired": true, "weight": 2, "position": 3}
+      {"title": "Auditer un protocole selon Belmont", "description": "Pour une étude fictive recrutant des salariés par leur manager, relever un enjeu de respect, de bienfaisance et de justice, puis proposer une protection observable pour chacun.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Réécrire un consentement insuffisant", "description": "Réviser une notice qui omet retrait, risques émotionnels et usage des données ; ajouter une question courte permettant de vérifier la compréhension.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Décider d'une information incomplète", "description": "Examiner un protocole qui cache le but exact d'une tâche sociale : juger nécessité, risques, alternatives, revue indépendante et contenu du débriefing, sans rendre une autorisation juridique.", "type": "project", "isRequired": true, "weight": 2, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "belmont-report-ohrp"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-principes-ethiques-recherche-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "common-rule-ohrp"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-consentement-protection-donnees-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-revue-tromperie-debriefing-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-011-BELMONT", "type": "official_ethics_report", "authors": [], "organization": "National Commission for the Protection of Human Subjects of Biomedical and Behavioral Research", "title": "The Belmont Report", "year": 1979, "edition": "Version officielle publiée le 18 avril 1979", "publication": "U.S. Department of Health and Human Services, Office for Human Research Protections", "doi": null, "url": "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/read-the-belmont-report/index.html", "accessedAt": "2026-08-03", "evidenceLevel": "D", "peerReviewed": false, "language": "en", "license": "Document officiel du gouvernement des États-Unis", "status": "verified", "notes": "Source primaire normative pour principes et applications ; le cadre juridique local doit être vérifié séparément."},
       {"id": "REF-011-OPENSTAX-2-4", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.4 Ethics", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-4-ethics", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Introduction à la revue institutionnelle, au consentement, à la tromperie et au débriefing dans le contexte américain."},
@@ -78,6 +161,65 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en éthique de la recherche et vérification du cadre juridique local requises avant publication.", "Les sources réglementaires américaines sont présentées comme un cadre situé, non comme une règle universelle ni un conseil juridique."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "principes-ethiques-recherche",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "belmont-report-ohrp",
+            "openstax-psychology-2e-2-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-principes-ethiques-recherche-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "consentement-protection-donnees",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "common-rule-ohrp"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-consentement-protection-donnees-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "revue-tromperie-debriefing",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-revue-tromperie-debriefing-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

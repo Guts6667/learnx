@@ -27,7 +27,8 @@
         "content": {
           "text": "À partir des années 1950, des travaux en psychologie, linguistique, informatique et neurosciences renouvellent l'étude de la mémoire, du langage, de l'attention et de la résolution de problèmes. La révolution cognitive ne revient pas simplement à une introspection libre : elle construit des modèles de traitement de l'information et les confronte à des réponses observables, des erreurs, des temps de réaction ou des performances de rappel. Un processus mental peut donc être théorisé sans être tenu pour directement visible.",
           "sourceKeys": ["openstax-psychology-2e-1-2-currents", "openstax-psychology-2e-1-3-cognitive"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "example",
@@ -35,7 +36,8 @@
         "content": {
           "text": "Deux personnes obtiennent le même score à une tâche de mémoire, mais l'une répond rapidement avec quelques erreurs tandis que l'autre répond lentement sans erreur. Un modèle cognitif peut proposer des stratégies différentes, puis prédire comment la performance changera si le délai, la charge ou la consigne varie. Le modèle est utile s'il produit des prédictions qui peuvent échouer, pas seulement s'il raconte après coup une histoire plausible.",
           "sourceKeys": ["openstax-psychology-2e-1-3-cognitive"]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "rich_text",
@@ -43,7 +45,8 @@
         "content": {
           "text": "L'approche humaniste se développe en réaction aux visions jugées trop déterministes du comportement et de la personnalité. Elle met l'accent sur l'expérience vécue, le sens, la capacité de choix, la relation et le développement de la personne. Carl Rogers insiste notamment sur une relation centrée sur la personne. Ces orientations ont influencé la pratique clinique et la conception de l'alliance, mais leurs valeurs, leurs modèles de personnalité et les effets d'une intervention doivent être évalués séparément.",
           "sourceKeys": ["openstax-psychology-2e-1-2-currents", "openstax-psychology-2e-11-5"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -51,7 +54,8 @@
         "content": {
           "text": "La psychanalyse freudienne propose que des conflits et processus inconscients participent au comportement et à la personnalité. Son influence historique sur la psychothérapie, la culture et l'attention portée à l'histoire personnelle est majeure. Plusieurs propositions classiques sont toutefois difficiles à falsifier ou ont reçu peu de soutien direct. Les approches psychodynamiques ultérieures ont modifié concepts, durée et méthodes ; les évaluer exige de distinguer une théorie générale, un mécanisme précis et l'efficacité d'une intervention définie.",
           "sourceKeys": ["openstax-psychology-2e-1-2-currents", "openstax-psychology-2e-11-2"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -59,7 +63,8 @@
         "content": {
           "text": "À retenir : comparer des courants ne consiste ni à choisir une école comme identité ni à les déclarer également prouvés. Pour un même cas, il faut préciser la question posée, le mécanisme proposé, les observations attendues, les explications alternatives et le niveau de preuve disponible. Des idées issues de traditions différentes peuvent être reformulées et testées sans valider l'ensemble de leur système historique.",
           "sourceKeys": ["openstax-psychology-2e-1-2-currents", "openstax-psychology-2e-1-3-cognitive", "openstax-psychology-2e-11-5", "openstax-psychology-2e-11-2"]
-        }
+        },
+        "key": "content-5"
       }
     ],
     "resources": [
@@ -127,7 +132,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Révolution cognitive",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-revolution-cognitive-assessment-1"
         }
       },
       {
@@ -144,7 +150,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Perspective humaniste",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-perspective-humaniste-assessment-1"
         }
       },
       {
@@ -161,7 +168,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Psychanalyse et psychodynamique",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-psychanalyse-psychodynamique-assessment-1"
         }
       }
     ],
@@ -172,7 +180,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Séparer valeurs, théorie et preuve",
@@ -180,7 +190,9 @@
         "type": "writing",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Comparer quatre explications d'un même cas",
@@ -188,18 +200,82 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2-currents"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-3-cognitive"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-revolution-cognitive-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-11-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-11-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-perspective-humaniste-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-psychanalyse-psychodynamique-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -608,7 +684,66 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "revolution-cognitive",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-1-3-cognitive"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-revolution-cognitive-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "perspective-humaniste",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-11-5",
+            "openstax-psychology-2e-11-2"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-perspective-humaniste-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "psychanalyse-psychodynamique",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-psychanalyse-psychodynamique-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

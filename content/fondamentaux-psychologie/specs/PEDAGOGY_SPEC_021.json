@@ -28,7 +28,8 @@
         "content": {
           "text": "La métacognition appliquée à l'apprentissage comporte au moins deux fonctions liées. Le monitoring produit un jugement sur son état cognitif : « pourrai-je rappeler cette notion demain ? », « cette réponse est-elle probablement correcte ? ». Le contrôle transforme ce jugement en décision : poursuivre, changer de stratégie, rechercher une explication, se tester, espacer une reprise ou arrêter. Un bon jugement sans action appropriée n'améliore pas l'étude ; une bonne technique mal choisie ou appliquée au mauvais contenu peut aussi échouer.",
           "sourceKeys": ["metcalfe-metacognitive-judgments-2009"]
-        }
+        },
+        "key": "content-1"
       },
       {
         "type": "rich_text",
@@ -39,7 +40,8 @@
             "metcalfe-metacognitive-judgments-2009",
             "roediger-karpicke-test-enhanced-2006"
           ]
-        }
+        },
+        "key": "content-2"
       },
       {
         "type": "example",
@@ -47,7 +49,8 @@
         "content": {
           "text": "Après trois relectures, un texte paraît fluide et familier. Cette facilité peut être utilisée à tort comme preuve que le contenu sera rappelé plus tard. Dans les expériences de Roediger et Karpicke, la répétition de l'étude augmentait la confiance déclarée alors que des tests de récupération favorisaient davantage la rétention après deux jours ou une semaine. Le résultat porte sur les textes, conditions et délais étudiés ; il illustre surtout pourquoi une prédiction doit être confrontée à une performance différée plutôt qu'à un sentiment pendant la lecture.",
           "sourceKeys": ["roediger-karpicke-test-enhanced-2006"]
-        }
+        },
+        "key": "content-3"
       },
       {
         "type": "rich_text",
@@ -55,7 +58,8 @@
         "content": {
           "text": "Le contrôle métacognitif alloue un temps limité. Metcalfe propose que l'apprenant écarte provisoirement ce qui est déjà maîtrisé et travaille ensuite des éléments accessibles mais pas encore acquis, sa « région proximale d'apprentissage », avant d'aborder des éléments plus difficiles. Cette heuristique exige des jugements suffisamment exacts et une mise en œuvre réelle. Elle ne signifie pas qu'il faut éviter définitivement les notions très difficiles, ni réviser seulement ce qui semble agréable : objectifs, importance, prérequis et échéance modifient la décision.",
           "sourceKeys": ["metcalfe-metacognitive-judgments-2009"]
-        }
+        },
+        "key": "content-4"
       },
       {
         "type": "callout",
@@ -67,7 +71,8 @@
             "openstax-psychology-2e-8-4",
             "roediger-karpicke-test-enhanced-2006"
           ]
-        }
+        },
+        "key": "content-5"
       },
       {
         "type": "objective",
@@ -79,7 +84,8 @@
             "dunlosky-effective-techniques-2013",
             "roediger-karpicke-test-enhanced-2006"
           ]
-        }
+        },
+        "key": "content-6"
       }
     ],
     "resources": [
@@ -144,7 +150,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Monitoring et contrôle",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-monitoring-controle-metacognitifs-assessment-1"
         }
       },
       {
@@ -161,7 +168,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Calibration et illusions",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-calibration-illusions-maitrise-assessment-1"
         }
       },
       {
@@ -179,7 +187,8 @@
         "assessment": {
           "type": "quiz",
           "title": "Mini-évaluation — Autorégulation",
-          "questionCount": 5
+          "questionCount": 5,
+          "key": "concept-autoregulation-fondee-preuves-assessment-1"
         }
       }
     ],
@@ -190,7 +199,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 1
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
       },
       {
         "title": "Remplacer une illusion de fluidité",
@@ -198,7 +209,9 @@
         "type": "practice",
         "isRequired": true,
         "weight": 1,
-        "position": 2
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
       },
       {
         "title": "Construire un plan autorégulé",
@@ -206,18 +219,86 @@
         "type": "project",
         "isRequired": true,
         "weight": 2,
-        "position": 3
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "metcalfe-metacognitive-judgments-2009"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "roediger-karpicke-test-enhanced-2006"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-monitoring-controle-metacognitifs-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-calibration-illusions-maitrise-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "dunlosky-effective-techniques-2013"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-8-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-autoregulation-fondee-preuves-assessment-1"
       }
     ]
   },
   "editorial": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "status": "editorial_review",
     "language": "fr",
     "audience": "Adulte débutant sans prérequis universitaire",
     "owner": "LearnX",
     "createdAt": "2026-08-03",
-    "lastReviewedAt": "2026-08-03",
+    "lastReviewedAt": "2026-08-06",
     "nextReviewAt": "2027-08-03",
     "references": [
       {
@@ -829,7 +910,67 @@
         "author": "LearnX",
         "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.",
         "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
       }
-    ]
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "monitoring-controle-metacognitifs",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "metcalfe-metacognitive-judgments-2009",
+            "roediger-karpicke-test-enhanced-2006"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-monitoring-controle-metacognitifs-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "calibration-illusions-maitrise",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-calibration-illusions-maitrise-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "autoregulation-fondee-preuves",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "dunlosky-effective-techniques-2013",
+            "openstax-psychology-2e-8-4"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-autoregulation-fondee-preuves-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
   }
 }

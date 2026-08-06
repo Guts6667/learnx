@@ -13,11 +13,21 @@
     "estimatedMinutes": 150,
     "position": 3,
     "contentBlocks": [
-      {"type": "rich_text", "position": 1, "content": {"text": "Un plan descriptif répond à « que se passe-t-il, pour qui et dans quel contexte ? ». Étude de cas, observation naturaliste, enquête et archives peuvent décrire finement un phénomène, estimer une fréquence ou faire émerger des hypothèses. Leur valeur dépend de la qualité des observations et de l'échantillon ; leur absence de manipulation limite les conclusions causales mais ne les rend pas inférieurs pour une question descriptive.", "sourceKeys": ["openstax-psychology-2e-2-2-designs"]}},
-      {"type": "definition", "position": 2, "content": {"text": "Un plan corrélationnel mesure au moins deux variables sans assigner aléatoirement une manipulation. Il teste leur relation telle qu'elle apparaît. Il est indispensable lorsqu'une manipulation est impossible ou contraire à l'éthique, mais laisse ouvertes causalité inverse et variables tierces.", "sourceKeys": ["price-overview-nonexperimental", "openstax-psychology-2e-2-2-designs"]}},
-      {"type": "definition", "position": 3, "content": {"text": "Dans une expérience, le chercheur manipule une variable indépendante, mesure une variable dépendante et contrôle les facteurs extérieurs. L'assignation aléatoire répartit les participants de l'échantillon entre les conditions ; elle ne les sélectionne pas dans la population. Un groupe ou une condition de comparaison permet d'estimer ce qui se serait produit sans la manipulation.", "sourceKeys": ["price-experimental-design", "openstax-psychology-2e-2-3-designs"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "Une quasi-expérience comporte une intervention ou un événement comparable à une manipulation, mais pas d'assignation aléatoire complète. Comparer deux classes déjà constituées ou mesurer une population avant et après une politique peut être réaliste et informatif. Les groupes pouvant différer avant l'intervention, l'argument causal est généralement moins sûr que dans une expérience bien contrôlée et exige des comparaisons et mesures complémentaires.", "sourceKeys": ["price-overview-nonexperimental"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Choisir un plan revient à faire correspondre question, éthique, faisabilité et inférence. Décrire demande une observation valide ; associer demande au moins deux variables ; tester une cause demande temporalité et contrôle des alternatives. Combiner plusieurs plans peut produire une compréhension plus robuste qu'exiger une expérience impossible.", "sourceKeys": ["openstax-psychology-2e-2-2-designs", "price-overview-nonexperimental", "price-experimental-design"]}}
+      {"type": "rich_text", "position": 1, "content": {"text": "Un plan descriptif répond à « que se passe-t-il, pour qui et dans quel contexte ? ». Étude de cas, observation naturaliste, enquête et archives peuvent décrire finement un phénomène, estimer une fréquence ou faire émerger des hypothèses. Leur valeur dépend de la qualité des observations et de l'échantillon ; leur absence de manipulation limite les conclusions causales mais ne les rend pas inférieurs pour une question descriptive.", "sourceKeys": ["openstax-psychology-2e-2-2-designs"]},
+        "key": "content-1"
+      },
+      {"type": "definition", "position": 2, "content": {"text": "Un plan corrélationnel mesure au moins deux variables sans assigner aléatoirement une manipulation. Il teste leur relation telle qu'elle apparaît. Il est indispensable lorsqu'une manipulation est impossible ou contraire à l'éthique, mais laisse ouvertes causalité inverse et variables tierces.", "sourceKeys": ["price-overview-nonexperimental", "openstax-psychology-2e-2-2-designs"]},
+        "key": "content-2"
+      },
+      {"type": "definition", "position": 3, "content": {"text": "Dans une expérience, le chercheur manipule une variable indépendante, mesure une variable dépendante et contrôle les facteurs extérieurs. L'assignation aléatoire répartit les participants de l'échantillon entre les conditions ; elle ne les sélectionne pas dans la population. Un groupe ou une condition de comparaison permet d'estimer ce qui se serait produit sans la manipulation.", "sourceKeys": ["price-experimental-design", "openstax-psychology-2e-2-3-designs"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "Une quasi-expérience comporte une intervention ou un événement comparable à une manipulation, mais pas d'assignation aléatoire complète. Comparer deux classes déjà constituées ou mesurer une population avant et après une politique peut être réaliste et informatif. Les groupes pouvant différer avant l'intervention, l'argument causal est généralement moins sûr que dans une expérience bien contrôlée et exige des comparaisons et mesures complémentaires.", "sourceKeys": ["price-overview-nonexperimental"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Choisir un plan revient à faire correspondre question, éthique, faisabilité et inférence. Décrire demande une observation valide ; associer demande au moins deux variables ; tester une cause demande temporalité et contrôle des alternatives. Combiner plusieurs plans peut produire une compréhension plus robuste qu'exiger une expérience impossible.", "sourceKeys": ["openstax-psychology-2e-2-2-designs", "price-overview-nonexperimental", "price-experimental-design"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "openstax-psychology-2e-2-2-designs", "type": "book_chapter", "title": "Psychology 2e — 2.2 Approaches to Research", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax.", "description": "Construire un tableau des études de cas, observations, enquêtes, archives et suivis avec question adaptée, apport et limite.", "isRequired": true, "estimatedMinutes": 40, "position": 1},
@@ -26,18 +36,95 @@
       {"key": "openstax-psychology-2e-2-3-designs", "type": "book_chapter", "title": "Psychology 2e — 2.3 Analyzing Findings, Designing an Experiment", "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett", "url": "https://openstax.org/books/psychology-2e/pages/2-3-analyzing-findings", "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.3. OpenStax.", "description": "Annoter l'exemple expérimental : hypothèse, manipulation, groupes, mesure, aveuglement et sources possibles de biais.", "isRequired": false, "estimatedMinutes": 25, "position": 4}
     ],
     "concepts": [
-      {"title": "Plans descriptifs et corrélationnels", "slug": "plans-descriptifs-correlationnels", "description": "Ces plans décrivent une variable ou une relation sans manipulation et répondent à des questions que l'expérience ne peut pas toujours traiter.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2-designs", "price-overview-nonexperimental"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Plans non expérimentaux", "questionCount": 5}},
-      {"title": "Plan expérimental", "slug": "plan-experimental", "description": "Une expérience combine manipulation, mesure, comparaison et contrôle, souvent avec assignation aléatoire, pour soutenir une inférence causale.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-experimental-design", "openstax-psychology-2e-2-3-designs"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Plan expérimental", "questionCount": 5}},
-      {"title": "Plan quasi expérimental", "slug": "plan-quasi-experimental", "description": "Une quasi-expérience étudie une intervention sans assignation aléatoire complète et doit traiter les différences initiales entre groupes.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-overview-nonexperimental"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Quasi-expérience", "questionCount": 5}}
+      {"title": "Plans descriptifs et corrélationnels", "slug": "plans-descriptifs-correlationnels", "description": "Ces plans décrivent une variable ou une relation sans manipulation et répondent à des questions que l'expérience ne peut pas toujours traiter.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["openstax-psychology-2e-2-2-designs", "price-overview-nonexperimental"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Plans non expérimentaux", "questionCount": 5,
+        "key": "concept-plans-descriptifs-correlationnels-assessment-1"
+      }},
+      {"title": "Plan expérimental", "slug": "plan-experimental", "description": "Une expérience combine manipulation, mesure, comparaison et contrôle, souvent avec assignation aléatoire, pour soutenir une inférence causale.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-experimental-design", "openstax-psychology-2e-2-3-designs"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Plan expérimental", "questionCount": 5,
+        "key": "concept-plan-experimental-assessment-1"
+      }},
+      {"title": "Plan quasi expérimental", "slug": "plan-quasi-experimental", "description": "Une quasi-expérience étudie une intervention sans assignation aléatoire complète et doit traiter les différences initiales entre groupes.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-overview-nonexperimental"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Quasi-expérience", "questionCount": 5,
+        "key": "concept-plan-quasi-experimental-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Faire correspondre question et plan", "description": "Pour six questions, choisir étude de cas, observation, enquête, corrélation, expérience ou quasi-expérience et justifier chaque choix par l'inférence recherchée.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Schématiser une expérience", "description": "Concevoir un test de l'effet d'une pause sur la mémorisation avec variable indépendante, variable dépendante, assignation, condition contrôle et facteur maintenu constant.", "type": "practice", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Renforcer une quasi-expérience", "description": "Pour deux écoles dont une adopte un programme, proposer prétest, groupe de comparaison, variables initiales à vérifier et une limite causale persistante.", "type": "writing", "isRequired": true, "weight": 1, "position": 3}
+      {"title": "Faire correspondre question et plan", "description": "Pour six questions, choisir étude de cas, observation, enquête, corrélation, expérience ou quasi-expérience et justifier chaque choix par l'inférence recherchée.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Schématiser une expérience", "description": "Concevoir un test de l'effet d'une pause sur la mémorisation avec variable indépendante, variable dépendante, assignation, condition contrôle et facteur maintenu constant.", "type": "practice", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Renforcer une quasi-expérience", "description": "Pour deux écoles dont une adopte un programme, proposer prétest, groupe de comparaison, variables initiales à vérifier et une limite causale persistante.", "type": "writing", "isRequired": true, "weight": 1, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-2-designs"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-overview-nonexperimental"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-plans-descriptifs-correlationnels-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-experimental-design"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-3-designs"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-plan-experimental-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-plan-quasi-experimental-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-009-OPENSTAX-2-2", "type": "textbook", "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."], "organization": "OpenStax", "title": "Psychology 2e — 2.2 Approaches to Research", "year": 2020, "edition": "2e éd.", "publication": "OpenStax, Rice University", "doi": null, "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Comparaison des méthodes descriptives et corrélationnelles."},
       {"id": "REF-009-PRICE-NONEXP", "type": "open_textbook", "authors": ["Price, P. C.", "Jhangiani, R. S.", "Chiang, I.-C. A."], "organization": "BCcampus", "title": "Research Methods in Psychology — Overview of Nonexperimental Research", "year": 2015, "edition": "2nd Canadian ed.", "publication": "BCcampus Open Education", "doi": null, "url": "https://opentextbc.ca/researchmethods/chapter/overview-of-nonexperimental-research/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Définitions expérimental, non expérimental, corrélationnel et quasi expérimental."},
@@ -81,6 +168,66 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en plans de recherche requise avant publication.", "Les plans non expérimentaux sont présentés selon leur adéquation à la question, non comme des plans intrinsèquement inférieurs."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "plans-descriptifs-correlationnels",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "openstax-psychology-2e-2-2-designs",
+            "price-overview-nonexperimental"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-plans-descriptifs-correlationnels-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "plan-experimental",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "price-experimental-design",
+            "openstax-psychology-2e-2-3-designs"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-plan-experimental-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "plan-quasi-experimental",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-plan-quasi-experimental-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }

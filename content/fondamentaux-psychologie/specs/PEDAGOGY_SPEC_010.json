@@ -13,11 +13,21 @@
     "estimatedMinutes": 145,
     "position": 4,
     "contentBlocks": [
-      {"type": "definition", "position": 1, "content": {"text": "La population cible est l'ensemble sur lequel la recherche souhaite conclure ; l'échantillon est le sous-ensemble effectivement observé. Un échantillonnage probabiliste donne à chaque membre une probabilité connue d'être sélectionné. Un échantillon de convenance recrute les personnes disponibles : il peut être utile, mais sa ressemblance avec la population doit être examinée plutôt que supposée.", "sourceKeys": ["price-conducting-surveys", "price-basic-concepts-sampling"]}},
-      {"type": "rich_text", "position": 2, "content": {"text": "Un grand échantillon réduit certaines fluctuations dues au hasard, mais ne corrige pas automatiquement un biais systématique. Si une enquête sur le stress au travail recrute uniquement les abonnés volontaires d'une application de bien-être, les personnes incluses peuvent différer de l'ensemble des travailleurs. Une faible réponse peut aussi modifier l'échantillon si répondants et non-répondants diffèrent sur le phénomène étudié.", "sourceKeys": ["price-conducting-surveys"]}},
-      {"type": "definition", "position": 3, "content": {"text": "La validité de construit concerne l'adéquation entre un concept et la manière de le manipuler ou de le mesurer. Une mesure peut être très cohérente sans représenter le construit visé : une règle mesure fidèlement la longueur d'un doigt, mais ce score ne devient pas pour autant une mesure valide de l'estime de soi. La validité repose sur un ensemble d'arguments et de données, pas sur une apparence intuitive seule.", "sourceKeys": ["price-reliability-validity"]}},
-      {"type": "rich_text", "position": 4, "content": {"text": "La validité interne demande si le plan soutient l'effet causal attribué à la variable indépendante. La validité externe demande dans quelle mesure le résultat peut se généraliser à d'autres personnes, situations ou moments. Un laboratoire très contrôlé peut renforcer l'inférence causale sans garantir la généralisation ; une étude de terrain peut être réaliste tout en laissant davantage de facteurs confondants. Ces validités sont des questions distinctes, pas un score unique.", "sourceKeys": ["price-experiment-basics"]}},
-      {"type": "callout", "position": 5, "content": {"text": "Pour évaluer la portée d'un résultat, suivre quatre questions : qui voulait-on étudier ? qui a réellement participé ? que représentent les mesures ? quelles explications le plan contrôle-t-il ? La conclusion finale doit nommer la population, l'opérationnalisation et le contexte, puis distinguer ce qui est soutenu de ce qui doit encore être vérifié.", "sourceKeys": ["price-basic-concepts-sampling", "price-conducting-surveys", "price-reliability-validity", "price-experiment-basics"]}}
+      {"type": "definition", "position": 1, "content": {"text": "La population cible est l'ensemble sur lequel la recherche souhaite conclure ; l'échantillon est le sous-ensemble effectivement observé. Un échantillonnage probabiliste donne à chaque membre une probabilité connue d'être sélectionné. Un échantillon de convenance recrute les personnes disponibles : il peut être utile, mais sa ressemblance avec la population doit être examinée plutôt que supposée.", "sourceKeys": ["price-conducting-surveys", "price-basic-concepts-sampling"]},
+        "key": "content-1"
+      },
+      {"type": "rich_text", "position": 2, "content": {"text": "Un grand échantillon réduit certaines fluctuations dues au hasard, mais ne corrige pas automatiquement un biais systématique. Si une enquête sur le stress au travail recrute uniquement les abonnés volontaires d'une application de bien-être, les personnes incluses peuvent différer de l'ensemble des travailleurs. Une faible réponse peut aussi modifier l'échantillon si répondants et non-répondants diffèrent sur le phénomène étudié.", "sourceKeys": ["price-conducting-surveys"]},
+        "key": "content-2"
+      },
+      {"type": "definition", "position": 3, "content": {"text": "La validité de construit concerne l'adéquation entre un concept et la manière de le manipuler ou de le mesurer. Une mesure peut être très cohérente sans représenter le construit visé : une règle mesure fidèlement la longueur d'un doigt, mais ce score ne devient pas pour autant une mesure valide de l'estime de soi. La validité repose sur un ensemble d'arguments et de données, pas sur une apparence intuitive seule.", "sourceKeys": ["price-reliability-validity"]},
+        "key": "content-3"
+      },
+      {"type": "rich_text", "position": 4, "content": {"text": "La validité interne demande si le plan soutient l'effet causal attribué à la variable indépendante. La validité externe demande dans quelle mesure le résultat peut se généraliser à d'autres personnes, situations ou moments. Un laboratoire très contrôlé peut renforcer l'inférence causale sans garantir la généralisation ; une étude de terrain peut être réaliste tout en laissant davantage de facteurs confondants. Ces validités sont des questions distinctes, pas un score unique.", "sourceKeys": ["price-experiment-basics"]},
+        "key": "content-4"
+      },
+      {"type": "callout", "position": 5, "content": {"text": "Pour évaluer la portée d'un résultat, suivre quatre questions : qui voulait-on étudier ? qui a réellement participé ? que représentent les mesures ? quelles explications le plan contrôle-t-il ? La conclusion finale doit nommer la population, l'opérationnalisation et le contexte, puis distinguer ce qui est soutenu de ce qui doit encore être vérifié.", "sourceKeys": ["price-basic-concepts-sampling", "price-conducting-surveys", "price-reliability-validity", "price-experiment-basics"]},
+        "key": "content-5"
+      }
     ],
     "resources": [
       {"key": "price-basic-concepts-sampling", "type": "book_chapter", "title": "Research Methods in Psychology — Basic Concepts", "author": "Paul C. Price, Rajiv S. Jhangiani et I-Chant A. Chiang", "url": "https://opentextbc.ca/researchmethods/chapter/basic-concepts/", "citation": "Price, P. C., Jhangiani, R. S., & Chiang, I.-C. A. (2015). Basic Concepts. In Research Methods in Psychology (2nd Canadian ed.). BCcampus.", "description": "Lire « Population and Sample » et distinguer population cible, échantillon aléatoire et échantillon de convenance.", "isRequired": true, "estimatedMinutes": 20, "position": 1},
@@ -26,18 +36,95 @@
       {"key": "price-experiment-basics", "type": "book_chapter", "title": "Research Methods in Psychology — Experiment Basics", "author": "Paul C. Price, Rajiv S. Jhangiani et I-Chant A. Chiang", "url": "https://opentextbc.ca/researchmethods/chapter/experiment-basics/", "citation": "Price, P. C., Jhangiani, R. S., & Chiang, I.-C. A. (2015). Experiment Basics. In Research Methods in Psychology (2nd Canadian ed.). BCcampus.", "description": "Lire les passages sur les quatre validités et comparer validité interne, externe et de construit dans un cas fictif.", "isRequired": false, "estimatedMinutes": 30, "position": 4}
     ],
     "concepts": [
-      {"title": "Population et échantillonnage", "slug": "population-echantillonnage", "description": "L'échantillonnage sélectionne un sous-ensemble de la population cible et conditionne la représentativité de l'étude.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-basic-concepts-sampling", "price-conducting-surveys"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Population et échantillon", "questionCount": 5}},
-      {"title": "Biais de sélection et généralisation", "slug": "biais-selection-generalisation", "description": "Un recrutement ou une non-réponse systématiques peuvent rendre l'échantillon différent de la population et limiter la généralisation.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-conducting-surveys"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Biais et généralisation", "questionCount": 5}},
-      {"title": "Validité de construit, interne et externe", "slug": "validites-construit-interne-externe", "description": "Ces validités examinent respectivement la qualité de l'opérationnalisation, l'inférence causale et la généralisation au-delà de l'étude.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-reliability-validity", "price-experiment-basics"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Les validités", "questionCount": 5}}
+      {"title": "Population et échantillonnage", "slug": "population-echantillonnage", "description": "L'échantillonnage sélectionne un sous-ensemble de la population cible et conditionne la représentativité de l'étude.", "position": 1, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-basic-concepts-sampling", "price-conducting-surveys"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Population et échantillon", "questionCount": 5,
+        "key": "concept-population-echantillonnage-assessment-1"
+      }},
+      {"title": "Biais de sélection et généralisation", "slug": "biais-selection-generalisation", "description": "Un recrutement ou une non-réponse systématiques peuvent rendre l'échantillon différent de la population et limiter la généralisation.", "position": 2, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-conducting-surveys"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Biais et généralisation", "questionCount": 5,
+        "key": "concept-biais-selection-generalisation-assessment-1"
+      }},
+      {"title": "Validité de construit, interne et externe", "slug": "validites-construit-interne-externe", "description": "Ces validités examinent respectivement la qualité de l'opérationnalisation, l'inférence causale et la généralisation au-delà de l'étude.", "position": 3, "isRequired": true, "masteryThreshold": 70, "resourceKeys": ["price-reliability-validity", "price-experiment-basics"], "assessment": {"type": "quiz", "title": "Mini-évaluation — Les validités", "questionCount": 5,
+        "key": "concept-validites-construit-interne-externe-assessment-1"
+      }}
     ],
     "tasks": [
-      {"title": "Auditer un recrutement", "description": "Pour une enquête menée auprès des abonnés d'une salle de sport, définir la population visée, l'échantillon obtenu, deux sous-groupes sous-représentés et une conclusion à ne pas généraliser.", "type": "practice", "isRequired": true, "weight": 1, "position": 1},
-      {"title": "Ne pas confondre taille et représentativité", "description": "Comparer un petit échantillon probabiliste et un grand échantillon volontaire ; indiquer quelle incertitude chaque choix réduit ou laisse subsister.", "type": "writing", "isRequired": true, "weight": 1, "position": 2},
-      {"title": "Construire une matrice de validité", "description": "Pour une expérience de mémorisation en laboratoire, relever une menace pour le construit, une menace interne et deux limites externes, puis proposer une amélioration pour chacune.", "type": "practice", "isRequired": true, "weight": 1, "position": 3}
+      {"title": "Auditer un recrutement", "description": "Pour une enquête menée auprès des abonnés d'une salle de sport, définir la population visée, l'échantillon obtenu, deux sous-groupes sous-représentés et une conclusion à ne pas généraliser.", "type": "practice", "isRequired": true, "weight": 1, "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {"title": "Ne pas confondre taille et représentativité", "description": "Comparer un petit échantillon probabiliste et un grand échantillon volontaire ; indiquer quelle incertitude chaque choix réduit ou laisse subsister.", "type": "writing", "isRequired": true, "weight": 1, "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {"title": "Construire une matrice de validité", "description": "Pour une expérience de mémorisation en laboratoire, relever une menace pour le construit, une menace interne et deux limites externes, puis proposer une amélioration pour chacune.", "type": "practice", "isRequired": true, "weight": 1, "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-basic-concepts-sampling"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-conducting-surveys"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-population-echantillonnage-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-reliability-validity"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "price-experiment-basics"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-biais-selection-generalisation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-validites-construit-interne-externe-assessment-1"
+      }
     ]
   },
   "editorial": {
-    "version": "1.0.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-03", "nextReviewAt": "2027-08-03",
+    "version": "1.1.0", "status": "editorial_review", "language": "fr", "audience": "Adulte débutant sans prérequis universitaire", "owner": "LearnX", "createdAt": "2026-08-03", "lastReviewedAt": "2026-08-06", "nextReviewAt": "2027-08-03",
     "references": [
       {"id": "REF-010-PRICE-BASIC", "type": "open_textbook", "authors": ["Price, P. C.", "Jhangiani, R. S.", "Chiang, I.-C. A."], "organization": "BCcampus", "title": "Research Methods in Psychology — Basic Concepts", "year": 2015, "edition": "2nd Canadian ed.", "publication": "BCcampus Open Education", "doi": null, "url": "https://opentextbc.ca/researchmethods/chapter/basic-concepts/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Population, échantillon, échantillonnage aléatoire et de convenance."},
       {"id": "REF-010-PRICE-SURVEYS", "type": "open_textbook", "authors": ["Price, P. C.", "Jhangiani, R. S.", "Chiang, I.-C. A."], "organization": "BCcampus", "title": "Research Methods in Psychology — Conducting Surveys", "year": 2015, "edition": "2nd Canadian ed.", "publication": "BCcampus Open Education", "doi": null, "url": "https://opentextbc.ca/researchmethods/chapter/conducting-surveys/", "accessedAt": "2026-08-03", "evidenceLevel": "B", "peerReviewed": true, "language": "en", "license": "CC BY-NC-SA 4.0", "status": "verified", "notes": "Échantillonnage probabiliste, convenance, base de sondage et non-réponse."},
@@ -81,6 +168,66 @@
       ]}
     ],
     "review": {"editorialReviewer": null, "subjectReviewer": null, "scientificAccuracy": false, "pedagogicalAlignment": true, "seedCompatibility": true, "linksAndMedia": true, "readyForPublication": false, "notes": ["Revue humaine en méthodologie et mesure requise avant publication.", "La leçon distingue explicitement grande taille, représentativité et assignation aléatoire."]},
-    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"}]
+    "changeLog": [{"version": "1.0.0", "date": "2026-08-03", "author": "LearnX", "change": "Création de la leçon, des sources, des tâches et de 15 questions corrigées.", "reviewRequired": "editorial_and_subject"},
+      {
+        "version": "1.1.0",
+        "date": "2026-08-06",
+        "author": "LearnX",
+        "change": "Réorganisation V3 de la séquence inter-types en cycles notionnels.",
+        "reviewRequired": "editorial"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "population-echantillonnage",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "price-basic-concepts-sampling",
+            "price-conducting-surveys"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-population-echantillonnage-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "biais-selection-generalisation",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "price-reliability-validity",
+            "price-experiment-basics"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-biais-selection-generalisation-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "validites-construit-interne-externe",
+          "contentKeys": [
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-validites-construit-interne-externe-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
   }
 }
