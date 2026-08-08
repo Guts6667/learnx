@@ -624,6 +624,7 @@ model Resource {
   url              String?
   citation         String?
   description      String?
+  guidance         Json?               @map("guidance_json")
   isRequired       Boolean             @default(false) @map("is_required")
   estimatedMinutes Int?                @map("estimated_minutes")
   position         Int                 @default(0)

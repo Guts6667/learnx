@@ -13,6 +13,7 @@ export interface LessonProgressInput {
   requiredConcepts: boolean[];
   requiredExercises: boolean[];
   requiredQuizzes: boolean[];
+  requiredResources: boolean[];
   requiredTasks: boolean[];
 }
 
@@ -85,10 +86,14 @@ export function calculateLessonProgress(
     ...input.requiredQuizzes,
     ...input.requiredExercises,
   ];
+  const completionRequirements = [
+    ...trackedRequirements,
+    ...input.requiredResources,
+  ];
 
   return {
     canComplete:
-      trackedRequirements.every(Boolean) &&
+      completionRequirements.every(Boolean) &&
       input.requiredConcepts.every(Boolean),
     percent,
   };

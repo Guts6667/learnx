@@ -17,6 +17,7 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
           assessments: [
             {
               id: 'assessment-1',
+              key: 'assessment-1',
               isRequired: true,
               position: 1,
               questionCount: 5,
@@ -38,6 +39,7 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
             text: 'Le contenu pédagogique.',
           },
           id: 'block-1',
+          key: 'content-1',
           position: 1,
           type: 'RICH_TEXT',
         },
@@ -94,6 +96,7 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
         {
           description: 'Vérifier les acquis.',
           id: 'quiz-1',
+          key: 'quiz-1',
           isRequired: true,
           passingScore: 70,
           position: 1,
@@ -107,6 +110,13 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
           citation: null,
           description: 'Une lecture complémentaire.',
           estimatedMinutes: 5,
+          guidance: {
+            alternativeResourceKey: null,
+            instructions: 'Lire la section 1 et relever une définition.',
+            objective: 'Identifier la définition de référence.',
+            scope: 'Section 1',
+            urlStatus: 'ok',
+          },
           id: 'resource-1',
           isRequired: true,
           key: 'article-reference',
@@ -120,6 +130,13 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
           citation: 'Citation non navigable',
           description: null,
           estimatedMinutes: null,
+          guidance: {
+            alternativeResourceKey: 'article-reference',
+            instructions: 'Consulter la page de référence.',
+            objective: 'Approfondir la notion.',
+            scope: null,
+            urlStatus: 'broken',
+          },
           id: 'resource-2',
           isRequired: false,
           key: 'unsafe-reference',
@@ -130,6 +147,14 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
         },
       ],
       slug: 'demarrer',
+      sequence: [
+        { kind: 'CONTENT', key: 'content-1' },
+        { kind: 'RESOURCE', key: 'article-reference' },
+        { kind: 'TASK', key: 'activity-1' },
+        { kind: 'CONCEPT_ASSESSMENT', key: 'assessment-1' },
+        { kind: 'EXERCISE', key: 'activity-2' },
+        { kind: 'QUIZ', key: 'quiz-1' },
+      ],
       summary: 'Les notions essentielles.',
       tasks: [
         {
@@ -213,14 +238,14 @@ describe('LessonPage', () => {
       await screen.findByRole('heading', { level: 1, name: 'Démarrer' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Le contenu pédagogique.')).toBeInTheDocument();
-    expect(screen.getByText('Sources de ce bloc')).toBeInTheDocument();
+    expect(screen.getByText('Sources de ce contenu')).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveAttribute('href', 'https://example.com/article');
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveClass('underline');
-    expect(screen.getAllByText(/Source non sûre/)).toHaveLength(2);
+    expect(screen.getAllByText(/Source non sûre/)).toHaveLength(1);
     expect(
       screen.getAllByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveLength(1);
@@ -297,6 +322,29 @@ describe('LessonPage', () => {
     );
   });
 
+  it('rend une ressource guidée à sa position et persiste sa consultation', async () => {
+    window.history.replaceState(null, '', '/program/programme-test/lesson/demarrer?activity=resource%3Aresource-1');
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/lessons/demarrer') return Promise.resolve(jsonResponse(lessonResponse(true)));
+      if (path === '/api/lessons/lesson-1/progress') return Promise.resolve(jsonResponse(progressResponse()));
+      if (path === '/api/resources/resource-1/progress' && init?.method === 'PATCH') {
+        return Promise.resolve(jsonResponse({ ...progressResponse(), resourceProgress: { 'resource-1': 'COMPLETED' } }));
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<AppProviders><LessonPage lessonSlug="demarrer" programSlug="programme-test" /></AppProviders>);
+
+    expect(await screen.findByRole('heading', { name: 'Article de référence' })).toBeInTheDocument();
+    expect(screen.queryByText('Ressources de la leçon')).not.toBeInTheDocument();
+    expect(screen.getByText('Identifier la définition de référence.')).toBeInTheDocument();
+    expect(screen.getByText(/Section 1/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Ouvrir la lecture' })).toHaveAttribute('href', 'https://example.com/article');
+    fireEvent.click(screen.getByRole('button', { name: 'Marquer comme consultée' }));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/resources/resource-1/progress', expect.objectContaining({ body: JSON.stringify({ status: 'COMPLETED' }), method: 'PATCH' })));
+  });
+
   it('restaure une tâche profonde et met sa progression à jour', async () => {
     window.history.replaceState(
       null,
@@ -328,7 +376,7 @@ describe('LessonPage', () => {
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole('link', { name: 'Article de référence' }),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     fireEvent.click(
       screen.getByRole('button', { name: 'Marquer comme terminé' }),
     );

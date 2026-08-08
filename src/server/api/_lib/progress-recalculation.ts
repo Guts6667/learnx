@@ -277,6 +277,12 @@ function toLessonSnapshot(
         exerciseCarryovers.has(exercise.key),
     ),
     requiredQuizzes: lesson.quizzes.map((quiz) => quiz.attempts.length > 0),
+    requiredResources: lesson.resources
+      .filter((resource) => resource.isRequired)
+      .map(
+        (resource) =>
+          resource.progress[0]?.status === ResourceProgressStatus.COMPLETED,
+      ),
     requiredTasks: lesson.tasks
       .filter((task) => task.isRequired)
       .map(

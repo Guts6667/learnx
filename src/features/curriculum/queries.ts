@@ -181,6 +181,14 @@ export interface LessonResource {
   citation: string | null;
   description: string | null;
   estimatedMinutes: number | null;
+  guidance: {
+    accessibilityNotes?: string;
+    alternativeResourceKey?: string | null;
+    instructions: string;
+    objective: string;
+    scope?: string | null;
+    urlStatus: 'broken' | 'ok' | 'redirect' | 'restricted';
+  } | null;
   id: string;
   isRequired: boolean;
   key: string;

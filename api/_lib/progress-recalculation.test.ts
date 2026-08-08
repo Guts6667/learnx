@@ -169,6 +169,19 @@ describe('progress recalculation', () => {
     expect(transaction.lessonProgress.upsert).not.toHaveBeenCalled();
   });
 
+  it('bloque uniquement la terminaison lorsqu’une ressource obligatoire reste non consultée', async () => {
+    const state = lessonState();
+    state.resources[0].progress = [];
+    const prisma = {
+      lesson: { findFirst: vi.fn(async () => state) },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
+    } as unknown as PrismaClient;
+
+    await expect(
+      getLessonProgressSnapshot(prisma, lessonId, userId),
+    ).resolves.toMatchObject({ canComplete: false, percent: 100 });
+  });
+
   it('répare sans démarrer silencieusement une leçon sans activité', async () => {
     const inactiveLesson = lessonState();
     inactiveLesson.concepts = [];

@@ -33,6 +33,7 @@ interface PositionedActivity {
   key?: string;
   position: number;
   title?: string | null;
+  type?: string;
 }
 
 interface ConceptActivity extends PositionedActivity {
@@ -127,13 +128,16 @@ function status(
 
 function createActivity(
   baseHref: string,
-  input: Omit<LessonActivity, 'href' | 'label'> & { href?: string },
+  input: Omit<LessonActivity, 'href' | 'label'> & {
+    href?: string;
+    label?: string;
+  },
 ): LessonActivity {
   const key = activityKey(input.kind, input.id);
   return {
     ...input,
     href: input.href ?? anchoredHref(baseHref, key),
-    label: activityLabels[input.kind],
+    label: input.label ?? activityLabels[input.kind],
   };
 }
 
@@ -162,6 +166,14 @@ export function buildLessonActivitySequence(
       estimatedMinutes: resource.estimatedMinutes ?? null,
       id: resource.id,
       kind: 'RESOURCE',
+      label:
+        resource.type === 'VIDEO'
+          ? 'Regarder'
+          : resource.type === 'PODCAST'
+            ? 'Écouter'
+            : ['COURSE', 'TOOL', 'WEBSITE'].includes(resource.type ?? '')
+              ? 'Explorer'
+              : 'Lire',
       required: resource.isRequired ?? false,
       status: status(
         input.isPublished,

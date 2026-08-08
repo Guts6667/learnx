@@ -183,6 +183,14 @@ Forme exacte :
   "url": "https://openstax.org/books/psychology-2e/pages/1-1-what-is-psychology",
   "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.1. OpenStax.",
   "description": "Lire la section 1.1 et relever la définition et les critères d’une démarche empirique.",
+  "guidance": {
+    "objective": "Identifier la définition universitaire et les critères d’une démarche empirique.",
+    "instructions": "Lire la section 1.1 et relever trois critères.",
+    "scope": "Section 1.1",
+    "urlStatus": "ok",
+    "accessibilityNotes": "Version HTML structurée disponible.",
+    "alternativeResourceKey": null
+  },
   "isRequired": true,
   "estimatedMinutes": 25,
   "position": 1
@@ -202,6 +210,15 @@ contient une consigne concrète, pas une simple appréciation.
 
 `key` est stable et unique dans la leçon. Toute clé citée par une notion doit
 exister dans cette liste.
+
+`guidance` est obligatoire lorsqu'une ressource figure dans `lesson.sequence`.
+Ses valeurs proviennent du contrôle éditorial approuvé, jamais d'une déduction
+technique. `urlStatus` vaut `ok`, `redirect`, `restricted` ou `broken` ; une
+ressource obligatoire `restricted` ou `broken` référence une alternative de la
+même leçon. `scope` peut être `null` uniquement lorsque la consigne délimite
+elle-même sans ambiguïté la partie à consulter. Le verbe visible est localisé à
+partir du type (`Lire`, `Regarder`, `Écouter` ou `Explorer`) et n'est pas stocké
+comme texte français dans le seed.
 
 ### 4.4 Notions
 

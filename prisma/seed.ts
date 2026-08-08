@@ -136,6 +136,16 @@ const resourceSchema = z.object({
   url: z.url(),
   citation: z.string().trim().min(1).optional(),
   description: z.string().trim().min(1).optional(),
+  guidance: z
+    .object({
+      accessibilityNotes: z.string().trim().min(1).optional(),
+      alternativeResourceKey: z.string().trim().min(1).nullable().optional(),
+      instructions: z.string().trim().min(1),
+      objective: z.string().trim().min(1),
+      scope: z.string().trim().min(1).nullable().optional(),
+      urlStatus: z.enum(['ok', 'redirect', 'restricted', 'broken']),
+    })
+    .optional(),
   isRequired: z.boolean(),
   estimatedMinutes: z.number().int().positive().optional(),
   position: z.number().int().positive(),
@@ -412,6 +422,7 @@ export interface SeedProgramRepository {
     citation?: string;
     description?: string;
     estimatedMinutes?: number;
+    guidance?: Prisma.InputJsonValue;
     isRequired: boolean;
     key: string;
     lessonId: string;
@@ -793,6 +804,7 @@ export async function seedSampleProgram(
             citation: resourceData.citation,
             description: resourceData.description,
             estimatedMinutes: resourceData.estimatedMinutes,
+            guidance: resourceData.guidance,
             isRequired: resourceData.isRequired,
             key: resourceData.key,
             lessonId: lesson.id,

@@ -93,10 +93,10 @@ function ContentActivity({
       </p>
       <SafeMarkdown content={getText(block.content)} />
       {sources.length === 0 ? null : (
-        <footer class="border-t border-slate-700 pt-3">
-          <h3 class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
-            Sources de ce bloc
-          </h3>
+        <details class="border-t border-slate-700 pt-3">
+          <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-300 focus-visible:outline-2 focus-visible:outline-cyan-300">
+            Sources de ce contenu
+          </summary>
           <ul class="mt-2 space-y-2 text-sm text-slate-400">
             {sources.map((source) => {
               const url = getSafeExternalUrl(source.url);
@@ -104,6 +104,7 @@ function ContentActivity({
                 <li key={source.id}>
                   {source.title}
                   {source.author ? ` — ${source.author}` : ''}
+                  {source.citation ? ` — ${source.citation}` : ''}
                   {url ? (
                     <a
                       class="ml-2 text-cyan-300 underline"
@@ -118,8 +119,93 @@ function ContentActivity({
               );
             })}
           </ul>
-        </footer>
+        </details>
       )}
+    </Card>
+  );
+}
+
+function resourceVerb(type: string): string {
+  if (type === 'VIDEO') return 'Regarder';
+  if (type === 'PODCAST') return 'Écouter';
+  if (['COURSE', 'TOOL', 'WEBSITE'].includes(type)) return 'Explorer';
+  return 'Lire';
+}
+
+function ResourceActivity({
+  alternative,
+  isPending,
+  onOpen,
+  onComplete,
+  resource,
+  status,
+}: {
+  alternative?: LessonResource;
+  isPending: boolean;
+  onOpen?: () => Promise<void>;
+  onComplete?: () => Promise<void>;
+  resource: LessonResource;
+  status: 'COMPLETED' | 'NOT_STARTED' | 'STARTED';
+}) {
+  const guidance = resource.guidance;
+  const unavailable = ['broken', 'restricted'].includes(
+    guidance?.urlStatus ?? 'ok',
+  );
+  const href = unavailable ? null : getSafeExternalUrl(resource.url);
+  const alternativeHref = getSafeExternalUrl(alternative?.url ?? null);
+  const verb = resourceVerb(resource.type);
+
+  return (
+    <Card class="space-y-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
+          {resource.isRequired ? 'Obligatoire' : 'Pour aller plus loin'}
+        </Badge>
+        <Badge tone={status === 'COMPLETED' ? 'success' : 'neutral'}>
+          {status === 'COMPLETED' ? 'Consultée' : 'À consulter'}
+        </Badge>
+      </div>
+      {guidance?.objective ? (
+        <div>
+          <h3 class="font-semibold text-slate-100">Objectif</h3>
+          <p class="mt-1 leading-7 text-slate-300">{guidance.objective}</p>
+        </div>
+      ) : null}
+      {guidance?.scope ? (
+        <p class="text-sm text-slate-300">
+          <strong>Périmètre :</strong> {guidance.scope}
+        </p>
+      ) : null}
+      <p class="leading-7 text-slate-300">
+        {guidance?.instructions ?? resource.description}
+      </p>
+      {unavailable ? (
+        <div role="status" class="space-y-2 rounded-lg border border-amber-700 p-3">
+          <p>Cette ressource est actuellement indisponible.</p>
+          {alternativeHref ? (
+            <a class="inline-flex min-h-11 items-center text-cyan-300 underline" href={alternativeHref} rel="noreferrer" target="_blank">
+              Ouvrir l’alternative : {alternative?.title}
+            </a>
+          ) : null}
+        </div>
+      ) : href ? (
+        <a
+          class="inline-flex min-h-11 items-center rounded-lg border border-cyan-600 px-4 py-2 font-semibold text-cyan-200 no-underline focus-visible:outline-2 focus-visible:outline-cyan-300"
+          href={href}
+          onClick={() => void onOpen?.()}
+          rel="noreferrer"
+          target="_blank"
+        >
+          {verb === 'Lire' ? 'Ouvrir la lecture' : `${verb} la ressource`}
+        </a>
+      ) : (
+        <p role="status">Aucun lien sûr n’est disponible.</p>
+      )}
+      {onComplete && status !== 'COMPLETED' ? (
+        <Button isLoading={isPending} onClick={() => void onComplete()} variant="secondary">
+          Marquer comme consultée
+        </Button>
+      ) : null}
     </Card>
   );
 }
@@ -307,6 +393,17 @@ function LessonWorkspace({
     );
   }
 
+  async function updateResource(
+    resource: LessonResource,
+    status: 'COMPLETED' | 'STARTED',
+  ) {
+    await mutation.mutateAsync(
+      `/api/resources/${encodeURIComponent(resource.id)}/progress`,
+      'PATCH',
+      { status },
+    );
+  }
+
   async function continueLearning() {
     if (!current) return;
     if (current.kind === 'COMPLETE') {
@@ -349,6 +446,7 @@ function LessonWorkspace({
   );
   const block = lesson.contentBlocks.find((item) => item.id === current?.id);
   const task = lesson.tasks.find((item) => item.id === current?.id);
+  const resource = lesson.resources.find((item) => item.id === current?.id);
   const isCompletionActivity = current?.kind === 'COMPLETE';
   const isLessonCompleted = progress?.lessonProgress.status === 'COMPLETED';
   const continueLabel = isCompletionActivity
@@ -382,34 +480,6 @@ function LessonWorkspace({
         </Card>
       )}
       <p class="leading-7 text-slate-300">{lesson.summary}</p>
-      {lesson.resources.length === 0 ? null : (
-        <Card class="space-y-3">
-          <h2 class="text-lg font-semibold" id="lesson-resources-title">
-            Ressources de la leçon
-          </h2>
-          <ul class="space-y-2" aria-labelledby="lesson-resources-title">
-            {lesson.resources.map((item) => {
-              const href = getSafeExternalUrl(item.url);
-              return (
-                <li key={item.id}>
-                  {href ? (
-                    <a
-                      class="inline-flex min-h-11 items-center text-cyan-300 underline"
-                      href={href}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      {item.title}
-                    </a>
-                  ) : (
-                    <span>{item.title}</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
-      )}
       <div class="grid gap-6">
         <section class="space-y-4" aria-labelledby="current-activity-title">
           {current ? (
@@ -439,7 +509,21 @@ function LessonWorkspace({
               task={task}
             />
           ) : null}
-          {current && !block && !task && current.kind !== 'COMPLETE' ? (
+          {resource ? (
+            <ResourceActivity
+              alternative={
+                resource.guidance?.alternativeResourceKey
+                  ? resourcesByKey.get(resource.guidance.alternativeResourceKey)
+                  : undefined
+              }
+              isPending={mutation.isPending}
+              onComplete={lesson.isPublished ? () => updateResource(resource, 'COMPLETED') : undefined}
+              onOpen={lesson.isPublished ? () => updateResource(resource, 'STARTED') : undefined}
+              resource={resource}
+              status={progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'}
+            />
+          ) : null}
+          {current && !block && !task && !resource && current.kind !== 'COMPLETE' ? (
             <SecondaryActivity activity={current} />
           ) : null}
           {current?.kind === 'COMPLETE' ? (

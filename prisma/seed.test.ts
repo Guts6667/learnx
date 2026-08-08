@@ -361,6 +361,26 @@ describe('sample program seed', () => {
     );
   });
 
+  it('importe un guidage approuvé pour chaque ressource de psychologie', async () => {
+    const sampleProgram = await readSampleProgram();
+    const lessons = sampleProgram.stages.flatMap((stage) =>
+      stage.modules.flatMap((module) => module.lessons),
+    );
+
+    for (const lesson of lessons) {
+      const resourceKeys = new Set(lesson.resources.map(({ key }) => key));
+      for (const resource of lesson.resources) {
+        expect(resource.guidance?.objective).toBeTruthy();
+        expect(resource.guidance?.instructions).toBeTruthy();
+        expect(resource.guidance?.urlStatus).toMatch(
+          /^(ok|redirect|restricted|broken)$/,
+        );
+        const alternative = resource.guidance?.alternativeResourceKey;
+        if (alternative) expect(resourceKeys.has(alternative)).toBe(true);
+      }
+    }
+  });
+
   it('lit les trois leçons et les neuf banques de la première étape', async () => {
     const sampleSeed = await readSampleSeed();
     const lessons = sampleSeed.program.stages[0].modules[0].lessons.slice(0, 3);

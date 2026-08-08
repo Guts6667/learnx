@@ -49,6 +49,7 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [true],
         requiredExercises: [] as boolean[],
         requiredQuizzes: [] as boolean[],
+        requiredResources: [] as boolean[],
         requiredTasks: [] as boolean[],
       };
       let availableWeight = 0;
@@ -74,6 +75,7 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [false],
         requiredExercises: [true],
         requiredQuizzes: [true],
+        requiredResources: [true],
         requiredTasks: [true],
       }),
     ).toEqual({ canComplete: false, percent: 100 });
@@ -85,6 +87,7 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [],
         requiredExercises: [],
         requiredQuizzes: [],
+        requiredResources: [],
         requiredTasks: [],
       }),
     ).toEqual({ canComplete: true, percent: 0 });
@@ -93,8 +96,21 @@ describe('calculateLessonProgress', () => {
         requiredConcepts: [true],
         requiredExercises: [false],
         requiredQuizzes: [],
+        requiredResources: [],
         requiredTasks: [],
       }).canComplete,
     ).toBe(false);
+  });
+
+  it('bloque la terminaison sur une ressource obligatoire sans modifier le pourcentage', () => {
+    expect(
+      calculateLessonProgress({
+        requiredConcepts: [true],
+        requiredExercises: [true],
+        requiredQuizzes: [true],
+        requiredResources: [false],
+        requiredTasks: [true],
+      }),
+    ).toEqual({ canComplete: false, percent: 100 });
   });
 });
