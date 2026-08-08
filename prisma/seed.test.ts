@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import {
   SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
   createSeedProgramRepository,
+  getSelectedSeedSlugs,
   readOfficineExpressSeed,
   readPlatformApmInterviewSeed,
   readSampleProgram,
@@ -61,6 +62,30 @@ describe('seed transaction budget', () => {
       maxWait: 10_000,
       timeout: 600_000,
     });
+  });
+});
+
+describe('seed program selection', () => {
+  it('imports every maintained bundle by default', () => {
+    expect(getSelectedSeedSlugs({})).toEqual([
+      'fondamentaux-psychologie',
+      'officine-express',
+      'platform-apm-entretien-tryhackme',
+    ]);
+  });
+
+  it('can isolate the Platform APM import', () => {
+    expect(
+      getSelectedSeedSlugs({
+        LEARNX_SEED_PROGRAM_SLUG: 'platform-apm-entretien-tryhackme',
+      }),
+    ).toEqual(['platform-apm-entretien-tryhackme']);
+  });
+
+  it('rejects an unknown program instead of falling back to the full seed', () => {
+    expect(() =>
+      getSelectedSeedSlugs({ LEARNX_SEED_PROGRAM_SLUG: 'unknown-program' }),
+    ).toThrow('Unsupported LEARNX_SEED_PROGRAM_SLUG');
   });
 });
 

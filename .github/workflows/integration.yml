@@ -40,6 +40,69 @@ jobs:
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+      - name: Resolve seed owner on isolated clone
+        shell: bash
+        run: |
+          admin_email="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "
+            SELECT users.email
+            FROM users
+            INNER JOIN programs ON programs.owner_id = users.id
+            WHERE programs.slug = 'fondamentaux-psychologie'
+            ORDER BY programs.created_at
+            LIMIT 1;
+          ")"
+          test -n "$admin_email"
+          echo "::add-mask::$admin_email"
+          echo "ADMIN_EMAIL=$admin_email" >> "$GITHUB_ENV"
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+      - name: Validate targeted Platform APM seed twice
+        shell: bash
+        run: |
+          pnpm prisma:seed
+          first_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$ADMIN_EMAIL" -Atc "$signature_query")"
+          pnpm prisma:seed
+          second_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$ADMIN_EMAIL" -Atc "$signature_query")"
+          test "$first_signature" = "$second_signature"
+          test "$second_signature" = "1|2|5|6|19|12|6|6|30|2|0|0|0"
+          echo "Platform APM targeted seed is idempotent: $second_signature"
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+          LEARNX_SEED_PROGRAM_SLUG: platform-apm-entretien-tryhackme
+          signature_query: |
+            WITH target_program AS (
+              SELECT id FROM programs
+              WHERE slug = 'platform-apm-entretien-tryhackme'
+                AND owner_id = (SELECT id FROM users WHERE email = :'admin_email')
+            ), target_stages AS (
+              SELECT id, is_published FROM stages
+              WHERE program_id IN (SELECT id FROM target_program)
+            ), target_modules AS (
+              SELECT id, is_published FROM modules
+              WHERE stage_id IN (SELECT id FROM target_stages)
+            ), target_lessons AS (
+              SELECT id, is_published FROM lessons
+              WHERE module_id IN (SELECT id FROM target_modules)
+            ), target_concept_assessments AS (
+              SELECT id FROM concept_assessments
+              WHERE lesson_id IN (SELECT id FROM target_lessons)
+            )
+            SELECT concat_ws('|',
+              (SELECT count(*) FROM target_program),
+              (SELECT count(*) FROM target_stages),
+              (SELECT count(*) FROM target_modules),
+              (SELECT count(*) FROM target_lessons),
+              (SELECT count(*) FROM content_blocks WHERE lesson_id IN (SELECT id FROM target_lessons)),
+              (SELECT count(*) FROM resources WHERE lesson_id IN (SELECT id FROM target_lessons)),
+              (SELECT count(*) FROM exercises WHERE lesson_id IN (SELECT id FROM target_lessons) AND is_canonical),
+              (SELECT count(*) FROM target_concept_assessments),
+              (SELECT count(*) FROM concept_assessment_questions WHERE assessment_id IN (SELECT id FROM target_concept_assessments)),
+              (SELECT count(*) FROM stage_assessments WHERE stage_id IN (SELECT id FROM target_stages)),
+              (SELECT count(*) FROM target_stages WHERE is_published),
+              (SELECT count(*) FROM target_modules WHERE is_published),
+              (SELECT count(*) FROM target_lessons WHERE is_published)
+            );
       - name: Run real Functions and browser integration tests
         run: pnpm test:integration
         env:

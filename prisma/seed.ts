@@ -652,6 +652,51 @@ export async function readSampleProgram(): Promise<SampleProgram> {
   return (await readSampleSeed()).program;
 }
 
+const seedDefinitions = [
+  {
+    read: readSampleSeed,
+    slug: 'fondamentaux-psychologie',
+  },
+  {
+    read: readOfficineExpressSeed,
+    slug: 'officine-express',
+  },
+  {
+    read: readPlatformApmInterviewSeed,
+    slug: 'platform-apm-entretien-tryhackme',
+  },
+] as const;
+
+export function getSelectedSeedSlugs(
+  environment: NodeJS.ProcessEnv = process.env,
+): string[] {
+  const requestedSlug = environment.LEARNX_SEED_PROGRAM_SLUG?.trim();
+
+  if (!requestedSlug) {
+    return seedDefinitions.map(({ slug }) => slug);
+  }
+
+  if (!seedDefinitions.some(({ slug }) => slug === requestedSlug)) {
+    throw new Error(
+      `Unsupported LEARNX_SEED_PROGRAM_SLUG ("${requestedSlug}").`,
+    );
+  }
+
+  return [requestedSlug];
+}
+
+async function readSelectedSeeds(
+  environment: NodeJS.ProcessEnv = process.env,
+): Promise<SampleSeed[]> {
+  const selectedSlugs = new Set(getSelectedSeedSlugs(environment));
+
+  return Promise.all(
+    seedDefinitions
+      .filter(({ slug }) => selectedSlugs.has(slug))
+      .map(({ read }) => read()),
+  );
+}
+
 export async function seedSampleProgram(
   repository: SeedProgramRepository,
   ownerId: string,
@@ -1650,11 +1695,7 @@ async function main() {
       );
     }
 
-    const seeds = await Promise.all([
-      readSampleSeed(),
-      readOfficineExpressSeed(),
-      readPlatformApmInterviewSeed(),
-    ]);
+    const seeds = await readSelectedSeeds();
 
     await prisma.$transaction(async (transaction) => {
       const repository = createSeedProgramRepository(transaction);
@@ -1669,7 +1710,9 @@ async function main() {
       }
     }, SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS);
 
-    console.info('Programs seeded successfully.');
+    console.info(
+      `Programs seeded successfully: ${seeds.map(({ program }) => program.slug).join(', ')}.`,
+    );
   } finally {
     await prisma.$disconnect();
   }
