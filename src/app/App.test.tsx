@@ -451,6 +451,9 @@ describe('App', () => {
       name: 'Ouvrir l’administration',
     });
     const logout = screen.getByRole('button', { name: 'Se déconnecter' });
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Application' }),
+    ).toBeInTheDocument();
 
     expect(email).toHaveClass('break-all');
     expect(adminLink).toHaveAttribute('href', '/admin');

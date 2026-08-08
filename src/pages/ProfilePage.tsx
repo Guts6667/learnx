@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/Card';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { useLogoutMutation, useSessionQuery } from '@/features/auth/session';
+import { PwaInstallSettings } from '@/features/pwa/PwaStatus';
 
 export function ProfilePage() {
   const sessionQuery = useSessionQuery();
@@ -67,6 +68,7 @@ export function ProfilePage() {
           </div>
         </div>
       </Card>
+      <PwaInstallSettings />
     </section>
   );
 }

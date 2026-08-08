@@ -485,31 +485,32 @@ async function installJourneyApi(page: Page) {
 }
 
 async function openCriticalLesson(page: Page) {
-  const navigation = page.getByRole('navigation', {
-    name: 'Navigation principale',
-  });
-
-  await navigation.getByRole('link', { name: 'Parcours' }).click();
+  await page.goto('/program');
   await expect(
     page.getByRole('heading', { level: 1, name: 'Programmes' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Commencer' }).click();
-  await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
   await expect(
-    page.getByRole('heading', { level: 1, name: moduleSummary.title }),
+    page.getByRole('heading', { level: 1, name: program.title }),
   ).toBeVisible();
-  await page.getByRole('link', { name: /Commencer|Continuer/ }).click();
+  await page
+    .getByRole('link', {
+      name: `Ouvrir ${lessonSummary.title}, module ${moduleSummary.title}, Disponible`,
+    })
+    .click();
   await expect(
     page.getByRole('heading', { level: 1, name: lessonSummary.title }),
   ).toBeVisible();
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).toBe(true);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    )
+    .toBe(true);
 }
 
 test('garde Mes programmes et Explorer utilisables sur tous les viewports', async ({
@@ -547,6 +548,60 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
   }
 
   await expectNoSeriousA11yViolations(page);
+});
+
+test('rend le programme comme un accordéon plat et compact sur mobile', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/program/programme-e2e');
+
+  await expect(
+    page.getByRole('heading', { level: 1, name: program.title }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('progressbar', { name: 'Progression du programme' }),
+  ).toBeVisible();
+  await expect(page.getByRole('progressbar')).toHaveCount(1);
+
+  const stageButton = page.getByRole('button', {
+    name: `1. ${stageSummary.title}`,
+  });
+  await expect(stageButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(
+    page.getByRole('list', {
+      name: `Leçons du module ${moduleSummary.title}`,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: moduleSummary.title }),
+  ).toHaveCount(0);
+
+  const lessonLink = page.getByRole('link', {
+    name: `Ouvrir ${lessonSummary.title}, module ${moduleSummary.title}, Disponible`,
+  });
+  await expect(lessonLink).toHaveAttribute(
+    'href',
+    `/program/${program.slug}/lesson/${lessonSummary.slug}`,
+  );
+  await expect(page.locator('.ui-card .ui-card')).toHaveCount(0);
+  await expect(page.getByText(/Sur iPhone, touchez Partager/)).toHaveCount(0);
+  await expectNoHorizontalOverflow(page);
+  await expectNoSeriousA11yViolations(page);
+
+  await page.addStyleTag({ content: ':root { font-size: 200%; }' });
+  await expectNoHorizontalOverflow(page);
+  await expect(stageButton).toBeVisible();
+  await expect(lessonLink).toBeVisible();
 });
 
 test('garde les cinq destinations lisibles et accessibles sur mobile et desktop', async ({

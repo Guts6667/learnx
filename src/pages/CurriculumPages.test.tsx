@@ -468,6 +468,123 @@ describe('CurriculumPages', () => {
     );
   });
 
+  it('affiche les leçons en lignes plates avec leurs quatre états', async () => {
+    const timeline = {
+      actualPercent: 40,
+      completedAt: null,
+      expectedPercent: 35,
+      progressDelta: 5,
+      startedAt: '2026-08-08T08:00:00.000Z',
+      targetEndAt: null,
+      temporalStatus: 'ahead',
+    };
+    const lesson = (
+      id: string,
+      title: string,
+      status: 'AVAILABLE' | 'COMPLETED' | 'IN_PROGRESS',
+      isLocked = false,
+    ) => ({
+      activityCounts: {
+        concepts: 0,
+        exercises: 0,
+        quizzes: 0,
+        resources: 0,
+        tasks: 0,
+      },
+      estimatedMinutes: 20,
+      id,
+      isLocked,
+      isPublished: true,
+      position: 1,
+      progress: { percent: status === 'COMPLETED' ? 100 : 0, status },
+      slug: id,
+      summary: `Résumé ${title}`,
+      title,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            program: {
+              description: 'Programme à parcourir.',
+              id: 'program-flat',
+              slug: 'programme-plat',
+              stages: [
+                {
+                  description: 'Étape ouverte.',
+                  estimatedDurationDays: 3,
+                  estimatedMinutes: null,
+                  id: 'stage-flat',
+                  isPublished: true,
+                  modules: [
+                    {
+                      id: 'module-a',
+                      isPublished: true,
+                      lessons: [
+                        lesson('disponible', 'Leçon disponible', 'AVAILABLE'),
+                        lesson('encours', 'Leçon en cours', 'IN_PROGRESS'),
+                      ],
+                      position: 1,
+                      progress: { percent: 20, status: 'IN_PROGRESS' },
+                      slug: 'module-a',
+                      title: 'Module A',
+                    },
+                    {
+                      id: 'module-b',
+                      isPublished: true,
+                      lessons: [
+                        lesson('terminee', 'Leçon terminée', 'COMPLETED'),
+                        lesson('verrouillee', 'Leçon verrouillée', 'AVAILABLE', true),
+                      ],
+                      position: 2,
+                      progress: { percent: 50, status: 'IN_PROGRESS' },
+                      slug: 'module-b',
+                      title: 'Module B',
+                    },
+                  ],
+                  position: 1,
+                  progress: { percent: 40, status: 'IN_PROGRESS' },
+                  slug: 'etape-plate',
+                  timeline,
+                  title: 'Étape plate',
+                },
+              ],
+              status: 'ACTIVE',
+              timeline,
+              title: 'Programme plat',
+              viewPreference: { expandedStageId: 'stage-flat' },
+            },
+          }),
+        ),
+      ),
+    );
+
+    const view = renderPage(<ProgramPage programSlug="programme-plat" />);
+
+    expect(
+      await screen.findByRole('button', { name: /1\. Étape plate/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('heading', { name: 'Module A' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Module B' })).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /Ouvrir Leçon disponible.*Module A/ }),
+    ).toHaveAttribute('href', '/program/programme-plat/lesson/disponible');
+    expect(
+      screen.getByRole('link', { name: /Reprendre Leçon en cours.*Module A/ }),
+    ).toHaveAttribute('href', '/program/programme-plat/lesson/encours');
+    expect(
+      screen.getByRole('link', { name: /Revoir Leçon terminée.*Module B/ }),
+    ).toHaveAttribute('href', '/program/programme-plat/lesson/terminee');
+    expect(
+      screen.getByLabelText(/Leçon verrouillée, module Module B, Verrouillée/),
+    ).not.toHaveAttribute('href');
+    expect(screen.getAllByRole('progressbar')).toHaveLength(1);
+    expect(screen.queryByText(/Progression de l’étape/)).toBeNull();
+    expect(screen.queryByText(/Progression du module/)).toBeNull();
+    expect(view.container.querySelector('.ui-card .ui-card')).toBeNull();
+  });
+
   it('relie le programme, l’étape et le module à leurs contenus', async () => {
     const lesson = {
       activityCounts: {
@@ -629,10 +746,11 @@ describe('CurriculumPages', () => {
     expect(screen.getByText('Comprendre les premiers repères.')).toBeVisible();
     expect(screen.queryByText('Les notions essentielles.')).toBeNull();
     expect(screen.queryByText(/6 activités/)).toBeNull();
-    expect(screen.getByRole('link', { name: 'Reprendre' })).toHaveAttribute(
-      'href',
-      '/program/bases/module/premiers-pas',
-    );
+    expect(
+      screen.getByRole('link', {
+        name: /Reprendre Démarrer, module Premiers pas, Brouillon/,
+      }),
+    ).toHaveAttribute('href', '/program/bases/lesson/demarrer');
     expect(
       screen.getByRole('progressbar', {
         name: 'Progression du programme — 25 %',

@@ -1,5 +1,6 @@
+import { createContext, type ComponentChildren } from 'preact';
 import { useRegisterSW } from 'virtual:pwa-register/preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useContext, useEffect, useState } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -11,22 +12,55 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+interface PwaContextValue {
+  dismissIosHelp: () => void;
+  installApplication: () => Promise<void>;
+  installPrompt: BeforeInstallPromptEvent | null;
+  isOnline: boolean;
+  needRefresh: boolean;
+  offlineReady: boolean;
+  setNeedRefresh: (value: boolean) => void;
+  setOfflineReady: (value: boolean) => void;
+  showIosHelp: boolean;
+  updateServiceWorker: (reloadPage?: boolean) => Promise<void>;
+}
+
+const IOS_HELP_DISMISSED_KEY = 'learnx:pwa-ios-help-dismissed';
+const PwaContext = createContext<PwaContextValue | null>(null);
+
 function isIosDevice(): boolean {
   return /iPad|iPhone|iPod/.test(navigator.userAgent);
 }
 
 function isStandalone(): boolean {
   return (
-    window.matchMedia('(display-mode: standalone)').matches ||
+    (typeof window.matchMedia === 'function' &&
+      window.matchMedia('(display-mode: standalone)').matches) ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true
   );
 }
 
-export function PwaStatus() {
+function readIosHelpDismissed(): boolean {
+  try {
+    return window.localStorage.getItem(IOS_HELP_DISMISSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function usePwaContext(): PwaContextValue {
+  const value = useContext(PwaContext);
+  if (!value) throw new Error('PwaProvider is required.');
+  return value;
+}
+
+export function PwaProvider({ children }: { children: ComponentChildren }) {
   const isOnline = useOnlineStatus();
   const [installPrompt, setInstallPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [installHelpDismissed, setInstallHelpDismissed] = useState(false);
+  const [installHelpDismissed, setInstallHelpDismissed] = useState(
+    readIosHelpDismissed,
+  );
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     offlineReady: [offlineReady, setOfflineReady],
@@ -57,13 +91,47 @@ export function PwaStatus() {
     setInstallPrompt(null);
   }
 
+  function dismissIosHelp() {
+    setInstallHelpDismissed(true);
+    try {
+      window.localStorage.setItem(IOS_HELP_DISMISSED_KEY, 'true');
+    } catch {
+      // Device storage can be unavailable in private browsing contexts.
+    }
+  }
+
   const showIosHelp = isIosDevice() && !isStandalone() && !installHelpDismissed;
-  const hasStatus =
-    !isOnline ||
-    offlineReady ||
-    needRefresh ||
-    Boolean(installPrompt) ||
-    showIosHelp;
+
+  return (
+    <PwaContext.Provider
+      value={{
+        dismissIosHelp,
+        installApplication,
+        installPrompt,
+        isOnline,
+        needRefresh,
+        offlineReady,
+        setNeedRefresh,
+        setOfflineReady,
+        showIosHelp,
+        updateServiceWorker,
+      }}
+    >
+      {children}
+    </PwaContext.Provider>
+  );
+}
+
+export function PwaStatus() {
+  const {
+    isOnline,
+    needRefresh,
+    offlineReady,
+    setNeedRefresh,
+    setOfflineReady,
+    updateServiceWorker,
+  } = usePwaContext();
+  const hasStatus = !isOnline || offlineReady || needRefresh;
 
   if (!hasStatus) return null;
 
@@ -110,33 +178,56 @@ export function PwaStatus() {
           </div>
         </Card>
       ) : null}
+    </aside>
+  );
+}
 
-      {installPrompt ? (
-        <Card class="flex items-center justify-between gap-3 border-cyan-900 py-3">
-          <p class="text-sm text-cyan-100">
-            Installez LearnX pour y accéder comme une application.
-          </p>
-          <Button onClick={() => void installApplication()} size="sm">
-            Installer
-          </Button>
-        </Card>
-      ) : null}
+export function PwaInstallSettings() {
+  const {
+    dismissIosHelp,
+    installApplication,
+    installPrompt,
+    showIosHelp,
+  } = usePwaContext();
+  const standalone = isStandalone();
 
-      {showIosHelp ? (
-        <Card class="space-y-3 border-cyan-900 py-3">
-          <p class="text-sm text-cyan-100">
+  return (
+    <Card
+      aria-labelledby="application-settings-title"
+      class="max-w-2xl space-y-4"
+    >
+      <div>
+        <h2 class="text-lg font-semibold" id="application-settings-title">
+          Application
+        </h2>
+        <p class="mt-2 text-sm leading-6 text-slate-300">
+          Installez LearnX sur cet appareil pour l’ouvrir plus rapidement.
+        </p>
+      </div>
+      {standalone ? (
+        <p class="text-sm text-emerald-200" role="status">
+          LearnX est déjà installé sur cet appareil.
+        </p>
+      ) : installPrompt ? (
+        <Button onClick={() => void installApplication()} variant="secondary">
+          Installer LearnX
+        </Button>
+      ) : showIosHelp ? (
+        <div class="space-y-3">
+          <p class="text-sm leading-6 text-slate-300">
             Sur iPhone, touchez Partager puis « Sur l’écran d’accueil » pour
             installer LearnX.
           </p>
-          <Button
-            onClick={() => setInstallHelpDismissed(true)}
-            size="sm"
-            variant="ghost"
-          >
+          <Button onClick={dismissIosHelp} variant="ghost">
             J’ai compris
           </Button>
-        </Card>
-      ) : null}
-    </aside>
+        </div>
+      ) : (
+        <p class="text-sm text-slate-400">
+          L’installation est proposée ici lorsqu’elle est disponible sur votre
+          navigateur.
+        </p>
+      )}
+    </Card>
   );
 }

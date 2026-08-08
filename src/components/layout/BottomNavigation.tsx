@@ -40,7 +40,7 @@ export function BottomNavigation({ currentPath = window.location.pathname }) {
                 href={href}
               >
                 <NavigationIcon name={icon} />
-                <span class="max-w-full text-center">{label}</span>
+                <span class="max-w-full break-words text-center">{label}</span>
               </a>
             </li>
           );

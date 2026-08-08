@@ -153,6 +153,15 @@ const compactProgressStatusLabels = {
   LOCKED: 'Verrouillée',
 } as const;
 
+const lessonProgressIcons = {
+  AVAILABLE: '○',
+  COMPLETED: '✓',
+  IN_PROGRESS: '◐',
+  LOCKED: '⌧',
+  NEEDS_REVIEW: '↻',
+  PREVIEW: '◇',
+} as const;
+
 function formatStageDuration(stage: StageSummary): string {
   if (stage.estimatedDurationDays !== null) {
     return `${stage.estimatedDurationDays} j`;
@@ -161,21 +170,139 @@ function formatStageDuration(stage: StageSummary): string {
   return 'Durée non renseignée';
 }
 
-function getStageTargetModule(stage: StageSummary) {
+function formatLessonDuration(lesson: LessonSummary): string {
+  return lesson.estimatedMinutes === null
+    ? 'Durée non renseignée'
+    : `${lesson.estimatedMinutes} min`;
+}
+
+function lessonLineStatus(lesson: LessonSummary) {
+  if (!lesson.isPublished) {
+    return {
+      icon: lessonProgressIcons.PREVIEW,
+      label: 'Brouillon',
+      tone: 'warning' as const,
+    };
+  }
+  if (lesson.isLocked) {
+    return {
+      icon: lessonProgressIcons.LOCKED,
+      label: 'Verrouillée',
+      tone: 'neutral' as const,
+    };
+  }
+  return {
+    icon: lessonProgressIcons[lesson.progress.status],
+    label: lessonStatusLabel(lesson),
+    tone:
+      lesson.progress.status === 'IN_PROGRESS'
+        ? ('info' as const)
+        : lesson.progress.status === 'COMPLETED'
+          ? ('success' as const)
+          : ('neutral' as const),
+  };
+}
+
+function ProgramLessonRow({
+  lesson,
+  moduleTitle,
+  programSlug,
+}: {
+  lesson: LessonSummary;
+  moduleTitle: string;
+  programSlug: string;
+}) {
+  const status = lessonLineStatus(lesson);
+  const content = (
+    <>
+      <span
+        class={`min-w-0 flex-1 font-medium ${
+          lesson.isLocked ? 'text-slate-400' : 'text-slate-100'
+        }`}
+      >
+        {lesson.title}
+      </span>
+      <span class="shrink-0 text-sm text-slate-400">
+        {formatLessonDuration(lesson)}
+      </span>
+      <Badge class="shrink-0 gap-1" tone={status.tone}>
+        <span aria-hidden="true">{status.icon}</span>
+        {status.label}
+      </Badge>
+      <span aria-hidden="true" class="shrink-0 text-lg text-slate-400">
+        {lesson.isLocked ? '⌧' : '›'}
+      </span>
+    </>
+  );
+  const className =
+    'flex min-h-14 w-full min-w-0 flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-800 px-1 py-3 text-left first:border-t-0';
+
+  if (lesson.isLocked) {
+    return (
+      <div
+        aria-label={`${lesson.title}, module ${moduleTitle}, ${status.label}`}
+        class={`${className} cursor-not-allowed text-slate-400`}
+      >
+        {content}
+      </div>
+    );
+  }
+
+  const action =
+    lesson.progress.status === 'COMPLETED'
+      ? 'Revoir'
+      : lesson.progress.status === 'IN_PROGRESS'
+        ? 'Reprendre'
+        : 'Ouvrir';
+
   return (
-    stage.modules.find(
-      ({ progress }) =>
-        progress.status !== 'COMPLETED' && progress.status !== 'LOCKED',
-    ) ??
-    [...stage.modules]
-      .reverse()
-      .find(({ progress }) => progress.status === 'COMPLETED') ??
-    stage.modules[0] ??
-    null
+    <a
+      aria-label={`${action} ${lesson.title}, module ${moduleTitle}, ${status.label}`}
+      class={`${className} rounded-lg hover:bg-slate-900/70 focus-visible:outline-2 focus-visible:outline-cyan-300`}
+      href={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
+    >
+      {content}
+    </a>
   );
 }
 
-function StageTimelineItem({
+function ModuleLessonList({
+  module,
+  programSlug,
+  showHeading,
+}: {
+  module: StageSummary['modules'][number];
+  programSlug: string;
+  showHeading: boolean;
+}) {
+  const listId = `program-module-lessons-${module.id}`;
+
+  return (
+    <section aria-labelledby={showHeading ? `${listId}-title` : undefined}>
+      {showHeading ? (
+        <h3 class="mb-2 font-semibold text-slate-200" id={`${listId}-title`}>
+          {module.title}
+        </h3>
+      ) : null}
+      <ul
+        aria-label={showHeading ? undefined : `Leçons du module ${module.title}`}
+        id={listId}
+      >
+        {module.lessons.map((lesson) => (
+          <li key={lesson.id}>
+            <ProgramLessonRow
+              lesson={lesson}
+              moduleTitle={module.title}
+              programSlug={programSlug}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function StageAccordionItem({
   isExpanded,
   onExpand,
   programSlug,
@@ -187,29 +314,20 @@ function StageTimelineItem({
   stage: StageSummary;
 }) {
   const panelId = `program-stage-panel-${stage.id}`;
-  const targetModule = getStageTargetModule(stage);
-  const isLocked = stage.progress.status === 'LOCKED';
-  const actionLabel = isLocked
-    ? 'Voir les prérequis'
-    : stage.progress.status === 'COMPLETED'
-      ? 'Revoir'
-      : stage.progress.status === 'IN_PROGRESS'
-        ? 'Reprendre'
-        : 'Commencer';
-  const actionHref = isLocked
-    ? `/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`
-    : targetModule
-      ? `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(targetModule.slug)}`
-      : `/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`;
+  const statusLabel = stage.isPublished
+    ? compactProgressStatusLabels[stage.progress.status]
+    : 'Brouillon';
+  const statusTone = !stage.isPublished
+    ? 'warning'
+    : stage.progress.status === 'IN_PROGRESS'
+      ? 'info'
+      : stage.progress.status === 'COMPLETED'
+        ? 'success'
+        : 'neutral';
+  const showModuleHeadings = stage.modules.length > 1;
 
   return (
-    <li class="relative pl-8 sm:pl-10">
-      <span
-        aria-hidden="true"
-        class="absolute -left-4 top-5 grid size-8 place-items-center rounded-full border border-cyan-500/60 bg-slate-950 text-sm font-semibold text-cyan-200"
-      >
-        {stage.position}
-      </span>
+    <li>
       <Card class="overflow-hidden p-0">
         <button
           aria-controls={panelId}
@@ -220,13 +338,18 @@ function StageTimelineItem({
         >
           <span class="min-w-0 flex-1">
             <span class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-slate-100">{stage.title}</span>
-              {stage.isPublished ? null : <DraftBadge />}
+              <span class="font-semibold text-slate-100">
+                {stage.position}. {stage.title}
+              </span>
             </span>
             <span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
               <span>{formatStageDuration(stage)}</span>
-              <span>{compactProgressStatusLabels[stage.progress.status]}</span>
-              <span>{Math.round(stage.progress.percent)} %</span>
+              <Badge class="gap-1" tone={statusTone}>
+                <span aria-hidden="true">
+                  {lessonProgressIcons[stage.progress.status]}
+                </span>
+                {statusLabel}
+              </Badge>
             </span>
           </span>
           <span
@@ -246,46 +369,20 @@ function StageTimelineItem({
             role="region"
           >
             <p class="leading-7 text-slate-300">{stage.description}</p>
-            <ProgressBar
-              label={`Progression de l’étape — ${Math.round(stage.progress.percent)} %`}
-              value={stage.progress.percent}
-            />
             {stage.modules.length === 0 ? (
               <p class="text-sm text-slate-400">Aucun module disponible.</p>
             ) : (
-              <ul class="space-y-3" aria-label="Modules de l’étape">
+              <div class="space-y-5">
                 {stage.modules.map((module) => (
-                  <li
-                    class="rounded-xl border border-slate-800 bg-slate-950/40 p-4"
+                  <ModuleLessonList
                     key={module.id}
-                  >
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                      <span class="font-medium text-slate-100">
-                        {module.title}
-                      </span>
-                      <Badge
-                        tone={
-                          module.progress.status === 'COMPLETED'
-                            ? 'success'
-                            : module.progress.status === 'LOCKED'
-                              ? 'warning'
-                              : 'info'
-                        }
-                      >
-                        {compactProgressStatusLabels[module.progress.status]}
-                      </Badge>
-                    </div>
-                    <div class="mt-3">
-                      <ProgressBar
-                        label={`Progression du module — ${Math.round(module.progress.percent)} %`}
-                        value={module.progress.percent}
-                      />
-                    </div>
-                  </li>
+                    module={module}
+                    programSlug={programSlug}
+                    showHeading={showModuleHeadings}
+                  />
                 ))}
-              </ul>
+              </div>
             )}
-            <NavigationAction href={actionHref}>{actionLabel}</NavigationAction>
           </div>
         ) : null}
       </Card>
@@ -832,17 +929,20 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
 
   return (
     <section aria-labelledby="program-title" class="page-shell">
-      <div>
+      <div class="min-w-0">
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           Programme
         </p>
-        <div class="mt-3 flex flex-wrap items-center gap-3">
-          <h1 id="program-title" class="text-3xl font-bold tracking-tight">
+        <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
+          <h1
+            id="program-title"
+            class="min-w-0 break-words text-3xl font-bold tracking-tight"
+          >
             {program.title}
           </h1>
           {program.status === 'DRAFT' ? <DraftBadge /> : null}
         </div>
-        <p class="mt-3 text-slate-300">{program.description}</p>
+        <p class="mt-3 break-words text-slate-300">{program.description}</p>
       </div>
       <ProgressBar
         label={`Progression du programme — ${Math.round(program.timeline?.actualPercent ?? 0)} %`}
@@ -854,9 +954,9 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
           title="Aucune étape disponible"
         />
       ) : (
-        <ol class="ml-4 space-y-5 border-l border-cyan-900/80 py-1">
+        <ol class="space-y-4">
           {program.stages.map((stage) => (
-            <StageTimelineItem
+            <StageAccordionItem
               isExpanded={activeStageId === stage.id}
               key={stage.id}
               onExpand={() => {
