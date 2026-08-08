@@ -436,7 +436,7 @@ describe('CurriculumPages', () => {
     });
     vi.stubGlobal('fetch', fetchMock);
 
-    renderPage(<ProgramPage programSlug="compact" />);
+    const view = renderPage(<ProgramPage programSlug="compact" />);
 
     const firstStage = await screen.findByRole('button', {
       name: /Étape une/,
@@ -445,9 +445,31 @@ describe('CurriculumPages', () => {
     expect(firstStage).toHaveAttribute('aria-expanded', 'false');
     expect(secondStage).toHaveAttribute('aria-expanded', 'true');
     expect(screen.queryByText('Résumé Étape une')).toBeNull();
-    expect(screen.getByText('Résumé Étape deux')).toBeVisible();
+    expect(screen.queryByText('Résumé Étape deux')).toBeNull();
 
-    fireEvent.click(firstStage);
+    fireEvent.click(secondStage);
+
+    expect(
+      screen.getByRole('button', { name: /Étape une/ }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getByRole('button', { name: /Étape deux/ }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      fetchMock.mock.calls.filter(([, init]) => init?.method === 'PUT'),
+    ).toHaveLength(0);
+
+    view.unmount();
+    renderPage(<ProgramPage programSlug="compact" />);
+
+    const restoredFirstStage = await screen.findByRole('button', {
+      name: /Étape une/,
+    });
+    expect(
+      screen.getByRole('button', { name: /Étape deux/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.click(restoredFirstStage);
 
     expect(
       screen.getByRole('button', { name: /Étape une/ }),
@@ -455,7 +477,7 @@ describe('CurriculumPages', () => {
     expect(
       screen.getByRole('button', { name: /Étape deux/ }),
     ).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByText('Résumé Étape une')).toBeVisible();
+    expect(screen.queryByText('Résumé Étape une')).toBeNull();
     expect(screen.queryByText('Résumé Étape deux')).toBeNull();
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
@@ -743,7 +765,7 @@ describe('CurriculumPages', () => {
     expect(
       await screen.findByRole('button', { name: /Introduction/ }),
     ).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByText('Comprendre les premiers repères.')).toBeVisible();
+    expect(screen.queryByText('Comprendre les premiers repères.')).toBeNull();
     expect(screen.queryByText('Les notions essentielles.')).toBeNull();
     expect(screen.queryByText(/6 activités/)).toBeNull();
     expect(

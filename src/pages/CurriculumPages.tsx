@@ -215,27 +215,34 @@ function ProgramLessonRow({
   const status = lessonLineStatus(lesson);
   const content = (
     <>
+      <span class="min-w-0 flex-1 lg:flex lg:items-center lg:justify-between lg:gap-4">
+        <span
+          class={`block min-w-0 break-words font-medium ${
+            lesson.isLocked ? 'text-slate-400' : 'text-slate-100'
+          }`}
+        >
+          {lesson.title}
+        </span>
+        <span class="mt-2 flex flex-wrap items-center gap-2 lg:mt-0 lg:shrink-0">
+          <span class="text-sm text-slate-400">
+            {formatLessonDuration(lesson)}
+          </span>
+          <Badge class="gap-1" tone={status.tone}>
+            <span aria-hidden="true">{status.icon}</span>
+            {status.label}
+          </Badge>
+        </span>
+      </span>
       <span
-        class={`min-w-0 flex-1 font-medium ${
-          lesson.isLocked ? 'text-slate-400' : 'text-slate-100'
-        }`}
+        aria-hidden="true"
+        class="flex min-h-11 w-8 shrink-0 items-center justify-end text-lg text-slate-400"
       >
-        {lesson.title}
-      </span>
-      <span class="shrink-0 text-sm text-slate-400">
-        {formatLessonDuration(lesson)}
-      </span>
-      <Badge class="shrink-0 gap-1" tone={status.tone}>
-        <span aria-hidden="true">{status.icon}</span>
-        {status.label}
-      </Badge>
-      <span aria-hidden="true" class="shrink-0 text-lg text-slate-400">
         {lesson.isLocked ? '⌧' : '›'}
       </span>
     </>
   );
   const className =
-    'flex min-h-14 w-full min-w-0 flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-800 px-1 py-3 text-left first:border-t-0';
+    'flex min-h-16 w-full min-w-0 items-center gap-3 border-t border-slate-800 px-2 py-4 text-left first:border-t-0 sm:px-1';
 
   if (lesson.isLocked) {
     return (
@@ -304,12 +311,12 @@ function ModuleLessonList({
 
 function StageAccordionItem({
   isExpanded,
-  onExpand,
+  onToggle,
   programSlug,
   stage,
 }: {
   isExpanded: boolean;
-  onExpand: () => void;
+  onToggle: () => void;
   programSlug: string;
   stage: StageSummary;
 }) {
@@ -332,8 +339,8 @@ function StageAccordionItem({
         <button
           aria-controls={panelId}
           aria-expanded={isExpanded}
-          class="flex min-h-20 w-full items-center gap-4 rounded-2xl px-4 py-4 text-left transition-colors hover:bg-slate-800/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cyan-300 motion-reduce:transition-none sm:px-5"
-          onClick={onExpand}
+          class="flex min-h-20 w-full items-center gap-3 rounded-2xl px-4 py-5 text-left transition-colors hover:bg-slate-800/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cyan-300 motion-reduce:transition-none sm:px-5"
+          onClick={onToggle}
           type="button"
         >
           <span class="min-w-0 flex-1">
@@ -364,11 +371,10 @@ function StageAccordionItem({
         {isExpanded ? (
           <div
             aria-label={`Détails de l’étape ${stage.title}`}
-            class="space-y-5 border-t border-slate-800 px-4 py-5 sm:px-5"
+            class="space-y-6 border-t border-slate-800 px-4 py-4 sm:px-5 sm:py-5"
             id={panelId}
             role="region"
           >
-            <p class="leading-7 text-slate-300">{stage.description}</p>
             {stage.modules.length === 0 ? (
               <p class="text-sm text-slate-400">Aucun module disponible.</p>
             ) : (
@@ -959,8 +965,14 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
             <StageAccordionItem
               isExpanded={activeStageId === stage.id}
               key={stage.id}
-              onExpand={() => {
-                if (activeStageId === stage.id) return;
+              onToggle={() => {
+                if (activeStageId === stage.id) {
+                  setLocalPreference({
+                    expandedStageId: null,
+                    programId: program.id,
+                  });
+                  return;
+                }
                 const previousStageId = activeStageId;
                 setLocalPreference({
                   expandedStageId: stage.id,

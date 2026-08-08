@@ -41,7 +41,7 @@ const lessonSummary = {
   progress: { percent: 0, status: 'AVAILABLE' },
   slug: 'lecon-critique',
   summary: 'Une leçon publiée pour valider le parcours critique.',
-  title: 'Leçon critique',
+  title: 'Comprendre les responsabilités d’une plateforme produit',
 };
 
 const moduleSummary = {
@@ -577,6 +577,7 @@ test('rend le programme comme un accordéon plat et compact sur mobile', async (
     name: `1. ${stageSummary.title}`,
   });
   await expect(stageButton).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.getByText(stageSummary.description)).toHaveCount(0);
   await expect(
     page.getByRole('list', {
       name: `Leçons du module ${moduleSummary.title}`,
@@ -593,12 +594,38 @@ test('rend le programme comme un accordéon plat et compact sur mobile', async (
     'href',
     `/program/${program.slug}/lesson/${lessonSummary.slug}`,
   );
+  const lessonTitleBox = await lessonLink
+    .getByText(lessonSummary.title, { exact: true })
+    .boundingBox();
+  const lessonDurationBox = await lessonLink
+    .getByText(`${lessonSummary.estimatedMinutes} min`, { exact: true })
+    .boundingBox();
+  expect(lessonTitleBox).not.toBeNull();
+  expect(lessonDurationBox).not.toBeNull();
+  expect(lessonDurationBox?.y).toBeGreaterThan(lessonTitleBox?.y ?? 0);
   await expect(page.locator('.ui-card .ui-card')).toHaveCount(0);
   await expect(page.getByText(/Sur iPhone, touchez Partager/)).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
   await expectNoSeriousA11yViolations(page);
 
+  await stageButton.focus();
+  await page.keyboard.press('Enter');
+  await expect(stageButton).toHaveAttribute('aria-expanded', 'false');
+  await expect(
+    page.getByRole('list', {
+      name: `Leçons du module ${moduleSummary.title}`,
+    }),
+  ).toHaveCount(0);
+
+  await page.reload();
+  await expect(stageButton).toHaveAttribute('aria-expanded', 'true');
+
   await page.addStyleTag({ content: ':root { font-size: 200%; }' });
+  await expectNoHorizontalOverflow(page);
+  await expect(stageButton).toBeVisible();
+  await expect(lessonLink).toBeVisible();
+
+  await page.setViewportSize({ height: 700, width: 320 });
   await expectNoHorizontalOverflow(page);
   await expect(stageButton).toBeVisible();
   await expect(lessonLink).toBeVisible();
