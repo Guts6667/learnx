@@ -8,6 +8,7 @@ import { activityKey } from '@/lib/lesson-activity-sequence';
 interface PedagogicalNavigationProps {
   activities: LessonActivity[];
   continueActivity?: LessonActivity | null;
+  continueHref?: string;
   continueLabel?: string;
   currentKey: string;
   isContinueDisabled?: boolean;
@@ -27,6 +28,7 @@ const statusLabels: Record<LessonActivity['status'], string> = {
 export function PedagogicalNavigation({
   activities,
   continueActivity,
+  continueHref,
   continueLabel = 'Continuer',
   currentKey,
   isContinueDisabled = false,
@@ -48,16 +50,13 @@ export function PedagogicalNavigation({
     continueActivity === undefined
       ? (activities[currentIndex + 1] ?? null)
       : continueActivity;
+  const nextHref = continueHref ?? next?.href ?? null;
 
   return (
     <>
       <nav
         aria-label="Navigation pédagogique"
-        class="sticky z-30 min-w-0 rounded-2xl border border-cyan-900/80 bg-slate-950/95 p-3 shadow-xl shadow-slate-950/40 backdrop-blur lg:top-4 lg:bottom-auto"
-        style={{
-          bottom:
-            'calc(var(--app-navigation-height) + env(safe-area-inset-bottom))',
-        }}
+        class="min-w-0 rounded-2xl border border-cyan-900/80 bg-slate-950 p-3"
       >
         <div class="flex min-w-0 items-start justify-between gap-3">
           <div class="min-w-0">
@@ -110,8 +109,8 @@ export function PedagogicalNavigation({
             >
               {isContinuePending ? 'Chargement…' : continueLabel}
             </button>
-          ) : next ? (
-            <NavigationAction class="min-w-0" href={next.href} size="sm">
+          ) : nextHref ? (
+            <NavigationAction class="min-w-0" href={nextHref} size="sm">
               {continueLabel}
             </NavigationAction>
           ) : (

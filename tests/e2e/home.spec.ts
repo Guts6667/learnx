@@ -713,6 +713,14 @@ test('affiche le sommaire pédagogique en une colonne sans débordement', async 
   await page.goto('/program/programme-e2e/lesson/lecon-critique');
 
   const summaryTrigger = page.getByRole('button', { name: 'Sommaire' });
+  const pedagogicalNavigation = page.getByRole('navigation', {
+    name: 'Navigation pédagogique',
+  });
+  expect(
+    await pedagogicalNavigation.evaluate(
+      (element) => getComputedStyle(element).position,
+    ),
+  ).toBe('static');
   await summaryTrigger.click();
   const dialog = page.getByRole('dialog', { name: 'Sommaire de la leçon' });
   await expect(dialog).toBeVisible();

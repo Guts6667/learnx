@@ -205,6 +205,23 @@ function progressResponse(taskStatus: 'DONE' | 'TODO' = 'TODO') {
   };
 }
 
+function completableProgressResponse(isCompleted: boolean) {
+  return {
+    canComplete: true,
+    conceptProgress: { 'concept-1': 'VALIDATED' },
+    exerciseSubmissions: { 'exercise-1': 'SUBMITTED' },
+    lessonProgress: {
+      completedAt: isCompleted ? '2026-08-03T09:00:00.000Z' : null,
+      percent: isCompleted ? 100 : 90,
+      startedAt: '2026-08-03T08:00:00.000Z',
+      status: isCompleted ? 'COMPLETED' : 'IN_PROGRESS',
+    },
+    quizPassed: { 'quiz-1': true },
+    resourceProgress: { 'resource-1': 'COMPLETED' },
+    taskCompletions: { 'task-1': 'DONE' },
+  };
+}
+
 describe('LessonPage', () => {
   beforeEach(() => {
     Object.defineProperty(navigator, 'onLine', {
@@ -343,6 +360,57 @@ describe('LessonPage', () => {
     expect(screen.getByRole('link', { name: 'Ouvrir la lecture' })).toHaveAttribute('href', 'https://example.com/article');
     fireEvent.click(screen.getByRole('button', { name: 'Marquer comme consultée' }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/resources/resource-1/progress', expect.objectContaining({ body: JSON.stringify({ status: 'COMPLETED' }), method: 'PATCH' })));
+  });
+
+  it('remplace Terminer la leçon par Leçon suivante après la réussite serveur', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson',
+    );
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/lessons/demarrer') {
+        return Promise.resolve(jsonResponse(lessonResponse(true)));
+      }
+      if (path === '/api/lessons/lesson-1/progress') {
+        return Promise.resolve(jsonResponse(completableProgressResponse(false)));
+      }
+      if (
+        path === '/api/lessons/lesson-1/complete' &&
+        init?.method === 'POST'
+      ) {
+        return Promise.resolve(jsonResponse(completableProgressResponse(true)));
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
+
+    const completeButton = await screen.findByRole('button', {
+      name: 'Terminer la leçon',
+    });
+    expect(screen.getAllByText('Terminer la leçon')).toHaveLength(2);
+    fireEvent.click(completeButton);
+
+    expect(
+      await screen.findByRole('link', { name: 'Leçon suivante' }),
+    ).toHaveAttribute('href', '/program/programme-test/lesson/approfondir');
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/lessons/lesson-1/complete',
+      expect.objectContaining({ method: 'POST' }),
+    );
+    const nextLessonLink = screen.getByRole('link', {
+      name: 'Leçon suivante',
+    });
+    expect(
+      screen.getAllByRole('link', { name: 'Leçon suivante' }),
+    ).toHaveLength(1);
+    expect(nextLessonLink).toHaveClass('bg-cyan-400');
   });
 
   it('restaure une tâche profonde et met sa progression à jour', async () => {

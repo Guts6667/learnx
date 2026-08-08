@@ -79,6 +79,9 @@ describe('PedagogicalNavigation', () => {
     expect(
       within(navigation).queryByRole('link', { name: 'Retour à la leçon' }),
     ).not.toBeInTheDocument();
+    expect(navigation).not.toHaveClass('sticky');
+    expect(navigation).not.toHaveClass('fixed');
+    expect(navigation).not.toHaveAttribute('style');
   });
 
   it('ouvre un sommaire mono-colonne accessible et restaure le focus', async () => {

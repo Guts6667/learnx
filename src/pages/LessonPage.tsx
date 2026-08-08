@@ -407,13 +407,6 @@ function LessonWorkspace({
   async function continueLearning() {
     if (!current) return;
     if (current.kind === 'COMPLETE') {
-      if (progress?.lessonProgress.status === 'COMPLETED') {
-        void route(
-          sequence.next?.href ??
-            `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(lesson.module.slug)}`,
-        );
-        return;
-      }
       if (progress?.canComplete) {
         await mutation.mutateAsync(
           `/api/lessons/${encodeURIComponent(lesson.id)}/complete`,
@@ -453,12 +446,15 @@ function LessonWorkspace({
     ? isLessonCompleted && !sequence.next
       ? 'Retour au module'
       : isLessonCompleted
-        ? 'Continuer'
+        ? 'Leçon suivante'
         : 'Terminer la leçon'
     : 'Continuer';
   const isContinueDisabled = isCompletionActivity
     ? !lesson.isPublished || (!isLessonCompleted && !progress?.canComplete)
     : !sequence.next;
+  const completedLessonHref =
+    sequence.next?.href ??
+    `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(lesson.module.slug)}`;
 
   return (
     <article
@@ -551,13 +547,22 @@ function LessonWorkspace({
         <PedagogicalNavigation
           activities={sequence.activities}
           continueActivity={sequence.next}
+          continueHref={
+            isCompletionActivity && isLessonCompleted
+              ? completedLessonHref
+              : undefined
+          }
           continueLabel={continueLabel}
           currentKey={activityKey(current.kind, current.id)}
           isContinueDisabled={isContinueDisabled}
           isContinuePending={mutation.isPending}
           lessonTitle={lesson.title}
           moduleTitle={lesson.module.title}
-          onContinue={() => void continueLearning()}
+          onContinue={
+            isCompletionActivity && isLessonCompleted
+              ? undefined
+              : () => void continueLearning()
+          }
         />
       ) : null}
     </article>
