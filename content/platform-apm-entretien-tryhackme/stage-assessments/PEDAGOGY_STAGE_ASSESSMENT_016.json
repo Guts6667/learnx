@@ -1,0 +1,145 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_016",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "decider-et-dialoguer-technique",
+  "assessment": {
+    "seed": {
+      "title": "Simulation finale — Head of Product",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70,
+      "description": "Simulation d’entretien centrée sur l’exécution, les décisions Platform et la communication.",
+      "instructions": "## Partie 1 — Cas (7 minutes)\nLe taux de lancement réussi de certaines rooms baisse et la latence p95 augmente. Présenter les clarifications, métriques, investigations, options de dé-risquage, arbitrage et plan de communication.\n\n## Partie 2 — Réponses (5 × 75 secondes)\n- Why TryHackMe and this Platform role?\n- How would you define a Platform Squad OKR?\n- What do you do when engineering says an initiative is risky or expensive?\n- How do you run refinement and communicate in a remote team?\n- What infrastructure knowledge do you bring, and where do you rely on engineers?\n\n## Règle\nChaque réponse se termine par une conclusion et contient un exemple concret vécu ou un scénario explicitement hypothétique.",
+      "rubric": [
+        {
+          "criterion": "Cadrage et priorisation",
+          "weight": 25,
+          "requirements": [
+            "Les inconnues majeures sont explicitées.",
+            "La décision tient compte de l’impact, du risque et des dépendances."
+          ]
+        },
+        {
+          "criterion": "Mesure",
+          "weight": 20,
+          "requirements": [
+            "Les métriques sont reliées à l’expérience.",
+            "Les baselines et cibles ne sont pas inventées."
+          ]
+        },
+        {
+          "criterion": "Collaboration technique",
+          "weight": 20,
+          "requirements": [
+            "Les questions adressées à l’ingénierie sont pertinentes.",
+            "Aucune expertise infra fictive n’est revendiquée."
+          ]
+        },
+        {
+          "criterion": "Exécution",
+          "weight": 20,
+          "requirements": [
+            "Le plan est découpé, ordonné et actionnable.",
+            "La prochaine action est claire."
+          ]
+        },
+        {
+          "criterion": "Communication",
+          "weight": 15,
+          "requirements": [
+            "Les réponses sont structurées et concises.",
+            "Chaque réponse se conclut nettement."
+          ]
+        }
+      ]
+    },
+    "description": "Simulation d’entretien centrée sur l’exécution, les décisions Platform et la communication.",
+    "instructions": [
+      "## Partie 1 — Cas (7 minutes)\nLe taux de lancement réussi de certaines rooms baisse et la latence p95 augmente. Présenter les clarifications, métriques, investigations, options de dé-risquage, arbitrage et plan de communication.\n\n## Partie 2 — Réponses (5 × 75 secondes)\n- Why TryHackMe and this Platform role?\n- How would you define a Platform Squad OKR?\n- What do you do when engineering says an initiative is risky or expensive?\n- How do you run refinement and communicate in a remote team?\n- What infrastructure knowledge do you bring, and where do you rely on engineers?\n\n## Règle\nChaque réponse se termine par une conclusion et contient un exemple concret vécu ou un scénario explicitement hypothétique."
+    ],
+    "case": "Le Head of Product demande au candidat de diagnostiquer une dégradation hypothétique du lancement des rooms et de défendre ses décisions.",
+    "estimatedMinutes": 35,
+    "submissionFormat": "Réponses écrites et simulation orale chronométrée.",
+    "conceptSlugs": [
+      "okr-platform-outcome",
+      "priorisation-explicable-incertitude",
+      "dialogue-technique-decision"
+    ],
+    "rubric": [
+      {
+        "criterion": "Cadrage et priorisation",
+        "weight": 25,
+        "requirements": [
+          "Les inconnues majeures sont explicitées.",
+          "La décision tient compte de l’impact, du risque et des dépendances."
+        ]
+      },
+      {
+        "criterion": "Mesure",
+        "weight": 20,
+        "requirements": [
+          "Les métriques sont reliées à l’expérience.",
+          "Les baselines et cibles ne sont pas inventées."
+        ]
+      },
+      {
+        "criterion": "Collaboration technique",
+        "weight": 20,
+        "requirements": [
+          "Les questions adressées à l’ingénierie sont pertinentes.",
+          "Aucune expertise infra fictive n’est revendiquée."
+        ]
+      },
+      {
+        "criterion": "Exécution",
+        "weight": 20,
+        "requirements": [
+          "Le plan est découpé, ordonné et actionnable.",
+          "La prochaine action est claire."
+        ]
+      },
+      {
+        "criterion": "Communication",
+        "weight": 15,
+        "requirements": [
+          "Les réponses sont structurées et concises.",
+          "Chaque réponse se conclut nettement."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les leçons correspondant aux critères sous 70 %, refaire l’exercice, puis enregistrer une nouvelle réponse plus courte et plus concrète."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "createdAt": "2026-08-08",
+    "referenceIds": [
+      "REF-APM-081-01",
+      "REF-APM-081-02",
+      "REF-APM-082-01",
+      "REF-APM-082-02",
+      "REF-APM-083-01",
+      "REF-APM-083-02",
+      "REF-APM-083-03",
+      "REF-APM-083-04"
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "readyForPublication": true,
+      "notes": [
+        "Simulation personnelle ; les informations internes non publiques ne doivent pas être inventées."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création de l’évaluation finale d’étape.",
+        "reviewRequired": "editorial_review"
+      }
+    ]
+  }
+}

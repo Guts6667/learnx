@@ -4,11 +4,56 @@ import {
   SAMPLE_PROGRAM_SEED_TRANSACTION_OPTIONS,
   createSeedProgramRepository,
   readOfficineExpressSeed,
+  readPlatformApmInterviewSeed,
   readSampleProgram,
   readSampleSeed,
   seedSampleProgram,
   type SeedProgramRepository,
 } from './seed';
+
+type PlatformApmSeed = Awaited<ReturnType<typeof readPlatformApmInterviewSeed>>;
+type PlatformApmLesson =
+  PlatformApmSeed['program']['stages'][number]['modules'][number]['lessons'][number];
+
+type PlatformApmLessonSidecar = {
+  editorial: {
+    assessmentBanks: PlatformApmSeed['conceptAssessmentBanks'][number]['assessmentBanks'];
+    contentBlockSources: Array<{
+      contentBlockPosition: number;
+      referenceLinks: Array<{ referenceId: string }>;
+    }>;
+    references: Array<{ id: string }>;
+    resourceChecks: Array<{
+      referenceIds: string[];
+      resourceKey: string;
+    }>;
+    review: {
+      linksAndMedia: boolean;
+      pedagogicalAlignment: boolean;
+      readyForPublication: boolean;
+      seedCompatibility: boolean;
+    };
+  };
+  lesson: PlatformApmLesson;
+  moduleSlug: string;
+  programSlug: string;
+  specId: string;
+  stageSlug: string;
+};
+
+type PlatformApmStageAssessmentSidecar = {
+  assessment: {
+    conceptSlugs: string[];
+    rubric: Array<{ weight: number }>;
+    seed: PlatformApmSeed['program']['stages'][number]['assessment'];
+  };
+  editorial: {
+    review: { readyForPublication: boolean };
+  };
+  programSlug: string;
+  specId: string;
+  stageSlug: string;
+};
 
 describe('seed transaction budget', () => {
   it('keeps enough time to import the complete sample curriculum atomically', () => {
@@ -349,6 +394,201 @@ describe('sample program seed', () => {
     expect(context.exercises).toHaveLength(7);
     expect(context.sequences).toHaveLength(7);
     expect(context.stageAssessments).toHaveLength(1);
+  });
+
+  it('lit et importe le parcours Platform APM complet', async () => {
+    const seed = await readPlatformApmInterviewSeed();
+    const context = createRepository();
+    const modules = seed.program.stages.flatMap((stage) => stage.modules);
+    const lessons = modules.flatMap((module) => module.lessons);
+
+    expect(seed.program).toMatchObject({
+      slug: 'platform-apm-entretien-tryhackme',
+      status: 'active',
+    });
+    expect(seed.program.stages).toHaveLength(2);
+    expect(modules).toHaveLength(5);
+    expect(lessons).toHaveLength(6);
+    expect(lessons.every((lesson) => lesson.concepts.length === 1)).toBe(true);
+    expect(lessons.every((lesson) => lesson.tasks.length === 1)).toBe(true);
+    expect(lessons.every((lesson) => lesson.sequence.length > 0)).toBe(true);
+    expect(seed.conceptAssessmentBanks).toHaveLength(6);
+    expect(
+      seed.conceptAssessmentBanks
+        .flatMap((group) => group.assessmentBanks)
+        .flatMap((bank) => bank.questions),
+    ).toHaveLength(30);
+    expect(
+      seed.program.stages.every(
+        (stage) =>
+          stage.assessment.rubric?.reduce(
+            (total, criterion) => total + criterion.weight,
+            0,
+          ) === 100,
+      ),
+    ).toBe(true);
+
+    await seedSampleProgram(
+      context.repository,
+      'user-1',
+      seed.program,
+      seed.conceptAssessmentBanks,
+    );
+
+    expect(context.programs).toHaveLength(1);
+    expect(context.stages).toHaveLength(2);
+    expect(context.modules).toHaveLength(5);
+    expect(context.lessons).toHaveLength(6);
+    expect(context.concepts).toHaveLength(6);
+    expect(context.assessments).toHaveLength(6);
+    expect(context.assessmentQuestions).toHaveLength(6);
+    expect(context.resources).toHaveLength(12);
+    expect(context.tasks).toHaveLength(0);
+    expect(context.exercises).toHaveLength(6);
+    expect(context.sequences).toHaveLength(6);
+    expect(context.stageAssessments).toHaveLength(2);
+  });
+
+  it('conserve la parité entre les sidecars Platform APM et le bundle seed', async () => {
+    const seed = await readPlatformApmInterviewSeed();
+    const lessonSidecars = await Promise.all(
+      Array.from({ length: 6 }, async (_, index) => {
+        const specNumber = String(index + 78).padStart(3, '0');
+        const source = await readFile(
+          `content/platform-apm-entretien-tryhackme/specs/PEDAGOGY_SPEC_${specNumber}.json`,
+          'utf8',
+        );
+
+        return JSON.parse(source) as PlatformApmLessonSidecar;
+      }),
+    );
+    const assessmentSidecars = await Promise.all(
+      [15, 16].map(async (assessmentNumber) => {
+        const source = await readFile(
+          `content/platform-apm-entretien-tryhackme/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(assessmentNumber).padStart(3, '0')}.json`,
+          'utf8',
+        );
+
+        return JSON.parse(source) as PlatformApmStageAssessmentSidecar;
+      }),
+    );
+
+    for (const sidecar of lessonSidecars) {
+      expect(sidecar.programSlug).toBe(seed.program.slug);
+      const stage = seed.program.stages.find(
+        ({ slug }) => slug === sidecar.stageSlug,
+      );
+      const module = stage?.modules.find(
+        ({ slug }) => slug === sidecar.moduleSlug,
+      );
+      const lesson = module?.lessons.find(
+        ({ slug }) => slug === sidecar.lesson.slug,
+      );
+      const bankGroup = seed.conceptAssessmentBanks.find(
+        (group) =>
+          group.programSlug === sidecar.programSlug &&
+          group.stageSlug === sidecar.stageSlug &&
+          group.moduleSlug === sidecar.moduleSlug &&
+          group.lessonSlug === sidecar.lesson.slug,
+      );
+
+      expect(lesson, `${sidecar.specId}: leçon absente du bundle`).toEqual(
+        sidecar.lesson,
+      );
+      expect(
+        bankGroup?.assessmentBanks,
+        `${sidecar.specId}: banques différentes du bundle`,
+      ).toEqual(sidecar.editorial.assessmentBanks);
+
+      const resourceKeys = new Set(
+        sidecar.lesson.resources.map(({ key }) => key),
+      );
+      const referenceIds = new Set(
+        sidecar.editorial.references.map(({ id }) => id),
+      );
+      const checkedResourceKeys = new Set(
+        sidecar.editorial.resourceChecks.map(({ resourceKey }) => resourceKey),
+      );
+      const sourcedPositions = new Set(
+        sidecar.editorial.contentBlockSources.map(
+          ({ contentBlockPosition }) => contentBlockPosition,
+        ),
+      );
+      const sequenceReferences = new Set(
+        sidecar.lesson.sequence.map(({ key, kind }) => `${kind}:${key}`),
+      );
+
+      expect(checkedResourceKeys).toEqual(resourceKeys);
+      for (const block of sidecar.lesson.contentBlocks) {
+        expect(block.content.sourceKeys.length).toBeGreaterThan(0);
+        expect(sourcedPositions).toContain(block.position);
+        for (const sourceKey of block.content.sourceKeys) {
+          expect(resourceKeys).toContain(sourceKey);
+        }
+      }
+      for (const mapping of sidecar.editorial.contentBlockSources) {
+        expect(mapping.referenceLinks.length).toBeGreaterThan(0);
+        for (const { referenceId } of mapping.referenceLinks) {
+          expect(referenceIds).toContain(referenceId);
+        }
+      }
+      for (const check of sidecar.editorial.resourceChecks) {
+        expect(check.referenceIds.length).toBeGreaterThan(0);
+        for (const referenceId of check.referenceIds) {
+          expect(referenceIds).toContain(referenceId);
+        }
+      }
+      for (const resource of sidecar.lesson.resources.filter(
+        ({ isRequired }) => isRequired,
+      )) {
+        expect(sequenceReferences).toContain(`RESOURCE:${resource.key}`);
+      }
+      for (const concept of sidecar.lesson.concepts.filter(
+        ({ isRequired }) => isRequired,
+      )) {
+        expect(concept.assessment).toBeDefined();
+        expect(
+          sidecar.editorial.assessmentBanks.some(
+            ({ conceptSlug }) => conceptSlug === concept.slug,
+          ),
+        ).toBe(true);
+      }
+      expect(sidecar.editorial.review).toMatchObject({
+        linksAndMedia: true,
+        pedagogicalAlignment: true,
+        readyForPublication: true,
+        seedCompatibility: true,
+      });
+    }
+
+    for (const sidecar of assessmentSidecars) {
+      expect(sidecar.programSlug).toBe(seed.program.slug);
+      const stage = seed.program.stages.find(
+        ({ slug }) => slug === sidecar.stageSlug,
+      );
+      const conceptSlugs = new Set(
+        stage?.modules.flatMap((module) =>
+          module.lessons.flatMap((lesson) =>
+            lesson.concepts.map(({ slug }) => slug),
+          ),
+        ) ?? [],
+      );
+
+      expect(
+        stage?.assessment,
+        `${sidecar.specId}: évaluation finale différente du bundle`,
+      ).toEqual(sidecar.assessment.seed);
+      expect(
+        sidecar.assessment.rubric.reduce(
+          (total, criterion) => total + criterion.weight,
+          0,
+        ),
+      ).toBe(100);
+      for (const conceptSlug of sidecar.assessment.conceptSlugs) {
+        expect(conceptSlugs).toContain(conceptSlug);
+      }
+      expect(sidecar.editorial.review.readyForPublication).toBe(true);
+    }
   });
 
   it('reads the curriculum hierarchy from the example JSON', async () => {

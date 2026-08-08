@@ -644,6 +644,10 @@ export async function readOfficineExpressSeed(): Promise<SampleSeed> {
   return readSeedFile('seed/officine-express-program.json');
 }
 
+export async function readPlatformApmInterviewSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/platform-apm-interview-program.json');
+}
+
 export async function readSampleProgram(): Promise<SampleProgram> {
   return (await readSampleSeed()).program;
 }
@@ -1649,6 +1653,7 @@ async function main() {
     const seeds = await Promise.all([
       readSampleSeed(),
       readOfficineExpressSeed(),
+      readPlatformApmInterviewSeed(),
     ]);
 
     await prisma.$transaction(async (transaction) => {

@@ -1,0 +1,642 @@
+{
+  "specId": "PEDAGOGY_SPEC_083",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "decider-et-dialoguer-technique",
+  "moduleSlug": "culture-technique-entretien",
+  "lesson": {
+    "title": "Dialoguer infrastructure et réussir le cas Head of Product",
+    "slug": "dialoguer-infrastructure-cas-entretien",
+    "summary": "Maîtriser le vocabulaire technique minimal, poser les bonnes questions et structurer une réponse de cas Platform claire et honnête.",
+    "objectives": [
+      "Expliquer simplement dix termes infrastructure.",
+      "Choisir des métriques de fiabilité et de performance pertinentes.",
+      "Présenter un diagnostic et un plan d’action en moins de sept minutes."
+    ],
+    "prerequisites": [
+      "Savoir cadrer, mesurer et prioriser un problème Platform."
+    ],
+    "estimatedMinutes": 45,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-glossary",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "API : contrat d’échange entre logiciels. Cloud : ressources informatiques fournies à la demande. VM : machine isolée avec son propre système virtualisé. Conteneur : paquet d’application et de dépendances partageant le noyau de l’hôte. Load balancer : répartition du trafic. Scaling : adaptation de capacité. Cache : copie rapide d’une donnée coûteuse à recalculer. Authentification : vérification d’identité. Autorisation : vérification des droits. CI/CD : automatisation de build, tests et déploiement.",
+          "sourceKeys": [
+            "aws-iaas",
+            "github-actions"
+          ]
+        }
+      },
+      {
+        "key": "content-metrics",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Pour un parcours de lancement d’environnement, les mesures utiles peuvent inclure le taux de succès, la disponibilité, la latence médiane et p95, le taux d’erreur, le volume d’incidents, le temps moyen de rétablissement et les tickets support. Un SLI est une mesure de service ; un SLO fixe sa cible. Un error budget représente la part d’échec tolérée et aide à arbitrer fiabilité et rythme de changement.",
+          "sourceKeys": [
+            "google-slos"
+          ]
+        }
+      },
+      {
+        "key": "content-case",
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Cas hypothétique : le lancement de certaines rooms devient lent. Une réponse structurée commence par clarifier les utilisateurs, régions, types de rooms et définition de « lent » ; elle cartographie le funnel clic → demande → provisionnement → prêt → première action ; elle vérifie données et incidents ; elle choisit mitigation et investigation ; elle priorise avec l’ingénierie ; elle déploie progressivement et mesure le résultat.",
+          "sourceKeys": [
+            "thm-job-tech",
+            "google-slos"
+          ]
+        }
+      },
+      {
+        "key": "content-honesty",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Formulation crédible : « Mon expérience frontend me permet de dialoguer avec les ingénieurs et de comprendre les dépendances. Sur l’infrastructure profonde, je ne prétends pas choisir seul la solution : je clarifie l’impact, les métriques et les risques, puis je m’appuie sur l’équipe pour évaluer les options et décider du bon compromis. »",
+          "sourceKeys": [
+            "thm-job-tech"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "aws-iaas",
+        "type": "website",
+        "title": "What is Infrastructure as a Service (IaaS)?",
+        "author": "Amazon Web Services",
+        "url": "https://aws.amazon.com/what-is/iaas/",
+        "citation": "Amazon Web Services. (2026). What is Infrastructure as a Service (IaaS)? Consulté le 8 août 2026.",
+        "description": "Parcourir les sections compute, storage et networking ; reformuler VM et load balancing en une phrase.",
+        "guidance": {
+          "objective": "Acquérir le vocabulaire cloud minimal.",
+          "instructions": "Lire les sections How does IaaS work? et types of IaaS resources.",
+          "scope": "Fonctionnement, compute, storage et networking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "github-actions",
+        "type": "website",
+        "title": "Understanding GitHub Actions",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/get-started/understand-github-actions",
+        "citation": "GitHub. (2026). Understanding GitHub Actions. Consulté le 8 août 2026.",
+        "description": "Lire l’overview et expliquer CI/CD, workflow, job et runner sans détail d’implémentation.",
+        "guidance": {
+          "objective": "Comprendre le rôle d’un pipeline CI/CD.",
+          "instructions": "Lire Overview et The components of GitHub Actions.",
+          "scope": "Overview, workflows, jobs et runners",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "google-slos",
+        "type": "book_chapter",
+        "title": "Implementing SLOs",
+        "author": "Steven Thurgood, David Ferguson, Alex Hidalgo et Betsy Beyer",
+        "url": "https://sre.google/workbook/implementing-slos/",
+        "citation": "Thurgood, S., Ferguson, D., Hidalgo, A., & Beyer, B. (2018). Implementing SLOs. The Site Reliability Workbook. Google.",
+        "description": "Lire l’introduction, la définition des SLIs/SLOs et la partie décisionnelle ; retenir le principe, pas les détails SRE.",
+        "guidance": {
+          "objective": "Comprendre comment les objectifs de fiabilité soutiennent une décision produit.",
+          "instructions": "Lire l’introduction, What to Measure et Decision Making Using SLOs and Error Budgets.",
+          "scope": "Introduction, SLIs/SLOs et décision",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "thm-job-tech",
+        "type": "website",
+        "title": "Associate Product Manager (Platform)",
+        "author": "TryHackMe",
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+        "description": "Relire les passages sur infrastructure, architecture, fiabilité, qualité et performance avant la simulation.",
+        "guidance": {
+          "objective": "Ancrer le cas dans le périmètre public du poste.",
+          "instructions": "Relire The Role et Skills & Requirements.",
+          "scope": "Lignes 45 à 78 de l’offre",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 4,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Dialogue technique orienté décision",
+        "slug": "dialogue-technique-decision",
+        "description": "Le Platform APM comprend les concepts et les signaux nécessaires pour cadrer, mesurer et arbitrer, tout en laissant l’expertise de solution aux ingénieurs.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "aws-iaas",
+          "github-actions",
+          "google-slos",
+          "thm-job-tech"
+        ],
+        "assessment": {
+          "key": "assessment-dialogue-technique-decision",
+          "type": "quiz",
+          "title": "Mini-évaluation — Dialogue technique orienté décision",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-case-head-product",
+        "title": "Résoudre le cas du lancement lent",
+        "description": "Préparer puis prononcer une réponse de 5 à 7 minutes : clarifications, hypothèses, funnel, données, mitigation, collaboration engineering, priorisation, rollout, métriques et risques. Terminer par une décision et la prochaine action.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-glossary"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "aws-iaas"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-actions"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-metrics"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "google-slos"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-case"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-case-head-product"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-honesty"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-dialogue-technique-decision"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte francophone, ancien développeur frontend devenu Product Manager, préparant un entretien Platform APM en anglais.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-08",
+    "lastReviewedAt": "2026-08-08",
+    "nextReviewAt": "2026-09-08",
+    "references": [
+      {
+        "id": "REF-APM-083-01",
+        "type": "web_document",
+        "authors": [],
+        "organization": "Amazon Web Services",
+        "title": "What is Infrastructure as a Service (IaaS)?",
+        "year": 2026,
+        "edition": null,
+        "publication": "Amazon Web Services",
+        "doi": null,
+        "url": "https://aws.amazon.com/what-is/iaas/",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      },
+      {
+        "id": "REF-APM-083-02",
+        "type": "web_document",
+        "authors": [],
+        "organization": "GitHub",
+        "title": "Understanding GitHub Actions",
+        "year": 2026,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/get-started/understand-github-actions",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      },
+      {
+        "id": "REF-APM-083-03",
+        "type": "handbook_chapter",
+        "authors": [
+          "Steven Thurgood, David Ferguson, Alex Hidalgo",
+          "Betsy Beyer"
+        ],
+        "organization": "Steven Thurgood, David Ferguson, Alex Hidalgo et Betsy Beyer",
+        "title": "Implementing SLOs",
+        "year": 2026,
+        "edition": null,
+        "publication": "Steven Thurgood, David Ferguson, Alex Hidalgo et Betsy Beyer",
+        "doi": null,
+        "url": "https://sre.google/workbook/implementing-slos/",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      },
+      {
+        "id": "REF-APM-083-04",
+        "type": "web_document",
+        "authors": [],
+        "organization": "TryHackMe",
+        "title": "Associate Product Manager (Platform)",
+        "year": 2026,
+        "edition": null,
+        "publication": "TryHackMe",
+        "doi": null,
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-083-01",
+            "locator": "Fonctionnement, compute, storage et networking",
+            "supports": "Éléments factuels du bloc content-glossary."
+          },
+          {
+            "referenceId": "REF-APM-083-02",
+            "locator": "Overview, workflows, jobs et runners",
+            "supports": "Éléments factuels du bloc content-glossary."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-083-03",
+            "locator": "Introduction, SLIs/SLOs et décision",
+            "supports": "Éléments factuels du bloc content-metrics."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-083-04",
+            "locator": "Lignes 45 à 78 de l’offre",
+            "supports": "Éléments factuels du bloc content-case."
+          },
+          {
+            "referenceId": "REF-APM-083-03",
+            "locator": "Introduction, SLIs/SLOs et décision",
+            "supports": "Éléments factuels du bloc content-case."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-083-04",
+            "locator": "Lignes 45 à 78 de l’offre",
+            "supports": "Éléments factuels du bloc content-honesty."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "aws-iaas",
+        "referenceIds": [
+          "REF-APM-083-01"
+        ],
+        "pedagogicalRationale": "Acquérir le vocabulaire cloud minimal.",
+        "learnerInstructions": "Lire les sections How does IaaS work? et types of IaaS resources.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "github-actions",
+        "referenceIds": [
+          "REF-APM-083-02"
+        ],
+        "pedagogicalRationale": "Comprendre le rôle d’un pipeline CI/CD.",
+        "learnerInstructions": "Lire Overview et The components of GitHub Actions.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "google-slos",
+        "referenceIds": [
+          "REF-APM-083-03"
+        ],
+        "pedagogicalRationale": "Comprendre comment les objectifs de fiabilité soutiennent une décision produit.",
+        "learnerInstructions": "Lire l’introduction, What to Measure et Decision Making Using SLOs and Error Budgets.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "thm-job-tech",
+        "referenceIds": [
+          "REF-APM-083-04"
+        ],
+        "pedagogicalRationale": "Ancrer le cas dans le périmètre public du poste.",
+        "learnerInstructions": "Relire The Role et Skills & Requirements.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "dialogue-technique-decision",
+        "assessmentTitle": "Mini-évaluation — Dialogue technique orienté décision",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle définition décrit une API ?",
+            "explanation": "Une API définit comment des systèmes communiquent.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un contrat permettant à des logiciels d’échanger des requêtes et des réponses.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une machine physique uniquement.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un tableau de roadmap.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Une méthode de priorisation.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle différence simplifiée entre authentification et autorisation est correcte ?",
+            "explanation": "Identité et droits sont deux contrôles distincts.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "L’authentification vérifie qui vous êtes ; l’autorisation vérifie ce que vous pouvez faire.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Elles désignent exactement la même chose.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’autorisation précède toujours l’identité.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’authentification mesure la latence.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que montre la latence p95 ?",
+            "explanation": "Le percentile rend visible l’expérience de la partie lente de la distribution.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Une valeur sous laquelle se situent 95 % des observations.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La moyenne exacte de tous les utilisateurs.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre d’incidents critiques.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le taux de disponibilité annuel.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un error budget aide à arbitrer le rythme de changement et la fiabilité.",
+            "explanation": "Il traduit la tolérance liée au SLO en signal de décision.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle est la meilleure ouverture pour un cas « les rooms sont lentes » ?",
+            "explanation": "Le diagnostic commence par définir le problème et les signaux avant la solution.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Clarifier qui est affecté, où, depuis quand et comment la lenteur est mesurée.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Proposer immédiatement plus de serveurs.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Promettre une réduction de 50 %.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Choisir un fournisseur cloud.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport ciblé, ressource au point d’usage, production concrète, puis mini-évaluation différée.",
+      "cycles": [
+        {
+          "conceptSlug": "dialogue-technique-decision",
+          "contentKeys": [
+            "content-glossary",
+            "content-metrics",
+            "content-case",
+            "content-honesty"
+          ],
+          "resourceKeys": [
+            "aws-iaas",
+            "github-actions",
+            "google-slos",
+            "thm-job-tech"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-case-head-product"
+          },
+          "assessmentKey": "assessment-dialogue-technique-decision",
+          "rationale": "La production oblige à mobiliser la notion dans une situation d’entretien avant sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication personnelle autorisée sans validation scientifique.",
+        "Les scénarios de performance et leurs valeurs sont explicitement hypothétiques.",
+        "Le contenu entraîne le dialogue technique sans attribuer au candidat un rôle d’ingénieur infrastructure."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création du parcours intensif de préparation à l’entretien.",
+        "reviewRequired": "recheck_job_post_before_reuse"
+      }
+    ]
+  }
+}

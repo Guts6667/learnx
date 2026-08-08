@@ -1,0 +1,416 @@
+{
+  "specId": "PEDAGOGY_SPEC_079",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "comprendre-role-et-executer",
+  "moduleSlug": "execution-produit",
+  "lesson": {
+    "title": "Transformer un problème en ticket livrable",
+    "slug": "transformer-probleme-ticket-livrable",
+    "summary": "Passer d’un signal vague à un problème cadré, puis à un ticket Jira testable et assez petit pour être livré.",
+    "objectives": [
+      "Écrire un problem statement fondé sur un impact utilisateur.",
+      "Rédiger une user story et des critères d’acceptation vérifiables.",
+      "Dé-risquer un sujet coûteux par un spike ou un découpage."
+    ],
+    "prerequisites": [
+      "Connaître les responsabilités du Platform APM."
+    ],
+    "estimatedMinutes": 35,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-problem",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un bon cadrage sépare le problème de la solution. Il précise qui est affecté, dans quelle situation, quelle friction est observée, quelles preuves existent et quel résultat doit changer. « Les labs sont trop lents » devient par exemple : « certains apprenants abandonnent entre le clic de lancement et l’environnement prêt ; nous devons mesurer où et pour qui l’attente se dégrade ».",
+          "sourceKeys": [
+            "atlassian-stories"
+          ]
+        }
+      },
+      {
+        "key": "content-ticket",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Une user story exprime un utilisateur, un objectif et une raison. Les critères d’acceptation décrivent ensuite des conditions explicites et vérifiables. Un ticket exploitable ajoute le contexte, le périmètre, les exclusions, les dépendances, les risques, les éléments de mesure et la Definition of Done de l’équipe.",
+          "sourceKeys": [
+            "atlassian-stories"
+          ]
+        }
+      },
+      {
+        "key": "content-derisk",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Si l’effort ou le risque est trop incertain, le bon réflexe est de réduire l’incertitude : lancer un spike limité dans le temps, instrumenter le parcours, isoler une région ou un type d’environnement, découper une mitigation d’une solution structurelle, puis réestimer avec l’équipe.",
+          "sourceKeys": [
+            "atlassian-stories"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "atlassian-stories",
+        "type": "article",
+        "title": "User Stories with Examples and a Template",
+        "author": "Atlassian",
+        "url": "https://www.atlassian.com/agile/project-management/user-stories",
+        "citation": "Atlassian. (2026). User Stories with Examples and a Template. Consulté le 8 août 2026.",
+        "description": "Lire la définition, le format et le rôle des critères d’acceptation ; comparer avec le ticket produit dans l’exercice.",
+        "guidance": {
+          "objective": "Rédiger une user story centrée sur la valeur et testable.",
+          "instructions": "Lire les sections What is a user story? et What is in a user story?",
+          "scope": "Définition, format et critères d’acceptation",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Ticket orienté problème et testable",
+        "slug": "ticket-probleme-testable",
+        "description": "Un ticket utile communique le pourquoi, le périmètre et les conditions observables de réussite sans imposer prématurément une solution.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "atlassian-stories"
+        ],
+        "assessment": {
+          "key": "assessment-ticket-probleme-testable",
+          "type": "quiz",
+          "title": "Mini-évaluation — Ticket orienté problème et testable",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-ticket-labs",
+        "title": "Écrire un ticket sur le lancement des labs",
+        "description": "À partir de « les labs sont trop lents », produire : problème, utilisateurs affectés, preuve manquante, user story, cinq critères d’acceptation, hors périmètre, métrique de succès et une question à l’ingénierie.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-problem"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-ticket"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "atlassian-stories"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-ticket-labs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-derisk"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-ticket-probleme-testable"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte francophone, ancien développeur frontend devenu Product Manager, préparant un entretien Platform APM en anglais.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-08",
+    "lastReviewedAt": "2026-08-08",
+    "nextReviewAt": "2026-09-08",
+    "references": [
+      {
+        "id": "REF-APM-079-01",
+        "type": "web_document",
+        "authors": [],
+        "organization": "Atlassian",
+        "title": "User Stories with Examples and a Template",
+        "year": 2026,
+        "edition": null,
+        "publication": "Atlassian",
+        "doi": null,
+        "url": "https://www.atlassian.com/agile/project-management/user-stories",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-079-01",
+            "locator": "Définition, format et critères d’acceptation",
+            "supports": "Éléments factuels du bloc content-problem."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-079-01",
+            "locator": "Définition, format et critères d’acceptation",
+            "supports": "Éléments factuels du bloc content-ticket."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-079-01",
+            "locator": "Définition, format et critères d’acceptation",
+            "supports": "Éléments factuels du bloc content-derisk."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "atlassian-stories",
+        "referenceIds": [
+          "REF-APM-079-01"
+        ],
+        "pedagogicalRationale": "Rédiger une user story centrée sur la valeur et testable.",
+        "learnerInstructions": "Lire les sections What is a user story? et What is in a user story?",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "ticket-probleme-testable",
+        "assessmentTitle": "Mini-évaluation — Ticket orienté problème et testable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément doit venir avant le choix d’une solution ?",
+            "explanation": "Le cadrage évite de confondre une idée de solution avec le besoin à résoudre.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La définition du problème, des utilisateurs affectés et du résultat attendu.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le nom définitif du composant.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de points du sprint.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le choix d’un fournisseur cloud.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "À quoi servent principalement les critères d’acceptation ?",
+            "explanation": "Ils décrivent les conditions que le résultat doit satisfaire.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "À rendre la réussite explicite et vérifiable.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "À détailler chaque ligne de code.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "À remplacer les tests.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "À calculer automatiquement la priorité.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une user story suffit toujours, même sans contexte, risque ni critère d’acceptation.",
+            "explanation": "Un sujet complexe exige assez de contexte et de critères pour créer une compréhension partagée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "L’effort d’un chantier est très incertain. Quelle action est la plus utile ?",
+            "explanation": "Un spike produit de l’information et permet une meilleure décision.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Proposer un spike limité pour répondre aux inconnues majeures.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Fixer arbitrairement une date.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Augmenter sa priorité.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Masquer l’incertitude dans le ticket.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel critère d’acceptation est le plus testable ?",
+            "explanation": "Un critère testable décrit un comportement ou une mesure observable.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Le taux de lancements réussis est mesuré par région et type d’environnement.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le lancement doit être meilleur.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La plateforme doit être moderne.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Les utilisateurs doivent être contents.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport ciblé, ressource au point d’usage, production concrète, puis mini-évaluation différée.",
+      "cycles": [
+        {
+          "conceptSlug": "ticket-probleme-testable",
+          "contentKeys": [
+            "content-problem",
+            "content-ticket",
+            "content-derisk"
+          ],
+          "resourceKeys": [
+            "atlassian-stories"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-ticket-labs"
+          },
+          "assessmentKey": "assessment-ticket-probleme-testable",
+          "rationale": "La production oblige à mobiliser la notion dans une situation d’entretien avant sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication personnelle autorisée sans validation scientifique.",
+        "Les scénarios de performance et leurs valeurs sont explicitement hypothétiques.",
+        "Le contenu entraîne le dialogue technique sans attribuer au candidat un rôle d’ingénieur infrastructure."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création du parcours intensif de préparation à l’entretien.",
+        "reviewRequired": "recheck_job_post_before_reuse"
+      }
+    ]
+  }
+}

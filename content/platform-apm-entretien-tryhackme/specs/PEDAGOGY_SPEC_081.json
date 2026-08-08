@@ -1,0 +1,480 @@
+{
+  "specId": "PEDAGOGY_SPEC_081",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "decider-et-dialoguer-technique",
+  "moduleSlug": "objectifs-et-mesures",
+  "lesson": {
+    "title": "Écrire des OKRs et choisir les métriques plateforme",
+    "slug": "okrs-metriques-plateforme",
+    "summary": "Distinguer objectif, résultat clé, KPI, output et outcome, puis écrire un OKR Platform mesurable.",
+    "objectives": [
+      "Distinguer OKR et KPI.",
+      "Transformer un output en résultat mesurable.",
+      "Écrire un Objective et trois Key Results adaptés à une Platform Squad."
+    ],
+    "prerequisites": [
+      "Comprendre l’impact indirect d’une Platform Squad."
+    ],
+    "estimatedMinutes": 35,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-okr",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un OKR associe un Objective qualitatif, clair et mobilisateur à des Key Results mesurables qui indiquent si le résultat recherché est atteint. « Migrer le service X » est un output ; « rendre le lancement des environnements plus fiable » décrit mieux l’outcome visé.",
+          "sourceKeys": [
+            "atlassian-okrs"
+          ]
+        }
+      },
+      {
+        "key": "content-kpi",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Un KPI est une mesure suivie dans la durée, par exemple disponibilité, latence p95, taux de lancement réussi, nombre d’incidents ou délai de résolution. Un Key Result fixe un changement attendu sur une période et peut utiliser un KPI : faire passer le taux de réussite de 96 % à 99 %, par exemple.",
+          "sourceKeys": [
+            "atlassian-okrs"
+          ]
+        }
+      },
+      {
+        "key": "content-platform-metrics",
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Exemple hypothétique pour TryHackMe — Objective : rendre le lancement des environnements fiable et prévisible. KR1 : augmenter le taux de lancement réussi de 96 % à 99 %. KR2 : réduire la latence p95 de 120 à 75 secondes. KR3 : réduire de 30 % les tickets support liés au lancement. Les valeurs doivent venir d’une baseline réelle avant adoption.",
+          "sourceKeys": [
+            "atlassian-okrs",
+            "thm-job-okrs"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "atlassian-okrs",
+        "type": "document",
+        "title": "OKRs: goal setting that focuses on outcomes",
+        "author": "Atlassian",
+        "url": "https://wac-cdn.atlassian.com/dam/jcr%3A1e67a709-b003-4932-bda3-2a412436021a/OKRs%20Goal%20Setting%20that%20Focuses%20On%20Outcomes.pdf",
+        "citation": "Atlassian. (2025). OKRs: goal setting that focuses on outcomes.",
+        "description": "Lire la définition de l’Objective et des Key Results, puis vérifier que les KRs de l’exercice mesurent un résultat.",
+        "guidance": {
+          "objective": "Écrire un OKR orienté outcome.",
+          "instructions": "Lire les pages présentant les deux composants d’un OKR et les exemples.",
+          "scope": "Définition et exemples d’OKRs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "thm-job-okrs",
+        "type": "website",
+        "title": "Associate Product Manager (Platform)",
+        "author": "TryHackMe",
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+        "description": "Repérer la responsabilité relative à la définition et à l’exécution des OKRs de la Platform Squad.",
+        "guidance": {
+          "objective": "Relier la méthode OKR à la responsabilité du poste.",
+          "instructions": "Relire la liste des responsabilités.",
+          "scope": "Lignes 49 à 62 de l’offre",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 3,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "OKR Platform orienté outcome",
+        "slug": "okr-platform-outcome",
+        "description": "Un OKR Platform formule un résultat utile et des changements mesurables, avec une baseline et une échéance, plutôt qu’une liste de livrables.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "atlassian-okrs",
+          "thm-job-okrs"
+        ],
+        "assessment": {
+          "key": "assessment-okr-platform-outcome",
+          "type": "quiz",
+          "title": "Mini-évaluation — OKR Platform orienté outcome",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-okr-platform",
+        "title": "Corriger puis écrire un OKR",
+        "description": "Expliquer pourquoi « améliorer l’infrastructure — KR : migrer trois services » est insuffisant. Écrire ensuite un Objective et trois KRs avec baseline, cible, période et lien utilisateur ou squad.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-okr"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "atlassian-okrs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-kpi"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-platform-metrics"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-okr-platform"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-okr-platform-outcome"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte francophone, ancien développeur frontend devenu Product Manager, préparant un entretien Platform APM en anglais.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-08",
+    "lastReviewedAt": "2026-08-08",
+    "nextReviewAt": "2026-09-08",
+    "references": [
+      {
+        "id": "REF-APM-081-01",
+        "type": "official_document",
+        "authors": [],
+        "organization": "Atlassian",
+        "title": "OKRs: goal setting that focuses on outcomes",
+        "year": 2026,
+        "edition": null,
+        "publication": "Atlassian",
+        "doi": null,
+        "url": "https://wac-cdn.atlassian.com/dam/jcr%3A1e67a709-b003-4932-bda3-2a412436021a/OKRs%20Goal%20Setting%20that%20Focuses%20On%20Outcomes.pdf",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      },
+      {
+        "id": "REF-APM-081-02",
+        "type": "web_document",
+        "authors": [],
+        "organization": "TryHackMe",
+        "title": "Associate Product Manager (Platform)",
+        "year": 2026,
+        "edition": null,
+        "publication": "TryHackMe",
+        "doi": null,
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-081-01",
+            "locator": "Définition et exemples d’OKRs",
+            "supports": "Éléments factuels du bloc content-okr."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-081-01",
+            "locator": "Définition et exemples d’OKRs",
+            "supports": "Éléments factuels du bloc content-kpi."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-081-01",
+            "locator": "Définition et exemples d’OKRs",
+            "supports": "Éléments factuels du bloc content-platform-metrics."
+          },
+          {
+            "referenceId": "REF-APM-081-02",
+            "locator": "Lignes 49 à 62 de l’offre",
+            "supports": "Éléments factuels du bloc content-platform-metrics."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "atlassian-okrs",
+        "referenceIds": [
+          "REF-APM-081-01"
+        ],
+        "pedagogicalRationale": "Écrire un OKR orienté outcome.",
+        "learnerInstructions": "Lire les pages présentant les deux composants d’un OKR et les exemples.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "thm-job-okrs",
+        "referenceIds": [
+          "REF-APM-081-02"
+        ],
+        "pedagogicalRationale": "Relier la méthode OKR à la responsabilité du poste.",
+        "learnerInstructions": "Relire la liste des responsabilités.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "okr-platform-outcome",
+        "assessmentTitle": "Mini-évaluation — OKR Platform orienté outcome",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation est un meilleur Objective ?",
+            "explanation": "L’Objective décrit la direction et le résultat recherché, pas une liste de livrables.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Rendre le lancement des environnements fiable et prévisible.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Migrer trois services.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Fermer vingt tickets.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ajouter un dashboard.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément manque à « réduire la latence » pour en faire un KR solide ?",
+            "explanation": "Un KR doit permettre de vérifier objectivement le changement.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Une baseline, une cible, une métrique définie et une période.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un nom de projet.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une couleur de dashboard.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un nombre de développeurs.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un KPI peut servir de mesure à un Key Result.",
+            "explanation": "Le KPI est une mesure suivie ; un KR peut fixer son évolution attendue sur une période.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle métrique représente le mieux la fiabilité d’un lancement ?",
+            "explanation": "La mesure doit refléter le résultat vécu par l’utilisateur.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Le taux de lancements qui atteignent l’état prêt.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le nombre de réunions.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de tickets rédigés.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La taille du backlog.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi faut-il une baseline avant de fixer une cible ?",
+            "explanation": "Une baseline donne du sens au changement attendu.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Pour savoir d’où l’on part et vérifier si la cible est crédible et utile.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour garantir que tout KR sera atteint.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour remplacer l’avis des ingénieurs.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour éviter toute expérimentation.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport ciblé, ressource au point d’usage, production concrète, puis mini-évaluation différée.",
+      "cycles": [
+        {
+          "conceptSlug": "okr-platform-outcome",
+          "contentKeys": [
+            "content-okr",
+            "content-kpi",
+            "content-platform-metrics"
+          ],
+          "resourceKeys": [
+            "atlassian-okrs",
+            "thm-job-okrs"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-okr-platform"
+          },
+          "assessmentKey": "assessment-okr-platform-outcome",
+          "rationale": "La production oblige à mobiliser la notion dans une situation d’entretien avant sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication personnelle autorisée sans validation scientifique.",
+        "Les scénarios de performance et leurs valeurs sont explicitement hypothétiques.",
+        "Le contenu entraîne le dialogue technique sans attribuer au candidat un rôle d’ingénieur infrastructure."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création du parcours intensif de préparation à l’entretien.",
+        "reviewRequired": "recheck_job_post_before_reuse"
+      }
+    ]
+  }
+}

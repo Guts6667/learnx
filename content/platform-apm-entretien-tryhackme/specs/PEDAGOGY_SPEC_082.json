@@ -1,0 +1,480 @@
+{
+  "specId": "PEDAGOGY_SPEC_082",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "decider-et-dialoguer-technique",
+  "moduleSlug": "priorisation-et-risque",
+  "lesson": {
+    "title": "Prioriser avec RICE et le jugement produit",
+    "slug": "prioriser-rice-risque-technique",
+    "summary": "Utiliser un score comme aide à la décision, puis intégrer dépendances, sécurité, fiabilité et incertitude technique.",
+    "objectives": [
+      "Calculer et interpréter un score RICE.",
+      "Expliquer pourquoi un score ne décide pas seul.",
+      "Répondre à un risque engineering par investigation, découpage ou arbitrage de scope."
+    ],
+    "prerequisites": [
+      "Savoir définir un résultat et ses métriques."
+    ],
+    "estimatedMinutes": 35,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-rice",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "RICE compare des initiatives avec quatre facteurs : Reach, Impact, Confidence et Effort. Le score correspond à Reach × Impact × Confidence ÷ Effort. Il rend les hypothèses visibles et aide à comparer, mais sa précision dépend directement de la qualité des estimations.",
+          "sourceKeys": [
+            "intercom-rice"
+          ]
+        }
+      },
+      {
+        "key": "content-limits",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Le classement n’est pas une décision automatique. Une dépendance, une vulnérabilité, une obligation de fiabilité ou un engagement peuvent justifier de traiter un item moins bien classé. L’écart doit être assumé et expliqué.",
+          "sourceKeys": [
+            "intercom-rice"
+          ]
+        }
+      },
+      {
+        "key": "content-engineering-risk",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Quand l’ingénierie dit « c’est risqué ou cher », le PM cherche l’inconnue dominante : faisabilité, migration, dépendance, charge, sécurité ou réversibilité. Il peut demander un spike, une instrumentation, un rollout limité, une mitigation, un découpage vertical ou une réduction de scope. Il ne réduit pas le risque en baissant simplement l’estimation.",
+          "sourceKeys": [
+            "intercom-rice",
+            "intercom-outcomes"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "intercom-rice",
+        "type": "article",
+        "title": "RICE: Simple prioritization for product managers",
+        "author": "Sean McBride — Intercom",
+        "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/",
+        "citation": "McBride, S. (2018). RICE: Simple prioritization for product managers. Intercom.",
+        "description": "Lire la définition des quatre facteurs, la formule et la section sur les limites du classement.",
+        "guidance": {
+          "objective": "Utiliser RICE comme aide explicite à la priorisation.",
+          "instructions": "Lire RICE: Four factors, la formule et How to use RICE scores effectively.",
+          "scope": "Sections sur les facteurs, la formule et les limites",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "intercom-outcomes",
+        "type": "article",
+        "title": "How we focus on delivering outcomes",
+        "author": "Intercom",
+        "url": "https://www.intercom.com/blog/product-principles-deliver-outcomes/",
+        "citation": "Intercom. (2022). Product principles: How we focus on delivering outcomes.",
+        "description": "Lire les anti-patterns et relever pourquoi livrer n’est que le début de la mesure.",
+        "guidance": {
+          "objective": "Relier priorisation, livraison et résultat observé.",
+          "instructions": "Lire l’introduction et la liste des anti-patterns.",
+          "scope": "Introduction et anti-patterns",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 6,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Priorisation explicable sous incertitude",
+        "slug": "priorisation-explicable-incertitude",
+        "description": "Une bonne priorisation combine données, objectifs, effort et confiance avec les contraintes non négociables et le risque technique.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "intercom-rice",
+          "intercom-outcomes"
+        ],
+        "assessment": {
+          "key": "assessment-priorisation-explicable-incertitude",
+          "type": "quiz",
+          "title": "Mini-évaluation — Priorisation explicable sous incertitude",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-arbitrage",
+        "title": "Arbitrer quatre initiatives Platform",
+        "description": "Classer : réduire une latence fréquente, corriger une faiblesse d’authentification, créer un outil interne et rembourser une dette de déploiement. Donner hypothèses RICE, contraintes hors score, incertitudes, décision et première action de dé-risquage.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-rice"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "intercom-rice"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-limits"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-arbitrage"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-engineering-risk"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-priorisation-explicable-incertitude"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte francophone, ancien développeur frontend devenu Product Manager, préparant un entretien Platform APM en anglais.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-08",
+    "lastReviewedAt": "2026-08-08",
+    "nextReviewAt": "2026-09-08",
+    "references": [
+      {
+        "id": "REF-APM-082-01",
+        "type": "web_document",
+        "authors": [],
+        "organization": "Sean McBride — Intercom",
+        "title": "RICE: Simple prioritization for product managers",
+        "year": 2026,
+        "edition": null,
+        "publication": "Sean McBride — Intercom",
+        "doi": null,
+        "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      },
+      {
+        "id": "REF-APM-082-02",
+        "type": "web_document",
+        "authors": [],
+        "organization": "Intercom",
+        "title": "How we focus on delivering outcomes",
+        "year": 2026,
+        "edition": null,
+        "publication": "Intercom",
+        "doi": null,
+        "url": "https://www.intercom.com/blog/product-principles-deliver-outcomes/",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-082-01",
+            "locator": "Sections sur les facteurs, la formule et les limites",
+            "supports": "Éléments factuels du bloc content-rice."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-082-01",
+            "locator": "Sections sur les facteurs, la formule et les limites",
+            "supports": "Éléments factuels du bloc content-limits."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-082-01",
+            "locator": "Sections sur les facteurs, la formule et les limites",
+            "supports": "Éléments factuels du bloc content-engineering-risk."
+          },
+          {
+            "referenceId": "REF-APM-082-02",
+            "locator": "Introduction et anti-patterns",
+            "supports": "Éléments factuels du bloc content-engineering-risk."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "intercom-rice",
+        "referenceIds": [
+          "REF-APM-082-01"
+        ],
+        "pedagogicalRationale": "Utiliser RICE comme aide explicite à la priorisation.",
+        "learnerInstructions": "Lire RICE: Four factors, la formule et How to use RICE scores effectively.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "intercom-outcomes",
+        "referenceIds": [
+          "REF-APM-082-02"
+        ],
+        "pedagogicalRationale": "Relier priorisation, livraison et résultat observé.",
+        "learnerInstructions": "Lire l’introduction et la liste des anti-patterns.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "priorisation-explicable-incertitude",
+        "assessmentTitle": "Mini-évaluation — Priorisation explicable sous incertitude",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que signifie le C de RICE ?",
+            "explanation": "La confiance réduit le poids d’hypothèses peu étayées.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Confidence : la confiance dans les estimations.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Cost : le budget financier.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Complexity : le nombre de systèmes.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Customer : le segment principal.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle est la formule RICE ?",
+            "explanation": "L’effort divise la valeur estimée ; les trois autres facteurs la multiplient.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Reach × Impact × Confidence ÷ Effort.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Reach + Impact + Effort.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Impact ÷ Confidence.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Effort × Reach ÷ Impact.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L’initiative au meilleur score RICE doit toujours passer en premier.",
+            "explanation": "Dépendances, sécurité, engagements et fiabilité peuvent modifier l’ordre.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "L’équipe juge une migration très risquée. Quelle première réponse est la plus constructive ?",
+            "explanation": "La première étape consiste à transformer une incertitude générale en questions vérifiables.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Identifier l’inconnue majeure et proposer un spike limité.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Contester l’estimation.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer les tests.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Promettre la date malgré tout.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel comportement montre un bon jugement produit ?",
+            "explanation": "Le framework rend le raisonnement visible ; il ne remplace pas la responsabilité de décider.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Documenter pourquoi une contrainte de sécurité fait passer un item devant son score.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Modifier les scores jusqu’à obtenir l’ordre souhaité.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Cacher les dépendances.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Présenter RICE comme une preuve scientifique.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport ciblé, ressource au point d’usage, production concrète, puis mini-évaluation différée.",
+      "cycles": [
+        {
+          "conceptSlug": "priorisation-explicable-incertitude",
+          "contentKeys": [
+            "content-rice",
+            "content-limits",
+            "content-engineering-risk"
+          ],
+          "resourceKeys": [
+            "intercom-rice",
+            "intercom-outcomes"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-arbitrage"
+          },
+          "assessmentKey": "assessment-priorisation-explicable-incertitude",
+          "rationale": "La production oblige à mobiliser la notion dans une situation d’entretien avant sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication personnelle autorisée sans validation scientifique.",
+        "Les scénarios de performance et leurs valeurs sont explicitement hypothétiques.",
+        "Le contenu entraîne le dialogue technique sans attribuer au candidat un rôle d’ingénieur infrastructure."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création du parcours intensif de préparation à l’entretien.",
+        "reviewRequired": "recheck_job_post_before_reuse"
+      }
+    ]
+  }
+}

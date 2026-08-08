@@ -49,6 +49,19 @@ Ce programme personnel est un pilote court de reconnaissance médicamenteuse.
 Il ne remplace ni une formation professionnelle ni la validation du
 pharmacien.
 
+## Programme Platform APM — Entretien TryHackMe
+
+- Blueprint :
+  `content/platform-apm-entretien-tryhackme/CURRICULUM_BLUEPRINT.md`
+- Spécifications de leçons :
+  `content/platform-apm-entretien-tryhackme/specs/`
+- Évaluations d'étape :
+  `content/platform-apm-entretien-tryhackme/stage-assessments/`
+- Bundle importé par Prisma : `seed/platform-apm-interview-program.json`
+
+Ce parcours intensif prépare un entretien précis. Les informations relatives au
+poste doivent être revérifiées avant toute réutilisation ultérieure.
+
 ## Archives
 
 - `docs/archive/v1/` : backlog et point d'entrée historique V1.

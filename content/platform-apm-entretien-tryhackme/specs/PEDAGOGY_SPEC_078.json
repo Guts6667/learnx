@@ -1,0 +1,414 @@
+{
+  "specId": "PEDAGOGY_SPEC_078",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "comprendre-role-et-executer",
+  "moduleSlug": "role-platform",
+  "lesson": {
+    "title": "Décoder le rôle de Platform APM chez TryHackMe",
+    "slug": "decoder-role-platform-apm-tryhackme",
+    "summary": "Comprendre qui sert une Platform Squad, ce que TryHackMe attend du poste et comment présenter sa valeur sans prétendre être ingénieur infrastructure.",
+    "objectives": [
+      "Expliquer le rôle d’une Platform Squad en moins de 75 secondes.",
+      "Relier les responsabilités de l’annonce à des résultats observables.",
+      "Distinguer responsabilité produit et expertise technique."
+    ],
+    "prerequisites": [],
+    "estimatedMinutes": 25,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-role",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Chez TryHackMe, la Platform Squad est une équipe orientée ingénierie, responsable de l’infrastructure et de l’architecture globales du produit. Elle soutient les squads visibles des utilisateurs et contribue à la fiabilité, à la qualité et aux performances. Son impact est donc souvent indirect : elle améliore l’expérience finale et la capacité des autres équipes à livrer.",
+          "sourceKeys": [
+            "thm-job"
+          ]
+        }
+      },
+      {
+        "key": "content-responsibilities",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Le poste combine ownership de roadmap et de backlog, collecte des besoins auprès de l’ingénierie et des autres équipes produit, suppression des blocages, cadrage de projets, rédaction de tickets Jira, gestion des sprints, exécution des OKRs et communication du travail de la squad au reste de l’entreprise.",
+          "sourceKeys": [
+            "thm-job"
+          ]
+        }
+      },
+      {
+        "key": "content-posture",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "La posture attendue n’est pas de dicter une architecture. Le Platform APM clarifie le problème, les utilisateurs affectés, l’impact, les contraintes et les critères de réussite ; il s’appuie sur les ingénieurs pour les choix techniques et rend les arbitrages compréhensibles.",
+          "sourceKeys": [
+            "thm-job"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "thm-job",
+        "type": "website",
+        "title": "Associate Product Manager (Platform)",
+        "author": "TryHackMe",
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+        "description": "Relire les sections Role, Responsibilities et Skills, puis relever les attentes formulées avec des verbes d’action.",
+        "guidance": {
+          "objective": "Identifier les attentes exactes du poste.",
+          "instructions": "Lire les sections The Role, responsibilities et Skills & Requirements ; noter cinq verbes d’action.",
+          "scope": "Lignes 39 à 78 de l’offre",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 6,
+        "position": 1
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Impact d’un Platform APM",
+        "slug": "impact-platform-apm",
+        "description": "Le Platform APM transforme des problèmes techniques partagés en priorités, livrables et résultats mesurables pour les squads et les utilisateurs.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "thm-job"
+        ],
+        "assessment": {
+          "key": "assessment-impact-platform-apm",
+          "type": "quiz",
+          "title": "Mini-évaluation — Impact d’un Platform APM",
+          "questionCount": 5
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-pitch-role",
+        "title": "Expliquer le rôle en 75 secondes",
+        "description": "Enregistrer ou prononcer une réponse de 60 à 75 secondes : définition de la Platform Squad, trois responsabilités, impact indirect et manière de collaborer avec l’ingénierie.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-role"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "thm-job"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-responsibilities"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-posture"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-pitch-role"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-impact-platform-apm"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "language": "fr",
+    "audience": "Adulte francophone, ancien développeur frontend devenu Product Manager, préparant un entretien Platform APM en anglais.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-08",
+    "lastReviewedAt": "2026-08-08",
+    "nextReviewAt": "2026-09-08",
+    "references": [
+      {
+        "id": "REF-APM-078-01",
+        "type": "web_document",
+        "authors": [],
+        "organization": "TryHackMe",
+        "title": "Associate Product Manager (Platform)",
+        "year": 2026,
+        "edition": null,
+        "publication": "TryHackMe",
+        "doi": null,
+        "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+        "accessedAt": "2026-08-08",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source ouverte et contrôlée le 8 août 2026 ; les données propres au poste doivent être revérifiées avant un usage ultérieur."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-078-01",
+            "locator": "Lignes 39 à 78 de l’offre",
+            "supports": "Éléments factuels du bloc content-role."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-078-01",
+            "locator": "Lignes 39 à 78 de l’offre",
+            "supports": "Éléments factuels du bloc content-responsibilities."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-APM-078-01",
+            "locator": "Lignes 39 à 78 de l’offre",
+            "supports": "Éléments factuels du bloc content-posture."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source directe de l’employeur, documentation officielle ou publication méthodologique de l’éditeur d’origine.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "thm-job",
+        "referenceIds": [
+          "REF-APM-078-01"
+        ],
+        "pedagogicalRationale": "Identifier les attentes exactes du poste.",
+        "learnerInstructions": "Lire les sections The Role, responsibilities et Skills & Requirements ; noter cinq verbes d’action.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-08",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "impact-platform-apm",
+        "assessmentTitle": "Mini-évaluation — Impact d’un Platform APM",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le rôle central de la Platform Squad décrit dans l’offre ?",
+            "explanation": "L’offre décrit une équipe orientée infrastructure et architecture qui soutient les squads customer-facing.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Soutenir les squads produit tout en améliorant infrastructure, fiabilité, qualité et performance.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Créer seule toutes les fonctionnalités visibles.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Remplacer les responsables engineering.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Produire uniquement la stratégie annuelle.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel exemple correspond le mieux à un impact indirect de plateforme ?",
+            "explanation": "Une amélioration partagée peut accélérer plusieurs expériences et plusieurs squads.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Réduire le temps de lancement des environnements utilisés dans plusieurs parcours.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Changer le texte d’un bouton isolé.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Créer une campagne publicitaire.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Écrire un article de blog sans lien produit.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L’APM doit choisir seul l’architecture technique pour prouver sa légitimité.",
+            "explanation": "Il doit cadrer et prioriser avec l’ingénierie, sans feindre une expertise qu’il n’a pas.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle responsabilité est explicitement mentionnée dans l’offre ?",
+            "explanation": "L’annonce cite le cadrage, les tickets Jira, les sprints et la livraison dans les délais.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Créer les tickets Jira et gérer les sprints.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Administrer la paie.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Diriger seul la cybersécurité interne.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Concevoir tous les écrans sans designer.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle réponse exprime la meilleure posture face à une question infra très profonde ?",
+            "explanation": "Le rôle fait le pont entre produit et ingénierie et rend les décisions explicites.",
+            "acceptedAnswers": [],
+            "position": 5,
+            "options": [
+              {
+                "label": "Clarifier l’impact et les contraintes, puis s’appuyer sur les ingénieurs pour évaluer les options.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Inventer une réponse technique.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter toute discussion technique.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Décider selon la préférence du fondateur sans données.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport ciblé, ressource au point d’usage, production concrète, puis mini-évaluation différée.",
+      "cycles": [
+        {
+          "conceptSlug": "impact-platform-apm",
+          "contentKeys": [
+            "content-role",
+            "content-responsibilities",
+            "content-posture"
+          ],
+          "resourceKeys": [
+            "thm-job"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-pitch-role"
+          },
+          "assessmentKey": "assessment-impact-platform-apm",
+          "rationale": "La production oblige à mobiliser la notion dans une situation d’entretien avant sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": true,
+      "notes": [
+        "Publication personnelle autorisée sans validation scientifique.",
+        "Les scénarios de performance et leurs valeurs sont explicitement hypothétiques.",
+        "Le contenu entraîne le dialogue technique sans attribuer au candidat un rôle d’ingénieur infrastructure."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création du parcours intensif de préparation à l’entretien.",
+        "reviewRequired": "recheck_job_post_before_reuse"
+      }
+    ]
+  }
+}

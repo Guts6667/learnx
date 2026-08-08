@@ -1,0 +1,109 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_015",
+  "schemaVersion": 1,
+  "programSlug": "platform-apm-entretien-tryhackme",
+  "stageSlug": "comprendre-role-et-executer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Exécuter comme Platform APM",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70,
+      "description": "Production courte combinant compréhension du rôle, ticket Jira et communication de sprint.",
+      "instructions": "## Livrables\n1. Une réponse orale de 60 à 75 secondes à « What is the role of a Platform APM at TryHackMe? ».\n2. Un ticket Jira sur un problème hypothétique de lancement de lab : contexte, user story, critères d’acceptation, risques, hors périmètre et métrique.\n3. Un update remote de six lignes maximum.\n\n## Règle\nAncrer chaque choix dans un impact concret et ne pas inventer d’information interne à TryHackMe.",
+      "rubric": [
+        {
+          "criterion": "Compréhension du rôle",
+          "weight": 30,
+          "requirements": [
+            "Le rôle Platform et son impact indirect sont expliqués.",
+            "Les responsabilités de l’offre sont correctement reliées à l’exécution."
+          ]
+        },
+        {
+          "criterion": "Qualité du ticket",
+          "weight": 40,
+          "requirements": [
+            "Le problème est distinct de la solution.",
+            "Les critères sont observables et le périmètre explicite."
+          ]
+        },
+        {
+          "criterion": "Communication",
+          "weight": 30,
+          "requirements": [
+            "La réponse et l’update sont concis.",
+            "La prochaine action et le propriétaire sont identifiables."
+          ]
+        }
+      ]
+    },
+    "description": "Production courte combinant compréhension du rôle, ticket Jira et communication de sprint.",
+    "instructions": [
+      "## Livrables\n1. Une réponse orale de 60 à 75 secondes à « What is the role of a Platform APM at TryHackMe? ».\n2. Un ticket Jira sur un problème hypothétique de lancement de lab : contexte, user story, critères d’acceptation, risques, hors périmètre et métrique.\n3. Un update remote de six lignes maximum.\n\n## Règle\nAncrer chaque choix dans un impact concret et ne pas inventer d’information interne à TryHackMe."
+    ],
+    "case": "Le candidat prépare les artefacts attendus d’un APM dans une squad Platform fictive inspirée du périmètre public de l’offre.",
+    "estimatedMinutes": 30,
+    "submissionFormat": "Réponses écrites et simulation orale chronométrée.",
+    "conceptSlugs": [
+      "impact-platform-apm",
+      "ticket-probleme-testable",
+      "rituels-decision-transparence"
+    ],
+    "rubric": [
+      {
+        "criterion": "Compréhension du rôle",
+        "weight": 30,
+        "requirements": [
+          "Le rôle Platform et son impact indirect sont expliqués.",
+          "Les responsabilités de l’offre sont correctement reliées à l’exécution."
+        ]
+      },
+      {
+        "criterion": "Qualité du ticket",
+        "weight": 40,
+        "requirements": [
+          "Le problème est distinct de la solution.",
+          "Les critères sont observables et le périmètre explicite."
+        ]
+      },
+      {
+        "criterion": "Communication",
+        "weight": 30,
+        "requirements": [
+          "La réponse et l’update sont concis.",
+          "La prochaine action et le propriétaire sont identifiables."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les leçons correspondant aux critères sous 70 %, refaire l’exercice, puis enregistrer une nouvelle réponse plus courte et plus concrète."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "approved",
+    "createdAt": "2026-08-08",
+    "referenceIds": [
+      "REF-APM-078-01",
+      "REF-APM-079-01",
+      "REF-APM-080-01",
+      "REF-APM-080-02"
+    ],
+    "review": {
+      "editorialReviewer": "Codex",
+      "subjectReviewer": null,
+      "readyForPublication": true,
+      "notes": [
+        "Simulation personnelle ; les informations internes non publiques ne doivent pas être inventées."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-08",
+        "author": "Codex",
+        "change": "Création de l’évaluation finale d’étape.",
+        "reviewRequired": "editorial_review"
+      }
+    ]
+  }
+}

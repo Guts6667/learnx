@@ -1,0 +1,1975 @@
+{
+  "program": {
+    "title": "Platform APM — Entretien TryHackMe",
+    "slug": "platform-apm-entretien-tryhackme",
+    "description": "Parcours intensif de préparation à l’entretien Head of Product pour le poste d’Associate Product Manager (Platform) chez TryHackMe. Il privilégie l’exécution, la clarté, le cadrage et le dialogue avec l’ingénierie.",
+    "status": "active",
+    "position": 3,
+    "estimatedDurationDays": 2,
+    "stages": [
+      {
+        "title": "Comprendre le rôle et exécuter",
+        "slug": "comprendre-role-et-executer",
+        "position": 1,
+        "estimatedDurationDays": 1,
+        "assessment": {
+          "title": "Évaluation — Exécuter comme Platform APM",
+          "type": "practical_exercise",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Production courte combinant compréhension du rôle, ticket Jira et communication de sprint.",
+          "instructions": "## Livrables\n1. Une réponse orale de 60 à 75 secondes à « What is the role of a Platform APM at TryHackMe? ».\n2. Un ticket Jira sur un problème hypothétique de lancement de lab : contexte, user story, critères d’acceptation, risques, hors périmètre et métrique.\n3. Un update remote de six lignes maximum.\n\n## Règle\nAncrer chaque choix dans un impact concret et ne pas inventer d’information interne à TryHackMe.",
+          "rubric": [
+            {
+              "criterion": "Compréhension du rôle",
+              "weight": 30,
+              "requirements": [
+                "Le rôle Platform et son impact indirect sont expliqués.",
+                "Les responsabilités de l’offre sont correctement reliées à l’exécution."
+              ]
+            },
+            {
+              "criterion": "Qualité du ticket",
+              "weight": 40,
+              "requirements": [
+                "Le problème est distinct de la solution.",
+                "Les critères sont observables et le périmètre explicite."
+              ]
+            },
+            {
+              "criterion": "Communication",
+              "weight": 30,
+              "requirements": [
+                "La réponse et l’update sont concis.",
+                "La prochaine action et le propriétaire sont identifiables."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Rôle Platform",
+            "slug": "role-platform",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Décoder le rôle de Platform APM chez TryHackMe",
+                "slug": "decoder-role-platform-apm-tryhackme",
+                "summary": "Comprendre qui sert une Platform Squad, ce que TryHackMe attend du poste et comment présenter sa valeur sans prétendre être ingénieur infrastructure.",
+                "objectives": [
+                  "Expliquer le rôle d’une Platform Squad en moins de 75 secondes.",
+                  "Relier les responsabilités de l’annonce à des résultats observables.",
+                  "Distinguer responsabilité produit et expertise technique."
+                ],
+                "prerequisites": [],
+                "estimatedMinutes": 25,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-role",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Chez TryHackMe, la Platform Squad est une équipe orientée ingénierie, responsable de l’infrastructure et de l’architecture globales du produit. Elle soutient les squads visibles des utilisateurs et contribue à la fiabilité, à la qualité et aux performances. Son impact est donc souvent indirect : elle améliore l’expérience finale et la capacité des autres équipes à livrer.",
+                      "sourceKeys": [
+                        "thm-job"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-responsibilities",
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Le poste combine ownership de roadmap et de backlog, collecte des besoins auprès de l’ingénierie et des autres équipes produit, suppression des blocages, cadrage de projets, rédaction de tickets Jira, gestion des sprints, exécution des OKRs et communication du travail de la squad au reste de l’entreprise.",
+                      "sourceKeys": [
+                        "thm-job"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-posture",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "La posture attendue n’est pas de dicter une architecture. Le Platform APM clarifie le problème, les utilisateurs affectés, l’impact, les contraintes et les critères de réussite ; il s’appuie sur les ingénieurs pour les choix techniques et rend les arbitrages compréhensibles.",
+                      "sourceKeys": [
+                        "thm-job"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "thm-job",
+                    "type": "website",
+                    "title": "Associate Product Manager (Platform)",
+                    "author": "TryHackMe",
+                    "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+                    "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+                    "description": "Relire les sections Role, Responsibilities et Skills, puis relever les attentes formulées avec des verbes d’action.",
+                    "guidance": {
+                      "objective": "Identifier les attentes exactes du poste.",
+                      "instructions": "Lire les sections The Role, responsibilities et Skills & Requirements ; noter cinq verbes d’action.",
+                      "scope": "Lignes 39 à 78 de l’offre",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 6,
+                    "position": 1
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Impact d’un Platform APM",
+                    "slug": "impact-platform-apm",
+                    "description": "Le Platform APM transforme des problèmes techniques partagés en priorités, livrables et résultats mesurables pour les squads et les utilisateurs.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "thm-job"
+                    ],
+                    "assessment": {
+                      "key": "assessment-impact-platform-apm",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Impact d’un Platform APM",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-pitch-role",
+                    "title": "Expliquer le rôle en 75 secondes",
+                    "description": "Enregistrer ou prononcer une réponse de 60 à 75 secondes : définition de la Platform Squad, trois responsabilités, impact indirect et manière de collaborer avec l’ingénierie.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-role"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "thm-job"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-responsibilities"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-posture"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-pitch-role"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-impact-platform-apm"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Exécution produit",
+            "slug": "execution-produit",
+            "position": 2,
+            "lessons": [
+              {
+                "title": "Transformer un problème en ticket livrable",
+                "slug": "transformer-probleme-ticket-livrable",
+                "summary": "Passer d’un signal vague à un problème cadré, puis à un ticket Jira testable et assez petit pour être livré.",
+                "objectives": [
+                  "Écrire un problem statement fondé sur un impact utilisateur.",
+                  "Rédiger une user story et des critères d’acceptation vérifiables.",
+                  "Dé-risquer un sujet coûteux par un spike ou un découpage."
+                ],
+                "prerequisites": [
+                  "Connaître les responsabilités du Platform APM."
+                ],
+                "estimatedMinutes": 35,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-problem",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Un bon cadrage sépare le problème de la solution. Il précise qui est affecté, dans quelle situation, quelle friction est observée, quelles preuves existent et quel résultat doit changer. « Les labs sont trop lents » devient par exemple : « certains apprenants abandonnent entre le clic de lancement et l’environnement prêt ; nous devons mesurer où et pour qui l’attente se dégrade ».",
+                      "sourceKeys": [
+                        "atlassian-stories"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-ticket",
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Une user story exprime un utilisateur, un objectif et une raison. Les critères d’acceptation décrivent ensuite des conditions explicites et vérifiables. Un ticket exploitable ajoute le contexte, le périmètre, les exclusions, les dépendances, les risques, les éléments de mesure et la Definition of Done de l’équipe.",
+                      "sourceKeys": [
+                        "atlassian-stories"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-derisk",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Si l’effort ou le risque est trop incertain, le bon réflexe est de réduire l’incertitude : lancer un spike limité dans le temps, instrumenter le parcours, isoler une région ou un type d’environnement, découper une mitigation d’une solution structurelle, puis réestimer avec l’équipe.",
+                      "sourceKeys": [
+                        "atlassian-stories"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "atlassian-stories",
+                    "type": "article",
+                    "title": "User Stories with Examples and a Template",
+                    "author": "Atlassian",
+                    "url": "https://www.atlassian.com/agile/project-management/user-stories",
+                    "citation": "Atlassian. (2026). User Stories with Examples and a Template. Consulté le 8 août 2026.",
+                    "description": "Lire la définition, le format et le rôle des critères d’acceptation ; comparer avec le ticket produit dans l’exercice.",
+                    "guidance": {
+                      "objective": "Rédiger une user story centrée sur la valeur et testable.",
+                      "instructions": "Lire les sections What is a user story? et What is in a user story?",
+                      "scope": "Définition, format et critères d’acceptation",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 8,
+                    "position": 1
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Ticket orienté problème et testable",
+                    "slug": "ticket-probleme-testable",
+                    "description": "Un ticket utile communique le pourquoi, le périmètre et les conditions observables de réussite sans imposer prématurément une solution.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "atlassian-stories"
+                    ],
+                    "assessment": {
+                      "key": "assessment-ticket-probleme-testable",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Ticket orienté problème et testable",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-ticket-labs",
+                    "title": "Écrire un ticket sur le lancement des labs",
+                    "description": "À partir de « les labs sont trop lents », produire : problème, utilisateurs affectés, preuve manquante, user story, cinq critères d’acceptation, hors périmètre, métrique de succès et une question à l’ingénierie.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-problem"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-ticket"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "atlassian-stories"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-ticket-labs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-derisk"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-ticket-probleme-testable"
+                  }
+                ]
+              },
+              {
+                "title": "Faire tourner Scrum et communiquer à distance",
+                "slug": "scrum-communication-remote",
+                "summary": "Comprendre le but des événements Scrum, le rôle opérationnel du PM et les habitudes de communication nécessaires dans une équipe remote.",
+                "objectives": [
+                  "Associer chaque événement Scrum à son but.",
+                  "Préparer un refinement et une review utiles.",
+                  "Écrire une mise à jour asynchrone courte et actionnable."
+                ],
+                "prerequisites": [
+                  "Savoir rédiger un ticket testable."
+                ],
+                "estimatedMinutes": 30,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-events",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le Sprint contient quatre événements formels : Sprint Planning, Daily Scrum, Sprint Review et Sprint Retrospective. Le Planning définit pourquoi le Sprint a de la valeur, ce qui peut être fait et comment commencer. Le Daily Scrum inspecte la progression vers le Sprint Goal. La Review inspecte le résultat avec les parties prenantes. La Retrospective cherche des améliorations de qualité et d’efficacité.",
+                      "sourceKeys": [
+                        "scrum-guide"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-refinement",
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Le refinement n’est pas un événement formel du Scrum Guide : c’est l’activité continue qui décompose et précise les éléments du Product Backlog. Pour ce poste, le PM arrive avec le contexte, l’ordre des priorités, les questions ouvertes et des critères suffisamment clairs ; l’équipe apporte faisabilité, risques et options de découpage.",
+                      "sourceKeys": [
+                        "scrum-guide",
+                        "thm-job-rituals"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-remote",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Dans une organisation remote, une bonne mise à jour tient en quelques lignes : objectif, état, fait nouveau, risque ou décision, prochaine action et propriétaire. La réunion sert aux décisions ou ambiguïtés réelles ; le statut simple peut rester asynchrone.",
+                      "sourceKeys": [
+                        "thm-job-rituals"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "scrum-guide",
+                    "type": "document",
+                    "title": "The Scrum Guide — 2020",
+                    "author": "Ken Schwaber et Jeff Sutherland",
+                    "url": "https://scrumguides.org/download.html",
+                    "citation": "Schwaber, K., & Sutherland, J. (2020). The Scrum Guide. Scrum Guides.",
+                    "description": "Lire les sections Scrum Events et Product Backlog afin de distinguer les buts des événements et le refinement.",
+                    "guidance": {
+                      "objective": "Comprendre les événements Scrum et le refinement.",
+                      "instructions": "Lire Scrum Events, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective et Product Backlog.",
+                      "scope": "Sections Scrum Events et Product Backlog",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 1
+                  },
+                  {
+                    "key": "thm-job-rituals",
+                    "type": "website",
+                    "title": "Associate Product Manager (Platform)",
+                    "author": "TryHackMe",
+                    "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+                    "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+                    "description": "Repérer les attentes relatives aux sprints et à la clarté de communication dans un contexte remote.",
+                    "guidance": {
+                      "objective": "Relier Scrum aux attentes réelles du poste.",
+                      "instructions": "Relire responsabilités et Skills & Requirements.",
+                      "scope": "Lignes 49 à 74 de l’offre",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 4,
+                    "position": 2
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Rituels orientés décision et transparence",
+                    "slug": "rituels-decision-transparence",
+                    "description": "Chaque rituel a un but précis ; le PM prépare le contexte et les décisions sans transformer chaque échange en réunion de statut.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "scrum-guide",
+                      "thm-job-rituals"
+                    ],
+                    "assessment": {
+                      "key": "assessment-rituels-decision-transparence",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Rituels orientés décision et transparence",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-update-remote",
+                    "title": "Écrire un update de sprint",
+                    "description": "Rédiger en 6 lignes maximum un update comprenant : Sprint Goal, progrès, fait nouveau, risque, décision demandée et prochaine action avec propriétaire. Puis indiquer dans quel rituel traiter le risque.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-events"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "scrum-guide"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-refinement"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-remote"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-update-remote"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-rituels-decision-transparence"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Décider et dialoguer technique",
+        "slug": "decider-et-dialoguer-technique",
+        "position": 2,
+        "estimatedDurationDays": 1,
+        "assessment": {
+          "title": "Simulation finale — Head of Product",
+          "type": "simulation",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Simulation d’entretien centrée sur l’exécution, les décisions Platform et la communication.",
+          "instructions": "## Partie 1 — Cas (7 minutes)\nLe taux de lancement réussi de certaines rooms baisse et la latence p95 augmente. Présenter les clarifications, métriques, investigations, options de dé-risquage, arbitrage et plan de communication.\n\n## Partie 2 — Réponses (5 × 75 secondes)\n- Why TryHackMe and this Platform role?\n- How would you define a Platform Squad OKR?\n- What do you do when engineering says an initiative is risky or expensive?\n- How do you run refinement and communicate in a remote team?\n- What infrastructure knowledge do you bring, and where do you rely on engineers?\n\n## Règle\nChaque réponse se termine par une conclusion et contient un exemple concret vécu ou un scénario explicitement hypothétique.",
+          "rubric": [
+            {
+              "criterion": "Cadrage et priorisation",
+              "weight": 25,
+              "requirements": [
+                "Les inconnues majeures sont explicitées.",
+                "La décision tient compte de l’impact, du risque et des dépendances."
+              ]
+            },
+            {
+              "criterion": "Mesure",
+              "weight": 20,
+              "requirements": [
+                "Les métriques sont reliées à l’expérience.",
+                "Les baselines et cibles ne sont pas inventées."
+              ]
+            },
+            {
+              "criterion": "Collaboration technique",
+              "weight": 20,
+              "requirements": [
+                "Les questions adressées à l’ingénierie sont pertinentes.",
+                "Aucune expertise infra fictive n’est revendiquée."
+              ]
+            },
+            {
+              "criterion": "Exécution",
+              "weight": 20,
+              "requirements": [
+                "Le plan est découpé, ordonné et actionnable.",
+                "La prochaine action est claire."
+              ]
+            },
+            {
+              "criterion": "Communication",
+              "weight": 15,
+              "requirements": [
+                "Les réponses sont structurées et concises.",
+                "Chaque réponse se conclut nettement."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Objectifs et mesures",
+            "slug": "objectifs-et-mesures",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Écrire des OKRs et choisir les métriques plateforme",
+                "slug": "okrs-metriques-plateforme",
+                "summary": "Distinguer objectif, résultat clé, KPI, output et outcome, puis écrire un OKR Platform mesurable.",
+                "objectives": [
+                  "Distinguer OKR et KPI.",
+                  "Transformer un output en résultat mesurable.",
+                  "Écrire un Objective et trois Key Results adaptés à une Platform Squad."
+                ],
+                "prerequisites": [
+                  "Comprendre l’impact indirect d’une Platform Squad."
+                ],
+                "estimatedMinutes": 35,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-okr",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Un OKR associe un Objective qualitatif, clair et mobilisateur à des Key Results mesurables qui indiquent si le résultat recherché est atteint. « Migrer le service X » est un output ; « rendre le lancement des environnements plus fiable » décrit mieux l’outcome visé.",
+                      "sourceKeys": [
+                        "atlassian-okrs"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-kpi",
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Un KPI est une mesure suivie dans la durée, par exemple disponibilité, latence p95, taux de lancement réussi, nombre d’incidents ou délai de résolution. Un Key Result fixe un changement attendu sur une période et peut utiliser un KPI : faire passer le taux de réussite de 96 % à 99 %, par exemple.",
+                      "sourceKeys": [
+                        "atlassian-okrs"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-platform-metrics",
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Exemple hypothétique pour TryHackMe — Objective : rendre le lancement des environnements fiable et prévisible. KR1 : augmenter le taux de lancement réussi de 96 % à 99 %. KR2 : réduire la latence p95 de 120 à 75 secondes. KR3 : réduire de 30 % les tickets support liés au lancement. Les valeurs doivent venir d’une baseline réelle avant adoption.",
+                      "sourceKeys": [
+                        "atlassian-okrs",
+                        "thm-job-okrs"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "atlassian-okrs",
+                    "type": "document",
+                    "title": "OKRs: goal setting that focuses on outcomes",
+                    "author": "Atlassian",
+                    "url": "https://wac-cdn.atlassian.com/dam/jcr%3A1e67a709-b003-4932-bda3-2a412436021a/OKRs%20Goal%20Setting%20that%20Focuses%20On%20Outcomes.pdf",
+                    "citation": "Atlassian. (2025). OKRs: goal setting that focuses on outcomes.",
+                    "description": "Lire la définition de l’Objective et des Key Results, puis vérifier que les KRs de l’exercice mesurent un résultat.",
+                    "guidance": {
+                      "objective": "Écrire un OKR orienté outcome.",
+                      "instructions": "Lire les pages présentant les deux composants d’un OKR et les exemples.",
+                      "scope": "Définition et exemples d’OKRs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 10,
+                    "position": 1
+                  },
+                  {
+                    "key": "thm-job-okrs",
+                    "type": "website",
+                    "title": "Associate Product Manager (Platform)",
+                    "author": "TryHackMe",
+                    "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+                    "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+                    "description": "Repérer la responsabilité relative à la définition et à l’exécution des OKRs de la Platform Squad.",
+                    "guidance": {
+                      "objective": "Relier la méthode OKR à la responsabilité du poste.",
+                      "instructions": "Relire la liste des responsabilités.",
+                      "scope": "Lignes 49 à 62 de l’offre",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 3,
+                    "position": 2
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "OKR Platform orienté outcome",
+                    "slug": "okr-platform-outcome",
+                    "description": "Un OKR Platform formule un résultat utile et des changements mesurables, avec une baseline et une échéance, plutôt qu’une liste de livrables.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "atlassian-okrs",
+                      "thm-job-okrs"
+                    ],
+                    "assessment": {
+                      "key": "assessment-okr-platform-outcome",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — OKR Platform orienté outcome",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-okr-platform",
+                    "title": "Corriger puis écrire un OKR",
+                    "description": "Expliquer pourquoi « améliorer l’infrastructure — KR : migrer trois services » est insuffisant. Écrire ensuite un Objective et trois KRs avec baseline, cible, période et lien utilisateur ou squad.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-okr"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "atlassian-okrs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-kpi"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-platform-metrics"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-okr-platform"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-okr-platform-outcome"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Priorisation et risque",
+            "slug": "priorisation-et-risque",
+            "position": 2,
+            "lessons": [
+              {
+                "title": "Prioriser avec RICE et le jugement produit",
+                "slug": "prioriser-rice-risque-technique",
+                "summary": "Utiliser un score comme aide à la décision, puis intégrer dépendances, sécurité, fiabilité et incertitude technique.",
+                "objectives": [
+                  "Calculer et interpréter un score RICE.",
+                  "Expliquer pourquoi un score ne décide pas seul.",
+                  "Répondre à un risque engineering par investigation, découpage ou arbitrage de scope."
+                ],
+                "prerequisites": [
+                  "Savoir définir un résultat et ses métriques."
+                ],
+                "estimatedMinutes": 35,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-rice",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "RICE compare des initiatives avec quatre facteurs : Reach, Impact, Confidence et Effort. Le score correspond à Reach × Impact × Confidence ÷ Effort. Il rend les hypothèses visibles et aide à comparer, mais sa précision dépend directement de la qualité des estimations.",
+                      "sourceKeys": [
+                        "intercom-rice"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-limits",
+                    "type": "callout",
+                    "position": 2,
+                    "content": {
+                      "text": "Le classement n’est pas une décision automatique. Une dépendance, une vulnérabilité, une obligation de fiabilité ou un engagement peuvent justifier de traiter un item moins bien classé. L’écart doit être assumé et expliqué.",
+                      "sourceKeys": [
+                        "intercom-rice"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-engineering-risk",
+                    "type": "rich_text",
+                    "position": 3,
+                    "content": {
+                      "text": "Quand l’ingénierie dit « c’est risqué ou cher », le PM cherche l’inconnue dominante : faisabilité, migration, dépendance, charge, sécurité ou réversibilité. Il peut demander un spike, une instrumentation, un rollout limité, une mitigation, un découpage vertical ou une réduction de scope. Il ne réduit pas le risque en baissant simplement l’estimation.",
+                      "sourceKeys": [
+                        "intercom-rice",
+                        "intercom-outcomes"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "intercom-rice",
+                    "type": "article",
+                    "title": "RICE: Simple prioritization for product managers",
+                    "author": "Sean McBride — Intercom",
+                    "url": "https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/",
+                    "citation": "McBride, S. (2018). RICE: Simple prioritization for product managers. Intercom.",
+                    "description": "Lire la définition des quatre facteurs, la formule et la section sur les limites du classement.",
+                    "guidance": {
+                      "objective": "Utiliser RICE comme aide explicite à la priorisation.",
+                      "instructions": "Lire RICE: Four factors, la formule et How to use RICE scores effectively.",
+                      "scope": "Sections sur les facteurs, la formule et les limites",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 10,
+                    "position": 1
+                  },
+                  {
+                    "key": "intercom-outcomes",
+                    "type": "article",
+                    "title": "How we focus on delivering outcomes",
+                    "author": "Intercom",
+                    "url": "https://www.intercom.com/blog/product-principles-deliver-outcomes/",
+                    "citation": "Intercom. (2022). Product principles: How we focus on delivering outcomes.",
+                    "description": "Lire les anti-patterns et relever pourquoi livrer n’est que le début de la mesure.",
+                    "guidance": {
+                      "objective": "Relier priorisation, livraison et résultat observé.",
+                      "instructions": "Lire l’introduction et la liste des anti-patterns.",
+                      "scope": "Introduction et anti-patterns",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 6,
+                    "position": 2
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Priorisation explicable sous incertitude",
+                    "slug": "priorisation-explicable-incertitude",
+                    "description": "Une bonne priorisation combine données, objectifs, effort et confiance avec les contraintes non négociables et le risque technique.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "intercom-rice",
+                      "intercom-outcomes"
+                    ],
+                    "assessment": {
+                      "key": "assessment-priorisation-explicable-incertitude",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Priorisation explicable sous incertitude",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-arbitrage",
+                    "title": "Arbitrer quatre initiatives Platform",
+                    "description": "Classer : réduire une latence fréquente, corriger une faiblesse d’authentification, créer un outil interne et rembourser une dette de déploiement. Donner hypothèses RICE, contraintes hors score, incertitudes, décision et première action de dé-risquage.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-rice"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "intercom-rice"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-limits"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-arbitrage"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-engineering-risk"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-priorisation-explicable-incertitude"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Culture technique et entretien",
+            "slug": "culture-technique-entretien",
+            "position": 3,
+            "lessons": [
+              {
+                "title": "Dialoguer infrastructure et réussir le cas Head of Product",
+                "slug": "dialoguer-infrastructure-cas-entretien",
+                "summary": "Maîtriser le vocabulaire technique minimal, poser les bonnes questions et structurer une réponse de cas Platform claire et honnête.",
+                "objectives": [
+                  "Expliquer simplement dix termes infrastructure.",
+                  "Choisir des métriques de fiabilité et de performance pertinentes.",
+                  "Présenter un diagnostic et un plan d’action en moins de sept minutes."
+                ],
+                "prerequisites": [
+                  "Savoir cadrer, mesurer et prioriser un problème Platform."
+                ],
+                "estimatedMinutes": 45,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-glossary",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "API : contrat d’échange entre logiciels. Cloud : ressources informatiques fournies à la demande. VM : machine isolée avec son propre système virtualisé. Conteneur : paquet d’application et de dépendances partageant le noyau de l’hôte. Load balancer : répartition du trafic. Scaling : adaptation de capacité. Cache : copie rapide d’une donnée coûteuse à recalculer. Authentification : vérification d’identité. Autorisation : vérification des droits. CI/CD : automatisation de build, tests et déploiement.",
+                      "sourceKeys": [
+                        "aws-iaas",
+                        "github-actions"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-metrics",
+                    "type": "rich_text",
+                    "position": 2,
+                    "content": {
+                      "text": "Pour un parcours de lancement d’environnement, les mesures utiles peuvent inclure le taux de succès, la disponibilité, la latence médiane et p95, le taux d’erreur, le volume d’incidents, le temps moyen de rétablissement et les tickets support. Un SLI est une mesure de service ; un SLO fixe sa cible. Un error budget représente la part d’échec tolérée et aide à arbitrer fiabilité et rythme de changement.",
+                      "sourceKeys": [
+                        "google-slos"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-case",
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Cas hypothétique : le lancement de certaines rooms devient lent. Une réponse structurée commence par clarifier les utilisateurs, régions, types de rooms et définition de « lent » ; elle cartographie le funnel clic → demande → provisionnement → prêt → première action ; elle vérifie données et incidents ; elle choisit mitigation et investigation ; elle priorise avec l’ingénierie ; elle déploie progressivement et mesure le résultat.",
+                      "sourceKeys": [
+                        "thm-job-tech",
+                        "google-slos"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-honesty",
+                    "type": "callout",
+                    "position": 4,
+                    "content": {
+                      "text": "Formulation crédible : « Mon expérience frontend me permet de dialoguer avec les ingénieurs et de comprendre les dépendances. Sur l’infrastructure profonde, je ne prétends pas choisir seul la solution : je clarifie l’impact, les métriques et les risques, puis je m’appuie sur l’équipe pour évaluer les options et décider du bon compromis. »",
+                      "sourceKeys": [
+                        "thm-job-tech"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "aws-iaas",
+                    "type": "website",
+                    "title": "What is Infrastructure as a Service (IaaS)?",
+                    "author": "Amazon Web Services",
+                    "url": "https://aws.amazon.com/what-is/iaas/",
+                    "citation": "Amazon Web Services. (2026). What is Infrastructure as a Service (IaaS)? Consulté le 8 août 2026.",
+                    "description": "Parcourir les sections compute, storage et networking ; reformuler VM et load balancing en une phrase.",
+                    "guidance": {
+                      "objective": "Acquérir le vocabulaire cloud minimal.",
+                      "instructions": "Lire les sections How does IaaS work? et types of IaaS resources.",
+                      "scope": "Fonctionnement, compute, storage et networking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 8,
+                    "position": 1
+                  },
+                  {
+                    "key": "github-actions",
+                    "type": "website",
+                    "title": "Understanding GitHub Actions",
+                    "author": "GitHub",
+                    "url": "https://docs.github.com/en/actions/get-started/understand-github-actions",
+                    "citation": "GitHub. (2026). Understanding GitHub Actions. Consulté le 8 août 2026.",
+                    "description": "Lire l’overview et expliquer CI/CD, workflow, job et runner sans détail d’implémentation.",
+                    "guidance": {
+                      "objective": "Comprendre le rôle d’un pipeline CI/CD.",
+                      "instructions": "Lire Overview et The components of GitHub Actions.",
+                      "scope": "Overview, workflows, jobs et runners",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 7,
+                    "position": 2
+                  },
+                  {
+                    "key": "google-slos",
+                    "type": "book_chapter",
+                    "title": "Implementing SLOs",
+                    "author": "Steven Thurgood, David Ferguson, Alex Hidalgo et Betsy Beyer",
+                    "url": "https://sre.google/workbook/implementing-slos/",
+                    "citation": "Thurgood, S., Ferguson, D., Hidalgo, A., & Beyer, B. (2018). Implementing SLOs. The Site Reliability Workbook. Google.",
+                    "description": "Lire l’introduction, la définition des SLIs/SLOs et la partie décisionnelle ; retenir le principe, pas les détails SRE.",
+                    "guidance": {
+                      "objective": "Comprendre comment les objectifs de fiabilité soutiennent une décision produit.",
+                      "instructions": "Lire l’introduction, What to Measure et Decision Making Using SLOs and Error Budgets.",
+                      "scope": "Introduction, SLIs/SLOs et décision",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 3
+                  },
+                  {
+                    "key": "thm-job-tech",
+                    "type": "website",
+                    "title": "Associate Product Manager (Platform)",
+                    "author": "TryHackMe",
+                    "url": "https://careers.tryhackme.com/jobs/7977304-associate-product-manager-platform",
+                    "citation": "TryHackMe. (2026). Associate Product Manager (Platform). Consulté le 8 août 2026.",
+                    "description": "Relire les passages sur infrastructure, architecture, fiabilité, qualité et performance avant la simulation.",
+                    "guidance": {
+                      "objective": "Ancrer le cas dans le périmètre public du poste.",
+                      "instructions": "Relire The Role et Skills & Requirements.",
+                      "scope": "Lignes 45 à 78 de l’offre",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page web structurée consultable sur ordinateur et mobile.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": false,
+                    "estimatedMinutes": 4,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Dialogue technique orienté décision",
+                    "slug": "dialogue-technique-decision",
+                    "description": "Le Platform APM comprend les concepts et les signaux nécessaires pour cadrer, mesurer et arbitrer, tout en laissant l’expertise de solution aux ingénieurs.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "aws-iaas",
+                      "github-actions",
+                      "google-slos",
+                      "thm-job-tech"
+                    ],
+                    "assessment": {
+                      "key": "assessment-dialogue-technique-decision",
+                      "type": "quiz",
+                      "title": "Mini-évaluation — Dialogue technique orienté décision",
+                      "questionCount": 5
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "practice-case-head-product",
+                    "title": "Résoudre le cas du lancement lent",
+                    "description": "Préparer puis prononcer une réponse de 5 à 7 minutes : clarifications, hypothèses, funnel, données, mitigation, collaboration engineering, priorisation, rollout, métriques et risques. Terminer par une décision et la prochaine action.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-glossary"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "aws-iaas"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "github-actions"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-metrics"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "google-slos"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-case"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "practice-case-head-product"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-honesty"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-dialogue-technique-decision"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "conceptAssessmentBanks": [
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "comprendre-role-et-executer",
+      "moduleSlug": "role-platform",
+      "lessonSlug": "decoder-role-platform-apm-tryhackme",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "impact-platform-apm",
+          "assessmentTitle": "Mini-évaluation — Impact d’un Platform APM",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel est le rôle central de la Platform Squad décrit dans l’offre ?",
+              "explanation": "L’offre décrit une équipe orientée infrastructure et architecture qui soutient les squads customer-facing.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Soutenir les squads produit tout en améliorant infrastructure, fiabilité, qualité et performance.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Créer seule toutes les fonctionnalités visibles.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Remplacer les responsables engineering.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Produire uniquement la stratégie annuelle.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel exemple correspond le mieux à un impact indirect de plateforme ?",
+              "explanation": "Une amélioration partagée peut accélérer plusieurs expériences et plusieurs squads.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Réduire le temps de lancement des environnements utilisés dans plusieurs parcours.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Changer le texte d’un bouton isolé.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Créer une campagne publicitaire.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Écrire un article de blog sans lien produit.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L’APM doit choisir seul l’architecture technique pour prouver sa légitimité.",
+              "explanation": "Il doit cadrer et prioriser avec l’ingénierie, sans feindre une expertise qu’il n’a pas.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle responsabilité est explicitement mentionnée dans l’offre ?",
+              "explanation": "L’annonce cite le cadrage, les tickets Jira, les sprints et la livraison dans les délais.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Créer les tickets Jira et gérer les sprints.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Administrer la paie.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Diriger seul la cybersécurité interne.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Concevoir tous les écrans sans designer.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle réponse exprime la meilleure posture face à une question infra très profonde ?",
+              "explanation": "Le rôle fait le pont entre produit et ingénierie et rend les décisions explicites.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Clarifier l’impact et les contraintes, puis s’appuyer sur les ingénieurs pour évaluer les options.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Inventer une réponse technique.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Éviter toute discussion technique.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Décider selon la préférence du fondateur sans données.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "comprendre-role-et-executer",
+      "moduleSlug": "execution-produit",
+      "lessonSlug": "transformer-probleme-ticket-livrable",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "ticket-probleme-testable",
+          "assessmentTitle": "Mini-évaluation — Ticket orienté problème et testable",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel élément doit venir avant le choix d’une solution ?",
+              "explanation": "Le cadrage évite de confondre une idée de solution avec le besoin à résoudre.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "La définition du problème, des utilisateurs affectés et du résultat attendu.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le nom définitif du composant.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le nombre de points du sprint.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le choix d’un fournisseur cloud.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "À quoi servent principalement les critères d’acceptation ?",
+              "explanation": "Ils décrivent les conditions que le résultat doit satisfaire.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "À rendre la réussite explicite et vérifiable.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "À détailler chaque ligne de code.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "À remplacer les tests.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "À calculer automatiquement la priorité.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une user story suffit toujours, même sans contexte, risque ni critère d’acceptation.",
+              "explanation": "Un sujet complexe exige assez de contexte et de critères pour créer une compréhension partagée.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "L’effort d’un chantier est très incertain. Quelle action est la plus utile ?",
+              "explanation": "Un spike produit de l’information et permet une meilleure décision.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Proposer un spike limité pour répondre aux inconnues majeures.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Fixer arbitrairement une date.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Augmenter sa priorité.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Masquer l’incertitude dans le ticket.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel critère d’acceptation est le plus testable ?",
+              "explanation": "Un critère testable décrit un comportement ou une mesure observable.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Le taux de lancements réussis est mesuré par région et type d’environnement.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le lancement doit être meilleur.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La plateforme doit être moderne.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Les utilisateurs doivent être contents.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "comprendre-role-et-executer",
+      "moduleSlug": "execution-produit",
+      "lessonSlug": "scrum-communication-remote",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "rituels-decision-transparence",
+          "assessmentTitle": "Mini-évaluation — Rituels orientés décision et transparence",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel est le but principal de la Sprint Review ?",
+              "explanation": "La Review porte sur le résultat et les adaptations possibles.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Inspecter le résultat du Sprint avec les parties prenantes et adapter la suite.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Évaluer individuellement les développeurs.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Estimer tous les tickets futurs.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Résoudre chaque détail technique.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel événement cherche explicitement à améliorer qualité et efficacité ?",
+              "explanation": "La rétrospective inspecte les manières de travailler et choisit des améliorations.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "La Sprint Retrospective.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le Daily Scrum.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La Sprint Review.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le Sprint Planning.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Le backlog refinement est l’un des quatre événements formels du Sprint.",
+              "explanation": "Le Scrum Guide le décrit comme une activité continue, pas comme un événement formel.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel contenu convient le mieux à un update remote ?",
+              "explanation": "Une mise à jour utile permet aux lecteurs de comprendre et d’agir rapidement.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "État, changement, risque, décision requise, prochaine action et propriétaire.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Un long journal chronologique.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Uniquement « tout va bien ».",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Des détails techniques sans impact.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Un ticket important est trop gros pendant le refinement. Que fait le PM ?",
+              "explanation": "Le PM apporte priorité et contexte ; l’équipe contribue sur faisabilité et découpage.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Il clarifie le résultat minimal et demande à l’équipe des options de découpage.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Il impose une estimation.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Il le place quand même dans le Sprint.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Il annule le refinement.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "decider-et-dialoguer-technique",
+      "moduleSlug": "objectifs-et-mesures",
+      "lessonSlug": "okrs-metriques-plateforme",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "okr-platform-outcome",
+          "assessmentTitle": "Mini-évaluation — OKR Platform orienté outcome",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle formulation est un meilleur Objective ?",
+              "explanation": "L’Objective décrit la direction et le résultat recherché, pas une liste de livrables.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Rendre le lancement des environnements fiable et prévisible.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Migrer trois services.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Fermer vingt tickets.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Ajouter un dashboard.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel élément manque à « réduire la latence » pour en faire un KR solide ?",
+              "explanation": "Un KR doit permettre de vérifier objectivement le changement.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Une baseline, une cible, une métrique définie et une période.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Un nom de projet.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Une couleur de dashboard.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Un nombre de développeurs.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un KPI peut servir de mesure à un Key Result.",
+              "explanation": "Le KPI est une mesure suivie ; un KR peut fixer son évolution attendue sur une période.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle métrique représente le mieux la fiabilité d’un lancement ?",
+              "explanation": "La mesure doit refléter le résultat vécu par l’utilisateur.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Le taux de lancements qui atteignent l’état prêt.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le nombre de réunions.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le nombre de tickets rédigés.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La taille du backlog.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi faut-il une baseline avant de fixer une cible ?",
+              "explanation": "Une baseline donne du sens au changement attendu.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Pour savoir d’où l’on part et vérifier si la cible est crédible et utile.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Pour garantir que tout KR sera atteint.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Pour remplacer l’avis des ingénieurs.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Pour éviter toute expérimentation.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "decider-et-dialoguer-technique",
+      "moduleSlug": "priorisation-et-risque",
+      "lessonSlug": "prioriser-rice-risque-technique",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "priorisation-explicable-incertitude",
+          "assessmentTitle": "Mini-évaluation — Priorisation explicable sous incertitude",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que signifie le C de RICE ?",
+              "explanation": "La confiance réduit le poids d’hypothèses peu étayées.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Confidence : la confiance dans les estimations.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Cost : le budget financier.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Complexity : le nombre de systèmes.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Customer : le segment principal.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle est la formule RICE ?",
+              "explanation": "L’effort divise la valeur estimée ; les trois autres facteurs la multiplient.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "Reach × Impact × Confidence ÷ Effort.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Reach + Impact + Effort.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Impact ÷ Confidence.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Effort × Reach ÷ Impact.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "L’initiative au meilleur score RICE doit toujours passer en premier.",
+              "explanation": "Dépendances, sécurité, engagements et fiabilité peuvent modifier l’ordre.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "L’équipe juge une migration très risquée. Quelle première réponse est la plus constructive ?",
+              "explanation": "La première étape consiste à transformer une incertitude générale en questions vérifiables.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Identifier l’inconnue majeure et proposer un spike limité.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Contester l’estimation.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Supprimer les tests.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Promettre la date malgré tout.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quel comportement montre un bon jugement produit ?",
+              "explanation": "Le framework rend le raisonnement visible ; il ne remplace pas la responsabilité de décider.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Documenter pourquoi une contrainte de sécurité fait passer un item devant son score.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Modifier les scores jusqu’à obtenir l’ordre souhaité.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Cacher les dépendances.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Présenter RICE comme une preuve scientifique.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "platform-apm-entretien-tryhackme",
+      "stageSlug": "decider-et-dialoguer-technique",
+      "moduleSlug": "culture-technique-entretien",
+      "lessonSlug": "dialoguer-infrastructure-cas-entretien",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "dialogue-technique-decision",
+          "assessmentTitle": "Mini-évaluation — Dialogue technique orienté décision",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle définition décrit une API ?",
+              "explanation": "Une API définit comment des systèmes communiquent.",
+              "acceptedAnswers": [],
+              "position": 1,
+              "options": [
+                {
+                  "label": "Un contrat permettant à des logiciels d’échanger des requêtes et des réponses.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Une machine physique uniquement.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Un tableau de roadmap.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Une méthode de priorisation.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle différence simplifiée entre authentification et autorisation est correcte ?",
+              "explanation": "Identité et droits sont deux contrôles distincts.",
+              "acceptedAnswers": [],
+              "position": 2,
+              "options": [
+                {
+                  "label": "L’authentification vérifie qui vous êtes ; l’autorisation vérifie ce que vous pouvez faire.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Elles désignent exactement la même chose.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "L’autorisation précède toujours l’identité.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "L’authentification mesure la latence.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Que montre la latence p95 ?",
+              "explanation": "Le percentile rend visible l’expérience de la partie lente de la distribution.",
+              "acceptedAnswers": [],
+              "position": 3,
+              "options": [
+                {
+                  "label": "Une valeur sous laquelle se situent 95 % des observations.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "La moyenne exacte de tous les utilisateurs.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Le nombre d’incidents critiques.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le taux de disponibilité annuel.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un error budget aide à arbitrer le rythme de changement et la fiabilité.",
+              "explanation": "Il traduit la tolérance liée au SLO en signal de décision.",
+              "acceptedAnswers": [],
+              "position": 4,
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ]
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Quelle est la meilleure ouverture pour un cas « les rooms sont lentes » ?",
+              "explanation": "Le diagnostic commence par définir le problème et les signaux avant la solution.",
+              "acceptedAnswers": [],
+              "position": 5,
+              "options": [
+                {
+                  "label": "Clarifier qui est affecté, où, depuis quand et comment la lenteur est mesurée.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Proposer immédiatement plus de serveurs.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Promettre une réduction de 50 %.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Choisir un fournisseur cloud.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
