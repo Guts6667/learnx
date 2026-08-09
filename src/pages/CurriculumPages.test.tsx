@@ -33,6 +33,41 @@ describe('CurriculumPages', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn((path: string) => {
+        if (path === '/api/programs?preview=true') {
+          return Promise.resolve(
+            jsonResponse({
+              programs: [
+                {
+                  description: 'Préparer un entretien produit.',
+                  estimatedDurationDays: 2,
+                  id: 'program-owned',
+                  slug: 'platform-apm',
+                  stages: [
+                    {
+                      id: 'stage-owned',
+                      isPublished: false,
+                      position: 1,
+                      slug: 'preparation',
+                      title: 'Préparation',
+                    },
+                  ],
+                  status: 'ACTIVE',
+                  timeline: {
+                    actualPercent: 0,
+                    completedAt: null,
+                    expectedPercent: 0,
+                    progressDelta: 0,
+                    startedAt: null,
+                    targetEndAt: null,
+                    temporalStatus: null,
+                  },
+                  title: 'Platform APM',
+                  visibility: 'PRIVATE',
+                },
+              ],
+            }),
+          );
+        }
         if (path.startsWith('/api/catalog/programs?')) {
           return Promise.resolve(
             jsonResponse({
@@ -104,6 +139,14 @@ describe('CurriculumPages', () => {
       await screen.findByRole('heading', { level: 2, name: 'Les bases' }),
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('heading', { level: 2, name: 'Platform APM' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Propriétaire')).toBeInTheDocument();
+    expect(screen.getByText('Privé')).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Prévisualiser le programme' }),
+    ).toHaveAttribute('href', '/program/platform-apm');
+    expect(
       screen.getByRole('progressbar', { name: 'Progression — 35 %' }),
     ).toHaveAttribute('aria-valuenow', '35');
     expect(
@@ -125,6 +168,9 @@ describe('CurriculumPages', () => {
   it('confirme l’inscription côté serveur avant de mettre à jour le catalogue', async () => {
     let isEnrolled = false;
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/programs?preview=true') {
+        return Promise.resolve(jsonResponse({ programs: [] }));
+      }
       if (init?.method === 'POST') {
         isEnrolled = true;
         return Promise.resolve(jsonResponse({ enrollment: { id: 'new' } }));
@@ -184,6 +230,9 @@ describe('CurriculumPages', () => {
 
   it('normalise la recherche et charge la page suivante sans doublon', async () => {
     const fetchMock = vi.fn((path: string) => {
+      if (path === '/api/programs?preview=true') {
+        return Promise.resolve(jsonResponse({ programs: [] }));
+      }
       if (path.startsWith('/api/me/programs?')) {
         return Promise.resolve(jsonResponse({ items: [], nextCursor: null }));
       }
@@ -241,6 +290,9 @@ describe('CurriculumPages', () => {
   it('demande confirmation avant la désinscription et conserve un retour explicite', async () => {
     let isActive = true;
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/programs?preview=true') {
+        return Promise.resolve(jsonResponse({ programs: [] }));
+      }
       if (init?.method === 'DELETE') {
         isActive = false;
         return Promise.resolve(jsonResponse({ enrollment: { id: 'enrollment' } }));
@@ -323,9 +375,9 @@ describe('CurriculumPages', () => {
     onlineSpy.mockRestore();
   });
 
-  it('n’utilise la prévisualisation brouillon qu’après un refus de la lecture normale', async () => {
+  it('préfère la prévisualisation propriétaire puis replie vers la lecture normale', async () => {
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/programs/brouillon') {
+      if (path === '/api/programs/public?preview=true') {
         return Promise.resolve(
           new Response(
             JSON.stringify({
@@ -344,11 +396,11 @@ describe('CurriculumPages', () => {
       return Promise.resolve(
         jsonResponse({
           program: {
-            description: 'Prévisualisation propriétaire.',
-            id: 'draft-program',
-            slug: 'brouillon',
+            description: 'Programme accessible.',
+            id: 'program',
+            slug: path.includes('brouillon') ? 'brouillon' : 'public',
             stages: [],
-            status: 'DRAFT',
+            status: path.includes('brouillon') ? 'DRAFT' : 'ACTIVE',
             timeline: {
               actualPercent: 0,
               completedAt: null,
@@ -358,7 +410,10 @@ describe('CurriculumPages', () => {
               targetEndAt: null,
               temporalStatus: null,
             },
-            title: 'Programme brouillon',
+            title: path.includes('brouillon')
+              ? 'Programme brouillon'
+              : 'Programme public',
+            visibility: path.includes('brouillon') ? 'PRIVATE' : 'PUBLIC',
             viewPreference: { expandedStageId: null },
           },
         }),
@@ -372,9 +427,17 @@ describe('CurriculumPages', () => {
       await screen.findByRole('heading', { name: 'Programme brouillon' }),
     ).toBeInTheDocument();
     expect(fetchMock.mock.calls.map(([path]) => path)).toEqual([
-      '/api/programs/brouillon',
       '/api/programs/brouillon?preview=true',
     ]);
+
+    renderPage(<ProgramPage programSlug="public" />);
+
+    expect(
+      await screen.findByRole('heading', { name: 'Programme public' }),
+    ).toBeInTheDocument();
+    expect(fetchMock.mock.calls.map(([path]) => path)).toContain(
+      '/api/programs/public',
+    );
   });
 
   it('n’ouvre qu’une étape et mémorise le choix sans naviguer', async () => {
@@ -635,7 +698,7 @@ describe('CurriculumPages', () => {
       title: 'Premiers pas',
     };
     const fetchMock = vi.fn((path: string) => {
-      if (path === '/api/programs/bases') {
+      if (path === '/api/programs/bases?preview=true') {
         return Promise.resolve(
           jsonResponse({
             program: {
@@ -668,6 +731,7 @@ describe('CurriculumPages', () => {
                 temporalStatus: 'ahead',
               },
               title: 'Les bases',
+              visibility: 'PRIVATE',
               viewPreference: { expandedStageId: 'stage-1' },
             },
           }),

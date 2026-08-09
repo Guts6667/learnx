@@ -19,6 +19,7 @@ export interface ProgramSummary {
   status: 'ACTIVE' | 'DRAFT';
   timeline: TimelineSnapshot;
   title: string;
+  visibility: 'PRIVATE' | 'PUBLIC';
 }
 
 export type TemporalStatus =
@@ -324,7 +325,7 @@ function useCurriculumQuery<T>(
   queryKey: readonly string[],
   path: string,
   enabled = true,
-  allowOwnerPreview = false,
+  ownerPreviewMode: 'fallback' | 'prefer' | undefined = undefined,
 ) {
   const queryClient = useAppQueryClient();
   const queryKeyHash = queryKey.join(':');
@@ -334,23 +335,28 @@ function useCurriculumQuery<T>(
         enabled,
         queryKey,
         queryFn: async () => {
+          const separator = path.includes('?') ? '&' : '?';
+          const previewPath = `${path}${separator}preview=true`;
+          const primaryPath =
+            ownerPreviewMode === 'prefer' ? previewPath : path;
+          const fallbackPath =
+            ownerPreviewMode === 'prefer' ? path : previewPath;
           try {
-            return await apiRequest<T>(path);
+            return await apiRequest<T>(primaryPath);
           } catch (error) {
             if (
-              !allowOwnerPreview ||
+              !ownerPreviewMode ||
               !(error instanceof ApiClientError) ||
               error.status !== 404
             ) {
               throw error;
             }
-            const separator = path.includes('?') ? '&' : '?';
-            return apiRequest<T>(`${path}${separator}preview=true`);
+            return apiRequest<T>(fallbackPath);
           }
         },
         staleTime: 0,
       }),
-    [allowOwnerPreview, enabled, path, queryClient, queryKeyHash],
+    [enabled, ownerPreviewMode, path, queryClient, queryKeyHash],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
 
@@ -363,17 +369,23 @@ function useCurriculumQuery<T>(
     return unsubscribe;
   }, [observer]);
 
+  const reload = useCallback(async () => {
+    await observer.refetch();
+  }, [observer]);
+
   return {
     data: result.data,
     error: result.error,
     isPending: enabled && result.isPending,
+    reload,
   };
 }
 
-export function useProgramsQuery() {
+export function useProgramsQuery(enabled = true) {
   return useCurriculumQuery<{ programs: ProgramSummary[] }>(
     ['programs', 'preview'],
     '/api/programs?preview=true',
+    enabled,
   );
 }
 
@@ -382,7 +394,7 @@ export function useProgramQuery(programSlug: string) {
     ['program', programSlug, 'accessible'],
     `/api/programs/${encodeURIComponent(programSlug)}`,
     true,
-    true,
+    'prefer',
   );
 }
 
@@ -450,7 +462,7 @@ export function useStageQuery(programSlug: string, stageSlug: string) {
     ['stage', programSlug, stageSlug, 'accessible'],
     `/api/programs/${encodeURIComponent(programSlug)}/stages/${encodeURIComponent(stageSlug)}`,
     true,
-    true,
+    'fallback',
   );
 }
 
@@ -459,7 +471,7 @@ export function useModuleQuery(moduleSlug: string) {
     ['module', moduleSlug, 'accessible'],
     `/api/modules/${encodeURIComponent(moduleSlug)}`,
     true,
-    true,
+    'fallback',
   );
 }
 
@@ -525,7 +537,7 @@ export function useLessonQuery(lessonSlug: string) {
     ['lesson', lessonSlug, 'accessible'],
     `/api/lessons/${encodeURIComponent(lessonSlug)}`,
     true,
-    true,
+    'fallback',
   );
 }
 

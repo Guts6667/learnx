@@ -22,11 +22,13 @@ import {
 } from '@/features/programs/queries';
 import {
   type LessonSummary,
+  type ProgramSummary,
   type StageSummary,
   type StageValidation,
   useModuleQuery,
   useModuleRestart,
   useProgramQuery,
+  useProgramsQuery,
   useProgramViewPreference,
   useStageQuery,
 } from '@/features/curriculum/queries';
@@ -609,6 +611,51 @@ function EnrolledProgramCard({
   );
 }
 
+function OwnedProgramCard({ program }: { program: ProgramSummary }) {
+  const hasDraftContent =
+    program.status === 'DRAFT' ||
+    program.stages.some((stage) => !stage.isPublished);
+  const percent = program.timeline?.actualPercent ?? 0;
+
+  return (
+    <li>
+      <Card class="flex h-full flex-col space-y-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <h2 class="text-xl font-semibold">{program.title}</h2>
+          <div class="flex flex-wrap gap-2">
+            <Badge tone="info">Propriétaire</Badge>
+            <Badge
+              tone={program.visibility === 'PRIVATE' ? 'warning' : 'success'}
+            >
+              {program.visibility === 'PRIVATE' ? 'Privé' : 'Public'}
+            </Badge>
+            {hasDraftContent ? <DraftBadge /> : null}
+          </div>
+        </div>
+        <p class="text-sm leading-6 text-slate-300">{program.description}</p>
+        <ul class="space-y-1 text-sm text-slate-400">
+          <li>{durationLabel(program.estimatedDurationDays)}</li>
+          <li>
+            {program.stages.length} étape{program.stages.length > 1 ? 's' : ''}
+          </li>
+        </ul>
+        <ProgressBar
+          label={`Progression — ${Math.round(percent)} %`}
+          value={percent}
+        />
+        <NavigationAction
+          class="mt-auto"
+          href={`/program/${encodeURIComponent(program.slug)}`}
+        >
+          {hasDraftContent
+            ? 'Prévisualiser le programme'
+            : 'Ouvrir le programme'}
+        </NavigationAction>
+      </Card>
+    </li>
+  );
+}
+
 function DirectoryPagination({
   hasMore,
   isLoading,
@@ -651,7 +698,23 @@ export function ProgramsPage() {
     enrollmentStatus,
     isOnline,
   );
+  const owned = useProgramsQuery(isOnline);
   const mutation = useProgramEnrollmentMutation();
+  const normalizedOwnedSearch = search.toLocaleLowerCase('fr');
+  const ownedPrograms = (owned.data?.programs ?? []).filter((program) =>
+    normalizedOwnedSearch
+      ? `${program.title} ${program.description}`
+          .toLocaleLowerCase('fr')
+          .includes(normalizedOwnedSearch)
+      : true,
+  );
+  const ownedProgramIds = new Set(
+    (owned.data?.programs ?? []).map((program) => program.id),
+  );
+  const enrolledPrograms = enrolled.data.items.filter(
+    (program) =>
+      enrollmentStatus !== 'ACTIVE' || !ownedProgramIds.has(program.program.id),
+  );
 
   function selectView(view: ProgramsView, focus = false) {
     setActiveView(view);
@@ -792,18 +855,25 @@ export function ProgramsPage() {
                   <option value="WITHDRAWN">Programmes quittés</option>
                 </select>
               </label>
-              {enrolled.isPending ? (
+              {enrolled.isPending || owned.isPending ? (
                 <Skeleton label="Chargement de Mes programmes" />
-              ) : enrolled.error ? (
+              ) : enrolled.error || owned.error ? (
                 <ErrorState
                   action={
-                    <Button onClick={() => void enrolled.reload()}>
+                    <Button
+                      onClick={() => {
+                        void enrolled.reload();
+                        void owned.reload();
+                      }}
+                    >
                       Réessayer
                     </Button>
                   }
                   description="Mes programmes n’ont pas pu être chargés."
                 />
-              ) : enrolled.data.items.length === 0 ? (
+              ) : enrolledPrograms.length === 0 &&
+                (enrollmentStatus !== 'ACTIVE' ||
+                  ownedPrograms.length === 0) ? (
                 <EmptyState
                   action={
                     enrollmentStatus === 'ACTIVE' ? (
@@ -824,26 +894,64 @@ export function ProgramsPage() {
                   }
                 />
               ) : (
-                <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {enrolled.data.items.map((program) => (
-                    <EnrolledProgramCard
-                      isConfirming={
-                        confirmingProgramId === program.program.id
-                      }
-                      isMutationDisabled={Boolean(mutation.pendingProgramId)}
-                      isMutationLoading={
-                        mutation.pendingProgramId === program.program.id
-                      }
-                      key={program.enrollment.id}
-                      onCancel={() => setConfirmingProgramId(undefined)}
-                      onConfirm={(item) => void withdraw(item)}
-                      onRequestWithdrawal={(item) =>
-                        setConfirmingProgramId(item.program.id)
-                      }
-                      program={program}
-                    />
-                  ))}
-                </ul>
+                <div class="space-y-6">
+                  {enrollmentStatus === 'ACTIVE' &&
+                  ownedPrograms.length ? (
+                    <section
+                      aria-labelledby="owned-programs-title"
+                      class="space-y-3"
+                    >
+                      <h2
+                        class="text-lg font-semibold text-slate-100"
+                        id="owned-programs-title"
+                      >
+                        Programmes dont vous êtes propriétaire
+                      </h2>
+                      <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                        {ownedPrograms.map((program) => (
+                          <OwnedProgramCard key={program.id} program={program} />
+                        ))}
+                      </ul>
+                    </section>
+                  ) : null}
+                  {enrolledPrograms.length ? (
+                    <section
+                      aria-labelledby="enrolled-programs-title"
+                      class="space-y-3"
+                    >
+                      <h2
+                        class="text-lg font-semibold text-slate-100"
+                        id="enrolled-programs-title"
+                      >
+                        Programmes suivis
+                      </h2>
+                      <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                        {enrolledPrograms.map((program) => (
+                          <EnrolledProgramCard
+                            isConfirming={
+                              confirmingProgramId === program.program.id
+                            }
+                            isMutationDisabled={Boolean(
+                              mutation.pendingProgramId,
+                            )}
+                            isMutationLoading={
+                              mutation.pendingProgramId === program.program.id
+                            }
+                            key={program.enrollment.id}
+                            onCancel={() =>
+                              setConfirmingProgramId(undefined)
+                            }
+                            onConfirm={(item) => void withdraw(item)}
+                            onRequestWithdrawal={(item) =>
+                              setConfirmingProgramId(item.program.id)
+                            }
+                            program={program}
+                          />
+                        ))}
+                      </ul>
+                    </section>
+                  ) : null}
+                </div>
               )}
               <DirectoryPagination
                 hasMore={Boolean(enrolled.data.nextCursor)}
