@@ -403,6 +403,24 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     );
     await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
 
+    const privateProgram = await prisma.program.findUniqueOrThrow({
+      where: { id: fixture.programId },
+      select: { publishedVersionId: true, updatedAt: true },
+    });
+    expect(privateProgram.publishedVersionId).not.toBeNull();
+    await expectStatus(
+      await owner.patch(
+        `/api/admin/programs/${fixture.programId}/visibility`,
+        {
+          data: {
+            expectedUpdatedAt: privateProgram.updatedAt.toISOString(),
+            visibility: 'PUBLIC',
+          },
+        },
+      ),
+      200,
+    );
+
     const catalogResponse = await expectStatus(
       await outsider.get('/api/catalog/programs?pageSize=50'),
       200,

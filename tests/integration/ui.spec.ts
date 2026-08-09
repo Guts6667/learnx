@@ -55,11 +55,11 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
     await page.goto(
       `/program/${fixture.programSlug}/lesson/${fixture.lessonSlug}`,
     );
-    const lessonResponse = await request.get(
+    const lessonResponse = await page.request.get(
       `/api/lessons/${fixture.lessonSlug}`,
     );
     expect(lessonResponse.status()).toBe(200);
-    const progressResponse = await request.get(
+    const progressResponse = await page.request.get(
       `/api/lessons/${fixture.lessonId}/progress`,
     );
     expect(progressResponse.status()).toBe(200);
