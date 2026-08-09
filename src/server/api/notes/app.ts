@@ -9,6 +9,14 @@ import {
 } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
+  cursorPageQuerySchema,
+  encodeCursor,
+  InvalidCursorError,
+  parseCursor,
+  toCursorPage,
+  type CursorPage,
+} from '../_lib/cursor-pagination.js';
+import {
   learningProgramWhere,
   previewProgramWhere,
 } from '../_lib/program-access-policy.js';
@@ -63,11 +71,13 @@ export interface NotesRepository {
     canPreview: boolean,
   ): Promise<{ id: string; programId: string } | null>;
   findOwned(noteId: string, userId: string): Promise<NoteRecord | null>;
-  list(
-    userId: string,
-    search: string | undefined,
-    lessonId: string | undefined,
-  ): Promise<NoteRecord[]>;
+  list(input: {
+    cursor?: string;
+    lessonId?: string;
+    pageSize: number;
+    search?: string;
+    userId: string;
+  }): Promise<CursorPage<NoteRecord>>;
   update(input: UpdateNoteInput): Promise<NoteRecord>;
 }
 
@@ -77,7 +87,7 @@ interface NotesAppOptions {
 }
 
 const identifierSchema = z.uuid();
-const listSchema = z.object({
+const listSchema = cursorPageQuerySchema.extend({
   lessonId: identifierSchema.optional(),
   search: z.string().trim().max(100).optional(),
 });
@@ -296,11 +306,18 @@ export function createPrismaNotesRepository(
         select: noteSelect,
       });
     },
-    async list(userId, search, lessonId) {
-      return client.note.findMany({
+    async list(input) {
+      const search = input.search?.trim() || undefined;
+      const context = `${input.userId}:${input.lessonId ?? ''}:${search ?? ''}`;
+      const cursor = parseCursor(input.cursor, 'notes', context);
+      const cursorDate = cursor ? new Date(cursor.value) : undefined;
+      if (cursorDate && Number.isNaN(cursorDate.getTime())) {
+        throw new InvalidCursorError();
+      }
+      const records = await client.note.findMany({
         where: {
-          userId,
-          ...(lessonId ? { lessonId } : {}),
+          userId: input.userId,
+          ...(input.lessonId ? { lessonId: input.lessonId } : {}),
           ...(search
             ? {
                 OR: [
@@ -309,10 +326,29 @@ export function createPrismaNotesRepository(
                 ],
               }
             : {}),
+          ...(cursor && cursorDate
+            ? {
+                AND: [
+                  {
+                    OR: [
+                      { updatedAt: { lt: cursorDate } },
+                      { id: { lt: cursor.id }, updatedAt: cursorDate },
+                    ],
+                  },
+                ],
+              }
+            : {}),
         },
-        orderBy: [{ updatedAt: 'desc' }, { id: 'asc' }],
+        orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
         select: noteSelect,
+        take: input.pageSize + 1,
       });
+      return toCursorPage(records, input.pageSize, (record) =>
+        encodeCursor('notes', context, {
+          id: record.id,
+          value: record.updatedAt.toISOString(),
+        }),
+      );
     },
     async update(input) {
       const { id, ...data } = input;
@@ -344,6 +380,10 @@ export function createNotesApp(options: NotesAppOptions = {}) {
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
+    if (error instanceof InvalidCursorError) {
+      const apiError = invalidRequest();
+      return context.json(toApiErrorBody(apiError), apiError.status);
+    }
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
@@ -362,15 +402,16 @@ export function createNotesApp(options: NotesAppOptions = {}) {
 
     if (!parsed.success) throw invalidRequest();
 
-    const notes = await (
-      await getRepository()
-    ).list(
-      context.get('user').id,
-      parsed.data.search || undefined,
-      parsed.data.lessonId,
-    );
+    const page = await (await getRepository()).list({
+      ...parsed.data,
+      search: parsed.data.search || undefined,
+      userId: context.get('user').id,
+    });
 
-    return context.json({ notes: notes.map(serializeNote) });
+    return context.json({
+      nextCursor: page.nextCursor,
+      notes: page.items.map(serializeNote),
+    });
   });
 
   app.post('/api/notes', async (context) => {

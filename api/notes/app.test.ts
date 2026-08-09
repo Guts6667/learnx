@@ -79,25 +79,26 @@ function createRepository() {
         ? (records.get(requestedNoteId) ?? null)
         : null;
     },
-    async list(requestedUserId, search, requestedLessonId) {
+    async list(input) {
       listCalls.push({
-        lessonId: requestedLessonId,
-        search,
-        userId: requestedUserId,
+        lessonId: input.lessonId,
+        search: input.search,
+        userId: input.userId,
       });
-      return [...records.entries()]
-        .filter(([id]) => owners.get(id) === requestedUserId)
+      const items = [...records.entries()]
+        .filter(([id]) => owners.get(id) === input.userId)
         .map(([, record]) => record)
         .filter(
           (record) =>
-            !requestedLessonId || record.lesson?.id === requestedLessonId,
+            !input.lessonId || record.lesson?.id === input.lessonId,
         )
         .filter(
           (record) =>
-            !search ||
-            record.title.toLowerCase().includes(search.toLowerCase()) ||
-            record.markdown.toLowerCase().includes(search.toLowerCase()),
+            !input.search ||
+            record.title.toLowerCase().includes(input.search.toLowerCase()) ||
+            record.markdown.toLowerCase().includes(input.search.toLowerCase()),
         );
+      return { items, nextCursor: null };
     },
     async update(input) {
       const current = records.get(input.id);
@@ -339,10 +340,17 @@ describe('notes persistence', () => {
     const client = { note: { findMany } } as unknown as PrismaClient;
     const repository = createPrismaNotesRepository(client);
 
-    await repository.list(userId, 'mémoire', lessonId);
+    await repository.list({
+      lessonId,
+      pageSize: 20,
+      search: 'mémoire',
+      userId,
+    });
 
     expect(findMany).toHaveBeenCalledWith(
       expect.objectContaining({
+        orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
+        take: 21,
         where: expect.objectContaining({
           lessonId,
           userId,

@@ -21,6 +21,14 @@ import {
 } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 import {
+  cursorPageQuerySchema,
+  encodeCursor,
+  InvalidCursorError,
+  parseCursor,
+  toCursorPage,
+  type CursorPage,
+} from '../_lib/cursor-pagination.js';
+import {
   learningOrPreviewProgramWhere,
   learningProgramWhere,
   previewProgramWhere,
@@ -102,10 +110,14 @@ export interface ConceptAssessmentRepository {
     preview: boolean,
   ): Promise<AssessmentReadModel | null>;
   listAttempts(
-    assessmentId: string,
-    userId: string,
-    preview: boolean,
-  ): Promise<AttemptReadModel[]>;
+    input: {
+      assessmentId: string;
+      cursor?: string;
+      pageSize: number;
+      preview: boolean;
+      userId: string;
+    },
+  ): Promise<CursorPage<AttemptReadModel>>;
   recordAttempt(input: RecordAttemptInput): Promise<RecordedAttempt>;
 }
 
@@ -290,12 +302,22 @@ export function createPrismaRepository(
         title: assessment.title,
       };
     },
-    async listAttempts(assessmentId, userId, preview) {
-      const publicationFilter = preview ? {} : { isPublished: true };
+    async listAttempts(input) {
+      const publicationFilter = input.preview ? {} : { isPublished: true };
+      const context = `${input.userId}:${input.assessmentId}:${input.preview}`;
+      const cursor = parseCursor(
+        input.cursor,
+        'concept-assessment-attempts',
+        context,
+      );
+      const cursorDate = cursor ? new Date(cursor.value) : undefined;
+      if (cursorDate && Number.isNaN(cursorDate.getTime())) {
+        throw new InvalidCursorError();
+      }
       const attempts = await client.conceptAssessmentAttempt.findMany({
         where: {
-          assessmentId,
-          userId,
+          assessmentId: input.assessmentId,
+          userId: input.userId,
           assessment: {
             concept: {
               lesson: {
@@ -304,20 +326,41 @@ export function createPrismaRepository(
                   ...publicationFilter,
                   stage: {
                     ...publicationFilter,
-                    program: learningOrPreviewProgramWhere(userId, preview),
+                    program: learningOrPreviewProgramWhere(
+                      input.userId,
+                      input.preview,
+                    ),
                   },
                 },
               },
             },
           },
+          ...(cursor && cursorDate
+            ? {
+                OR: [
+                  { submittedAt: { lt: cursorDate } },
+                  { id: { lt: cursor.id }, submittedAt: cursorDate },
+                ],
+              }
+            : {}),
         },
-        orderBy: { submittedAt: 'desc' },
+        orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
         include: { moduleRun: { select: { sequence: true } } },
+        take: input.pageSize + 1,
       });
-      return attempts.map(({ moduleRun, ...attempt }) => ({
-        ...attempt,
-        runSequence: moduleRun.sequence,
-      }));
+      const page = toCursorPage(attempts, input.pageSize, (attempt) =>
+        encodeCursor('concept-assessment-attempts', context, {
+          id: attempt.id,
+          value: attempt.submittedAt.toISOString(),
+        }),
+      );
+      return {
+        items: page.items.map(({ moduleRun, ...attempt }) => ({
+          ...attempt,
+          runSequence: moduleRun.sequence,
+        })),
+        nextCursor: page.nextCursor,
+      };
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
@@ -489,6 +532,10 @@ export function createConceptAssessmentsApp(
   app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
+    if (error instanceof InvalidCursorError) {
+      const apiError = invalidRequest();
+      return context.json(toApiErrorBody(apiError), apiError.status);
+    }
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
@@ -532,13 +579,19 @@ export function createConceptAssessmentsApp(
     async (context) => {
       const { assessmentId, preview, repository } =
         await getAssessment(context);
-      const attempts = await repository.listAttempts(
+      const query = cursorPageQuerySchema.safeParse(context.req.query());
+      if (!query.success) throw invalidRequest();
+      const page = await repository.listAttempts({
+        ...query.data,
         assessmentId,
-        context.get('user').id,
         preview,
-      );
+        userId: context.get('user').id,
+      });
 
-      return context.json({ attempts: attempts.map(serializeAttempt) });
+      return context.json({
+        attempts: page.items.map(serializeAttempt),
+        nextCursor: page.nextCursor,
+      });
     },
   );
 

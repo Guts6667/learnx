@@ -129,7 +129,9 @@ export function QuizPage({
         attempts={attemptsQuery.data?.attempts ?? []}
         backHref={backHref}
         error={mutation.error}
+        hasMoreAttempts={attemptsQuery.hasMore}
         isPending={mutation.isPending}
+        isLoadingMoreAttempts={attemptsQuery.isLoadingMore}
         key={quiz.id}
         labels={{
           emptyDescription: t('quiz.empty.description'),
@@ -139,6 +141,7 @@ export function QuizPage({
           success: t('quiz.success'),
         }}
         onSubmit={mutation.submit}
+        onLoadMoreAttempts={attemptsQuery.loadMore}
       />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>

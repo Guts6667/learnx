@@ -100,7 +100,17 @@ function formatAttemptDate(value: string, locale: UiLocale): string {
   });
 }
 
-function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
+function AttemptHistory({
+  attempts,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
+}: {
+  attempts: AssessmentAttempt[];
+  hasMore?: boolean;
+  isLoadingMore?: boolean;
+  onLoadMore?: () => Promise<void>;
+}) {
   const { locale, t } = useI18n();
   return (
     <section aria-labelledby="assessment-history-title" class="space-y-3">
@@ -140,6 +150,15 @@ function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
           ))}
         </ol>
       )}
+      {hasMore && onLoadMore ? (
+        <Button
+          isLoading={isLoadingMore}
+          onClick={() => void onLoadMore()}
+          variant="secondary"
+        >
+          {t('common.loadMore')}
+        </Button>
+      ) : null}
     </section>
   );
 }
@@ -290,19 +309,25 @@ export function QuestionAssessmentExperience({
   attempts,
   backHref,
   error,
+  hasMoreAttempts,
   isPending,
+  isLoadingMoreAttempts,
   labels,
+  onLoadMoreAttempts,
   onSubmit,
 }: {
   assessment: QuestionAssessment;
   attempts: AssessmentAttempt[];
   backHref: string;
   error: unknown;
+  hasMoreAttempts?: boolean;
   isPending: boolean;
+  isLoadingMoreAttempts?: boolean;
   labels: ExperienceLabels;
   onSubmit: (
     answers: SubmittedAssessmentAnswer[],
   ) => Promise<AssessmentAttemptResponse>;
+  onLoadMoreAttempts?: () => Promise<void>;
 }) {
   const { t } = useI18n();
   const [answers, setAnswers] = useState<Record<string, DraftAnswer>>({});
@@ -383,7 +408,12 @@ export function QuestionAssessmentExperience({
           onRestart={restart}
           result={result}
         />
-        <AttemptHistory attempts={historyAttempts} />
+        <AttemptHistory
+          attempts={historyAttempts}
+          hasMore={hasMoreAttempts}
+          isLoadingMore={isLoadingMoreAttempts}
+          onLoadMore={onLoadMoreAttempts}
+        />
       </div>
     );
   }
@@ -458,7 +488,12 @@ export function QuestionAssessmentExperience({
         </Card>
       </form>
 
-      <AttemptHistory attempts={attempts} />
+      <AttemptHistory
+        attempts={attempts}
+        hasMore={hasMoreAttempts}
+        isLoadingMore={isLoadingMoreAttempts}
+        onLoadMore={onLoadMoreAttempts}
+      />
     </div>
   );
 }

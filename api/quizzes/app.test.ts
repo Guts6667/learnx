@@ -170,7 +170,7 @@ function createRepository(ownerId = userId) {
         : null;
     },
     async listAttempts() {
-      return attempts;
+      return { items: attempts, nextCursor: null };
     },
     async recordAttempt(input) {
       records.push(input);
@@ -303,6 +303,23 @@ describe('quiz API', () => {
 });
 
 describe('quiz persistence filters', () => {
+  it('borne et ordonne de façon stable l’historique utilisateur', async () => {
+    const findMany = vi.fn(async () => []);
+    const repository = createPrismaRepository({
+      quizAttempt: { findMany },
+    } as unknown as PrismaClient);
+
+    await repository.listAttempts({ pageSize: 20, quizId, userId });
+
+    expect(findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
+        take: 21,
+        where: expect.objectContaining({ quizId, userId }),
+      }),
+    );
+  });
+
   it('filtre la hiérarchie publiée, le programme actif et le propriétaire', async () => {
     const findFirst = vi.fn(async () => null);
     const repository = createPrismaRepository({

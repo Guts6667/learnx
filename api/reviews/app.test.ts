@@ -37,10 +37,10 @@ function createRepository(): ReviewsRepository {
         ? { completedAt, id: reviewId, status: ReviewStatus.COMPLETED }
         : null;
     },
-    async listPending(requestedUserId) {
-      if (requestedUserId !== userId) return [];
+    async listPending(input) {
+      if (input.userId !== userId) return { items: [], nextCursor: null };
 
-      return [
+      return { items: [
         {
           assessmentTitle: 'Mini-évaluation — Mémoire',
           conceptTitle: 'Mémoire de travail',
@@ -69,7 +69,7 @@ function createRepository(): ReviewsRepository {
           sourceType: ReviewSourceType.CONCEPT_ASSESSMENT,
           status: ReviewStatus.PENDING,
         },
-      ];
+      ], nextCursor: null };
     },
   };
 }
@@ -136,7 +136,7 @@ describe('reviews API', () => {
       patchRequest({ status: 'completed' }),
     );
 
-    expect(await listed.json()).toEqual({ reviews: [] });
+    expect(await listed.json()).toEqual({ nextCursor: null, reviews: [] });
     expect(updated.status).toBe(404);
   });
 
@@ -178,10 +178,16 @@ describe('reviews persistence', () => {
     } as unknown as PrismaClient;
     const repository = createPrismaReviewsRepository(client);
 
-    await repository.listPending(userId, false);
+    await repository.listPending({
+      canPreview: false,
+      pageSize: 20,
+      userId,
+    });
 
     expect(findMany).toHaveBeenCalledWith(
       expect.objectContaining({
+        orderBy: [{ dueAt: 'asc' }, { id: 'asc' }],
+        take: 21,
         where: expect.objectContaining({
           program: expect.objectContaining({
             OR: expect.arrayContaining([expect.objectContaining({ ownerId: userId })]),

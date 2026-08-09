@@ -24,6 +24,7 @@
     "prisma:validate-sequence-removal": "tsx scripts/validate-lesson-sequence-seed-removal.ts",
     "progress:recalculate": "tsx scripts/recalculate-progress.ts",
     "maintenance:cleanup": "tsx scripts/cleanup-expired-data.ts",
+    "performance:measure": "tsx scripts/measure-database-performance.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

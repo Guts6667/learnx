@@ -64,6 +64,7 @@ interface QuizResponse {
 
 interface QuizAttemptsResponse {
   attempts: QuizAttempt[];
+  nextCursor: string | null;
 }
 
 export function useQuizQuery(quizId: string | null) {
@@ -115,6 +116,9 @@ export function useQuizAttemptsQuery(quizId: string | null) {
     [queryClient, quizId],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
+  const [attempts, setAttempts] = useState<QuizAttempt[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     setResult(observer.getCurrentResult());
@@ -125,10 +129,38 @@ export function useQuizAttemptsQuery(quizId: string | null) {
     return unsubscribe;
   }, [observer, quizId]);
 
+  useEffect(() => {
+    if (!result.data) return;
+    setAttempts(result.data.attempts);
+    setNextCursor(result.data.nextCursor);
+  }, [result.data]);
+
+  const loadMore = useCallback(async () => {
+    if (!quizId || !nextCursor || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const page = await apiRequest<QuizAttemptsResponse>(
+        `/api/quizzes/${encodeURIComponent(quizId)}/attempts?cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      setAttempts((current) => [
+        ...current,
+        ...page.attempts.filter(
+          (attempt) => !current.some((existing) => existing.id === attempt.id),
+        ),
+      ]);
+      setNextCursor(page.nextCursor);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, nextCursor, quizId]);
+
   return {
-    data: result.data,
+    data: result.data ? { ...result.data, attempts, nextCursor } : undefined,
     error: result.error,
+    hasMore: Boolean(nextCursor),
     isPending: Boolean(quizId) && result.isPending,
+    isLoadingMore,
+    loadMore,
   };
 }
 
@@ -159,6 +191,7 @@ export function useQuizAttemptMutation(quizId: string | null) {
           ['quiz-attempts', quizId],
           (current) => ({
             attempts: [response.attempt, ...(current?.attempts ?? [])],
+            nextCursor: current?.nextCursor ?? null,
           }),
         );
         return response;

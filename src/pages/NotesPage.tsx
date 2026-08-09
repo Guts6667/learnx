@@ -148,11 +148,22 @@ export function NotesPage() {
         />
       ) : null}
       {query.data?.notes.length ? (
-        <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {query.data.notes.map((note) => (
-            <NoteCard key={note.id} note={note} />
-          ))}
-        </ul>
+        <div class="space-y-4">
+          <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {query.data.notes.map((note) => (
+              <NoteCard key={note.id} note={note} />
+            ))}
+          </ul>
+          {query.hasMore ? (
+            <Button
+              isLoading={query.isLoadingMore}
+              onClick={() => void query.loadMore()}
+              variant="secondary"
+            >
+              {t('common.loadMore')}
+            </Button>
+          ) : null}
+        </div>
       ) : null}
     </section>
   );

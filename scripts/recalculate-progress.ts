@@ -7,8 +7,10 @@ import {
   runSerializableProgressTransaction,
 } from '../src/server/api/_lib/progress-recalculation';
 import { prisma } from '../src/server/prisma';
+import { processCursorBatches } from '../src/server/maintenance/cursor-batches';
 
 const identifierSchema = z.uuid();
+const batchSizeSchema = z.coerce.number().int().min(1).max(1_000);
 
 function readOption(name: string): string | undefined {
   const index = process.argv.indexOf(name);
@@ -27,11 +29,22 @@ function parseIdentifierOption(name: string): string | undefined {
   return parsed.data;
 }
 
+function parseBatchSize(): number {
+  const value = readOption('--batch-size');
+  if (!value) return 100;
+  const parsed = batchSizeSchema.safeParse(value);
+  if (!parsed.success) {
+    throw new Error('--batch-size must be an integer between 1 and 1000.');
+  }
+  return parsed.data;
+}
+
 async function main() {
   const apply = process.argv.includes('--apply');
   const allowAll = process.argv.includes('--all');
   const programId = parseIdentifierOption('--program-id');
   const userId = parseIdentifierOption('--user-id');
+  const batchSize = parseBatchSize();
 
   if (!allowAll && !programId && !userId) {
     throw new Error(
@@ -39,25 +52,16 @@ async function main() {
     );
   }
 
-  const progressRecords = await prisma.lessonProgress.findMany({
-    where: {
-      ...(userId ? { userId } : {}),
-      ...(programId
-        ? {
-            lesson: {
-              module: { stage: { programId } },
-            },
-          }
-        : {}),
-    },
-    select: {
-      lessonId: true,
-      userId: true,
-    },
-  });
+  const where = {
+    ...(userId ? { userId } : {}),
+    ...(programId
+      ? { lesson: { module: { stage: { programId } } } }
+      : {}),
+  };
+  const total = await prisma.lessonProgress.count({ where });
 
   console.info(
-    `${apply ? 'Applying' : 'Dry run:'} ${progressRecords.length} existing lesson progress recalculation(s).`,
+    `${apply ? 'Applying' : 'Dry run:'} ${total} existing lesson progress recalculation(s), batch size ${batchSize}.`,
   );
 
   if (!apply) {
@@ -66,19 +70,31 @@ async function main() {
   }
 
   const now = new Date();
-  for (const progress of progressRecords) {
-    await runSerializableProgressTransaction(prisma, (transaction) =>
-      recalculateLessonProgress(
-        transaction,
-        progress.lessonId,
-        progress.userId,
-        now,
-        { preserveTimestamps: true, startIfMissing: false },
-      ),
-    );
-  }
+  const processed = await processCursorBatches({
+    fetchBatch: (cursor) => prisma.lessonProgress.findMany({
+      cursor: cursor ? { id: cursor } : undefined,
+      orderBy: { id: 'asc' },
+      skip: cursor ? 1 : 0,
+      take: batchSize,
+      where,
+      select: { id: true, lessonId: true, userId: true },
+    }),
+    onBatchComplete: (count) =>
+      console.info(`Recalculated ${count}/${total} progress record(s).`),
+    processRecord: async (progress) => {
+      await runSerializableProgressTransaction(prisma, (transaction) =>
+        recalculateLessonProgress(
+          transaction,
+          progress.lessonId,
+          progress.userId,
+          now,
+          { preserveTimestamps: true, startIfMissing: false },
+        ),
+      );
+    },
+  });
 
-  console.info(`Recalculated ${progressRecords.length} lesson progress record(s).`);
+  console.info(`Recalculated ${processed} lesson progress record(s).`);
 }
 
 try {

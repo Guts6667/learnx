@@ -33,6 +33,7 @@ interface ConceptAssessmentResponse {
 
 interface ConceptAssessmentAttemptsResponse {
   attempts: AssessmentAttempt[];
+  nextCursor: string | null;
 }
 
 function getAssessmentPath(assessmentId: string, preview: boolean): string {
@@ -41,10 +42,17 @@ function getAssessmentPath(assessmentId: string, preview: boolean): string {
   return preview ? `${basePath}?preview=true` : basePath;
 }
 
-function getAttemptsPath(assessmentId: string, preview: boolean): string {
+function getAttemptsPath(
+  assessmentId: string,
+  preview: boolean,
+  cursor?: string,
+): string {
   const basePath = `/api/concept-assessments/${encodeURIComponent(assessmentId)}/attempts`;
-
-  return preview ? `${basePath}?preview=true` : basePath;
+  const parameters = new URLSearchParams();
+  if (preview) parameters.set('preview', 'true');
+  if (cursor) parameters.set('cursor', cursor);
+  const query = parameters.toString();
+  return query ? `${basePath}?${query}` : basePath;
 }
 
 export function useConceptAssessmentQuery(
@@ -102,6 +110,9 @@ export function useConceptAssessmentAttemptsQuery(
     [assessmentId, preview, queryClient],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
+  const [attempts, setAttempts] = useState<AssessmentAttempt[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     setResult(observer.getCurrentResult());
@@ -112,10 +123,38 @@ export function useConceptAssessmentAttemptsQuery(
     return unsubscribe;
   }, [assessmentId, observer]);
 
+  useEffect(() => {
+    if (!result.data) return;
+    setAttempts(result.data.attempts);
+    setNextCursor(result.data.nextCursor);
+  }, [result.data]);
+
+  const loadMore = useCallback(async () => {
+    if (!assessmentId || !nextCursor || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const page = await apiRequest<ConceptAssessmentAttemptsResponse>(
+        getAttemptsPath(assessmentId, preview, nextCursor),
+      );
+      setAttempts((current) => [
+        ...current,
+        ...page.attempts.filter(
+          (attempt) => !current.some((existing) => existing.id === attempt.id),
+        ),
+      ]);
+      setNextCursor(page.nextCursor);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [assessmentId, isLoadingMore, nextCursor, preview]);
+
   return {
-    data: result.data,
+    data: result.data ? { ...result.data, attempts, nextCursor } : undefined,
     error: result.error,
+    hasMore: Boolean(nextCursor),
     isPending: Boolean(assessmentId) && result.isPending,
+    isLoadingMore,
+    loadMore,
   };
 }
 
@@ -149,6 +188,7 @@ export function useConceptAssessmentAttemptMutation(
           ['concept-assessment-attempts', assessmentId, preview],
           (current) => ({
             attempts: [response.attempt, ...(current?.attempts ?? [])],
+            nextCursor: current?.nextCursor ?? null,
           }),
         );
         return response;

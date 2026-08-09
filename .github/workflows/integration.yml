@@ -42,6 +42,12 @@ jobs:
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+      - name: Measure bounded database reads on isolated clone
+        run: pnpm performance:measure -- --output performance-report.json
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+          LEARNX_PERFORMANCE_DATABASE: isolated
       - name: Run real Functions and browser integration tests
         run: pnpm test:integration
         env:
@@ -97,6 +103,13 @@ jobs:
           if-no-files-found: ignore
           name: integration-playwright-${{ github.run_id }}
           path: playwright-report-integration
+      - name: Upload performance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: ignore
+          name: database-performance-${{ github.run_id }}
+          path: performance-report.json
       - name: Delete isolated Neon branch
         if: always() && steps.neon.outputs.branch_id != ''
         uses: neondatabase/delete-branch-action@v3

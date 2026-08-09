@@ -26,6 +26,7 @@ export interface NoteDetail {
 }
 
 interface NotesResponse {
+  nextCursor: string | null;
   notes: NoteDetail[];
 }
 
@@ -33,11 +34,12 @@ interface NoteResponse {
   note: NoteDetail;
 }
 
-function getNotesPath(search: string, lessonId?: string): string {
+function getNotesPath(search: string, lessonId?: string, cursor?: string): string {
   const parameters = new URLSearchParams();
 
   if (search.trim()) parameters.set('search', search.trim());
   if (lessonId) parameters.set('lessonId', lessonId);
+  if (cursor) parameters.set('cursor', cursor);
 
   const query = parameters.toString();
 
@@ -57,6 +59,9 @@ export function useNotesQuery(search: string, lessonId?: string) {
     [lessonId, path, queryClient, search],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
+  const [notes, setNotes] = useState<NoteDetail[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     setResult(observer.getCurrentResult());
@@ -65,10 +70,38 @@ export function useNotesQuery(search: string, lessonId?: string) {
     return unsubscribe;
   }, [observer]);
 
+  useEffect(() => {
+    if (!result.data) return;
+    setNotes(result.data.notes);
+    setNextCursor(result.data.nextCursor);
+  }, [result.data]);
+
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const page = await apiRequest<NotesResponse>(
+        getNotesPath(search, lessonId, nextCursor),
+      );
+      setNotes((current) => [
+        ...current,
+        ...page.notes.filter(
+          (note) => !current.some((existing) => existing.id === note.id),
+        ),
+      ]);
+      setNextCursor(page.nextCursor);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, lessonId, nextCursor, search]);
+
   return {
-    data: result.data,
+    data: result.data ? { ...result.data, nextCursor, notes } : undefined,
     error: result.error,
+    hasMore: Boolean(nextCursor),
     isPending: result.isPending,
+    isLoadingMore,
+    loadMore,
   };
 }
 

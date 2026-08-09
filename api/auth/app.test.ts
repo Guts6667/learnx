@@ -26,6 +26,7 @@ function createTestDependencies() {
   const sessions = new Map<string, StoredSession>();
   let userSequence = 0;
   let sessionSequence = 0;
+  let touchCount = 0;
 
   const repository: AuthRepository = {
     async createSession(input) {
@@ -91,6 +92,7 @@ function createTestDependencies() {
       return users.get(email) ?? null;
     },
     async touchSession(id, lastUsedAt) {
+      touchCount += 1;
       const session = [...sessions.values()].find(
         (candidate) => candidate.id === id,
       );
@@ -127,7 +129,7 @@ function createTestDependencies() {
       passwordHash === `hashed:${password}`,
   };
 
-  return { dependencies, sessions, users };
+  return { dependencies, getTouchCount: () => touchCount, sessions, users };
 }
 
 function getSessionCookie(response: Response): string {
@@ -141,6 +143,43 @@ function getSessionCookie(response: Response): string {
 }
 
 describe('auth API', () => {
+  it('borne les écritures lastUsedAt sans différer les contrôles de compte', async () => {
+    const { dependencies, getTouchCount } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Learner',
+          email: 'touch@example.com',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const cookie = getSessionCookie(registerResponse);
+
+    expect(
+      (
+        await app.request('http://localhost/api/auth/session', {
+          headers: { cookie },
+        })
+      ).status,
+    ).toBe(200);
+    expect(getTouchCount()).toBe(0);
+
+    dependencies.now = () => new Date(testNow.getTime() + 5 * 60 * 1_000);
+    expect(
+      (
+        await app.request('http://localhost/api/auth/session', {
+          headers: { cookie },
+        })
+      ).status,
+    ).toBe(200);
+    expect(getTouchCount()).toBe(1);
+  });
+
   it('disables public registration when production policy is active', async () => {
     const { dependencies, users } = createTestDependencies();
     const app = createAuthApp({

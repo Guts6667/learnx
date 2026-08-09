@@ -17,6 +17,14 @@ import {
   requireCapability,
 } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  cursorPageQuerySchema,
+  encodeCursor,
+  InvalidCursorError,
+  parseCursor,
+  toCursorPage,
+  type CursorPage,
+} from '../_lib/cursor-pagination.js';
 import { learningProgramWhere } from '../_lib/program-access-policy.js';
 import {
   recalculateLessonProgress,
@@ -74,7 +82,12 @@ export interface QuizRepository {
     quizId: string,
     userId: string,
   ): Promise<QuizReadModel | null>;
-  listAttempts(quizId: string, userId: string): Promise<QuizAttemptReadModel[]>;
+  listAttempts(input: {
+    cursor?: string;
+    pageSize: number;
+    quizId: string;
+    userId: string;
+  }): Promise<CursorPage<QuizAttemptReadModel>>;
   recordAttempt(input: RecordQuizAttemptInput): Promise<QuizAttemptReadModel>;
 }
 
@@ -223,11 +236,17 @@ export function createPrismaRepository(
         title: quiz.title,
       };
     },
-    async listAttempts(quizId, userId) {
+    async listAttempts(input) {
+      const context = `${input.userId}:${input.quizId}`;
+      const cursor = parseCursor(input.cursor, 'quiz-attempts', context);
+      const cursorDate = cursor ? new Date(cursor.value) : undefined;
+      if (cursorDate && Number.isNaN(cursorDate.getTime())) {
+        throw new InvalidCursorError();
+      }
       const attempts = await client.quizAttempt.findMany({
         where: {
-          quizId,
-          userId,
+          quizId: input.quizId,
+          userId: input.userId,
           quiz: {
             lesson: {
               isPublished: true,
@@ -235,19 +254,37 @@ export function createPrismaRepository(
                 isPublished: true,
                 stage: {
                   isPublished: true,
-                  program: learningProgramWhere(userId),
+                  program: learningProgramWhere(input.userId),
                 },
               },
             },
           },
+          ...(cursor && cursorDate
+            ? {
+                OR: [
+                  { submittedAt: { lt: cursorDate } },
+                  { id: { lt: cursor.id }, submittedAt: cursorDate },
+                ],
+              }
+            : {}),
         },
-        orderBy: { submittedAt: 'desc' },
+        orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
         include: { moduleRun: { select: { sequence: true } } },
+        take: input.pageSize + 1,
       });
-      return attempts.map(({ moduleRun, ...attempt }) => ({
-        ...attempt,
-        runSequence: moduleRun.sequence,
-      }));
+      const page = toCursorPage(attempts, input.pageSize, (attempt) =>
+        encodeCursor('quiz-attempts', context, {
+          id: attempt.id,
+          value: attempt.submittedAt.toISOString(),
+        }),
+      );
+      return {
+        items: page.items.map(({ moduleRun, ...attempt }) => ({
+          ...attempt,
+          runSequence: moduleRun.sequence,
+        })),
+        nextCursor: page.nextCursor,
+      };
     },
     async recordAttempt(input) {
       return runSerializableProgressTransaction(client, async (transaction) => {
@@ -318,6 +355,10 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
   app.use('*', requireCapability('learning.read'));
 
   app.onError((error, context) => {
+    if (error instanceof InvalidCursorError) {
+      const apiError = invalidRequest();
+      return context.json(toApiErrorBody(apiError), apiError.status);
+    }
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
@@ -356,12 +397,18 @@ export function createQuizzesApp(options: QuizzesAppOptions = {}) {
 
   app.get('/api/quizzes/:quizId/attempts', async (context) => {
     const { quizId, repository } = await getQuiz(context);
-    const attempts = await repository.listAttempts(
+    const query = cursorPageQuerySchema.safeParse(context.req.query());
+    if (!query.success) throw invalidRequest();
+    const page = await repository.listAttempts({
+      ...query.data,
       quizId,
-      context.get('user').id,
-    );
+      userId: context.get('user').id,
+    });
 
-    return context.json({ attempts: attempts.map(serializeAttempt) });
+    return context.json({
+      attempts: page.items.map(serializeAttempt),
+      nextCursor: page.nextCursor,
+    });
   });
 
   app.post('/api/quizzes/:quizId/attempts', async (context) => {

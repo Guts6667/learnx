@@ -13,6 +13,14 @@ import {
   requireCapability,
 } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
+import {
+  cursorPageQuerySchema,
+  encodeCursor,
+  InvalidCursorError,
+  parseCursor,
+  toCursorPage,
+  type CursorPage,
+} from '../_lib/cursor-pagination.js';
 import { learningOrPreviewProgramWhere } from '../_lib/program-access-policy.js';
 import { runSerializableProgressTransaction } from '../_lib/progress-recalculation.js';
 
@@ -50,7 +58,12 @@ export interface ReviewsRepository {
     completedAt: Date,
     canPreview: boolean,
   ): Promise<CompletedReview | null>;
-  listPending(userId: string, canPreview: boolean): Promise<ReviewRecord[]>;
+  listPending(input: {
+    canPreview: boolean;
+    cursor?: string;
+    pageSize: number;
+    userId: string;
+  }): Promise<CursorPage<ReviewRecord>>;
 }
 
 interface ReviewsAppOptions {
@@ -112,14 +125,31 @@ export function createPrismaReviewsRepository(
         };
       });
     },
-    async listPending(userId, canPreview) {
+    async listPending(input) {
+      const context = `${input.userId}:${input.canPreview}`;
+      const cursor = parseCursor(input.cursor, 'reviews', context);
+      const cursorDate = cursor ? new Date(cursor.value) : undefined;
+      if (cursorDate && Number.isNaN(cursorDate.getTime())) {
+        throw new InvalidCursorError();
+      }
       const reviews = await client.reviewItem.findMany({
         where: {
           status: ReviewStatus.PENDING,
-          userId,
-          program: learningOrPreviewProgramWhere(userId, canPreview),
+          userId: input.userId,
+          program: learningOrPreviewProgramWhere(
+            input.userId,
+            input.canPreview,
+          ),
+          ...(cursor && cursorDate
+            ? {
+                OR: [
+                  { dueAt: { gt: cursorDate } },
+                  { dueAt: cursorDate, id: { gt: cursor.id } },
+                ],
+              }
+            : {}),
         },
-        orderBy: [{ dueAt: 'asc' }, { createdAt: 'asc' }],
+        orderBy: [{ dueAt: 'asc' }, { id: 'asc' }],
         select: {
           dueAt: true,
           id: true,
@@ -145,8 +175,15 @@ export function createPrismaReviewsRepository(
           sourceType: true,
           status: true,
         },
+        take: input.pageSize + 1,
       });
-      const assessmentIds = reviews
+      const page = toCursorPage(reviews, input.pageSize, (review) =>
+        encodeCursor('reviews', context, {
+          id: review.id,
+          value: review.dueAt.toISOString(),
+        }),
+      );
+      const assessmentIds = page.items
         .filter(
           (review) => review.sourceType === ReviewSourceType.CONCEPT_ASSESSMENT,
         )
@@ -158,7 +195,10 @@ export function createPrismaReviewsRepository(
             lesson: {
               module: {
                 stage: {
-                  program: learningOrPreviewProgramWhere(userId, canPreview),
+                  program: learningOrPreviewProgramWhere(
+                    input.userId,
+                    input.canPreview,
+                  ),
                 },
               },
             },
@@ -184,7 +224,7 @@ export function createPrismaReviewsRepository(
         assessments.map((assessment) => [assessment.id, assessment]),
       );
 
-      return reviews.map((review) => {
+      const items = page.items.map((review) => {
         const assessment = assessmentById.get(review.sourceId);
 
         return {
@@ -215,6 +255,7 @@ export function createPrismaReviewsRepository(
           status: review.status,
         };
       });
+      return { items, nextCursor: page.nextCursor };
     },
   };
 }
@@ -238,6 +279,10 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
   app.use('*', options.authentication ?? requireUser);
   app.use('*', requireCapability('learning.read'));
   app.onError((error, context) => {
+    if (error instanceof InvalidCursorError) {
+      const apiError = invalidRequest();
+      return context.json(toApiErrorBody(apiError), apiError.status);
+    }
     if (error instanceof ApiError) {
       return context.json(toApiErrorBody(error), error.status);
     }
@@ -252,15 +297,19 @@ export function createReviewsApp(options: ReviewsAppOptions = {}) {
   });
 
   app.get('/api/reviews', async (context) => {
+    const query = cursorPageQuerySchema.safeParse(context.req.query());
+    if (!query.success) throw invalidRequest();
     const user = context.get('user');
-    const reviews = await (
-      await getRepository()
-    ).listPending(
-      user.id,
-      true,
-    );
+    const page = await (await getRepository()).listPending({
+      ...query.data,
+      canPreview: true,
+      userId: user.id,
+    });
 
-    return context.json({ reviews: reviews.map(serializeReview) });
+    return context.json({
+      nextCursor: page.nextCursor,
+      reviews: page.items.map(serializeReview),
+    });
   });
 
   app.patch('/api/reviews/:reviewId', async (context) => {

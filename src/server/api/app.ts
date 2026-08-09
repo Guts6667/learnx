@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { adminApp } from './admin/app.js';
 import { accessRequestsApp } from './access-requests/app.js';
 import { ApiError, toApiErrorBody } from './_lib/errors.js';
+import { createRequestObservability } from './_lib/observability.js';
 import { authApp } from './auth/app.js';
 import { catalogApp } from './catalog/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
@@ -20,6 +21,7 @@ import { todayApp } from './today/app.js';
 export function createApiApp() {
   const app = new Hono();
 
+  app.use('*', createRequestObservability());
   app.use('*', async (context, next) => {
     await next();
     context.header('Cache-Control', 'private, no-store');

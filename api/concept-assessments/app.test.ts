@@ -186,7 +186,7 @@ function createRepository(ownerId = userId) {
         : null;
     },
     async listAttempts() {
-      return attempts;
+      return { items: attempts, nextCursor: null };
     },
     async recordAttempt(input) {
       records.push(input);
@@ -398,6 +398,28 @@ describe('concept assessment API', () => {
 });
 
 describe('concept assessment persistence', () => {
+  it('borne et ordonne de façon stable l’historique utilisateur', async () => {
+    const findMany = vi.fn(async () => []);
+    const repository = createPrismaRepository({
+      conceptAssessmentAttempt: { findMany },
+    } as unknown as PrismaClient);
+
+    await repository.listAttempts({
+      assessmentId,
+      pageSize: 20,
+      preview: false,
+      userId,
+    });
+
+    expect(findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        orderBy: [{ submittedAt: 'desc' }, { id: 'desc' }],
+        take: 21,
+        where: expect.objectContaining({ assessmentId, userId }),
+      }),
+    );
+  });
+
   it('filtre la prévisualisation par propriétaire sans exiger la publication', async () => {
     const findFirst = vi.fn(async () => null);
     const client = {

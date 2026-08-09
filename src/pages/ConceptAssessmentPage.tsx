@@ -151,7 +151,9 @@ export function ConceptAssessmentPage({
         attempts={attemptsQuery.data?.attempts ?? []}
         backHref={backHref}
         error={mutation.error}
+        hasMoreAttempts={attemptsQuery.hasMore}
         isPending={mutation.isPending}
+        isLoadingMoreAttempts={attemptsQuery.isLoadingMore}
         key={assessment.id}
         labels={{
           emptyDescription: t('conceptAssessment.empty.description'),
@@ -161,6 +163,7 @@ export function ConceptAssessmentPage({
           success: t('conceptAssessment.success'),
         }}
         onSubmit={mutation.submit}
+        onLoadMoreAttempts={attemptsQuery.loadMore}
       />
       <LessonActivitySummary currentKey={key} lesson={lesson} />
     </article>

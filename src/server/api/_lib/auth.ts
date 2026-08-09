@@ -38,6 +38,12 @@ export interface AuthResult {
   user: AuthenticatedUser;
 }
 
+export const SESSION_TOUCH_INTERVAL_MS = 5 * 60 * 1_000;
+
+export function shouldTouchSession(lastUsedAt: Date, now: Date): boolean {
+  return now.getTime() - lastUsedAt.getTime() >= SESSION_TOUCH_INTERVAL_MS;
+}
+
 const defaultDependencies: AuthDependencies = {
   createSessionToken,
   getSessionExpiry,
@@ -210,12 +216,14 @@ export async function getSessionUser(
     return null;
   }
 
-  const sessionStillActive = await dependencies.repository.touchSession(
-    sessionWithUser.session.id,
-    dependencies.now(),
-  );
-
-  if (!sessionStillActive) return null;
+  const now = dependencies.now();
+  if (shouldTouchSession(sessionWithUser.session.lastUsedAt, now)) {
+    const sessionStillActive = await dependencies.repository.touchSession(
+      sessionWithUser.session.id,
+      now,
+    );
+    if (!sessionStillActive) return null;
+  }
 
   return toAuthenticatedUser(sessionWithUser.user);
 }

@@ -26,6 +26,7 @@ export interface ReviewItem {
 }
 
 interface ReviewsResponse {
+  nextCursor: string | null;
   reviews: ReviewItem[];
 }
 
@@ -45,6 +46,9 @@ export function useReviewsQuery() {
     [queryClient],
   );
   const [result, setResult] = useState(() => observer.getCurrentResult());
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     setResult(observer.getCurrentResult());
@@ -53,10 +57,38 @@ export function useReviewsQuery() {
     return unsubscribe;
   }, [observer]);
 
+  useEffect(() => {
+    if (!result.data) return;
+    setReviews(result.data.reviews);
+    setNextCursor(result.data.nextCursor);
+  }, [result.data]);
+
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const page = await apiRequest<ReviewsResponse>(
+        `/api/reviews?cursor=${encodeURIComponent(nextCursor)}`,
+      );
+      setReviews((current) => [
+        ...current,
+        ...page.reviews.filter(
+          (review) => !current.some((existing) => existing.id === review.id),
+        ),
+      ]);
+      setNextCursor(page.nextCursor);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, nextCursor]);
+
   return {
-    data: result.data,
+    data: result.data ? { ...result.data, nextCursor, reviews } : undefined,
     error: result.error,
+    hasMore: Boolean(nextCursor),
     isPending: result.isPending,
+    isLoadingMore,
+    loadMore,
   };
 }
 
