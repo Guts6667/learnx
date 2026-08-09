@@ -12,7 +12,7 @@ const migration = readFileSync(
 describe('V3 program version schema', () => {
   it('stocke des versions immuables identifiées par numéro et checksum', () => {
     expect(schema).toContain('model ProgramVersion {');
-    expect(schema).toContain('snapshot          Json');
+    expect(schema).toMatch(/snapshot\s+Json\s+@map\("snapshot_json"\)/);
     expect(schema).toContain('@@unique([programId, version])');
     expect(schema).toContain('@@unique([programId, checksum])');
     expect(migration).toContain('program_versions_checksum_sha256_check');

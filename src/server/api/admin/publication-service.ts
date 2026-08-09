@@ -2,6 +2,7 @@ import {
   AuditAction,
   Prisma,
   ProgramStatus,
+  TranslationWorkflowStatus,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
 import {
@@ -72,6 +73,20 @@ const lessonPublicationSelect = {
   updatedAt: true,
 } satisfies Prisma.LessonSelect;
 
+const translationPublicationPolicySelect = {
+  id: true,
+  locale: true,
+  title: true,
+  translationWorkflow: {
+    select: {
+      sourceProgramVersionId: true,
+      status: true,
+      updatedAt: true,
+      version: true,
+    },
+  },
+} satisfies Prisma.ProgramSelect;
+
 const modulePublicationSelect = {
   id: true,
   isPublished: true,
@@ -81,7 +96,12 @@ const modulePublicationSelect = {
   },
   title: true,
   updatedAt: true,
-  stage: { select: { programId: true } },
+  stage: {
+    select: {
+      program: { select: translationPublicationPolicySelect },
+      programId: true,
+    },
+  },
 } satisfies Prisma.ModuleSelect;
 
 const stagePublicationSelect = {
@@ -99,6 +119,7 @@ const stagePublicationSelect = {
   title: true,
   updatedAt: true,
   programId: true,
+  program: { select: translationPublicationPolicySelect },
 } satisfies Prisma.StageSelect;
 
 const programPublicationSelect = {
@@ -109,6 +130,8 @@ const programPublicationSelect = {
   },
   status: true,
   title: true,
+  locale: true,
+  translationWorkflow: translationPublicationPolicySelect.translationWorkflow,
   updatedAt: true,
 } satisfies Prisma.ProgramSelect;
 
@@ -123,6 +146,9 @@ type StageRecord = Prisma.StageGetPayload<{
 }>;
 type ProgramRecord = Prisma.ProgramGetPayload<{
   select: typeof programPublicationSelect;
+}>;
+type TranslationPublicationPolicy = Prisma.ProgramGetPayload<{
+  select: typeof translationPublicationPolicySelect;
 }>;
 
 function mapLesson(lesson: LessonRecord) {
@@ -175,7 +201,11 @@ async function readTarget(
   ownerId: string,
   targetType: PublicationTargetType,
   targetId: string,
-): Promise<{ programId: string; target: PublicationTarget } | null> {
+): Promise<{
+  policy: TranslationPublicationPolicy;
+  programId: string;
+  target: PublicationTarget;
+} | null> {
   if (targetType === 'PROGRAM') {
     const program = await client.program.findFirst({
       select: programPublicationSelect,
@@ -184,6 +214,7 @@ async function readTarget(
     return program
       ? {
           programId: program.id,
+          policy: program,
           target: { entity: mapProgram(program), type: 'PROGRAM' },
         }
       : null;
@@ -197,6 +228,7 @@ async function readTarget(
     return stage
       ? {
           programId: stage.programId,
+          policy: stage.program,
           target: { entity: mapStage(stage), type: 'STAGE' },
         }
       : null;
@@ -211,10 +243,39 @@ async function readTarget(
   });
   return module
     ? {
-        programId: module.stage.programId,
-        target: { entity: mapModule(module), type: 'MODULE' },
+      programId: module.stage.programId,
+      policy: module.stage.program,
+      target: { entity: mapModule(module), type: 'MODULE' },
       }
     : null;
+}
+
+function translationPublicationContext(policy: TranslationPublicationPolicy) {
+  const workflow = policy.translationWorkflow;
+  const requiresReview = policy.locale !== 'fr';
+  const approved = workflow?.status === TranslationWorkflowStatus.APPROVED;
+  return {
+    blockers:
+      requiresReview && !approved
+        ? [
+            {
+              code: 'TRANSLATION_REVIEW_REQUIRED' as const,
+              id: policy.id,
+              message:
+                'La variante linguistique doit terminer ses revues humaines et sa QA avant publication.',
+              title: policy.title,
+              type: 'PROGRAM' as const,
+            },
+          ]
+        : [],
+    version: JSON.stringify({
+      locale: policy.locale,
+      sourceProgramVersionId: workflow?.sourceProgramVersionId ?? null,
+      status: workflow?.status ?? null,
+      updatedAt: workflow?.updatedAt.toISOString() ?? null,
+      version: workflow?.version ?? 0,
+    }),
+  };
 }
 
 async function applyChanges(
@@ -301,6 +362,7 @@ export function createPrismaPublicationService(
           resolved.target,
           request.action,
           request.mode,
+          translationPublicationContext(resolved.policy),
         );
         const isAlreadyApplied =
           plan.changes.length === 0 && plan.blockers.length === 0;
@@ -352,7 +414,12 @@ export function createPrismaPublicationService(
       );
 
       return resolved
-        ? buildPublicationPlan(resolved.target, request.action, request.mode)
+        ? buildPublicationPlan(
+            resolved.target,
+            request.action,
+            request.mode,
+            translationPublicationContext(resolved.policy),
+          )
         : null;
     },
   };

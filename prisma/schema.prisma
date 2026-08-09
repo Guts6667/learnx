@@ -16,17 +16,18 @@ enum Role {
 }
 
 enum AuditAction {
-  PROGRAM_PUBLICATION_APPLY @map("program_publication_apply")
-  PROGRAM_VISIBILITY_UPDATE @map("program_visibility_update")
-  MODULE_UPDATE             @map("module_update")
-  LESSON_UPDATE             @map("lesson_update")
-  STAGE_ASSESSMENT_REVIEW   @map("stage_assessment_review")
-  ACCESS_REQUEST_APPROVE    @map("access_request_approve")
-  ACCESS_REQUEST_REJECT     @map("access_request_reject")
-  ACCESS_INVITATION_ISSUE   @map("access_invitation_issue")
-  ACCOUNT_ROLE_ASSIGN       @map("account_role_assign")
-  ACCOUNT_SUSPEND           @map("account_suspend")
-  ACCOUNT_REACTIVATE        @map("account_reactivate")
+  PROGRAM_PUBLICATION_APPLY           @map("program_publication_apply")
+  PROGRAM_VISIBILITY_UPDATE           @map("program_visibility_update")
+  MODULE_UPDATE                       @map("module_update")
+  LESSON_UPDATE                       @map("lesson_update")
+  STAGE_ASSESSMENT_REVIEW             @map("stage_assessment_review")
+  ACCESS_REQUEST_APPROVE              @map("access_request_approve")
+  ACCESS_REQUEST_REJECT               @map("access_request_reject")
+  ACCESS_INVITATION_ISSUE             @map("access_invitation_issue")
+  ACCOUNT_ROLE_ASSIGN                 @map("account_role_assign")
+  ACCOUNT_SUSPEND                     @map("account_suspend")
+  ACCOUNT_REACTIVATE                  @map("account_reactivate")
+  PROGRAM_TRANSLATION_WORKFLOW_UPDATE @map("program_translation_workflow_update")
 
   @@map("audit_action")
 }
@@ -60,6 +61,15 @@ enum ProgramVisibility {
   PUBLIC  @map("public")
 
   @@map("program_visibility")
+}
+
+enum TranslationWorkflowStatus {
+  DRAFT             @map("draft")
+  IN_REVIEW         @map("in_review")
+  CHANGES_REQUESTED @map("changes_requested")
+  APPROVED          @map("approved")
+
+  @@map("translation_workflow_status")
 }
 
 enum ProgramEnrollmentStatus {
@@ -238,39 +248,43 @@ enum ReviewStatus {
 }
 
 model User {
-  id                           String                        @id @default(uuid()) @db.Uuid
-  email                        String                        @unique
-  passwordHash                 String                        @map("password_hash")
-  displayName                  String                        @map("display_name")
-  role                         Role                          @default(USER)
-  accountStatus                AccountStatus                 @default(ACTIVE) @map("account_status")
-  locale                       String                        @default("fr") @db.VarChar(2)
-  suspendedAt                  DateTime?                     @map("suspended_at")
-  createdAt                    DateTime                      @default(now()) @map("created_at")
-  updatedAt                    DateTime                      @updatedAt @map("updated_at")
-  sessions                     Session[]
-  programs                     Program[]
-  programProgresses            ProgramProgress[]
-  stageProgresses              StageProgress[]
-  lessonProgresses             LessonProgress[]
-  taskCompletions              TaskCompletion[]
-  resourceProgresses           ResourceProgress[]
-  conceptProgresses            ConceptProgress[]
-  conceptAttempts              ConceptAssessmentAttempt[]
-  quizAttempts                 QuizAttempt[]
-  exerciseSubmissions          ExerciseSubmission[]
-  stageAssessmentSubmissions   StageAssessmentSubmission[]
-  reviewItems                  ReviewItem[]
-  notes                        Note[]
-  moduleRuns                   ModuleRun[]
-  activityCompletionCarryovers ActivityCompletionCarryover[]
-  reviewedAccessRequests       AccessRequest[]               @relation("AccessRequestReviewer")
-  activatedAccessRequest       AccessRequest?                @relation("ActivatedAccessRequest")
-  issuedAccessInvitations      AccessInvitation[]            @relation("AccessInvitationIssuer")
-  auditEvents                  AuditEvent[]                  @relation("AuditEventActor")
-  publishedProgramVersions     ProgramVersion[]              @relation("ProgramVersionPublisher")
-  programEnrollments           ProgramEnrollment[]
-  programViewPreferences       ProgramViewPreference[]
+  id                              String                        @id @default(uuid()) @db.Uuid
+  email                           String                        @unique
+  passwordHash                    String                        @map("password_hash")
+  displayName                     String                        @map("display_name")
+  role                            Role                          @default(USER)
+  accountStatus                   AccountStatus                 @default(ACTIVE) @map("account_status")
+  locale                          String                        @default("fr") @db.VarChar(2)
+  suspendedAt                     DateTime?                     @map("suspended_at")
+  createdAt                       DateTime                      @default(now()) @map("created_at")
+  updatedAt                       DateTime                      @updatedAt @map("updated_at")
+  sessions                        Session[]
+  programs                        Program[]
+  programProgresses               ProgramProgress[]
+  stageProgresses                 StageProgress[]
+  lessonProgresses                LessonProgress[]
+  taskCompletions                 TaskCompletion[]
+  resourceProgresses              ResourceProgress[]
+  conceptProgresses               ConceptProgress[]
+  conceptAttempts                 ConceptAssessmentAttempt[]
+  quizAttempts                    QuizAttempt[]
+  exerciseSubmissions             ExerciseSubmission[]
+  stageAssessmentSubmissions      StageAssessmentSubmission[]
+  reviewItems                     ReviewItem[]
+  notes                           Note[]
+  moduleRuns                      ModuleRun[]
+  activityCompletionCarryovers    ActivityCompletionCarryover[]
+  reviewedAccessRequests          AccessRequest[]               @relation("AccessRequestReviewer")
+  activatedAccessRequest          AccessRequest?                @relation("ActivatedAccessRequest")
+  issuedAccessInvitations         AccessInvitation[]            @relation("AccessInvitationIssuer")
+  auditEvents                     AuditEvent[]                  @relation("AuditEventActor")
+  publishedProgramVersions        ProgramVersion[]              @relation("ProgramVersionPublisher")
+  programEnrollments              ProgramEnrollment[]
+  programViewPreferences          ProgramViewPreference[]
+  linguisticTranslationReviews    ProgramTranslationWorkflow[]  @relation("TranslationLinguisticReviewer")
+  pedagogicalTranslationReviews   ProgramTranslationWorkflow[]  @relation("TranslationPedagogicalReviewer")
+  culturalLegalTranslationReviews ProgramTranslationWorkflow[]  @relation("TranslationCulturalLegalReviewer")
+  approvedTranslationWorkflows    ProgramTranslationWorkflow[]  @relation("TranslationWorkflowApprover")
 
   @@map("users")
 }
@@ -373,30 +387,31 @@ model AuditEvent {
 }
 
 model Program {
-  id                    String                  @id @default(uuid()) @db.Uuid
-  ownerId               String                  @map("owner_id") @db.Uuid
+  id                    String                      @id @default(uuid()) @db.Uuid
+  ownerId               String                      @map("owner_id") @db.Uuid
   title                 String
   slug                  String
-  canonicalProgramKey   String                  @map("canonical_program_key")
-  locale                String                  @default("fr") @db.VarChar(2)
+  canonicalProgramKey   String                      @map("canonical_program_key")
+  locale                String                      @default("fr") @db.VarChar(2)
   description           String
-  status                ProgramStatus           @default(DRAFT)
-  visibility            ProgramVisibility       @default(PRIVATE)
+  status                ProgramStatus               @default(DRAFT)
+  visibility            ProgramVisibility           @default(PRIVATE)
   icon                  String?
-  position              Int                     @default(0)
-  estimatedDurationDays Int?                    @map("estimated_duration_days")
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
-  publishedVersionId    String?                 @unique @map("published_version_id") @db.Uuid
-  owner                 User                    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  publishedVersion      ProgramVersion?         @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
-  versions              ProgramVersion[]        @relation("ProgramVersions")
+  position              Int                         @default(0)
+  estimatedDurationDays Int?                        @map("estimated_duration_days")
+  createdAt             DateTime                    @default(now()) @map("created_at")
+  updatedAt             DateTime                    @updatedAt @map("updated_at")
+  publishedVersionId    String?                     @unique @map("published_version_id") @db.Uuid
+  owner                 User                        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  publishedVersion      ProgramVersion?             @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  versions              ProgramVersion[]            @relation("ProgramVersions")
   enrollments           ProgramEnrollment[]
   viewPreferences       ProgramViewPreference[]
   stages                Stage[]
   progress              ProgramProgress[]
   reviewItems           ReviewItem[]
   notes                 Note[]
+  translationWorkflow   ProgramTranslationWorkflow?
 
   @@unique([ownerId, slug])
   @@unique([ownerId, canonicalProgramKey, locale])
@@ -406,18 +421,49 @@ model Program {
   @@map("programs")
 }
 
+model ProgramTranslationWorkflow {
+  id                      String                    @id @default(uuid()) @db.Uuid
+  programId               String                    @unique @map("program_id") @db.Uuid
+  sourceProgramVersionId  String                    @map("source_program_version_id") @db.Uuid
+  status                  TranslationWorkflowStatus @default(DRAFT)
+  glossaryVersion         String                    @map("glossary_version")
+  qaChecks                Json                      @default("{}") @map("qa_checks_json")
+  linguisticReviewerId    String?                   @map("linguistic_reviewer_id") @db.Uuid
+  linguisticReviewedAt    DateTime?                 @map("linguistic_reviewed_at")
+  pedagogicalReviewerId   String?                   @map("pedagogical_reviewer_id") @db.Uuid
+  pedagogicalReviewedAt   DateTime?                 @map("pedagogical_reviewed_at")
+  culturalLegalReviewerId String?                   @map("cultural_legal_reviewer_id") @db.Uuid
+  culturalLegalReviewedAt DateTime?                 @map("cultural_legal_reviewed_at")
+  approvedByUserId        String?                   @map("approved_by_user_id") @db.Uuid
+  approvedAt              DateTime?                 @map("approved_at")
+  version                 Int                       @default(1)
+  createdAt               DateTime                  @default(now()) @map("created_at")
+  updatedAt               DateTime                  @updatedAt @map("updated_at")
+  program                 Program                   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  sourceProgramVersion    ProgramVersion            @relation("TranslationSourceProgramVersion", fields: [sourceProgramVersionId], references: [id], onDelete: Restrict)
+  linguisticReviewer      User?                     @relation("TranslationLinguisticReviewer", fields: [linguisticReviewerId], references: [id], onDelete: Restrict)
+  pedagogicalReviewer     User?                     @relation("TranslationPedagogicalReviewer", fields: [pedagogicalReviewerId], references: [id], onDelete: Restrict)
+  culturalLegalReviewer   User?                     @relation("TranslationCulturalLegalReviewer", fields: [culturalLegalReviewerId], references: [id], onDelete: Restrict)
+  approvedBy              User?                     @relation("TranslationWorkflowApprover", fields: [approvedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([sourceProgramVersionId])
+  @@index([status, updatedAt])
+  @@map("program_translation_workflows")
+}
+
 model ProgramVersion {
-  id                String              @id @default(uuid()) @db.Uuid
-  programId         String              @map("program_id") @db.Uuid
-  version           Int
-  checksum          String
-  snapshot          Json                @map("snapshot_json")
-  publishedAt       DateTime            @default(now()) @map("published_at")
-  publishedByUserId String              @map("published_by_user_id") @db.Uuid
-  program           Program             @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
-  publishedBy       User                @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
-  currentForProgram Program?            @relation("CurrentPublishedProgramVersion")
-  enrollments       ProgramEnrollment[]
+  id                  String                       @id @default(uuid()) @db.Uuid
+  programId           String                       @map("program_id") @db.Uuid
+  version             Int
+  checksum            String
+  snapshot            Json                         @map("snapshot_json")
+  publishedAt         DateTime                     @default(now()) @map("published_at")
+  publishedByUserId   String                       @map("published_by_user_id") @db.Uuid
+  program             Program                      @relation("ProgramVersions", fields: [programId], references: [id], onDelete: Cascade)
+  publishedBy         User                         @relation("ProgramVersionPublisher", fields: [publishedByUserId], references: [id], onDelete: Restrict)
+  currentForProgram   Program?                     @relation("CurrentPublishedProgramVersion")
+  enrollments         ProgramEnrollment[]
+  derivedTranslations ProgramTranslationWorkflow[] @relation("TranslationSourceProgramVersion")
 
   @@unique([programId, version])
   @@unique([programId, checksum])

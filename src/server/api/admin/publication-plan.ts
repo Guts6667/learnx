@@ -57,7 +57,8 @@ export interface PublicationBlocker {
     | 'PROGRAM_ARCHIVED'
     | 'PROGRAM_EMPTY'
     | 'SCOPE_TOO_LARGE'
-    | 'STAGE_EMPTY';
+    | 'STAGE_EMPTY'
+    | 'TRANSLATION_REVIEW_REQUIRED';
   id: string;
   message: string;
   title: string;
@@ -215,16 +216,23 @@ function planHash(
   target: PublicationTarget,
   action: PublicationAction,
   mode: PublicationMode,
+  contextVersion = '',
 ): string {
   return createHash('sha256')
-    .update(JSON.stringify({ action, mode, target }))
+    .update(JSON.stringify({ action, contextVersion, mode, target }))
     .digest('hex');
+}
+
+interface PublicationPolicyContext {
+  blockers?: PublicationBlocker[];
+  version?: string;
 }
 
 export function buildPublicationPlan(
   target: PublicationTarget,
   action: PublicationAction,
   requestedMode: PublicationMode,
+  policy: PublicationPolicyContext = {},
 ): PublicationPlan {
   const mode = action === 'PUBLISH' ? 'FULL' : requestedMode;
   const allEntities = targetEntities(target);
@@ -244,6 +252,9 @@ export function buildPublicationPlan(
     }))
     .filter((entity) => entity.from !== entity.to);
   const blockers = action === 'PUBLISH' ? collectBlockers(target) : [];
+  if (action === 'PUBLISH' && policy.blockers) {
+    blockers.push(...policy.blockers);
+  }
 
   if (allEntities.length > MAX_PUBLICATION_ENTITIES) {
     blockers.push({
@@ -260,7 +271,7 @@ export function buildPublicationPlan(
     blockers,
     changes,
     mode,
-    planId: planHash(target, action, mode),
+    planId: planHash(target, action, mode, policy.version),
     target: {
       id: target.entity.id,
       title: target.entity.title,

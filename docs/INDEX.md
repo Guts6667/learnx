@@ -20,6 +20,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Évaluations | `ASSESSMENT_SPEC.md` | Schéma, logique serveur et tests |
 | Revue scientifique | `SCIENTIFIC_REVIEW_SPEC.md` | Vision optionnelle non persistée tant qu'aucun ticket ne l'autorise |
 | Contenu pédagogique | `EDITORIAL_GUIDELINES.md`, `PEDAGOGY_AUTHORING_GUIDE.md`, `PEDAGOGY_CHANGE_POLICY.md` et le blueprint du programme | Les quatre documents ensemble |
+| Workflow bilingue | `content/i18n/GLOSSARY_FR_EN.json` et `PEDAGOGY_AUTHORING_GUIDE.md` §11 | Manifeste de traduction et workflow serveur |
 
 `PRODUCT_REQUIREMENTS.md` conserve la baseline MVP. Le consulter pour une
 décision fondatrice précise, pas comme état courant exhaustif de la V3.

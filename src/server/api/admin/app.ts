@@ -37,6 +37,12 @@ import {
   createPrismaProgramVisibilityService,
   type ProgramVisibilityService,
 } from './program-visibility-service.js';
+import {
+  createPrismaTranslationWorkflowService,
+  translationWorkflowActions,
+  type TranslationWorkflowService,
+} from './translation-workflow-service.js';
+import { bilingualQaChecksSchema } from '../../../shared/bilingual-editorial.js';
 
 interface AdminLesson {
   id: string;
@@ -109,6 +115,7 @@ interface AdminAppOptions {
   publicationService?: PublicationService;
   programVisibilityService?: ProgramVisibilityService;
   repository?: AdminRepository;
+  translationWorkflowService?: TranslationWorkflowService;
 }
 
 const identifierSchema = z.uuid();
@@ -184,6 +191,15 @@ const programVisibilityUpdateSchema = z
   .object({
     expectedUpdatedAt: z.iso.datetime({ offset: true }),
     visibility: z.enum([ProgramVisibility.PRIVATE, ProgramVisibility.PUBLIC]),
+  })
+  .strict();
+const translationWorkflowTransitionSchema = z
+  .object({
+    action: z.enum(translationWorkflowActions),
+    expectedVersion: z.number().int().min(0),
+    glossaryVersion: z.string().regex(/^\d+\.\d+\.\d+$/).optional(),
+    qaChecks: bilingualQaChecksSchema.optional(),
+    sourceProgramVersionId: identifierSchema.optional(),
   })
   .strict();
 
@@ -427,6 +443,20 @@ export function createAdminApp(options: AdminAppOptions = {}) {
     }
     return defaultProgramVisibilityService;
   };
+  let defaultTranslationWorkflowService:
+    | TranslationWorkflowService
+    | undefined;
+  const getTranslationWorkflowService = async () => {
+    if (options.translationWorkflowService) {
+      return options.translationWorkflowService;
+    }
+    if (!defaultTranslationWorkflowService) {
+      const { prisma } = await import('../../prisma.js');
+      defaultTranslationWorkflowService =
+        createPrismaTranslationWorkflowService(prisma);
+    }
+    return defaultTranslationWorkflowService;
+  };
   let defaultAccessRequestReviewService:
     | AccessRequestReviewService
     | undefined;
@@ -668,6 +698,59 @@ export function createAdminApp(options: AdminAppOptions = {}) {
 
     return context.json({ program: result.program });
   });
+
+  app.get(
+    '/api/admin/programs/:programId/translation-workflow',
+    async (context) => {
+      const workflow = await (
+        await getTranslationWorkflowService()
+      ).find(
+        parseIdentifier(context.req.param('programId')),
+        context.get('user').id,
+      );
+      if (!workflow) throw notFound();
+      return context.json({ workflow });
+    },
+  );
+
+  app.post(
+    '/api/admin/programs/:programId/translation-workflow',
+    async (context) => {
+      assertCapability(context.get('user').role, 'program.admin.edit');
+      const programId = parseIdentifier(context.req.param('programId'));
+      const parsed = translationWorkflowTransitionSchema.safeParse(
+        await parseJson(context.req.raw),
+      );
+      if (!parsed.success) throw invalidRequest();
+
+      const result = await (
+        await getTranslationWorkflowService()
+      ).transition(context.get('user').id, programId, parsed.data);
+      if (result.kind === 'NOT_FOUND') throw notFound();
+      if (result.kind === 'CONFLICT') {
+        throw new ApiError(
+          'TRANSLATION_WORKFLOW_CONFLICT',
+          'The translation workflow changed. Refresh before retrying.',
+          409,
+        );
+      }
+      if (result.kind === 'INVALID_SOURCE') {
+        throw new ApiError(
+          'INVALID_TRANSLATION_SOURCE',
+          'The source must be a published French version of the same canonical program.',
+          409,
+        );
+      }
+      if (result.kind === 'INVALID_TRANSITION') {
+        throw new ApiError(
+          'INVALID_TRANSLATION_TRANSITION',
+          'The requested translation workflow transition is not allowed.',
+          409,
+        );
+      }
+      return context.json({ workflow: result.workflow });
+    },
+  );
 
   app.get('/api/admin/stages/:stageId', async (context) => {
     const stage = await (

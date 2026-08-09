@@ -152,6 +152,32 @@ Pour un livre, manuel, guide, norme ou classification :
 Si une édition change le sens d’un contenu, il s’agit d’une modification
 substantielle soumise à une nouvelle revue.
 
+### 6.1 Variantes linguistiques
+
+Une variante traduite est un programme éditorial autonome relié à une version
+publiée précise de sa source canonique. Elle conserve son propre brouillon, ses
+revues et sa publication. Une modification ultérieure de la source ne met jamais
+silencieusement la traduction à jour.
+
+Avant publication d'une variante traduite :
+
+- la structure canonique source/cible est identique ou tout écart est bloqué ;
+- le glossaire versionné applicable est déclaré ;
+- une revue linguistique humaine contrôle sens, registre et terminologie ;
+- une revue pédagogique humaine contrôle objectifs, consignes, évaluations,
+  distracteurs et rubriques ;
+- une revue culturelle et juridique signale les adaptations nécessaires ;
+- les liens, ressources, niveaux de langue et titres bibliographiques sont
+  contrôlés par la QA bilingue.
+
+Les titres d'œuvres, de sources et de ressources restent ceux de la publication
+réellement consultée. Une traduction explicative peut les accompagner, mais ne
+remplace jamais le titre bibliographique. Aucune traduction automatique ne peut
+être publiée sans ces revues humaines.
+
+Ce workflow éditorial est indépendant d'une éventuelle validation scientifique :
+approuver une traduction n'affirme rien sur l'exactitude scientifique du contenu.
+
 ## 7. Liens, documents et vidéos
 
 ### 7.1 Liens et documents

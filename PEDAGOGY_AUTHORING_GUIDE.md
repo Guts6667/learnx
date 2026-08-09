@@ -720,3 +720,53 @@ tout son contenu. Livrer `PEDAGOGY_ASSESSMENT_BANK_XXX.json` avec :
 
 `assessmentBanks` suit exactement la section 5.4. Chaque `conceptSlug`, titre
 et nombre de questions doit correspondre à la leçon déjà intégrée.
+
+## 11. Manifeste d'une variante linguistique
+
+Une traduction ne modifie jamais le sidecar source. Elle ajoute dans le dossier
+du programme un fichier `TRANSLATION_MANIFEST_<locale>.json`, validé par
+`pnpm editorial:bilingual:check`. Le manifeste suit exactement ce contrat :
+
+```json
+{
+  "schemaVersion": 1,
+  "glossaryVersion": "1.0.0",
+  "source": {
+    "programSlug": "programme-source",
+    "locale": "fr",
+    "programVersion": 1,
+    "checksum": "sha256-sur-64-caracteres-hexadecimaux",
+    "structureKeys": ["stage:cle", "module:cle", "lesson:cle"]
+  },
+  "target": {
+    "programSlug": "translated-program",
+    "locale": "en",
+    "structureKeys": ["stage:cle", "module:cle", "lesson:cle"],
+    "glossaryTermKeys": ["programme", "lecon"]
+  },
+  "qa": {
+    "bibliographicTitles": true,
+    "culturalAndLegalContext": true,
+    "distractors": true,
+    "instructions": true,
+    "languageLevel": true,
+    "links": true,
+    "resources": true,
+    "rubrics": true,
+    "structure": true,
+    "terminology": true
+  }
+}
+```
+
+`source.programVersion` et `source.checksum` identifient l'édition effectivement
+traduite. Les deux listes `structureKeys` sont ordonnées et strictement
+identiques. Les clés sont celles du programme, des étapes, modules, leçons et
+activités ; elles ne sont ni traduites ni régénérées.
+
+Le glossaire français/anglais de référence est
+`content/i18n/GLOSSARY_FR_EN.json`. Une nouvelle version de glossaire conserve
+l'historique Git et déclenche une nouvelle QA terminologique des variantes qui
+l'adoptent. Les champs de revue scientifique du sidecar ne valident jamais une
+traduction, et les revues de traduction ne produisent jamais une pastille
+scientifique.

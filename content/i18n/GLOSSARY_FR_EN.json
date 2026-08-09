@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "sourceLocale": "fr",
+  "targetLocale": "en",
+  "version": "1.0.0",
+  "terms": [
+    {
+      "key": "programme",
+      "source": "programme",
+      "target": "program",
+      "definition": "Parcours complet LearnX composé d’étapes, de modules et de leçons.",
+      "context": "Structure pédagogique LearnX, pas une application informatique.",
+      "doNotUse": ["programme"]
+    },
+    {
+      "key": "etape",
+      "source": "étape",
+      "target": "stage",
+      "definition": "Niveau pédagogique situé entre le programme et le module.",
+      "context": "Hiérarchie Program > Stage > Module > Lesson.",
+      "doNotUse": ["step"]
+    },
+    {
+      "key": "module",
+      "source": "module",
+      "target": "module",
+      "definition": "Regroupement cohérent de leçons dans une étape.",
+      "context": "Conserver le même terme en anglais.",
+      "doNotUse": []
+    },
+    {
+      "key": "lecon",
+      "source": "leçon",
+      "target": "lesson",
+      "definition": "Unité de contexte du parcours d’apprentissage.",
+      "context": "Contenus, activités, évaluations et ressources restent rattachés à la leçon.",
+      "doNotUse": ["course"]
+    },
+    {
+      "key": "notion",
+      "source": "notion",
+      "target": "concept",
+      "definition": "Acquis ciblé et évalué dans une leçon.",
+      "context": "Employer concept pour l’objet pédagogique évalué.",
+      "doNotUse": ["notion"]
+    },
+    {
+      "key": "mini-evaluation",
+      "source": "mini-évaluation",
+      "target": "concept check",
+      "definition": "Évaluation courte ciblant une seule notion.",
+      "context": "La distinguer du quiz de consolidation de la leçon.",
+      "doNotUse": ["mini quiz"]
+    },
+    {
+      "key": "ressource-obligatoire",
+      "source": "ressource obligatoire",
+      "target": "required resource",
+      "definition": "Support guidé dont la consultation déclarée conditionne la fin de la leçon.",
+      "context": "La consultation ne constitue ni une activité maîtrisée ni une preuve de compréhension.",
+      "doNotUse": ["mandatory activity"]
+    },
+    {
+      "key": "pour-aller-plus-loin",
+      "source": "pour aller plus loin",
+      "target": "further reading",
+      "definition": "Ressource facultative qui ne bloque pas la progression.",
+      "context": "Adapter le libellé au média lorsque nécessaire.",
+      "doNotUse": ["required reading"]
+    }
+  ]
+}

@@ -20,9 +20,9 @@ function enumBlock(name: string): string {
 
 describe('V3 access lifecycle schema', () => {
   it('keeps passwords required and backfills existing users as active', () => {
-    expect(schema).toContain('passwordHash                 String');
-    expect(schema).toContain(
-      'accountStatus                AccountStatus                 @default(ACTIVE)',
+    expect(schema).toMatch(/passwordHash\s+String\s+@map\("password_hash"\)/);
+    expect(schema).toMatch(
+      /accountStatus\s+AccountStatus\s+@default\(ACTIVE\)/,
     );
     expect(migration).toContain(
       'ADD COLUMN "account_status" "account_status" NOT NULL DEFAULT \'active\'',

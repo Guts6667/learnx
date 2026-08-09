@@ -7,7 +7,26 @@ import {
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const timestamp = new Date('2026-08-03T12:00:00.000Z');
 
-function createModuleDatabase() {
+interface TranslationPolicyFixture {
+  id: string;
+  locale: string;
+  title: string;
+  translationWorkflow: null | {
+    sourceProgramVersionId: string;
+    status: 'APPROVED' | 'IN_REVIEW';
+    updatedAt: Date;
+    version: number;
+  };
+}
+
+function createModuleDatabase(
+  programPolicy: TranslationPolicyFixture = {
+    id: 'program-1',
+    locale: 'fr',
+    title: 'Programme',
+    translationWorkflow: null,
+  },
+) {
   const state = {
     lessonPublished: false,
     modulePublished: false,
@@ -33,7 +52,10 @@ function createModuleDatabase() {
     ],
     title: 'Module',
     updatedAt: state.updatedAt,
-    stage: { programId: 'program-1' },
+    stage: {
+      programId: 'program-1',
+      program: programPolicy,
+    },
   });
   let storedVersion:
     | { checksum: string; id: string; publishedAt: Date; version: number }
@@ -98,6 +120,37 @@ function createModuleDatabase() {
 }
 
 describe('Prisma publication service', () => {
+  it('bloque une variante non revue et invalide son aperçu après approbation', async () => {
+    const policy: TranslationPolicyFixture = {
+      id: 'program-1',
+      locale: 'en',
+      title: 'Translated program',
+      translationWorkflow: null,
+    };
+    const fixture = createModuleDatabase(policy);
+    const service = createPrismaPublicationService(fixture.client);
+    const request = {
+      action: 'PUBLISH' as const,
+      mode: 'FULL' as const,
+      targetId: 'module-1',
+      targetType: 'MODULE' as const,
+    };
+    const blocked = await service.preview(ownerId, request);
+    expect(blocked?.blockers).toEqual([
+      expect.objectContaining({ code: 'TRANSLATION_REVIEW_REQUIRED' }),
+    ]);
+
+    policy.translationWorkflow = {
+      sourceProgramVersionId: 'version-source-1',
+      status: 'APPROVED',
+      updatedAt: new Date('2026-08-09T12:00:00.000Z'),
+      version: 6,
+    };
+    const approved = await service.preview(ownerId, request);
+    expect(approved?.blockers).toEqual([]);
+    expect(approved?.planId).not.toBe(blocked?.planId);
+  });
+
   it('rejette un aperçu obsolète mais accepte la répétition déjà appliquée', async () => {
     const fixture = createModuleDatabase();
     const service = createPrismaPublicationService(fixture.client);
@@ -177,6 +230,12 @@ describe('Prisma publication service', () => {
       title: 'Étape',
       updatedAt: timestamp,
       programId: 'program-1',
+      program: {
+        id: 'program-1',
+        locale: 'fr',
+        title: 'Programme',
+        translationWorkflow: null,
+      },
     });
     const transaction = {
       auditEvent: { upsert: vi.fn() },

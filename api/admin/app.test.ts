@@ -20,6 +20,7 @@ import {
   type PublicationService,
 } from '../../src/server/api/admin/publication-service';
 import type { ProgramVisibilityService } from '../../src/server/api/admin/program-visibility-service';
+import type { TranslationWorkflowService } from '../../src/server/api/admin/translation-workflow-service';
 
 const ownerId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
@@ -892,6 +893,56 @@ describe('administration minimale', () => {
       ...request,
       planId: plan.planId,
     });
+  });
+
+  it('applique une transition de revue bilingue côté serveur', async () => {
+    const workflow = {
+      approvedAt: null,
+      approvedByUserId: null,
+      culturalLegalReviewedAt: null,
+      culturalLegalReviewerId: null,
+      glossaryVersion: '1.0.0',
+      linguisticReviewedAt: null,
+      linguisticReviewerId: null,
+      pedagogicalReviewedAt: null,
+      pedagogicalReviewerId: null,
+      programId,
+      qaChecks: {},
+      sourceProgramVersionId: 'c29e4b75-f73a-47de-b67c-cd6a38262b2f',
+      status: 'DRAFT' as const,
+      updatedAt: new Date('2026-08-09T10:00:00.000Z'),
+      version: 1,
+    };
+    const translationWorkflowService: TranslationWorkflowService = {
+      find: vi.fn(async () => workflow),
+      transition: vi.fn(async () => ({ kind: 'APPLIED' as const, workflow })),
+    };
+    const app = createAdminApp({
+      authentication: authentication(),
+      repository: createRepository().repository,
+      translationWorkflowService,
+    });
+    const input = {
+      action: 'CONFIGURE',
+      expectedVersion: 0,
+      glossaryVersion: '1.0.0',
+      sourceProgramVersionId: workflow.sourceProgramVersionId,
+    };
+    const response = await app.request(
+      `/api/admin/programs/${programId}/translation-workflow`,
+      {
+        body: JSON.stringify(input),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(translationWorkflowService.transition).toHaveBeenCalledWith(
+      ownerId,
+      programId,
+      input,
+    );
   });
 
   it('ne révèle pas le plan d’un autre propriétaire', async () => {
