@@ -2,16 +2,19 @@ import type {
   AccountStatus,
   Role,
 } from '../../../../generated/prisma/client.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 export interface AuthenticatedUser {
   id: string;
   email: string;
   displayName: string;
+  locale?: SupportedLocale;
   role: Role;
 }
 
 export interface StoredAccountUser extends AuthenticatedUser {
   accountStatus: AccountStatus;
+  locale: SupportedLocale;
 }
 
 export interface StoredUser extends StoredAccountUser {
@@ -37,6 +40,7 @@ export interface AuthRepository {
     email: string;
     passwordHash: string;
     displayName: string;
+    locale: SupportedLocale;
   }): Promise<StoredUser>;
   deleteSessionByTokenHash(tokenHash: string): Promise<void>;
   findSessionWithUserByTokenHash(tokenHash: string): Promise<{
@@ -45,4 +49,8 @@ export interface AuthRepository {
   } | null>;
   findUserByEmail(email: string): Promise<StoredUser | null>;
   touchSession(id: string, lastUsedAt: Date): Promise<boolean>;
+  updateUserLocale(
+    userId: string,
+    locale: SupportedLocale,
+  ): Promise<StoredAccountUser | null>;
 }

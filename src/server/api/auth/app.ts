@@ -7,11 +7,13 @@ import {
   logoutUser,
   registerUser,
   setSessionCookie,
+  updateUserLocale,
   type AuthDependencies,
   type AuthEnvironment,
 } from '../_lib/auth.js';
 import {
   loginInputSchema,
+  localePreferenceInputSchema,
   registerInputSchema,
 } from '../_lib/auth-validation.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
@@ -149,6 +151,40 @@ export function createAuthApp(options: AuthAppOptions = {}) {
 
     if (!user) clearSessionCookie(context, secureCookies);
 
+    return context.json({ user });
+  });
+
+  app.patch('/api/auth/locale', async (context) => {
+    const currentUser = await getSessionUser(
+      context.req.raw,
+      options.dependencies,
+    );
+    if (!currentUser) {
+      throw new ApiError(
+        'AUTHENTICATION_REQUIRED',
+        'Authentication is required.',
+        401,
+      );
+    }
+    const parsedInput = localePreferenceInputSchema.safeParse(
+      await parseBody(context.req.raw),
+    );
+    if (!parsedInput.success) {
+      throw new ApiError('INVALID_REQUEST', 'Invalid locale preference.', 400);
+    }
+    const user = await updateUserLocale(
+      currentUser.id,
+      parsedInput.data.locale,
+      options.dependencies,
+    );
+    if (!user) {
+      throw new ApiError(
+        'AUTHENTICATION_REQUIRED',
+        'Authentication is required.',
+        401,
+      );
+    }
+    context.header('Cache-Control', 'private, no-store');
     return context.json({ user });
   });
 

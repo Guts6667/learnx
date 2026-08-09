@@ -42,6 +42,7 @@ function createContext(options: { deliveryFails?: boolean } = {}) {
       issues.push(input);
       return {
         expiresAt: input.expiresAt,
+        locale: input.locale,
         recipientEmail: input.email,
         verificationId: input.verificationId,
       };
@@ -73,14 +74,16 @@ describe('email verification', () => {
   it('stores only the token hash and sends a fragment link', async () => {
     const context = createContext();
 
-    await issueEmailVerification('learner@example.com', context.dependencies);
+    await issueEmailVerification('learner@example.com', 'en', context.dependencies);
 
     expect(context.issues).toHaveLength(1);
     expect(context.issues[0]?.tokenHash).toBe(hashVerificationToken(rawToken));
+    expect(context.issues[0]?.locale).toBe('en');
     expect(JSON.stringify(context.issues)).not.toContain(rawToken);
     expect(context.sent[0]).toEqual(
       expect.objectContaining({
         idempotencyKey: 'verification-1',
+        locale: 'en',
         verificationUrl: buildVerificationUrl(
           'https://learnx.example',
           rawToken,
@@ -93,7 +96,7 @@ describe('email verification', () => {
   it('invalidates a token after a simulated delivery failure without logging secrets', async () => {
     const context = createContext({ deliveryFails: true });
 
-    await issueEmailVerification('learner@example.com', context.dependencies);
+    await issueEmailVerification('learner@example.com', 'fr', context.dependencies);
 
     expect(context.invalidated).toEqual(['verification-1']);
     expect(context.logs).toEqual([

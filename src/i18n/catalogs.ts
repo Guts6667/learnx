@@ -1,5 +1,8 @@
 export const frenchMessages = {
   'app.name': 'LearnX',
+  'app.documentTitle': 'LearnX — Parcours personnel',
+  'app.description':
+    'LearnX, votre environnement personnel pour apprendre, pratiquer et réviser.',
   'app.tagline': 'Parcours personnel',
   'navigation.skipToContent': 'Aller au contenu principal',
   'navigation.back.ariaLabel': 'Revenir à la page précédente',
@@ -22,6 +25,19 @@ export const frenchMessages = {
   'curriculum.moduleOptions': 'Options du module',
   'curriculum.stagePrerequisites': 'Voir les prérequis de l’étape',
   'learning.returnProgram': 'Retour au programme',
+  'profile.eyebrow': 'Compte',
+  'profile.email': 'Adresse e-mail',
+  'profile.language': 'Langue de l’interface',
+  'profile.languageDescription':
+    'Cette préférence est enregistrée sur votre compte et suivra vos appareils.',
+  'profile.languageFrench': 'Français',
+  'profile.languageEnglish': 'English',
+  'profile.languageSaved': 'Langue enregistrée.',
+  'profile.languageError':
+    'La langue n’a pas pu être enregistrée. Réessayez.',
+  'profile.actions': 'Actions',
+  'profile.openAdmin': 'Ouvrir l’administration',
+  'profile.logout': 'Se déconnecter',
   'auth.email.label': 'Adresse e-mail',
   'auth.password.label': 'Mot de passe',
   'auth.login.sessionCheck': 'Vérification de la session',
@@ -92,6 +108,9 @@ export type MessageCatalog = Readonly<Record<MessageKey, MessageValue>>;
 
 export const englishMessages = {
   'app.name': 'LearnX',
+  'app.documentTitle': 'LearnX — Personal learning journey',
+  'app.description':
+    'LearnX, your personal environment to learn, practise and review.',
   'app.tagline': 'Personal learning journey',
   'navigation.skipToContent': 'Skip to main content',
   'navigation.back.ariaLabel': 'Go back to the previous page',
@@ -114,6 +133,18 @@ export const englishMessages = {
   'curriculum.moduleOptions': 'Module options',
   'curriculum.stagePrerequisites': 'View stage prerequisites',
   'learning.returnProgram': 'Back to the program',
+  'profile.eyebrow': 'Account',
+  'profile.email': 'Email address',
+  'profile.language': 'Interface language',
+  'profile.languageDescription':
+    'This preference is saved to your account and follows you across devices.',
+  'profile.languageFrench': 'Français',
+  'profile.languageEnglish': 'English',
+  'profile.languageSaved': 'Language saved.',
+  'profile.languageError': 'The language could not be saved. Please try again.',
+  'profile.actions': 'Actions',
+  'profile.openAdmin': 'Open administration',
+  'profile.logout': 'Sign out',
   'auth.email.label': 'Email address',
   'auth.password.label': 'Password',
   'auth.login.sessionCheck': 'Checking your session',

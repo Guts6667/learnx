@@ -4,11 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 import { useAppQueryClient } from '@/app/providers';
 import { apiRequest } from '@/lib/api-client';
 import { purgePrivateBrowserStorage } from '@/lib/private-browser-storage';
+import type { UiLocale } from '@/i18n';
 
 export interface SessionUser {
   displayName: string;
   email: string;
   id: string;
+  locale: UiLocale;
   role: 'USER' | 'CREATOR' | 'ADMIN';
 }
 
@@ -121,4 +123,35 @@ export function useLogoutMutation() {
   }, [queryClient]);
 
   return { isPending, mutateAsync };
+}
+
+export function useLocaleMutation() {
+  const queryClient = useAppQueryClient();
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<unknown>();
+
+  const mutateAsync = useCallback(
+    async (locale: UiLocale) => {
+      setIsPending(true);
+      setError(undefined);
+      try {
+        await queryClient.cancelQueries({ queryKey: sessionQueryKey });
+        const session = await apiRequest<SessionResponse>('/api/auth/locale', {
+          body: JSON.stringify({ locale }),
+          headers: { 'content-type': 'application/json' },
+          method: 'PATCH',
+        });
+        queryClient.setQueryData(sessionQueryKey, session);
+        return session;
+      } catch (requestError) {
+        setError(requestError);
+        throw requestError;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    [queryClient],
+  );
+
+  return { error, isPending, mutateAsync };
 }

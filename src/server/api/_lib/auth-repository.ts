@@ -1,4 +1,5 @@
 import type { AuthRepository, StoredUser } from './auth-types.js';
+import { normalizeLocale } from '../../../shared/locale.js';
 
 async function getPrismaClient() {
   const { prisma } = await import('../../prisma.js');
@@ -21,9 +22,10 @@ function toStoredUser(user: {
   email: string;
   passwordHash: string;
   displayName: string;
+  locale: string;
   role: StoredUser['role'];
 }): StoredUser {
-  return user;
+  return { ...user, locale: normalizeLocale(user.locale) };
 }
 
 export const prismaAuthRepository: AuthRepository = {
@@ -76,7 +78,7 @@ export const prismaAuthRepository: AuthRepository = {
 
     const { user, ...storedSession } = session;
 
-    return { session: storedSession, user };
+    return { session: storedSession, user: toStoredUser(user) };
   },
   async findUserByEmail(email) {
     const prisma = await getPrismaClient();
@@ -92,5 +94,19 @@ export const prismaAuthRepository: AuthRepository = {
     });
 
     return result.count === 1;
+  },
+  async updateUserLocale(userId, locale) {
+    const prisma = await getPrismaClient();
+
+    return prisma.$transaction(async (transaction) => {
+      const updated = await transaction.user.updateMany({
+        data: { locale },
+        where: { accountStatus: 'ACTIVE', id: userId },
+      });
+      if (updated.count !== 1) return null;
+
+      const user = await transaction.user.findUnique({ where: { id: userId } });
+      return user ? toStoredUser(user) : null;
+    });
   },
 };

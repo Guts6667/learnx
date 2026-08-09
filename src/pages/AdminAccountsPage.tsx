@@ -1,6 +1,8 @@
 import { useState } from 'preact/hooks';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { useI18n } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -197,6 +199,7 @@ function AccountCard({
   account: AdminAccount;
   currentUserId?: string;
 }) {
+  const { locale } = useI18n();
   const isSuspended = account.accountStatus === 'SUSPENDED';
 
   return (
@@ -217,10 +220,10 @@ function AccountCard({
         {account.suspendedAt ? (
           <p class="text-sm text-slate-400">
             Suspendu le{' '}
-            {new Intl.DateTimeFormat('fr-FR', {
+            {formatLocalizedDate(account.suspendedAt, locale, {
               dateStyle: 'medium',
               timeStyle: 'short',
-            }).format(new Date(account.suspendedAt))}
+            })}
           </p>
         ) : null}
         <AccountRoleAction account={account} />

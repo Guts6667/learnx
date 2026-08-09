@@ -3,7 +3,10 @@ import { createContext } from 'preact';
 import type { ComponentChildren } from 'preact';
 import { useContext, useState } from 'preact/hooks';
 
-import { I18nProvider, type UiLocale } from '@/i18n';
+import {
+  I18nProvider,
+  type UiLocale,
+} from '@/i18n';
 
 interface AppProvidersProps {
   children: ComponentChildren;
@@ -12,7 +15,7 @@ interface AppProvidersProps {
 
 const QueryClientContext = createContext<QueryClient | null>(null);
 
-export function AppProviders({ children, locale = 'fr' }: AppProvidersProps) {
+export function AppProviders({ children, locale }: AppProvidersProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -24,13 +27,14 @@ export function AppProviders({ children, locale = 'fr' }: AppProvidersProps) {
         },
       }),
   );
+  const initialLocale = locale ?? 'fr';
 
   return (
-    <I18nProvider locale={locale}>
-      <QueryClientContext.Provider value={queryClient}>
+    <QueryClientContext.Provider value={queryClient}>
+      <I18nProvider locale={initialLocale}>
         {children}
-      </QueryClientContext.Provider>
-    </I18nProvider>
+      </I18nProvider>
+    </QueryClientContext.Provider>
   );
 }
 

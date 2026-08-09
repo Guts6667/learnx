@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'preact/hooks';
 
 import { apiRequest } from '@/lib/api-client';
+import type { UiLocale } from '@/i18n';
 
 interface AccessRequestResponse {
   message: string;
@@ -16,7 +17,7 @@ export function useAccessRequestMutation() {
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
 
-  const mutateAsync = useCallback(async (email: string) => {
+  const mutateAsync = useCallback(async (email: string, locale: UiLocale) => {
     setIsPending(true);
     setError(undefined);
 
@@ -26,7 +27,7 @@ export function useAccessRequestMutation() {
         {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email, locale }),
         },
       );
       setData(response);

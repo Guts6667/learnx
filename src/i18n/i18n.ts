@@ -3,14 +3,18 @@ import {
   type MessageCatalog,
   type MessageKey,
 } from '@/i18n/catalogs';
+import {
+  normalizeLocale,
+  supportedLocales,
+  type SupportedLocale,
+} from '@/shared/locale';
 
-export const supportedUiLocales = ['fr', 'en'] as const;
-export type UiLocale = (typeof supportedUiLocales)[number];
+export const supportedUiLocales = supportedLocales;
+export type UiLocale = SupportedLocale;
 export type TranslationParameters = Readonly<Record<string, string | number>>;
 
 export function normalizeUiLocale(locale: string | null | undefined): UiLocale {
-  const language = locale?.trim().toLowerCase().split('-')[0];
-  return language === 'en' ? 'en' : 'fr';
+  return normalizeLocale(locale);
 }
 
 function selectMessage(

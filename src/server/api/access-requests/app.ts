@@ -114,6 +114,7 @@ export function createAccessRequestsApp(
     );
     await requestAccess(
       parsedInput.data.email,
+      parsedInput.data.locale,
       options.dependencies && options.emailVerification
         ? {
             ...options.dependencies,

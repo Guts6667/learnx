@@ -8,6 +8,8 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
 import type { RecommendationKind } from '@/lib/recommendation';
+import { useI18n, type UiLocale } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 
 const actionLabels: Record<RecommendationKind, string> = {
   DUE_TODAY_REVIEW: 'Révision du jour',
@@ -20,11 +22,11 @@ const actionLabels: Record<RecommendationKind, string> = {
   REQUIRED_QUIZ: 'Quiz requis',
 };
 
-function formatLastActivity(value: string): string {
-  return new Intl.DateTimeFormat('fr-FR', {
+function formatLastActivity(value: string, locale: UiLocale): string {
+  return formatLocalizedDate(value, locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(value));
+  });
 }
 
 export function TodayPage() {
@@ -66,6 +68,7 @@ function TodayContent({
   data: TodayResponse;
   program: NonNullable<TodayResponse['program']>;
 }) {
+  const { locale } = useI18n();
   return (
     <div class="grid min-w-0 gap-5 lg:grid-cols-12">
       {data.action ? (
@@ -127,7 +130,7 @@ function TodayContent({
               variant="ghost"
             >
               {data.lastActivity.title} ·{' '}
-              {formatLastActivity(data.lastActivity.at)}
+              {formatLastActivity(data.lastActivity.at, locale)}
             </NavigationAction>
           ) : (
             <p class="mt-2 text-sm text-slate-300">Aucune activité récente</p>

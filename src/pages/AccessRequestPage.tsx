@@ -20,7 +20,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
   const [email, setEmail] = useState('');
   const isOnline = useOnlineStatus();
   const requestMutation = useAccessRequestMutation();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const error = requestMutation.error;
   const errorMessage =
     error instanceof ApiClientError
@@ -33,7 +33,7 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
     event.preventDefault();
 
     try {
-      await requestMutation.mutateAsync(email);
+      await requestMutation.mutateAsync(email, locale);
     } catch {
       // The mutation state exposes the normalized API error accessibly.
     }

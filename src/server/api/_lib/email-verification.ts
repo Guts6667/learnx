@@ -4,6 +4,7 @@ import {
   ResendEmailProvider,
   type EmailProvider,
 } from '../../email/email-provider.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 const defaultTtlMilliseconds = 24 * 60 * 60 * 1_000;
 const minimumTtlMilliseconds = 5 * 60 * 1_000;
@@ -12,6 +13,7 @@ const maximumTtlMilliseconds = 7 * 24 * 60 * 60 * 1_000;
 export interface IssuedEmailVerification {
   expiresAt: Date;
   recipientEmail: string;
+  locale: SupportedLocale;
   verificationId: string;
 }
 
@@ -25,6 +27,7 @@ export interface EmailVerificationRepository {
     tokenHash: string;
     verificationId: string;
     email: string;
+    locale: SupportedLocale;
   }): Promise<IssuedEmailVerification | null>;
 }
 
@@ -139,6 +142,7 @@ export const prismaEmailVerificationRepository: EmailVerificationRepository = {
     now,
     tokenHash,
     verificationId,
+    locale,
   }) {
     const { prisma } = await import('../../prisma.js');
 
@@ -170,6 +174,7 @@ export const prismaEmailVerificationRepository: EmailVerificationRepository = {
         data: {
           emailNormalized: email,
           id: accessRequestId,
+          locale,
           updatedAt: now,
         },
       });
@@ -194,6 +199,7 @@ export const prismaEmailVerificationRepository: EmailVerificationRepository = {
 
       return {
         expiresAt,
+        locale: request.locale === 'en' ? 'en' : 'fr',
         recipientEmail: email,
         verificationId,
       };
@@ -266,6 +272,7 @@ export function createEmailVerificationConsumerDependencies() {
 
 export async function issueEmailVerification(
   email: string,
+  locale: SupportedLocale,
   dependencies: EmailVerificationDependencies,
 ): Promise<void> {
   const now = dependencies.now();
@@ -276,6 +283,7 @@ export async function issueEmailVerification(
     email,
     expiresAt: new Date(now.getTime() + dependencies.ttlMilliseconds),
     now,
+    locale,
     tokenHash: hashVerificationToken(token),
     verificationId,
   });
@@ -287,6 +295,7 @@ export async function issueEmailVerification(
       expiresAt: issued.expiresAt,
       idempotencyKey: issued.verificationId,
       recipientEmail: issued.recipientEmail,
+      locale: issued.locale,
       verificationUrl: buildVerificationUrl(dependencies.appUrl, token),
     });
   } catch {

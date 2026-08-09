@@ -20,12 +20,14 @@ import {
   useNoteQuery,
   useNotesQuery,
 } from '@/features/notes/queries';
+import { useI18n, type UiLocale } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 
-function formatUpdatedAt(value: string): string {
-  return new Intl.DateTimeFormat('fr-FR', {
+function formatUpdatedAt(value: string, locale: UiLocale): string {
+  return formatLocalizedDate(value, locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(value));
+  });
 }
 
 function getExcerpt(markdown: string): string {
@@ -44,6 +46,7 @@ function getExcerpt(markdown: string): string {
 }
 
 function NoteCard({ note }: { note: NoteDetail }) {
+  const { locale } = useI18n();
   return (
     <li>
       <Card class="space-y-3">
@@ -63,7 +66,7 @@ function NoteCard({ note }: { note: NoteDetail }) {
           <p class="text-sm text-slate-400">Note personnelle</p>
         )}
         <p class="text-xs text-slate-400">
-          Modifiée le {formatUpdatedAt(note.updatedAt)}
+          Modifiée le {formatUpdatedAt(note.updatedAt, locale)}
         </p>
         <NavigationAction
           href={`/notes/${encodeURIComponent(note.id)}`}

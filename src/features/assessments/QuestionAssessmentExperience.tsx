@@ -8,6 +8,8 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Textarea } from '@/components/ui/Textarea';
+import { useI18n, type UiLocale } from '@/i18n';
+import { formatLocalizedDate, formatLocalizedNumber } from '@/shared/locale';
 
 export type AssessmentQuestionType =
   'MULTIPLE_CHOICE' | 'SHORT_ANSWER' | 'SINGLE_CHOICE' | 'TRUE_FALSE';
@@ -91,14 +93,15 @@ function toSubmittedAnswers(
   });
 }
 
-function formatAttemptDate(value: string): string {
-  return new Intl.DateTimeFormat('fr-FR', {
+function formatAttemptDate(value: string, locale: UiLocale): string {
+  return formatLocalizedDate(value, locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(value));
+  });
 }
 
 function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
+  const { locale } = useI18n();
   return (
     <section aria-labelledby="assessment-history-title" class="space-y-3">
       <h2 class="text-xl font-semibold" id="assessment-history-title">
@@ -113,11 +116,11 @@ function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
               <Card class="flex items-center justify-between gap-4">
                 <div>
                   <p class="font-semibold">
-                    Score : {Math.round(attempt.score)} %
+                    Score : {formatLocalizedNumber(Math.round(attempt.score), locale)} %
                   </p>
                   <p class="mt-1 text-sm text-slate-400">
                     Reprise {attempt.runSequence ?? 1} ·{' '}
-                    {formatAttemptDate(attempt.submittedAt)}
+                    {formatAttemptDate(attempt.submittedAt, locale)}
                   </p>
                 </div>
                 <Badge tone={attempt.passed ? 'success' : 'danger'}>

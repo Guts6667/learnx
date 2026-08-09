@@ -10,6 +10,7 @@ const authenticatedSession: SessionResponse = {
     displayName: 'Nouvel utilisateur',
     email: 'new@example.com',
     id: 'user-new',
+    locale: 'fr',
     role: 'USER',
   },
 };

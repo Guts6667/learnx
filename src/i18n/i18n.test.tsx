@@ -46,4 +46,23 @@ describe('i18n foundation', () => {
   it('keeps the catalog large enough to cover the first migrated domain', () => {
     expect(Object.keys(frenchMessages).length).toBeGreaterThan(40);
   });
+
+  it('synchronizes document and PWA metadata with the active locale', async () => {
+    render(
+      <I18nProvider locale="en">
+        <p>content</p>
+      </I18nProvider>,
+    );
+
+    expect(document.documentElement.lang).toBe('en');
+    expect(document.title).toBe('LearnX — Personal learning journey');
+    expect(document.querySelector('link[rel="manifest"]')).toHaveAttribute(
+      'href',
+      '/manifest-en.webmanifest',
+    );
+    expect(
+      document.querySelector<HTMLMetaElement>('meta[name="description"]')
+        ?.content,
+    ).toContain('personal environment');
+  });
 });

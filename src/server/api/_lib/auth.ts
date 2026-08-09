@@ -15,6 +15,7 @@ import type {
   AuthenticatedUser,
   StoredAccountUser,
 } from './auth-types.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 export interface AuthEnvironment {
   Variables: {
@@ -60,6 +61,7 @@ function toAuthenticatedUser(user: StoredAccountUser): AuthenticatedUser {
     id: user.id,
     email: user.email,
     displayName: user.displayName,
+    locale: user.locale,
     role: user.role,
   };
 }
@@ -104,7 +106,12 @@ async function createSession(
 }
 
 export async function registerUser(
-  input: { email: string; password: string; displayName: string },
+  input: {
+    email: string;
+    password: string;
+    displayName: string;
+    locale: SupportedLocale;
+  },
   dependencies = defaultDependencies,
 ): Promise<AuthResult> {
   const existingUser = await dependencies.repository.findUserByEmail(
@@ -124,6 +131,7 @@ export async function registerUser(
       email: input.email,
       passwordHash: await dependencies.hashPassword(input.password),
       displayName: input.displayName,
+      locale: input.locale,
     });
 
     return createSession(dependencies, toAuthenticatedUser(user));
@@ -141,6 +149,15 @@ export async function registerUser(
 
     throw error;
   }
+}
+
+export async function updateUserLocale(
+  userId: string,
+  locale: SupportedLocale,
+  dependencies = defaultDependencies,
+): Promise<AuthenticatedUser | null> {
+  const user = await dependencies.repository.updateUserLocale(userId, locale);
+  return user ? toAuthenticatedUser(user) : null;
 }
 
 export async function loginUser(

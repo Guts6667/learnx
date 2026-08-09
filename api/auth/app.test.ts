@@ -50,6 +50,7 @@ function createTestDependencies() {
         email: input.email,
         passwordHash: input.passwordHash,
         displayName: input.displayName,
+        locale: input.locale,
         role: 'USER',
       };
 
@@ -81,6 +82,7 @@ function createTestDependencies() {
           id: user.id,
           email: user.email,
           displayName: user.displayName,
+          locale: user.locale,
           role: user.role,
         },
       };
@@ -98,6 +100,14 @@ function createTestDependencies() {
       }
 
       return Boolean(session);
+    },
+    async updateUserLocale(userId, locale) {
+      const user = [...users.values()].find(
+        (candidate) => candidate.id === userId,
+      );
+      if (!user || user.accountStatus !== 'ACTIVE') return null;
+      user.locale = locale;
+      return user;
     },
   };
 
@@ -179,6 +189,7 @@ describe('auth API', () => {
         id: 'user-1',
         email: 'learner@example.com',
         displayName: 'Learner',
+        locale: 'fr',
         role: 'USER',
       },
     });
@@ -218,6 +229,87 @@ describe('auth API', () => {
     expect(await sessionResponse.json()).toMatchObject({
       user: { id: user.id, role: 'CREATOR' },
     });
+  });
+
+  it('persists an authenticated locale preference across sessions', async () => {
+    const { dependencies } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Learner',
+          email: 'locale@example.com',
+          locale: 'fr',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const cookie = getSessionCookie(registerResponse);
+    const updateResponse = await app.request(
+      'http://localhost/api/auth/locale',
+      {
+        body: JSON.stringify({ locale: 'en' }),
+        headers: {
+          'content-type': 'application/json',
+          cookie,
+        },
+        method: 'PATCH',
+      },
+    );
+    const sessionResponse = await app.request(
+      'http://localhost/api/auth/session',
+      { headers: { cookie } },
+    );
+
+    expect(updateResponse.status).toBe(200);
+    expect(updateResponse.headers.get('cache-control')).toBe(
+      'private, no-store',
+    );
+    expect(await updateResponse.json()).toMatchObject({
+      user: { email: 'locale@example.com', locale: 'en' },
+    });
+    expect(await sessionResponse.json()).toMatchObject({
+      user: { email: 'locale@example.com', locale: 'en' },
+    });
+  });
+
+  it('rejects unauthenticated or unsupported locale changes', async () => {
+    const { dependencies } = createTestDependencies();
+    const app = createAuthApp({ dependencies });
+    const unauthenticated = await app.request(
+      'http://localhost/api/auth/locale',
+      {
+        body: JSON.stringify({ locale: 'en' }),
+        headers: { 'content-type': 'application/json' },
+        method: 'PATCH',
+      },
+    );
+    const registerResponse = await app.request(
+      'http://localhost/api/auth/register',
+      {
+        body: JSON.stringify({
+          displayName: 'Learner',
+          email: 'invalid-locale@example.com',
+          password: 'correct-horse-battery-staple',
+        }),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
+      },
+    );
+    const invalid = await app.request('http://localhost/api/auth/locale', {
+      body: JSON.stringify({ locale: 'de' }),
+      headers: {
+        'content-type': 'application/json',
+        cookie: getSessionCookie(registerResponse),
+      },
+      method: 'PATCH',
+    });
+
+    expect(unauthenticated.status).toBe(401);
+    expect(invalid.status).toBe(400);
   });
 
   it('refuse un compte suspendu et invalide sa session existante', async () => {

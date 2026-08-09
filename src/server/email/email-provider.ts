@@ -1,6 +1,10 @@
+import type { SupportedLocale } from '../../shared/locale.js';
+import { formatLocalizedDate } from '../../shared/locale.js';
+
 interface VerificationEmailContent {
   expiresAt: Date;
   recipientEmail: string;
+  locale: SupportedLocale;
   verificationUrl: string;
 }
 
@@ -8,6 +12,7 @@ interface AccessInvitationEmailContent {
   activationUrl: string;
   expiresAt: Date;
   recipientEmail: string;
+  locale: SupportedLocale;
 }
 
 export interface VerificationEmailInput extends VerificationEmailContent {
@@ -47,14 +52,38 @@ function escapeHtml(value: string): string {
 export function createVerificationEmailContent({
   expiresAt,
   recipientEmail,
+  locale,
   verificationUrl,
 }: VerificationEmailContent) {
-  const expiration = new Intl.DateTimeFormat('fr-FR', {
+  const expiration = formatLocalizedDate(expiresAt, locale, {
     dateStyle: 'long',
     timeStyle: 'short',
     timeZone: 'Europe/Paris',
-  }).format(expiresAt);
+  });
   const safeUrl = escapeHtml(verificationUrl);
+
+  if (locale === 'en') {
+    return {
+      html: [
+        '<h1>Verify your email address</h1>',
+        '<p>Confirm your address to send your access request to the LearnX administrator.</p>',
+        `<p><a href="${safeUrl}">Verify my address</a></p>`,
+        `<p>This link expires on ${escapeHtml(expiration)} and can only be used once.</p>`,
+        '<p>If you did not request access, you can ignore this email.</p>',
+      ].join(''),
+      subject: 'Verify your email address for LearnX',
+      text: [
+        'Verify your email address',
+        '',
+        'Confirm your address to send your access request to the LearnX administrator.',
+        verificationUrl,
+        '',
+        `This link expires on ${expiration} and can only be used once.`,
+        'If you did not request access, you can ignore this email.',
+      ].join('\n'),
+      to: recipientEmail,
+    };
+  }
 
   return {
     html: [
@@ -82,13 +111,37 @@ export function createAccessInvitationEmailContent({
   activationUrl,
   expiresAt,
   recipientEmail,
+  locale,
 }: AccessInvitationEmailContent) {
-  const expiration = new Intl.DateTimeFormat('fr-FR', {
+  const expiration = formatLocalizedDate(expiresAt, locale, {
     dateStyle: 'long',
     timeStyle: 'short',
     timeZone: 'Europe/Paris',
-  }).format(expiresAt);
+  });
   const safeUrl = escapeHtml(activationUrl);
+
+  if (locale === 'en') {
+    return {
+      html: [
+        '<h1>Your LearnX access has been approved</h1>',
+        '<p>Choose your password now to activate your account.</p>',
+        `<p><a href="${safeUrl}">Activate my account</a></p>`,
+        `<p>This link expires on ${escapeHtml(expiration)} and can only be used once.</p>`,
+        '<p>If you were not expecting this invitation, you can ignore this email.</p>',
+      ].join(''),
+      subject: 'Activate your LearnX account',
+      text: [
+        'Your LearnX access has been approved',
+        '',
+        'Choose your password now to activate your account.',
+        activationUrl,
+        '',
+        `This link expires on ${expiration} and can only be used once.`,
+        'If you were not expecting this invitation, you can ignore this email.',
+      ].join('\n'),
+      to: recipientEmail,
+    };
+  }
 
   return {
     html: [

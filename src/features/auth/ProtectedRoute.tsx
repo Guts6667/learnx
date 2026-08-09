@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/Spinner';
 import { useSessionQuery } from '@/features/auth/session';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { isOfflineRequestError } from '@/lib/api-client';
+import { normalizeUiLocale, useI18n } from '@/i18n';
 
 interface ProtectedRouteProps {
   children: ComponentChildren;
@@ -17,6 +18,13 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isOnline = useOnlineStatus();
   const sessionQuery = useSessionQuery();
   const [isReconnecting, setIsReconnecting] = useState(false);
+  const { setLocale } = useI18n();
+
+  useEffect(() => {
+    if (sessionQuery.data?.user) {
+      setLocale(normalizeUiLocale(sessionQuery.data.user.locale));
+    }
+  }, [sessionQuery.data?.user, setLocale]);
 
   useEffect(() => {
     if (

@@ -238,6 +238,7 @@ describe('access requests API', () => {
         displayName: 'Learner',
         email: 'learner@example.com',
         id: '00000000-0000-4000-8000-000000000001',
+        locale: 'fr' as const,
         role: 'CREATOR' as const,
       },
     }));

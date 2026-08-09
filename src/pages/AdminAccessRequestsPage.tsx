@@ -1,6 +1,8 @@
 import { useState } from 'preact/hooks';
 
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
+import { useI18n } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -200,6 +202,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
 }
 
 function RequestCard({ request }: { request: AdminAccessRequest }) {
+  const { locale } = useI18n();
   const tone =
     request.status === 'APPROVED'
       ? 'success'
@@ -217,10 +220,10 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
             </h2>
             <p class="mt-1 text-sm text-slate-400">
               Vérifiée le{' '}
-              {new Intl.DateTimeFormat('fr-FR', {
+              {formatLocalizedDate(request.emailVerifiedAt, locale, {
                 dateStyle: 'medium',
                 timeStyle: 'short',
-              }).format(new Date(request.emailVerifiedAt))}
+              })}
             </p>
           </div>
           <Badge tone={tone}>{statusLabels[request.status]}</Badge>

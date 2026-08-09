@@ -5,11 +5,13 @@ import {
   issueEmailVerification,
   type EmailVerificationDependencies,
 } from './email-verification.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 export interface AccessRequestRepository {
   createPendingUnlessUserExists(input: {
     email: string;
     id: string;
+    locale: SupportedLocale;
     now: Date;
   }): Promise<void>;
 }
@@ -22,7 +24,7 @@ export interface AccessRequestDependencies {
 }
 
 const prismaAccessRequestRepository: AccessRequestRepository = {
-  async createPendingUnlessUserExists({ email, id, now }) {
+  async createPendingUnlessUserExists({ email, id, locale, now }) {
     const { prisma } = await import('../../prisma.js');
 
     await prisma.$transaction(async (transaction) => {
@@ -37,10 +39,11 @@ const prismaAccessRequestRepository: AccessRequestRepository = {
 
       await transaction.$executeRaw`
         INSERT INTO "access_requests"
-          ("id", "email_normalized", "status", "version", "created_at", "updated_at")
+          ("id", "email_normalized", "locale", "status", "version", "created_at", "updated_at")
         VALUES (
           ${id}::uuid,
           ${email},
+          ${locale},
           'pending_email'::"access_request_status",
           1,
           ${now},
@@ -69,16 +72,18 @@ function createDefaultDependencies(): AccessRequestDependencies {
 
 export async function requestAccess(
   email: string,
+  locale: SupportedLocale,
   dependencies = createDefaultDependencies(),
 ): Promise<void> {
   if (dependencies.emailVerification) {
-    await issueEmailVerification(email, dependencies.emailVerification);
+    await issueEmailVerification(email, locale, dependencies.emailVerification);
     return;
   }
 
   await dependencies.repository.createPendingUnlessUserExists({
     email,
     id: dependencies.createId(),
+    locale,
     now: dependencies.now(),
   });
 }

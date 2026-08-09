@@ -13,15 +13,18 @@ import {
   useExerciseMutation,
   useExerciseQuery,
 } from '@/features/exercises/queries';
+import { useI18n, type UiLocale } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 
-function formatSubmissionDate(value: string): string {
-  return new Intl.DateTimeFormat('fr-FR', {
+function formatSubmissionDate(value: string, locale: UiLocale): string {
+  return formatLocalizedDate(value, locale, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(new Date(value));
+  });
 }
 
 function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
+  const { locale } = useI18n();
   const mutation = useExerciseMutation(exercise.id);
   const submission = exercise.submission;
   const [contentMarkdown, setContentMarkdown] = useState(
@@ -46,7 +49,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         <p class="text-sm text-slate-300">
           Envoyé le{' '}
           {submission.submittedAt
-            ? formatSubmissionDate(submission.submittedAt)
+            ? formatSubmissionDate(submission.submittedAt, locale)
             : 'date inconnue'}
         </p>
         <pre class="whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-3 font-sans text-sm leading-6 text-slate-300">

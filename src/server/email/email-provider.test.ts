@@ -7,6 +7,7 @@ import {
 const input = {
   expiresAt: new Date('2026-08-06T10:00:00.000Z'),
   idempotencyKey: 'verification-1',
+  locale: 'fr' as const,
   recipientEmail: 'learner@example.com',
   verificationUrl: 'https://learnx.example/verify-email#token=safe-token_value',
 };
@@ -16,6 +17,7 @@ describe('email provider', () => {
     const invitation = {
       activationUrl: 'https://learn-x.app/activate#token=secret-token',
       expiresAt: input.expiresAt,
+      locale: 'fr' as const,
       recipientEmail: input.recipientEmail,
     };
     const content = createAccessInvitationEmailContent(invitation);
@@ -33,6 +35,24 @@ describe('email provider', () => {
     expect(content.text).toContain(input.verificationUrl);
     expect(content.html).toContain('Vérifier mon adresse');
     expect(content.html).toContain(input.verificationUrl);
+  });
+
+  it('localizes verification and invitation emails in English', () => {
+    const verification = createVerificationEmailContent({
+      ...input,
+      locale: 'en',
+    });
+    const invitation = createAccessInvitationEmailContent({
+      activationUrl: 'https://learn-x.app/activate#token=safe-token',
+      expiresAt: input.expiresAt,
+      locale: 'en',
+      recipientEmail: input.recipientEmail,
+    });
+
+    expect(verification.subject).toBe('Verify your email address for LearnX');
+    expect(verification.html).toContain('Verify my address');
+    expect(invitation.subject).toBe('Activate your LearnX account');
+    expect(invitation.html).toContain('Activate my account');
   });
 
   it('sends through Resend with an idempotency key', async () => {
@@ -80,6 +100,7 @@ describe('email provider', () => {
       activationUrl: 'https://learn-x.app/activate#token=safe-token',
       expiresAt: input.expiresAt,
       idempotencyKey: 'invitation-1',
+      locale: 'fr',
       recipientEmail: input.recipientEmail,
     });
 

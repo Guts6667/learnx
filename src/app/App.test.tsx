@@ -4,6 +4,10 @@ import { App } from '@/app/App';
 
 describe('App', () => {
   beforeEach(() => {
+    Object.defineProperty(navigator, 'language', {
+      configurable: true,
+      value: 'fr-FR',
+    });
     Object.defineProperty(navigator, 'onLine', {
       configurable: true,
       value: true,
@@ -229,9 +233,36 @@ describe('App', () => {
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/access-requests',
       expect.objectContaining({
-        body: JSON.stringify({ email: 'learner@example.com' }),
+          body: JSON.stringify({ email: 'learner@example.com', locale: 'fr' }),
         credentials: 'include',
         method: 'POST',
+      }),
+    );
+  });
+
+  it('initialise une nouvelle demande avec la langue du navigateur', async () => {
+    Object.defineProperty(navigator, 'language', {
+      configurable: true,
+      value: 'en-US',
+    });
+    window.history.pushState({}, '', '/request-access');
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(jsonResponse({ message: 'Request received.' }, 202)),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    fireEvent.input(await screen.findByLabelText('Email address'), {
+      target: { value: 'english@example.com' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Send my request' }));
+
+    await screen.findByRole('heading', { name: 'Request submitted' });
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/access-requests',
+      expect.objectContaining({
+        body: JSON.stringify({ email: 'english@example.com', locale: 'en' }),
       }),
     );
   });
@@ -467,6 +498,48 @@ describe('App', () => {
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
     expect(adminLink.parentElement).toHaveClass('flex-col');
+  });
+
+  it('enregistre la langue du compte et met à jour le document immédiatement', async () => {
+    window.history.pushState({}, '', '/profile');
+    const user = {
+      displayName: 'Learner',
+      email: 'locale@example.com',
+      id: 'user-locale',
+      locale: 'fr',
+      role: 'USER',
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/auth/locale' && init?.method === 'PATCH') {
+        return Promise.resolve(
+          jsonResponse({ user: { ...user, locale: 'en' } }),
+        );
+      }
+      return Promise.resolve(jsonResponse({ user }));
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    const language = await screen.findByRole('combobox', {
+      name: 'Langue de l’interface',
+    });
+    fireEvent.input(language, { target: { value: 'en' } });
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/auth/locale',
+        expect.objectContaining({
+          body: JSON.stringify({ locale: 'en' }),
+          method: 'PATCH',
+        }),
+      ),
+    );
+    await waitFor(() => expect(document.documentElement.lang).toBe('en'));
+    expect(document.title).toBe('LearnX — Personal learning journey');
+    expect(
+      screen.getByRole('combobox', { name: 'Interface language' }),
+    ).toHaveValue('en');
   });
 
   it('ne propose aucune navigation d’administration au rôle créateur', async () => {

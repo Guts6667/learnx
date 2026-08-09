@@ -11,11 +11,11 @@ import {
   useCompleteReviewMutation,
   useReviewsQuery,
 } from '@/features/reviews/queries';
+import { useI18n, type UiLocale } from '@/i18n';
+import { formatLocalizedDate } from '@/shared/locale';
 
-function formatDueAt(value: string): string {
-  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(
-    new Date(value),
-  );
+function formatDueAt(value: string, locale: UiLocale): string {
+  return formatLocalizedDate(value, locale, { dateStyle: 'long' });
 }
 
 function isOverdue(value: string): boolean {
@@ -45,6 +45,7 @@ function ReviewCard({
   onComplete: (reviewId: string) => Promise<unknown>;
   pendingId: string | null;
 }) {
+  const { locale } = useI18n();
   const assessmentHref = `/program/${encodeURIComponent(item.program.slug)}/lesson/${encodeURIComponent(item.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(item.sourceId)}`;
 
   return (
@@ -64,7 +65,7 @@ function ReviewCard({
             {item.program.title} · {item.lesson.title}
           </p>
           <p class="mt-2 text-sm text-slate-400">
-            À revoir le {formatDueAt(item.dueAt)}
+            À revoir le {formatDueAt(item.dueAt, locale)}
           </p>
         </div>
         {item.assessmentTitle ? (

@@ -12,6 +12,10 @@ import {
   hashAccessInvitationToken,
   type AccessInvitationDelivery,
 } from '../_lib/access-invitation.js';
+import {
+  normalizeLocale,
+  type SupportedLocale,
+} from '../../../shared/locale.js';
 
 export const reviewableAccessRequestStatuses = [
   'PENDING_APPROVAL',
@@ -28,6 +32,7 @@ export interface AccessRequestReviewItem {
   emailNormalized: string;
   emailVerifiedAt: Date;
   id: string;
+  locale?: SupportedLocale;
   invitationExpiresAt: Date | null;
   rejectionReason: string | null;
   reviewedAt: Date | null;
@@ -88,6 +93,7 @@ function toReviewItem(request: {
   emailVerifiedAt: Date | null;
   id: string;
   invitations: Array<{ assignedRole: Role; expiresAt: Date }>;
+  locale: string;
   rejectionReason: string | null;
   reviewedAt: Date | null;
   status: string;
@@ -110,6 +116,7 @@ function toReviewItem(request: {
     emailVerifiedAt: request.emailVerifiedAt,
     id: request.id,
     invitationExpiresAt: invitation?.expiresAt ?? null,
+    locale: request.locale === 'en' ? 'en' : 'fr',
     rejectionReason: request.rejectionReason,
     reviewedAt: request.reviewedAt,
     status: request.status as ReviewableAccessRequestStatus,
@@ -131,6 +138,7 @@ export function createPrismaAccessRequestReviewService(
   async function deliverOrInvalidate(input: {
     expiresAt: Date;
     invitationId: string;
+    locale: SupportedLocale;
     recipientEmail: string;
     token: string;
   }): Promise<void> {
@@ -291,6 +299,7 @@ export function createPrismaAccessRequestReviewService(
         await deliverOrInvalidate({
           expiresAt: invitationExpiresAt,
           invitationId,
+          locale: normalizeLocale(result.request.locale),
           recipientEmail: result.request.emailNormalized,
           token: invitationToken,
         });
@@ -447,6 +456,7 @@ export function createPrismaAccessRequestReviewService(
         await deliverOrInvalidate({
           expiresAt: invitationExpiresAt,
           invitationId,
+          locale: normalizeLocale(result.request.locale),
           recipientEmail: result.request.emailNormalized,
           token: invitationToken,
         });

@@ -15,6 +15,7 @@ function createPrismaFixture(options: { expired?: boolean } = {}) {
     activatedUserId: null as string | null,
     emailNormalized: 'learner@example.com',
     id: 'request-1',
+    locale: 'fr',
     status: 'APPROVED',
   };
   const invitation = {
@@ -34,6 +35,7 @@ function createPrismaFixture(options: { expired?: boolean } = {}) {
     id: string;
     passwordHash: string;
     role: Role;
+    locale: string;
   }> = [];
   const sessions: Array<{
     expiresAt: Date;
@@ -92,6 +94,7 @@ function createPrismaFixture(options: { expired?: boolean } = {}) {
           email: string;
           passwordHash: string;
           role: Role;
+          locale: string;
         };
       }) {
         const user = { id: 'user-1', ...data };
@@ -131,6 +134,7 @@ describe('access invitation lifecycle', () => {
     await delivery?.send({
       expiresAt: new Date('2026-08-06T10:00:00.000Z'),
       invitationId: 'invitation-1',
+      locale: 'fr',
       recipientEmail: 'learner@example.com',
       token: rawToken,
     });

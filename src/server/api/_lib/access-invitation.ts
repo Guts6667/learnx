@@ -14,6 +14,7 @@ import {
   getSessionExpiry,
   hashSessionToken,
 } from './session.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 const minimumTtlMilliseconds = 5 * 60 * 1_000;
 const maximumTtlMilliseconds = 7 * 24 * 60 * 60 * 1_000;
@@ -22,6 +23,7 @@ const defaultTtlMilliseconds = 7 * 24 * 60 * 60 * 1_000;
 export interface AccessInvitationDeliveryInput {
   expiresAt: Date;
   invitationId: string;
+  locale: SupportedLocale;
   recipientEmail: string;
   token: string;
 }
@@ -36,6 +38,7 @@ export interface AccessInvitationActivationResult {
     displayName: string;
     email: string;
     id: string;
+    locale: SupportedLocale;
     role: Role;
   };
 }
@@ -118,6 +121,7 @@ export function createAccessInvitationDelivery(
         activationUrl: buildAccessInvitationUrl(appUrl.origin, input.token),
         expiresAt: input.expiresAt,
         idempotencyKey: input.invitationId,
+        locale: input.locale,
         recipientEmail: input.recipientEmail,
       });
     },
@@ -199,6 +203,8 @@ export function createPrismaAccessInvitationActivationService(
               accountStatus: 'ACTIVE',
               displayName: input.displayName,
               email: invitation.accessRequest.emailNormalized,
+              locale:
+                invitation.accessRequest.locale === 'en' ? 'en' : 'fr',
               passwordHash,
               role: invitation.assignedRole,
             },
@@ -240,6 +246,7 @@ export function createPrismaAccessInvitationActivationService(
               displayName: user.displayName,
               email: user.email,
               id: user.id,
+              locale: user.locale === 'en' ? 'en' : 'fr',
               role: user.role,
             },
           };
