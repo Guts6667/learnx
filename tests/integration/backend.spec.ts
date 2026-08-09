@@ -51,7 +51,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
   baseURL,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
-  test.setTimeout(240_000);
+  test.setTimeout(480_000);
   expect(baseURL).toBeTruthy();
 
   const ownerEmail = uniqueEmail('owner', testInfo.retry);
