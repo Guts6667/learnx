@@ -1,6 +1,7 @@
 import { route } from 'preact-router';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -398,6 +399,10 @@ function NoteEditor({ note }: { note: NoteDetail }) {
 }
 
 export function NotePage({ noteId }: { noteId: string }) {
+  useBackNavigationTarget({
+    href: '/notes',
+    labelKey: 'navigation.back.notes',
+  });
   const query = useNoteQuery(noteId);
 
   if (query.isPending) return <Spinner label="Chargement de la note" />;

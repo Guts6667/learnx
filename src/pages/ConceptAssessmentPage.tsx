@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/Badge';
 import { useEffect } from 'preact/hooks';
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import {
   LessonContextHeader,
   LessonActivitySummary,
@@ -17,6 +18,7 @@ import {
 } from '@/features/concept-assessments/queries';
 import { useLessonQuery } from '@/features/curriculum/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
+import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 
 export function ConceptAssessmentPage({
   assessmentId,
@@ -48,7 +50,11 @@ export function ConceptAssessmentPage({
     selectedAssessmentId,
     preview,
   );
-  const fallbackLessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+  const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
+  useBackNavigationTarget({
+    href: fallbackLessonHref,
+    labelKey: 'navigation.back.lesson',
+  });
 
   useEffect(() => {
     if (lesson && selectedAssessment) {

@@ -12,7 +12,10 @@ vi.mock('preact-router', async (importOriginal) => ({
 }));
 
 function PageWithStableBackTarget() {
-  useBackNavigationTarget('/program/programme-test/module/premiers-pas');
+  useBackNavigationTarget({
+    href: '/program/programme-test?stage=introduction',
+    labelKey: 'navigation.back.program',
+  });
 
   return <h1>Leçon</h1>;
 }
@@ -80,12 +83,12 @@ describe('navigation accessible', () => {
     );
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Revenir à la page précédente' }),
+      screen.getByRole('button', { name: 'Retour au programme' }),
     );
 
     expect(back).not.toHaveBeenCalled();
     expect(route).toHaveBeenCalledWith(
-      '/program/programme-test/module/premiers-pas',
+      '/program/programme-test?stage=introduction',
     );
   });
 
@@ -167,5 +170,33 @@ describe('navigation accessible', () => {
         .getByRole('link', { name: 'Learning paths' })
         .querySelector('span'),
     ).toHaveClass('break-words');
+  });
+
+  it.each(['/today', '/program', '/reviews', '/notes', '/profile'])(
+    'n’affiche aucune flèche globale sur la racine %s',
+    (currentPath) => {
+      renderWithLocale(
+        <MobileLayout canGoBack currentPath={currentPath}>
+          <h1>Racine</h1>
+        </MobileLayout>,
+      );
+
+      expect(
+        screen.queryByRole('button', { name: /Retour|Revenir/ }),
+      ).toBeNull();
+    },
+  );
+
+  it('annonce la destination contextuelle en anglais', () => {
+    renderWithLocale(
+      <MobileLayout canGoBack currentPath="/program/path/lesson/start">
+        <PageWithStableBackTarget />
+      </MobileLayout>,
+      'en',
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Back to the program' }),
+    ).toBeInTheDocument();
   });
 });

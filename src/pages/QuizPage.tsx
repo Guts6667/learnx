@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/Badge';
 import { useEffect } from 'preact/hooks';
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import {
   LessonContextHeader,
   LessonActivitySummary,
@@ -17,6 +18,7 @@ import {
   useQuizQuery,
 } from '@/features/quizzes/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
+import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 
 export function QuizPage({
   lessonSlug,
@@ -38,7 +40,11 @@ export function QuizPage({
   const quizQuery = useQuizQuery(selectedQuizId);
   const attemptsQuery = useQuizAttemptsQuery(selectedQuizId);
   const mutation = useQuizAttemptMutation(selectedQuizId);
-  const fallbackLessonHref = `/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lessonSlug)}`;
+  const fallbackLessonHref = buildLessonHref(programSlug, lessonSlug);
+  useBackNavigationTarget({
+    href: fallbackLessonHref,
+    labelKey: 'navigation.back.lesson',
+  });
 
   useEffect(() => {
     if (lesson && selectedQuiz) {

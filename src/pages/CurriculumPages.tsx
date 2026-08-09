@@ -1,6 +1,7 @@
 import { route } from 'preact-router';
 import { useRef, useState } from 'preact/hooks';
 
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -32,6 +33,8 @@ import {
   useProgramViewPreference,
   useStageQuery,
 } from '@/features/curriculum/queries';
+import { useI18n } from '@/i18n';
+import { programStageHref } from '@/lib/curriculum-navigation';
 
 function lessonStatusLabel(lesson: LessonSummary): string {
   if (!lesson.isPublished) return 'Brouillon';
@@ -284,17 +287,26 @@ function ModuleLessonList({
   programSlug: string;
   showHeading: boolean;
 }) {
+  const { t } = useI18n();
   const listId = `program-module-lessons-${module.id}`;
+  const optionsHref = `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(module.slug)}`;
 
   return (
     <section aria-labelledby={showHeading ? `${listId}-title` : undefined}>
       {showHeading ? (
-        <h3 class="mb-2 font-semibold text-slate-200" id={`${listId}-title`}>
-          {module.title}
-        </h3>
+        <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h3 class="font-semibold text-slate-200" id={`${listId}-title`}>
+            {module.title}
+          </h3>
+          <NavigationAction href={optionsHref} variant="ghost">
+            {t('curriculum.moduleOptions')}
+          </NavigationAction>
+        </div>
       ) : null}
       <ul
-        aria-label={showHeading ? undefined : `Leçons du module ${module.title}`}
+        aria-label={
+          showHeading ? undefined : `Leçons du module ${module.title}`
+        }
         id={listId}
       >
         {module.lessons.map((lesson) => (
@@ -307,6 +319,11 @@ function ModuleLessonList({
           </li>
         ))}
       </ul>
+      {!showHeading ? (
+        <NavigationAction class="mt-3" href={optionsHref} variant="ghost">
+          {t('curriculum.moduleOptions')}
+        </NavigationAction>
+      ) : null}
     </section>
   );
 }
@@ -322,6 +339,7 @@ function StageAccordionItem({
   programSlug: string;
   stage: StageSummary;
 }) {
+  const { t } = useI18n();
   const panelId = `program-stage-panel-${stage.id}`;
   const statusLabel = stage.isPublished
     ? compactProgressStatusLabels[stage.progress.status]
@@ -389,6 +407,12 @@ function StageAccordionItem({
                     showHeading={showModuleHeadings}
                   />
                 ))}
+                <NavigationAction
+                  href={`/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`}
+                  variant="ghost"
+                >
+                  {t('curriculum.stagePrerequisites')}
+                </NavigationAction>
               </div>
             )}
           </div>
@@ -430,7 +454,8 @@ function StageValidationCard({
           {validation.requiredTasks.total}
         </li>
         <li>
-          Exercices obligatoires : {validation.requiredExercises?.validated ?? 0}/
+          Exercices obligatoires :{' '}
+          {validation.requiredExercises?.validated ?? 0}/
           {validation.requiredExercises?.total ?? 0}
         </li>
         <li>
@@ -668,11 +693,7 @@ function DirectoryPagination({
   if (!hasMore) return null;
   return (
     <div class="flex justify-center">
-      <Button
-        isLoading={isLoading}
-        onClick={onLoadMore}
-        variant="secondary"
-      >
+      <Button isLoading={isLoading} onClick={onLoadMore} variant="secondary">
         Afficher plus
       </Button>
     </div>
@@ -693,11 +714,7 @@ export function ProgramsPage() {
   const enrolledTabRef = useRef<HTMLButtonElement>(null);
   const catalogTabRef = useRef<HTMLButtonElement>(null);
   const catalog = useCatalogProgramsQuery(search, isOnline);
-  const enrolled = useEnrolledProgramsQuery(
-    search,
-    enrollmentStatus,
-    isOnline,
-  );
+  const enrolled = useEnrolledProgramsQuery(search, enrollmentStatus, isOnline);
   const owned = useProgramsQuery(isOnline);
   const mutation = useProgramEnrollmentMutation();
   const normalizedOwnedSearch = search.toLocaleLowerCase('fr');
@@ -895,8 +912,7 @@ export function ProgramsPage() {
                 />
               ) : (
                 <div class="space-y-6">
-                  {enrollmentStatus === 'ACTIVE' &&
-                  ownedPrograms.length ? (
+                  {enrollmentStatus === 'ACTIVE' && ownedPrograms.length ? (
                     <section
                       aria-labelledby="owned-programs-title"
                       class="space-y-3"
@@ -909,7 +925,10 @@ export function ProgramsPage() {
                       </h2>
                       <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {ownedPrograms.map((program) => (
-                          <OwnedProgramCard key={program.id} program={program} />
+                          <OwnedProgramCard
+                            key={program.id}
+                            program={program}
+                          />
                         ))}
                       </ul>
                     </section>
@@ -938,9 +957,7 @@ export function ProgramsPage() {
                               mutation.pendingProgramId === program.program.id
                             }
                             key={program.enrollment.id}
-                            onCancel={() =>
-                              setConfirmingProgramId(undefined)
-                            }
+                            onCancel={() => setConfirmingProgramId(undefined)}
                             onConfirm={(item) => void withdraw(item)}
                             onRequestWithdrawal={(item) =>
                               setConfirmingProgramId(item.program.id)
@@ -1012,6 +1029,10 @@ export function ProgramsPage() {
 }
 
 export function ProgramPage({ programSlug }: { programSlug: string }) {
+  useBackNavigationTarget({
+    href: '/program',
+    labelKey: 'navigation.back.programs',
+  });
   const query = useProgramQuery(programSlug);
   const preference = useProgramViewPreference(programSlug);
   const [localPreference, setLocalPreference] = useState<{
@@ -1020,6 +1041,9 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
   } | null>(null);
   const state = getQueryState(query.error, query.isPending);
   const program = query.data?.program;
+  const requestedStageSlug = new URLSearchParams(window.location.search).get(
+    'stage',
+  );
 
   if (state) {
     return state;
@@ -1034,10 +1058,14 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
     );
   }
 
+  const requestedStageId = program.stages.find(
+    (stage) => stage.slug === requestedStageSlug,
+  )?.id;
   const activeStageId =
     localPreference?.programId === program.id
       ? localPreference.expandedStageId
-      : (program.viewPreference?.expandedStageId ??
+      : (requestedStageId ??
+        program.viewPreference?.expandedStageId ??
         program.stages[0]?.id ??
         null);
 
@@ -1115,6 +1143,10 @@ export function StagePage({
   programSlug: string;
   stageSlug: string;
 }) {
+  useBackNavigationTarget({
+    href: programStageHref(programSlug, stageSlug),
+    labelKey: 'navigation.back.program',
+  });
   const query = useStageQuery(programSlug, stageSlug);
   const state = getQueryState(query.error, query.isPending);
 
@@ -1196,6 +1228,15 @@ export function ModulePage({
   programSlug: string;
 }) {
   const query = useModuleQuery(moduleSlug);
+  const stageSlug = query.data?.module.stage.slug;
+  useBackNavigationTarget(
+    stageSlug
+      ? {
+          href: programStageHref(programSlug, stageSlug),
+          labelKey: 'navigation.back.program',
+        }
+      : null,
+  );
   const restart = useModuleRestart(query.data?.module.id ?? '');
   const state = getQueryState(query.error, query.isPending);
 

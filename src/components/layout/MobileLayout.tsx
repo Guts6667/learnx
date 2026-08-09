@@ -2,7 +2,10 @@ import type { ComponentChildren } from 'preact';
 import { route } from 'preact-router';
 import { useCallback, useState } from 'preact/hooks';
 
-import { BackNavigationProvider } from '@/components/layout/BackNavigationContext';
+import {
+  BackNavigationProvider,
+  type BackNavigationTarget,
+} from '@/components/layout/BackNavigationContext';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { PwaProvider, PwaStatus } from '@/features/pwa/PwaStatus';
 import { useI18n } from '@/i18n';
@@ -19,6 +22,10 @@ const rootPaths = new Set([
   '/request-access',
   '/verify-email',
   '/today',
+  '/program',
+  '/reviews',
+  '/notes',
+  '/profile',
 ]);
 
 export function MobileLayout({
@@ -27,10 +34,15 @@ export function MobileLayout({
   currentPath = window.location.pathname,
 }: MobileLayoutProps) {
   const { t } = useI18n();
-  const [backTarget, setBackTarget] = useState<string | null>(null);
-  const updateBackTarget = useCallback((href: string | null) => {
-    setBackTarget(href);
-  }, []);
+  const [backTarget, setBackTarget] = useState<BackNavigationTarget | null>(
+    null,
+  );
+  const updateBackTarget = useCallback(
+    (target: BackNavigationTarget | null) => {
+      setBackTarget(target);
+    },
+    [],
+  );
 
   function focusMainContent() {
     window.requestAnimationFrame(() => {
@@ -40,7 +52,7 @@ export function MobileLayout({
 
   function goBack() {
     if (backTarget) {
-      route(backTarget);
+      route(backTarget.href);
       return;
     }
 
@@ -67,14 +79,20 @@ export function MobileLayout({
             <div class="flex items-center gap-2">
               {!rootPaths.has(currentPath) ? (
                 <button
-                  aria-label={t('navigation.back.ariaLabel')}
+                  aria-label={
+                    backTarget
+                      ? t(backTarget.labelKey)
+                      : t('navigation.back.ariaLabel')
+                  }
                   class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-slate-800 px-3 font-semibold text-slate-100 transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                   onClick={goBack}
                   type="button"
                 >
                   <span aria-hidden="true">←</span>
                   <span class="ml-2 hidden sm:inline">
-                    {t('navigation.back.label')}
+                    {backTarget
+                      ? t(backTarget.labelKey)
+                      : t('navigation.back.label')}
                   </span>
                 </button>
               ) : null}

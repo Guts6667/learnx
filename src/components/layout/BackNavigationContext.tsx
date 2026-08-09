@@ -1,7 +1,14 @@
 import { createContext, type ComponentChildren } from 'preact';
 import { useContext, useEffect } from 'preact/hooks';
 
-type SetBackTarget = (href: string | null) => void;
+import type { MessageKey } from '@/i18n/catalogs';
+
+export interface BackNavigationTarget {
+  href: string;
+  labelKey: MessageKey;
+}
+
+type SetBackTarget = (target: BackNavigationTarget | null) => void;
 
 const BackNavigationContext = createContext<SetBackTarget>(() => undefined);
 
@@ -19,11 +26,13 @@ export function BackNavigationProvider({
   );
 }
 
-export function useBackNavigationTarget(href: string) {
+export function useBackNavigationTarget(target: BackNavigationTarget | null) {
   const setBackTarget = useContext(BackNavigationContext);
+  const href = target?.href;
+  const labelKey = target?.labelKey;
 
   useEffect(() => {
-    setBackTarget(href);
+    setBackTarget(href && labelKey ? { href, labelKey } : null);
     return () => setBackTarget(null);
-  }, [href, setBackTarget]);
+  }, [href, labelKey, setBackTarget]);
 }

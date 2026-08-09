@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/preact';
+import { fireEvent, render, screen, waitFor } from '@testing-library/preact';
 import type { ComponentChildren } from 'preact';
 
 import { AppProviders } from '@/app/providers';
@@ -149,9 +144,10 @@ describe('CurriculumPages', () => {
     expect(
       screen.getByRole('progressbar', { name: 'Progression — 35 %' }),
     ).toHaveAttribute('aria-valuenow', '35');
-    expect(
-      screen.getByRole('link', { name: 'Continuer' }),
-    ).toHaveAttribute('href', '/program/bases');
+    expect(screen.getByRole('link', { name: 'Continuer' })).toHaveAttribute(
+      'href',
+      '/program/bases',
+    );
     const enrolledTab = screen.getByRole('tab', { name: 'Mes programmes' });
     const catalogTab = screen.getByRole('tab', { name: 'Explorer' });
     expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
@@ -295,7 +291,9 @@ describe('CurriculumPages', () => {
       }
       if (init?.method === 'DELETE') {
         isActive = false;
-        return Promise.resolve(jsonResponse({ enrollment: { id: 'enrollment' } }));
+        return Promise.resolve(
+          jsonResponse({ enrollment: { id: 'enrollment' } }),
+        );
       }
       if (path.startsWith('/api/me/programs?')) {
         return Promise.resolve(
@@ -360,7 +358,9 @@ describe('CurriculumPages', () => {
   });
 
   it('affiche un état hors ligne sans lancer de requête privée', () => {
-    const onlineSpy = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const onlineSpy = vi
+      .spyOn(navigator, 'onLine', 'get')
+      .mockReturnValue(false);
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
 
@@ -512,12 +512,14 @@ describe('CurriculumPages', () => {
 
     fireEvent.click(secondStage);
 
-    expect(
-      screen.getByRole('button', { name: /Étape une/ }),
-    ).toHaveAttribute('aria-expanded', 'false');
-    expect(
-      screen.getByRole('button', { name: /Étape deux/ }),
-    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: /Étape une/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+    expect(screen.getByRole('button', { name: /Étape deux/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
     expect(
       fetchMock.mock.calls.filter(([, init]) => init?.method === 'PUT'),
     ).toHaveLength(0);
@@ -528,18 +530,21 @@ describe('CurriculumPages', () => {
     const restoredFirstStage = await screen.findByRole('button', {
       name: /Étape une/,
     });
-    expect(
-      screen.getByRole('button', { name: /Étape deux/ }),
-    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: /Étape deux/ })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
 
     fireEvent.click(restoredFirstStage);
 
-    expect(
-      screen.getByRole('button', { name: /Étape une/ }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    expect(
-      screen.getByRole('button', { name: /Étape deux/ }),
-    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: /Étape une/ })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    expect(screen.getByRole('button', { name: /Étape deux/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
     expect(screen.queryByText('Résumé Étape une')).toBeNull();
     expect(screen.queryByText('Résumé Étape deux')).toBeNull();
     await waitFor(() =>
@@ -551,6 +556,65 @@ describe('CurriculumPages', () => {
         }),
       ),
     );
+  });
+
+  it('ouvre la bonne étape depuis une URL déterministe après rechargement', async () => {
+    window.history.replaceState({}, '', '/program/compact?stage=etape-1');
+    const timeline = {
+      actualPercent: 0,
+      completedAt: null,
+      expectedPercent: 0,
+      progressDelta: 0,
+      startedAt: null,
+      targetEndAt: null,
+      temporalStatus: null,
+    };
+    const stage = (id: string, slug: string, position: number) => ({
+      description: `Étape ${position}`,
+      estimatedDurationDays: position,
+      estimatedMinutes: null,
+      id,
+      isPublished: true,
+      modules: [],
+      position,
+      progress: { percent: 0, status: 'AVAILABLE' },
+      slug,
+      timeline,
+      title: `Étape ${position}`,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            program: {
+              description: 'Programme direct.',
+              id: 'program-direct',
+              slug: 'compact',
+              stages: [
+                stage('stage-1', 'etape-1', 1),
+                stage('stage-2', 'etape-2', 2),
+              ],
+              status: 'ACTIVE',
+              timeline,
+              title: 'Programme direct',
+              viewPreference: { expandedStageId: 'stage-2' },
+            },
+          }),
+        ),
+      ),
+    );
+
+    renderPage(<ProgramPage programSlug="compact" />);
+
+    expect(
+      await screen.findByRole('button', { name: /1\. Étape 1/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: /2\. Étape 2/ })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+    window.history.replaceState({}, '', '/');
   });
 
   it('affiche les leçons en lignes plates avec leurs quatre états', async () => {
@@ -620,7 +684,12 @@ describe('CurriculumPages', () => {
                       isPublished: true,
                       lessons: [
                         lesson('terminee', 'Leçon terminée', 'COMPLETED'),
-                        lesson('verrouillee', 'Leçon verrouillée', 'AVAILABLE', true),
+                        lesson(
+                          'verrouillee',
+                          'Leçon verrouillée',
+                          'AVAILABLE',
+                          true,
+                        ),
                       ],
                       position: 2,
                       progress: { percent: 50, status: 'IN_PROGRESS' },
@@ -652,6 +721,9 @@ describe('CurriculumPages', () => {
     ).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByRole('heading', { name: 'Module A' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Module B' })).toBeVisible();
+    expect(
+      screen.getAllByRole('link', { name: 'Options du module' }),
+    ).toHaveLength(2);
     expect(
       screen.getByRole('link', { name: /Ouvrir Leçon disponible.*Module A/ }),
     ).toHaveAttribute('href', '/program/programme-plat/lesson/disponible');
@@ -837,6 +909,12 @@ describe('CurriculumPages', () => {
         name: /Reprendre Démarrer, module Premiers pas, Brouillon/,
       }),
     ).toHaveAttribute('href', '/program/bases/lesson/demarrer');
+    expect(
+      screen.getByRole('link', { name: 'Options du module' }),
+    ).toHaveAttribute('href', '/program/bases/module/premiers-pas');
+    expect(
+      screen.getByRole('link', { name: 'Voir les prérequis de l’étape' }),
+    ).toHaveAttribute('href', '/program/bases/stage/introduction');
     expect(
       screen.getByRole('progressbar', {
         name: 'Progression du programme — 25 %',

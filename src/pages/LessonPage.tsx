@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'preact/hooks';
 import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -23,6 +24,8 @@ import {
   useLessonProgressQuery,
   useLessonQuery,
 } from '@/features/curriculum/queries';
+import { programStageHref } from '@/lib/curriculum-navigation';
+import { useI18n } from '@/i18n';
 import {
   activityKey,
   buildLessonActivitySequence,
@@ -180,10 +183,18 @@ function ResourceActivity({
         {guidance?.instructions ?? resource.description}
       </p>
       {unavailable ? (
-        <div role="status" class="space-y-2 rounded-lg border border-amber-700 p-3">
+        <div
+          role="status"
+          class="space-y-2 rounded-lg border border-amber-700 p-3"
+        >
           <p>Cette ressource est actuellement indisponible.</p>
           {alternativeHref ? (
-            <a class="inline-flex min-h-11 items-center text-cyan-300 underline" href={alternativeHref} rel="noreferrer" target="_blank">
+            <a
+              class="inline-flex min-h-11 items-center text-cyan-300 underline"
+              href={alternativeHref}
+              rel="noreferrer"
+              target="_blank"
+            >
               Ouvrir l’alternative : {alternative?.title}
             </a>
           ) : null}
@@ -202,7 +213,11 @@ function ResourceActivity({
         <p role="status">Aucun lien sûr n’est disponible.</p>
       )}
       {onComplete && status !== 'COMPLETED' ? (
-        <Button isLoading={isPending} onClick={() => void onComplete()} variant="secondary">
+        <Button
+          isLoading={isPending}
+          onClick={() => void onComplete()}
+          variant="secondary"
+        >
           Marquer comme consultée
         </Button>
       ) : null}
@@ -317,6 +332,7 @@ function LessonWorkspace({
   lesson: LessonDetail;
   programSlug: string;
 }) {
+  const { t } = useI18n();
   const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
   const mutation = useLessonProgressMutation(lesson.id);
   const lastReportedActivity = useRef<string | null>(null);
@@ -435,7 +451,7 @@ function LessonWorkspace({
   const isLessonCompleted = progress?.lessonProgress.status === 'COMPLETED';
   const continueLabel = isCompletionActivity
     ? isLessonCompleted && !sequence.next
-      ? 'Retour au module'
+      ? t('learning.returnProgram')
       : isLessonCompleted
         ? 'Leçon suivante'
         : 'Terminer la leçon'
@@ -445,7 +461,7 @@ function LessonWorkspace({
     : !sequence.next;
   const completedLessonHref =
     sequence.next?.href ??
-    `/program/${encodeURIComponent(programSlug)}/module/${encodeURIComponent(lesson.module.slug)}`;
+    programStageHref(programSlug, lesson.module.stage.slug);
 
   return (
     <article
@@ -504,13 +520,25 @@ function LessonWorkspace({
                   : undefined
               }
               isPending={mutation.isPending}
-              onComplete={lesson.isPublished ? () => updateResource(resource, 'COMPLETED') : undefined}
-              onOpen={lesson.isPublished ? () => updateResource(resource, 'STARTED') : undefined}
+              onComplete={
+                lesson.isPublished
+                  ? () => updateResource(resource, 'COMPLETED')
+                  : undefined
+              }
+              onOpen={
+                lesson.isPublished
+                  ? () => updateResource(resource, 'STARTED')
+                  : undefined
+              }
               resource={resource}
               status={progress?.resourceProgress[resource.id] ?? 'NOT_STARTED'}
             />
           ) : null}
-          {current && !block && !task && !resource && current.kind !== 'COMPLETE' ? (
+          {current &&
+          !block &&
+          !task &&
+          !resource &&
+          current.kind !== 'COMPLETE' ? (
             <SecondaryActivity activity={current} />
           ) : null}
           {current?.kind === 'COMPLETE' ? (
@@ -568,6 +596,15 @@ export function LessonPage({
   programSlug: string;
 }) {
   const query = useLessonQuery(lessonSlug);
+  const stageSlug = query.data?.lesson.module.stage.slug;
+  useBackNavigationTarget(
+    stageSlug
+      ? {
+          href: programStageHref(programSlug, stageSlug),
+          labelKey: 'navigation.back.program',
+        }
+      : null,
+  );
 
   if (query.isPending) return <Spinner label="Chargement de la leçon" />;
   if (query.error) {

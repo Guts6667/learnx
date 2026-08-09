@@ -139,13 +139,22 @@ function LessonRoute({ lessonSlug, path, programSlug }: RouteParams) {
   );
 }
 
-function ExerciseRoute({ exerciseId, lessonSlug, path }: RouteParams) {
+function ExerciseRoute({
+  exerciseId,
+  lessonSlug,
+  path,
+  programSlug,
+}: RouteParams) {
   void path;
-  if (!exerciseId || !lessonSlug) return null;
+  if (!exerciseId || !lessonSlug || !programSlug) return null;
 
   return (
     <ProtectedRoute>
-      <ExercisePage exerciseId={exerciseId} lessonSlug={lessonSlug} />
+      <ExercisePage
+        exerciseId={exerciseId}
+        lessonSlug={lessonSlug}
+        programSlug={programSlug}
+      />
     </ProtectedRoute>
   );
 }

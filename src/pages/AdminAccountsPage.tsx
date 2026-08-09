@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -24,7 +25,10 @@ const roleLabels = {
 } as const;
 
 function mutationError(error: unknown): string {
-  if (error instanceof ApiClientError && error.code === 'ACCOUNT_STATE_CONFLICT') {
+  if (
+    error instanceof ApiClientError &&
+    error.code === 'ACCOUNT_STATE_CONFLICT'
+  ) {
     return 'Le compte a changé. Rechargez la liste avant de réessayer.';
   }
   if (
@@ -203,17 +207,13 @@ function AccountCard({
             <h2 class="break-words text-lg font-semibold">
               {account.displayName}
             </h2>
-            <p class="mt-1 break-all text-sm text-slate-300">
-              {account.email}
-            </p>
+            <p class="mt-1 break-all text-sm text-slate-300">{account.email}</p>
           </div>
           <Badge tone={isSuspended ? 'danger' : 'success'}>
             {isSuspended ? 'Suspendu' : 'Actif'}
           </Badge>
         </div>
-        <p class="text-sm text-slate-400">
-          Rôle : {roleLabels[account.role]}
-        </p>
+        <p class="text-sm text-slate-400">Rôle : {roleLabels[account.role]}</p>
         {account.suspendedAt ? (
           <p class="text-sm text-slate-400">
             Suspendu le{' '}
@@ -234,6 +234,10 @@ function AccountCard({
 }
 
 export function AdminAccountsPage() {
+  useBackNavigationTarget({
+    href: '/admin',
+    labelKey: 'navigation.back.admin',
+  });
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');

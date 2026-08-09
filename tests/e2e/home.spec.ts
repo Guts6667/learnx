@@ -609,7 +609,9 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
     await page.setViewportSize(viewport);
     await expectNoHorizontalOverflow(page);
     await expect(catalogTab).toBeVisible();
-    await expect(page.getByRole('heading', { name: program.title })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: program.title }),
+    ).toBeVisible();
   }
 
   await expectNoSeriousA11yViolations(page);
@@ -694,6 +696,63 @@ test('rend le programme comme un accordéon plat et compact sur mobile', async (
   await expectNoHorizontalOverflow(page);
   await expect(stageButton).toBeVisible();
   await expect(lessonLink).toBeVisible();
+});
+
+test('utilise des parents UX stables sans boucle entre programme, module et leçon', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+
+  await page.goto(`/program/${program.slug}/lesson/${lessonSummary.slug}`);
+  await expect(
+    page.getByRole('heading', { level: 1, name: lessonSummary.title }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Retour au programme' }).click();
+  await expect(page).toHaveURL(
+    `/program/${program.slug}?stage=${stageSummary.slug}`,
+  );
+  await expect(
+    page.getByRole('button', { name: `1. ${stageSummary.title}` }),
+  ).toHaveAttribute('aria-expanded', 'true');
+
+  await page.getByRole('link', { name: 'Options du module' }).click();
+  await expect(
+    page.getByRole('heading', { level: 1, name: moduleSummary.title }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Retour au programme' }).click();
+  await expect(page).toHaveURL(
+    `/program/${program.slug}?stage=${stageSummary.slug}`,
+  );
+
+  await page
+    .getByRole('link', { name: 'Voir les prérequis de l’étape' })
+    .click();
+  await expect(
+    page.getByRole('heading', { level: 1, name: stageSummary.title }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Retour au programme' }).click();
+  await expect(page).toHaveURL(
+    `/program/${program.slug}?stage=${stageSummary.slug}`,
+  );
+
+  await page.getByRole('button', { name: 'Retour à Mes programmes' }).click();
+  await expect(page).toHaveURL('/program');
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Programmes' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Retour|Revenir/ }),
+  ).toHaveCount(0);
+  await expectNoHorizontalOverflow(page);
 });
 
 test('garde les cinq destinations lisibles et accessibles sur mobile et desktop', async ({
@@ -812,9 +871,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
   await expect(page.getByText('Quiz réussi')).toBeVisible();
   await expect(page.getByText('100 %').first()).toBeVisible();
 
-  await page
-    .getByRole('button', { name: 'Revenir à la page précédente' })
-    .click();
+  await page.getByRole('button', { name: 'Retour à la leçon' }).click();
   await expect(
     page.getByRole('progressbar', { name: /Progression de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
@@ -941,7 +998,7 @@ test('crée une note contextuelle accessible sans casser la lecture mobile', asy
       (button, navigationElement) =>
         Boolean(
           button.compareDocumentPosition(navigationElement as Node) &
-            Node.DOCUMENT_POSITION_FOLLOWING,
+          Node.DOCUMENT_POSITION_FOLLOWING,
         ),
       await navigation.elementHandle(),
     ),
@@ -1016,12 +1073,10 @@ test('reste utilisable avec texte agrandi et réduction des animations', async (
   await expectNoHorizontalOverflow(page);
   await expectNoSeriousA11yViolations(page);
 
-  const animationDuration = await page.locator('body').evaluate((element) =>
-    getComputedStyle(element).animationDuration,
-  );
-  expect(Number.parseFloat(animationDuration || '0')).toBeLessThanOrEqual(
-    0.01,
-  );
+  const animationDuration = await page
+    .locator('body')
+    .evaluate((element) => getComputedStyle(element).animationDuration);
+  expect(Number.parseFloat(animationDuration || '0')).toBeLessThanOrEqual(0.01);
 });
 
 test('conserve la route privée et reprend après reconnexion', async ({

@@ -1,6 +1,10 @@
 import type { ComponentChildren } from 'preact';
 import { useRef, useState } from 'preact/hooks';
 
+import {
+  type BackNavigationTarget,
+  useBackNavigationTarget,
+} from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -27,6 +31,12 @@ import {
   useAdminCurriculumMutation,
   useAdminNavigationQuery,
 } from '@/features/admin/queries';
+import {
+  adminLessonHref,
+  adminModuleHref,
+  adminProgramHref,
+  adminStageHref,
+} from '@/lib/admin-navigation';
 import { ApiClientError } from '@/lib/api-client';
 
 interface AdminPageProps {
@@ -318,8 +328,8 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
       </div>
       <p class="text-sm leading-6 text-slate-300">
         Un programme public et publié est consultable par les membres LearnX
-        authentifiés. Les brouillons restent privés et la validation scientifique
-        est indépendante.
+        authentifiés. Les brouillons restent privés et la validation
+        scientifique est indépendante.
       </p>
       {isConfirming ? (
         <Card class="space-y-3 bg-slate-900" role="alertdialog">
@@ -644,27 +654,6 @@ function childList(
   );
 }
 
-function programPath(programId: string) {
-  return `/admin/program/${encodeURIComponent(programId)}`;
-}
-
-function stagePath(programId: string, stageId: string) {
-  return `${programPath(programId)}/stage/${encodeURIComponent(stageId)}`;
-}
-
-function modulePath(programId: string, stageId: string, moduleId: string) {
-  return `${stagePath(programId, stageId)}/module/${encodeURIComponent(moduleId)}`;
-}
-
-function lessonPath(
-  programId: string,
-  stageId: string,
-  moduleId: string,
-  lessonId: string,
-) {
-  return `${modulePath(programId, stageId, moduleId)}/lesson/${encodeURIComponent(lessonId)}`;
-}
-
 function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
   return (
     <>
@@ -698,7 +687,7 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
         <ul class="space-y-4">
           {programs.map((program) => (
             <EntityCard
-              href={programPath(program.id)}
+              href={adminProgramHref(program.id)}
               key={program.id}
               position={program.position}
               status={<ProgramStatusBadge status={program.status} />}
@@ -746,7 +735,7 @@ function ProgramView({ program }: { program: AdminProgram }) {
         'Étapes',
         program.stages.map((stage) => (
           <EntityCard
-            href={stagePath(program.id, stage.id)}
+            href={adminStageHref(program.id, stage.id)}
             key={stage.id}
             position={stage.position}
             status={<StatusBadge isPublished={stage.isPublished} />}
@@ -765,7 +754,10 @@ function StageView({ stage }: { stage: AdminStage }) {
       <Breadcrumbs
         items={[
           { href: '/admin', label: 'Administration' },
-          { href: programPath(stage.program.id), label: stage.program.title },
+          {
+            href: adminProgramHref(stage.program.id),
+            label: stage.program.title,
+          },
           { label: stage.title },
         ]}
       />
@@ -785,7 +777,7 @@ function StageView({ stage }: { stage: AdminStage }) {
         'Modules',
         stage.modules.map((module) => (
           <EntityCard
-            href={modulePath(stage.program.id, stage.id, module.id)}
+            href={adminModuleHref(stage.program.id, stage.id, module.id)}
             key={module.id}
             position={module.position}
             status={<StatusBadge isPublished={module.isPublished} />}
@@ -805,11 +797,11 @@ function ModuleView({ module }: { module: AdminModule }) {
         items={[
           { href: '/admin', label: 'Administration' },
           {
-            href: programPath(module.stage.program.id),
+            href: adminProgramHref(module.stage.program.id),
             label: module.stage.program.title,
           },
           {
-            href: stagePath(module.stage.program.id, module.stage.id),
+            href: adminStageHref(module.stage.program.id, module.stage.id),
             label: module.stage.title,
           },
           { label: module.title },
@@ -826,7 +818,7 @@ function ModuleView({ module }: { module: AdminModule }) {
         'Leçons',
         module.lessons.map((lesson) => (
           <EntityCard
-            href={lessonPath(
+            href={adminLessonHref(
               module.stage.program.id,
               module.stage.id,
               module.id,
@@ -853,15 +845,15 @@ function LessonView({ lesson }: { lesson: AdminLesson }) {
         items={[
           { href: '/admin', label: 'Administration' },
           {
-            href: programPath(module.stage.program.id),
+            href: adminProgramHref(module.stage.program.id),
             label: module.stage.program.title,
           },
           {
-            href: stagePath(module.stage.program.id, module.stage.id),
+            href: adminStageHref(module.stage.program.id, module.stage.id),
             label: module.stage.title,
           },
           {
-            href: modulePath(
+            href: adminModuleHref(
               module.stage.program.id,
               module.stage.id,
               module.id,
@@ -899,6 +891,36 @@ function navigationTarget({
   return { kind: 'PROGRAMS' };
 }
 
+function adminBackTarget({
+  lessonId,
+  moduleId,
+  programId,
+  stageId,
+}: AdminPageProps): BackNavigationTarget | null {
+  if (lessonId && moduleId && programId && stageId) {
+    return {
+      href: adminModuleHref(programId, stageId, moduleId),
+      labelKey: 'navigation.back.adminModule',
+    };
+  }
+  if (moduleId && programId && stageId) {
+    return {
+      href: adminStageHref(programId, stageId),
+      labelKey: 'navigation.back.adminStage',
+    };
+  }
+  if (stageId && programId) {
+    return {
+      href: adminProgramHref(programId),
+      labelKey: 'navigation.back.adminProgram',
+    };
+  }
+  if (programId) {
+    return { href: '/admin', labelKey: 'navigation.back.admin' };
+  }
+  return { href: '/profile', labelKey: 'navigation.back.profile' };
+}
+
 function NavigationView({ data }: { data: AdminNavigationResponse }) {
   if (data.kind === 'PROGRAMS')
     return <ProgramsView programs={data.programs} />;
@@ -909,6 +931,7 @@ function NavigationView({ data }: { data: AdminNavigationResponse }) {
 }
 
 export function AdminPage(props: AdminPageProps) {
+  useBackNavigationTarget(adminBackTarget(props));
   const query = useAdminNavigationQuery(navigationTarget(props));
 
   if (query.isPending)

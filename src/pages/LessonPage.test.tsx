@@ -9,7 +9,11 @@ function jsonResponse(body: unknown): Response {
   });
 }
 
-function lessonResponse(isPublished: boolean, isLocked = false) {
+function lessonResponse(
+  isPublished: boolean,
+  isLocked = false,
+  hasNextLesson = true,
+) {
   return {
     lesson: {
       concepts: [
@@ -78,15 +82,17 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
         title: 'Premiers pas',
       },
       navigation: {
-        nextLesson: {
-          estimatedMinutes: 20,
-          id: 'lesson-2',
-          isPublished,
-          position: 2,
-          slug: 'approfondir',
-          summary: 'Aller plus loin.',
-          title: 'Approfondir',
-        },
+        nextLesson: hasNextLesson
+          ? {
+              estimatedMinutes: 20,
+              id: 'lesson-2',
+              isPublished,
+              position: 2,
+              slug: 'approfondir',
+              summary: 'Aller plus loin.',
+              title: 'Approfondir',
+            }
+          : null,
         previousLesson: null,
       },
       objectives: ['Comprendre la notion'],
@@ -308,9 +314,9 @@ describe('LessonPage', () => {
     expect(
       screen.getByRole('link', { name: 'Ouvrir la source' }),
     ).toHaveAttribute('href', 'https://example.com/article');
-    expect(
-      screen.getByRole('link', { name: 'Ouvrir la source' }),
-    ).toHaveClass('underline');
+    expect(screen.getByRole('link', { name: 'Ouvrir la source' })).toHaveClass(
+      'underline',
+    );
     expect(screen.getAllByText(/Source non sûre/)).toHaveLength(1);
     expect(
       screen.getAllByRole('link', { name: 'Ouvrir la source' }),
@@ -371,9 +377,7 @@ describe('LessonPage', () => {
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Prendre une note' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Prendre une note' }));
     await waitFor(() => {
       const request = fetchMock.mock.calls.find(
         ([path, init]) => path === '/api/notes' && init?.method === 'POST',
@@ -389,26 +393,62 @@ describe('LessonPage', () => {
   });
 
   it('rend une ressource guidée à sa position et persiste sa consultation', async () => {
-    window.history.replaceState(null, '', '/program/programme-test/lesson/demarrer?activity=resource%3Aresource-1');
+    window.history.replaceState(
+      null,
+      '',
+      '/program/programme-test/lesson/demarrer?activity=resource%3Aresource-1',
+    );
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
-      if (path === '/api/lessons/demarrer') return Promise.resolve(jsonResponse(lessonResponse(true)));
-      if (path === '/api/lessons/lesson-1/progress') return Promise.resolve(jsonResponse(progressResponse()));
-      if (path === '/api/resources/resource-1/progress' && init?.method === 'PATCH') {
-        return Promise.resolve(jsonResponse({ ...progressResponse(), resourceProgress: { 'resource-1': 'COMPLETED' } }));
+      if (path === '/api/lessons/demarrer')
+        return Promise.resolve(jsonResponse(lessonResponse(true)));
+      if (path === '/api/lessons/lesson-1/progress')
+        return Promise.resolve(jsonResponse(progressResponse()));
+      if (
+        path === '/api/resources/resource-1/progress' &&
+        init?.method === 'PATCH'
+      ) {
+        return Promise.resolve(
+          jsonResponse({
+            ...progressResponse(),
+            resourceProgress: { 'resource-1': 'COMPLETED' },
+          }),
+        );
       }
       throw new Error(`Unexpected request: ${path}`);
     });
     vi.stubGlobal('fetch', fetchMock);
 
-    render(<AppProviders><LessonPage lessonSlug="demarrer" programSlug="programme-test" /></AppProviders>);
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
 
-    expect(await screen.findByRole('heading', { name: 'Article de référence' })).toBeInTheDocument();
-    expect(screen.queryByText('Ressources de la leçon')).not.toBeInTheDocument();
-    expect(screen.getByText('Identifier la définition de référence.')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'Article de référence' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('Ressources de la leçon'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Identifier la définition de référence.'),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Section 1/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Ouvrir la lecture' })).toHaveAttribute('href', 'https://example.com/article');
-    fireEvent.click(screen.getByRole('button', { name: 'Marquer comme consultée' }));
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/resources/resource-1/progress', expect.objectContaining({ body: JSON.stringify({ status: 'COMPLETED' }), method: 'PATCH' })));
+    expect(
+      screen.getByRole('link', { name: 'Ouvrir la lecture' }),
+    ).toHaveAttribute('href', 'https://example.com/article');
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Marquer comme consultée' }),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/api/resources/resource-1/progress',
+        expect.objectContaining({
+          body: JSON.stringify({ status: 'COMPLETED' }),
+          method: 'PATCH',
+        }),
+      ),
+    );
   });
 
   it('remplace Terminer la leçon par Leçon suivante après la réussite serveur', async () => {
@@ -422,7 +462,9 @@ describe('LessonPage', () => {
         return Promise.resolve(jsonResponse(lessonResponse(true)));
       }
       if (path === '/api/lessons/lesson-1/progress') {
-        return Promise.resolve(jsonResponse(completableProgressResponse(false)));
+        return Promise.resolve(
+          jsonResponse(completableProgressResponse(false)),
+        );
       }
       if (
         path === '/api/lessons/lesson-1/complete' &&
@@ -460,6 +502,41 @@ describe('LessonPage', () => {
       screen.getAllByRole('link', { name: 'Leçon suivante' }),
     ).toHaveLength(1);
     expect(nextLessonLink).toHaveClass('bg-cyan-400');
+  });
+
+  it('revient au programme et à la bonne étape après la dernière leçon', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/program/programme-test/lesson/demarrer?activity=complete%3Alesson',
+    );
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((path: string) => {
+        if (path === '/api/lessons/demarrer') {
+          return Promise.resolve(
+            jsonResponse(lessonResponse(true, false, false)),
+          );
+        }
+        if (path === '/api/lessons/lesson-1/progress') {
+          return Promise.resolve(
+            jsonResponse(completableProgressResponse(true)),
+          );
+        }
+        throw new Error(`Unexpected request: ${path}`);
+      }),
+    );
+
+    render(
+      <AppProviders>
+        <LessonPage lessonSlug="demarrer" programSlug="programme-test" />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Retour au programme' }),
+    ).toHaveAttribute('href', '/program/programme-test?stage=introduction');
+    expect(screen.queryByText('Retour au module')).not.toBeInTheDocument();
   });
 
   it('restaure une tâche profonde et met sa progression à jour', async () => {

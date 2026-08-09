@@ -88,7 +88,11 @@ describe('ExercisePage', () => {
 
     render(
       <AppProviders>
-        <ExercisePage exerciseId={exerciseId} lessonSlug="demarrer" />
+        <ExercisePage
+          exerciseId={exerciseId}
+          lessonSlug="demarrer"
+          programSlug="programme-test"
+        />
       </AppProviders>,
     );
 
@@ -143,7 +147,11 @@ describe('ExercisePage', () => {
 
     render(
       <AppProviders>
-        <ExercisePage exerciseId="exercise-inconnu" lessonSlug="demarrer" />
+        <ExercisePage
+          exerciseId="exercise-inconnu"
+          lessonSlug="demarrer"
+          programSlug="programme-test"
+        />
       </AppProviders>,
     );
 

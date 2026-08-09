@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 
+import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -178,10 +179,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
                 >
                   Confirmer
                 </Button>
-                <Button
-                  onClick={() => setConfirmation(false)}
-                  variant="ghost"
-                >
+                <Button onClick={() => setConfirmation(false)} variant="ghost">
                   Modifier
                 </Button>
               </div>
@@ -234,11 +232,14 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
 }
 
 export function AdminAccessRequestsPage() {
+  useBackNavigationTarget({
+    href: '/admin',
+    labelKey: 'navigation.back.admin',
+  });
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const [status, setStatus] =
-    useState<AccessRequestStatus>('PENDING_APPROVAL');
+  const [status, setStatus] = useState<AccessRequestStatus>('PENDING_APPROVAL');
   const query = useAdminAccessRequestsQuery({
     page,
     pageSize: 20,

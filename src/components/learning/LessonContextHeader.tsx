@@ -1,13 +1,13 @@
 import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
-import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { LessonDetail } from '@/features/curriculum/queries';
+import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 import { buildLessonActivitySequence } from '@/lib/lesson-activity-sequence';
 
 export function lessonHref(lesson: LessonDetail): string {
-  return `/program/${encodeURIComponent(lesson.module.stage.program.slug)}/lesson/${encodeURIComponent(lesson.slug)}`;
+  return buildLessonHref(lesson.module.stage.program.slug, lesson.slug);
 }
 
 export function lessonActivitySequence(
@@ -53,12 +53,7 @@ export function LessonContextHeader({
   lesson: LessonDetail;
   percent?: number;
 }) {
-  const program = lesson.module.stage.program;
-  const module = lesson.module;
   const canonicalLessonHref = lessonHref(lesson);
-  const moduleHref = `/program/${encodeURIComponent(program.slug)}/module/${encodeURIComponent(module.slug)}`;
-
-  useBackNavigationTarget(activityTitle ? canonicalLessonHref : moduleHref);
 
   return (
     <header class="space-y-4">

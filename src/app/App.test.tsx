@@ -335,7 +335,7 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('déplace le focus principal et affiche le retour après navigation', async () => {
+  it('déplace le focus principal sans afficher de retour sur une racine', async () => {
     window.history.pushState({}, '', '/today');
     mockSession({
       id: 'user-1',
@@ -356,8 +356,8 @@ describe('App', () => {
       expect(document.getElementById('main-content')).toHaveFocus(),
     );
     expect(
-      screen.getByRole('button', { name: 'Revenir à la page précédente' }),
-    ).toBeInTheDocument();
+      screen.queryByRole('button', { name: /Retour|Revenir/ }),
+    ).not.toBeInTheDocument();
   });
 
   it('connecte un utilisateur puis met à jour la session locale', async () => {
