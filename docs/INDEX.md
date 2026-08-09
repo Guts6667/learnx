@@ -73,10 +73,10 @@ poste doivent être revérifiées avant toute réutilisation ultérieure.
   `content/psychology-foundations-pilot/TRANSLATION_MANIFEST_en.json`
 - Bundle Prisma : `seed/psychology-foundations-pilot-program.json`
 
-Ce pilote reste un brouillon privé tant que les revues humaines linguistique,
-pédagogique et culturelle/juridique ne sont pas approuvées dans le workflow
-bilingue. Sa publication et sa progression sont indépendantes du programme
-français.
+Les deux premiers lots anglais restent des brouillons privés tant que les revues
+humaines linguistique, pédagogique et culturelle/juridique ne sont pas
+approuvées dans le workflow bilingue. Leur publication et leur progression sont
+indépendantes du programme français.
 
 ## Archives
 

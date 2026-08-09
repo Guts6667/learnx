@@ -1,0 +1,997 @@
+{
+  "specId": "PEDAGOGY_SPEC_089",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "understanding-major-schools",
+  "moduleSlug": "history-and-perspectives",
+  "lesson": {
+    "title": "Cognitivism, humanism and psychoanalysis",
+    "slug": "cognitivism-humanism-and-psychoanalysis",
+    "summary": "Contemporary psychology inherited traditions that neither ask the same questions nor apply the same standards of evidence. This lesson presents the cognitive revolution, the humanistic approach and the psychoanalytic or psychodynamic tradition while distinguishing historical contribution, concepts, testable predictions and empirical scope.",
+    "objectives": [
+      "Explain how the cognitive revolution made mental processes compatible with experimental study.",
+      "Present the central questions of the humanistic approach without treating its values as demonstrated findings.",
+      "Distinguish historical Freudian psychoanalysis from later psychodynamic approaches.",
+      "Compare several traditions through their mechanisms, predictions and levels of evidence."
+    ],
+    "prerequisites": [
+      "Distinguish observable behaviour from a mental process.",
+      "Understand the behaviorist project and the principles of conditioning."
+    ],
+    "estimatedMinutes": 150,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "From the 1950s, work in psychology, linguistics, computer science and neuroscience renewed the study of memory, language, attention and problem solving. The cognitive revolution was not simply a return to free introspection: it built information-processing models and tested them against observable responses, errors, reaction times and recall performance. A mental process can therefore be theorised without being treated as directly visible.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-1-3-cognitive"
+          ]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Two people obtain the same score on a memory task, but one answers quickly with some errors while the other answers slowly without errors. A cognitive model can propose different strategies, then predict how performance will change if the delay, load or instruction varies. The model is useful if it produces predictions that could fail, not merely if it tells a plausible story after the event.",
+          "sourceKeys": ["openstax-psychology-2e-1-3-cognitive"]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "The humanistic approach developed in reaction to views of behaviour and personality considered overly deterministic. It emphasises lived experience, meaning, choice, relationships and personal growth. Carl Rogers notably emphasised a person-centred relationship. These orientations influenced clinical practice and ideas about the therapeutic alliance, but their values, personality models and the effects of an intervention must be evaluated separately.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-11-5"
+          ]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Freudian psychoanalysis proposes that unconscious conflicts and processes contribute to behaviour and personality. Its historical influence on psychotherapy, culture and attention to personal history is substantial. Several classical propositions are nevertheless difficult to falsify or have received limited direct support. Later psychodynamic approaches changed concepts, duration and methods; evaluating them requires distinguishing a general theory, a precise mechanism and the effectiveness of a defined intervention.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-11-2"
+          ]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Key point: comparing traditions means neither choosing a school as an identity nor declaring them equally supported. For the same case, specify the question, proposed mechanism, expected observations, alternative explanations and available level of evidence. Ideas from different traditions can be reformulated and tested without validating their entire historical system.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-1-3-cognitive",
+            "openstax-psychology-2e-11-5",
+            "openstax-psychology-2e-11-2"
+          ]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-1-2-currents",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.2 History of Psychology",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2. OpenStax.",
+        "description": "Read the passages on Freud, humanism and the cognitive revolution; create one column for historical contribution and another for testable claims.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML.",
+          "alternativeResourceKey": null,
+          "instructions": "Separate historical contribution from testable claims.",
+          "objective": "Compare historical contribution with empirically testable claims.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-1-3-cognitive",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.3 Contemporary Psychology, Cognitive Psychology",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.3, Cognitive Psychology. OpenStax.",
+        "description": "Read the subsection on cognitive psychology and identify two subjects, two possible measures and one interdisciplinary collaboration.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 2,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML.",
+          "alternativeResourceKey": null,
+          "instructions": "Identify subjects, measures and collaborations.",
+          "objective": "Connect the history of cognitivism with contemporary objects and measures.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-11-5",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 11.5 Humanistic Approaches",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-5-humanistic-approaches",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 11.5. OpenStax.",
+        "description": "Read the passages on Maslow and Rogers; separate the values of the approach, theoretical propositions and effects that would require evaluation.",
+        "isRequired": false,
+        "estimatedMinutes": 25,
+        "position": 3,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML.",
+          "alternativeResourceKey": null,
+          "instructions": "Classify statements as values, theory or empirical questions.",
+          "objective": "Distinguish humanistic priorities from empirical claims.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-11-2",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 11.2 Freud and the Psychodynamic Perspective",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/11-2-freud-and-the-psychodynamic-perspective",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 11.2. OpenStax.",
+        "description": "Read the introduction and final critique; distinguish description of the theory, historical influence and empirical support for a precise proposition.",
+        "isRequired": false,
+        "estimatedMinutes": 30,
+        "position": 4,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML; some historical examples require critical reading.",
+          "alternativeResourceKey": null,
+          "instructions": "Distinguish description, historical influence and empirical support.",
+          "objective": "Describe the theory before discussing its testability.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "The cognitive revolution",
+        "slug": "revolution-cognitive",
+        "description": "The cognitive revolution restored the study of representations and mental processes through models that generate observable predictions.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-currents",
+          "openstax-psychology-2e-1-3-cognitive"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — The cognitive revolution",
+          "questionCount": 5,
+          "key": "concept-revolution-cognitive-assessment-1"
+        }
+      },
+      {
+        "title": "The humanistic perspective",
+        "slug": "perspective-humaniste",
+        "description": "The humanistic approach emphasises lived experience, meaning, relationships and capacity for growth while requiring values to be distinguished from empirical claims.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-currents",
+          "openstax-psychology-2e-11-5"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — The humanistic perspective",
+          "questionCount": 5,
+          "key": "concept-perspective-humaniste-assessment-1"
+        }
+      },
+      {
+        "title": "Psychoanalysis and psychodynamic approaches",
+        "slug": "psychanalyse-psychodynamique",
+        "description": "Historical psychoanalysis and psychodynamic approaches give a role to unconscious processes and relational history, but their propositions and interventions must be evaluated separately.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-currents",
+          "openstax-psychology-2e-11-2"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Psychoanalysis and psychodynamic approaches",
+          "questionCount": 5,
+          "key": "concept-psychanalyse-psychodynamique-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Turn a cognitive mechanism into a prediction",
+        "description": "Choose a memory or attention phenomenon and propose a mechanism, a manipulation, a measurement and a result that would contradict the mechanism.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": []
+      },
+      {
+        "title": "Separate values, theory and evidence",
+        "description": "Using the humanistic section, create three columns: value or priority, proposition about human functioning, and observation needed to evaluate it.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Compare four explanations of the same case",
+        "description": "For a person postponing an important task, formulate a behaviorist, cognitive, humanistic and psychodynamic hypothesis; for each, state one prediction, one useful datum and one limitation.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2-currents"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-3-cognitive"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-revolution-cognitive-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-11-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-11-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-perspective-humaniste-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-psychanalyse-psychodynamique-assessment-1"
+      }
+    ],
+    "canonicalKey": "courants-modernes",
+    "quizzes": []
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-006-OPENSTAX-HISTORY",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.2 History of Psychology",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Synthèse historique de Freud, l'humanisme et la révolution cognitive."
+      },
+      {
+        "id": "REF-006-OPENSTAX-COGNITIVE",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.3 Contemporary Psychology",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Objet et méthodes de la psychologie cognitive contemporaine."
+      },
+      {
+        "id": "REF-006-OPENSTAX-HUMANISTIC",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 11.5 Humanistic Approaches",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/11-5-humanistic-approaches",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Présentation introductive de Maslow et Rogers ; ne constitue pas une revue d'efficacité thérapeutique."
+      },
+      {
+        "id": "REF-006-OPENSTAX-PSYCHODYNAMIC",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 11.2 Freud and the Psychodynamic Perspective",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/11-2-freud-and-the-psychodynamic-perspective",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Présentation de la théorie historique et de ses critiques."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-006-OPENSTAX-HISTORY",
+            "locator": "section 1.2, The Cognitive Revolution",
+            "supports": "Contexte interdisciplinaire et retour de l'étude scientifique des processus mentaux."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-COGNITIVE",
+            "locator": "section 1.3, Cognitive Psychology",
+            "supports": "Objets et méthodes de la psychologie cognitive contemporaine."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sections d'un manuel universitaire convergent sur le contexte et l'objet du courant.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-006-OPENSTAX-COGNITIVE",
+            "locator": "section 1.3, Cognitive Psychology",
+            "supports": "Étude des processus cognitifs au moyen de méthodes et de mesures diverses."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Exemple fictif original illustrant la logique de modèles testables.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-006-OPENSTAX-HISTORY",
+            "locator": "section 1.2, Humanism",
+            "supports": "Contexte de réaction au behaviorisme et à la psychanalyse."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-HUMANISTIC",
+            "locator": "section 11.5, introduction et passages sur Rogers",
+            "supports": "Accent sur développement, expérience et approche centrée sur la personne."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse historique et chapitre spécialisé convergents ; la portée empirique est délimitée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-006-OPENSTAX-HISTORY",
+            "locator": "section 1.2, Freud and Psychoanalytic Theory",
+            "supports": "Influence historique et rôle attribué à l'inconscient."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-PSYCHODYNAMIC",
+            "locator": "section 11.2, introduction et critique",
+            "supports": "Concepts freudiens, distinction historique et difficultés de test."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Les faits historiques sont établis ; l'hétérogénéité des approches psychodynamiques impose une formulation prudente.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-006-OPENSTAX-HISTORY",
+            "locator": "ensemble de la section 1.2",
+            "supports": "Pluralité des courants et différences de méthode."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-COGNITIVE",
+            "locator": "section Cognitive Psychology",
+            "supports": "Exigence de questions et méthodes délimitées pour l'étude des cognitions."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-HUMANISTIC",
+            "locator": "section 11.5",
+            "supports": "Priorités propres à l'approche humaniste."
+          },
+          {
+            "referenceId": "REF-006-OPENSTAX-PSYCHODYNAMIC",
+            "locator": "section 11.2",
+            "supports": "Nécessité de distinguer propositions au sein de la tradition psychodynamique."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse comparative qui ne pose pas d'équivalence de preuve entre courants.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-1-2-currents",
+        "referenceIds": ["REF-006-OPENSTAX-HISTORY"],
+        "pedagogicalRationale": "Vue historique commune permettant une comparaison initiale.",
+        "learnerInstructions": "Séparer contribution historique et affirmation testable.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-1-3-cognitive",
+        "referenceIds": ["REF-006-OPENSTAX-COGNITIVE"],
+        "pedagogicalRationale": "Relie l'histoire du cognitivisme à ses objets contemporains.",
+        "learnerInstructions": "Relever objets, mesures et collaborations.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-11-5",
+        "referenceIds": ["REF-006-OPENSTAX-HUMANISTIC"],
+        "pedagogicalRationale": "Présentation structurée de Maslow et Rogers pour distinguer priorités et propositions.",
+        "learnerInstructions": "Classer les énoncés en valeur, théorie ou question empirique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-11-2",
+        "referenceIds": ["REF-006-OPENSTAX-PSYCHODYNAMIC"],
+        "pedagogicalRationale": "Permet de décrire la théorie avant d'en discuter la testabilité.",
+        "learnerInstructions": "Distinguer description, influence historique et soutien empirique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible ; certains exemples historiques sont datés et doivent être lus de manière critique.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "revolution-cognitive",
+        "assessmentTitle": "Concept check — The cognitive revolution",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "What distinguishes a scientific cognitive explanation from a plausible story told after the event?",
+            "explanation": "A scientific model makes observable predictions that can be contradicted.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "It makes testable predictions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "It necessarily uses a computer",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "It rejects all behavioural measurement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "It explains every possible result",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which measurements can test a cognitive model?",
+            "explanation": "Time, errors and recall are observable indicators that allow the model to be compared with data.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Reaction time",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Types of errors",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Recall performance",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "The researcher’s intuition alone",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "The cognitive revolution made observable behaviour unnecessary.",
+            "explanation": "Cognitive models are tested precisely through observable responses and performance.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which context contributed to the cognitive revolution?",
+            "explanation": "Developments in linguistics, computer science, neuroscience and psychology renewed the study of the mind.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Exchange among several disciplines in the 1950s",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Abandonment of all experimentation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "The disappearance of memory as a subject",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "An exclusive return to ancient philosophy",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "What is the movement that restored the scientific study of mental processes to a central place from the 1950s called?",
+            "explanation": "It is the cognitive revolution.",
+            "acceptedAnswers": [
+              "cognitive revolution",
+              "the cognitive revolution"
+            ],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "perspective-humaniste",
+        "assessmentTitle": "Concept check — The humanistic perspective",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which theme is central to the humanistic approach?",
+            "explanation": "Lived experience, meaning, relationships and potential for growth occupy a central place.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Personal growth and lived experience",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Conditioned reflexes only",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Elimination of all subjectivity",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Explaining every behaviour through one gene",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "A humanistic value and a claim about therapeutic effectiveness are validated in exactly the same way.",
+            "explanation": "A value guides practice; a claim about effects requires a defined empirical evaluation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which psychologist is most associated with the person-centred approach?",
+            "explanation": "Carl Rogers developed the person-centred approach.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Carl Rogers",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "John Watson",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Edward Titchener",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ivan Pavlov",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "What must be distinguished when evaluating a humanistic proposition?",
+            "explanation": "Clarity requires separating values, theoretical models and observable effects of an intervention.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "The values prioritised",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Propositions about human functioning",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Measurable effects of an intervention",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "The idea that all claims are equivalent",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Which humanistic psychologist is associated with the hierarchy of needs and self-actualisation?",
+            "explanation": "It is Abraham Maslow.",
+            "acceptedAnswers": ["Abraham Maslow", "Maslow"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "psychanalyse-psychodynamique",
+        "assessmentTitle": "Concept check — Psychoanalysis and psychodynamic approaches",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which distinction is most important when evaluating the psychodynamic tradition?",
+            "explanation": "A historical theory, a precise mechanism and a defined intervention do not automatically have the same support.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Distinguish the historical system, mechanism and intervention",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Treat all approaches as identical",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Confuse cultural influence with experimental evidence",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Evaluate only Freud’s fame",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "The historical influence of a theory is sufficient to demonstrate all its propositions.",
+            "explanation": "Historical influence and empirical support are distinct questions.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which themes belong to the psychoanalytic or psychodynamic tradition?",
+            "explanation": "This tradition notably emphasises unconscious processes, conflicts and relational history.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Unconscious processes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Psychological conflicts",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Relational history",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Rejection of all personal experience",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Why are some classical Freudian propositions difficult to evaluate scientifically?",
+            "explanation": "They may be framed so that they explain opposing results without a clear observation capable of refuting them.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "They sometimes lack explicit falsification criteria",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "They always use measurements that are too precise",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "They never discuss behaviour",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "They have all been retracted",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "What term describes the possibility that a proposition can be contradicted by an observation?",
+            "explanation": "It is falsifiability, or refutability.",
+            "acceptedAnswers": ["falsifiability", "refutability"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Human linguistic, pedagogical and subject review is required before publication.",
+        "Bibliographic titles and canonical technical keys are intentionally unchanged."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English translation draft from PEDAGOGY_SPEC_006.",
+        "reviewRequired": "linguistic_pedagogical_and_subject"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "revolution-cognitive",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2-currents",
+            "openstax-psychology-2e-1-3-cognitive"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-revolution-cognitive-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "perspective-humaniste",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": [
+            "openstax-psychology-2e-11-5",
+            "openstax-psychology-2e-11-2"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-perspective-humaniste-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "psychanalyse-psychodynamique",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-psychanalyse-psychodynamique-assessment-1",
+          "rationale": "La synthèse située mobilise la notion dans un cas plus ample avant sa validation ciblée."
+        }
+      ]
+    }
+  }
+}

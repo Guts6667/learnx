@@ -1,0 +1,123 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_018",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "understanding-major-schools",
+  "assessment": {
+    "seed": {
+      "title": "Final assessment — Understanding the major schools",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Compare several psychological explanations of the same situation without turning schools into labels, specifying for each the proposed mechanism, predictions, necessary data, historical contribution and limitations.",
+    "instructions": [
+      "Read the CampusLang case and separate observed behaviour, Maya’s statements and the interpretations proposed by the team.",
+      "Formulate a behaviorist analysis including at least one operant contingency and, if relevant, a classical-conditioning hypothesis.",
+      "Formulate a cognitive analysis with a bounded mechanism, a possible manipulation, a measure and a result that would contradict the hypothesis.",
+      "Present what a humanistic perspective would seek to understand about Maya’s experience and goals without treating a value as evidence of effectiveness.",
+      "Present a cautious psychodynamic hypothesis, then explain what makes it difficult to test and what data could at least make it more precise.",
+      "Compare the four perspectives in a mechanism-prediction-data-limitation table and propose an integrated explanation that does not exceed the available information.",
+      "Cite at least four resources from the stage, including one primary historical source, and explicitly distinguish historical citation from contemporary evidence."
+    ],
+    "case": "CampusLang offers an optional language-learning app. Maya, a first-year student, has used it every evening for six weeks. At first, she mainly studied when the app displayed a streak and awarded badges. She now says she feels tense whenever she hears the reminder sound, even on days when she planned to rest. She answers familiar exercises very quickly but fails when an instruction changes slightly. In an interview, she explains that she wants to speak with her grandmother in her first language but feels ashamed of making mistakes in front of others. One teacher claims that everything is explained by the app’s rewards. A colleague argues that Maya simply lacks self-confidence. Another contributor mentions an unconscious conflict linked to family expectations without asking further questions. The team wants to increase the number of reminders and asks which explanation should be retained. No prior measurement, comparison group or clinical information is available.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "A structured 1,200–1,500 word report including a comparative table and an integrated conclusion.",
+    "conceptSlugs": [
+      "institutionnalisation-psychologie-scientifique",
+      "experimentation-mesure-introspection",
+      "structuralisme-fonctionnalisme",
+      "projet-behavioriste",
+      "conditionnement-classique",
+      "conditionnement-operant",
+      "revolution-cognitive",
+      "perspective-humaniste",
+      "psychanalyse-psychodynamique"
+    ],
+    "rubric": [
+      {
+        "criterion": "Historical and conceptual accuracy",
+        "weight": 20,
+        "requirements": [
+          "The schools are defined without major anachronism.",
+          "Classical conditioning, operant conditioning and reinforcement are used correctly.",
+          "Historical psychoanalysis and later psychodynamic approaches are not conflated."
+        ]
+      },
+      {
+        "criterion": "Mechanisms and predictions",
+        "weight": 25,
+        "requirements": [
+          "Each perspective includes an explicitly stated mechanism.",
+          "The behaviorist and cognitive analyses generate observable predictions.",
+          "The proposals are not mere restatements of the behaviour."
+        ]
+      },
+      {
+        "criterion": "Evidence, testability and limitations",
+        "weight": 25,
+        "requirements": [
+          "Missing data and alternative explanations are identified.",
+          "At least one result capable of contradicting each testable hypothesis is stated.",
+          "Historical influence, plausibility and empirical support are distinguished."
+        ]
+      },
+      {
+        "criterion": "Comparison and integration",
+        "weight": 20,
+        "requirements": [
+          "The table compares perspectives using the same dimensions.",
+          "The conclusion combines relevant levels without declaring the schools equivalent.",
+          "The recommendation about reminders remains proportionate to the data and considers adverse effects."
+        ]
+      },
+      {
+        "criterion": "Sources and quality of argument",
+        "weight": 10,
+        "requirements": [
+          "At least four stage resources are cited precisely.",
+          "A primary historical source is presented as such.",
+          "The text is structured, nuanced and follows the requested format."
+        ]
+      }
+    ],
+    "remediation": "For each criterion below 70%, revisit the associated concepts and rewrite only the insufficient sections. The revised version must add one falsifiable prediction, one missing datum and one limitation for each relevant perspective while retaining the first version for comparison."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-004-OPENSTAX-HISTORY",
+      "REF-004-WUNDT",
+      "REF-004-WOZNIAK",
+      "REF-005-OPENSTAX-HISTORY",
+      "REF-005-OPENSTAX-CLASSICAL",
+      "REF-005-OPENSTAX-OPERANT",
+      "REF-005-WATSON",
+      "REF-006-OPENSTAX-HISTORY",
+      "REF-006-OPENSTAX-COGNITIVE",
+      "REF-006-OPENSTAX-HUMANISTIC",
+      "REF-006-OPENSTAX-PSYCHODYNAMIC"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "The CampusLang case is entirely fictional.",
+        "Human linguistic, pedagogical and subject review is required before publication.",
+        "No clinical or diagnostic conclusion is requested."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English translation draft of the stage assessment.",
+        "reviewRequired": "linguistic_pedagogical_and_subject"
+      }
+    ]
+  }
+}

@@ -83,7 +83,7 @@ jobs:
           pnpm prisma:seed
           second_signature="$(pnpm exec tsx scripts/validate-psychology-pilot-seed.ts signature)"
           test "$first_signature" = "$second_signature"
-          test "$second_signature" = "draft|private|1|1|3|15|11|3|6|9|45|1|0|0|0"
+          test "$second_signature" = "draft|private|2|2|6|30|22|5|13|18|90|2|0|0|0"
           echo "English psychology pilot targeted seed is idempotent: $second_signature"
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}

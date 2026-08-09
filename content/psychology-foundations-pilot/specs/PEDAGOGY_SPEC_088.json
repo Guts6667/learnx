@@ -1,0 +1,967 @@
+{
+  "specId": "PEDAGOGY_SPEC_088",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "understanding-major-schools",
+  "moduleSlug": "history-and-perspectives",
+  "lesson": {
+    "title": "Behaviorism and learning",
+    "slug": "behaviorism-and-learning",
+    "summary": "Behaviorism strengthened the controlled study of relations between the environment and behaviour. This lesson distinguishes its methodological project from learning mechanisms, then compares classical and operant conditioning while avoiding confusion between reinforcement, punishment, positive and negative.",
+    "objectives": [
+      "Explain the methodological project of behaviorism and its historical context.",
+      "Represent classical conditioning with its stimuli and responses.",
+      "Analyse operant conditioning through a behaviour and its consequence.",
+      "Distinguish the experimental contribution, scope and limitations of a behaviorist explanation."
+    ],
+    "prerequisites": [
+      "Distinguish observable behaviour from a mental process.",
+      "Understand the role of a measurement and an experimental condition."
+    ],
+    "estimatedMinutes": 150,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "At the beginning of the twentieth century, John B. Watson advocated a psychology centred on observable behaviour and relations between stimuli and responses. This project rejected private mental states as an indispensable basis for scientific explanation. It favoured operational definitions, controlled protocols and public predictions. Behaviorism was not a single doctrine, however: the positions of Watson, Skinner and contemporary learning research are not interchangeable.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-behaviorism",
+            "watson-1913-behaviorist-views"
+          ]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "In classical conditioning, an organism learns a relation between events. A stimulus that was initially neutral, when repeatedly paired with a stimulus that already elicits a response, may eventually trigger a conditioned response. The mechanism primarily concerns the predictive value of stimuli; it does not assume that the person voluntarily decides to produce the response.",
+          "sourceKeys": ["openstax-psychology-2e-6-2"]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "In operant conditioning, the future probability of a behaviour varies according to its consequences. Reinforcement increases the behaviour; punishment decreases it. Positive means that an event is added and negative that it is removed. Negative reinforcement is therefore not punishment: it increases a behaviour because an aversive event disappears.",
+          "sourceKeys": ["openstax-psychology-2e-6-3"]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "A revision app immediately congratulates a user after ten minutes of work and awards a point. If session frequency increases, the point or praise functions as positive reinforcement. If the user studies to stop an unpleasant alert and this strategy increases, removal of the alert may function as negative reinforcement. The category depends on the observed effect on behaviour, not the designer’s intention or whether the consequence seems morally pleasant.",
+          "sourceKeys": ["openstax-psychology-2e-6-3"]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Key point: behaviorist approaches produced powerful methods for studying learning and changing defined behaviours. On their own, they do not explain all human learning, especially when expectations, memory, observation of others, goals or social context alter behaviour. A useful explanation therefore states what the model predicts and what it leaves outside its scope.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2-behaviorism",
+            "openstax-psychology-2e-6-2",
+            "openstax-psychology-2e-6-3"
+          ]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-1-2-behaviorism",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.2 History of Psychology, Behaviorism",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2, Behaviorism. OpenStax.",
+        "description": "Read the passage on Watson and Skinner, then distinguish the methodological project, object of study and contemporary legacy.",
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML.",
+          "alternativeResourceKey": null,
+          "instructions": "Distinguish the historical position, methodological contribution and legacy.",
+          "objective": "Place learning mechanisms in the history of behaviorism.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-6-2",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 6.2 Classical Conditioning",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 6.2. OpenStax.",
+        "description": "Read through the general processes and draw a stimulus-response diagram for an original example.",
+        "isRequired": true,
+        "estimatedMinutes": 35,
+        "position": 2,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML with described tables and figures.",
+          "alternativeResourceKey": null,
+          "instructions": "Produce a complete diagram for a new example.",
+          "objective": "Identify every component of a classical-conditioning sequence.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-6-3",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 6.3 Operant Conditioning",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 6.3. OpenStax.",
+        "description": "Read the definitions and reinforcement-punishment table; classify four consequences and justify their expected effect on behaviour.",
+        "isRequired": true,
+        "estimatedMinutes": 40,
+        "position": 3,
+        "guidance": {
+          "accessibilityNotes": "Accessible HTML with a summary table.",
+          "alternativeResourceKey": null,
+          "instructions": "Classify consequences by observed function, not moral judgement.",
+          "objective": "Classify operant consequences by their observed function.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "watson-1913-behaviorist-views",
+        "type": "article",
+        "title": "Psychology as the Behaviorist Views It",
+        "author": "John B. Watson",
+        "url": "https://psychclassics.yorku.ca/Watson/views.htm",
+        "citation": "Watson, J. B. (1913). Psychology as the behaviorist views it. Psychological Review, 20, 158-177. Transcription, York University.",
+        "description": "Read the first two paragraphs as a primary source and identify one methodological claim, one stated objective and one limitation to examine today.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 4,
+        "guidance": {
+          "accessibilityNotes": "Historical English HTML text; optional targeted reading.",
+          "alternativeResourceKey": null,
+          "instructions": "Read the first two paragraphs and annotate the thesis, objective and limitation.",
+          "objective": "Read a founding text critically rather than memorising a summary.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "The behaviorist project",
+        "slug": "projet-behavioriste",
+        "description": "Methodological behaviorism favours publicly observable relations between environment and behaviour, using testable definitions and predictions.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-behaviorism",
+          "watson-1913-behaviorist-views"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — The behaviorist project",
+          "questionCount": 5,
+          "key": "concept-projet-behavioriste-assessment-1"
+        }
+      },
+      {
+        "title": "Classical conditioning",
+        "slug": "conditionnement-classique",
+        "description": "Classical conditioning describes learning a predictive relation between stimuli that changes an elicited response.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-6-2"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Classical conditioning",
+          "questionCount": 5,
+          "key": "concept-conditionnement-classique-assessment-1"
+        }
+      },
+      {
+        "title": "Operant conditioning",
+        "slug": "conditionnement-operant",
+        "description": "Operant conditioning describes how consequences change the future probability of a behaviour.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-6-3"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Operant conditioning",
+          "questionCount": 5,
+          "key": "concept-conditionnement-operant-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Read a historical manifesto critically",
+        "description": "Extract from Watson’s text one sentence defining the subject or aim of psychology, paraphrase it, and state one contribution and one limitation of this position.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2-behaviorism",
+          "watson-1913-behaviorist-views"
+        ]
+      },
+      {
+        "title": "Map a classical-conditioning sequence",
+        "description": "Create an original example and identify the unconditioned stimulus, unconditioned response, conditioned stimulus and conditioned response; make the temporal order explicit.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Analyse consequences without relying on everyday meanings",
+        "description": "Classify six situations as positive reinforcement, negative reinforcement, positive punishment or negative punishment, then justify each answer through addition or removal and increase or decrease in behaviour.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2-behaviorism"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-6-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "watson-1913-behaviorist-views"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-projet-behavioriste-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-6-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-conditionnement-classique-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-conditionnement-operant-assessment-1"
+      }
+    ],
+    "canonicalKey": "behaviorisme-apprentissage",
+    "quizzes": []
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-005-OPENSTAX-HISTORY",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.2 History of Psychology",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Contexte historique du behaviorisme."
+      },
+      {
+        "id": "REF-005-OPENSTAX-CLASSICAL",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 6.2 Classical Conditioning",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/6-2-classical-conditioning",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Définitions et processus du conditionnement classique."
+      },
+      {
+        "id": "REF-005-OPENSTAX-OPERANT",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 6.3 Operant Conditioning",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/6-3-operant-conditioning",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Définitions du renforcement, de la punition et de leurs signes."
+      },
+      {
+        "id": "REF-005-WATSON",
+        "type": "primary_historical_article",
+        "authors": ["Watson, J. B."],
+        "organization": "Psychological Review ; transcription York University",
+        "title": "Psychology as the Behaviorist Views It",
+        "year": 1913,
+        "edition": null,
+        "publication": "Psychological Review, 20, 158-177",
+        "doi": "https://doi.org/10.1037/h0074428",
+        "url": "https://psychclassics.yorku.ca/Watson/views.htm",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "Texte historique reproduit à des fins académiques",
+        "status": "verified",
+        "notes": "Source primaire utilisée pour caractériser le manifeste, non comme état contemporain des connaissances."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-005-OPENSTAX-HISTORY",
+            "locator": "section 1.2, Behaviorism",
+            "supports": "Contexte, influence de Watson et Skinner et apport des méthodes objectives."
+          },
+          {
+            "referenceId": "REF-005-WATSON",
+            "locator": "deux premiers paragraphes",
+            "supports": "Projet d'une psychologie objective centrée sur la prédiction du comportement."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source historique primaire et synthèse universitaire convergentes, avec distinction explicite des variantes du behaviorisme.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-005-OPENSTAX-CLASSICAL",
+            "locator": "définition et acquisition",
+            "supports": "Association prédictive entre stimuli et apparition d'une réponse conditionnée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Définition de manuel directement correspondante.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-005-OPENSTAX-OPERANT",
+            "locator": "définition et tableau 6.2",
+            "supports": "Effets du renforcement et de la punition ; sens de positif et négatif."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Terminologie standard explicitement présentée dans la source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-005-OPENSTAX-OPERANT",
+            "locator": "tableau 6.2 et sections Reinforcement et Punishment",
+            "supports": "Classification fonctionnelle des conséquences selon ajout, retrait et effet sur le comportement."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Exemple fictif original construit avec les définitions standard.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-005-OPENSTAX-HISTORY",
+            "locator": "fin de la sous-section Behaviorism et Cognitive Revolution",
+            "supports": "Apports historiques du behaviorisme et retour de l'étude des processus mentaux."
+          },
+          {
+            "referenceId": "REF-005-OPENSTAX-CLASSICAL",
+            "locator": "ensemble de la section",
+            "supports": "Portée circonscrite du conditionnement classique."
+          },
+          {
+            "referenceId": "REF-005-OPENSTAX-OPERANT",
+            "locator": "ensemble de la section",
+            "supports": "Portée circonscrite du conditionnement opérant."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Conclusion qui reconnaît les apports sans généraliser ces mécanismes à tout apprentissage.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-1-2-behaviorism",
+        "referenceIds": ["REF-005-OPENSTAX-HISTORY"],
+        "pedagogicalRationale": "Situe les mécanismes d'apprentissage dans l'histoire du courant.",
+        "learnerInstructions": "Distinguer position historique, contribution méthodologique et héritage.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-6-2",
+        "referenceIds": ["REF-005-OPENSTAX-CLASSICAL"],
+        "pedagogicalRationale": "Présentation progressive du vocabulaire et des processus du conditionnement classique.",
+        "learnerInstructions": "Produire un schéma complet pour un exemple inédit.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec tableaux et figures décrites.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-6-3",
+        "referenceIds": ["REF-005-OPENSTAX-OPERANT"],
+        "pedagogicalRationale": "Définitions et exemples permettant de corriger les confusions terminologiques fréquentes.",
+        "learnerInstructions": "Classer les conséquences par fonction observée, pas par jugement moral.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible avec tableau récapitulatif.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "watson-1913-behaviorist-views",
+        "referenceIds": ["REF-005-WATSON"],
+        "pedagogicalRationale": "Lecture critique d'un texte fondateur plutôt que mémorisation d'un résumé.",
+        "learnerInstructions": "Lire les deux premiers paragraphes et annoter thèse, objectif et limite.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Texte HTML ; langue et style historiques difficiles, lecture facultative et ciblée.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "projet-behavioriste",
+        "assessmentTitle": "Concept check — The behaviorist project",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which objective does Watson place at the forefront of his manifesto?",
+            "explanation": "Watson presents an objective psychology aimed in particular at predicting and controlling behaviour.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Predict behaviour from observable conditions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Describe dreams only",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Reject all experimentation",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Measure the unconscious directly",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "All authors described as behaviorists defend exactly the same theory.",
+            "explanation": "The term covers several historical and theoretical positions; Watson and Skinner are not interchangeable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which elements correspond to the behaviorist methodological project?",
+            "explanation": "The approach favours measurable behaviour, public conditions and testable predictions.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Define observable behaviours",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Control experimental conditions",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Formulate testable predictions",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Treat every private experience as sufficient evidence",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which limitation should accompany a strictly behaviorist explanation?",
+            "explanation": "An analysis centred on contingencies may leave out relevant cognitive, social or biological processes.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "It may omit internal processes and social context",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "It never produces predictions",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "It prohibits all measurement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "It necessarily explains all learning",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Which psychologist published Psychology as the Behaviorist Views It in 1913?",
+            "explanation": "It was John B. Watson.",
+            "acceptedAnswers": ["John B. Watson", "John Watson", "Watson"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "conditionnement-classique",
+        "assessmentTitle": "Concept check — Classical conditioning",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "In classical conditioning, what does the organism mainly learn?",
+            "explanation": "It learns that one stimulus predicts another, which changes the response to the first.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "A predictive relation between stimuli",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "A moral rule",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "A consequence following a voluntary action",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "A stable personality trait",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "A conditioned response must necessarily be chosen voluntarily.",
+            "explanation": "Classical conditioning often concerns elicited responses that do not require a voluntary decision.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "After repeated pairings, a previously neutral sound elicits salivation. What has the sound become?",
+            "explanation": "The sound has become a conditioned stimulus capable of eliciting a conditioned response.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "A conditioned stimulus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Negative punishment",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "An operant behaviour",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "An unconditioned response",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which elements must be identified in a complete classical-conditioning diagram?",
+            "explanation": "The diagram distinguishes stimuli and responses before and after learning.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Unconditioned stimulus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Unconditioned response",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Conditioned stimulus",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Conditioned response",
+                "isCorrect": true,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "What is the initial phase during which the conditioned association forms called?",
+            "explanation": "This phase is acquisition.",
+            "acceptedAnswers": ["acquisition"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "conditionnement-operant",
+        "assessmentTitle": "Concept check — Operant conditioning",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "What effect defines reinforcement?",
+            "explanation": "Reinforcement increases the future probability of the behaviour it follows.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "The behaviour increases",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The behaviour decreases",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "A stimulus always disappears",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "The person judges the consequence pleasant",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "An alarm stops when a person fastens a seat belt, increasing seat-belt use. What is this?",
+            "explanation": "Removing the alarm increases the behaviour: this is negative reinforcement.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Negative reinforcement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Negative punishment",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Positive reinforcement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Classical conditioning only",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "In operant terminology, negative means bad or harmful.",
+            "explanation": "Negative indicates removal of an event; it is not a moral judgement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "What information is needed to classify an operant consequence?",
+            "explanation": "You must determine what is added or removed and observe whether behaviour increases or decreases.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Is an event added or removed?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Does the behaviour increase or decrease?",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "What was the stated intention?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Does the consequence seem morally good?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "What is the successive reinforcement of approximations towards a target behaviour called?",
+            "explanation": "This procedure is shaping.",
+            "acceptedAnswers": ["shaping"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Human linguistic, pedagogical and subject review is required before publication.",
+        "Bibliographic titles and canonical technical keys are intentionally unchanged."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English translation draft from PEDAGOGY_SPEC_005.",
+        "reviewRequired": "linguistic_pedagogical_and_subject"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "projet-behavioriste",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2-behaviorism",
+            "openstax-psychology-2e-6-2",
+            "watson-1913-behaviorist-views"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-projet-behavioriste-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "conditionnement-classique",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": ["openstax-psychology-2e-6-3"],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-conditionnement-classique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "conditionnement-operant",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-conditionnement-operant-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        }
+      ]
+    }
+  }
+}

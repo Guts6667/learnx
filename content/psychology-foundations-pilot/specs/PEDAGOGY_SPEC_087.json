@@ -1,0 +1,918 @@
+{
+  "specId": "PEDAGOGY_SPEC_087",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "understanding-major-schools",
+  "moduleSlug": "history-and-perspectives",
+  "lesson": {
+    "title": "The birth of experimental psychology",
+    "slug": "birth-of-experimental-psychology",
+    "summary": "Experimental psychology emerged gradually at the intersection of philosophy, physiology and new measurement practices. This lesson uses the Leipzig laboratory as an institutional landmark, distinguishes experimentation from free introspection, and compares structuralism with functionalism without reducing the history of the discipline to a linear succession of founders.",
+    "objectives": [
+      "Explain why 1879 is an institutional landmark rather than the instant birth of psychology.",
+      "Identify what experimentation and measurement changed in the study of psychological processes.",
+      "Distinguish structuralism and functionalism through their main questions.",
+      "Identify a historical simplification and formulate a more nuanced account."
+    ],
+    "prerequisites": [
+      "Define psychology as the scientific study of behaviour and mental processes."
+    ],
+    "estimatedMinutes": 120,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "During the nineteenth century, questions about the mind did not suddenly leave philosophy and become scientific. Work in physiology, psychophysics and reaction-time measurement gradually made some phenomena accessible to controlled observation. Wilhelm Wundt’s creation of a laboratory in Leipzig in 1879 is often used as a landmark because it embodied a lasting organisation of research and training. This landmark means neither that no psychological experiment existed before it nor that one person created the entire discipline.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2",
+            "wozniak-wundt-physiological-psychology"
+          ]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "An experimental approach varies or controls conditions in order to observe their effects on a defined response. Early laboratories could present a sound or a light, measure reaction time and compare repeated conditions. Reports of conscious experience could also be collected, but under regulated conditions; they were not equivalent to free, unverifiable self-observation.",
+          "sourceKeys": [
+            "wundt-outlines-psychology-1897",
+            "wozniak-wundt-physiological-psychology"
+          ]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "In a simple task, a person presses a button when a light appears. The researcher defines the stimulus, records the delay in milliseconds, repeats the trials and compares, for example, a predictable condition with an unpredictable one. Reaction time does not directly reveal the person’s entire thought process, but it provides a public and reproducible indicator of a bounded process.",
+          "sourceKeys": ["openstax-psychology-2e-1-2"]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Structuralism, especially associated with Edward Titchener, sought to describe the elements of conscious experience. Functionalism, associated in particular with William James, instead asked what mental activities are for and how they contribute to adaptation. Both orientations used introspection, but for different purposes and alongside other observations. Treating Wundt as wholly equivalent to Titchener’s later structuralism erases important historical differences.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2",
+            "wundt-outlines-psychology-1897"
+          ]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Key point: a discipline is built through institutions, instruments, methods and debates. Landmarks such as Leipzig in 1879 are useful provided that history is not turned into a story about a single inventor, a single method or an inevitable progression towards current views.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-2",
+            "wozniak-wundt-physiological-psychology"
+          ]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-1-2",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.2 History of Psychology",
+        "author": "Rose M. Spielman, William J. Jenkins and Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.2. OpenStax.",
+        "description": "Read the passages on Wundt, James, structuralism and functionalism; for each, identify the question studied, the method mentioned and one limitation.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1,
+        "guidance": {
+          "accessibilityNotes": "Accessible structured HTML version.",
+          "alternativeResourceKey": null,
+          "instructions": "Read the indicated passages and record one question, one method and one limitation for each orientation.",
+          "objective": "Distinguish the historical questions, methods and limits of the early schools of psychology.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "wundt-outlines-psychology-1897",
+        "type": "book_chapter",
+        "title": "Outlines of Psychology — Introduction, section 1",
+        "author": "Wilhelm Wundt, traduction de Charles Hubbard Judd",
+        "url": "https://psychclassics.yorku.ca/Wundt/Outlines/sec1.htm",
+        "citation": "Wundt, W. (1897). Outlines of Psychology, Introduction, section 1 (C. H. Judd, Trans.). Classics in the History of Psychology, York University.",
+        "description": "Read the opening paragraphs as a primary historical source and note why Wundt’s position is more complex than a simple psychology of introspection.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 2,
+        "guidance": {
+          "accessibilityNotes": "Older HTML text with a simple layout.",
+          "alternativeResourceKey": null,
+          "instructions": "Read the opening paragraphs and compare Wundt’s definitions with the textbook summary.",
+          "objective": "Use a primary source to identify the limits of a simplified account of Wundt.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      },
+      {
+        "key": "wozniak-wundt-physiological-psychology",
+        "type": "article",
+        "title": "Introduction to Wundt's Principles of Physiological Psychology",
+        "author": "Robert H. Wozniak",
+        "url": "https://psychclassics.yorku.ca/Wundt/Physio/wozniak.htm",
+        "citation": "Wozniak, R. H. Introduction to Wundt's Principles of Physiological Psychology. Classics in the History of Psychology, York University.",
+        "description": "Read the presentation of Wundt’s experimental programme and distinguish the historical text from the author’s retrospective interpretation.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3,
+        "guidance": {
+          "accessibilityNotes": "Long HTML text; the requested reading is targeted.",
+          "alternativeResourceKey": null,
+          "instructions": "Identify two reasons why the laboratory alone does not summarise Wundt’s contribution.",
+          "objective": "Relate Wundt’s work, laboratory and methodological programme without merging them.",
+          "scope": null,
+          "urlStatus": "ok"
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Institutionalisation of scientific psychology",
+        "slug": "institutionnalisation-psychologie-scientifique",
+        "description": "Experimental psychology developed through the convergence of methods, instruments, laboratories, publications and training rather than through a single founding act.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2",
+          "wozniak-wundt-physiological-psychology"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Institutionalisation of psychology",
+          "questionCount": 5,
+          "key": "concept-institutionnalisation-psychologie-scientifique-assessment-1"
+        }
+      },
+      {
+        "title": "Experimentation, measurement and controlled introspection",
+        "slug": "experimentation-mesure-introspection",
+        "description": "Experimentation makes defined conditions and measurements public, while subjective reports gain scientific value only within an explicit and limited protocol.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-2",
+          "wundt-outlines-psychology-1897"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Experimentation and measurement",
+          "questionCount": 5,
+          "key": "concept-experimentation-mesure-introspection-assessment-1"
+        }
+      },
+      {
+        "title": "Structuralism and functionalism",
+        "slug": "structuralisme-fonctionnalisme",
+        "description": "Structuralism emphasises the composition of conscious experience, whereas functionalism examines the adaptive functions of mental activity and behaviour.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-1-2"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Structuralism and functionalism",
+          "questionCount": 5,
+          "key": "concept-structuralisme-fonctionnalisme-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Build a critical timeline",
+        "description": "Using the OpenStax section, place five landmarks before and after 1879, then state under each what it actually changed and what it does not allow you to claim.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": ["openstax-psychology-2e-1-2"]
+      },
+      {
+        "title": "Break down a reaction-time experiment",
+        "description": "Describe a stimulus, a response, a measure, a comparison condition and a permitted conclusion; add one conclusion that the protocol would not support.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Compare two historical questions",
+        "description": "Produce a 200–300 word table contrasting structuralism and functionalism by subject, question, method, contribution and limitation, using at least two attached sources.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wundt-outlines-psychology-1897"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "wozniak-wundt-physiological-psychology"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-institutionnalisation-psychologie-scientifique-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-experimentation-mesure-introspection-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-structuralisme-fonctionnalisme-assessment-1"
+      }
+    ],
+    "canonicalKey": "naissance-psychologie-experimentale",
+    "quizzes": []
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-004-OPENSTAX-HISTORY",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.2 History of Psychology",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-2-history-of-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Synthèse universitaire introductive ; les catégories historiques sont utilisées avec prudence."
+      },
+      {
+        "id": "REF-004-WUNDT",
+        "type": "primary_historical_text",
+        "authors": ["Wundt, W."],
+        "organization": "Classics in the History of Psychology, York University",
+        "title": "Outlines of Psychology — Introduction, section 1",
+        "year": 1897,
+        "edition": "Traduction anglaise de 1897",
+        "publication": "Wilhelm Engelmann ; transcription York University",
+        "doi": null,
+        "url": "https://psychclassics.yorku.ca/Wundt/Outlines/sec1.htm",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Domaine public ; transcription universitaire",
+        "status": "verified",
+        "notes": "Source primaire historique, non utilisée comme preuve d'efficacité contemporaine."
+      },
+      {
+        "id": "REF-004-WOZNIAK",
+        "type": "historical_commentary",
+        "authors": ["Wozniak, R. H."],
+        "organization": "Classics in the History of Psychology, York University",
+        "title": "Introduction to Wundt's Principles of Physiological Psychology",
+        "year": null,
+        "edition": null,
+        "publication": "York University",
+        "doi": null,
+        "url": "https://psychclassics.yorku.ca/Wundt/Physio/wozniak.htm",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Consultation en ligne",
+        "status": "verified",
+        "notes": "Commentaire historique universitaire utilisé pour nuancer le rôle de l'introspection."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-004-OPENSTAX-HISTORY",
+            "locator": "section 1.2, introduction et passage sur Wundt",
+            "supports": "Racines au XIXe siècle, laboratoire de Leipzig et mesure des temps de réaction."
+          },
+          {
+            "referenceId": "REF-004-WOZNIAK",
+            "locator": "présentation du programme de psychologie physiologique",
+            "supports": "Convergence entre physiologie, expérimentation et psychologie."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse universitaire et commentaire historique convergents ; le texte évite l'affirmation d'une naissance unique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-004-WUNDT",
+            "locator": "Introduction, section 1",
+            "supports": "Distinction entre expérience immédiate, introspection et observation externe."
+          },
+          {
+            "referenceId": "REF-004-WOZNIAK",
+            "locator": "paragraphes sur la méthode expérimentale",
+            "supports": "Rôle des conditions contrôlées dans l'introspection expérimentale."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source primaire et commentaire historique directement centrés sur la méthode.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-004-OPENSTAX-HISTORY",
+            "locator": "section 1.2, exemple du laboratoire de Leipzig",
+            "supports": "Usage des stimuli, boutons et temps de réaction comme mesures."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Exemple pédagogique original construit à partir du protocole historique décrit.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-004-OPENSTAX-HISTORY",
+            "locator": "sections Wundt, structuralisme et fonctionnalisme",
+            "supports": "Questions distinctes du structuralisme et du fonctionnalisme."
+          },
+          {
+            "referenceId": "REF-004-WUNDT",
+            "locator": "Introduction, section 1",
+            "supports": "Position propre de Wundt, plus large que la caricature d'une introspection libre."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La formulation distingue explicitement Wundt du structuralisme ultérieur de Titchener.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-004-OPENSTAX-HISTORY",
+            "locator": "ensemble de la section 1.2",
+            "supports": "Pluralité des personnes, écoles et contextes ayant façonné la discipline."
+          },
+          {
+            "referenceId": "REF-004-WOZNIAK",
+            "locator": "introduction historique",
+            "supports": "Importance du programme, de l'institut et de la circulation des étudiants."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Conclusion de synthèse proportionnée aux sources historiques consultées.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-1-2",
+        "referenceIds": ["REF-004-OPENSTAX-HISTORY"],
+        "pedagogicalRationale": "Synthèse structurée adaptée à une première lecture historique.",
+        "learnerInstructions": "Relever question, méthode et limite pour chaque orientation.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML accessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "wundt-outlines-psychology-1897",
+        "referenceIds": ["REF-004-WUNDT"],
+        "pedagogicalRationale": "Contact bref avec une source primaire permettant de détecter les simplifications rétrospectives.",
+        "learnerInstructions": "Comparer les définitions discutées par Wundt avec le résumé du manuel.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Texte HTML ancien, sans mise en page complexe.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      },
+      {
+        "resourceKey": "wozniak-wundt-physiological-psychology",
+        "referenceIds": ["REF-004-WOZNIAK"],
+        "pedagogicalRationale": "Commentaire historique qui relie l'œuvre, le laboratoire et le programme méthodologique.",
+        "learnerInstructions": "Identifier deux raisons pour lesquelles le laboratoire seul ne résume pas l'apport de Wundt.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Texte HTML long ; lecture ciblée indiquée.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-03",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "institutionnalisation-psychologie-scientifique",
+        "assessmentTitle": "Concept check — Institutionalisation of psychology",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Why is 1879 often used as a landmark in the history of psychology?",
+            "explanation": "The Leipzig laboratory is a lasting institutional landmark for research and training, not an absolute beginning.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Wundt established a lasting laboratory for psychological research there",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "All reflection on the mind began that year",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "The first physiological measurement was made that year",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "All schools of psychology were founded simultaneously",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "The 1879 landmark proves that no psychology-related experiment existed before then.",
+            "explanation": "Work in physiology, psychophysics and measurement preceded the Leipzig laboratory.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which elements contribute to the institutionalisation of a scientific discipline?",
+            "explanation": "Laboratories, instruments, training and publications make a scientific community and its methods durable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Laboratories",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Instruments and protocols",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Training and publications",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "The isolated opinion of one founder",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which historical statement is the most cautious?",
+            "explanation": "A rigorous history uses landmarks without attributing the whole discipline to one person or date.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "The Leipzig laboratory is one major landmark among several transformations",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Wundt single-handedly invented psychology in 1879",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Psychology immediately became identical in every country",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Instruments made theoretical debates unnecessary",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "In which city did Wundt organise the laboratory used as the 1879 landmark?",
+            "explanation": "The laboratory was located in Leipzig, Germany.",
+            "acceptedAnswers": ["Leipzig"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "experimentation-mesure-introspection",
+        "assessmentTitle": "Concept check — Experimentation and measurement",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "What makes a reaction time scientifically useful?",
+            "explanation": "It is a defined measurement that can be recorded and compared across explicit conditions.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "It can be measured and compared according to a protocol",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "It directly reveals all thought",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "It never varies between trials",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "It replaces every other method",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "What must a simple reaction-time experiment specify?",
+            "explanation": "The stimulus, response, measurement and comparison conditions make the protocol interpretable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "The stimulus presented",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The response recorded",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "The conditions compared",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "The participant’s complete personality",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Wundt defended only free self-observation without experimental control.",
+            "explanation": "His writings instead connect psychological observation to controlled experimental conditions.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "A predictable condition produces a shorter mean time than an unpredictable condition. Which conclusion is warranted?",
+            "explanation": "The result concerns the observed difference in this protocol; it does not describe all mental activity.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Predictability is associated with a faster response in this protocol",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The condition reveals general intelligence",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "All mental processes are now explained",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "The measurement makes repetition unnecessary",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "What is the delay between the appearance of a stimulus and the recorded response called?",
+            "explanation": "This delay is reaction time.",
+            "acceptedAnswers": ["reaction time", "the reaction time"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      },
+      {
+        "conceptSlug": "structuralisme-fonctionnalisme",
+        "assessmentTitle": "Concept check — Structuralism and functionalism",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which question best corresponds to functionalism?",
+            "explanation": "Functionalism examines the usefulness and adaptive function of mental activity and behaviour.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "What purpose does this mental activity serve in adaptation?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Which elements exactly compose this conscious experience?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Which reinforcement follows this behaviour?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Which brain structure is sufficient to explain everything?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Who is structuralism mainly associated with in this lesson?",
+            "explanation": "Systematic structuralism is mainly associated with Edward Titchener; equating it entirely with Wundt is reductive.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Edward Titchener",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "William James",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "B. F. Skinner",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Carl Rogers",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Structuralists and functionalists always used completely opposing methods.",
+            "explanation": "They differed mainly in their questions and aims; both used introspection, among other methods.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which statements correctly describe the two orientations?",
+            "explanation": "Structuralism concerns the composition of experience and functionalism its adaptive functions.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Structuralism analyses the contents of experience",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Functionalism studies the usefulness of mental activity",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Functionalism prohibits all measurement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Structuralism explains only observable behaviour",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "short_answer",
+            "prompt": "Which school is notably associated with William James?",
+            "explanation": "William James is a major figure in functionalism.",
+            "acceptedAnswers": ["functionalism"],
+            "position": 5,
+            "options": []
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Human linguistic, pedagogical and subject review is required before publication.",
+        "Bibliographic titles and canonical technical keys are intentionally unchanged."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English translation draft from PEDAGOGY_SPEC_004.",
+        "reviewRequired": "linguistic_pedagogical_and_subject"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : apports ciblés, activité d'application ou consultation guidée, puis mini-évaluation. Aucun regroupement mécanique par type.",
+      "cycles": [
+        {
+          "conceptSlug": "institutionnalisation-psychologie-scientifique",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-2",
+            "wundt-outlines-psychology-1897",
+            "wozniak-wundt-physiological-psychology"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-institutionnalisation-psychologie-scientifique-assessment-1",
+          "rationale": "Les ressources explicitement reliées aux apports sont consultées à ce point du parcours. La consultation guidée suit les apports qui lui donnent un cadre et précède la validation ciblée de la notion."
+        },
+        {
+          "conceptSlug": "experimentation-mesure-introspection",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-experimentation-mesure-introspection-assessment-1",
+          "rationale": "L'application immédiate transforme l'apport en décision observable avant la mini-évaluation ciblée."
+        },
+        {
+          "conceptSlug": "structuralisme-fonctionnalisme",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-structuralisme-fonctionnalisme-assessment-1",
+          "rationale": "La reformulation écrite oblige à organiser les acquis avant la mini-évaluation ciblée."
+        }
+      ]
+    }
+  }
+}

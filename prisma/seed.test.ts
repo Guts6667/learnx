@@ -420,7 +420,9 @@ describe('sample program seed', () => {
     const seed = await readPsychologyFoundationsPilotSeed();
     const context = createRepository();
     const stage = seed.program.stages[0];
-    const lessons = stage.modules[0].lessons;
+    const lessons = seed.program.stages.flatMap((candidateStage) =>
+      candidateStage.modules.flatMap((module) => module.lessons),
+    );
 
     expect(seed.program).toMatchObject({
       canonicalProgramKey: 'fondamentaux-psychologie',
@@ -435,6 +437,11 @@ describe('sample program seed', () => {
     expect(stage.modules[0]).toMatchObject({
       canonicalKey: 'definition-psychologie',
       slug: 'what-is-psychology',
+    });
+    expect(seed.program.stages).toHaveLength(2);
+    expect(seed.program.stages[1]).toMatchObject({
+      canonicalKey: 'grands-courants',
+      slug: 'understanding-major-schools',
     });
     expect(
       lessons.map(({ canonicalKey, slug }) => ({ canonicalKey, slug })),
@@ -451,29 +458,43 @@ describe('sample program seed', () => {
         canonicalKey: 'metiers-et-ethique',
         slug: 'professions-and-ethics',
       },
+      {
+        canonicalKey: 'naissance-psychologie-experimentale',
+        slug: 'birth-of-experimental-psychology',
+      },
+      {
+        canonicalKey: 'behaviorisme-apprentissage',
+        slug: 'behaviorism-and-learning',
+      },
+      {
+        canonicalKey: 'courants-modernes',
+        slug: 'cognitivism-humanism-and-psychoanalysis',
+      },
     ]);
     expect(lessons.every((lesson) => lesson.contentBlocks.length === 5)).toBe(
       true,
     );
     expect(lessons.every((lesson) => lesson.concepts.length === 3)).toBe(true);
     expect(lessons.every((lesson) => lesson.tasks.length === 3)).toBe(true);
-    expect(seed.conceptAssessmentBanks).toHaveLength(3);
+    expect(seed.conceptAssessmentBanks).toHaveLength(6);
     expect(
       seed.conceptAssessmentBanks.flatMap(
         ({ assessmentBanks }) => assessmentBanks,
       ),
-    ).toHaveLength(9);
+    ).toHaveLength(18);
     expect(
       seed.conceptAssessmentBanks
         .flatMap(({ assessmentBanks }) => assessmentBanks)
         .flatMap(({ questions }) => questions),
-    ).toHaveLength(45);
-    expect(
-      stage.assessment.rubric?.reduce(
-        (total, criterion) => total + criterion.weight,
-        0,
-      ),
-    ).toBe(100);
+    ).toHaveLength(90);
+    for (const candidateStage of seed.program.stages) {
+      expect(
+        candidateStage.assessment.rubric?.reduce(
+          (total, criterion) => total + criterion.weight,
+          0,
+        ),
+      ).toBe(100);
+    }
 
     await seedSampleProgram(
       context.repository,
@@ -489,23 +510,23 @@ describe('sample program seed', () => {
     );
 
     expect(context.programs).toHaveLength(1);
-    expect(context.stages).toHaveLength(1);
-    expect(context.modules).toHaveLength(1);
-    expect(context.lessons).toHaveLength(3);
-    expect(context.concepts).toHaveLength(9);
-    expect(context.assessments).toHaveLength(9);
-    expect(context.assessmentQuestions).toHaveLength(9);
-    expect(context.resources).toHaveLength(11);
-    expect(context.tasks).toHaveLength(3);
-    expect(context.exercises).toHaveLength(6);
-    expect(context.sequences).toHaveLength(3);
-    expect(context.stageAssessments).toHaveLength(1);
+    expect(context.stages).toHaveLength(2);
+    expect(context.modules).toHaveLength(2);
+    expect(context.lessons).toHaveLength(6);
+    expect(context.concepts).toHaveLength(18);
+    expect(context.assessments).toHaveLength(18);
+    expect(context.assessmentQuestions).toHaveLength(18);
+    expect(context.resources).toHaveLength(22);
+    expect(context.tasks).toHaveLength(5);
+    expect(context.exercises).toHaveLength(13);
+    expect(context.sequences).toHaveLength(6);
+    expect(context.stageAssessments).toHaveLength(2);
   });
 
   it('keeps the English pilot sidecars and seed bundle structurally identical', async () => {
     const seed = await readPsychologyFoundationsPilotSeed();
     const sidecars = await Promise.all(
-      [84, 85, 86].map(async (number) => {
+      [84, 85, 86, 87, 88, 89].map(async (number) => {
         const source = await readFile(
           `content/psychology-foundations-pilot/specs/PEDAGOGY_SPEC_${String(number).padStart(3, '0')}.json`,
           'utf8',
@@ -564,30 +585,50 @@ describe('sample program seed', () => {
       }
     }
 
-    const assessmentSidecar = JSON.parse(
+    for (const number of [17, 18]) {
+      const assessmentSidecar = JSON.parse(
+        await readFile(
+          `content/psychology-foundations-pilot/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(number).padStart(3, '0')}.json`,
+          'utf8',
+        ),
+      ) as PsychologyPilotStageAssessmentSidecar;
+      const seededStage = seed.program.stages.find(
+        ({ slug }) => slug === assessmentSidecar.stageSlug,
+      );
+      const seededAssessment = seededStage?.assessment;
+
+      expect(assessmentSidecar.programSlug).toBe(seed.program.slug);
+      expect(seededStage).toBeDefined();
+      expect(seededAssessment).toMatchObject(assessmentSidecar.assessment.seed);
+      expect(seededAssessment?.description).toBe(
+        assessmentSidecar.assessment.description,
+      );
+      expect(assessmentSidecar.assessment.rubric).toEqual(
+        seededAssessment?.rubric,
+      );
+      expect(
+        assessmentSidecar.assessment.rubric.reduce(
+          (total, criterion) => total + criterion.weight,
+          0,
+        ),
+      ).toBe(100);
+      expect(assessmentSidecar.editorial.review.readyForPublication).toBe(
+        false,
+      );
+    }
+
+    const translationManifest = JSON.parse(
       await readFile(
-        'content/psychology-foundations-pilot/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_017.json',
+        'content/psychology-foundations-pilot/TRANSLATION_MANIFEST_en.json',
         'utf8',
       ),
-    ) as PsychologyPilotStageAssessmentSidecar;
-    const seededAssessment = seed.program.stages[0]?.assessment;
-
-    expect(assessmentSidecar.programSlug).toBe(seed.program.slug);
-    expect(assessmentSidecar.stageSlug).toBe(seed.program.stages[0]?.slug);
-    expect(seededAssessment).toMatchObject(assessmentSidecar.assessment.seed);
-    expect(seededAssessment?.description).toBe(
-      assessmentSidecar.assessment.description,
+    ) as {
+      source: { structureKeys: string[] };
+      target: { structureKeys: string[] };
+    };
+    expect(translationManifest.target.structureKeys).toEqual(
+      translationManifest.source.structureKeys,
     );
-    expect(assessmentSidecar.assessment.rubric).toEqual(
-      seededAssessment?.rubric,
-    );
-    expect(
-      assessmentSidecar.assessment.rubric.reduce(
-        (total, criterion) => total + criterion.weight,
-        0,
-      ),
-    ).toBe(100);
-    expect(assessmentSidecar.editorial.review.readyForPublication).toBe(false);
   });
 
   it('lit et importe le pilote Officine Express complet', async () => {
