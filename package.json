@@ -23,6 +23,7 @@
     "prisma:validate-sequence": "tsx scripts/validate-lesson-sequence-backfill.ts",
     "prisma:validate-sequence-removal": "tsx scripts/validate-lesson-sequence-seed-removal.ts",
     "progress:recalculate": "tsx scripts/recalculate-progress.ts",
+    "maintenance:cleanup": "tsx scripts/cleanup-expired-data.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -64,5 +65,10 @@
     "vite-plugin-pwa": "^1.3.0",
     "vitest": "^4.1.10",
     "workbox-window": "^7.4.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "nanoid@<3.3.17": "3.3.18"
+    }
   }
 }

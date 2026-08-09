@@ -131,6 +131,12 @@ liens d’e-mail avant bascule.
 
 ### F-003 — P2 — En-têtes de durcissement incomplets sur Vercel
 
+**Remédiation V3-030.** `vercel.json` applique désormais à toutes les routes une
+CSP compatible avec l’application/PWA, `nosniff`, une politique anti-framing,
+une politique de référent stricte et la désactivation des permissions caméra,
+géolocalisation et microphone. Un test lit la configuration déployable pour
+empêcher leur retrait silencieux.
+
 **Preuve.** Les réponses Vercel observées ont HSTS, mais aucune politique CSP,
 `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` ou politique
 explicite anti-framing. L’API n’ajoute actuellement que le contrôle de cache.
@@ -144,6 +150,10 @@ attendue.
 sinon V3-030. Ajouter des en-têtes compatibles PWA/Vercel et des tests HTTP.
 
 ### F-004 — P2 — Advisory élevé dans la chaîne de build
+
+**Remédiation V3-030.** La résolution transitive de `nanoid` est contrainte vers
+la version corrigée `3.3.18`, sans l’ajouter aux dépendances applicatives. Les
+audits sont rejoués après régénération du lockfile.
 
 **Preuve.** `pnpm audit --prod` : 0 vulnérabilité sur 159 dépendances runtime.
 L’audit complet trouve `GHSA-2v37-7h3g-55p8` sur `nanoid@3.3.16`, transitif de
@@ -182,6 +192,13 @@ multi-utilisateur ; aucun seuil n’est défini.
 dans le temps ou une autre stratégie conservant la suspension/révocation.
 
 ### F-007 — P2 — Rétention et observabilité d’exploitation incomplètes
+
+**Remédiation partielle V3-030.** `pnpm maintenance:cleanup` fournit une purge
+idempotente et bornée, en simulation par défaut, pour les sessions, buckets de
+rate limit, vérifications e-mail et invitations expirés. Une application réelle
+exige `--apply`; aucun job ni nettoyage de base partagée n’est déclenché par ce
+ticket. Les métriques, alertes et la pagination du recalcul restent affectées à
+V3-031.
 
 **Preuve.** Aucun job de purge n’a été trouvé pour les sessions expirées, les
 buckets de rate limit expirés et les anciens tokens d’e-mail/invitation. Les
@@ -246,12 +263,12 @@ alertes.
 | `pnpm exec prisma validate` | succès |
 | `pnpm exec prisma migrate status` | 28 migrations, base configurée à jour, lecture seule |
 | `pnpm audit --prod --json` | 0 vulnérabilité, 159 dépendances |
-| `pnpm audit --json` | 1 advisory high de build, F-004 |
+| `pnpm audit --json` | 0 vulnérabilité après remédiation V3-030, 792 dépendances |
 | `pnpm i18n:check` | succès, 637 clés alignées en français et anglais |
 | `pnpm test:e2e` | 40/40 scénarios réussis |
 | `pnpm lint` | succès |
 | `pnpm typecheck` | succès |
-| `pnpm test` | 93 fichiers, 512 tests réussis |
+| `pnpm test` | 95 fichiers, 523 tests réussis |
 | `pnpm build` | succès, PWA générée, 14 entrées précachées |
 | GitHub Integration n°76 | succès complet sur clone Neon, branche supprimée |
 | `git diff --check` | succès avant et après rédaction du rapport |

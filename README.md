@@ -150,6 +150,32 @@ La CI peut aussi fournir `DEPLOYMENT_CHECK_EMAIL` et
 alors une connexion, la session, une lecture du curriculum puis la déconnexion,
 sans créer ni modifier de contenu métier.
 
+## Maintenance des données techniques expirées
+
+La commande suivante inventorie uniquement les enregistrements techniques
+éligibles à la purge et ne modifie aucune donnée par défaut :
+
+```bash
+pnpm maintenance:cleanup
+```
+
+Elle couvre les sessions expirées depuis plus de 7 jours, les buckets de rate
+limit vieux de plus de 24 heures et les vérifications e-mail ou invitations
+terminées depuis plus de 30 jours. Les utilisateurs, demandes d’accès, événements
+d’audit, notes, progressions, tentatives et contenus ne sont jamais ciblés.
+
+Une suppression nécessite l’option explicite `--apply` :
+
+```bash
+pnpm maintenance:cleanup --apply
+```
+
+Chaque exécution est bornée par lots et peut être rejouée sans erreur. Les
+valeurs `LEARNX_RETENTION_*` de `.env.example` permettent d’ajuster la politique.
+Toujours commencer par la simulation, vérifier la cible `DATABASE_URL` et sa
+sauvegarde, puis seulement lancer `--apply`. Aucun nettoyage automatique n’est
+déclenché par le build ou le déploiement.
+
 ## Tests d’intégration réels
 
 `pnpm test:integration` construit l’application puis exécute Chromium desktop,
