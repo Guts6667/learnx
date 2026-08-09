@@ -1,0 +1,806 @@
+{
+  "specId": "PEDAGOGY_SPEC_095",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "selectionner-cas-usage",
+  "moduleSlug": "decouverte-et-priorisation",
+  "lesson": {
+    "title": "Prioriser valeur, faisabilité, risque et maturité",
+    "slug": "prioriser-valeur-faisabilite-risque",
+    "summary": "La priorisation rend comparables des cas d'usage sans transformer un score en vérité. Elle examine valeur attendue, faisabilité et maturité, risques et impacts, qualité des preuves et conditions de décision afin de sélectionner, reporter ou rejeter explicitement.",
+    "objectives": [
+      "Évaluer plusieurs cas d'usage avec des critères communs de valeur, faisabilité, maturité et risque.",
+      "Associer chaque appréciation à une preuve, une hypothèse et un niveau de confiance.",
+      "Utiliser des critères éliminatoires et une analyse de sensibilité avant le classement chiffré.",
+      "Formuler une décision argumentée de sélection, report ou rejet pour le portefeuille Asteria."
+    ],
+    "prerequisites": [
+      "Cartographier le processus actuel et ses irritants.",
+      "Formuler des cas d'usage avec alternatives, hypothèses et critères d'abandon."
+    ],
+    "estimatedMinutes": 100,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Un portefeuille n'est pas une liste d'idées classées par enthousiasme. La comparaison doit relier chaque cas à la mission de l'organisation, à un bénéfice attendu, à des personnes concernées, à des coûts, à des contraintes et à des impacts potentiels. Elle prépare une décision initiale de poursuite, pas une promesse de succès.",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La valeur désigne l'amélioration plausible d'un résultat métier ou utilisateur par rapport à une situation de référence : qualité, délai, accessibilité, charge, maîtrise du risque ou capacité nouvelle. Elle précise qui bénéficie, qui peut supporter un coût et comment l'effet sera vérifié. Une estimation de valeur sans baseline ou population identifiée reste une hypothèse à faible confiance.",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "La faisabilité ne se réduit pas à l'existence d'un modèle. Elle couvre l'accès et l'adéquation des données, les performances vérifiables dans le contexte visé, les intégrations, les compétences, la supervision, les délais, les fournisseurs et les ressources. La maturité décrit la préparation de l'organisation à fournir ces conditions et à gouverner l'usage dans la durée.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "Le risque est formulé comme un scénario d'impact potentiel dans un contexte, pas comme une étiquette abstraite. À ce stade, l'objectif est de repérer les impacts suffisamment graves, incertains ou difficiles à maîtriser pour modifier la priorité, imposer une expertise ou exclure le cas. Une promesse de forte valeur ne compense pas automatiquement un risque inacceptable.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Une matrice utile conserve, pour chaque critère, l'appréciation, la preuve disponible, l'hypothèse principale et la confiance. Le score agrégé sert à structurer la discussion. Avant de le calculer, appliquer les critères éliminatoires : finalité non légitime, absence de responsable, données manifestement inadéquates, supervision impossible ou impact potentiel hors tolérance déclarée.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-6",
+        "type": "example",
+        "position": 6,
+        "content": {
+          "text": "Cas fictif Asteria : l'aide à retrouver des passages approuvés peut présenter une valeur modérée et un périmètre contrôlable si la gouvernance documentaire progresse. La rédaction automatique de toute réponse promet davantage de gain mais augmente les exigences de vérification. La recommandation de décisions RH à partir de dossiers personnels est rejetée du portefeuille initial : finalité, impacts, cadre juridique et supervision demandent une instruction spécialisée qui dépasse la mission de découverte.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-7",
+        "type": "definition",
+        "position": 7,
+        "content": {
+          "text": "Une décision de portefeuille comprend le cas retenu, les raisons et preuves, les incertitudes, les conditions préalables, la prochaine expérimentation et le responsable. Elle justifie aussi les reports et rejets. Une analyse de sensibilité vérifie si un changement raisonnable de poids ou de note inverse le classement ; si c'est le cas, le consultant présente l'arbitrage au lieu de masquer sa fragilité.",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "govuk-discovery-phase"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI RMF Core. AI Risk Management Framework 1.0.",
+        "description": "Consulter MAP 1 à MAP 5 et le paragraphe sur la décision initiale go/no-go. Relever les critères liés à la mission, la valeur métier, la tolérance au risque, les exigences, la tâche, les données, les bénéfices, coûts, portée, supervision et impacts.",
+        "guidance": {
+          "objective": "Construire une grille de priorisation qui couvre contexte, valeur, faisabilité et impacts.",
+          "instructions": "Lire MAP 1 à MAP 5 puis associer chaque sous-catégorie pertinente à valeur, faisabilité, maturité ou risque ; signaler celles qui servent de condition éliminatoire.",
+          "scope": "Fonction MAP, sous-catégories MAP 1.1 à MAP 5.2, et paragraphe sur l'initial go/no-go decision",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée avec tableaux ; PDF associé disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "govuk-discovery-phase",
+        "type": "website",
+        "title": "How the discovery phase works",
+        "author": "GOV.UK Agile delivery community",
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "citation": "GOV.UK Agile delivery community. (2021). How the discovery phase works. Service Manual.",
+        "description": "Relire « How you'll measure success » et « How you know discovery is finished ». Identifier les éléments nécessaires à une décision de poursuivre, d'expérimenter ou d'arrêter.",
+        "guidance": {
+          "objective": "Relier la priorité à une mesure de succès et à une décision explicite de fin de découverte.",
+          "instructions": "Lire les deux sections puis ajouter à la matrice une baseline manquante, une mesure de succès et une condition de report pour chaque cas Asteria.",
+          "scope": "Sections How you'll measure success et How you know discovery is finished",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Critères multidimensionnels de priorité",
+        "slug": "criteres-valeur-faisabilite-maturite-risque",
+        "description": "La comparaison examine conjointement valeur, faisabilité, maturité et risque avec des critères communs et définis.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core",
+          "govuk-discovery-phase"
+        ],
+        "assessment": {
+          "key": "concept-criteres-priorite-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Choisir les critères",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Preuve, confiance et critères éliminatoires",
+        "slug": "preuve-confiance-criteres-eliminatoires",
+        "description": "Chaque appréciation indique sa preuve et sa confiance ; un critère éliminatoire peut suspendre un cas indépendamment du total obtenu.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core"
+        ],
+        "assessment": {
+          "key": "concept-preuve-confiance-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Qualifier les appréciations",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Décision de portefeuille et sensibilité",
+        "slug": "decision-portefeuille-et-sensibilite",
+        "description": "La décision documente sélection, report et rejet, puis teste la robustesse du classement aux hypothèses et pondérations.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core",
+          "govuk-discovery-phase"
+        ],
+        "assessment": {
+          "key": "concept-decision-portefeuille-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Décider sur le portefeuille",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Construire la grille de comparaison",
+        "description": "Lire les passages demandés puis construire une grille qui définit quatre critères de valeur, quatre de faisabilité et maturité, quatre de risque, une échelle commune de 0 à 3, le type de preuve attendu et trois critères éliminatoires. Justifier la direction de chaque note.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": [
+          "nist-ai-rmf-core",
+          "govuk-discovery-phase"
+        ]
+      },
+      {
+        "key": "activity-2",
+        "title": "Évaluer le portefeuille Asteria",
+        "description": "Évaluer quatre propositions : améliorer la gouvernance documentaire, proposer des passages approuvés, générer un brouillon de réponse et recommander une décision RH. Pour chaque note, fournir preuve, hypothèse, confiance et propriétaire de la vérification. Appliquer les critères éliminatoires avant tout total.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Rédiger la recommandation de portefeuille",
+        "description": "Sélectionner un cas à approfondir, en reporter au moins un et en rejeter au moins un. Tester deux pondérations alternatives et expliquer si le classement change. Rédiger une recommandation de 400 à 600 mots avec preuves, incertitudes, conditions préalables, prochaine expérience et décisions à escalader.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-discovery-phase"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-criteres-priorite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-preuve-confiance-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-7"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-decision-portefeuille-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-089-001",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "AI RMF Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "AI Resource Center",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "NIST Technical Series publication ; conditions d'utilisation NIST applicables",
+        "status": "verified",
+        "notes": "Version 1.0 figée pour ce cours ; la grille LearnX est une synthèse pédagogique et non un outil officiel NIST."
+      },
+      {
+        "id": "REF-089-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "How the discovery phase works",
+        "year": 2021,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel sur la mesure du succès et la décision de poursuivre ou d'arrêter après découverte."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.1 à MAP 1.5 et MAP 3.1 à MAP 5.2",
+            "supports": "Lien entre mission, valeur, coûts, risques, parties prenantes et impacts."
+          },
+          {
+            "referenceId": "REF-089-002",
+            "locator": "sections How you'll measure success et How you know discovery is finished",
+            "supports": "Mesure du résultat et décision de poursuivre ou d'arrêter."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux cadres publics convergent sur une décision initiale fondée sur contexte, valeur et contraintes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.3 à MAP 1.4 et MAP 3.1 à MAP 3.3",
+            "supports": "Définition de la valeur métier, des bénéfices, coûts et références de comparaison."
+          },
+          {
+            "referenceId": "REF-089-002",
+            "locator": "sections Define the problem et How you'll measure success",
+            "supports": "Quantification du problème et choix de mesures de performance."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources soutiennent l'ancrage de la valeur dans un résultat et une mesure explicites.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.2, MAP 1.6, MAP 2.1 à MAP 2.3 et MAP 3.4 à MAP 4.2",
+            "supports": "Compétences, exigences, tâches, données, supervision, composants et contrôles nécessaires à la faisabilité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre fournit directement les dimensions de préparation technique et organisationnelle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.5, MAP 3.2 et MAP 4.1 à MAP 5.2",
+            "supports": "Tolérance, coûts des erreurs, risques des composants et caractérisation des impacts."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sous-catégories soutiennent une appréciation contextualisée des impacts.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.1 à MAP 5.2 et paragraphe précédant le tableau MAP sur l'initial go/no-go decision",
+            "supports": "Documentation du contexte et des impacts suffisante pour informer une décision initiale go/no-go."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Le principe de décision est officiel ; l'échelle, la matrice et les critères éliminatoires sont des outils pédagogiques originaux, non prescrits par le NIST.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "MAP 1.1, MAP 2.2 à MAP 2.3, MAP 3.1 à MAP 3.5 et MAP 5.1",
+            "supports": "Comparaison contextualisée des bénéfices, conditions de données, supervision et impacts dans le cas fictif."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Les appréciations du cas sont fictives et doivent être testées ; la structure de comparaison est soutenue.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-089-001",
+            "locator": "paragraphe sur l'initial go/no-go decision et MAP 1.1 à MAP 5.2",
+            "supports": "Décision initiale documentée à partir du contexte, des bénéfices et impacts."
+          },
+          {
+            "referenceId": "REF-089-002",
+            "locator": "section How you know discovery is finished",
+            "supports": "Décision explicite de passer à l'expérimentation ou de s'arrêter."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "La décision documentée est soutenue ; l'analyse de sensibilité est une pratique analytique proposée par le cours, pas une exigence de ces sources.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core",
+        "referenceIds": [
+          "REF-089-001"
+        ],
+        "pedagogicalRationale": "La fonction MAP réunit les dimensions nécessaires à une priorisation responsable des cas d'usage.",
+        "learnerInstructions": "Consulter MAP 1 à MAP 5 et construire la grille de comparaison.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel et PDF associé disponibles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version AI RMF 1.0 utilisée ; ne pas présenter la matrice LearnX comme un outil NIST."
+      },
+      {
+        "resourceKey": "govuk-discovery-phase",
+        "referenceIds": [
+          "REF-089-002"
+        ],
+        "pedagogicalRationale": "Le guide relie la découverte à la mesure du succès et à une décision de poursuite ou d'arrêt.",
+        "learnerInstructions": "Relire les deux sections et compléter baseline, mesure et condition de report.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Dernière mise à jour affichée le 21 juin 2021."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "criteres-valeur-faisabilite-maturite-risque",
+        "assessmentTitle": "Mini-évaluation — Choisir les critères",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments relèvent de la faisabilité et de la maturité ?",
+            "explanation": "Ils décrivent la capacité technique et organisationnelle à construire, contrôler et maintenir l'usage.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Qualité et disponibilité des documents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Compétences et responsabilités disponibles",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Intégrations et supervision",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le seul enthousiasme du sponsor",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation décrit une valeur mieux instruite ?",
+            "explanation": "Elle identifie bénéficiaire, résultat, référence et vérification à réaliser.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Réduire le délai médian de recherche pour les agents, mesuré par rapport à la baseline à établir",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Créer beaucoup de valeur grâce à l'IA",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Utiliser un modèle performant",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un bénéfice élevé permet d'ignorer les impacts potentiels lors de la priorisation initiale.",
+            "explanation": "Valeur et impacts doivent être examinés conjointement ; certains risques peuvent modifier ou bloquer la priorité.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "preuve-confiance-criteres-eliminatoires",
+        "assessmentTitle": "Mini-évaluation — Qualifier les appréciations",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un cas obtient 3/3 en valeur sur la seule affirmation du sponsor. Comment documenter cette note ?",
+            "explanation": "L'affirmation soutient une attente, mais l'absence de baseline impose une confiance faible et une vérification.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Comme une hypothèse à faible confiance avec baseline à collecter",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Comme une preuve de valeur élevée",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Sans commentaire car le score suffit",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles situations peuvent justifier un report avant calcul du total ?",
+            "explanation": "Elles signalent l'absence de conditions minimales de gouvernance ou de maîtrise.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Aucun propriétaire pour les documents critiques",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supervision impossible pour une décision à fort impact",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Finalité non légitime ou non clarifiée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le score de valeur n'est que de 2/3",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux notes identiques sont équivalentes même si l'une repose sur des mesures et l'autre sur une intuition.",
+            "explanation": "La preuve et la confiance changent la qualité de la décision malgré un score identique.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "decision-portefeuille-et-sensibilite",
+        "assessmentTitle": "Mini-évaluation — Décider sur le portefeuille",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le classement s'inverse lorsque le poids du risque passe de 25 % à 30 %. Quelle conclusion est la plus rigoureuse ?",
+            "explanation": "Le classement est sensible aux préférences ; l'arbitrage doit être présenté au décideur.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Documenter la sensibilité et faire arbitrer les pondérations et tolérances",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Conserver secrètement la pondération qui favorise le cas préféré",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Additionner les deux classements",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir la recommandation finale de l'étape ?",
+            "explanation": "Une décision actionnable justifie sélection, report et rejet avec conditions et responsables.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le cas retenu et les preuves principales",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les incertitudes et conditions préalables",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les raisons des reports et rejets",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une garantie de résultat",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Rejeter explicitement un cas inadapté fait partie d'une bonne gestion de portefeuille.",
+            "explanation": "La priorisation protège les ressources et les personnes en rendant les non-choix explicites et justifiés.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : définir les dimensions de priorité, qualifier preuves et seuils, puis décider et tester la robustesse du portefeuille.",
+      "cycles": [
+        {
+          "conceptSlug": "criteres-valeur-faisabilite-maturite-risque",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-core"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-criteres-priorite-assessment-1",
+          "rationale": "Le cadrage de valeur et le cadre MAP fournissent les dimensions de la grille avant la validation des critères généraux."
+        },
+        {
+          "conceptSlug": "preuve-confiance-criteres-eliminatoires",
+          "contentKeys": [
+            "content-3",
+            "content-4",
+            "content-5"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-preuve-confiance-assessment-1",
+          "rationale": "L'apprenant applique ensuite la grille en conservant preuve, confiance et critères éliminatoires avant l'évaluation ciblée."
+        },
+        {
+          "conceptSlug": "decision-portefeuille-et-sensibilite",
+          "contentKeys": [
+            "content-6",
+            "content-7"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-decision-portefeuille-assessment-1",
+          "rationale": "Le cas et la méthode de sensibilité préparent une recommandation complète de sélection, report et rejet."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "La matrice, l'échelle de 0 à 3, les pondérations et seuils d'exercice sont des outils pédagogiques LearnX et non une méthode officielle NIST.",
+        "Le cas Asteria et les appréciations proposées sont fictifs ; l'apprenant doit les contester à partir des preuves disponibles.",
+        "Les slugs parents ne sont pas encore intégrés au seed ; une validation d'intégration reste requise.",
+        "Une revue humaine pédagogique et métier est requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur la priorisation du portefeuille et de ses trois mini-évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

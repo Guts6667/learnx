@@ -1,0 +1,718 @@
+{
+  "specId": "PEDAGOGY_SPEC_108",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "cadre-europeen-et-securite-genai",
+  "lesson": {
+    "title": "Sécuriser les données et l'application générative",
+    "slug": "securiser-donnees-application-generative",
+    "summary": "La leçon construit une défense en profondeur autour des flux de données, des menaces propres aux applications LLM et de contrôles testables couvrant identité, accès, entrées, sorties, outils, journalisation et réponse.",
+    "objectives": [
+      "Cartographier et classifier les flux de données de bout en bout.",
+      "Transformer prompt injection, divulgation et agence excessive en scénarios contextualisés.",
+      "Définir des contrôles en profondeur, des tests, des preuves et un risque résiduel."
+    ],
+    "prerequisites": [
+      "Disposer de la cartographie RAG, des interfaces et des fournisseurs d'Asteria."
+    ],
+    "estimatedMinutes": 45,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L'assistant Asteria ne se limite pas au modèle : documents, pipeline d'indexation, base de recherche, prompts, API, identité, historique, journaux et postes utilisateurs forment une chaîne. Pour chaque flux, documenter origine, destination, finalité, données possibles, chiffrement, conservation, réutilisation, accès et frontière de confiance. Une information confidentielle ne devient pas sûre parce qu'elle est transformée en embedding.",
+          "sourceKeys": [
+            "anssi-flux-donnees-genai"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Une instruction malveillante peut être directe ou cachée dans un document récupéré ; une sortie peut divulguer une information ; un agent trop autonome peut appeler un outil avec des droits excessifs. Le contexte détermine l'impact. Asteria doit donc tester les documents non fiables, la séparation des instructions et données, l'autorisation des outils et les sorties, sans considérer un filtre unique comme une garantie.",
+          "sourceKeys": [
+            "owasp-menaces-llm-2025"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une défense crédible combine moindre privilège, séparation des environnements, contrôle d'accès documentaire, validation des entrées et sorties, limites d'outils, isolation, journalisation, tests adversariaux, surveillance et réponse. Pour chaque contrôle, distinguer présence, fonctionnement et efficacité. Les journaux eux-mêmes doivent minimiser les données et respecter les durées autorisées.",
+          "sourceKeys": [
+            "anssi-defense-profondeur-genai"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "anssi-flux-donnees-genai",
+        "type": "document",
+        "title": "Recommandations de sécurité pour un système d'IA générative",
+        "author": "Agence nationale de la sécurité des systèmes d'information",
+        "url": "https://cyber.gouv.fr/sites/default/files/document/Recommandations_de_s%C3%A9curit%C3%A9_pour_un_syst%C3%A8me_d_IA_g%C3%A9n%C3%A9rative.pdf",
+        "citation": "Agence nationale de la sécurité des systèmes d'information. (2024). Recommandations de sécurité pour un système d'IA générative (version 1.0, ANSSI-PA-102).",
+        "description": "Lire les recommandations indiquées et les relier aux composants et flux d'Asteria.",
+        "guidance": {
+          "objective": "Construire une défense en profondeur adaptée à un assistant génératif connecté à des données internes.",
+          "instructions": "Lire les passages sur architecture et données puis annoter les frontières de confiance de la carte Asteria.",
+          "scope": "Architecture d'un système d'IA générative et recommandations relatives aux données",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "owasp-menaces-llm-2025",
+        "type": "document",
+        "title": "OWASP Top 10 for LLM Applications 2025",
+        "author": "OWASP GenAI Security Project",
+        "url": "https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/",
+        "citation": "OWASP Foundation. (2024). OWASP Top 10 for LLM Applications 2025.",
+        "description": "Approfondissement facultatif — Consulter les catégories Prompt Injection, Sensitive Information Disclosure et Excessive Agency, puis les contextualiser sans traiter la liste comme une conformité.",
+        "guidance": {
+          "objective": "Transformer des catégories de vulnérabilité en scénarios de menace testables.",
+          "instructions": "Facultatif — Lire les trois catégories indiquées et produire pour chacune un scénario, un contrôle préventif et un test.",
+          "scope": "LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure et LLM06 Excessive Agency",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Pages HTML officielles en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "anssi-defense-profondeur-genai",
+        "type": "document",
+        "title": "Recommandations de sécurité pour un système d'IA générative",
+        "author": "Agence nationale de la sécurité des systèmes d'information",
+        "url": "https://cyber.gouv.fr/sites/default/files/document/Recommandations_de_s%C3%A9curit%C3%A9_pour_un_syst%C3%A8me_d_IA_g%C3%A9n%C3%A9rative.pdf",
+        "citation": "Agence nationale de la sécurité des systèmes d'information. (2024). Recommandations de sécurité pour un système d'IA générative (version 1.0, ANSSI-PA-102).",
+        "description": "Approfondissement facultatif — Lire les recommandations indiquées et les relier aux composants et flux d'Asteria.",
+        "guidance": {
+          "objective": "Construire une défense en profondeur adaptée à un assistant génératif connecté à des données internes.",
+          "instructions": "Facultatif — Lire les recommandations indiquées puis construire une matrice contrôle-test-preuve pour Asteria.",
+          "scope": "Recommandations relatives aux entrées-sorties, privilèges, administration et journalisation",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Flux, classification et frontières de confiance",
+        "slug": "flux-donnees-frontieres-confiance",
+        "description": "La sécurité commence par une carte des sources, transformations, stockages, identités, journaux, sorties et transferts, avec classification et frontières de confiance.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "anssi-flux-donnees-genai"
+        ],
+        "assessment": {
+          "key": "concept-flux-securite-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cartographier les flux sensibles",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Scénarios de menace LLM",
+        "slug": "scenarios-menace-llm-contextualises",
+        "description": "Une catégorie OWASP devient exploitable lorsqu'elle est reliée à une entrée, un composant, un privilège, un chemin d'attaque et une conséquence métier.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "owasp-menaces-llm-2025"
+        ],
+        "assessment": {
+          "key": "concept-menaces-llm-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Contextualiser les menaces LLM",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Contrôles testables et défense en profondeur",
+        "slug": "controles-securite-testables-profondeur",
+        "description": "Les contrôles couvrent prévention, détection, limitation et réponse ; chacun possède propriétaire, configuration, test, preuve, seuil et procédure en cas d'échec.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "anssi-defense-profondeur-genai"
+        ],
+        "assessment": {
+          "key": "concept-controles-securite-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Concevoir des contrôles testables",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Annoter un flux sensible",
+        "description": "En 5 minutes, choisir un flux Asteria et préciser origine, destination, catégorie de données, identité, stockage, conservation et frontière de confiance.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Contextualiser une menace",
+        "description": "En 5 minutes, transformer une catégorie OWASP en scénario indiquant entrée, chemin, composant, privilège, conséquence, contrôle et signal.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Construire trois chaînes contrôle-test-preuve",
+        "description": "En 12 minutes, pour trois scénarios, définir un contrôle préventif, détectif ou limitatif, son propriétaire, un test positif et négatif, la preuve attendue, le seuil d'échec et le risque résiduel.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "anssi-flux-donnees-genai"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-flux-securite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "owasp-menaces-llm-2025"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-menaces-llm-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "anssi-defense-profondeur-genai"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-controles-securite-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-102-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "ANSSI",
+        "title": "Recommandations de sécurité pour un système d'IA générative",
+        "year": 2024,
+        "edition": "Version 1.0 du 29 avril 2024",
+        "publication": "ANSSI-PA-102",
+        "doi": null,
+        "url": "https://cyber.gouv.fr/sites/default/files/document/Recommandations_de_s%C3%A9curit%C3%A9_pour_un_syst%C3%A8me_d_IA_g%C3%A9n%C3%A9rative.pdf",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Licence Ouverte v2.0 (Etalab)",
+        "status": "verified",
+        "notes": "Version 1.0 datée du 29 avril 2024 ; portée technique à faire confirmer par le RSSI."
+      },
+      {
+        "id": "REF-102-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "OWASP Foundation",
+        "title": "OWASP Top 10 for LLM Applications 2025",
+        "year": 2024,
+        "edition": "Édition 2025",
+        "publication": "OWASP GenAI Security Project",
+        "doi": null,
+        "url": "https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "CC BY-SA 4.0 selon le projet OWASP GenAI.",
+        "status": "verified",
+        "notes": "Édition 2025 volontairement figée pour la version 1.0 de cette leçon ; taxonomie communautaire de sécurité, non norme de conformité. Une édition 2026 existe et nécessite une migration éditoriale distincte avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-102-001",
+            "locator": "architecture d'un système d'IA générative et recommandations relatives aux données",
+            "supports": "Cartographie de l'architecture, maîtrise des données et segmentation des composants."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide officiel de cybersécurité ; la configuration Asteria reste fictive.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-102-002",
+            "locator": "LLM01, LLM02 et LLM06 de l'édition 2025",
+            "supports": "Description de prompt injection, divulgation d'informations sensibles et agence excessive."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Taxonomie OWASP directement pertinente ; elle ne constitue pas une certification.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-102-001",
+            "locator": "recommandations relatives aux entrées-sorties, privilèges, administration et journalisation",
+            "supports": "Mesures de défense en profondeur pour les systèmes d'IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide officiel ; la sélection finale relève du RSSI et du contexte.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "anssi-flux-donnees-genai",
+        "referenceIds": [
+          "REF-102-001"
+        ],
+        "pedagogicalRationale": "Guide technique primaire de l'autorité française de cybersécurité.",
+        "learnerInstructions": "Lire les passages sur architecture et données puis annoter les frontières de confiance de la carte Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Le lien officiel expose un PDF ; vérifier la version avant publication."
+      },
+      {
+        "resourceKey": "owasp-menaces-llm-2025",
+        "referenceIds": [
+          "REF-102-002"
+        ],
+        "pedagogicalRationale": "Taxonomie technique publique spécifique aux applications LLM.",
+        "learnerInstructions": "Facultatif — Lire les trois catégories indiquées et produire pour chacune un scénario, un contrôle préventif et un test.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Pages HTML officielles en anglais, accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Revérifier l'édition applicable avant publication."
+      },
+      {
+        "resourceKey": "anssi-defense-profondeur-genai",
+        "referenceIds": [
+          "REF-102-001"
+        ],
+        "pedagogicalRationale": "Guide technique primaire de l'autorité française de cybersécurité.",
+        "learnerInstructions": "Facultatif — Lire les recommandations indiquées puis construire une matrice contrôle-test-preuve pour Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Le lien officiel expose un PDF ; vérifier la version avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "flux-donnees-frontieres-confiance",
+        "assessmentTitle": "Mini-évaluation — Cartographier les flux sensibles",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi cartographier les embeddings ?",
+            "explanation": "Ils sont un composant dérivé à protéger et peuvent rester liés à des informations sensibles.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Ils font partie des flux et stockages à analyser",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ils sont toujours anonymes",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ils remplacent les documents sources",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il documenter pour un flux ?",
+            "explanation": "Ces éléments permettent de décider des mesures adaptées.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Origine et destination",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Finalité et catégories de données",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Accès et conservation",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur de l'interface",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le modèle est l'unique composant pertinent pour la sécurité d'un assistant RAG.",
+            "explanation": "La chaîne complète comprend données, API, stockage, identités et interfaces.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "scenarios-menace-llm-contextualises",
+        "assessmentTitle": "Mini-évaluation — Contextualiser les menaces LLM",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel exemple est une injection indirecte ?",
+            "explanation": "L'instruction hostile provient d'un contenu récupéré, pas du message visible de l'utilisateur.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un document indexé contient une instruction qui tente de détourner l'assistant",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un utilisateur demande une reformulation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une API répond lentement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Qu'est-ce qui accroît l'impact d'une agence excessive ?",
+            "explanation": "Fonctions, permissions et autonomie déterminent les actions possibles.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Outils inutiles disponibles",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Permissions trop larges",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Actions sans confirmation",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Texte court",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Bloquer quelques mots dans les prompts élimine le risque d'injection.",
+            "explanation": "Les injections varient et exigent une défense en profondeur.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "controles-securite-testables-profondeur",
+        "assessmentTitle": "Mini-évaluation — Concevoir des contrôles testables",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels types de mesure forment une défense en profondeur ?",
+            "explanation": "La combinaison prévient, détecte et limite les conséquences.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Moindre privilège",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Journalisation surveillée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Tests adversariaux",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Un avertissement générique seul",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle preuve évalue l'efficacité d'un contrôle d'accès ?",
+            "explanation": "Un test documenté vérifie des autorisations attendues et refusées.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Résultats d'essais avec profils autorisés et non autorisés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une capture du bouton",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le contrat fournisseur seul",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les journaux peuvent collecter sans limite toutes les requêtes pour faciliter l'enquête.",
+            "explanation": "La collecte doit aussi être minimisée, protégée et gouvernée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : cartographier les flux, contextualiser les menaces, puis concevoir des contrôles testables.",
+      "cycles": [
+        {
+          "conceptSlug": "flux-donnees-frontieres-confiance",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "anssi-flux-donnees-genai"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-flux-securite-assessment-1",
+          "rationale": "La carte des flux fournit le périmètre concret des menaces et contrôles."
+        },
+        {
+          "conceptSlug": "scenarios-menace-llm-contextualises",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "owasp-menaces-llm-2025"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-menaces-llm-assessment-1",
+          "rationale": "La taxonomie est convertie en scénarios propres au système avant validation."
+        },
+        {
+          "conceptSlug": "controles-securite-testables-profondeur",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "anssi-defense-profondeur-genai"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-controles-securite-assessment-1",
+          "rationale": "La matrice transforme les recommandations en contrôles démontrables et gouvernés."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "La sécurité est traitée comme un travail conjoint avec le RSSI, non comme une validation autonome du consultant.",
+        "OWASP 2025 est une taxonomie communautaire volontairement figée pour cette édition du cours, pas une norme de conformité.",
+        "L’édition OWASP 2026 publiée le 3 août 2026 devra être comparée et les catégories, exercices et localisateurs devront être migrés avant publication.",
+        "Une revue humaine sécurité, protection des données, métier et pédagogique est requise.",
+        "Les slugs parents ne sont pas encore intégrés au seed."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur la sécurité des données et applications génératives avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

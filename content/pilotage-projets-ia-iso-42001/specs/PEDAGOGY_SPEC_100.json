@@ -1,0 +1,579 @@
+{
+  "specId": "PEDAGOGY_SPEC_100",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "moduleSlug": "du-poc-a-la-production",
+  "lesson": {
+    "title": "Distinguer expérimentation, PoC, pilote et production",
+    "slug": "distinguer-experimentation-poc-pilote-production",
+    "summary": "Cette leçon distingue quatre niveaux de maturité et apprend à définir des preuves et critères de sortie proportionnés avant tout changement d’échelle.",
+    "objectives": [
+      "Distinguer expérimentation, preuve de concept, pilote et production par leur question de décision.",
+      "Définir des critères d’entrée, de sortie et d’arrêt pour chaque phase.",
+      "Refuser un passage de phase lorsque les preuves ne correspondent pas au contexte d’usage visé."
+    ],
+    "prerequisites": [
+      "Savoir formuler une hypothèse, une mesure et une règle de décision."
+    ],
+    "estimatedMinutes": 65,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-confusion-demonstration",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Le fournisseur d’Asteria présente dix réponses convaincantes et qualifie la démonstration de « pilote prêt pour la production ». Ces exemples ne prouvent ni la robustesse sur un corpus représentatif, ni l’utilité en situation réelle, ni la maîtrise des incidents. Nommer correctement la phase empêche de transformer une démonstration en autorisation implicite de déployer.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-quatre-phases",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une expérimentation explore rapidement une hypothèse ; un PoC vérifie qu’un mécanisme est faisable dans un périmètre contrôlé ; un pilote observe une solution limitée avec des utilisateurs, processus et contraintes proches de l’usage cible ; la production fournit un service opéré, surveillé, maintenu et gouverné. Ces termes ne sont pas universellement normalisés : le projet doit donc documenter sa propre définition et la décision attendue à chaque phase.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-011"
+          ]
+        }
+      },
+      {
+        "key": "content-portes-preuves",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une porte de passage associe un périmètre, des preuves, des seuils, des responsables et une décision possible : poursuivre, corriger, réduire le périmètre, suspendre ou arrêter. Les tests doivent refléter des conditions proches du déploiement visé ; une performance moyenne ne suffit pas si des scénarios critiques échouent.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-011",
+            "nist-genai-profile-011"
+          ]
+        }
+      },
+      {
+        "key": "content-production-engagement",
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Le passage en production engage une organisation au-delà du modèle : disponibilité, support, sécurité, protection des données, supervision, mesure, gestion des changements et retrait deviennent nécessaires. Un pilote peut volontairement limiter les utilisateurs, les sources ou les fonctions. Ces limites doivent rester visibles et ne pas être supprimées sans une nouvelle décision instruite.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-011",
+            "nist-genai-profile-011"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-011",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0 — Core.",
+        "description": "Lire MAP 1, MEASURE 2 et MANAGE 1 pour identifier les preuves attendues avant une décision de développement ou de déploiement.",
+        "guidance": {
+          "objective": "Relier contexte, évaluation et décision de passage.",
+          "instructions": "Relever une exigence de contexte, deux preuves d’évaluation et une décision possible.",
+          "scope": "MAP 1 ; MEASURE 2 ; MANAGE 1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "nist-genai-profile-011",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio et al.",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., et al. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (NIST AI 600-1). NIST.",
+        "description": "Lire l’introduction et les actions sur l’évaluation pré-déploiement, la documentation des limites et la surveillance des risques génératifs.",
+        "guidance": {
+          "objective": "Identifier pourquoi un système génératif requiert plusieurs formes de test avant changement d’échelle.",
+          "instructions": "Lire l’introduction puis rechercher les actions liées à pre-deployment testing et deployment context ; relever trois preuves attendues.",
+          "scope": "Introduction ; actions de gestion des risques relatives aux tests pré-déploiement et au contexte de déploiement",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page DOI vers PDF anglais officiel et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Niveaux de maturité d’une solution IA",
+        "slug": "niveaux-maturite-solution-ia",
+        "description": "Expérimentation, PoC, pilote et production répondent à des questions différentes et exposent le système à des contextes croissants.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-011"
+        ],
+        "assessment": {
+          "key": "concept-niveaux-maturite-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Niveaux de maturité",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Porte de passage fondée sur des preuves",
+        "slug": "porte-passage-fondee-preuves",
+        "description": "Une décision de passage repose sur des preuves contextualisées, des seuils, des limites et des responsables définis avant la revue.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-011",
+          "nist-genai-profile-011"
+        ],
+        "assessment": {
+          "key": "concept-porte-passage-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Porte de passage",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-classer-preuves-phases",
+        "title": "Classer les preuves par phase",
+        "description": "Classer douze éléments fictifs d’Asteria entre expérimentation, PoC, pilote et production, puis expliquer pour trois éléments pourquoi ils ne suffisent pas à autoriser la phase suivante.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-construire-portes-passage",
+        "title": "Construire les portes de passage",
+        "description": "Produire un tableau PoC→pilote et pilote→production avec périmètre, critères d’entrée, preuves, seuils, propriétaires, limites, décision d’arrêt et preuve conservée.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-confusion-demonstration"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-quatre-phases"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-classer-preuves-phases"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-niveaux-maturite-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-portes-preuves"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-production-engagement"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile-011"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-construire-portes-passage"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-porte-passage-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-094-001",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Version 1.0 en cours de révision en 2026."
+      },
+      {
+        "id": "REF-094-002",
+        "type": "institutional_framework",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": "NIST AI 600-1",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Profil intersectoriel officiel publié en juillet 2024."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Cas et démonstration Asteria fictifs."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-094-001",
+            "locator": "MAP 1, MEASURE 2, MANAGE 1.1",
+            "supports": "Évaluation contextualisée et décision de développement ou déploiement."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Les quatre appellations sont des conventions de projet explicitement signalées comme non universelles ; leur logique de preuve est soutenue par le cadre.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-094-001",
+            "locator": "MEASURE 2.1 à 2.4 et MANAGE 1.1",
+            "supports": "Documentation des tests, contexte proche du déploiement et décision de poursuivre."
+          },
+          {
+            "referenceId": "REF-094-002",
+            "locator": "section 2 et actions relatives aux tests pré-déploiement",
+            "supports": "Tests et gestion des risques propres à l’IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux publications NIST primaires convergentes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-094-001",
+            "locator": "GOVERN 1.5, 1.7 ; MEASURE 2.4 ; MANAGE 4",
+            "supports": "Surveillance, responsabilités, amélioration et retrait."
+          },
+          {
+            "referenceId": "REF-094-002",
+            "locator": "actions de gestion des risques sur déploiement et surveillance",
+            "supports": "Contrôles continus pour les systèmes génératifs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadres institutionnels directement pertinents.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-011",
+        "referenceIds": [
+          "REF-094-001"
+        ],
+        "pedagogicalRationale": "Structure le lien entre contexte, mesure et décision.",
+        "learnerInstructions": "Lire les sous-catégories ciblées et extraire quatre preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée."
+      },
+      {
+        "resourceKey": "nist-genai-profile-011",
+        "referenceIds": [
+          "REF-094-002"
+        ],
+        "pedagogicalRationale": "Ajoute les risques et tests propres aux usages génératifs.",
+        "learnerInstructions": "Lire l’introduction et les actions ciblées, puis relever trois preuves pré-déploiement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page DOI et PDF officiel accessibles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "niveaux-maturite-solution-ia",
+        "assessmentTitle": "Mini-évaluation — Niveaux de maturité",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle phase observe une solution limitée dans des conditions proches de l’usage réel ?",
+            "explanation": "Le pilote confronte une solution limitée à des utilisateurs, processus et contraintes proches de la cible.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le pilote",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La démonstration commerciale",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’idéation",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un PoC concluant prouve que l’exploitation en production est maîtrisée.",
+            "explanation": "Le PoC vérifie une faisabilité délimitée ; il ne couvre pas automatiquement exploitation, sécurité, adoption et surveillance.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi documenter la définition des phases du projet ?",
+            "explanation": "Les termes varient ; une définition partagée clarifie preuves, limites et décisions.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Pour partager la question et les preuves attendues à chaque phase",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour garantir une durée identique",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour supprimer toute incertitude",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "porte-passage-fondee-preuves",
+        "assessmentTitle": "Mini-évaluation — Porte de passage",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments appartiennent à une porte de passage robuste ?",
+            "explanation": "La porte associe preuves, seuils, responsables, limites et décisions possibles.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Des seuils définis avant la revue",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un responsable de décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une sélection des seuls résultats favorables",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Dix réponses choisies par le fournisseur sont convaincantes. Quelle conclusion est recevable ?",
+            "explanation": "Ces exemples soutiennent une exploration, pas une généralisation au contexte cible.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "La démonstration justifie des tests représentatifs supplémentaires",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le passage en production est validé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le risque d’erreur est nul",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Un scénario critique échoue malgré une bonne moyenne. Quelle décision est la plus prudente ?",
+            "explanation": "Un seuil critique peut être bloquant même lorsque la moyenne est favorable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Bloquer ou réduire le périmètre selon le critère prévu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ignorer l’échec car la moyenne suffit",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer le scénario du jeu de test",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : qualifier la maturité réelle, puis construire des décisions de passage auditables.",
+      "cycles": [
+        {
+          "conceptSlug": "niveaux-maturite-solution-ia",
+          "contentKeys": [
+            "content-confusion-demonstration",
+            "content-quatre-phases"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-classer-preuves-phases"
+          },
+          "assessmentKey": "concept-niveaux-maturite-assessment-1",
+          "rationale": "Le classement corrige immédiatement la confusion entre démonstration et maturité opérationnelle."
+        },
+        {
+          "conceptSlug": "porte-passage-fondee-preuves",
+          "contentKeys": [
+            "content-portes-preuves",
+            "content-production-engagement"
+          ],
+          "resourceKeys": [
+            "nist-genai-profile-011"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-construire-portes-passage"
+          },
+          "assessmentKey": "concept-porte-passage-assessment-1",
+          "rationale": "Les risques génératifs sont transformés en preuves et décisions explicites avant validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Les définitions des phases sont des conventions opérationnelles à adapter et non des catégories normatives."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

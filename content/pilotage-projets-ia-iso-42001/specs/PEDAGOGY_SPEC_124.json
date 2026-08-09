@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_124",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "moduleSlug": "soutenance-et-consolidation",
+  "lesson": {
+    "title": "Défendre le dossier devant un comité de direction",
+    "slug": "defendre-dossier-comite-direction",
+    "summary": "Cette leçon transforme le dossier technique et de gouvernance en une décision exécutive concise, puis entraîne à répondre aux objections sans masquer risques, incertitudes ni limites d’autorité.",
+    "objectives": [
+      "Produire une synthèse exécutive reliant valeur, risques, options, preuves et décision demandée.",
+      "Répondre à des objections en distinguant fait, hypothèse, arbitrage, limite et prochaine vérification."
+    ],
+    "prerequisites": [
+      "Disposer du dossier SGIA consolidé, de la note de cohérence et des arbitrages d’actions correctives."
+    ],
+    "estimatedMinutes": 60,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-synthese-orientee-decision",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une synthèse exécutive n’est pas un résumé exhaustif du dossier. Elle expose la décision demandée, le résultat attendu, les options réalistes, les risques et opportunités majeurs, les preuves disponibles, les conditions de succès et les prochaines échéances. Elle indique aussi ce qui demeure incertain afin que la direction puisse exercer son autorité plutôt que valider une conclusion déjà fermée.",
+          "sourceKeys": [
+            "nist-executive-118",
+            "nist-govern-118"
+          ]
+        }
+      },
+      {
+        "key": "content-objections-et-limites",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une objection utile teste une hypothèse ou un arbitrage. La réponse professionnelle commence par qualifier la question, cite la preuve pertinente, reconnaît la limite et propose une décision ou une vérification. Dire « je ne peux pas conclure avec les éléments disponibles » est préférable à une assurance inventée. Les perspectives métier, technique, sécurité, données, juridique et utilisateurs peuvent révéler des risques différents.",
+          "sourceKeys": [
+            "nist-audience-118",
+            "nist-core-118"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-executive-118",
+        "type": "website",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Executive Summary",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/0-ai-rmf-1-0/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Executive Summary. NIST AI 100-1.",
+        "description": "Lire la synthèse pour observer comment finalité, bénéfices, risques, public et approche sont articulés sans détailler tout le cadre.",
+        "guidance": {
+          "objective": "Repérer les informations indispensables à une synthèse destinée à la décision.",
+          "instructions": "Identifier finalité, bénéfices, risques, acteurs et logique d’action, puis transposer cette structure au cas Asteria en cinq rubriques.",
+          "scope": "Executive Summary",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; version 1.0 annoncée en cours de révision.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-audience-118",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — Audience",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/2-sec-audience/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Audience. NIST AI 100-1.",
+        "description": "Consulter la section Audience pour cartographier les perspectives et objections légitimes à intégrer dans la soutenance.",
+        "guidance": {
+          "objective": "Préparer des objections couvrant plusieurs acteurs du cycle de vie.",
+          "instructions": "Choisir six perspectives et formuler pour chacune une objection précise, une preuve attendue et une autorité de décision.",
+          "scope": "Section Audience",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais, avec schémas décrits dans le texte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "nist-govern-118",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — fonction GOVERN",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), fonction GOVERN. NIST AI 100-1.",
+        "description": "Revoir les responsabilités de gouvernance et de direction pour formuler une demande de décision attribuée.",
+        "guidance": {
+          "objective": "Associer chaque arbitrage au bon niveau d’autorité.",
+          "instructions": "Pour trois décisions proposées, préciser qui prépare, qui recommande, qui décide et qui exécute.",
+          "scope": "Introduction de GOVERN et GOVERN 2",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 3
+      },
+      {
+        "key": "nist-core-118",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Utiliser les quatre fonctions comme aide-mémoire pour vérifier qu’une objection ne néglige ni contexte, ni mesure, ni gestion.",
+        "guidance": {
+          "objective": "Qualifier les objections dans une vision transversale du risque.",
+          "instructions": "Classer huit objections selon la fonction principalement mobilisée, puis signaler les croisements.",
+          "scope": "Aperçu des quatre fonctions",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Synthèse exécutive orientée décision",
+        "slug": "synthese-executive-orientee-decision",
+        "description": "La synthèse sélectionne les éléments nécessaires à un arbitrage explicite : résultat, options, preuves, risques, conditions et décision demandée.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-executive-118",
+          "nist-govern-118"
+        ],
+        "assessment": {
+          "key": "concept-synthese-executive-decision-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Synthèse exécutive orientée décision",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Réponse étayée aux objections",
+        "slug": "reponse-etayee-objections",
+        "description": "Une réponse distingue fait, hypothèse, arbitrage et limite, puis propose une décision ou une vérification attribuée.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-audience-118",
+          "nist-core-118"
+        ],
+        "assessment": {
+          "key": "concept-reponse-etayee-objections-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Réponse étayée aux objections",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-synthese-comite",
+        "title": "Produire la synthèse exécutive d’Asteria",
+        "description": "Rédiger deux pages maximum : décision demandée, trois options, valeur attendue, cinq risques ou limites maximum, preuves clés, conditions, ressources et jalons. Ajouter en annexe la piste vers le détail du dossier.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-simulation-objections",
+        "title": "Répondre à un comité contradictoire",
+        "description": "Préparer puis enregistrer ou rédiger des réponses à six objections : valeur, délai, sécurité, données, utilisateurs et certification. Chaque réponse doit citer une preuve, une limite et une prochaine décision ou vérification.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-synthese-orientee-decision"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-executive-118"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-govern-118"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-synthese-comite"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-synthese-executive-decision-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-objections-et-limites"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-audience-118"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-core-118"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-simulation-objections"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-reponse-etayee-objections-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior consolidant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-118-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/0-ai-rmf-1-0/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Les sections Executive Summary, Audience et Core sont utilisées ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-118-NIST-AI-RMF",
+            "locator": "Executive Summary et GOVERN 2",
+            "supports": "Articulation entre finalité, risques, bénéfices, acteurs et responsabilité de direction."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "La source soutient les informations à relier ; la forme de synthèse proposée est un choix pédagogique professionnel à valider.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-118-NIST-AI-RMF",
+            "locator": "Audience, paragraphes sur les acteurs et perspectives ; Core, introduction",
+            "supports": "Importance de perspectives pluridisciplinaires et d’une gestion continue et contextuelle des risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre public soutient directement la pluralité des acteurs et la contextualisation des décisions.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-executive-118",
+        "referenceIds": [
+          "REF-118-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Modèle public de condensation d’une finalité, de risques et d’une approche.",
+        "learnerInstructions": "Transposer sa structure au cas Asteria sans en copier la formulation.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-audience-118",
+        "referenceIds": [
+          "REF-118-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Élargit les objections au-delà de la seule perspective technique.",
+        "learnerInstructions": "Formuler six objections et leurs preuves attendues.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique avec texte descriptif.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-govern-118",
+        "referenceIds": [
+          "REF-118-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Permet d’attribuer correctement les arbitrages.",
+        "learnerInstructions": "Distinguer préparation, recommandation, décision et exécution.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative hors séquence."
+      },
+      {
+        "resourceKey": "nist-core-118",
+        "referenceIds": [
+          "REF-118-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Sert d’aide-mémoire transversal pour qualifier les objections.",
+        "learnerInstructions": "Classer huit objections et signaler les croisements.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative hors séquence."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "synthese-executive-orientee-decision",
+        "assessmentTitle": "Mini-évaluation — Synthèse exécutive orientée décision",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle ouverture est la plus utile au comité ?",
+            "explanation": "Le comité doit comprendre immédiatement la décision demandée, les options et les conditions.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Décision demandée, options, recommandation et conditions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Historique complet de tous les fichiers",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Liste de termes techniques sans enjeu",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent rester visibles malgré la concision ?",
+            "explanation": "Risques majeurs, preuves, incertitudes, conditions et autorité sont indispensables à l’arbitrage.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Risques et opportunités majeurs",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Preuves et incertitudes",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Conditions et autorité de décision",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Tous les détails sans hiérarchie",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une synthèse exécutive doit cacher les incertitudes pour paraître convaincante.",
+            "explanation": "Une décision responsable exige que les incertitudes matérielles et leurs conséquences soient visibles.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "reponse-etayee-objections",
+        "assessmentTitle": "Mini-évaluation — Réponse étayée aux objections",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le directeur demande si le système est « totalement sûr ». Quelle réponse est la plus professionnelle ?",
+            "explanation": "La réponse qualifie le risque, cite les preuves, reconnaît les limites et propose une règle de décision.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Présenter les tests, limites, risques résiduels et conditions de maintien",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Garantir l’absence de tout incident",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter la question",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que contient une réponse étayée ?",
+            "explanation": "Fait ou preuve, limite, arbitrage et prochaine décision ou vérification composent une réponse responsable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Preuve pertinente",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Limite ou incertitude",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Décision ou vérification suivante",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Confiance personnelle sans donnée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Reconnaître qu’une conclusion est impossible avec les preuves disponibles peut être une bonne réponse.",
+            "explanation": "Identifier honnêtement la limite puis proposer la preuve ou l’escalade nécessaire protège la qualité de la décision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : condenser le dossier en demande de décision, puis tester sa solidité par des objections pluridisciplinaires.",
+      "cycles": [
+        {
+          "conceptSlug": "synthese-executive-orientee-decision",
+          "contentKeys": [
+            "content-synthese-orientee-decision"
+          ],
+          "resourceKeys": [
+            "nist-executive-118",
+            "nist-govern-118"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-synthese-comite"
+          },
+          "assessmentKey": "concept-synthese-executive-decision-assessment-1",
+          "rationale": "L’analyse d’une synthèse institutionnelle précède la production courte et attribuée."
+        },
+        {
+          "conceptSlug": "reponse-etayee-objections",
+          "contentKeys": [
+            "content-objections-et-limites"
+          ],
+          "resourceKeys": [
+            "nist-audience-118",
+            "nist-core-118"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-simulation-objections"
+          },
+          "assessmentKey": "concept-reponse-etayee-objections-assessment-1",
+          "rationale": "La diversité des acteurs sert à construire une contradiction réaliste avant la mini-évaluation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Toutes les objections et décisions Asteria sont fictives.",
+        "La soutenance n’autorise aucune promesse de conformité, de sécurité absolue ou de réussite à une certification.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon de défense exécutive du dossier SGIA.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

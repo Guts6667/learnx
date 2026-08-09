@@ -1,0 +1,845 @@
+{
+  "specId": "PEDAGOGY_SPEC_093",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "selectionner-cas-usage",
+  "moduleSlug": "decouverte-et-priorisation",
+  "lesson": {
+    "title": "Cartographier un processus, ses acteurs et ses irritants",
+    "slug": "cartographier-processus-irritants",
+    "summary": "Avant d'imaginer un cas d'usage IA, le consultant décrit le processus actuel, ses acteurs, ses points de contact et ses irritants à partir de faits observables. Cette carte délimite le problème et rend visibles les dépendances que masquerait une lecture centrée sur un outil.",
+    "objectives": [
+      "Délimiter un processus actuel avec un début, une fin, des étapes et un résultat attendu.",
+      "Identifier les acteurs, points de contact, canaux, informations et dépendances du processus.",
+      "Distinguer un irritant observé, son effet, une cause supposée et la preuve encore nécessaire.",
+      "Produire une carte synthétique du processus actuel d'Asteria sans concevoir prématurément la solution."
+    ],
+    "prerequisites": [
+      "Reformuler une demande de solution en problème professionnel observable.",
+      "Distinguer faits, attentes, hypothèses et questions ouvertes."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Une demande d'IA vise rarement une action isolée. Retrouver une procédure, vérifier sa validité, comprendre une exception et transmettre une réponse forment un parcours qui traverse plusieurs rôles et outils. Cartographier l'existant avant de proposer une solution permet de voir où se produit réellement la difficulté, qui en subit les effets et quelles équipes ou informations conditionnent le résultat.",
+          "sourceKeys": [
+            "govuk-whole-problem"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une carte du processus actuel, dite carte « as-is », représente un périmètre explicite : événement de départ, résultat de fin, étapes principales, décisions, entrées, sorties et passages entre acteurs. Elle décrit ce qui se passe aujourd'hui, y compris les contournements, plutôt que la procédure théorique ou le futur outil souhaité.",
+          "sourceKeys": [
+            "govuk-experience-map",
+            "govuk-whole-problem"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Un acteur accomplit, décide, fournit, contrôle ou subit une partie du processus. Un point de contact est une interaction avec un canal, un outil, un document ou une équipe. Une dépendance est une condition externe à une étape, par exemple la mise à jour d'une procédure par la qualité. Les rendre visibles évite d'attribuer à l'utilisateur ou au modèle un problème créé ailleurs dans le service.",
+          "sourceKeys": [
+            "govuk-experience-map",
+            "govuk-whole-problem"
+          ]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Cas fictif Asteria : un collaborateur formule une question, cherche dans plusieurs espaces, ouvre parfois une ancienne procédure, sollicite un référent puis rédige une réponse. Le référent vérifie l'information auprès de la qualité lorsque le document est ambigu. Cette description ne prouve pas encore que la recherche est l'unique cause de lenteur : la validation, l'obsolescence documentaire et la répartition des responsabilités peuvent aussi peser sur le délai.",
+          "sourceKeys": [
+            "govuk-whole-problem"
+          ]
+        }
+      },
+      {
+        "key": "content-5",
+        "type": "definition",
+        "position": 5,
+        "content": {
+          "text": "Un irritant est une difficulté observée à une étape précise, pour un acteur identifié, avec un effet descriptible : attente, reprise, erreur, abandon, surcharge ou exposition à un risque. Sa cause reste une hypothèse tant qu'elle n'est pas étayée. « Les réponses sont lentes » est un effet général ; « les agents consultent trois espaces et sollicitent deux validations » devient un constat exploitable si des observations, journaux ou entretiens le confirment.",
+          "sourceKeys": [
+            "govuk-experience-map",
+            "govuk-user-needs"
+          ]
+        }
+      },
+      {
+        "key": "content-6",
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Pour chaque irritant, consigner quatre éléments séparés : observation disponible, effet sur le résultat ou les personnes, cause supposée et preuve à rechercher. Un irritant fortement ressenti mais non mesuré peut rester dans la carte ; il doit simplement être marqué comme signal à vérifier, et non transformé en bénéfice chiffré garanti.",
+          "sourceKeys": [
+            "govuk-experience-map",
+            "govuk-user-needs"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "govuk-experience-map",
+        "type": "website",
+        "title": "Creating an experience map",
+        "author": "GOV.UK User research community",
+        "url": "https://www.gov.uk/service-manual/user-research/creating-an-experience-map",
+        "citation": "GOV.UK User research community. (2017). Creating an experience map. Service Manual.",
+        "description": "Lire les sections d'introduction, « Identify common stages » et « Build up the experience ». Relever les éléments qui constituent la colonne vertébrale d'une carte et ceux qui documentent l'expérience à chaque étape.",
+        "guidance": {
+          "objective": "Structurer une carte simple à partir d'étapes, d'actions, de points de contact et de besoins observés.",
+          "instructions": "Lire les trois sections indiquées puis préparer une liste de six informations à placer sur la carte Asteria.",
+          "scope": "Introduction et sections Identify common stages et Build up the experience",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, accessible sans compte ; traduction du navigateur possible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "govuk-whole-problem",
+        "type": "website",
+        "title": "Map and understand a user's whole problem",
+        "author": "GOV.UK Design community",
+        "url": "https://www.gov.uk/service-manual/design/map-a-users-whole-problem",
+        "citation": "GOV.UK Design community. (2018). Map and understand a user's whole problem. Service Manual.",
+        "description": "Lire l'introduction et les sections sur la cartographie du parcours et du service. Identifier ce que la carte doit montrer côté utilisateur et côté organisation, puis repérer deux dépendances possibles dans le cas Asteria.",
+        "guidance": {
+          "objective": "Relier le parcours visible aux processus internes, acteurs et dépendances qui le rendent possible.",
+          "instructions": "Lire les sections indiquées et ajouter à la carte Asteria les canaux, processus internes et équipes qui interviennent.",
+          "scope": "Introduction, Map user journeys together et Work out what you need to change",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "govuk-user-needs",
+        "type": "website",
+        "title": "Learning about users and their needs",
+        "author": "GOV.UK User research community",
+        "url": "https://www.gov.uk/service-manual/user-research/start-by-learning-user-needs",
+        "citation": "GOV.UK User research community. (2017). Learning about users and their needs. Service Manual.",
+        "description": "Consulter les sections sur la recherche et la validation des besoins afin de distinguer une observation utilisateur d'une opinion interne non vérifiée.",
+        "guidance": {
+          "objective": "Qualifier la preuve disponible derrière un besoin ou un irritant.",
+          "instructions": "Lire les sections Researching users and their needs et Validating user needs, puis associer une preuve possible à trois irritants Asteria.",
+          "scope": "Sections Researching users and their needs et Validating user needs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Processus actuel et frontières",
+        "slug": "processus-actuel-et-frontieres",
+        "description": "Une carte as-is délimite le processus réellement suivi entre un événement de départ et un résultat de fin, sans intégrer prématurément la solution future.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-experience-map",
+          "govuk-whole-problem"
+        ],
+        "assessment": {
+          "key": "concept-processus-frontieres-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Délimiter le processus actuel",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Acteurs, points de contact et dépendances",
+        "slug": "acteurs-points-contact-dependances",
+        "description": "La carte relie les actions visibles aux rôles, canaux, outils, informations et équipes dont dépend le résultat.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-whole-problem"
+        ],
+        "assessment": {
+          "key": "concept-acteurs-dependances-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cartographier acteurs et dépendances",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Irritant, effet, hypothèse et preuve",
+        "slug": "irritant-effet-hypothese-preuve",
+        "description": "Un irritant est localisé et relié à un effet observable ; sa cause supposée et la preuve à collecter sont consignées séparément.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-experience-map",
+          "govuk-user-needs"
+        ],
+        "assessment": {
+          "key": "concept-irritant-preuve-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Qualifier les irritants",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Repérer les composants d'une carte",
+        "description": "Lire les sections demandées de la ressource puis dresser la liste des étapes, actions, points de contact, besoins et preuves à documenter dans la carte Asteria.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": [
+          "govuk-experience-map"
+        ]
+      },
+      {
+        "key": "activity-2",
+        "title": "Construire la carte as-is d'Asteria",
+        "description": "Produire une carte en six à dix étapes depuis la question du collaborateur jusqu'à la réponse validée. Pour chaque étape, indiquer acteur, action, canal ou outil, information utilisée, sortie et dépendance. Ne placer aucune fonctionnalité future sur la carte.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Constituer le registre des irritants",
+        "description": "À partir de la carte Asteria, sélectionner cinq irritants. Pour chacun, préciser l'étape, l'acteur, l'observation disponible, l'effet, la cause supposée, la preuve à collecter et la personne pouvant la fournir. Signaler explicitement les éléments encore hypothétiques.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-experience-map"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-processus-frontieres-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-whole-problem"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-acteurs-dependances-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-user-needs"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-irritant-preuve-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-087-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "Creating an experience map",
+        "year": 2017,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/user-research/creating-an-experience-map",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel de cartographie d'expérience ; adapté ici à un processus interne fictif."
+      },
+      {
+        "id": "REF-087-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "Map and understand a user's whole problem",
+        "year": 2018,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/design/map-a-users-whole-problem",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel sur la relation entre parcours, processus internes, points de contact et dépendances."
+      },
+      {
+        "id": "REF-087-003",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "Learning about users and their needs",
+        "year": 2017,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/user-research/start-by-learning-user-needs",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel distinguant besoins étayés et opinions à traiter comme hypothèses."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-002",
+            "locator": "introduction et section Map user journeys together",
+            "supports": "Nécessité de comprendre le parcours plus large, les équipes et les dépendances avant de définir une solution."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide institutionnel directement applicable à la cartographie d'un service.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-001",
+            "locator": "lignes 68 à 114, sections d'introduction et Steps to follow",
+            "supports": "Construction d'une carte à partir d'étapes, d'actions, de points de contact et de besoins."
+          },
+          {
+            "referenceId": "REF-087-002",
+            "locator": "sections Map user journeys together et Work out what you need to change",
+            "supports": "Description conjointe du parcours actuel et des processus internes."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux guides institutionnels convergent sur les composants minimaux de la carte.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-001",
+            "locator": "lignes 77 à 114",
+            "supports": "Prise en compte de plusieurs personnes, équipes, points de contact et canaux."
+          },
+          {
+            "referenceId": "REF-087-002",
+            "locator": "section Work out how the service looks from government's perspective",
+            "supports": "Cartographie des processus internes, acteurs, points de contact et preuves requises."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les catégories sont explicites dans les deux sources.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-002",
+            "locator": "sections Map user journeys together et Work out what you need to change",
+            "supports": "Analyse du parcours visible et des processus internes dans un cas fictif."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Le cas et ses détails sont fictifs ; la méthode de lecture du processus est soutenue par la source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-001",
+            "locator": "lignes 68 à 74 et 105 à 114",
+            "supports": "Identification des points de douleur et de ce qui fonctionne ou non à chaque étape."
+          },
+          {
+            "referenceId": "REF-087-003",
+            "locator": "sections Researching users and their needs et Validating user needs",
+            "supports": "Nécessité d'étayer les besoins par la recherche plutôt que par des opinions."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources distinguent observations d'expérience et hypothèses internes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-087-001",
+            "locator": "sections Build up the experience et Live with the map",
+            "supports": "Enrichissement puis révision de la carte à partir de preuves et retours."
+          },
+          {
+            "referenceId": "REF-087-003",
+            "locator": "sections How to research et Validating user needs",
+            "supports": "Collecte de preuves et validation continue des besoins."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La grille en quatre éléments est une synthèse pédagogique originale de principes convergents.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "govuk-experience-map",
+        "referenceIds": [
+          "REF-087-001"
+        ],
+        "pedagogicalRationale": "La ressource fournit une méthode ouverte et concrète pour structurer les étapes et enrichir une carte.",
+        "learnerInstructions": "Lire les sections indiquées et préparer les informations de la carte Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Page publiée le 21 février 2017."
+      },
+      {
+        "resourceKey": "govuk-whole-problem",
+        "referenceIds": [
+          "REF-087-002"
+        ],
+        "pedagogicalRationale": "La ressource relie le parcours utilisateur aux processus, équipes et dépendances internes.",
+        "learnerInstructions": "Lire les sections indiquées puis compléter la carte Asteria côté organisation.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "govuk-user-needs",
+        "referenceIds": [
+          "REF-087-003"
+        ],
+        "pedagogicalRationale": "La ressource rappelle qu'une opinion non issue des utilisateurs reste une hypothèse à vérifier.",
+        "learnerInstructions": "Consulter les sections indiquées et associer une preuve possible à trois irritants.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; dernière mise à jour affichée le 23 mars 2017."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "processus-actuel-et-frontieres",
+        "assessmentTitle": "Mini-évaluation — Délimiter le processus actuel",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément appartient à la carte as-is d'Asteria ?",
+            "explanation": "La carte as-is décrit le fonctionnement actuel, pas la future solution.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le passage actuel d'une question du collaborateur à une réponse validée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le futur moteur de recherche vectorielle",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L'interface souhaitée du chatbot",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations délimitent utilement un processus ?",
+            "explanation": "Le périmètre relie un déclencheur, un résultat de fin et les étapes réellement suivies.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "L'événement de départ",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le résultat attendu à la fin",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les étapes et décisions actuelles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le fournisseur préféré",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une carte as-is doit représenter la procédure officielle même si les utilisateurs suivent des contournements observés.",
+            "explanation": "Elle doit représenter le processus réel et rendre les écarts visibles.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "acteurs-points-contact-dependances",
+        "assessmentTitle": "Mini-évaluation — Cartographier acteurs et dépendances",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent apparaître autour de l'étape « vérifier la procédure » ?",
+            "explanation": "Une étape est comprise grâce au rôle, au support utilisé et aux dépendances qui conditionnent sa sortie.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le rôle qui vérifie",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le document ou outil consulté",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L'équipe responsable de la mise à jour",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement la durée moyenne supposée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi cartographier une dépendance à l'équipe qualité ?",
+            "explanation": "Elle peut expliquer un délai ou un risque qui ne dépend ni de l'agent ni du futur modèle.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Pour comprendre une condition externe qui influence le résultat",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour attribuer automatiquement la responsabilité à la qualité",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour prouver qu'une IA est nécessaire",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un fournisseur externe peut être un acteur du processus même si l'utilisateur ne le voit jamais.",
+            "explanation": "Un acteur peut fournir ou opérer une composante qui conditionne le service sans point de contact visible.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "irritant-effet-hypothese-preuve",
+        "assessmentTitle": "Mini-évaluation — Qualifier les irritants",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation qualifie le mieux un irritant ?",
+            "explanation": "Elle localise l'observation, l'acteur et l'effet sans transformer la cause supposée en certitude.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Lors de la recherche, les agents consultés disent ouvrir plusieurs espaces ; le temps exact et la cause principale restent à mesurer",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La documentation est mauvaise et un chatbot résoudra le problème",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Tout le processus doit être automatisé",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves peuvent étayer un irritant de recherche documentaire ?",
+            "explanation": "Des observations, journaux et mesures du processus permettent de vérifier fréquence et effets.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Observation de sessions de recherche",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Journaux ou statistiques des outils",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Entretiens avec plusieurs profils d'utilisateurs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La seule intuition du sponsor",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un irritant non encore quantifié doit être supprimé de la carte.",
+            "explanation": "Il peut rester comme signal à vérifier si son statut et la preuve manquante sont explicites.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : délimiter l'existant, relier acteurs et dépendances, puis qualifier les irritants par leurs preuves.",
+      "cycles": [
+        {
+          "conceptSlug": "processus-actuel-et-frontieres",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "govuk-experience-map"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-processus-frontieres-assessment-1",
+          "rationale": "La lecture guidée fournit les composants de carte avant la validation du périmètre."
+        },
+        {
+          "conceptSlug": "acteurs-points-contact-dependances",
+          "contentKeys": [
+            "content-3",
+            "content-4"
+          ],
+          "resourceKeys": [
+            "govuk-whole-problem"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-acteurs-dependances-assessment-1",
+          "rationale": "Le cas Asteria est cartographié avec ses coulisses organisationnelles avant l'évaluation ciblée."
+        },
+        {
+          "conceptSlug": "irritant-effet-hypothese-preuve",
+          "contentKeys": [
+            "content-5",
+            "content-6"
+          ],
+          "resourceKeys": [
+            "govuk-user-needs"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-irritant-preuve-assessment-1",
+          "rationale": "La distinction entre observation et hypothèse guide la production du registre des irritants."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas Asteria et ses détails sont fictifs.",
+        "Les pages officielles ont été consultées le 9 août 2026 ; leur applicabilité à un processus interne est explicitement présentée comme une adaptation pédagogique.",
+        "Les slugs parents ne sont pas encore intégrés au seed ; une validation d'intégration reste requise.",
+        "Une revue humaine pédagogique et métier est requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur la cartographie du processus et de ses trois mini-évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

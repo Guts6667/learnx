@@ -1,0 +1,119 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_025",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "deployer-adopter-surveiller",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Déployer, faire adopter et surveiller",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Mobiliser et réviser les artefacts produits pendant l’étape au cours de deux tours d’une simulation Asteria : statuer d’abord sur un lancement restreint, puis réagir à un incident fictif en communiquant, en décidant de la continuité et en mettant à jour les contrôles.",
+    "instructions": [
+      "Tour 1 — Reprendre le dossier de préparation, le plan d’adoption et le tableau de bord construits pendant l’étape, puis les réviser en vingt minutes à partir des nouvelles preuves, inconnues et risques. Choisir autoriser, autoriser sous conditions, différer ou arrêter ; préciser périmètre, version, autorité, conditions, risques résiduels, surveillance, support, formation, seuils de suspension et repli.",
+      "Tour 1 — Pendant dix minutes, présenter la décision au comité fictif puis répondre par écrit aux objections du sponsor, de la sécurité et du métier sans inventer les preuves absentes ni usurper leur autorité.",
+      "Tour 2 — À réception de l’incident, produire en quinze minutes une fiche initiale distinguant faits, hypothèses et inconnues ; définir confinement, préservation des preuves, responsabilités, communication, escalades et critères de reprise.",
+      "Tour 2 — En dix minutes, décider entre reprise restreinte, maintien de suspension, remplacement ou retrait. Documenter le changement éventuel, les tests, l’approbation, le rollback et la surveillance renforcée.",
+      "Conclure en cinq minutes par la mise à jour du tableau de bord, du plan de formation, du registre des risques et de la procédure d’incident. Expliquer ce que l’organisation doit désormais apprendre ou vérifier."
+    ],
+    "case": "Cas fictif — Tour 1 : le pilote Asteria a duré quatre semaines avec une capacité cible de 80 collaborateurs ; 50 participants ont été actifs pendant la période observée. Sur 400 questions évaluées, 87 % des réponses ont été jugées utiles, mais ce taux tombe à 71 % pour les procédures RH. Douze réponses ont utilisé une source obsolète ; aucune ne figure dans le jeu critique initial. Le coût mensuel projeté est de 4 800 euros, dans la fourchette acceptée, mais la charge de vérification humaine n’est mesurée que pour 18 utilisateurs. Le support a traité 34 demandes d’assistance liées au pilote ; ce volume ne correspond pas aux 4 200 demandes métier mensuelles du processus étudié. Le support n’a pas encore répété le retour complet au processus manuel. Quatre-vingt-dix pour cent des utilisateurs ont assisté à la formation ; seuls 62 % ont réussi la mise en situation de signalement. Le fournisseur annonce une mise à jour de modèle dans deux semaines et accepte de notifier un incident grave, sans délai contractuel encore vérifié. La sécurité demande d’exclure RH du lancement. Le sponsor veut ouvrir à 300 personnes dès lundi. Tour 2, communiqué après la décision : à 10 h 12 le lendemain du lancement autorisé ou simulé, une utilisatrice signale l’affichage d’un extrait RH hors de ses droits habituels. Trois requêtes proches apparaissent dans les journaux. La version du modèle est inchangée, mais une collection documentaire a été réindexée à 8 h 30. La cause, le nombre de personnes exposées et l’existence d’une extraction ne sont pas établis. Le fournisseur propose de désactiver les citations pour éviter l’affichage des extraits ; l’équipe interne propose plutôt de suspendre la collection RH. À 11 h, la direction demande un message aux utilisateurs et une heure de reprise. Vous devez agir avec ces seules informations, préserver les inconnues et solliciter les expertises compétentes.",
+    "estimatedMinutes": 60,
+    "submissionFormat": "Dossier de simulation de 5 à 7 pages ou équivalent : note de lancement, réponses aux objections, fiche d’incident, décision de continuité ou retrait, demande de changement éventuelle et plan d’amélioration mis à jour.",
+    "conceptSlugs": [
+      "dossier-preparation-lancement",
+      "decision-lancement-conditionnelle-reversible",
+      "maitrise-ia-adaptee-roles",
+      "adoption-fondee-usage-soutien",
+      "surveillance-multidimensionnelle-contextualisee",
+      "seuils-revues-decisions-operationnelles",
+      "reponse-incident-fondee-faits",
+      "changement-reprise-retrait-gouvernes"
+    ],
+    "rubric": [
+      {
+        "criterion": "Décision et conditions de lancement",
+        "weight": 25,
+        "requirements": [
+          "La recommandation relie objectifs, preuves versionnées, inconnues, risques résiduels et autorité de décision.",
+          "Le périmètre et les conditions sont proportionnés aux résultats, notamment pour RH, la capacité de repli et la mise à jour fournisseur.",
+          "Seuils de restriction ou d’arrêt, support, repli, propriétaires et prochaine revue sont définis avant le lancement."
+        ]
+      },
+      {
+        "criterion": "Adoption, formation et soutien",
+        "weight": 15,
+        "requirements": [
+          "La présence à la formation n’est pas confondue avec la maîtrise démontrée ; les lacunes de signalement sont traitées.",
+          "Les actions sont adaptées aux rôles et incluent support, alternative et feedback des utilisateurs et non-utilisateurs.",
+          "Les signaux d’usage sont interprétés avec leurs limites et sans blâmer les personnes."
+        ]
+      },
+      {
+        "criterion": "Surveillance et décisions opérationnelles",
+        "weight": 20,
+        "requirements": [
+          "Valeur, qualité, coût, usage, charge de vérification, support et risques sont suivis séparément et segmentés lorsque nécessaire.",
+          "Les indicateurs possèdent définition, source, version, cadence, propriétaire, seuil et décision associée.",
+          "Le tableau de bord et les contrôles sont mis à jour après l’incident avec preuves et limites explicites."
+        ]
+      },
+      {
+        "criterion": "Réponse à incident et maîtrise du changement",
+        "weight": 30,
+        "requirements": [
+          "Faits, hypothèses, impacts et inconnues sont distingués ; confinement, preuves, responsabilités, communications et escalades sont cohérents.",
+          "La qualification juridique ou réglementaire est transmise aux fonctions compétentes au lieu d’être inventée par le consultant.",
+          "La correction ou reprise précise périmètre, version, risques, tests, approbation, rollback et surveillance ; suspension ou retrait restent possibles si les critères échouent."
+        ]
+      },
+      {
+        "criterion": "Communication et posture de consultant",
+        "weight": 10,
+        "requirements": [
+          "Les décisions sont formulées clairement pour le comité, les utilisateurs et les acteurs opérationnels sans masquer les inconnues.",
+          "Les objections sont traitées par des preuves, arbitrages et voies d’escalade plutôt que par une promesse absolue.",
+          "Le plan d’amélioration transforme l’incident en apprentissage vérifiable du projet et du SGIA."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre les notions associées et rejouer uniquement le tour concerné avec un journal des corrections. Une décision de lancement sans repli testé, un incident sans confinement ni préservation des preuves, ou une reprise sans tests et autorité bloque la validation. Les qualifications réglementaires inventées doivent être remplacées par faits, questions et escalades explicites avant une nouvelle tentative."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-111-001",
+      "REF-111-002",
+      "REF-112-001",
+      "REF-112-002",
+      "REF-112-003",
+      "REF-113-001",
+      "REF-113-002",
+      "REF-114-001",
+      "REF-114-002"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas, les organisations, les personnes, les données, les performances et l’incident sont entièrement fictifs.",
+        "L’évaluation porte uniquement sur les huit notions obligatoires des quatre leçons de l’étape 7.",
+        "Une revue humaine en exploitation, conduite du changement, sécurité, incident, protection des données et gouvernance IA est requise avant publication.",
+        "Les quatre champs de assessment.seed sont compatibles avec le seed actuel ; l’import des consignes détaillées suit le mécanisme StageAssessment existant."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la simulation finale de l’étape 7 en deux tours et d’une grille à cinq critères.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

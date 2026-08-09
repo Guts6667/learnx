@@ -1,0 +1,833 @@
+{
+  "specId": "PEDAGOGY_SPEC_098",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "cadrer-valeur-faisabilite",
+  "moduleSlug": "business-case-ia",
+  "lesson": {
+    "title": "Arbitrer options, coûts, dépendances et go/no-go",
+    "slug": "arbitrer-options-couts-go-no-go",
+    "summary": "Cette leçon apprend à comparer plusieurs moyens d’atteindre un même objectif, à estimer un coût complet sous incertitude et à formuler une décision go, go conditionnel, no-go ou exploration supplémentaire qui reste révisable.",
+    "objectives": [
+      "Construire une comparaison incluant statu quo, amélioration non-IA et option IA.",
+      "Estimer les coûts et dépendances sur le cycle de vie en explicitant hypothèses et incertitudes.",
+      "Formuler une recommandation go/no-go avec conditions, critères d’arrêt et prochaine décision."
+    ],
+    "prerequisites": [
+      "Avoir établi le cadre de mesure et le diagnostic de préparation d’Asteria."
+    ],
+    "estimatedMinutes": 85,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-options-asteria",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Pour réduire le délai de traitement, Asteria peut maintenir le processus actuel, améliorer la recherche et la gouvernance documentaire, automatiser le routage par règles, tester un assistant génératif limité ou combiner ces solutions. Présenter seulement deux fournisseurs de chatbot créerait une fausse décision : le sponsor doit comparer des moyens différents d’atteindre le même objectif.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-options-comparables",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une analyse d’options commence par un objectif commun et des facteurs critiques de succès. Elle inclut une référence — souvent le statu quo — ainsi que des alternatives réellement distinctes, dont une option sans IA lorsque celle-ci est viable. Les options incapables de satisfaire une exigence critique sont écartées avec une justification documentée ; les autres sont comparées selon les mêmes critères.",
+          "sourceKeys": [
+            "govuk-green-book-2026",
+            "nist-ai-rmf-core-manage"
+          ]
+        }
+      },
+      {
+        "key": "content-cout-cycle-vie",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Le coût complet ne se limite pas au prix du modèle. Il couvre découverte, préparation des données, intégration, licences, évaluation, sécurité, supervision, conduite du changement, exploitation, suivi, correction et retrait. Les dépendances — compétences rares, fournisseur, hébergement, propriétaires de données, délais juridiques — sont documentées car elles influencent coût, calendrier, réversibilité et risque.",
+          "sourceKeys": [
+            "govuk-green-book-2026",
+            "nist-ai-rmf-core-manage"
+          ]
+        }
+      },
+      {
+        "key": "content-incertitude-scenarios",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Une estimation précoce est une plage conditionnelle, pas une facture exacte. Le consultant explicite les hypothèses dominantes et teste au moins un scénario défavorable : volumes plus élevés, bénéfice plus faible, reprise humaine supérieure ou coût fournisseur accru. Il évite qu’une précision numérique artificielle masque la faiblesse des preuves.",
+          "sourceKeys": [
+            "govuk-green-book-2026"
+          ]
+        }
+      },
+      {
+        "key": "content-decision-go-no-go",
+        "type": "definition",
+        "position": 5,
+        "content": {
+          "text": "Une décision de cadrage peut être : go vers une expérimentation délimitée ; go conditionnel après des actions préalables ; no-go lorsque valeur, faisabilité ou risque sont insuffisants ; ou exploration supplémentaire lorsqu’une incertitude déterminante peut être levée à coût proportionné. La recommandation nomme le décideur, les conditions, les preuves attendues, le budget ou effort autorisé et la date de réexamen.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-manage",
+            "govuk-discovery-go-no-go"
+          ]
+        }
+      },
+      {
+        "key": "content-arreter-apprendre",
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Arrêter n’est pas un échec lorsque la découverte montre que l’amélioration attendue ne justifie pas le coût ou que les conditions ne sont pas réunies. La valeur du cadrage réside aussi dans les dépenses évitées, les hypothèses invalidées et les actions de préparation identifiées. Un go conditionnel n’est pas un oui vague : chaque condition possède un propriétaire et une preuve de clôture.",
+          "sourceKeys": [
+            "govuk-discovery-go-no-go",
+            "nist-ai-rmf-core-manage"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "govuk-green-book-2026",
+        "type": "document",
+        "title": "The Green Book 2026",
+        "author": "HM Treasury",
+        "url": "https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government/the-green-book-2026",
+        "citation": "HM Treasury. (2026). The Green Book 2026. GOV.UK.",
+        "description": "Lire l’aperçu de l’évaluation des options, les sections sur la longlist, la shortlist, le statu quo, le risque, l’incertitude et l’optimisme. Transposer les principes sans appliquer les calculs propres au secteur public britannique.",
+        "guidance": {
+          "objective": "Comparer des options sur une base commune et communiquer l’incertitude des coûts et bénéfices.",
+          "instructions": "Lire les sections indiquées, puis relever pour Asteria trois options, deux facteurs critiques de succès et deux hypothèses à tester en sensibilité.",
+          "scope": "Chapitres 2, 4 à 6 ; sections « Risk and uncertainty », « Sensitivity analysis » et « Optimism bias »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML en anglais, accessible sans compte ; publication sous Open Government Licence v3.0.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-core-manage",
+        "type": "document",
+        "title": "AI Risk Management Framework 1.0 — MANAGE",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0, fonction MANAGE. NIST AI 100-1.",
+        "description": "Lire MANAGE 1.1 à 2.2. Relever la décision de poursuivre, la prise en compte des ressources et la comparaison avec des alternatives non-IA.",
+        "guidance": {
+          "objective": "Relier la recommandation à l’objectif, aux risques, aux ressources et aux alternatives non-IA.",
+          "instructions": "Lire les sous-catégories indiquées puis formuler une condition de poursuite et une alternative sans IA pour Asteria.",
+          "scope": "MANAGE 1.1 à 2.2",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée par tableaux, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "govuk-discovery-go-no-go",
+        "type": "website",
+        "title": "How the discovery phase works",
+        "author": "Government Digital Service",
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "citation": "Government Digital Service. (2021). How the discovery phase works. GOV.UK Service Manual.",
+        "description": "Lire la section de fin de découverte. Identifier ce qui justifie une poursuite et pourquoi une décision d’arrêt peut économiser temps et argent.",
+        "guidance": {
+          "objective": "Communiquer un no-go comme une décision informée et utile.",
+          "instructions": "Lire « How you know discovery is finished », puis rédiger une phrase de décision d’arrêt qui cite preuve, conséquence et prochaine action.",
+          "scope": "Section « How you know discovery is finished »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 5,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Portefeuille d’options comparables",
+        "slug": "portefeuille-options-comparables",
+        "description": "Des options distinctes, dont le statu quo et une alternative non-IA viable, sont comparées au même objectif et aux mêmes facteurs critiques de succès.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-green-book-2026",
+          "nist-ai-rmf-core-manage"
+        ],
+        "assessment": {
+          "key": "concept-options-comparables-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Options comparables",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Coût complet, dépendances et incertitude",
+        "slug": "cout-complet-dependances-incertitude",
+        "description": "L’estimation couvre le cycle de vie, explicite les dépendances et teste la sensibilité de la décision aux hypothèses les plus incertaines.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-green-book-2026"
+        ],
+        "assessment": {
+          "key": "concept-cout-incertitude-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Coût et incertitude",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Décision go/no-go conditionnée",
+        "slug": "decision-go-no-go-conditionnee",
+        "description": "La recommandation relie preuves, objectifs, risques et capacités à une décision explicite, à ses conditions et à ses critères de réexamen ou d’arrêt.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-manage",
+          "govuk-discovery-go-no-go"
+        ],
+        "assessment": {
+          "key": "concept-decision-go-no-go-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Décision go/no-go",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-construire-options-asteria",
+        "title": "Construire une longlist proportionnée",
+        "description": "Décrire au moins quatre options Asteria : statu quo, amélioration non-IA, expérimentation IA limitée et combinaison. Définir cinq facteurs critiques de succès et justifier toute option écartée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-estimer-cout-scenarios",
+        "title": "Estimer le coût complet par scénarios",
+        "description": "Pour deux options finalistes, construire une estimation basse, centrale et haute couvrant préparation, intégration, exploitation, évaluation, supervision, changement et retrait. Signaler cinq dépendances et tester deux hypothèses sensibles.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-rediger-recommandation-go-no-go",
+        "title": "Rédiger la recommandation au sponsor",
+        "description": "Rédiger 350 à 450 mots proposant go, go conditionnel, no-go ou exploration supplémentaire. Présenter preuves, incertitudes, conditions, propriétaires, critères d’arrêt, enveloppe autorisée et date de réexamen.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 3,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-options-asteria"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-options-comparables"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-green-book-2026"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-construire-options-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-options-comparables-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-cout-cycle-vie"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-incertitude-scenarios"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-estimer-cout-scenarios"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cout-incertitude-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-decision-go-no-go"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-arreter-apprendre"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-manage"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-discovery-go-no-go"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-rediger-recommandation-go-no-go"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-decision-go-no-go-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en gestion de projet, Agile et usages de l’IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-092-GOVUK-GREEN-BOOK",
+        "type": "government_guidance",
+        "authors": [],
+        "organization": "HM Treasury",
+        "title": "The Green Book 2026",
+        "year": 2026,
+        "edition": "Édition 2026",
+        "publication": "GOV.UK",
+        "doi": null,
+        "url": "https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government/the-green-book-2026",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide obligatoire pour certaines décisions publiques britanniques ; seuls ses principes généraux d’appraisal sont transposés au cas privé fictif."
+      },
+      {
+        "id": "REF-092-NIST-AI-RMF-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0) — Core",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre volontaire ; version 1.0 annoncée en cours de révision."
+      },
+      {
+        "id": "REF-092-GOVUK-DISCOVERY",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "How the discovery phase works",
+        "year": 2021,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "La section utilisée traite explicitement de la décision de passer à l’étape suivante ou d’arrêter."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Options entièrement fictives créées pour Asteria."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-092-GOVUK-GREEN-BOOK",
+            "locator": "Chapitre 2, sections « Generating options and longlist appraisal » et « Shortlist appraisal »",
+            "supports": "Comparaison d’un éventail d’options, présence du statu quo et facteurs critiques de succès."
+          },
+          {
+            "referenceId": "REF-092-NIST-AI-RMF-CORE",
+            "locator": "MANAGE 2.1",
+            "supports": "Prise en compte des ressources et d’alternatives non-IA viables."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux cadres institutionnels convergent sur la comparaison d’alternatives réelles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-092-GOVUK-GREEN-BOOK",
+            "locator": "Chapitres 5 et 6, coûts sur le cycle de vie et considérations commerciales",
+            "supports": "Analyse des coûts, bénéfices, risques et arrangements fournisseurs sur le cycle de vie."
+          },
+          {
+            "referenceId": "REF-092-NIST-AI-RMF-CORE",
+            "locator": "MANAGE 2.1 et MAP 4.1",
+            "supports": "Ressources requises et dépendances tierces dans la décision."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse proportionnée de catégories de coûts et dépendances explicitement documentées.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-092-GOVUK-GREEN-BOOK",
+            "locator": "Sections « Risk and uncertainty », « Sensitivity analysis » et « Optimism bias »",
+            "supports": "Communication de l’incertitude, scénarios, tests de sensibilité et correction de l’optimisme."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "L’édition 2026 décrit directement ces méthodes d’appraisal.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-092-NIST-AI-RMF-CORE",
+            "locator": "MANAGE 1.1 à 1.4",
+            "supports": "Décider si le système atteint ses objectifs et si développement ou déploiement doivent se poursuivre."
+          },
+          {
+            "referenceId": "REF-092-GOVUK-DISCOVERY",
+            "locator": "Section « How you know discovery is finished »",
+            "supports": "Décision de passer à l’étape suivante, conditions de viabilité et mesure du succès."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources relient explicitement preuves, objectif et décision de poursuite.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-092-GOVUK-DISCOVERY",
+            "locator": "Section « How you know discovery is finished », paragraphes sur l’arrêt",
+            "supports": "L’arrêt informé peut économiser temps et argent et ne constitue pas un échec."
+          },
+          {
+            "referenceId": "REF-092-NIST-AI-RMF-CORE",
+            "locator": "MANAGE 1.1 et 2.1",
+            "supports": "Décision de poursuite conditionnée par objectifs, risques, ressources et alternatives."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources convergentes ; la formalisation des conditions est une application de gouvernance.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "govuk-green-book-2026",
+        "referenceIds": [
+          "REF-092-GOVUK-GREEN-BOOK"
+        ],
+        "pedagogicalRationale": "Le guide fournit une méthode rigoureuse pour comparer objectifs, options, coûts, bénéfices, risques et incertitudes.",
+        "learnerInstructions": "Relever options, facteurs critiques et hypothèses sensibles sans appliquer mécaniquement les calculs publics britanniques.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Édition 2026 et licence vérifiées."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core-manage",
+        "referenceIds": [
+          "REF-092-NIST-AI-RMF-CORE"
+        ],
+        "pedagogicalRationale": "MANAGE relie directement objectifs, risques, ressources, alternatives non-IA et décision de poursuivre.",
+        "learnerInstructions": "Formuler une condition de poursuite et une alternative sans IA.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "govuk-discovery-go-no-go",
+        "referenceIds": [
+          "REF-092-GOVUK-DISCOVERY"
+        ],
+        "pedagogicalRationale": "La ressource permet de communiquer l’arrêt comme résultat utile d’une découverte.",
+        "learnerInstructions": "Rédiger une décision d’arrêt fondée sur une preuve et une conséquence.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "portefeuille-options-comparables",
+        "assessmentTitle": "Mini-évaluation — Options comparables",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles options doivent apparaître dans la comparaison d’Asteria ?",
+            "explanation": "Le statu quo, une amélioration non-IA et une option IA délimitée réduisent le biais de solution.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le statu quo",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une amélioration documentaire sans IA",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une expérimentation IA limitée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement deux fournisseurs du même chatbot",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une option ne satisfait pas une exigence critique de confidentialité. Que faire ?",
+            "explanation": "Elle doit être écartée ou modifiée, avec la preuve et la justification documentées.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "L’écarter ou la redéfinir en documentant le motif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Compenser avec un score élevé de productivité",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer le critère après comparaison",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux produits différents constituent toujours deux options stratégiques distinctes.",
+            "explanation": "Ils peuvent relever du même moyen ; les options doivent représenter des façons réellement distinctes d’atteindre l’objectif.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "cout-complet-dependances-incertitude",
+        "assessmentTitle": "Mini-évaluation — Coût et incertitude",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels postes appartiennent au coût complet d’un assistant ?",
+            "explanation": "Préparation, intégration, évaluation, supervision, exploitation et retrait appartiennent au cycle de vie.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Préparation du corpus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Évaluation et supervision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Exploitation et retrait",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement les jetons du modèle",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Comment présenter une estimation très incertaine ?",
+            "explanation": "Une plage et des scénarios explicitent mieux l’incertitude qu’un montant faussement précis.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Par une plage, des hypothèses et des scénarios",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Par un montant exact sans hypothèse",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "En retirant les coûts difficiles à estimer",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Tester une baisse du bénéfice attendu est une analyse de sensibilité pertinente.",
+            "explanation": "La sensibilité montre si la décision résiste à une hypothèse moins favorable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "decision-go-no-go-conditionnee",
+        "assessmentTitle": "Mini-évaluation — Décision go/no-go",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le potentiel est crédible, mais aucun propriétaire documentaire n’est nommé. Quelle recommandation est la plus précise ?",
+            "explanation": "Un go conditionnel nomme l’action préalable, son propriétaire et la preuve de clôture.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Go conditionnel à la nomination et à l’engagement d’un propriétaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Go sans réserve",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "No-go définitif sans explication",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que contient une recommandation gouvernable ?",
+            "explanation": "Décision, preuves, conditions, propriétaires, budget, seuils et réexamen permettent de piloter la suite.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "La décision proposée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les conditions et leurs propriétaires",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les critères d’arrêt et la date de réexamen",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une promesse sans incertitude",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un no-go étayé peut être un résultat utile de la découverte.",
+            "explanation": "Il évite une dépense mal justifiée et rend explicites les preuves et conditions manquantes.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles d’arbitrage : élargir les options, rendre visibles coûts et incertitudes, puis produire une décision conditionnée et révisable.",
+      "cycles": [
+        {
+          "conceptSlug": "portefeuille-options-comparables",
+          "contentKeys": [
+            "content-options-asteria",
+            "content-options-comparables"
+          ],
+          "resourceKeys": [
+            "govuk-green-book-2026"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-construire-options-asteria"
+          },
+          "assessmentKey": "concept-options-comparables-assessment-1",
+          "rationale": "Le biais initial en faveur du chatbot est corrigé par une comparaison structurée incluant statu quo et non-IA."
+        },
+        {
+          "conceptSlug": "cout-complet-dependances-incertitude",
+          "contentKeys": [
+            "content-cout-cycle-vie",
+            "content-incertitude-scenarios"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-estimer-cout-scenarios"
+          },
+          "assessmentKey": "concept-cout-incertitude-assessment-1",
+          "rationale": "La même ressource Green Book, déjà consultée au cycle précédent, soutient la mise en pratique sans créer une seconde lecture dupliquée."
+        },
+        {
+          "conceptSlug": "decision-go-no-go-conditionnee",
+          "contentKeys": [
+            "content-decision-go-no-go",
+            "content-arreter-apprendre"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-manage",
+            "govuk-discovery-go-no-go"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-rediger-recommandation-go-no-go"
+          },
+          "assessmentKey": "concept-decision-go-no-go-assessment-1",
+          "rationale": "Le NIST établit la logique de poursuite et l’alternative non-IA ; le Service Manual normalise une décision d’arrêt utile avant la recommandation au sponsor."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon initial : revue éditoriale, métier et technique requise avant intégration.",
+        "Le Green Book éclaire la méthode d’analyse ; il n’est pas présenté comme obligation applicable à l’entreprise fictive.",
+        "Les chiffres, options et dépendances du cas Asteria sont fictifs."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur l’arbitrage des options, coûts, dépendances et go/no-go.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

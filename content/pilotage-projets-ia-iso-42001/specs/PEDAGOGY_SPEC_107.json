@@ -1,0 +1,718 @@
+{
+  "specId": "PEDAGOGY_SPEC_107",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "cadre-europeen-et-securite-genai",
+  "lesson": {
+    "title": "Situer RGPD, règlement européen sur l'IA et responsabilités",
+    "slug": "situer-rgpd-reglement-ia-responsabilites",
+    "summary": "Cette leçon donne au consultant une méthode de qualification initiale et d'escalade : décrire faits et flux, distinguer les cadres, repérer les rôles possibles et préparer les questions destinées au DPO, au juridique et aux responsables métier.",
+    "objectives": [
+      "Distinguer le champ du RGPD de celui du règlement européen sur l'IA sans présumer leur applicabilité.",
+      "Identifier les rôles possibles dans les deux cadres à partir des faits du projet.",
+      "Construire une matrice de questions, preuves et escalades sans rendre d'avis juridique."
+    ],
+    "prerequisites": [
+      "Disposer de la cartographie du système, des données, des fournisseurs et des usages d'Asteria."
+    ],
+    "estimatedMinutes": 45,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La présence d'IA n'entraîne pas à elle seule toutes les obligations du RGPD, et l'absence de données personnelles n'écarte pas automatiquement le règlement IA. Le consultant commence par documenter finalités, données, personnes, système, usage, secteur, territoire et calendrier. Il sépare constat factuel, qualification à confirmer et décision d'expert.",
+          "sourceKeys": [
+            "cnil-perimetre-rgpd-ia"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Le règlement IA définit notamment fournisseur et déployeur ; le RGPD distingue responsable de traitement, sous-traitant et responsabilité conjointe selon les finalités, moyens et instructions. Les vocabulaires ne sont pas interchangeables. Une entreprise peut utiliser un service sous sa propre autorité tout en devant analyser séparément son rôle et celui du fournisseur pour chaque traitement de données.",
+          "sourceKeys": [
+            "eurlex-ai-act-roles"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une AIPD peut être nécessaire selon les traitements et risques ; le consultant ne la déclare ni suffisante ni obligatoire sans analyse compétente. Il prépare données, finalités, personnes, risques, mesures, fournisseurs et inconnues, puis saisit le DPO. De même, la classification éventuelle au titre du règlement IA et les obligations associées sont soumises au juridique. La matrice conserve question, fait, preuve, expert, décision et date.",
+          "sourceKeys": [
+            "cnil-aipd-ia"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "cnil-perimetre-rgpd-ia",
+        "type": "document",
+        "title": "Développement des systèmes d'IA : les recommandations de la CNIL pour respecter le RGPD",
+        "author": "Commission nationale de l'informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/developpement-des-systemes-dia-les-recommandations-de-la-cnil-pour-respecter-le-rgpd",
+        "citation": "Commission nationale de l'informatique et des libertés. (2025). Développement des systèmes d'IA : les recommandations de la CNIL pour respecter le RGPD.",
+        "description": "Lire le périmètre et les passages sur rôles, finalité, AIPD et articulation avec le règlement IA.",
+        "guidance": {
+          "objective": "Repérer les questions RGPD à instruire avec le DPO et le juridique.",
+          "instructions": "Lire les passages demandés puis compléter la matrice d'escalade d'Asteria.",
+          "scope": "Périmètre, articulation avec le règlement IA et focus AIPD",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "eurlex-ai-act-roles",
+        "type": "document",
+        "title": "Règlement (UE) 2024/1689 établissant des règles harmonisées concernant l'intelligence artificielle",
+        "author": "Parlement européen et Conseil de l'Union européenne",
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "citation": "Parlement européen et Conseil de l'Union européenne. (2024). Règlement (UE) 2024/1689, version consolidée au 27 juillet 2026. EUR-Lex.",
+        "description": "Approfondissement facultatif — Lire uniquement les définitions et dispositions indiquées pour qualifier les rôles et repérer les questions à soumettre au juridique.",
+        "guidance": {
+          "objective": "Identifier le périmètre, les rôles et les obligations potentielles sans produire un avis juridique.",
+          "instructions": "Facultatif — Lire les définitions de fournisseur et déployeur, puis repérer les informations factuelles nécessaires avant toute qualification.",
+          "scope": "Articles 2 et 3, puis architecture des chapitres II et III",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML officielle en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "cnil-aipd-ia",
+        "type": "document",
+        "title": "Développement des systèmes d'IA : les recommandations de la CNIL pour respecter le RGPD",
+        "author": "Commission nationale de l'informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/developpement-des-systemes-dia-les-recommandations-de-la-cnil-pour-respecter-le-rgpd",
+        "citation": "Commission nationale de l'informatique et des libertés. (2025). Développement des systèmes d'IA : les recommandations de la CNIL pour respecter le RGPD.",
+        "description": "Approfondissement facultatif — Lire le périmètre et les passages sur rôles, finalité, AIPD et articulation avec le règlement IA.",
+        "guidance": {
+          "objective": "Repérer les questions RGPD à instruire avec le DPO et le juridique.",
+          "instructions": "Facultatif — Lire le focus AIPD puis dresser les questions que le consultant transmet au DPO pour Asteria.",
+          "scope": "Focus Réaliser une AIPD et passage sur l'articulation RGPD/règlement IA",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 10,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Deux cadres, deux questions de périmètre",
+        "slug": "perimetres-rgpd-reglement-ia",
+        "description": "Le RGPD porte sur les traitements de données personnelles ; le règlement IA régit des systèmes, modèles, acteurs et usages selon son propre périmètre. Les deux peuvent s'appliquer simultanément.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-perimetre-rgpd-ia"
+        ],
+        "assessment": {
+          "key": "concept-perimetres-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Distinguer les périmètres",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Rôles et responsabilités à qualifier",
+        "slug": "roles-rgpd-ai-act-a-qualifier",
+        "description": "Responsable de traitement, sous-traitant ou responsables conjoints au RGPD ne se déduisent pas automatiquement de fournisseur et déployeur au règlement IA.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "eurlex-ai-act-roles"
+        ],
+        "assessment": {
+          "key": "concept-roles-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Qualifier les rôles avec prudence",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Escalade juridique, DPO et AIPD",
+        "slug": "escalade-juridique-dpo-aipd",
+        "description": "Le consultant collecte les faits, signale les déclencheurs et organise la décision ; le DPO, le juridique et les responsables autorisés qualifient et valident les obligations.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-aipd-ia"
+        ],
+        "assessment": {
+          "key": "concept-escalade-juridique-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Escalader les questions réglementaires",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Qualifier les faits de périmètre",
+        "description": "En 5 minutes, classer huit informations Asteria entre fait disponible, qualification à confirmer et preuve ou expert encore nécessaire.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Distinguer les rôles",
+        "description": "En 5 minutes, comparer pour Asteria un rôle possible au RGPD et un rôle possible au règlement IA, puis noter le fait qui permettrait de les confirmer.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Rédiger une note d'escalade",
+        "description": "En 12 minutes, produire une note courte séparant faits, trois questions RGPD, trois questions règlement IA, preuves manquantes, mesures provisoires, responsable de décision et blocage éventuel du pilote.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-perimetre-rgpd-ia"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-perimetres-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "eurlex-ai-act-roles"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-roles-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-aipd-ia"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-escalade-juridique-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-101-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "CNIL",
+        "title": "Développement des systèmes d'IA : les recommandations de la CNIL pour respecter le RGPD",
+        "year": 2025,
+        "edition": "Version consolidée au 27 juillet 2026",
+        "publication": "CNIL",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/developpement-des-systemes-dia-les-recommandations-de-la-cnil-pour-respecter-le-rgpd",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation selon les mentions légales de la CNIL.",
+        "status": "verified",
+        "notes": "Recommandations finalisées le 22 juillet 2025, principalement centrées sur le développement de systèmes impliquant des données personnelles."
+      },
+      {
+        "id": "REF-101-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Union européenne",
+        "title": "Règlement (UE) 2024/1689 établissant des règles harmonisées concernant l'intelligence artificielle",
+        "year": 2024,
+        "edition": null,
+        "publication": "Journal officiel de l'Union européenne",
+        "doi": null,
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation des documents de l'Union européenne selon la décision 2011/833/UE.",
+        "status": "verified",
+        "notes": "Texte officiel consolidé consulté le 9 août 2026. L'applicabilité dépend des faits, rôles, usages et dates ; revue juridique obligatoire."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-101-001",
+            "locator": "sections Périmètre des recommandations et articulation avec le règlement européen sur l'IA",
+            "supports": "Périmètre des recommandations CNIL et possibilité d'application conjointe du RGPD et du règlement IA."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source officielle ; l'applicabilité à Asteria reste à déterminer avec les experts compétents.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-101-002",
+            "locator": "articles 2 et 3, définitions de fournisseur et déployeur",
+            "supports": "Définitions officielles des rôles et périmètre du règlement IA."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Texte juridique primaire ; toute qualification du cas nécessite une revue juridique factuelle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-101-001",
+            "locator": "focus Réaliser une analyse d'impact sur la protection des données",
+            "supports": "Objet de l'AIPD, articulation des phases et exemples de risques à considérer."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Recommandations officielles ; la décision d'applicabilité reste volontairement escaladée.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "cnil-perimetre-rgpd-ia",
+        "referenceIds": [
+          "REF-101-001"
+        ],
+        "pedagogicalRationale": "Autorité française de protection des données ; source opérationnelle pour cadrer les questions RGPD.",
+        "learnerInstructions": "Lire les passages demandés puis compléter la matrice d'escalade d'Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ne pas extrapoler les recommandations de développement à tout déploiement."
+      },
+      {
+        "resourceKey": "eurlex-ai-act-roles",
+        "referenceIds": [
+          "REF-101-002"
+        ],
+        "pedagogicalRationale": "Source primaire du droit de l'Union pour le règlement sur l'IA.",
+        "learnerInstructions": "Facultatif — Lire les définitions de fournisseur et déployeur, puis repérer les informations factuelles nécessaires avant toute qualification.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML officielle en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Vérifier la version consolidée et les dates d'application avant publication."
+      },
+      {
+        "resourceKey": "cnil-aipd-ia",
+        "referenceIds": [
+          "REF-101-001"
+        ],
+        "pedagogicalRationale": "Autorité française de protection des données ; source opérationnelle pour cadrer les questions RGPD.",
+        "learnerInstructions": "Facultatif — Lire le focus AIPD puis dresser les questions que le consultant transmet au DPO pour Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ne pas extrapoler les recommandations de développement à tout déploiement."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "perimetres-rgpd-reglement-ia",
+        "assessmentTitle": "Mini-évaluation — Distinguer les périmètres",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel constat justifie d'instruire le RGPD ?",
+            "explanation": "Le traitement possible de données personnelles exige une analyse factuelle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Des documents et requêtes peuvent contenir des informations sur des personnes identifiables",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le système utilise un modèle génératif",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le fournisseur est connu",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations sont utiles aux deux analyses ?",
+            "explanation": "Usage, acteurs, données, territoire et calendrier conditionnent le périmètre.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Finalité et usage",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Flux et catégories de données",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Rôles des acteurs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Préférence graphique",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un même projet peut relever à la fois du RGPD et du règlement IA.",
+            "explanation": "Les deux cadres ont des objets distincts et peuvent se cumuler.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "roles-rgpd-ai-act-a-qualifier",
+        "assessmentTitle": "Mini-évaluation — Qualifier les rôles avec prudence",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle méthode est correcte ?",
+            "explanation": "Chaque cadre qualifie les rôles selon ses propres critères et les faits.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Analyser séparément les rôles RGPD et règlement IA",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Assimiler toujours déployeur et responsable de traitement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Assimiler toujours fournisseur et sous-traitant",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels faits aident à qualifier les rôles ?",
+            "explanation": "Ils montrent qui décide, agit, fournit et utilise.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Qui détermine finalités et moyens",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Qui traite sur instructions",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Qui met le système en service sous son nom",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le montant du budget seulement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le contrat suffit toujours à déterminer la qualification réelle d'un acteur.",
+            "explanation": "La qualification dépend aussi des faits et activités effectives.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "escalade-juridique-dpo-aipd",
+        "assessmentTitle": "Mini-évaluation — Escalader les questions réglementaires",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le rôle correct du consultant face à une AIPD potentielle ?",
+            "explanation": "Il prépare les faits et saisit le DPO sans rendre seul la qualification.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Documenter les éléments et demander l'analyse du DPO",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Déclarer l'AIPD inutile",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Copier un modèle et conclure à la conformité",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que contient une bonne escalade ?",
+            "explanation": "Elle permet à l'expert de décider à partir de faits traçables.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Question précise",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faits et preuves",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Décision attendue et responsable",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Conclusion juridique inventée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La conformité à ISO/IEC 42001 prouve automatiquement la conformité au règlement IA.",
+            "explanation": "Un système de management et une obligation réglementaire sont des objets distincts.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : délimiter les cadres, qualifier prudemment les rôles, puis organiser l'escalade.",
+      "cycles": [
+        {
+          "conceptSlug": "perimetres-rgpd-reglement-ia",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "cnil-perimetre-rgpd-ia"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-perimetres-assessment-1",
+          "rationale": "La collecte des faits précède toute qualification réglementaire."
+        },
+        {
+          "conceptSlug": "roles-rgpd-ai-act-a-qualifier",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "eurlex-ai-act-roles"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-roles-assessment-1",
+          "rationale": "La matrice empêche de transposer automatiquement un rôle d'un cadre à l'autre."
+        },
+        {
+          "conceptSlug": "escalade-juridique-dpo-aipd",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "cnil-aipd-ia"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-escalade-juridique-assessment-1",
+          "rationale": "La note transforme l'incertitude juridique en processus de décision tracé."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "Contenu juridique vérifié sur les pages officielles le 9 août 2026 ; revérification obligatoire avant publication.",
+        "Cette leçon fournit une méthode de préparation et ne constitue pas un avis juridique.",
+        "Les dates d'application, la classification et les obligations doivent être confirmées par le juridique sur la version consolidée.",
+        "Une revue humaine juridique, DPO, métier et pédagogique est bloquante avant publication.",
+        "Les slugs parents ne sont pas encore intégrés au seed."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon de cadrage RGPD/règlement IA et d'escalade avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

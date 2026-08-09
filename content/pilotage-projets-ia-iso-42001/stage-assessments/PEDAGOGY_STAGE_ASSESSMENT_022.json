@@ -1,0 +1,125 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_022",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Concevoir et piloter la réalisation",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Construire le dispositif de pilotage permettant au comité Asteria de décider si l’assistant documentaire peut passer d’un PoC limité à un pilote contrôlé.",
+    "instructions": [
+      "Assembler et mettre en cohérence les cinq artefacts préparés pendant les leçons ; l’évaluation porte sur leurs arbitrages et leurs interfaces, pas sur une rédaction intégrale depuis une page blanche.",
+      "Reformuler l’objectif du prochain cycle sous forme d’hypothèses réfutables et préciser les preuves attendues, les règles de décision et les conditions d’arrêt.",
+      "Produire une charte synthétique qui définit périmètre, hors-périmètre, résultats attendus, contraintes, gouvernance, autorités de décision et mécanismes d’escalade.",
+      "Construire une roadmap de quatre jalons de preuve, puis un backlog initial ordonné couvrant produit, données, évaluation, sécurité, documentation et gouvernance. Relier chaque item à un objectif, un risque, une preuve ou une dépendance.",
+      "Dessiner l’architecture fonctionnelle de l’assistant RAG avec sources, ingestion, index, identité, recherche, contexte, modèle, interface, journaux, fournisseurs, flux et frontières de confiance. Indiquer contrôles, preuves et propriétaires sans inventer les caractéristiques techniques absentes du cas.",
+      "Rédiger un protocole d’évaluation comprenant dimensions de qualité, sécurité, coût et expérience ; jeu représentatif ; scénarios critiques et hors périmètre ; versions ; notation humaine ; seuils ; critères bloquants ; rapport et décision de passage.",
+      "Conclure par une recommandation motivée parmi : poursuivre le PoC, corriger avant revue, autoriser un pilote restreint ou arrêter. Lister les inconnues et les expertises à solliciter."
+    ],
+    "case": "Cas fictif — Asteria Services a obtenu un prototype d’assistant documentaire en six semaines. Le fournisseur montre vingt réponses choisies, dont dix-huit sont jugées convaincantes par le sponsor. Aucun jeu d’évaluation versionné n’existe. Le prototype utilise un service de recherche géré et un modèle fourni par deux prestataires distincts ; l’équipe ne dispose pas encore du diagramme des flux ni de la liste exacte des données journalisées. Les 1 800 documents provenant de cinq équipes constituent le sous-corpus sélectionné pour le prototype parmi les quelque 8 000 documents estimés lors du cadrage de l’étape 3 ; la représentativité de cette sélection reste à établir. Un audit manuel de 60 documents en a trouvé 14 obsolètes et 9 portant des restrictions d’accès non reproduites dans l’index de test. Les RH demandent d’intégrer leurs procédures au pilote ; la sécurité refuse tant que les droits et les journaux ne sont pas clarifiés. Le sponsor vise dans trois semaines un pilote dont la capacité cible est de 80 utilisateurs et demande un taux de « bonnes réponses » de 85 %, sans définir la notation. Le fournisseur estime le coût mensuel entre 2 000 et 7 000 euros selon l’usage. Trois utilisateurs du prototype signalent des réponses trop longues ; un autre a obtenu une procédure sans source visible. Aucun incident grave n’est établi, mais les scénarios d’exfiltration, de prompt injection et de refus hors périmètre n’ont pas été testés. Vous devez préparer la revue de passage sans combler ces inconnues.",
+    "estimatedMinutes": 50,
+    "submissionFormat": "Dossier de synthèse de 3 à 5 pages ou canevas équivalent, assemblé depuis les exercices : charte courte, gouvernance, roadmap et extrait de backlog, schéma RAG légendé, protocole d’évaluation et recommandation exécutive concise.",
+    "conceptSlugs": [
+      "empirisme-applique-incertitudes-ia",
+      "boucle-hypothese-preuve-decision",
+      "niveaux-maturite-solution-ia",
+      "porte-passage-fondee-preuves",
+      "gouvernance-orientee-decisions",
+      "roadmap-backlog-tracables",
+      "chaine-fonctionnelle-assistant-rag",
+      "frontieres-confiance-tracabilite-rag",
+      "evaluation-multidimensionnelle-contextualisee",
+      "protocole-reproductible-seuils-passage"
+    ],
+    "rubric": [
+      {
+        "criterion": "Pilotage sous incertitude et portes de passage",
+        "weight": 20,
+        "requirements": [
+          "Les affirmations importantes sont transformées en hypothèses réfutables, preuves attendues et règles de décision.",
+          "Expérimentation, PoC, pilote et production sont distingués sans présenter la démonstration comme une preuve de maturité.",
+          "Les critères d’entrée, de sortie, de restriction et d’arrêt sont définis avant les résultats."
+        ]
+      },
+      {
+        "criterion": "Gouvernance, roadmap et backlog",
+        "weight": 20,
+        "requirements": [
+          "Les décisions possèdent une autorité, des contributeurs, une preuve, un délai et une voie d’escalade.",
+          "La roadmap ordonne des jalons de preuve et non de simples dates ou cérémonies.",
+          "Le backlog est ordonné, multidisciplinaire et traçable vers objectifs, risques, preuves ou dépendances."
+        ]
+      },
+      {
+        "criterion": "Cartographie fonctionnelle de l’assistant RAG",
+        "weight": 20,
+        "requirements": [
+          "La chaîne couvre corpus, ingestion, recherche, contexte, modèle, interface, journaux et fournisseurs.",
+          "Les données, acteurs, flux, versions, frontières de confiance, mécanismes de repli et inconnues sont visibles.",
+          "Chaque contrôle majeur est relié à une preuve et à un propriétaire ; la carte n’est pas présentée comme preuve d’efficacité."
+        ]
+      },
+      {
+        "criterion": "Protocole d’évaluation et décision",
+        "weight": 30,
+        "requirements": [
+          "Qualité de recherche, fidélité, sécurité, refus, coût, latence, utilité et charge de vérification sont mesurés distinctement.",
+          "Le jeu couvre cas ordinaires, difficiles, hors périmètre et critiques dans des conditions proches du pilote.",
+          "Versions, notation, revue humaine, désaccords, seuils, scénarios bloquants, incertitude et format de rapport sont définis.",
+          "La recommandation est cohérente avec les preuves disponibles et conserve explicitement les inconnues."
+        ]
+      },
+      {
+        "criterion": "Communication et posture de consultant",
+        "weight": 10,
+        "requirements": [
+          "Le dossier est structuré pour une décision de comité et distingue faits, hypothèses, choix et limites.",
+          "Les performances et coûts du fournisseur ne sont pas présentés comme établis sans protocole.",
+          "Les décisions nécessitant une expertise sécurité, données, juridique ou métier sont escaladées sans usurper ces responsabilités."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre les leçons associées et soumettre uniquement les sections révisées avec un journal de décision. Une faiblesse sur la cartographie impose de reconstruire les flux avant de réviser le protocole. Une faiblesse sur l’évaluation impose de redéfinir jeu, métriques et seuils avant toute recommandation de pilote. Tout scénario critique sans propriétaire ou décision bloque la validation jusqu’à correction."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-093-001",
+      "REF-093-002",
+      "REF-094-001",
+      "REF-094-002",
+      "REF-095-001",
+      "REF-095-002",
+      "REF-096-001",
+      "REF-096-002",
+      "REF-097-001",
+      "REF-097-002"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas, les organisations, les données, les performances et les coûts sont entièrement fictifs.",
+        "L’évaluation porte uniquement sur les dix notions obligatoires des cinq leçons de l’étape 4.",
+        "Une revue humaine en pilotage Agile, architecture IA générative, sécurité et évaluation est requise avant publication.",
+        "Les quatre champs de assessment.seed sont compatibles avec le seed actuel ; l’import des consignes détaillées suit le mécanisme StageAssessment existant."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création du projet final de l’étape 4 et d’une grille à cinq critères.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

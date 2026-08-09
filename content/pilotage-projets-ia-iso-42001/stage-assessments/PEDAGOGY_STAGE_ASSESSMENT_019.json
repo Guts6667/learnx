@@ -1,0 +1,119 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_019",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "posture-consultant-ia",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Adopter la posture du consultant IA",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Préparer et restituer un premier entretien avec la directrice des opérations d’Asteria Services sans présupposer la solution, puis produire les premières pièces du dossier de mission.",
+    "instructions": [
+      "Assembler et réviser les productions réalisées pendant les trois leçons ; le temps de l’évaluation ne suppose pas de recréer la carte, le guide et les catégories depuis une page blanche.",
+      "Reformuler la demande initiale sous la forme d’un problème professionnel observable, puis indiquer ce qui ne permet pas encore de décider entre automatisation déterministe, apprentissage automatique, IA générative ou solution non-IA.",
+      "Préparer dix questions ouvertes couvrant objectif, utilisateurs, processus actuel, volumes et qualité, données, contraintes, personnes affectées, risques, alternatives et décision suivante. Pour chaque question, préciser brièvement la décision qu’elle peut éclairer.",
+      "À partir des informations du cas, produire une première carte du système envisagé avec finalité, entrées, composants, sorties, interfaces, acteurs internes et externes, personnes affectées et trois moments de contrôle dans le cycle de vie.",
+      "Rédiger un compte rendu qui sépare explicitement faits étayés, attentes, hypothèses et questions ouvertes. Ne compléter aucune information absente.",
+      "Conclure par une recommandation de prochaine étape, les personnes à associer, les preuves à réunir et au moins une condition pouvant conduire à ne pas poursuivre le projet IA."
+    ],
+    "case": "Asteria Services est présente sur plusieurs sites en France. Lors du premier échange, la directrice des opérations déclare : « Nous voulons un assistant interne capable de répondre à toutes les questions et d’aider à rédiger les réponses. Un fournisseur nous assure qu’il peut le mettre en service en six semaines et nous faire gagner 30 % de temps. Nos procédures sont réparties entre plusieurs espaces, et je ne connais pas le volume mensuel exact de questions. La qualité met à jour certains documents, mais chaque équipe conserve aussi ses propres fichiers. L’IT pense qu’un abonnement SaaS peut suffire. Les RH souhaitent inclure les politiques du personnel. Certaines procédures contiennent des informations sensibles. Nous préférons ne pas mobiliser les utilisateurs avant d’avoir une démonstration, pour aller plus vite. Si le modèle est performant, le reste devrait être simple. » Le fournisseur n’a encore transmis ni architecture, ni protocole d’évaluation, ni engagements détaillés sur les données. Vous intervenez comme consultant IA junior, sous la supervision d’un responsable de mission. Votre rôle n’est pas de choisir immédiatement la solution, mais de préparer une décision instruite.",
+    "estimatedMinutes": 50,
+    "submissionFormat": "Note de découverte structurée de 450 à 650 mots, accompagnée d’un guide de dix questions courtes et d’une carte synthétique du système et de ses acteurs, assemblés à partir des exercices de l’étape.",
+    "conceptSlugs": [
+      "automatisation-deterministe-et-systeme-ia",
+      "apprentissage-et-inference-machine-learning",
+      "ia-generative-et-production-contenu",
+      "systeme-ia-sociotechnique",
+      "cycle-vie-tevv-continu",
+      "acteurs-responsabilites-coordonnees",
+      "cadrage-probleme-avant-solution",
+      "faits-attentes-hypotheses-questions",
+      "entretien-decouverte-oriente-decision"
+    ],
+    "rubric": [
+      {
+        "criterion": "Reformulation du besoin et choix technologique prudent",
+        "weight": 20,
+        "requirements": [
+          "Le problème est formulé sans présupposer un chatbot ou une IA générative.",
+          "Automatisation déterministe, apprentissage automatique, IA générative et alternative non-IA sont distingués correctement.",
+          "Les informations manquantes empêchant le choix sont explicitées."
+        ]
+      },
+      {
+        "criterion": "Cartographie du système et du cycle de vie",
+        "weight": 25,
+        "requirements": [
+          "La carte dépasse le seul modèle et relie finalité, données, composants, sorties, interfaces et contexte d’usage.",
+          "Les acteurs qui décident, fournissent, configurent, utilisent, contrôlent ou peuvent être affectés sont identifiés.",
+          "Au moins trois contrôles sont placés à des moments pertinents du cycle de vie."
+        ]
+      },
+      {
+        "criterion": "Qualité du guide d’entretien",
+        "weight": 25,
+        "requirements": [
+          "Les dix questions sont ouvertes, compréhensibles et non suggestives.",
+          "Elles couvrent le processus actuel, les preuves, les personnes affectées, les contraintes et les alternatives.",
+          "Le lien entre chaque question et une décision à éclairer est explicite."
+        ]
+      },
+      {
+        "criterion": "Qualification des informations et prochaine décision",
+        "weight": 20,
+        "requirements": [
+          "Faits, attentes, hypothèses et questions ouvertes sont séparés sans invention.",
+          "Les promesses du fournisseur et le gain de 30 % ne sont pas présentés comme des faits établis.",
+          "La prochaine étape précise responsables, preuves à réunir et condition de non-poursuite."
+        ]
+      },
+      {
+        "criterion": "Posture et communication de consultant",
+        "weight": 10,
+        "requirements": [
+          "La note est structurée, concise et exploitable par un commanditaire.",
+          "Les limites du premier entretien et le besoin de recoupement sont indiqués.",
+          "Le consultant n’usurpe ni décision métier ni expertise juridique, sécurité ou protection des données."
+        ]
+      }
+    ],
+    "remediation": "Pour chaque critère sous 70 %, reprendre la leçon correspondante et joindre une version révisée avec un court journal des corrections. Si la reformulation ou la qualification des informations reste insuffisante, refaire d’abord l’entretien sur un mini-cas non-IA. Si la carte du système ou des acteurs reste incomplète, la reconstruire en utilisant explicitement les figures 2 et 3 et l’annexe A du NIST AI RMF 1.0. La nouvelle soumission doit conserver les inconnues au lieu de les combler."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-001-OECD-DEFINITION-SYSTEME-IA",
+      "REF-002-CNIL-GLOSSAIRE-IA",
+      "REF-003-CNIL-FAQ-IA-GENERATIVE",
+      "REF-PIA-002-01",
+      "REF-PIA-002-02",
+      "REF-086-001",
+      "REF-086-002"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas Asteria, les personnes, les déclarations et les performances sont entièrement fictifs.",
+        "La simulation évalue uniquement les notions enseignées dans les trois leçons de l’étape.",
+        "Une revue humaine pédagogique et métier est requise avant publication.",
+        "Les quatre champs de assessment.seed sont compatibles avec le seed actuel ; l’intégration des consignes, du cas et de la grille devra suivre le mécanisme de données déjà prévu pour StageAssessment."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la simulation finale de l’étape 1 et de sa grille à cinq critères.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

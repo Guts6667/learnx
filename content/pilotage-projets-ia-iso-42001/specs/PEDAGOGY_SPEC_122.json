@@ -1,0 +1,564 @@
+{
+  "specId": "PEDAGOGY_SPEC_122",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "moduleSlug": "integration-autonome-et-preparation",
+  "lesson": {
+    "title": "Arbitrer les écarts et les actions correctives",
+    "slug": "arbitrer-ecarts-actions-correctives",
+    "summary": "Cette leçon fait passer du traitement d’un écart isolé à l’arbitrage d’un portefeuille d’actions concurrentes, sous contraintes de risque, de dépendances, de ressources et de délai.",
+    "objectives": [
+      "Prioriser des écarts et actions correctives selon le risque, la cause, les dépendances et l’urgence.",
+      "Formuler une décision explicite sur le risque résiduel, l’escalade et la vérification d’efficacité."
+    ],
+    "prerequisites": [
+      "Avoir vérifié la cohérence du dossier SGIA et maîtriser la distinction entre correction, cause et action corrective."
+    ],
+    "estimatedMinutes": 60,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-arbitrage-portefeuille-ecarts",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Arbitrer un portefeuille d’écarts consiste à choisir l’ordre, la profondeur et le propriétaire des réponses en fonction des conséquences possibles, de l’urgence, des causes communes, des dépendances et des ressources. Un score unique ne remplace pas le jugement : deux écarts proches peuvent appeler des décisions différentes si l’un compromet une preuve essentielle ou révèle une défaillance systémique.",
+          "sourceKeys": [
+            "nist-manage-116",
+            "nist-playbook-116"
+          ]
+        }
+      },
+      {
+        "key": "content-risque-residuel-escalade",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une décision sur le risque résiduel indique ce qui reste possible après traitement, qui a autorité pour l’accepter, quelles conditions s’appliquent et quand la décision sera réexaminée. Le consultant prépare l’analyse et recommande ; il n’accepte pas un risque au nom d’une autorité qu’il ne possède pas. Si une preuve critique manque ou si le risque dépasse la tolérance définie, l’escalade ou la suspension est une décision professionnelle recevable.",
+          "sourceKeys": [
+            "nist-manage-116",
+            "nist-core-116"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-manage-116",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — fonction MANAGE",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), fonction MANAGE. NIST AI 100-1.",
+        "description": "Consulter la fonction MANAGE pour examiner priorisation, traitement, suivi et réponse aux risques dans un contexte organisationnel.",
+        "guidance": {
+          "objective": "Relier l’arbitrage des actions aux risques et aux responsabilités.",
+          "instructions": "Choisir quatre résultats MANAGE pertinents et préciser la décision qu’ils éclairent pour Asteria.",
+          "scope": "Fonction MANAGE du Core",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; version 1.0 annoncée en cours de révision.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-playbook-116",
+        "type": "website",
+        "title": "NIST AI RMF Playbook — Manage",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/manage/",
+        "citation": "National Institute of Standards and Technology. (s. d.). NIST AI RMF Playbook — Manage.",
+        "description": "Explorer quelques suggestions Manage pour enrichir les options de traitement, puis les adapter aux contraintes du cas au lieu de les appliquer mécaniquement.",
+        "guidance": {
+          "objective": "Comparer plusieurs réponses possibles et leurs preuves d’efficacité.",
+          "instructions": "Retenir trois suggestions applicables, une à adapter et une à écarter ; justifier chaque choix.",
+          "scope": "Page Manage du Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; suggestions volontaires et contextuelles.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "nist-core-116",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Revoir GOVERN et MANAGE pour distinguer analyse préparée par l’équipe, responsabilité exécutive et suivi des décisions.",
+        "guidance": {
+          "objective": "Identifier l’autorité adaptée à chaque arbitrage de risque.",
+          "instructions": "Pour trois décisions du cas, préciser recommandation, décideur, preuve attendue et règle d’escalade.",
+          "scope": "GOVERN 2 et fonction MANAGE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais, sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 5,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Priorisation proportionnée des actions correctives",
+        "slug": "priorisation-actions-correctives",
+        "description": "La priorisation combine conséquences, urgence, causes communes, dépendances, preuves et ressources au lieu de suivre mécaniquement un score.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-manage-116",
+          "nist-playbook-116"
+        ],
+        "assessment": {
+          "key": "concept-priorisation-actions-correctives-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Priorisation des actions correctives",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Risque résiduel, autorité et escalade",
+        "slug": "risque-residuel-autorite-escalade",
+        "description": "Le risque restant après traitement fait l’objet d’une décision attribuée, conditionnelle, traçable et réexaminée par l’autorité compétente.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-manage-116",
+          "nist-core-116"
+        ],
+        "assessment": {
+          "key": "concept-risque-residuel-autorite-escalade-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Risque résiduel, autorité et escalade",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-arbitrer-portefeuille-actions",
+        "title": "Arbitrer un portefeuille d’actions",
+        "description": "Classer huit écarts fictifs d’Asteria dans une roadmap de trente, soixante et quatre-vingt-dix jours. Pour chacun, documenter conséquences, cause présumée, dépendances, propriétaire, preuve de clôture et test d’efficacité.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-note-arbitrage-residuel",
+        "title": "Rédiger trois décisions de risque résiduel",
+        "description": "Rédiger une décision d’acceptation conditionnelle, une escalade et une suspension. Pour chaque cas, préciser autorité, motif, conditions, preuve attendue, échéance et déclencheur de réexamen.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-arbitrage-portefeuille-ecarts"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-playbook-116"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-arbitrer-portefeuille-actions"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-priorisation-actions-correctives-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-risque-residuel-escalade"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-manage-116"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-core-116"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-note-arbitrage-residuel"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-risque-residuel-autorite-escalade-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior consolidant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-116-NIST-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre public volontaire ; la version 1.0 est annoncée en cours de révision."
+      },
+      {
+        "id": "REF-116-NIST-PLAYBOOK",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI RMF Playbook — Manage",
+        "year": null,
+        "edition": "Ressource vivante consultée le 9 août 2026",
+        "publication": "NIST Trustworthy and Responsible AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/manage/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Suggestions volontaires à adapter au contexte ; ressource vivante."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-116-NIST-CORE",
+            "locator": "Fonction MANAGE",
+            "supports": "Priorisation, traitement, suivi et réponse aux risques."
+          },
+          {
+            "referenceId": "REF-116-NIST-PLAYBOOK",
+            "locator": "Manage Playbook",
+            "supports": "Options d’action à adapter aux risques et au contexte de l’organisation."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre et guide institutionnels convergent sur une gestion proportionnée et contextuelle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-116-NIST-CORE",
+            "locator": "GOVERN 2 et fonction MANAGE",
+            "supports": "Responsabilités, autorité exécutive et décisions de gestion des risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre public distingue clairement organisation des responsabilités et gestion des risques.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-manage-116",
+        "referenceIds": [
+          "REF-116-NIST-CORE"
+        ],
+        "pedagogicalRationale": "Cadre l’arbitrage et le suivi des risques.",
+        "learnerInstructions": "Relier quatre résultats MANAGE à des décisions du cas.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-playbook-116",
+        "referenceIds": [
+          "REF-116-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Élargit les options de traitement et oblige à justifier leur adaptation.",
+        "learnerInstructions": "Comparer suggestions retenues, adaptées et écartées.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique en anglais.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource vivante à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-core-116",
+        "referenceIds": [
+          "REF-116-NIST-CORE"
+        ],
+        "pedagogicalRationale": "Aide à distinguer recommandation, décision et autorité.",
+        "learnerInstructions": "Attribuer trois décisions aux autorités compétentes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative hors séquence."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "priorisation-actions-correctives",
+        "assessmentTitle": "Mini-évaluation — Priorisation des actions correctives",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel critère justifie de traiter d’abord un écart de journalisation ?",
+            "explanation": "L’absence de trace peut empêcher la détection d’incidents et la démonstration de décisions critiques.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Il compromet des preuves et la détection d’incidents prioritaires",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Son titre est le plus court",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il a été saisi en premier dans le registre",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels facteurs soutiennent une priorisation proportionnée ?",
+            "explanation": "Conséquences, urgence, cause commune, dépendances et capacité de vérification éclairent la décision.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Conséquences et urgence",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Causes communes et dépendances",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Preuve et test d’efficacité possibles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Ordre alphabétique",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux écarts ayant le même score doivent toujours recevoir la même priorité.",
+            "explanation": "Le score ne capture pas nécessairement dépendances, causes systémiques, preuves compromises ou urgence.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "risque-residuel-autorite-escalade",
+        "assessmentTitle": "Mini-évaluation — Risque résiduel, autorité et escalade",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que doit faire le consultant si le risque résiduel dépasse la tolérance déclarée ?",
+            "explanation": "Il documente l’analyse et escalade vers l’autorité compétente ; il ne s’attribue pas le pouvoir d’accepter le risque.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Escalader avec recommandation, preuves et options",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Accepter seul pour tenir le délai",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer le risque du registre",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent une acceptation conditionnelle traçable ?",
+            "explanation": "L’autorité, le motif, les conditions, l’échéance et les déclencheurs de réexamen encadrent la décision.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Autorité et motif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Conditions et preuves attendues",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Échéance et déclencheurs de réexamen",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Accord implicite sans trace",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Suspendre une mise en production peut être une recommandation professionnelle lorsque les preuves critiques manquent.",
+            "explanation": "La suspension proportionnée et motivée protège la décision lorsque les conditions de maîtrise ne sont pas démontrées.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : prioriser un portefeuille d’actions, puis attribuer et encadrer la décision sur le risque restant.",
+      "cycles": [
+        {
+          "conceptSlug": "priorisation-actions-correctives",
+          "contentKeys": [
+            "content-arbitrage-portefeuille-ecarts"
+          ],
+          "resourceKeys": [
+            "nist-playbook-116"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-arbitrer-portefeuille-actions"
+          },
+          "assessmentKey": "concept-priorisation-actions-correctives-assessment-1",
+          "rationale": "Les suggestions adaptées enrichissent les options avant la priorisation sous contraintes."
+        },
+        {
+          "conceptSlug": "risque-residuel-autorite-escalade",
+          "contentKeys": [
+            "content-risque-residuel-escalade"
+          ],
+          "resourceKeys": [
+            "nist-manage-116",
+            "nist-core-116"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-note-arbitrage-residuel"
+          },
+          "assessmentKey": "concept-risque-residuel-autorite-escalade-assessment-1",
+          "rationale": "Le cadre de gestion des risques permet de distinguer analyse, recommandation, autorité et suivi."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le consultant prépare et recommande ; il n’accepte pas un risque au nom d’une autorité non attribuée.",
+        "Les scores du cas ne constituent pas une mesure objective universelle du risque.",
+        "Le NIST AI RMF 1.0 et son Playbook doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon d’arbitrage des écarts et actions correctives.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,537 @@
+{
+  "specId": "PEDAGOGY_SPEC_120",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "deployer-adopter-surveiller",
+  "moduleSlug": "surveillance-et-amelioration",
+  "lesson": {
+    "title": "Gérer incident, changement et retrait",
+    "slug": "gerer-incident-changement-retrait",
+    "summary": "Cette leçon relie triage, confinement, communication, reprise, apprentissage et contrôle des changements afin de traiter un incident sans improviser et de suspendre ou retirer le système lorsque le risque l’exige.",
+    "objectives": [
+      "Construire une réponse à incident IA qui protège, trace, communique et apprend sans conclure au-delà des faits.",
+      "Soumettre changements, reprise, suspension et retrait à une décision gouvernée avec preuves et retour arrière."
+    ],
+    "prerequisites": [
+      "Avoir défini les seuils de surveillance, voies d’escalade et conditions de repli du cas Asteria."
+    ],
+    "estimatedMinutes": 75,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-asteria-incident",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — À 10 h 12, une collaboratrice signale que l’assistant Asteria a affiché un extrait d’une procédure RH qu’elle ne devrait pas consulter. L’équipe ignore encore si l’origine est un droit mal recopié, un défaut d’indexation, une requête hostile ou un autre mécanisme. Trois requêtes similaires apparaissent dans les journaux. Le premier enjeu est de protéger les personnes et les informations, conserver les faits et limiter l’exposition, pas d’annoncer immédiatement une cause certaine.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-cycle-reponse-incident",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La réponse à incident suit une boucle gouvernée : détecter et enregistrer, qualifier avec les faits disponibles, protéger et contenir, mobiliser les propriétaires, préserver les preuves, communiquer selon les responsabilités, corriger, vérifier la reprise puis apprendre. Le triage distingue impact observé, exposition possible, personnes concernées, système et version, étendue, urgence et inconnues. Les obligations de notification ou la qualification juridique sont escaladées vers les fonctions compétentes ; le consultant fournit faits, chronologie et hypothèses sans les trancher seul.",
+          "sourceKeys": [
+            "nist-genai-profile-incident"
+          ]
+        }
+      },
+      {
+        "key": "content-changement-retrait-controle",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Une correction urgente reste un changement à contrôler. Elle précise objet, raison, composants et données touchés, risques introduits, tests, approbation, fenêtre, observation renforcée et retour arrière. La reprise n’est autorisée que pour un périmètre et une version explicitement vérifiés. Si les résultats demeurent incompatibles avec l’usage prévu ou la tolérance au risque, l’organisation doit pouvoir restreindre, désactiver, remplacer ou retirer le système en préservant continuité de service, données, preuves et communication.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-incident-change"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-genai-profile-incident",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Tabassi, Patrick Hall et Kamie Roberts",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., Schwartz, R., Dunietz, J., Jain, S., Stanley, M., Tabassi, E., Hall, P., & Roberts, K. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (NIST AI 600-1). NIST. https://doi.org/10.6028/NIST.AI.600-1",
+        "description": "Lire les actions GV-6.2-003, GV-6.2-004 et GV-6.2-006 à 007 relatives aux plans d’incident fournisseur, à la surveillance continue, au repli et aux engagements contractuels.",
+        "guidance": {
+          "objective": "Préparer une réponse à incident intégrant acteurs internes, fournisseurs, répétition et repli.",
+          "instructions": "Extraire six questions à poser avant l’incident Asteria : propriété, contact, preuve, délai, repli et apprentissage. Ne pas reproduire le tableau source.",
+          "scope": "Tableau 2, actions GV-6.2-003, GV-6.2-004, GV-6.2-006 et GV-6.2-007",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page DOI vers le PDF officiel anglais ; document textuel et table des matières disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-core-incident-change",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). Artificial Intelligence Risk Management Framework 1.0 — Core.",
+        "description": "Lire GOVERN 1.5 et 1.7, GOVERN 4.3, MANAGE 2.3 et 2.4, puis MANAGE 4.1 à 4.3 pour relier incident, reprise, changement, communication et retrait.",
+        "guidance": {
+          "objective": "Définir les décisions et preuves qui encadrent correction, reprise, désactivation et retrait.",
+          "instructions": "Pour Asteria, associer chaque sous-catégorie à une action, un propriétaire, une preuve et un point de décision ; signaler ce qui doit être escaladé.",
+          "scope": "GOVERN 1.5 et 1.7 ; GOVERN 4.3 ; MANAGE 2.3 à 2.4 ; MANAGE 4.1 à 4.3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Réponse à incident fondée sur les faits",
+        "slug": "reponse-incident-fondee-faits",
+        "description": "La réponse protège, contient, conserve les preuves, coordonne, communique et apprend tout en distinguant faits, hypothèses, impacts et qualifications à escalader.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-genai-profile-incident"
+        ],
+        "assessment": {
+          "key": "concept-reponse-incident-faits-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Répondre à un incident IA",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Changement, reprise et retrait gouvernés",
+        "slug": "changement-reprise-retrait-gouvernes",
+        "description": "Toute correction ou évolution est évaluée, testée, approuvée et réversible ; la reprise, la suspension et le retrait possèdent des critères et responsables explicites.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-incident-change"
+        ],
+        "assessment": {
+          "key": "concept-changement-retrait-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Changement, reprise et retrait",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-construire-fiche-incident",
+        "title": "Construire la fiche de réponse à incident",
+        "description": "À partir du signalement Asteria, produire une chronologie initiale distinguant faits, hypothèses et inconnues ; qualifier impacts et étendue sans diagnostic définitif ; proposer confinement, préservation des preuves, responsabilités, communications, escalades et critères de passage à la reprise.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-changement-retrait",
+        "title": "Décider correction, reprise ou retrait",
+        "description": "Produire une demande de changement pour la correction envisagée avec périmètre, versions, risques, tests, approbations, observation renforcée et rollback. Ajouter un arbre de décision menant à reprise restreinte, maintien de suspension, remplacement ou retrait, puis une courte rétrospective mettant à jour contrôles et formation.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asteria-incident"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-cycle-reponse-incident"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile-incident"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-construire-fiche-incident"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-reponse-incident-faits-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-changement-retrait-controle"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-incident-change"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-changement-retrait"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-changement-retrait-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-114-001",
+        "type": "institutional_framework",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": "NIST AI 600-1, juillet 2024",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Profil transversal volontaire ; les actions ciblées portent sur fournisseurs, incidents, surveillance et repli."
+      },
+      {
+        "id": "REF-114-002",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "AI RMF 1.0 en cours de révision en 2026 ; version figée dans cette spec."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Incident Asteria entièrement fictif créé pour l’exercice."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-114-001",
+            "locator": "tableau 2, actions GV-6.2-003, GV-6.2-004, GV-6.2-006 et GV-6.2-007",
+            "supports": "Préparation des plans d’incident fournisseur, propriété, répétition, apprentissage, surveillance, repli et obligations de service."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Publication institutionnelle primaire sur les risques génératifs ; la boucle de réponse synthétise des pratiques opérationnelles sans inventer d’obligation juridique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-114-002",
+            "locator": "GOVERN 1.5 et 1.7 ; GOVERN 4.3 ; MANAGE 2.3 à 2.4 ; MANAGE 4.1 à 4.3",
+            "supports": "Revue, retrait sûr, identification des incidents, réponse, reprise, désactivation, changement et communication."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre NIST soutient les décisions de cycle de vie ; le processus de changement proposé est un modèle pédagogique à adapter.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-genai-profile-incident",
+        "referenceIds": [
+          "REF-114-001"
+        ],
+        "pedagogicalRationale": "Apporte des actions spécifiques aux incidents et dépendances fournisseurs d’un système génératif.",
+        "learnerInstructions": "Lire les actions ciblées et formuler six questions préparatoires sans reproduire le tableau.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "DOI pérenne vers le PDF officiel textuel.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core-incident-change",
+        "referenceIds": [
+          "REF-114-002"
+        ],
+        "pedagogicalRationale": "Relie réponse, changement, reprise, communication et retrait au cycle de gestion des risques.",
+        "learnerInstructions": "Associer chaque sous-catégorie à action, preuve, propriétaire et point de décision Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La page signale la révision en cours de l’AI RMF 1.0."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "reponse-incident-fondee-faits",
+        "assessmentTitle": "Mini-évaluation — Répondre à un incident IA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle première formulation est la plus rigoureuse après le signalement Asteria ?",
+            "explanation": "Le signalement et les journaux constituent des faits initiaux ; la cause reste une hypothèse à investiguer pendant que l’exposition est contenue.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un accès inapproprié est signalé ; la cause est inconnue, le périmètre concerné est contenu et les preuves sont préservées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le fournisseur a certainement causé une fuite massive",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il n’y a aucun incident tant que la cause n’est pas connue",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles actions immédiates sont compatibles avec une réponse fondée sur les faits ?",
+            "explanation": "Contenir, préserver les preuves et mobiliser les responsables protègent sans détruire l’information nécessaire à l’analyse.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Restreindre le périmètre concerné et préserver journaux et versions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Alerter les propriétaires sécurité, données et métier selon la procédure",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Effacer les journaux pour protéger la confidentialité",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qui détermine si une notification réglementaire est requise ?",
+            "explanation": "La qualification et les obligations sont escaladées vers les fonctions juridiques, protection des données ou sécurité compétentes ; le consultant documente les faits.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Les fonctions compétentes selon la gouvernance, à partir des faits fournis",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le consultant seul dans la minute",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’utilisateur affecté sans support",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "changement-reprise-retrait-gouvernes",
+        "assessmentTitle": "Mini-évaluation — Changement, reprise et retrait",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une correction urgente est prête. Quelle condition doit précéder la reprise ?",
+            "explanation": "Même urgente, la correction est versionnée, testée sur le risque concerné, approuvée et assortie d’un repli et d’une surveillance renforcée.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Tests ciblés, approbation, périmètre de reprise, rollback et surveillance définis",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La confiance du développeur uniquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La suppression de l’incident du registre",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments appartiennent à un retrait maîtrisé ?",
+            "explanation": "Le retrait protège la continuité, les données, les preuves, les utilisateurs et les responsabilités, au lieu de simplement couper un service.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Un processus alternatif et une communication aux utilisateurs",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La conservation ou suppression gouvernée des données et preuves",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L’arrêt sans propriétaire ni chronologie",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le retour à une version précédente peut être improvisé après l’échec du changement.",
+            "explanation": "Le rollback doit être préparé et testé autant que proportionné avant le changement ; improviser peut augmenter les impacts.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : traiter l’incident en conservant faits, preuves et responsabilités, puis gouverner la correction, la reprise et le retrait à partir de cette analyse.",
+      "cycles": [
+        {
+          "conceptSlug": "reponse-incident-fondee-faits",
+          "contentKeys": [
+            "content-asteria-incident",
+            "content-cycle-reponse-incident"
+          ],
+          "resourceKeys": [
+            "nist-genai-profile-incident"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-construire-fiche-incident"
+          },
+          "assessmentKey": "concept-reponse-incident-faits-assessment-1",
+          "rationale": "Le signalement fictif impose de protéger et documenter avant d’attribuer une cause ou une qualification."
+        },
+        {
+          "conceptSlug": "changement-reprise-retrait-gouvernes",
+          "contentKeys": [
+            "content-changement-retrait-controle"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-incident-change"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-changement-retrait"
+          },
+          "assessmentKey": "concept-changement-retrait-assessment-1",
+          "rationale": "L’apprenant utilise les preuves de l’incident pour contrôler la modification, la reprise ou le retrait et mettre à jour le système de management."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Incident, personnes, données et système Asteria fictifs.",
+        "Revue humaine en réponse à incident, sécurité, protection des données et exploitation requise avant publication.",
+        "Les obligations de notification et qualifications juridiques ne sont pas enseignées comme décisions du consultant."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,486 @@
+{
+  "specId": "PEDAGOGY_SPEC_123",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "moduleSlug": "integration-autonome-et-preparation",
+  "lesson": {
+    "title": "Préparer la revue et l’audit de certification de l’organisation",
+    "slug": "preparer-revue-audit-organisation",
+    "summary": "Cette leçon organise une préparation honnête à la revue et à une éventuelle évaluation externe du SGIA d’Asteria, en séparant les preuves produites, les rôles de mise en œuvre et toute reconnaissance ultérieure à confirmer.",
+    "objectives": [
+      "Préparer un dispositif de revue fondé sur des preuves actuelles, des responsables disponibles et des écarts visibles.",
+      "Distinguer compétence personnelle, mise en œuvre du SGIA et éventuelle certification de l’organisation sans présumer les modalités d’un organisme externe."
+    ],
+    "prerequisites": [
+      "Disposer d’une note de cohérence et d’une roadmap d’actions correctives pour le SGIA d’Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-preparation-fondee-preuves",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Préparer une revue ou un audit consiste à rendre le fonctionnement réel du SGIA observable : périmètre à jour, personnes disponibles, décisions traçables, échantillons de preuves accessibles et écarts connus. Une répétition utile teste la capacité à retrouver et expliquer les preuves ; elle ne fabrique pas rétroactivement une conformité apparente ni ne dissimule les exceptions.",
+          "sourceKeys": [
+            "nist-govern-117"
+          ]
+        }
+      },
+      {
+        "key": "content-objets-certification-distincts",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Dans ce parcours, trois objets restent séparés par règle de positionnement : la compétence personnelle de l’apprenant, la mise en œuvre du SGIA par l’organisation et une éventuelle certification externe de cette organisation. Le consultant peut accompagner la mise en œuvre et préparer une revue ; le parcours ne lui attribue ni rôle d’auditeur tierce partie ni pouvoir de certification. Les modalités d’une certification réelle doivent être confirmées directement avec l’organisme choisi.",
+          "sourceKeys": []
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-govern-117",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — fonction GOVERN",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/0-ai-rmf-1-0/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), fonction GOVERN. NIST AI 100-1.",
+        "description": "Consulter GOVERN pour relier responsabilités, documentation, suivi et pratiques réelles aux preuves préparées pour la revue.",
+        "guidance": {
+          "objective": "Préparer des pistes de preuve reliées à des responsabilités et pratiques réelles.",
+          "instructions": "Choisir six résultats GOVERN et identifier pour chacun un propriétaire, un interlocuteur, une preuve et une faiblesse à déclarer.",
+          "scope": "Fonction GOVERN du Core",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; version 1.0 annoncée en cours de révision.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-audience-117",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — Audience",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/2-sec-audience/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Audience. NIST AI 100-1.",
+        "description": "Consulter les catégories d’acteurs du cycle de vie afin de préparer une carte de responsabilités et de limites sans leur attribuer de pouvoirs externes non vérifiés.",
+        "guidance": {
+          "objective": "Cartographier les perspectives et responsabilités utiles à la préparation d’une revue.",
+          "instructions": "Choisir six catégories d’acteurs, préciser leur contribution, la preuve attendue, leur limite d’autorité et les modalités externes qui restent à confirmer.",
+          "scope": "Section Audience",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais, avec schémas décrits dans le texte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Préparation transparente fondée sur les preuves",
+        "slug": "preparation-transparente-preuves",
+        "description": "La préparation rend les pratiques et preuves actuelles accessibles, testables et explicables sans masquer les écarts connus.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-govern-117"
+        ],
+        "assessment": {
+          "key": "concept-preparation-transparente-preuves-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Préparation transparente fondée sur les preuves",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Certification organisationnelle et rôles distincts",
+        "slug": "certification-organisationnelle-roles-distincts",
+        "description": "Dans ce parcours, compétence personnelle, mise en œuvre du SGIA et éventuelle certification de l’organisation sont des objets distincts dont les modalités externes restent à confirmer.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-audience-117"
+        ],
+        "assessment": {
+          "key": "concept-certification-organisationnelle-roles-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Certification organisationnelle et rôles",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-plan-preparation-revue",
+        "title": "Préparer la revue de disponibilité d’Asteria",
+        "description": "Produire un agenda de quatre-vingt-dix minutes, une liste d’interlocuteurs, huit pistes de preuve, trois échantillons à tester et un journal ouvert des écarts et limites. Aucun document ne doit être antidaté ou créé pour simuler une pratique passée.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-carte-acteurs-certification",
+        "title": "Construire la carte des rôles et limites",
+        "description": "Distinguer dans un tableau Asteria, l’équipe de mise en œuvre, la revue interne, une éventuelle évaluation externe et la compétence personnelle de l’apprenant. Pour chaque ligne, préciser contribution, décision, preuve et limite ; marquer les modalités externes comme « à confirmer ».",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-preparation-fondee-preuves"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-govern-117"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-preparation-revue"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-preparation-transparente-preuves-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-objets-certification-distincts"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-audience-117"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-carte-acteurs-certification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-certification-organisationnelle-roles-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior consolidant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-117-NIST-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Les sections Audience et Core sont utilisées ; cadre volontaire dont la version 1.0 est annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-117-NIST-CORE",
+            "locator": "Core, fonction GOVERN",
+            "supports": "Documentation, rôles, pratiques et surveillance de la gouvernance des risques IA."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre public du NIST soutient directement la documentation des responsabilités et pratiques ; les modalités d’un audit réel restent hors de cette affirmation.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Règle de positionnement pédagogique validée dans le blueprint du programme : elle borne les prétentions du parcours et ne décrit aucune exigence normative ni modalité d’un organisme certificateur."
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-govern-117",
+        "referenceIds": [
+          "REF-117-NIST-CORE"
+        ],
+        "pedagogicalRationale": "Relie preuves, pratiques, responsables et gouvernance.",
+        "learnerInstructions": "Identifier six pistes de preuve et leurs interlocuteurs.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML public structuré.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-audience-117",
+        "referenceIds": [
+          "REF-117-NIST-CORE"
+        ],
+        "pedagogicalRationale": "Élargit la préparation aux rôles et perspectives du cycle de vie sans leur attribuer une autorité non vérifiée.",
+        "learnerInstructions": "Cartographier six catégories d’acteurs, leurs preuves attendues, leurs limites et les modalités externes à confirmer.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique avec texte descriptif.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "preparation-transparente-preuves",
+        "assessmentTitle": "Mini-évaluation — Préparation transparente fondée sur les preuves",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle pratique est acceptable avant une revue de disponibilité ?",
+            "explanation": "Tester la récupération des preuves actuelles permet d’identifier honnêtement les lacunes sans fabriquer une pratique passée.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Simuler une demande de preuve et enregistrer les lacunes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Antidater les comptes rendus manquants",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Masquer les exceptions connues",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit relier une piste de preuve exploitable ?",
+            "explanation": "Une piste utile relie pratique, responsable, période, échantillon et décision ou résultat observé.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Pratique et responsable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Période et échantillon",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Décision ou résultat observé",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Promesse sans trace",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une préparation honnête conserve les écarts ouverts et explique leur traitement prévu.",
+            "explanation": "La transparence sur les écarts et leur suivi est préférable à une conformité apparente fabriquée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "certification-organisationnelle-roles-distincts",
+        "assessmentTitle": "Mini-évaluation — Certification organisationnelle et rôles",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel acteur ce parcours autorise-t-il à reconnaître Asteria comme certifiée ?",
+            "explanation": "Aucun : le parcours n’accorde aucun pouvoir de certification et impose de confirmer tout processus réel avec l’organisme choisi.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Aucun acteur du parcours",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le consultant qui a rédigé le dossier",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’équipe de mise en œuvre seule",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles distinctions doivent apparaître dans la communication d’Asteria ?",
+            "explanation": "Le blueprint impose de présenter compétence personnelle, mise en œuvre du SGIA et éventuelle certification de l’organisation comme des objets séparés.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Compétence personnelle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Mise en œuvre du SGIA",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Certification de l’organisation",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Ces trois objets sont interchangeables",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Accompagner la préparation autorise le consultant à se présenter comme auditeur tierce partie.",
+            "explanation": "Le périmètre pédagogique n’accorde pas au consultant de rôle d’auditeur tierce partie ; toute qualification externe doit être vérifiée séparément.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : rendre les pratiques vérifiables, puis expliciter les rôles, limites et informations externes à confirmer.",
+      "cycles": [
+        {
+          "conceptSlug": "preparation-transparente-preuves",
+          "contentKeys": [
+            "content-preparation-fondee-preuves"
+          ],
+          "resourceKeys": [
+            "nist-govern-117"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-preparation-revue"
+          },
+          "assessmentKey": "concept-preparation-transparente-preuves-assessment-1",
+          "rationale": "La gouvernance publique du NIST structure les pistes de preuve avant une répétition réaliste."
+        },
+        {
+          "conceptSlug": "certification-organisationnelle-roles-distincts",
+          "contentKeys": [
+            "content-objets-certification-distincts"
+          ],
+          "resourceKeys": [
+            "nist-audience-117"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-carte-acteurs-certification"
+          },
+          "assessmentKey": "concept-certification-organisationnelle-roles-assessment-1",
+          "rationale": "Les perspectives du NIST aident à cartographier les contributions et limites ; la séparation des objets de certification reste une règle de positionnement du programme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "La leçon prépare l’organisation ; elle ne forme ni ne qualifie un auditeur tierce partie.",
+        "Les modalités de l’organisme certificateur doivent être confirmées avant toute mission réelle.",
+        "Aucune clause ISO ni question d’examen protégée n’est reproduite."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon de préparation de la revue et d’un éventuel audit de certification organisationnelle.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

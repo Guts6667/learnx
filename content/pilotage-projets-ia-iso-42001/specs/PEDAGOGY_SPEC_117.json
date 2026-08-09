@@ -1,0 +1,537 @@
+{
+  "specId": "PEDAGOGY_SPEC_117",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "deployer-adopter-surveiller",
+  "moduleSlug": "mise-en-production-et-adoption",
+  "lesson": {
+    "title": "Préparer la décision et les conditions de mise en production",
+    "slug": "preparer-decision-mise-en-production",
+    "summary": "Cette leçon transforme la mise en production en décision gouvernée : les preuves, risques résiduels, responsabilités, limites d’usage et conditions de retour arrière sont examinés avant d’autoriser un lancement délimité.",
+    "objectives": [
+      "Construire un dossier de préparation au lancement reliant objectifs, preuves, risques et responsabilités.",
+      "Formuler une décision de lancement explicite, conditionnelle et réversible lorsque les preuves l’exigent."
+    ],
+    "prerequisites": [
+      "Disposer du plan d’évaluation, du registre des risques et de la feuille de route SGIA du cas Asteria."
+    ],
+    "estimatedMinutes": 65,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-asteria-revue-lancement",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria souhaite ouvrir son assistant à 120 collaborateurs lundi. Les tests montrent une qualité acceptable sur les procédures courantes, mais deux scénarios critiques restent sans résultat, le support n’a pas répété le retour au processus manuel et le fournisseur doit encore confirmer le délai de notification d’un changement de modèle. La date souhaitée n’est donc pas, à elle seule, un critère d’autorisation.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-dossier-preparation-lancement",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un dossier de préparation au lancement rassemble les preuves nécessaires à la décision dans le contexte réel visé : objectif et périmètre, résultats d’évaluation versionnés, limites connues, risques résiduels, contrôles testés, rôles opérationnels, support, surveillance, escalade et solution de repli. Il ne promet pas l’absence d’incident ; il permet de vérifier si les objectifs sont atteignables et si les risques restant après traitement sont compris et acceptés par l’autorité compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-launch"
+          ]
+        }
+      },
+      {
+        "key": "content-decision-conditionnelle-reversible",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une décision exploitable indique qui décide, sur quelle version et quelles preuves, pour quel périmètre, avec quelles conditions et jusqu’à quelle prochaine revue. Le résultat peut être : autoriser, autoriser sous conditions, différer ou arrêter. Un lancement restreint reste réversible : seuils d’alerte, autorité de suspension, procédure de retour au fonctionnement manuel et communication aux utilisateurs sont préparés avant l’ouverture.",
+          "sourceKeys": [
+            "nist-genai-profile-launch"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-launch",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). Artificial Intelligence Risk Management Framework 1.0 — Core.",
+        "description": "Lire MEASURE 2.3 à 2.7 et MANAGE 1.1 à 1.4 afin d’identifier les preuves de contexte, de sûreté, de sécurité et de risque résiduel nécessaires avant une décision de déploiement.",
+        "guidance": {
+          "objective": "Relier chaque condition de lancement à une preuve ou à une décision de risque explicite.",
+          "instructions": "Pour Asteria, relever quatre preuves disponibles, trois preuves manquantes et l’autorité qui doit arbitrer chaque risque résiduel.",
+          "scope": "MEASURE 2.3 à 2.7 ; MANAGE 1.1 à 1.4",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "nist-genai-profile-launch",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Tabassi, Patrick Hall et Kamie Roberts",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., Schwartz, R., Dunietz, J., Jain, S., Stanley, M., Tabassi, E., Hall, P., & Roberts, K. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (NIST AI 600-1). NIST. https://doi.org/10.6028/NIST.AI.600-1",
+        "description": "Lire la section 2.4 sur les limites des évaluations avant déploiement et repérer les pratiques qui évitent d’extrapoler un test hors de son contexte.",
+        "guidance": {
+          "objective": "Justifier un périmètre de lancement proportionné aux conditions réellement testées.",
+          "instructions": "Lire la section 2.4, puis rédiger deux limites de généralisation et une condition de retour arrière pour Asteria.",
+          "scope": "Section 2.4 — Pre-deployment Testing",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page DOI vers le PDF officiel anglais ; document textuel et table des matières disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Dossier de préparation au lancement",
+        "slug": "dossier-preparation-lancement",
+        "description": "Le dossier relie périmètre, objectifs, évaluations, risques résiduels, contrôles, responsabilités et capacité opérationnelle à des preuves versionnées.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-launch"
+        ],
+        "assessment": {
+          "key": "concept-dossier-preparation-lancement-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Préparation au lancement",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Décision de lancement conditionnelle et réversible",
+        "slug": "decision-lancement-conditionnelle-reversible",
+        "description": "L’autorisation précise périmètre, version, preuves, conditions, risques acceptés, prochaine revue, seuils de suspension et solution de repli.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-genai-profile-launch"
+        ],
+        "assessment": {
+          "key": "concept-decision-lancement-reversible-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Décider un lancement réversible",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-construire-dossier-readiness",
+        "title": "Construire le dossier de préparation d’Asteria",
+        "description": "Produire une matrice de dix conditions couvrant valeur, qualité, sécurité, données, fournisseurs, opérations et gouvernance. Pour chaque condition, indiquer preuve, version, propriétaire, état, risque résiduel et décision attendue ; ne pas marquer conforme une inconnue.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-rediger-decision-lancement",
+        "title": "Rédiger une décision de lancement",
+        "description": "Rédiger une note d’une page choisissant autorisation, autorisation conditionnelle, report ou arrêt. Préciser périmètre et version, preuves, conditions préalables, risques acceptés et par qui, seuils de suspension, retour manuel, communication et date de revue.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asteria-revue-lancement"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-dossier-preparation-lancement"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-launch"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-construire-dossier-readiness"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-dossier-preparation-lancement-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-decision-conditionnelle-reversible"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile-launch"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-rediger-decision-lancement"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-decision-lancement-reversible-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-111-001",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "AI RMF 1.0 en cours de révision en 2026 ; version figée dans cette spec."
+      },
+      {
+        "id": "REF-111-002",
+        "type": "institutional_framework",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": "NIST AI 600-1, juillet 2024",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Profil transversal volontaire ; ne constitue pas une certification ni une garantie de conformité."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Situation Asteria entièrement fictive créée pour l’exercice."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-111-001",
+            "locator": "MEASURE 2.3 à 2.7 ; MANAGE 1.1 à 1.4",
+            "supports": "Évaluation dans des conditions proches du déploiement, décision de poursuivre et documentation des risques résiduels."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel primaire ; le contenu traduit les résultats attendus en dossier de décision sans les présenter comme une checklist normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-111-002",
+            "locator": "section 2.4, Pre-deployment Testing ; tableau 1, risques liés aux configurations humain-IA et à la chaîne de valeur",
+            "supports": "Limites des tests avant déploiement et besoin de conditions opérationnelles et de repli adaptées au contexte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Publication officielle NIST consacrée aux risques génératifs ; la typologie de décision est une synthèse pédagogique explicite.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-launch",
+        "referenceIds": [
+          "REF-111-001"
+        ],
+        "pedagogicalRationale": "Fournit les résultats attendus pour vérifier performance, risques et décision de déploiement.",
+        "learnerInstructions": "Lire les sous-catégories ciblées et relier chacune à une preuve ou une décision Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La page signale la révision en cours de l’AI RMF 1.0."
+      },
+      {
+        "resourceKey": "nist-genai-profile-launch",
+        "referenceIds": [
+          "REF-111-002"
+        ],
+        "pedagogicalRationale": "Évite d’extrapoler des tests de laboratoire à un lancement large et irréversible.",
+        "learnerInstructions": "Lire la section 2.4 et en déduire limites de généralisation et repli pour Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "DOI pérenne vers le PDF officiel textuel.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "dossier-preparation-lancement",
+        "assessmentTitle": "Mini-évaluation — Préparation au lancement",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément constitue une preuve pertinente pour la revue de lancement Asteria ?",
+            "explanation": "Une évaluation versionnée dans des conditions proches de l’usage visé éclaire la décision ; une date ou une démonstration choisie ne suffit pas.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Les résultats versionnés d’un jeu représentatif du périmètre de lancement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La date annoncée au sponsor",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une démonstration sans journal ni critères",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent apparaître dans le dossier de préparation ?",
+            "explanation": "Le comité doit connaître preuves, risques résiduels, responsabilités et capacité de repli pour décider.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Les risques résiduels et leur autorité d’acceptation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les responsabilités de support, surveillance et escalade",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une garantie d’absence totale d’incident",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une condition dont la preuve manque peut être déclarée satisfaite si l’équipe est confiante.",
+            "explanation": "Une inconnue reste une inconnue ; elle doit être levée, acceptée par l’autorité compétente ou conduire à limiter ou différer le lancement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "decision-lancement-conditionnelle-reversible",
+        "assessmentTitle": "Mini-évaluation — Décider un lancement réversible",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Deux scénarios critiques ne sont pas testés. Quelle décision est la plus défendable ?",
+            "explanation": "Le lancement peut être différé ou limité à un périmètre qui exclut les scénarios non démontrés, avec conditions et nouvelle revue explicites.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Limiter ou différer le lancement jusqu’à obtention des preuves définies",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Lancer largement puisque la date est proche",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer les scénarios du registre des risques",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Qu’est-ce qui rend une autorisation conditionnelle réversible ?",
+            "explanation": "Des seuils observables, une autorité de suspension et un repli testé permettent d’agir sans improviser.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Des seuils de suspension définis",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un propriétaire autorisé à suspendre",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un espoir que les utilisateurs contournent les problèmes",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qui doit accepter un risque résiduel dépassant l’autorité du chef de projet ?",
+            "explanation": "Le risque est escaladé vers l’autorité définie par la gouvernance ; le consultant documente et recommande sans usurper la décision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "L’autorité compétente définie par la gouvernance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le premier utilisateur disponible",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le fournisseur seul",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : constituer des preuves de préparation, puis transformer ces preuves et inconnues en décision de lancement limitée et réversible.",
+      "cycles": [
+        {
+          "conceptSlug": "dossier-preparation-lancement",
+          "contentKeys": [
+            "content-asteria-revue-lancement",
+            "content-dossier-preparation-lancement"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-launch"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-construire-dossier-readiness"
+          },
+          "assessmentKey": "concept-dossier-preparation-lancement-assessment-1",
+          "rationale": "L’apprenant part d’un lancement imminent, examine les preuves et produit une matrice qui conserve les inconnues."
+        },
+        {
+          "conceptSlug": "decision-lancement-conditionnelle-reversible",
+          "contentKeys": [
+            "content-decision-conditionnelle-reversible"
+          ],
+          "resourceKeys": [
+            "nist-genai-profile-launch"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-rediger-decision-lancement"
+          },
+          "assessmentKey": "concept-decision-lancement-reversible-assessment-1",
+          "rationale": "La seconde production transforme la matrice en décision gouvernée, proportionnée au contexte réellement évalué et assortie d’un repli."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Revue humaine en exploitation, sécurité, risque et gouvernance IA requise avant publication.",
+        "Le contenu n’interprète pas les exigences d’une certification et reste fondé sur l’AI RMF volontaire."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

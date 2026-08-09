@@ -1,0 +1,505 @@
+{
+  "specId": "PEDAGOGY_SPEC_112",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "concevoir-sgia",
+  "lesson": {
+    "title": "Organiser rôles, compétences, communication et inventaire",
+    "slug": "organiser-roles-competences-inventaire",
+    "summary": "Cette leçon rend la gouvernance opérable en attribuant décisions, compétences et communications, puis en construisant un inventaire minimal des systèmes d’IA et de leurs propriétaires.",
+    "objectives": [
+      "Attribuer responsabilités, autorités et besoins de compétences sans créer de zones grises.",
+      "Construire un inventaire vivant et un plan de communication adapté aux décisions."
+    ],
+    "prerequisites": [
+      "Disposer du périmètre provisoire du SGIA d’Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-responsabilites-autorites-competences",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une gouvernance opérable distingue qui décide, exécute, vérifie, conseille et escalade, puis traite les écarts de compétences. Le rôle d’un comité ne remplace ni le propriétaire d’une décision ni les compétences nécessaires à son exécution.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-106",
+            "nist-ai-rmf-106"
+          ]
+        }
+      },
+      {
+        "key": "content-inventaire-communication-gouvernes",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Un inventaire vivant identifie chaque système, usage, propriétaire, état, dépendance et niveau de suivi ; la communication apporte la bonne information au bon acteur au bon moment. Un inventaire n’est pas une liste figée de modèles : il doit permettre de retrouver propriétaire, finalité, état et dépendances. Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé au texte applicable et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-106",
+            "nist-ai-rmf-106"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-106",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à GOVERN 2, GOVERN 3 et GOVERN 4 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à « Responsabilités, autorités et compétences ».",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres GOVERN 2, GOVERN 3 et GOVERN 4 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-106",
+        "type": "website",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Consulter GOVERN 2 et GOVERN 4 et relever les pratiques publiques utiles à Asteria.",
+        "guidance": {
+          "objective": "Opérationnaliser inventaire et communication gouvernés à partir d’un cadre public.",
+          "instructions": "Choisir quatre sous-catégories pertinentes ; pour chacune, noter une action, un propriétaire et une preuve attendue.",
+          "scope": "GOVERN 2 et GOVERN 4",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais structurée, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Responsabilités, autorités et compétences",
+        "slug": "responsabilites-autorites-competences",
+        "description": "Une gouvernance opérable distingue qui décide, exécute, vérifie, conseille et escalade, puis traite les écarts de compétences.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-106"
+        ],
+        "assessment": {
+          "key": "concept-responsabilites-autorites-competences-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Responsabilités, autorités et compétences",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Inventaire et communication gouvernés",
+        "slug": "inventaire-communication-gouvernes",
+        "description": "Un inventaire vivant identifie chaque système, usage, propriétaire, état, dépendance et niveau de suivi ; la communication apporte la bonne information au bon acteur au bon moment.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-106"
+        ],
+        "assessment": {
+          "key": "concept-inventaire-communication-gouvernes-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Inventaire et communication gouvernés",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-matrice-responsabilites-competences",
+        "title": "Construire la matrice de responsabilités",
+        "description": "Pour huit décisions du cas Asteria, nommer décideur, exécutant, contributeur, vérificateur, voie d’escalade et compétence requise ; signaler trois lacunes de capacité.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-inventaire-plan-communication",
+        "title": "Créer l’inventaire et le plan de communication",
+        "description": "Créer une fiche d’inventaire pour l’assistant et ses principaux composants, puis un plan de communication couvrant audience, message, déclencheur, canal, propriétaire et preuve.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-responsabilites-autorites-competences"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-106"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-matrice-responsabilites-competences"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-responsabilites-autorites-competences-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-inventaire-communication-gouvernes"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-106"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-inventaire-plan-communication"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-inventaire-communication-gouvernes-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-106-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-106-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication technique NIST : œuvre fédérale généralement dans le domaine public aux États-Unis ; droits étrangers réservés avec droit mondial de réimpression accordé, sous réserve d’éventuels contenus tiers.",
+        "status": "verified",
+        "notes": "Cadre volontaire public ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-106-NIST-PLAYBOOK",
+            "locator": "Suggestions GOVERN 2, GOVERN 3 et GOVERN 4",
+            "supports": "Pratiques publiques utiles à responsabilités, autorités et compétences."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-106-NIST-AI-RMF",
+            "locator": "GOVERN 2, GOVERN 3 et GOVERN 4",
+            "supports": "Résultats publics utiles à inventaire et communication gouvernés."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Cadre institutionnel public ; adaptation professionnelle à faire confirmer en revue métier.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-106",
+        "referenceIds": [
+          "REF-106-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer GOVERN 2, GOVERN 3 et GOVERN 4, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-106",
+        "referenceIds": [
+          "REF-106-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Cadre public pour produire un livrable professionnel vérifiable.",
+        "learnerInstructions": "Consulter GOVERN 2 et GOVERN 4, puis relier actions, propriétaires et preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "responsabilites-autorites-competences",
+        "assessmentTitle": "Mini-évaluation — Responsabilités, autorités et compétences",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qui doit accepter un risque résiduel d’Asteria ?",
+            "explanation": "Le rôle d’un comité ne remplace ni le propriétaire d’une décision ni les compétences nécessaires à son exécution.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le rôle doté de l’autorité explicite pour cette décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L’équipe projet sans mandat",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le fournisseur par défaut",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Nommer un comité suffit à attribuer toutes les responsabilités.",
+            "explanation": "Un comité ne remplace pas les propriétaires de décisions et les voies d’escalade.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent responsabilités, autorités et compétences vérifiable ?",
+            "explanation": "Le rôle d’un comité ne remplace ni le propriétaire d’une décision ni les compétences nécessaires à son exécution.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Une responsabilité explicite",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une preuve reliée à une décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un intitulé générique sans contexte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "inventaire-communication-gouvernes",
+        "assessmentTitle": "Mini-évaluation — Inventaire et communication gouvernés",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir un inventaire gouvernable ?",
+            "explanation": "Inventaire, décisions et communication restent reliés.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Finalité et propriétaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "État et dépendances",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Uniquement le nom du modèle",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Inventaire et communication gouvernés peut être démontré par une intention non documentée.",
+            "explanation": "Un inventaire n’est pas une liste figée de modèles : il doit permettre de retrouver propriétaire, finalité, état et dépendances.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés soutiennent inventaire et communication gouvernés ?",
+            "explanation": "Inventaire, décisions et communication restent reliés.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un propriétaire et une échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un critère et une preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une formulation non testable",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles appliqués : cadrer le principe, produire une preuve, puis valider la décision.",
+      "cycles": [
+        {
+          "conceptSlug": "responsabilites-autorites-competences",
+          "contentKeys": [
+            "content-responsabilites-autorites-competences"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-106"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-matrice-responsabilites-competences"
+          },
+          "assessmentKey": "concept-responsabilites-autorites-competences-assessment-1",
+          "rationale": "La source officielle situe le principe avant son application au cas fictif."
+        },
+        {
+          "conceptSlug": "inventaire-communication-gouvernes",
+          "contentKeys": [
+            "content-inventaire-communication-gouvernes"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-106"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-inventaire-plan-communication"
+          },
+          "assessmentKey": "concept-inventaire-communication-gouvernes-assessment-1",
+          "rationale": "Le cadre public NIST soutient la production sans remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon « Organiser rôles, compétences, communication et inventaire ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

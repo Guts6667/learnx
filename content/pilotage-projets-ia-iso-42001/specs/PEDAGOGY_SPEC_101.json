@@ -1,0 +1,573 @@
+{
+  "specId": "PEDAGOGY_SPEC_101",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "moduleSlug": "du-poc-a-la-production",
+  "lesson": {
+    "title": "Construire gouvernance projet, roadmap et backlog",
+    "slug": "construire-gouvernance-roadmap-backlog",
+    "summary": "Cette leçon relie décisions, responsabilités, jalons de preuve et backlog afin que le pilotage d’Asteria reste orienté vers les résultats plutôt que vers une liste de fonctionnalités.",
+    "objectives": [
+      "Attribuer clairement décision, contribution, exécution et escalade sans diluer la responsabilité.",
+      "Construire une roadmap de décisions et de preuves plutôt qu’un calendrier de promesses.",
+      "Écrire et ordonner un backlog traçable vers valeur, risque et apprentissage."
+    ],
+    "prerequisites": [
+      "Avoir défini les portes de passage du projet Asteria."
+    ],
+    "estimatedMinutes": 70,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-gouvernance-fictive",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Chez Asteria, le sponsor pense que l’IT validera les réponses ; l’IT pense que les métiers en sont propriétaires ; le fournisseur promet de « gérer la qualité ». Sans décision explicite, une réponse erronée peut être constatée par tous sans qu’aucune personne soit habilitée à suspendre le pilote.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-responsabilites-decision",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La gouvernance projet précise qui possède l’objectif, qui accepte un risque, qui produit une preuve, qui valide un résultat et qui peut arrêter ou escalader. Une matrice de responsabilités est utile si elle nomme des personnes ou fonctions habilitées et des décisions concrètes. Elle devient trompeuse lorsqu’elle distribue des lettres sans autorité, compétence ou délai de réponse.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-095"
+          ]
+        }
+      },
+      {
+        "key": "content-roadmap-preuves",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une roadmap de projet IA ordonne des résultats et des portes de décision : corpus qualifié, protocole accepté, PoC évalué, pilote autorisé, préparation opérationnelle. Les dates restent utiles, mais chaque jalon indique la preuve attendue, le responsable de la décision, les dépendances et les conditions d’arrêt. Elle est révisée lorsque les apprentissages changent les hypothèses.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-095",
+            "scrum-guide-fr-095"
+          ]
+        }
+      },
+      {
+        "key": "content-backlog-tracable",
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Le Product Backlog est une liste ordonnée et émergente de ce qui est nécessaire pour améliorer le produit. Dans un projet IA, il contient aussi des travaux de données, d’évaluation, de documentation, de sécurité et de gouvernance. Chaque item important devrait être relié à un objectif, une hypothèse, un risque ou une preuve ; l’ordre reflète valeur, dépendances, réduction d’incertitude et risque, pas seulement la demande la plus visible.",
+          "sourceKeys": [
+            "scrum-guide-fr-095",
+            "nist-ai-rmf-core-095"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-095",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0 — Core.",
+        "description": "Lire GOVERN 1.4 à 2.3 et MANAGE 1 afin d’identifier autorités, communication et décisions à représenter dans la gouvernance d’Asteria.",
+        "guidance": {
+          "objective": "Transformer la gouvernance en responsabilités et décisions observables.",
+          "instructions": "Relever quatre responsabilités et les associer à une décision du projet.",
+          "scope": "GOVERN 1.4 à 2.3 ; MANAGE 1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML anglaise structurée, sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "scrum-guide-fr-095",
+        "type": "document",
+        "title": "Le Guide Scrum — La définition officielle de Scrum",
+        "author": "Ken Schwaber et Jeff Sutherland",
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-French.pdf",
+        "citation": "Schwaber, K., & Sutherland, J. (2020). Le Guide Scrum — La définition officielle de Scrum.",
+        "description": "Lire les sections Product Goal, Product Backlog et responsabilités afin de distinguer direction produit, liste ordonnée et engagement d’équipe.",
+        "guidance": {
+          "objective": "Structurer objectif produit et backlog sans les confondre avec une roadmap figée.",
+          "instructions": "Lire les sections ciblées puis vérifier cinq items du backlog Asteria : objectif, ordre, critère de fin et dépendance.",
+          "scope": "Scrum Team ; Product Goal ; Product Backlog",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF français officiel, texte sélectionnable.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Gouvernance orientée décisions",
+        "slug": "gouvernance-orientee-decisions",
+        "description": "Les rôles sont reliés à des décisions, autorités, preuves et mécanismes d’escalade explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-095"
+        ],
+        "assessment": {
+          "key": "concept-gouvernance-decisions-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Gouvernance et décisions",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Roadmap et backlog traçables",
+        "slug": "roadmap-backlog-tracables",
+        "description": "Roadmap et backlog relient ordre du travail, preuves, dépendances, valeur, risques et décisions de passage.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "scrum-guide-fr-095",
+          "nist-ai-rmf-core-095"
+        ],
+        "assessment": {
+          "key": "concept-roadmap-backlog-assessment-1",
+          "type": "practice",
+          "title": "Mini-évaluation — Roadmap et backlog",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-matrice-decisions",
+        "title": "Construire la matrice des décisions",
+        "description": "Pour huit décisions Asteria — périmètre, corpus, seuils, risque, budget, pilote, incident et arrêt — désigner décideur, contributeurs, preuve requise, délai et voie d’escalade. Signaler tout conflit d’autorité.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-roadmap-backlog",
+        "title": "Relier roadmap et backlog",
+        "description": "Créer quatre jalons de preuve puis douze items de backlog répartis entre produit, données, évaluation, sécurité et gouvernance. Relier chaque item à un jalon ou justifier son retrait.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-gouvernance-fictive"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-responsabilites-decision"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-095"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-matrice-decisions"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-gouvernance-decisions-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-roadmap-preuves"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-backlog-tracable"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "scrum-guide-fr-095"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-roadmap-backlog"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-roadmap-backlog-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-095-001",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Version 1.0 figée ; révision NIST en cours."
+      },
+      {
+        "id": "REF-095-002",
+        "type": "professional_guide",
+        "authors": [
+          "Schwaber, K.",
+          "Sutherland, J."
+        ],
+        "organization": "Scrum Guides",
+        "title": "Le Guide Scrum — La définition officielle de Scrum",
+        "year": 2020,
+        "edition": "Version novembre 2020",
+        "publication": "Scrum Guides",
+        "doi": null,
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-French.pdf",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Attribution autorisée selon la notice du Guide Scrum ; reproduction non nécessaire.",
+        "status": "verified",
+        "notes": "Version française listée par le site officiel."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Cas Asteria fictif."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-095-001",
+            "locator": "GOVERN 1.4 à 2.3",
+            "supports": "Responsabilités, communication et autorité de la direction."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel primaire directement pertinent.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-095-001",
+            "locator": "MAP 1, MEASURE 1 et MANAGE 1",
+            "supports": "Preuves et décisions adaptées au contexte et aux risques."
+          },
+          {
+            "referenceId": "REF-095-002",
+            "locator": "Product Goal et adaptation du Product Backlog",
+            "supports": "Orientation par objectif et adaptation émergente."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Convergence entre gouvernance du risque et cadre de produit empirique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-095-002",
+            "locator": "section Product Backlog",
+            "supports": "Liste ordonnée et émergente du travail nécessaire au produit."
+          },
+          {
+            "referenceId": "REF-095-001",
+            "locator": "GOVERN, MAP et MEASURE",
+            "supports": "Travaux de gouvernance, contexte et mesure nécessaires à un système IA."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources officielles aux rôles complémentaires.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-095",
+        "referenceIds": [
+          "REF-095-001"
+        ],
+        "pedagogicalRationale": "Fonde les rôles et décisions du projet IA.",
+        "learnerInstructions": "Lire les sous-catégories ciblées et cartographier huit décisions.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "scrum-guide-fr-095",
+        "referenceIds": [
+          "REF-095-002"
+        ],
+        "pedagogicalRationale": "Clarifie objectif produit, responsabilités et backlog émergent.",
+        "learnerInstructions": "Lire les sections ciblées et contrôler le backlog produit.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "PDF textuel officiel.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "gouvernance-orientee-decisions",
+        "assessmentTitle": "Mini-évaluation — Gouvernance et décisions",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément manque si trois équipes sont seulement indiquées comme responsables de la qualité ?",
+            "explanation": "Il faut une autorité identifiée pour accepter, refuser ou escalader selon une preuve.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une décision précise, une autorité et une preuve attendue",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une quatrième équipe",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un acronyme supplémentaire",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le fournisseur peut accepter seul le risque métier d’Asteria puisqu’il fournit le modèle.",
+            "explanation": "Le fournisseur contribue et informe, mais l’autorité organisationnelle doit rester explicitement attribuée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qui doit pouvoir suspendre un pilote en cas de seuil critique franchi ?",
+            "explanation": "La fonction habilitée doit être nommée à l’avance avec son mécanisme d’escalade.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "La fonction explicitement habilitée par la gouvernance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La première personne qui voit l’erreur",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Personne avant la fin du sprint",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "roadmap-backlog-tracables",
+        "assessmentTitle": "Mini-évaluation — Roadmap et backlog",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel jalon est le mieux formulé ?",
+            "explanation": "Un jalon utile décrit une preuve et la décision qu’elle éclaire.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Jeu d’évaluation approuvé, seuils atteints et décision pilote documentée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "IA terminée en septembre",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Réunion fournisseur réalisée",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels items ont légitimement leur place dans un backlog IA ?",
+            "explanation": "Le backlog couvre tout le travail nécessaire à l’amélioration du produit et à une décision maîtrisée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Qualifier un échantillon documentaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Automatiser un test de non-régression",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Masquer une limite au sponsor",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Un item n’est relié à aucun objectif, risque, preuve ni dépendance. Quelle action prioritaire ?",
+            "explanation": "Sa contribution doit être clarifiée ; sinon il est retiré ou dépriorisé.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Clarifier sa contribution puis l’ordonner ou le retirer",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le réaliser parce qu’il existe",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’affecter au fournisseur sans discussion",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : attribuer les décisions, puis rendre le portefeuille de travail traçable vers les preuves.",
+      "cycles": [
+        {
+          "conceptSlug": "gouvernance-orientee-decisions",
+          "contentKeys": [
+            "content-gouvernance-fictive",
+            "content-responsabilites-decision"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-095"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-matrice-decisions"
+          },
+          "assessmentKey": "concept-gouvernance-decisions-assessment-1",
+          "rationale": "Le cas révèle la dilution de responsabilité avant la construction de la matrice."
+        },
+        {
+          "conceptSlug": "roadmap-backlog-tracables",
+          "contentKeys": [
+            "content-roadmap-preuves",
+            "content-backlog-tracable"
+          ],
+          "resourceKeys": [
+            "scrum-guide-fr-095"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-roadmap-backlog"
+          },
+          "assessmentKey": "concept-roadmap-backlog-assessment-1",
+          "rationale": "Roadmap et backlog sont construits ensemble pour éviter une liste de fonctionnalités sans décision."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Revue de gouvernance projet requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

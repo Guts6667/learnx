@@ -1,0 +1,590 @@
+{
+  "specId": "PEDAGOGY_SPEC_103",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "moduleSlug": "conception-et-evaluation-genai",
+  "lesson": {
+    "title": "Évaluer qualité, sécurité, coût et expérience utilisateur",
+    "slug": "evaluer-qualite-securite-cout-experience",
+    "summary": "Cette leçon construit un protocole d’évaluation multidimensionnel, représentatif et reproductible pour décider si l’assistant Asteria peut passer au pilote.",
+    "objectives": [
+      "Définir des dimensions et métriques distinctes pour qualité, sécurité, coût et expérience utilisateur.",
+      "Constituer un jeu d’évaluation représentatif avec scénarios ordinaires, difficiles, critiques et hors périmètre.",
+      "Établir seuils bloquants, règles d’agrégation, protocole humain et décision de passage avant les résultats."
+    ],
+    "prerequisites": [
+      "Disposer d’une cartographie fonctionnelle de l’assistant RAG Asteria."
+    ],
+    "estimatedMinutes": 70,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-score-moyen-fictif",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — L’assistant Asteria obtient 82 % de réponses jugées utiles sur trente questions, mais révèle une information confidentielle sur un scénario et invente une procédure sur deux questions rares. Une moyenne unique masque ces échecs critiques. La décision doit examiner plusieurs dimensions et des seuils bloquants définis à l’avance.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-dimensions-evaluation",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un protocole multidimensionnel sépare au minimum : qualité de recherche et fidélité aux sources ; pertinence et complétude de la réponse ; sécurité et respect des accès ; refus et escalade hors périmètre ; coût et latence ; utilité, compréhension et charge de vérification pour l’utilisateur. Chaque mesure indique unité, méthode, population ou échantillon, fréquence, responsable et limite d’interprétation.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-097",
+            "nist-genai-profile-097"
+          ]
+        }
+      },
+      {
+        "key": "content-jeu-representatif",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Le jeu d’évaluation doit refléter le contexte prévu : métiers, types de documents, langues, niveaux de difficulté, questions ambiguës, contenus absents, droits différents et scénarios susceptibles de produire un dommage. Les cas ordinaires évaluent l’utilité ; les cas limites, adversariaux et critiques testent les mécanismes de refus, de protection et d’escalade. Les versions du corpus, du système, des consignes et du jeu sont conservées.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-097",
+            "nist-genai-profile-097"
+          ]
+        }
+      },
+      {
+        "key": "content-protocole-decision",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Avant le test, fixer critères de notation, double revue d’un échantillon, résolution des désaccords, seuils par dimension, scénarios bloquants et traitement de l’incertitude. Après le test, publier résultats favorables et défavorables, limites, coûts observés et décision. Un seuil non mesurable ou une métrique peu fiable doit être documenté, pas remplacé silencieusement par une impression.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-097",
+            "nist-genai-profile-097"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-097",
+        "type": "website",
+        "title": "AI RMF Core — Measure",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0 — Core, MEASURE.",
+        "description": "Lire MEASURE 1 à 4 pour relever exigences de métriques, documentation, contexte de déploiement, revue indépendante, suivi et feedback utilisateur.",
+        "guidance": {
+          "objective": "Construire un protocole documenté et relié au contexte de déploiement.",
+          "instructions": "Lire MEASURE 1 à 4 et produire une checklist de huit propriétés du protocole Asteria.",
+          "scope": "Fonction MEASURE, catégories 1 à 4",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML anglaise structurée, sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-genai-profile-097",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio et al.",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., et al. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile (NIST AI 600-1). NIST.",
+        "description": "Lire la section sur les risques génératifs et sélectionner les actions d’évaluation liées à confabulation, sécurité de l’information, tests adversariaux, provenance et interaction humain-IA.",
+        "guidance": {
+          "objective": "Couvrir les échecs propres ou amplifiés par un assistant génératif.",
+          "instructions": "Choisir quatre risques pertinents pour Asteria et, pour chacun, définir un scénario de test, un résultat attendu et un seuil bloquant éventuel.",
+          "scope": "Section 2 ; actions MAP, MEASURE et MANAGE relatives aux quatre risques sélectionnés",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page DOI vers PDF anglais officiel, sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 11,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Évaluation multidimensionnelle et contextualisée",
+        "slug": "evaluation-multidimensionnelle-contextualisee",
+        "description": "Les mesures de qualité, risque, coût et usage sont distinctes, documentées et reliées au contexte réel plutôt que réduites à une moyenne globale.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-097"
+        ],
+        "assessment": {
+          "key": "concept-evaluation-multidimensionnelle-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Évaluation multidimensionnelle",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Protocole reproductible et seuils de passage",
+        "slug": "protocole-reproductible-seuils-passage",
+        "description": "Jeu, versions, notation, revue, seuils, incertitude et scénarios bloquants sont définis avant l’observation des résultats.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-097",
+          "nist-genai-profile-097"
+        ],
+        "assessment": {
+          "key": "concept-protocole-seuils-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Protocole et seuils",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-tableau-mesures",
+        "title": "Construire le tableau des mesures",
+        "description": "Définir pour Asteria huit mesures couvrant recherche, fidélité, sécurité, refus, coût, latence, utilité et charge de vérification. Pour chacune, préciser méthode, unité, échantillon, propriétaire et limite.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-protocole-evaluation",
+        "title": "Rédiger le protocole d’évaluation",
+        "description": "Composer un jeu de vingt scénarios répartis entre cas ordinaires, difficiles, hors périmètre et critiques. Définir versions, notation, revue humaine, seuils, scénarios bloquants, coût maximal, décision et format de rapport.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-score-moyen-fictif"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-dimensions-evaluation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-097"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-tableau-mesures"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-evaluation-multidimensionnelle-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-jeu-representatif"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-protocole-decision"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile-097"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-protocole-evaluation"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-protocole-seuils-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-097-001",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Version 1.0 figée ; révision NIST en cours."
+      },
+      {
+        "id": "REF-097-002",
+        "type": "institutional_framework",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": "NIST AI 600-1",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Profil intersectoriel officiel de juillet 2024."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Résultats Asteria entièrement fictifs."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-097-001",
+            "locator": "MEASURE 1 à 4",
+            "supports": "Mesures qualitatives et quantitatives contextualisées, documentées et suivies."
+          },
+          {
+            "referenceId": "REF-097-002",
+            "locator": "section 2 et actions MEASURE",
+            "supports": "Risques et évaluations propres à l’IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sources NIST officielles convergentes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-097-001",
+            "locator": "MEASURE 2.1 à 2.4 et 4.1 à 4.3",
+            "supports": "Jeux, outils, conditions proches du déploiement, utilisateurs et documentation."
+          },
+          {
+            "referenceId": "REF-097-002",
+            "locator": "actions relatives aux tests pré-déploiement et adversariaux",
+            "supports": "Scénarios ordinaires, limites et adversariaux pour l’IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadres primaires directement applicables à la conception du protocole.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-097-001",
+            "locator": "MEASURE 1.1 à 1.3, 2.1, 2.13 et MANAGE 1.1",
+            "supports": "Choix documenté des métriques, revue, efficacité et décision de poursuivre."
+          },
+          {
+            "referenceId": "REF-097-002",
+            "locator": "actions MEASURE et MANAGE",
+            "supports": "Documentation des limites et traitement des risques génératifs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources institutionnelles convergentes ; seuils chiffrés laissés au cas et non inventés comme normes.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-097",
+        "referenceIds": [
+          "REF-097-001"
+        ],
+        "pedagogicalRationale": "Fournit les propriétés attendues d’un processus de mesure rigoureux.",
+        "learnerInstructions": "Lire MEASURE 1 à 4 et produire une checklist de protocole.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée."
+      },
+      {
+        "resourceKey": "nist-genai-profile-097",
+        "referenceIds": [
+          "REF-097-002"
+        ],
+        "pedagogicalRationale": "Ajoute des risques et actions de test propres à l’IA générative.",
+        "learnerInstructions": "Sélectionner quatre risques Asteria et écrire leurs scénarios et seuils.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page DOI et PDF officiel accessibles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "evaluation-multidimensionnelle-contextualisee",
+        "assessmentTitle": "Mini-évaluation — Évaluation multidimensionnelle",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi le score moyen de 82 % ne suffit-il pas à décider ?",
+            "explanation": "Il agrège des dimensions différentes et peut masquer un échec critique.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Il peut masquer sécurité, scénarios critiques et charge utilisateur",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute moyenne est mathématiquement invalide",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Seul le coût compte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions doivent rester distinctes ?",
+            "explanation": "Qualité, sécurité, coût et expérience répondent à des questions et risques différents.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Fidélité aux sources",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Respect des droits d’accès",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Nombre de diapositives",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel indicateur mesure mieux l’expérience que la seule satisfaction ?",
+            "explanation": "Le temps et l’effort de vérification rendent visible le travail transféré à l’utilisateur.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Le temps de vérification et le taux de correction nécessaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La taille du modèle",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de réunions",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "protocole-reproductible-seuils-passage",
+        "assessmentTitle": "Mini-évaluation — Protocole et seuils",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent être figés ou versionnés avant une campagne ?",
+            "explanation": "Jeu, corpus, système, critères et méthode conditionnent la reproductibilité.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Jeu d’évaluation et critères de notation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Corpus, modèle et configuration",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La conclusion souhaitée",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quand définir un scénario bloquant ?",
+            "explanation": "Le définir avant les résultats limite les ajustements opportunistes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Avant l’exécution du protocole",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Après avoir vu les erreurs",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Uniquement après la production",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une métrique de sécurité n’est pas fiable. Quelle action ?",
+            "explanation": "L’incapacité à mesurer est une limite à documenter et traiter dans la décision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Documenter la limite et décider d’un contrôle ou d’une restriction compensatoire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La déclarer satisfaisante",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La remplacer par la satisfaction moyenne",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : séparer les dimensions de réussite, puis transformer ces dimensions en protocole de décision reproductible.",
+      "cycles": [
+        {
+          "conceptSlug": "evaluation-multidimensionnelle-contextualisee",
+          "contentKeys": [
+            "content-score-moyen-fictif",
+            "content-dimensions-evaluation"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-097"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-tableau-mesures"
+          },
+          "assessmentKey": "concept-evaluation-multidimensionnelle-assessment-1",
+          "rationale": "Le contre-exemple de la moyenne conduit à un tableau de mesures distinctes et contextualisées."
+        },
+        {
+          "conceptSlug": "protocole-reproductible-seuils-passage",
+          "contentKeys": [
+            "content-jeu-representatif",
+            "content-protocole-decision"
+          ],
+          "resourceKeys": [
+            "nist-genai-profile-097"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-protocole-evaluation"
+          },
+          "assessmentKey": "concept-protocole-seuils-assessment-1",
+          "rationale": "Les risques génératifs sont traduits en scénarios, seuils et règles de décision définis avant les résultats."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Résultats Asteria fictifs.",
+        "Les seuils numériques devront être adaptés au contexte et validés humainement ; aucun seuil n’est présenté comme universel."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

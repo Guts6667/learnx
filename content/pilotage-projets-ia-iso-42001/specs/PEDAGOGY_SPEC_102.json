@@ -1,0 +1,570 @@
+{
+  "specId": "PEDAGOGY_SPEC_102",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "moduleSlug": "conception-et-evaluation-genai",
+  "lesson": {
+    "title": "Cartographier un assistant fondé sur la recherche documentaire",
+    "slug": "cartographier-assistant-rag",
+    "summary": "Cette leçon apprend à représenter un assistant RAG comme une chaîne sociotechnique complète, avec données, composants, frontières de confiance, preuves et contrôles.",
+    "objectives": [
+      "Décrire la chaîne requête, recherche, contexte, génération, réponse et journalisation d’un assistant RAG.",
+      "Cartographier données, composants, fournisseurs, acteurs et frontières de confiance.",
+      "Associer aux principaux flux une origine, un contrôle, une preuve et un responsable."
+    ],
+    "prerequisites": [
+      "Connaître les acteurs du système Asteria et les bases d’un système d’IA générative."
+    ],
+    "estimatedMinutes": 70,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-rag-fictif",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria prévoit de connecter un modèle à ses procédures. L’expression « connecter les documents » masque cependant l’ingestion, le découpage, l’indexation, les droits d’accès, la recherche, la construction du contexte, la génération, l’affichage des sources, les retours utilisateurs et les journaux. Une carte exploitable rend chaque étape et chaque propriétaire visibles.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-definition-rag",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un système de génération augmentée par recherche, ou RAG, associe un modèle génératif à un système distinct de recherche ou à une base de connaissances. À partir d’une requête, le système recherche des informations pertinentes et les fournit au modèle dans son contexte pour produire une réponse. Le RAG peut actualiser ou délimiter les connaissances utilisées sans réentraîner le modèle, mais il ne garantit ni récupération correcte, ni fidélité de la génération, ni autorisation d’accès.",
+          "sourceKeys": [
+            "nist-glossary-rag-096"
+          ]
+        }
+      },
+      {
+        "key": "content-carte-chaine",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "Une carte fonctionnelle minimale distingue : sources documentaires et propriétaires ; pipeline d’ingestion et version ; index ou base de connaissances ; identité et droits de l’utilisateur ; requête et éventuelles transformations ; recherche et classement ; contexte transmis ; modèle et paramètres ; post-traitement ; réponse, citations et avertissements ; retours, journaux et surveillance. Elle indique aussi les services externes, les données qui franchissent une frontière et les mécanismes de repli.",
+          "sourceKeys": [
+            "nist-glossary-rag-096",
+            "nist-ssdf-genai-096"
+          ]
+        }
+      },
+      {
+        "key": "content-frontieres-preuves",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Pour chaque flux, documenter origine, finalité, sensibilité, destinataire, durée de conservation, transformation, contrôle et preuve. Une frontière de confiance existe notamment entre utilisateur et application, application et recherche, recherche et corpus, application et fournisseur de modèle. La carte ne démontre pas que le contrôle fonctionne : elle permet de définir le test et le propriétaire qui devront le prouver.",
+          "sourceKeys": [
+            "nist-ssdf-genai-096"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-glossary-rag-096",
+        "type": "website",
+        "title": "RAG — Glossary",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://csrc.nist.gov/glossary/term/rag",
+        "citation": "National Institute of Standards and Technology. (2025). RAG — Glossary, source NIST AI 100-2e2025.",
+        "description": "Lire la définition et identifier séparément système de recherche, base de connaissances, contexte et modèle génératif.",
+        "guidance": {
+          "objective": "Employer une définition précise du RAG et identifier ses composants minimaux.",
+          "instructions": "Lire l’entrée, puis dessiner la chaîne en quatre composants avant d’ajouter les contrôles Asteria.",
+          "scope": "Entrée « RAG » et source indiquée",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML anglaise courte, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 5,
+        "position": 1
+      },
+      {
+        "key": "nist-ssdf-genai-096",
+        "type": "document",
+        "title": "Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile",
+        "author": "Harold Booth et al.",
+        "url": "https://doi.org/10.6028/NIST.SP.800-218A",
+        "citation": "Booth, H., Souppaya, M., Vassilev, A., Ogata, M., Stanley, M., & Scarfone, K. (2024). Secure Software Development Practices for Generative AI and Dual-Use Foundation Models (NIST SP 800-218A). NIST.",
+        "description": "Consulter le tableau des pratiques et relever les tâches utiles à la provenance, à la protection des artefacts, à la gestion des composants et à la documentation des données et modèles.",
+        "guidance": {
+          "objective": "Ajouter à la carte RAG les preuves de développement et d’acquisition sécurisés.",
+          "instructions": "Lire le résumé, la portée et le tableau des pratiques ; sélectionner quatre tâches applicables à un intégrateur ou acquéreur comme Asteria.",
+          "scope": "Résumé ; sections 1 et 2 ; tableau des pratiques du profil",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page DOI vers PDF anglais officiel et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Chaîne fonctionnelle d’un assistant RAG",
+        "slug": "chaine-fonctionnelle-assistant-rag",
+        "description": "Le système relie corpus, ingestion, recherche, contexte, modèle, réponse, interface et surveillance ; chaque composant peut produire des erreurs distinctes.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-glossary-rag-096"
+        ],
+        "assessment": {
+          "key": "concept-chaine-rag-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Chaîne RAG",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Frontières de confiance et traçabilité",
+        "slug": "frontieres-confiance-tracabilite-rag",
+        "description": "Chaque flux sensible est relié à une origine, une finalité, un contrôle, une preuve et un responsable, notamment lorsqu’il franchit un service ou fournisseur.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ssdf-genai-096"
+        ],
+        "assessment": {
+          "key": "concept-frontieres-rag-assessment-1",
+          "type": "practice",
+          "title": "Mini-évaluation — Frontières et traçabilité",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-reconstruire-chaine-rag",
+        "title": "Reconstruire la chaîne Asteria",
+        "description": "Ordonner douze cartes de composants depuis les documents sources jusqu’au retour utilisateur. Pour chaque composant, noter une entrée, une sortie et un mode de défaillance observable.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-cartographie-rag",
+        "title": "Produire la cartographie fonctionnelle",
+        "description": "Dessiner la carte Asteria avec composants internes et externes, acteurs, flux, classifications de données, quatre frontières de confiance, contrôles, preuves, propriétaires et mécanisme de repli. Ajouter une légende et cinq inconnues à instruire.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-rag-fictif"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definition-rag"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-glossary-rag-096"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-reconstruire-chaine-rag"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-chaine-rag-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-carte-chaine"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-frontieres-preuves"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ssdf-genai-096"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-cartographie-rag"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-frontieres-rag-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-096-001",
+        "type": "institutional_glossary",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "RAG — Glossary",
+        "year": 2025,
+        "edition": "Source NIST AI 100-2e2025",
+        "publication": "NIST Computer Security Resource Center",
+        "doi": null,
+        "url": "https://csrc.nist.gov/glossary/term/rag",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Page institutionnelle publique ; vérifier les droits des sources citées.",
+        "status": "verified",
+        "notes": "Définition officielle courte renvoyant à NIST AI 100-2e2025."
+      },
+      {
+        "id": "REF-096-002",
+        "type": "institutional_standard",
+        "authors": [
+          "Booth, H.",
+          "Souppaya, M.",
+          "Vassilev, A.",
+          "Ogata, M.",
+          "Stanley, M.",
+          "Scarfone, K."
+        ],
+        "organization": "NIST",
+        "title": "Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile",
+        "year": 2024,
+        "edition": "NIST SP 800-218A",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.SP.800-218A",
+        "url": "https://doi.org/10.6028/NIST.SP.800-218A",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "Profil final publié en juillet 2024 pour producteurs et acquéreurs de systèmes IA."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Cas Asteria fictif."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-096-001",
+            "locator": "entrée RAG et source NIST AI 100-2e2025",
+            "supports": "Définition du couplage recherche, base de connaissances et modèle génératif."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Glossaire institutionnel primaire ; limites ajoutées comme précautions explicites.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-096-001",
+            "locator": "entrée RAG",
+            "supports": "Composants de recherche et génération."
+          },
+          {
+            "referenceId": "REF-096-002",
+            "locator": "sections 1, 2 et tableau des pratiques",
+            "supports": "Cycle de développement, artefacts, données, modèles, composants et acquisition."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Sources NIST complémentaires sur architecture fonctionnelle et pratiques sécurisées.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-096-002",
+            "locator": "tableau des pratiques : provenance, protection des artefacts, composants et documentation",
+            "supports": "Traçabilité des flux, contrôles et preuves dans le développement et l’acquisition."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Application pédagogique du profil SSDF à une carte de flux ; revue sécurité requise.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-glossary-rag-096",
+        "referenceIds": [
+          "REF-096-001"
+        ],
+        "pedagogicalRationale": "Définition institutionnelle concise du mécanisme RAG.",
+        "learnerInstructions": "Lire la définition et dessiner les quatre composants minimaux.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML court sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nist-ssdf-genai-096",
+        "referenceIds": [
+          "REF-096-002"
+        ],
+        "pedagogicalRationale": "Ajoute une perspective développement et acquisition sécurisés aux frontières de la carte.",
+        "learnerInstructions": "Sélectionner quatre pratiques applicables à Asteria et les relier à des preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page DOI et PDF officiel accessibles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "chaine-fonctionnelle-assistant-rag",
+        "assessmentTitle": "Mini-évaluation — Chaîne RAG",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel composant fournit au modèle les informations retrouvées pour la réponse ?",
+            "explanation": "Le système de recherche sélectionne des informations qui sont placées dans le contexte du modèle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le système de recherche et de construction du contexte",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le seul bouton d’envoi",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le planning projet",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le RAG garantit que la réponse générée respecte fidèlement le document retrouvé.",
+            "explanation": "La recherche et la génération peuvent chacune échouer ; la fidélité doit être évaluée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments faut-il versionner pour reproduire une réponse ?",
+            "explanation": "Corpus, index ou configuration de recherche, modèle et paramètres peuvent affecter la sortie.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "La version du corpus ou de l’index",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La version du modèle et des paramètres",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La couleur du bouton si elle n’influence pas le flux",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "frontieres-confiance-tracabilite-rag",
+        "assessmentTitle": "Mini-évaluation — Frontières et traçabilité",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel flux mérite une frontière de confiance explicite ?",
+            "explanation": "L’envoi d’un contexte à un fournisseur externe change de domaine de contrôle et doit être documenté.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le contexte transmis de l’application au fournisseur de modèle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le passage entre deux titres d’un document",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le changement de couleur d’une carte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que documenter pour un flux de données sensibles ?",
+            "explanation": "Origine, finalité, destinataire, transformation, contrôle, conservation et responsable rendent le flux gouvernable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Origine et finalité",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Contrôle et preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une promesse sans test",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "La carte montre un filtre d’accès. Que prouve-t-elle ?",
+            "explanation": "La carte décrit le contrôle prévu ; un test et une preuve séparés démontrent son fonctionnement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Le contrôle prévu, pas son efficacité réelle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Que toute fuite est impossible",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Que le fournisseur assume tous les risques",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : reconstruire le mécanisme RAG, puis ajouter gouvernance des flux et preuves.",
+      "cycles": [
+        {
+          "conceptSlug": "chaine-fonctionnelle-assistant-rag",
+          "contentKeys": [
+            "content-rag-fictif",
+            "content-definition-rag"
+          ],
+          "resourceKeys": [
+            "nist-glossary-rag-096"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-reconstruire-chaine-rag"
+          },
+          "assessmentKey": "concept-chaine-rag-assessment-1",
+          "rationale": "La définition est immédiatement transformée en chaîne de composants et modes de défaillance."
+        },
+        {
+          "conceptSlug": "frontieres-confiance-tracabilite-rag",
+          "contentKeys": [
+            "content-carte-chaine",
+            "content-frontieres-preuves"
+          ],
+          "resourceKeys": [
+            "nist-ssdf-genai-096"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-cartographie-rag"
+          },
+          "assessmentKey": "concept-frontieres-rag-assessment-1",
+          "rationale": "La carte technique devient un artefact de gouvernance relié à des preuves et responsables."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Revue architecture et sécurité requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

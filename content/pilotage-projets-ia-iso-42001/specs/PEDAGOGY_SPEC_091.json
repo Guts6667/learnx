@@ -1,0 +1,903 @@
+{
+  "specId": "PEDAGOGY_SPEC_091",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "posture-consultant-ia",
+  "moduleSlug": "role-et-systemes-ia",
+  "lesson": {
+    "title": "Comprendre le système, son cycle de vie et ses acteurs",
+    "slug": "comprendre-systeme-cycle-vie-acteurs",
+    "summary": "Cartographier un système d’IA comme un ensemble sociotechnique, suivre ses décisions sur tout le cycle de vie et attribuer des responsabilités explicites aux acteurs concernés.",
+    "objectives": [
+      "Délimiter un système d’IA au-delà de son seul modèle.",
+      "Repérer les dimensions et activités qui traversent le cycle de vie d’un système d’IA.",
+      "Associer les principales responsabilités aux acteurs internes, externes et affectés sans attribuer toute la gouvernance à l’équipe technique."
+    ],
+    "prerequisites": [
+      "Distinguer automatisation, apprentissage automatique et IA générative."
+    ],
+    "estimatedMinutes": 75,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-systeme-sociotechnique",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un système d’IA ne se réduit pas à un modèle. Pour le piloter, il faut considérer ensemble son objectif, son contexte d’usage, les données et entrées, le modèle, les tâches et sorties, les interfaces, les règles organisationnelles, les personnes qui l’utilisent ou le supervisent et celles qui peuvent subir ses effets. Cette vue sociotechnique rend visibles des dépendances et des risques qu’une fiche purement technique laisserait hors champ.",
+          "sourceKeys": [
+            "nist-ai-rmf-figures-2-3"
+          ]
+        }
+      },
+      {
+        "key": "content-exemple-asteria-systeme",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Cas fictif Asteria Services : l’assistant interne comprend la base documentaire, le mécanisme de recherche, le modèle génératif fourni par un tiers, les instructions, l’interface, les droits d’accès, les journaux, les règles d’escalade, les collaborateurs utilisateurs et les personnes chargées de corriger les documents. Changer un seul de ces éléments peut modifier la qualité, les coûts, les responsabilités ou les risques du service.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-dimensions-cycle-vie",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "La figure 2 de l’AI RMF 1.0 organise le système autour du contexte d’application, des données et entrées, du modèle d’IA, puis de la tâche et de la sortie. Elle place les personnes et la planète au centre et représente autour de ces dimensions des activités de planification, conception, collecte et traitement des données, construction du modèle, vérification et validation, déploiement, exploitation et surveillance. La gestion des risques commence idéalement dès la planification et se poursuit pendant tout le cycle de vie.",
+          "sourceKeys": [
+            "nist-ai-rmf-figures-2-3"
+          ]
+        }
+      },
+      {
+        "key": "content-tevv-continu",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Les activités de test, d’évaluation, de vérification et de validation — TEVV — ne forment pas une case terminale après le développement. Le NIST les répartit sur le cycle de vie : les hypothèses et données peuvent être examinées dès la conception, le modèle peut être évalué pendant le développement, le système intégré doit être validé avant et pendant le déploiement, puis les performances, incidents et effets émergents doivent être surveillés en exploitation.",
+          "sourceKeys": [
+            "nist-ai-rmf-appendix-a"
+          ]
+        }
+      },
+      {
+        "key": "content-familles-acteurs",
+        "type": "rich_text",
+        "position": 5,
+        "content": {
+          "text": "L’annexe A distingue des familles de tâches plutôt que des intitulés de poste figés : conception, développement, déploiement, exploitation et surveillance, TEVV, facteurs humains, expertise métier, évaluation des impacts, achats, gouvernance et supervision. Une même personne peut contribuer à plusieurs familles dans une petite organisation, mais chaque tâche importante doit conserver un responsable, des contributeurs et une voie d’escalade identifiables.",
+          "sourceKeys": [
+            "nist-ai-rmf-appendix-a"
+          ]
+        }
+      },
+      {
+        "key": "content-separation-regards",
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "La figure 3 présente comme bonne pratique une séparation, dans la dimension du modèle, entre les personnes qui construisent ou utilisent les modèles et celles qui vérifient et valident. Cette indépendance n’exige pas forcément une nouvelle équipe complète, mais elle interdit de traiter l’autoévaluation du producteur comme l’unique regard sur la conformité ou l’aptitude à l’usage.",
+          "sourceKeys": [
+            "nist-ai-rmf-figures-2-3",
+            "nist-ai-rmf-appendix-a"
+          ]
+        }
+      },
+      {
+        "key": "content-posture-consultant-coordination",
+        "type": "rich_text",
+        "position": 7,
+        "content": {
+          "text": "Le rôle du consultant est d’aider à rendre la chaîne de décisions explicite : qui formule l’usage prévu, qui fournit les données, qui construit ou configure, qui autorise le déploiement, qui contrôle, qui opère, qui reçoit les alertes et qui représente les personnes affectées. Il ne remplace ni le responsable métier, ni les experts techniques, juridiques ou de sécurité ; il organise leur contribution et signale les responsabilités absentes ou incompatibles.",
+          "sourceKeys": [
+            "nist-ai-rmf-figures-2-3",
+            "nist-ai-rmf-appendix-a"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-figures-2-3",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0) — figures 2 et 3",
+        "author": "Elham Tabassi — National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0) (NIST AI 100-1). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Lire la section 2 et examiner les figures 2 et 3 pour relever les dimensions du système, les activités du cycle de vie et les catégories d’acteurs.",
+        "guidance": {
+          "objective": "Construire une représentation commune du système, de son cycle de vie et des acteurs à mobiliser.",
+          "instructions": "Lire les pages numérotées 9 à 11 du rapport. Pour la figure 2, relever quatre dimensions du système, les activités du cycle et la place de People & Planet. Pour la figure 3, relever les catégories d’acteurs et la séparation recommandée dans la dimension AI Model.",
+          "scope": "Section 2 « Audience », pages numérotées 9 à 11, figures 2 et 3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF ouvert de 48 pages ; texte sélectionnable. Une version HTML officielle est disponible dans l’AI Resource Center du NIST.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-appendix-a",
+        "type": "website",
+        "title": "Appendix A: Descriptions of AI Actor Tasks",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/appendices/app-a-descriptions-of-ai-actor-tasks/",
+        "citation": "National Institute of Standards and Technology. (2023). Appendix A: Descriptions of AI Actor Tasks. Extrait de l’Artificial Intelligence Risk Management Framework (AI RMF 1.0).",
+        "description": "Lire les descriptions des tâches de conception, développement, déploiement, exploitation et surveillance, TEVV, achats et gouvernance pour préparer une répartition des responsabilités.",
+        "guidance": {
+          "objective": "Associer des responsabilités observables aux acteurs d’un projet d’IA.",
+          "instructions": "Lire les paragraphes AI Design, AI Development, AI Deployment, Operation and Monitoring, TEVV, Procurement et Governance and Oversight. Noter pour chacun une décision, une preuve ou une action attendue.",
+          "scope": "Annexe A, paragraphes consacrés à Design, Development, Deployment, Operation and Monitoring, TEVV, Procurement, Governance and Oversight",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML structurée en anglais. Les mêmes éléments figurent aux pages numérotées 35 à 37 du PDF officiel.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Système d’IA sociotechnique",
+        "slug": "systeme-ia-sociotechnique",
+        "description": "Un système d’IA associe finalité, contexte, données, modèle, tâches, sorties, interfaces, règles et personnes ; ses résultats et ses risques dépendent de leurs interactions.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-figures-2-3"
+        ],
+        "assessment": {
+          "key": "assessment-systeme-ia-sociotechnique",
+          "type": "quiz",
+          "title": "Mini-évaluation — Système d’IA sociotechnique",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Cycle de vie et TEVV continus",
+        "slug": "cycle-vie-tevv-continu",
+        "description": "La planification, la conception, le développement, le déploiement, l’exploitation et la surveillance sont interdépendants ; les activités de test, évaluation, vérification et validation les accompagnent.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-figures-2-3",
+          "nist-ai-rmf-appendix-a"
+        ],
+        "assessment": {
+          "key": "assessment-cycle-vie-tevv-continu",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cycle de vie et TEVV continus",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Acteurs et responsabilités coordonnées",
+        "slug": "acteurs-responsabilites-coordonnees",
+        "description": "Les tâches de conception, développement, déploiement, exploitation, contrôle, achat et gouvernance doivent être attribuées, coordonnées et escaladées sans concentrer toutes les responsabilités sur les développeurs.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-figures-2-3",
+          "nist-ai-rmf-appendix-a"
+        ],
+        "assessment": {
+          "key": "assessment-acteurs-responsabilites-coordonnees",
+          "type": "case_question",
+          "title": "Mini-évaluation — Acteurs et responsabilités coordonnées",
+          "questionCount": 4
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "practice-cartographier-systeme-asteria",
+        "title": "Délimiter le système Asteria",
+        "description": "Produire une carte d’une page qui relie l’usage prévu de l’assistant Asteria, ses données et entrées, ses principaux composants, ses sorties, ses utilisateurs, les personnes affectées et trois dépendances externes. Ajouter deux éléments qui seraient oubliés dans une simple fiche du modèle.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "practice-positionner-tevv-cycle",
+        "title": "Placer les contrôles sur le cycle de vie",
+        "description": "Pour Asteria, positionner au moins un contrôle avant la collecte documentaire, pendant la configuration du système, avant le pilote et pendant l’exploitation. Pour chaque contrôle, préciser l’hypothèse ou le risque examiné et la preuve conservée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "practice-repartir-responsabilites-asteria",
+        "title": "Répartir les responsabilités d’Asteria",
+        "description": "Construire une matrice courte pour sept décisions : finalité, sélection des documents, configuration, validation avant pilote, autorisation de lancement, surveillance et gestion d’incident. Nommer pour chacune un responsable, les contributeurs, la preuve attendue et la voie d’escalade. Signaler un conflit d’indépendance à éviter.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-systeme-sociotechnique"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-exemple-asteria-systeme"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-figures-2-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-cartographier-systeme-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-systeme-ia-sociotechnique"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-dimensions-cycle-vie"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tevv-continu"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-appendix-a"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-positionner-tevv-cycle"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-cycle-vie-tevv-continu"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-familles-acteurs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-separation-regards"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-posture-consultant-coordination"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "practice-repartir-responsabilites-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-acteurs-responsabilites-coordonnees"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior francophone ayant des bases en Agile et en IA générative.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-PIA-002-01",
+        "type": "government_report",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "NIST AI 100-1, version 1.0",
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Les œuvres rédigées par des employés du NIST ne sont pas protégées par le copyright aux États-Unis ; les droits étrangers sont réservés et les éléments tiers conservent leurs droits propres.",
+        "status": "verified",
+        "notes": "Source primaire institutionnelle. L’AI RMF 1.0 est en cours de révision ; figer cette version et revérifier l’état du document avant publication. La figure 2 est adaptée d’un cadre de l’OCDE et n’est pas reproduite."
+      },
+      {
+        "id": "REF-PIA-002-02",
+        "type": "official_web_excerpt",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology — AI Resource Center",
+        "title": "Appendix A: Descriptions of AI Actor Tasks",
+        "year": 2023,
+        "edition": "Extrait web de l’AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/airmf/appendices/app-a-descriptions-of-ai-actor-tasks/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Information publique selon la politique générale du site NIST, sauf élément explicitement signalé comme protégé.",
+        "status": "verified",
+        "notes": "Version HTML officielle de l’annexe A du rapport NIST AI 100-1 ; utile comme alternative accessible au PDF."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Executive Summary, pages numérotées 1 à 2 ; section 2 « Audience », pages numérotées 9 à 11 ; figure 2",
+            "supports": "Définition générale du système d’IA et lecture sociotechnique par dimensions, contexte et acteurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel primaire, explicite sur les dimensions du système et les acteurs ; la formulation pédagogique est une synthèse originale.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Exemple entièrement fictif construit pour le cas fil rouge Asteria Services ; aucune entreprise, performance ou architecture réelle n’est décrite."
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Section 2 « Audience », pages numérotées 9 à 10, figure 2 et son texte d’accompagnement",
+            "supports": "Dimensions du système, activités du cycle de vie, place de People & Planet et continuité de la gestion des risques."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Le bloc restitue directement les catégories et la légende de la figure 2 sans reproduire la figure.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Section 2 « Audience », pages numérotées 9 à 11 ; annexe A, pages numérotées 35 à 36, paragraphes « Test, Evaluation, Verification, and Validation »",
+            "supports": "Présence des activités TEVV pendant tout le cycle de vie et exemples par phase."
+          },
+          {
+            "referenceId": "REF-PIA-002-02",
+            "locator": "Paragraphes « Test, Evaluation, Verification, and Validation (TEVV) tasks », notamment les quatre puces Design, Development, Deployment et Operations",
+            "supports": "Déclinaison des tâches TEVV depuis la conception jusqu’à l’exploitation."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Le rapport et sa transcription HTML officielle convergent et détaillent explicitement la continuité des TEVV.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Annexe A, pages numérotées 35 à 37, ensemble des catégories de tâches d’acteurs",
+            "supports": "Catégories de tâches des acteurs sur le cycle de vie et responsabilités associées."
+          },
+          {
+            "referenceId": "REF-PIA-002-02",
+            "locator": "Annexe A, paragraphes AI Design à Governance and Oversight",
+            "supports": "Descriptions accessibles des familles de tâches et exemples d’acteurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La typologie vient de la source primaire ; la recommandation d’expliciter responsable, contributeurs et escalade est une application prudente à la mission de conseil.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Figure 3, page numérotée 11 ; annexe A, pages numérotées 35 à 36, paragraphe TEVV",
+            "supports": "Séparation recommandée entre construction ou usage du modèle et vérification ou validation."
+          },
+          {
+            "referenceId": "REF-PIA-002-02",
+            "locator": "Paragraphe « Test, Evaluation, Verification, and Validation (TEVV) tasks »",
+            "supports": "Distinction souhaitable entre vérification-validation et test-évaluation."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La bonne pratique est explicitement annoncée dans la légende de la figure 3 et précisée dans l’annexe A ; le bloc n’impose pas une structure organisationnelle unique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-PIA-002-01",
+            "locator": "Section 2 « Audience », pages numérotées 9 à 11 ; annexe A, pages numérotées 35 à 37",
+            "supports": "Responsabilité collective, diversité des perspectives et répartition des tâches entre acteurs du cycle de vie."
+          },
+          {
+            "referenceId": "REF-PIA-002-02",
+            "locator": "Annexe A, paragraphes AI Design à Governance and Oversight",
+            "supports": "Responsabilités complémentaires nécessitant coordination et supervision."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La posture proposée traduit la responsabilité collective décrite par le NIST sans attribuer au consultant les compétences réglementées des spécialistes.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-figures-2-3",
+        "referenceIds": [
+          "REF-PIA-002-01"
+        ],
+        "pedagogicalRationale": "Les deux figures donnent une vue compacte des dimensions, activités et acteurs que l’apprenant doit savoir cartographier avant de cadrer un projet.",
+        "learnerInstructions": "Lire les pages numérotées 9 à 11, puis relever les dimensions, les activités et la séparation recommandée des rôles de validation.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF textuel ouvert ; version HTML officielle disponible sur l’AI Resource Center. Les figures demandent une inspection visuelle, mais la légende et le texte adjacent donnent les informations principales.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "L’AI RMF 1.0 est annoncé en cours de révision ; revérifier la version avant publication."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-appendix-a",
+        "referenceIds": [
+          "REF-PIA-002-01",
+          "REF-PIA-002-02"
+        ],
+        "pedagogicalRationale": "L’annexe transforme les catégories de la figure 3 en tâches observables, utiles pour attribuer les responsabilités du cas Asteria.",
+        "learnerInstructions": "Lire les sept paragraphes ciblés et noter une décision, une preuve ou une action pour chaque famille de tâches.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré lisible sur mobile ; contenu équivalent dans le PDF officiel aux pages numérotées 35 à 37.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Extrait officiel de l’AI RMF 1.0 ; revérifier l’avis de mise à jour avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "systeme-ia-sociotechnique",
+        "assessmentTitle": "Mini-évaluation — Système d’IA sociotechnique",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle délimitation convient le mieux à l’assistant interne Asteria ?",
+            "explanation": "Le pilotage porte sur un système complet : finalité, contexte, données, composants, sorties, interfaces, règles et personnes interagissent.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le modèle génératif et ses paramètres uniquement.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Le modèle, la base documentaire, la recherche, l’interface, les règles, les utilisateurs, la supervision et le contexte d’usage.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le contrat avec le fournisseur uniquement.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’écran de conversation et les réponses visibles uniquement.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels changements peuvent modifier le comportement ou les risques d’Asteria même si le modèle reste identique ?",
+            "explanation": "La qualité des documents, les droits d’accès et les règles d’escalade font partie du système sociotechnique et influencent ses résultats ou ses impacts.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Remplacer des documents validés par des versions obsolètes.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Élargir les droits d’accès aux documents confidentiels.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Supprimer la règle d’escalade vers un expert.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Conserver exactement tous les composants, données, règles et usages.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une cartographie du système est complète dès qu’elle décrit le fournisseur et le modèle utilisés.",
+            "explanation": "Une cartographie utile inclut aussi l’usage, les données, les tâches et sorties, les interfaces, les règles, les acteurs et les personnes potentiellement affectées.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi placer les personnes et la planète dans la représentation du système ?",
+            "explanation": "Le contexte humain, les droits, le bien-être et les effets plus larges contribuent à comprendre les impacts et les limites d’usage.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Pour remplacer toute mesure technique par une enquête d’opinion.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Pour intégrer les personnes affectées, les droits et les impacts sociétaux ou environnementaux à l’analyse.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Pour affirmer que tous les usages ont le même impact.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour limiter le système à ses utilisateurs directs.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "cycle-vie-tevv-continu",
+        "assessmentTitle": "Mini-évaluation — Cycle de vie et TEVV continus",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand la gestion des risques devrait-elle commencer selon la figure 2 du NIST ?",
+            "explanation": "Le NIST indique qu’elle commence idéalement pendant la planification et la conception, puis se poursuit pendant tout le cycle de vie.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Après le premier incident en production.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Dès la planification et la conception, puis tout au long du cycle de vie.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Uniquement pendant l’audit annuel.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Seulement après le choix du fournisseur.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La validation est une opération unique placée juste avant la mise en production.",
+            "explanation": "Les activités TEVV commencent potentiellement dès la conception et se poursuivent pendant le développement, le déploiement et l’exploitation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel contrôle relève le mieux de l’exploitation et de la surveillance ?",
+            "explanation": "En exploitation, il faut suivre les sorties, erreurs, incidents et effets émergents afin de corriger ou d’escalader.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Définir pour la première fois l’objectif métier après six mois d’usage.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Suivre les erreurs signalées, leurs impacts et le traitement apporté.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Choisir un modèle sans examiner le contexte d’usage.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Supprimer les journaux après le lancement.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves montrent que les TEVV sont réparties dans le cycle d’Asteria ?",
+            "explanation": "Des critères définis avant le pilote, une validation de l’intégration et une surveillance des incidents montrent des contrôles à plusieurs moments du cycle.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Un registre des hypothèses sur les documents établi pendant la conception.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un rapport de validation de l’assistant intégré avant le pilote.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un suivi des erreurs et incidents après le lancement.",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une démonstration commerciale sans protocole ni résultat conservé.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "acteurs-responsabilites-coordonnees",
+        "assessmentTitle": "Mini-évaluation — Acteurs et responsabilités coordonnées",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qui doit définir et documenter en priorité la finalité et le contexte d’usage d’Asteria ?",
+            "explanation": "Les tâches de conception associent notamment responsable métier, produit, experts du domaine, données, facteurs humains et gouvernance ; elles ne peuvent être abandonnées au seul fournisseur du modèle.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le fournisseur du modèle, seul et sans validation interne.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Les acteurs de conception concernés, avec un responsable métier et les expertises nécessaires.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L’utilisateur qui ouvre la première conversation.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’auditeur externe après le déploiement.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Asteria prépare son pilote. Quelle responsabilité relève principalement des acteurs de déploiement ?",
+            "explanation": "Les acteurs de déploiement prennent les décisions contextuelles d’intégration en production, de pilote, de compatibilité, de conformité, de changement et d’expérience utilisateur.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Piloter l’intégration, vérifier la compatibilité et préparer le changement organisationnel.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Fixer seuls la stratégie globale et l’appétence au risque de l’entreprise.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Remplacer toutes les activités de vérification indépendantes.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Garantir qu’aucun incident ne surviendra.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Dans une petite organisation, une personne peut contribuer à plusieurs familles de tâches, mais les responsabilités et conflits d’indépendance doivent rester explicites.",
+            "explanation": "La taille de l’organisation peut conduire à cumuler des rôles ; elle ne supprime ni l’attribution des responsabilités ni le besoin d’un regard suffisamment indépendant.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel dispositif respecte le mieux la séparation recommandée par le NIST ?",
+            "explanation": "Un regard de vérification ou validation distinct de la construction limite l’autoévaluation comme unique preuve, tout en conservant la coopération entre acteurs.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Le développeur produit le système, définit seul les critères et signe seul sa validation.",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Une personne non impliquée dans la construction vérifie le protocole et les résultats avant la décision de pilote.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Aucun contrôle n’est réalisé si le fournisseur est réputé.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "L’utilisateur final devient seul responsable de tous les risques.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles notionnels : délimitation du système, contrôle continu du cycle de vie, puis coordination des acteurs. Chaque ressource est lue au point d’usage avant une production Asteria et une mini-évaluation.",
+      "cycles": [
+        {
+          "conceptSlug": "systeme-ia-sociotechnique",
+          "contentKeys": [
+            "content-systeme-sociotechnique",
+            "content-exemple-asteria-systeme"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-figures-2-3"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-cartographier-systeme-asteria"
+          },
+          "assessmentKey": "assessment-systeme-ia-sociotechnique",
+          "rationale": "La figure fournit le vocabulaire de cartographie ; l’exercice oblige ensuite à délimiter un système complet avant de valider la notion."
+        },
+        {
+          "conceptSlug": "cycle-vie-tevv-continu",
+          "contentKeys": [
+            "content-dimensions-cycle-vie",
+            "content-tevv-continu"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-appendix-a"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-positionner-tevv-cycle"
+          },
+          "assessmentKey": "assessment-cycle-vie-tevv-continu",
+          "rationale": "L’apprenant réemploie la figure déjà consultée, lit la déclinaison des TEVV par phase puis transforme le principe de continuité en contrôles et preuves placés à plusieurs moments du cas. La lecture introduit aussi les familles d’acteurs mobilisées dans le cycle suivant."
+        },
+        {
+          "conceptSlug": "acteurs-responsabilites-coordonnees",
+          "contentKeys": [
+            "content-familles-acteurs",
+            "content-separation-regards",
+            "content-posture-consultant-coordination"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "practice-repartir-responsabilites-asteria"
+          },
+          "assessmentKey": "assessment-acteurs-responsabilites-coordonnees",
+          "rationale": "La lecture immédiatement précédente des tâches rend les rôles observables ; les trois blocs en structurent le réemploi, puis la matrice révèle les oublis et conflits d’indépendance avant l’évaluation par cas."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon : une revue humaine éditoriale et métier reste nécessaire avant publication.",
+        "L’évaluation finale de l’étape doit être livrée et intégrée avant que l’étape puisse être publiée.",
+        "L’AI RMF 1.0 est en cours de révision ; la version, les liens et les localisateurs doivent être revérifiés avant publication.",
+        "Les figures NIST ne sont pas reproduites ; l’apprenant les consulte dans la source officielle ouverte."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "Codex",
+        "change": "Création de la leçon sur la délimitation du système d’IA, son cycle de vie et la coordination de ses acteurs.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

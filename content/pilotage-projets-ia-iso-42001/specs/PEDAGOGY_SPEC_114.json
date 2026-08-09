@@ -1,0 +1,505 @@
+{
+  "specId": "PEDAGOGY_SPEC_114",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "operer-et-ameliorer-sgia",
+  "lesson": {
+    "title": "Documenter cycle de vie, données et fournisseurs",
+    "slug": "documenter-cycle-vie-donnees-fournisseurs",
+    "summary": "Cette leçon construit une traçabilité proportionnée du système d’IA, depuis l’idée jusqu’au retrait, en couvrant décisions, données, versions, changements et dépendances fournisseurs.",
+    "objectives": [
+      "Définir les points de décision et preuves du cycle de vie d’un système d’IA.",
+      "Tracer données, versions, fournisseurs et changements selon leur criticité."
+    ],
+    "prerequisites": [
+      "Disposer de la cartographie fonctionnelle, du registre de risques et du plan de mesures d’Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-cycle-vie-decisions-tracees",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le cycle de vie est gouverné par des jalons, décisions, critères et preuves depuis l’exploration jusqu’au retrait ; les retours en arrière et changements restent visibles. La documentation utile permet de comprendre qui a décidé quoi, sur quelles preuves et avec quelles conditions.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-108",
+            "nist-ai-rmf-108"
+          ]
+        }
+      },
+      {
+        "key": "content-donnees-versions-fournisseurs-tracables",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "La traçabilité relie corpus, provenance, qualité, accès, versions de composants, fournisseurs, changements et responsabilités aux usages et risques concernés. Un contrat fournisseur ne dispense pas l’organisation de connaître ses dépendances et d’organiser la surveillance des changements. Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé au texte applicable et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-108",
+            "nist-ai-rmf-108"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-108",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à GOVERN 1, MAP 4 et MANAGE 3 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à « Cycle de vie et décisions tracées ».",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres GOVERN 1, MAP 4 et MANAGE 3 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-108",
+        "type": "website",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Consulter MAP 4, MEASURE 2 et MANAGE 3 et relever les pratiques publiques utiles à Asteria.",
+        "guidance": {
+          "objective": "Opérationnaliser données, versions et fournisseurs traçables à partir d’un cadre public.",
+          "instructions": "Choisir quatre sous-catégories pertinentes ; pour chacune, noter une action, un propriétaire et une preuve attendue.",
+          "scope": "MAP 4, MEASURE 2 et MANAGE 3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais structurée, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Cycle de vie et décisions tracées",
+        "slug": "cycle-vie-decisions-tracees",
+        "description": "Le cycle de vie est gouverné par des jalons, décisions, critères et preuves depuis l’exploration jusqu’au retrait ; les retours en arrière et changements restent visibles.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-108"
+        ],
+        "assessment": {
+          "key": "concept-cycle-vie-decisions-tracees-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Cycle de vie et décisions tracées",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Données, versions et fournisseurs traçables",
+        "slug": "donnees-versions-fournisseurs-tracables",
+        "description": "La traçabilité relie corpus, provenance, qualité, accès, versions de composants, fournisseurs, changements et responsabilités aux usages et risques concernés.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-108"
+        ],
+        "assessment": {
+          "key": "concept-donnees-versions-fournisseurs-tracables-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Données, versions et fournisseurs traçables",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-carte-cycle-vie-preuves",
+        "title": "Dessiner le cycle de vie gouverné",
+        "description": "Définir pour Asteria six jalons de l’exploration au retrait ; préciser pour chacun décision, critères d’entrée ou sortie, responsable et preuve conservée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-registre-donnees-fournisseurs",
+        "title": "Créer le registre de traçabilité",
+        "description": "Produire dix lignes couvrant corpus, journaux, composants et fournisseurs avec propriétaire, origine, version, usage, restriction, changement à surveiller et preuve disponible.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-cycle-vie-decisions-tracees"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-108"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-carte-cycle-vie-preuves"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cycle-vie-decisions-tracees-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-donnees-versions-fournisseurs-tracables"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-108"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-registre-donnees-fournisseurs"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-donnees-versions-fournisseurs-tracables-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-108-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-108-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication technique NIST : œuvre fédérale généralement dans le domaine public aux États-Unis ; droits étrangers réservés avec droit mondial de réimpression accordé, sous réserve d’éventuels contenus tiers.",
+        "status": "verified",
+        "notes": "Cadre volontaire public ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-108-NIST-PLAYBOOK",
+            "locator": "Suggestions GOVERN 1, MAP 4 et MANAGE 3",
+            "supports": "Pratiques publiques utiles à cycle de vie et décisions tracées."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-108-NIST-AI-RMF",
+            "locator": "GOVERN 1, MAP 4 et MANAGE 3",
+            "supports": "Résultats publics utiles à données, versions et fournisseurs traçables."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Cadre institutionnel public ; adaptation professionnelle à faire confirmer en revue métier.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-108",
+        "referenceIds": [
+          "REF-108-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer GOVERN 1, MAP 4 et MANAGE 3, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-108",
+        "referenceIds": [
+          "REF-108-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Cadre public pour produire un livrable professionnel vérifiable.",
+        "learnerInstructions": "Consulter MAP 4, MEASURE 2 et MANAGE 3, puis relier actions, propriétaires et preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "cycle-vie-decisions-tracees",
+        "assessmentTitle": "Mini-évaluation — Cycle de vie et décisions tracées",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle trace est la plus utile à un jalon ?",
+            "explanation": "La documentation utile permet de comprendre qui a décidé quoi, sur quelles preuves et avec quelles conditions.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Décision, critères, responsable et preuves utilisées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une date seule",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un compte rendu sans décision",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un cycle de vie IA est nécessairement linéaire.",
+            "explanation": "Les évaluations et changements peuvent imposer des retours, révisions ou arrêts.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent cycle de vie et décisions tracées vérifiable ?",
+            "explanation": "La documentation utile permet de comprendre qui a décidé quoi, sur quelles preuves et avec quelles conditions.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Une responsabilité explicite",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une preuve reliée à une décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un intitulé générique sans contexte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "donnees-versions-fournisseurs-tracables",
+        "assessmentTitle": "Mini-évaluation — Données, versions et fournisseurs traçables",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que relier dans le registre ?",
+            "explanation": "La traçabilité soutient décisions et responsabilité.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Donnée ou composant et usage",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Version, propriétaire et restriction",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Nom du fournisseur uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Données, versions et fournisseurs traçables peut être démontré par une intention non documentée.",
+            "explanation": "Un contrat fournisseur ne dispense pas l’organisation de connaître ses dépendances et d’organiser la surveillance des changements.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés soutiennent données, versions et fournisseurs traçables ?",
+            "explanation": "La traçabilité soutient décisions et responsabilité.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un propriétaire et une échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un critère et une preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une formulation non testable",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles appliqués : cadrer le principe, produire une preuve, puis valider la décision.",
+      "cycles": [
+        {
+          "conceptSlug": "cycle-vie-decisions-tracees",
+          "contentKeys": [
+            "content-cycle-vie-decisions-tracees"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-108"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-carte-cycle-vie-preuves"
+          },
+          "assessmentKey": "concept-cycle-vie-decisions-tracees-assessment-1",
+          "rationale": "La source officielle situe le principe avant son application au cas fictif."
+        },
+        {
+          "conceptSlug": "donnees-versions-fournisseurs-tracables",
+          "contentKeys": [
+            "content-donnees-versions-fournisseurs-tracables"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-108"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-registre-donnees-fournisseurs"
+          },
+          "assessmentKey": "concept-donnees-versions-fournisseurs-tracables-assessment-1",
+          "rationale": "Le cadre public NIST soutient la production sans remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon « Documenter cycle de vie, données et fournisseurs ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_021",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "cadrer-valeur-faisabilite",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Cadrer la valeur et la faisabilité",
+      "type": "written_assignment",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Produire une note d’opportunité à destination du sponsor d’Asteria Services. La note doit transformer les informations imparfaites de la découverte en un cadre de mesure, un diagnostic de préparation, une comparaison d’options et une recommandation explicite sans présenter les bénéfices comme acquis.",
+    "instructions": [
+      "Réutiliser les cadres de mesure, profils de préparation et comparaisons d’options construits pendant les leçons, puis les réviser pour former une décision cohérente ; le temps imparti est un temps d’intégration.",
+      "Rédiger une synthèse exécutive qui formule le besoin, la décision demandée et la recommandation en distinguant faits, hypothèses et informations manquantes.",
+      "Définir deux objectifs métier observables et proposer une baseline documentée : population, période, source, règle de calcul, exclusions et limites.",
+      "Construire un système de cinq à sept indicateurs équilibrant valeur, qualité, coût ou effort, adoption et risque ; préciser source, propriétaire, fréquence et seuil de décision.",
+      "Établir un profil de maturité ciblé sur les données et l’organisation. Pour chaque dimension retenue, citer une preuve du cas, une incertitude et son effet sur la poursuite.",
+      "Comparer au minimum quatre options, dont le statu quo, une amélioration sans IA et une expérimentation IA limitée, au regard de facteurs critiques communs.",
+      "Présenter pour les deux options finalistes les principaux postes de coût du cycle de vie, les dépendances et un scénario défavorable. Ne pas inventer un prix absent du cas : utiliser une plage ou signaler la donnée à obtenir.",
+      "Recommander go, go conditionnel, no-go ou exploration supplémentaire. Nommer les conditions, propriétaires, preuves de clôture, critères d’arrêt, enveloppe ou effort autorisé et date de réexamen.",
+      "Terminer par les trois prochaines actions prioritaires et les décisions qui doivent être escaladées au sponsor, à l’IT, au responsable des données ou à un spécialiste."
+    ],
+    "case": "Cas fictif — Trois semaines après la découverte initiale, Asteria Services souhaite décider si elle finance un pilote de son assistant documentaire interne. Le support reçoit environ 4 200 demandes par mois sur deux sites. Le sponsor affirme qu’un assistant fera gagner 30 % de temps, mais ce chiffre ne provient d’aucune mesure. Une extraction de six semaines contient 1 040 demandes clôturées. Elle indique une médiane de 18 minutes entre ouverture et clôture, mais inclut le temps d’attente du demandeur ; 360 demandes sont marquées « simples », selon une règle différente entre les deux sites. Sur un échantillon manuel de 120 demandes dites simples, 26 ont nécessité une reprise après une première réponse et 11 ont été réorientées vers une autre équipe. Aucun score d’exactitude n’est actuellement suivi. Le corpus envisagé rassemble environ 8 000 documents. Un examen exploratoire de 160 documents montre que 35 n’ont pas de propriétaire identifié, 29 portent une date antérieure de plus de trois ans sans statut d’archivage et 18 existent dans plusieurs versions contradictoires. L’équipe Sécurité demande une classification des documents avant tout branchement. Le DPO veut être consulté sur les journaux de requêtes, mais aucune analyse détaillée n’a encore été réalisée. Le responsable support peut consacrer une demi-journée par semaine au pilote. Deux experts métier acceptent de participer à l’évaluation pendant quatre semaines ; personne n’est encore nommé pour maintenir le corpus après le pilote. L’IT peut fournir un environnement de test dans six semaines si l’architecture et les accès sont validés. Un fournisseur propose un service génératif à 0,08 € par interaction, hors intégration, recherche documentaire, stockage, supervision et support. Une équipe interne estime entre 25 et 40 jours-personnes la préparation du corpus et l’intégration minimale ; cette estimation exclut sécurité, accompagnement des utilisateurs et exploitation. L’amélioration du moteur de recherche existant demanderait entre 8 et 14 jours-personnes et ne produirait pas de réponses rédigées. Une troisième option consiste à clarifier les procédures, nommer les propriétaires et automatiser le routage des demandes avant de réexaminer l’IA. Le sponsor dispose d’une enveloppe exploratoire équivalente à 35 jours-personnes et demande un premier résultat exploitable sous dix semaines. Il accepte un pilote limité à un seul site, mais souhaite une décision claire cette semaine.",
+    "estimatedMinutes": 80,
+    "submissionFormat": "Note d’opportunité structurée de 900 à 1 200 mots, complétée par trois tableaux courts repris et corrigés depuis les exercices : cadre de mesure, profil de préparation et comparaison des options.",
+    "conceptSlugs": [
+      "objectif-metier-observable",
+      "baseline-comparable",
+      "indicateurs-equilibres-seuils-decision",
+      "maturite-multidimensionnelle-preuves",
+      "qualite-donnees-adaptee-usage",
+      "capacite-organisationnelle-preparation",
+      "portefeuille-options-comparables",
+      "cout-complet-dependances-incertitude",
+      "decision-go-no-go-conditionnee"
+    ],
+    "rubric": [
+      {
+        "criterion": "Objectifs et baseline",
+        "weight": 18,
+        "requirements": [
+          "Les objectifs décrivent des résultats métier observables sans promettre le déploiement d’une technologie.",
+          "La baseline précise population, période, source, calcul, exclusions et limites de comparabilité.",
+          "Le gain de 30 % est correctement traité comme une hypothèse et non comme un fait."
+        ]
+      },
+      {
+        "criterion": "Cadre de mesure et seuils",
+        "weight": 17,
+        "requirements": [
+          "Les indicateurs couvrent au minimum valeur, qualité, effort ou coût et risque, sans optimiser uniquement la vitesse.",
+          "Chaque indicateur possède une source, un responsable, une fréquence et une règle interprétable.",
+          "Les seuils de réussite, de révision ou d’arrêt déclenchent une décision explicite."
+        ]
+      },
+      {
+        "criterion": "Diagnostic de préparation",
+        "weight": 20,
+        "requirements": [
+          "Le diagnostic distingue données, gouvernance, compétences, responsabilités, outils et capacité de changement.",
+          "Chaque appréciation importante est reliée à une preuve du cas ou signalée comme incertaine.",
+          "Les défauts du corpus et l’absence de propriétaire après pilote sont traduits en actions ou obstacles proportionnés."
+        ]
+      },
+      {
+        "criterion": "Comparaison des options",
+        "weight": 15,
+        "requirements": [
+          "Le statu quo, une option sans IA et une option IA délimitée sont comparés selon les mêmes objectifs et facteurs critiques.",
+          "Les options ne sont pas réduites à une comparaison de fournisseurs.",
+          "Les rejets et la présélection sont justifiés par des éléments du cas, sans score arbitraire."
+        ]
+      },
+      {
+        "criterion": "Coûts, dépendances et incertitude",
+        "weight": 15,
+        "requirements": [
+          "L’estimation couvre les principaux coûts du cycle de vie au-delà du prix par interaction.",
+          "Les dépendances, exclusions et hypothèses dominantes sont visibles.",
+          "Un scénario défavorable ou un test de sensibilité montre si la recommandation résiste à une hypothèse moins favorable."
+        ]
+      },
+      {
+        "criterion": "Recommandation et gouvernance de la suite",
+        "weight": 15,
+        "requirements": [
+          "La décision proposée est explicite, cohérente avec les preuves et proportionnée à l’enveloppe et au délai.",
+          "Toute condition possède un propriétaire, une preuve de clôture et une date ou un jalon.",
+          "Les critères d’arrêt, la prochaine décision et les escalades spécialisées sont nommés sans se substituer aux responsables compétents."
+        ]
+      }
+    ],
+    "remediation": "Si le score est inférieur à 70 %, reprendre uniquement les sections liées aux critères insuffisants. Commencer par annoter chaque affirmation de la note avec « fait du cas », « hypothèse », « calcul », « décision » ou « information manquante ». Refaire ensuite la baseline et la matrice d’options avant de réviser la recommandation. Une nouvelle soumission doit montrer les changements et expliquer pourquoi la décision a été maintenue ou modifiée."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-090-NIST-AI-RMF-CORE",
+      "REF-090-GOVUK-BENEFITS",
+      "REF-090-GOVUK-DISCOVERY",
+      "REF-091-GOVUK-DATA-MATURITY",
+      "REF-091-GOVUK-DATA-QUALITY",
+      "REF-091-NIST-AI-RMF-CORE",
+      "REF-092-GOVUK-GREEN-BOOK",
+      "REF-092-NIST-AI-RMF-CORE",
+      "REF-092-GOVUK-DISCOVERY"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon initial : revue humaine éditoriale, métier et technique requise.",
+        "Toutes les données, personnes, coûts et contraintes du cas Asteria sont fictifs.",
+        "La grille valorise la qualité de la décision et la traçabilité des hypothèses, pas le choix automatique d’une option IA.",
+        "L’évaluation n’exige aucune reproduction de norme ISO/IEC 42001 ni aucune donnée confidentielle réelle."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de l’évaluation finale de l’étape 3 sous forme de note d’opportunité.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

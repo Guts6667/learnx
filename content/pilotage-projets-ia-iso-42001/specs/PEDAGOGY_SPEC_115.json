@@ -1,0 +1,508 @@
+{
+  "specId": "PEDAGOGY_SPEC_115",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "operer-et-ameliorer-sgia",
+  "lesson": {
+    "title": "Évaluer performance, conduire l’audit interne et préparer la revue",
+    "slug": "evaluer-performance-audit-interne-revue",
+    "summary": "Cette leçon distingue surveillance du SGIA, audit interne et revue de direction afin que chaque dispositif produise une information adaptée à une décision.",
+    "objectives": [
+      "Construire un tableau de bord équilibré sur la performance du SGIA.",
+      "Préparer un audit interne fondé sur des preuves et une revue orientée décision."
+    ],
+    "prerequisites": [
+      "Disposer des objectifs, responsabilités, mesures et registres de preuves d’Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-surveillance-performance-sgia",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La surveillance du SGIA vérifie à la fois résultats, exécution des processus, efficacité des mesures et signaux de risque. Chaque indicateur doit avoir une source, une fréquence, un propriétaire et une décision associée. Un tableau de bord volumineux n’est pas meilleur s’il ne déclenche aucune analyse ni décision.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-109",
+            "govs-009-internal-audit-109"
+          ]
+        }
+      },
+      {
+        "key": "content-audit-interne-revue-direction",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "L’audit interne recherche des preuves objectives selon un périmètre et des critères définis ; la revue de direction utilise notamment performances, écarts, risques et changements pour décider des priorités et ressources. La préparation à la revue ne doit pas transformer l’audit en simple collecte documentaire ni masquer les constats défavorables. Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé au texte applicable et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-109",
+            "govs-009-internal-audit-109"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-109",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à GOVERN 1.5, MEASURE 1 et MEASURE 4 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à « Surveillance de la performance du SGIA ».",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres GOVERN 1.5, MEASURE 1 et MEASURE 4 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "govs-009-internal-audit-109",
+        "type": "website",
+        "title": "Government Functional Standard GovS 009: Internal Audit",
+        "author": "Government Internal Audit Agency and Internal Audit Profession",
+        "url": "https://www.gov.uk/government/publications/government-functional-standard-govs-009-internal-audit/government-functional-standard-govs-009-internal-audit",
+        "citation": "Government Internal Audit Agency & Internal Audit Profession. (2026). Government Functional Standard GovS 009: Internal Audit (version 3). GOV.UK.",
+        "description": "Lire les principes, le contexte et les sections sur gouvernance, planification, rôles et responsabilités afin de préparer un audit interne fondé sur objectifs, risques, preuves et indépendance.",
+        "guidance": {
+          "objective": "Distinguer l’assurance indépendante produite par l’audit interne des décisions prises en revue de direction.",
+          "instructions": "Relever le but de l’audit interne, deux conditions de gouvernance et trois éléments à intégrer au plan d’audit Asteria.",
+          "scope": "Sections 2, 3, 4.1, 4.2 et 4.3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML publique ; PDF alternatif également proposé.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Surveillance de la performance du SGIA",
+        "slug": "surveillance-performance-sgia",
+        "description": "La surveillance du SGIA vérifie à la fois résultats, exécution des processus, efficacité des mesures et signaux de risque. Chaque indicateur doit avoir une source, une fréquence, un propriétaire et une décision associée.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-109"
+        ],
+        "assessment": {
+          "key": "concept-surveillance-performance-sgia-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Surveillance de la performance du SGIA",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Audit interne et revue de direction",
+        "slug": "audit-interne-revue-direction",
+        "description": "L’audit interne recherche des preuves objectives selon un périmètre et des critères définis ; la revue de direction utilise notamment performances, écarts, risques et changements pour décider des priorités et ressources.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govs-009-internal-audit-109"
+        ],
+        "assessment": {
+          "key": "concept-audit-interne-revue-direction-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Audit interne et revue de direction",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-tableau-bord-sgia",
+        "title": "Concevoir le tableau de bord du SGIA",
+        "description": "Définir huit indicateurs maximum couvrant objectifs, processus, mesures, risques et preuves ; préciser source, fréquence, propriétaire, seuil et décision déclenchée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-audit-revue",
+        "title": "Préparer audit interne et revue",
+        "description": "Rédiger un plan d’audit ciblé avec périmètre, critères publics ou internes, échantillons, entretiens et indépendance ; préparer ensuite un ordre du jour de revue avec décisions attendues.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-surveillance-performance-sgia"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-109"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-tableau-bord-sgia"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-surveillance-performance-sgia-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-audit-interne-revue-direction"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govs-009-internal-audit-109"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-audit-revue"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-audit-interne-revue-direction-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-109-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-109-GIAA-GOVS009",
+        "type": "government_professional_standard",
+        "authors": [],
+        "organization": "Government Internal Audit Agency and Internal Audit Profession",
+        "title": "Government Functional Standard GovS 009: Internal Audit",
+        "year": 2026,
+        "edition": "Version 3, mise à jour du 4 février 2026",
+        "publication": "GOV.UK",
+        "doi": null,
+        "url": "https://www.gov.uk/government/publications/government-functional-standard-govs-009-internal-audit/government-functional-standard-govs-009-internal-audit",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0, sauf indication contraire sur la page ou le document.",
+        "status": "verified",
+        "notes": "Source professionnelle du secteur public britannique ; utilisée pour les principes de l’audit interne, transposés avec prudence au cas d’entreprise fictif."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-109-NIST-PLAYBOOK",
+            "locator": "Suggestions GOVERN 1.5, MEASURE 1 et MEASURE 4",
+            "supports": "Pratiques publiques utiles à surveillance de la performance du sgia."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-109-NIST-PLAYBOOK",
+            "locator": "GOVERN 1.5 et MEASURE 4",
+            "supports": "Surveillance périodique, documentation des résultats et amélioration."
+          },
+          {
+            "referenceId": "REF-109-GIAA-GOVS009",
+            "locator": "Sections 2, 3 et 4",
+            "supports": "Finalité, gouvernance, planification, responsabilités et indépendance de l’audit interne."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Deux sources publiques distinguent suivi du risque, assurance interne et décision de gouvernance.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-109",
+        "referenceIds": [
+          "REF-109-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer GOVERN 1.5, MEASURE 1 et MEASURE 4, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "govs-009-internal-audit-109",
+        "referenceIds": [
+          "REF-109-GIAA-GOVS009"
+        ],
+        "pedagogicalRationale": "Source professionnelle officielle décrivant finalité, gouvernance, planification et responsabilités de l’audit interne.",
+        "learnerInstructions": "Lire les sections ciblées et en tirer le plan d’audit Asteria, sans supposer une équivalence sectorielle.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML public ; PDF disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Transposition prudente hors secteur public britannique."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "surveillance-performance-sgia",
+        "assessmentTitle": "Mini-évaluation — Surveillance de la performance du SGIA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel indicateur est gouvernable ?",
+            "explanation": "Un tableau de bord volumineux n’est pas meilleur s’il ne déclenche aucune analyse ni décision.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un indicateur avec source, fréquence, propriétaire, seuil et décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un chiffre sans règle de calcul",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une opinion non documentée",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L’audit interne sert principalement à confirmer que tout va bien.",
+            "explanation": "Il doit rechercher des preuves et peut identifier des écarts ou possibilités d’amélioration.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent surveillance de la performance du sgia vérifiable ?",
+            "explanation": "Un tableau de bord volumineux n’est pas meilleur s’il ne déclenche aucune analyse ni décision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Une responsabilité explicite",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une preuve reliée à une décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un intitulé générique sans contexte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "audit-interne-revue-direction",
+        "assessmentTitle": "Mini-évaluation — Audit interne et revue de direction",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit permettre la revue de direction ?",
+            "explanation": "Surveillance, audit et revue ont des finalités distinctes.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Arbitrer priorités et ressources",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Décider des actions face aux écarts et changements",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Accumuler des documents sans décision",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Audit interne et revue de direction peut être démontré par une intention non documentée.",
+            "explanation": "La préparation à la revue ne doit pas transformer l’audit en simple collecte documentaire ni masquer les constats défavorables.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés soutiennent audit interne et revue de direction ?",
+            "explanation": "Surveillance, audit et revue ont des finalités distinctes.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un propriétaire et une échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un critère et une preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une formulation non testable",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles appliqués : cadrer le principe, produire une preuve, puis valider la décision.",
+      "cycles": [
+        {
+          "conceptSlug": "surveillance-performance-sgia",
+          "contentKeys": [
+            "content-surveillance-performance-sgia"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-109"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-tableau-bord-sgia"
+          },
+          "assessmentKey": "concept-surveillance-performance-sgia-assessment-1",
+          "rationale": "La source officielle situe le principe avant son application au cas fictif."
+        },
+        {
+          "conceptSlug": "audit-interne-revue-direction",
+          "contentKeys": [
+            "content-audit-interne-revue-direction"
+          ],
+          "resourceKeys": [
+            "govs-009-internal-audit-109"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-audit-revue"
+          },
+          "assessmentKey": "concept-audit-interne-revue-direction-assessment-1",
+          "rationale": "Le cadre public NIST soutient la production sans remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon « Évaluer performance, conduire l’audit interne et préparer la revue ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

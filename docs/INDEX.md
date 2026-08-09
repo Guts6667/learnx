@@ -66,6 +66,24 @@ pharmacien.
 Ce parcours intensif prépare un entretien précis. Les informations relatives au
 poste doivent être revérifiées avant toute réutilisation ultérieure.
 
+## Programme Pilotage de projets IA et ISO/IEC 42001
+
+- Présentation et statut :
+  `content/pilotage-projets-ia-iso-42001/README.md`
+- Blueprint :
+  `content/pilotage-projets-ia-iso-42001/CURRICULUM_BLUEPRINT.md`
+- Spécifications de leçons :
+  `content/pilotage-projets-ia-iso-42001/specs/`
+- Évaluations d’étape :
+  `content/pilotage-projets-ia-iso-42001/stage-assessments/`
+- Bundle importé par Prisma :
+  `seed/pilotage-projets-ia-iso-42001-program.json`
+
+Ce parcours en huit étapes prépare au pilotage de projets IA en entreprise et
+construit une base de type Lead Implementer. Il ne revendique ni formation
+accréditée ni équivalence avec une certification dont l’organisme et le
+programme d’examen ne sont pas encore confirmés.
+
 ## Psychology Foundations — English pilot
 
 - Blueprint : `content/psychology-foundations-pilot/CURRICULUM_BLUEPRINT.md`

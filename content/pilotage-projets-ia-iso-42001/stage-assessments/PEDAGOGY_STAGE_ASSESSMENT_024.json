@@ -1,0 +1,141 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_024",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Mettre en œuvre un SGIA inspiré d’ISO/IEC 42001",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Conduire un atelier guidé de construction du SGIA d’Asteria Services. La production doit relier contexte, périmètre, gouvernance, risques, processus, mesures et preuves dans une roadmap cohérente, sans reproduire ni prétendre démontrer une conformité détaillée à ISO/IEC 42001.",
+    "instructions": [
+      "Assembler, sélectionner et corriger les canevas produits pendant les six leçons ; les quatre-vingt-dix minutes couvrent l’intégration et l’arbitrage, pas la création intégrale de tous les registres depuis une page blanche.",
+      "Rédiger une synthèse du contexte : objectifs, contraintes, parties intéressées, usages d’IA et changements susceptibles d’affecter le SGIA.",
+      "Définir le périmètre avec inclusions, exclusions justifiées, interfaces, sites, systèmes, données, fournisseurs et dépendances ; signaler les limites nécessitant un expert ou un accès autorisé à la norme.",
+      "Proposer une politique courte et quatre objectifs SGIA maximum, chacun doté d’un propriétaire, d’une échéance, d’une mesure et d’une règle de décision.",
+      "Construire une gouvernance cible : décisions, autorités, responsabilités, compétences, voies d’escalade et communications ; inclure une première fiche d’inventaire de l’assistant Asteria.",
+      "Produire une matrice de couverture reliant au moins six enjeux, risques ou impacts à une mesure, un responsable, une échéance, un test d’efficacité et une preuve attendue. Cette matrice est pédagogique et ne constitue pas une table de conformité normative.",
+      "Établir un registre de preuves avec au moins huit entrées couvrant cycle de vie, données, fournisseurs, décisions, incidents, mesures et compétences. Préciser propriétaire, emplacement prévu, fréquence ou événement de mise à jour et durée de conservation à confirmer.",
+      "Définir un tableau de bord de six indicateurs maximum, puis un plan d’audit interne ciblé et un ordre du jour de revue de direction orienté décisions.",
+      "Analyser deux écarts imposés, décider pour chacun une mesure immédiate ou un confinement, rechercher les facteurs contributifs, puis définir une remédiation systémique et sa vérification d’efficacité ; intégrer les actions retenues dans une roadmap de quatre-vingt-dix jours priorisée.",
+      "Terminer par une note de limites : informations manquantes, correspondances ISO non vérifiées, décisions à escalader et revues humaines requises avant toute affirmation de conformité ou préparation d’audit de certification."
+    ],
+    "case": "Cas fictif — Le sponsor d’Asteria valide un pilote limité à un site et au support interne. L’assistant s’appuie sur un corpus documentaire, un composant de recherche, un modèle génératif fourni par un prestataire et une interface interne. La cartographie compte encore des documents sans propriétaire et des versions contradictoires. Le registre de risques mentionne réponses erronées, exposition d’informations sensibles, prompt injection, dépendance fournisseur et supervision insuffisante. La direction souhaite maintenant structurer un SGIA réutilisable au-delà du pilote, tout en évitant une bureaucratie disproportionnée. Le comité IA proposé réunit sponsor, IT, sécurité, DPO, support et achats, mais personne n’est nommé pour accepter les risques résiduels ni maintenir l’inventaire. Deux experts métier participent au test ; leur disponibilité après le pilote n’est pas garantie. Les journaux existent dans l’environnement de test, mais leur contenu, accès et durée de conservation restent à décider. Le fournisseur annonce une mise à jour importante du modèle tous les trimestres sans garantir un préavis uniforme. Deux écarts sont imposés pendant l’atelier : une procédure interne prévoit une revue mensuelle du corpus mais aucune revue n’a été enregistrée depuis six semaines ; une mesure de blocage des documents confidentiels a été configurée, mais son test d’efficacité n’a pas été défini. Le sponsor demande un dispositif exploitable en quatre-vingt-dix jours et un point de décision à trente jours. L’équipe dispose des cadres publics NIST et de sa documentation interne. Elle ne confirme pas encore disposer des droits ni de la compétence permettant une correspondance détaillée avec le texte intégral d’ISO/IEC 42001.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Dossier guidé de 6 à 8 pages ou canevas équivalent, assemblé depuis les exercices : fiche de périmètre, gouvernance, matrice de couverture, registre de preuves, tableau de bord, plan d’audit et de revue, deux fiches d’écarts et roadmap de quatre-vingt-dix jours.",
+    "conceptSlugs": [
+      "contexte-parties-interessees-sgia",
+      "perimetre-politique-objectifs-alignes",
+      "responsabilites-autorites-competences",
+      "inventaire-communication-gouvernes",
+      "couverture-risques-impacts",
+      "mesures-preuves-planifiees",
+      "cycle-vie-decisions-tracees",
+      "donnees-versions-fournisseurs-tracables",
+      "surveillance-performance-sgia",
+      "audit-interne-revue-direction",
+      "ecart-confinement-remediation-systemique",
+      "verification-efficacite-amelioration"
+    ],
+    "rubric": [
+      {
+        "criterion": "Contexte, périmètre, politique et objectifs",
+        "weight": 18,
+        "requirements": [
+          "Le contexte et les parties intéressées sont reliés à des décisions ou risques concrets.",
+          "Le périmètre explicite inclusions, exclusions, interfaces et dépendances sans masquer les fournisseurs.",
+          "Politique et objectifs sont cohérents, attribués, mesurables et délimités."
+        ]
+      },
+      {
+        "criterion": "Gouvernance, compétences, inventaire et communication",
+        "weight": 17,
+        "requirements": [
+          "Les autorités, responsabilités, voies d’escalade et compétences sont explicites.",
+          "L’inventaire permet d’identifier finalité, propriétaire, état, composants et dépendances.",
+          "La communication est adaptée aux audiences, événements et décisions."
+        ]
+      },
+      {
+        "criterion": "Couverture des risques, impacts, mesures et preuves",
+        "weight": 20,
+        "requirements": [
+          "La matrice relie scénarios, personnes affectées, impacts, incertitudes et décisions.",
+          "Chaque mesure prioritaire a un propriétaire, une échéance et un test d’efficacité.",
+          "Les preuves attendues démontrent l’exécution ou l’efficacité, pas seulement une intention."
+        ]
+      },
+      {
+        "criterion": "Cycle de vie, données et fournisseurs",
+        "weight": 15,
+        "requirements": [
+          "Les jalons et décisions du cycle de vie disposent de critères et traces.",
+          "Le registre couvre provenance, qualité, accès, version, changement et responsabilité.",
+          "Les dépendances fournisseurs et mécanismes de surveillance sont visibles."
+        ]
+      },
+      {
+        "criterion": "Évaluation, audit et revue",
+        "weight": 15,
+        "requirements": [
+          "Le tableau de bord associe indicateurs, sources, seuils, responsables et décisions.",
+          "Le plan d’audit définit périmètre, critères, échantillons, preuves et indépendance.",
+          "La revue de direction est structurée autour d’arbitrages, ressources et actions."
+        ]
+      },
+      {
+        "criterion": "Écarts, remédiation, amélioration et prudence normative",
+        "weight": 15,
+        "requirements": [
+          "Les écarts sont prouvés et qualifiés ; les mesures immédiates ou de confinement sont proportionnées à l’exposition.",
+          "Les remédiations systémiques traitent des facteurs contributifs et prévoient une preuve puis une vérification d’efficacité.",
+          "La roadmap est priorisée et les limites normatives, expertises et validations requises sont explicites."
+        ]
+      }
+    ],
+    "remediation": "Si le score est inférieur à 70 %, reprendre les critères insuffisants sans reconstruire tout le dossier. Commencer par tracer chaque décision vers un enjeu, un responsable et une preuve. Revoir ensuite les mesures sans test d’efficacité, puis les écarts sans cause ou preuve de clôture. Une nouvelle soumission doit conserver l’historique des corrections et expliquer les arbitrages modifiés."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-105-NIST-PLAYBOOK",
+      "REF-105-NIST-AI-RMF",
+      "REF-106-NIST-PLAYBOOK",
+      "REF-106-NIST-AI-RMF",
+      "REF-107-NIST-PLAYBOOK",
+      "REF-107-NIST-AI-RMF",
+      "REF-108-NIST-PLAYBOOK",
+      "REF-108-NIST-AI-RMF",
+      "REF-109-NIST-PLAYBOOK",
+      "REF-109-GIAA-GOVS009",
+      "REF-110-NIST-PLAYBOOK",
+      "REF-110-NIST-AI-RMF"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Toutes les données, personnes, écarts et décisions du cas Asteria sont fictifs.",
+        "La matrice de couverture est un outil pédagogique de pilotage ; elle n’affirme aucune conformité à ISO/IEC 42001.",
+        "Toute correspondance précise avec une exigence ou un contrôle nécessite un accès autorisé au texte applicable et une validation par une personne compétente.",
+        "L’atelier n’est ni un audit tierce partie ni une préparation reproduisant des questions d’examen protégées."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de l’atelier final de construction guidée du SGIA d’Asteria.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

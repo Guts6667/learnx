@@ -1,0 +1,821 @@
+{
+  "specId": "PEDAGOGY_SPEC_096",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "cadrer-valeur-faisabilite",
+  "moduleSlug": "business-case-ia",
+  "lesson": {
+    "title": "Définir objectifs, baseline et indicateurs",
+    "slug": "definir-objectifs-baseline-indicateurs",
+    "summary": "Cette leçon transforme une promesse générale de productivité en objectifs observables, établit une situation de référence défendable et construit un petit système d’indicateurs reliant valeur, qualité, coût et risque.",
+    "objectives": [
+      "Transformer une intention de sponsor en résultat métier délimité et observable.",
+      "Construire une baseline comparable en documentant population, période, méthode et limites.",
+      "Sélectionner des indicateurs équilibrés et définir leurs seuils de décision avant l’expérimentation."
+    ],
+    "prerequisites": [
+      "Avoir priorisé le cas d’usage d’assistant documentaire d’Asteria Services."
+    ],
+    "estimatedMinutes": 80,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-promesse-asteria",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Le sponsor d’Asteria annonce que l’assistant fera gagner 30 % de temps au support. Aucun temps de référence n’a pourtant été mesuré, le périmètre des demandes n’est pas fixé et la qualité des réponses actuelles n’est pas connue. Le chiffre est donc une hypothèse à tester, pas un bénéfice acquis.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-objectif-observable",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un objectif de cadrage décrit un changement attendu pour une population, dans un processus et sur une période définis. Il sépare le résultat métier recherché de la solution pressentie. Pour Asteria, « réduire le délai de traitement des demandes documentaires simples sans dégrader l’exactitude ni augmenter les escalades injustifiées » est plus décisionnel que « déployer un chatbot performant ».",
+          "sourceKeys": [
+            "nist-ai-rmf-core-map-measure"
+          ]
+        }
+      },
+      {
+        "key": "content-baseline-definition",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "La baseline est la mesure documentée de la situation avant intervention, utilisée comme point de comparaison. Elle précise au minimum la population observée, la période, la source, les règles de calcul et les exclusions. Une moyenne isolée peut masquer des catégories très différentes : le consultant vérifie la distribution utile, les volumes et les changements de processus susceptibles de rompre la comparaison.",
+          "sourceKeys": [
+            "govuk-mesurer-benefices-service"
+          ]
+        }
+      },
+      {
+        "key": "content-baseline-incomplete",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Une baseline absente n’oblige pas à inventer un chiffre. La décision professionnelle consiste à annoncer l’incertitude, organiser une mesure courte et préciser ce qui pourra ou non être conclu. Le coût de cette mesure fait partie du cadrage.",
+          "sourceKeys": [
+            "govuk-mesurer-benefices-service"
+          ]
+        }
+      },
+      {
+        "key": "content-systeme-indicateurs",
+        "type": "definition",
+        "position": 5,
+        "content": {
+          "text": "Un indicateur utile relie une question de décision à une mesure interprétable. Un cadrage d’IA générative combine généralement résultat métier, qualité du service, coût ou effort, adoption et risques. Chaque indicateur possède une définition, une source, une fréquence, un responsable et un seuil. Un gain de vitesse ne suffit pas si l’exactitude baisse ou si les reprises augmentent.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-map-measure",
+            "govuk-mesurer-benefices-service"
+          ]
+        }
+      },
+      {
+        "key": "content-seuils-avant-test",
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Les seuils de réussite, de révision et d’arrêt sont définis avant de regarder les résultats du pilote. Ils peuvent être quantitatifs ou qualitatifs, mais doivent préciser la décision déclenchée. Cette discipline limite la tentation de requalifier après coup un résultat décevant en succès.",
+          "sourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-core-map-measure"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-map-measure",
+        "type": "document",
+        "title": "AI Risk Management Framework 1.0 — AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0, sections MAP et MEASURE. NIST AI 100-1.",
+        "description": "Lire MAP 1.1 à 1.6 puis MEASURE 1.1, 2.3 et 4.3. Relever comment valeur métier, contexte, métriques et amélioration mesurée s’articulent.",
+        "guidance": {
+          "objective": "Relier objectif métier, contexte d’usage et mesure de performance ou de risque.",
+          "instructions": "Lire uniquement les sous-catégories indiquées et noter, pour Asteria, un objectif, une hypothèse et une mesure qui nécessitera des données de terrain.",
+          "scope": "MAP 1.1 à 1.6 ; MEASURE 1.1, 2.3 et 4.3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée par fonctions et tableaux, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "govuk-mesurer-benefices-service",
+        "type": "website",
+        "title": "Measuring the benefits of your service",
+        "author": "Government Digital Service",
+        "url": "https://www.gov.uk/service-manual/measuring-success/measuring-service-benefits",
+        "citation": "Government Digital Service. (2018, mise à jour consultée en 2026). Measuring the benefits of your service. GOV.UK Service Manual.",
+        "description": "Lire les sections sur la situation actuelle, les bénéfices et les mesures. Identifier ce qu’il faudrait mesurer avant le pilote d’Asteria.",
+        "guidance": {
+          "objective": "Construire une situation de référence reliée aux bénéfices attendus.",
+          "instructions": "Relever la mesure actuelle, le changement attendu et la source de données nécessaires pour un bénéfice du cas Asteria.",
+          "scope": "Sections consacrées à la compréhension de l’existant, aux bénéfices et à leur mesure",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, accessible sans authentification et structurée par titres.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "govuk-discovery-phase",
+        "type": "website",
+        "title": "How the discovery phase works",
+        "author": "Government Digital Service",
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "citation": "Government Digital Service. (2021). How the discovery phase works. GOV.UK Service Manual.",
+        "description": "Lire « How you know discovery is finished ». Relever les éléments nécessaires à une décision de poursuivre ou d’arrêter.",
+        "guidance": {
+          "objective": "Définir une sortie de découverte qui autorise aussi l’arrêt du projet.",
+          "instructions": "Lire la section indiquée puis rédiger un critère de poursuite et un critère d’arrêt pour Asteria.",
+          "scope": "Section « How you know discovery is finished »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, accessible sans compte et compatible avec les lecteurs d’écran usuels.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 5,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Objectif métier observable",
+        "slug": "objectif-metier-observable",
+        "description": "Un objectif métier observable décrit un changement attendu, sa population, son processus, son horizon et ses contraintes sans confondre résultat et solution.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-map-measure"
+        ],
+        "assessment": {
+          "key": "concept-objectif-metier-observable-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Objectif métier observable",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Baseline comparable",
+        "slug": "baseline-comparable",
+        "description": "Une baseline documente la situation antérieure avec un périmètre, une période, une source et une méthode suffisamment stables pour interpréter un changement.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-mesurer-benefices-service"
+        ],
+        "assessment": {
+          "key": "concept-baseline-comparable-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Baseline comparable",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Indicateurs équilibrés et seuils de décision",
+        "slug": "indicateurs-equilibres-seuils-decision",
+        "description": "Un système de mesure combine valeur, qualité, coût, usage et risque ; ses seuils relient les résultats observés à une décision prévue à l’avance.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase",
+          "nist-ai-rmf-core-map-measure"
+        ],
+        "assessment": {
+          "key": "concept-indicateurs-seuils-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Indicateurs et seuils",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-reformuler-objectif-asteria",
+        "title": "Reformuler la promesse du sponsor",
+        "description": "Transformer la promesse « gagner 30 % de temps » en un objectif de 80 à 120 mots précisant population, processus, résultat, horizon, contraintes de qualité et hypothèses encore ouvertes.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-baseline-asteria",
+        "title": "Concevoir la baseline minimale",
+        "description": "Produire un tableau indiquant pour quatre mesures la population, la période, la source, la règle de calcul, le responsable et une limite. Signaler explicitement toute donnée indisponible.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-fiche-indicateurs-seuils",
+        "title": "Construire la fiche de mesure du pilote",
+        "description": "Définir cinq indicateurs maximum couvrant valeur, qualité, coût ou effort, adoption et risque. Pour chacun, préciser formule ou règle, fréquence, source, propriétaire et seuil de réussite, révision ou arrêt.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-promesse-asteria"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-objectif-observable"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-map-measure"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-reformuler-objectif-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-objectif-metier-observable-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-baseline-definition"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-baseline-incomplete"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-mesurer-benefices-service"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-baseline-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-baseline-comparable-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-systeme-indicateurs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-seuils-avant-test"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-discovery-phase"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-fiche-indicateurs-seuils"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-indicateurs-seuils-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en gestion de projet, Agile et usages de l’IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-090-NIST-AI-RMF-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0) — Core",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre institutionnel volontaire ; la page indique qu’une révision de la version 1.0 est en cours."
+      },
+      {
+        "id": "REF-090-GOVUK-BENEFITS",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "Measuring the benefits of your service",
+        "year": 2018,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/measuring-success/measuring-service-benefits",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide destiné aux services publics numériques ; principes transposés avec prudence au cas d’entreprise fictif."
+      },
+      {
+        "id": "REF-090-GOVUK-DISCOVERY",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "How the discovery phase works",
+        "year": 2021,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "La section utilisée établit qu’une découverte peut légitimement conclure à l’arrêt et doit définir la mesure du succès."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Situation et données entièrement fictives créées pour le cas Asteria."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-090-NIST-AI-RMF-CORE",
+            "locator": "MAP 1.1, 1.3, 1.4 et 1.6",
+            "supports": "Documentation du contexte, de la valeur métier, des objectifs et des exigences du système."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel directement applicable au cadrage d’un système d’IA.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-090-GOVUK-BENEFITS",
+            "locator": "Sections sur la compréhension de l’existant et la mesure des bénéfices",
+            "supports": "Nécessité de connaître la situation actuelle et de relier bénéfice et mesure."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide institutionnel opérationnel, adapté ici sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-090-GOVUK-BENEFITS",
+            "locator": "Sections sur les données actuelles et la définition des mesures",
+            "supports": "Collecte proportionnée de données lorsque la situation initiale est insuffisamment documentée."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "La conduite proposée est une synthèse professionnelle prudente du guide.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-090-NIST-AI-RMF-CORE",
+            "locator": "MEASURE 1.1, 2.3, 3.1 et 4.3",
+            "supports": "Choix, documentation et suivi de mesures liées au contexte et aux risques."
+          },
+          {
+            "referenceId": "REF-090-GOVUK-BENEFITS",
+            "locator": "Sections consacrées aux bénéfices et aux mesures",
+            "supports": "Lien entre objectifs, bénéfices attendus et indicateurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sources institutionnelles convergent sur une mesure contextualisée et documentée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-090-GOVUK-DISCOVERY",
+            "locator": "Section « How you know discovery is finished »",
+            "supports": "Décision explicite de poursuivre ou d’arrêter et nécessité de savoir mesurer le succès."
+          },
+          {
+            "referenceId": "REF-090-NIST-AI-RMF-CORE",
+            "locator": "MANAGE 1.1",
+            "supports": "Décision documentée sur la poursuite du développement ou du déploiement au regard des objectifs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les deux cadres relient explicitement les résultats à une décision de poursuite.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-map-measure",
+        "referenceIds": [
+          "REF-090-NIST-AI-RMF-CORE"
+        ],
+        "pedagogicalRationale": "Les sous-catégories sélectionnées relient valeur, contexte, mesure et décision dans un même cadre IA.",
+        "learnerInstructions": "Lire les sous-catégories indiquées et produire un triplet objectif-hypothèse-mesure pour Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 en cours de révision ; version à figer avant publication."
+      },
+      {
+        "resourceKey": "govuk-mesurer-benefices-service",
+        "referenceIds": [
+          "REF-090-GOVUK-BENEFITS"
+        ],
+        "pedagogicalRationale": "Le guide rend concrète la construction d’une baseline et d’un cadre de bénéfices.",
+        "learnerInstructions": "Relever une mesure actuelle, un changement attendu et une source de données.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "govuk-discovery-phase",
+        "referenceIds": [
+          "REF-090-GOVUK-DISCOVERY"
+        ],
+        "pedagogicalRationale": "La ressource normalise l’arrêt comme résultat professionnel possible de la découverte.",
+        "learnerInstructions": "Lire la section de sortie de découverte et formuler deux critères de décision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "objectif-metier-observable",
+        "assessmentTitle": "Mini-évaluation — Objectif métier observable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel objectif est le plus exploitable pour cadrer Asteria ?",
+            "explanation": "L’objectif décrit un résultat métier, un périmètre et une contrainte de qualité sans préjuger de la solution.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Réduire le délai des demandes documentaires simples sans dégrader l’exactitude",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Installer le meilleur chatbot du marché",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Faire de l’IA rapidement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un pourcentage annoncé par le sponsor constitue déjà un bénéfice démontré.",
+            "explanation": "Sans baseline, méthode et observation, il reste une hypothèse à tester.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments appartiennent à un objectif métier bien délimité ?",
+            "explanation": "Population, processus, horizon et contraintes rendent le changement observable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "La population concernée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le processus visé",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L’horizon de mesure",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Le nom commercial du modèle",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "baseline-comparable",
+        "assessmentTitle": "Mini-évaluation — Baseline comparable",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit documenter la baseline d’Asteria ?",
+            "explanation": "Une comparaison interprétable exige périmètre, période, source et règle de calcul.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La période observée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les règles d’inclusion et d’exclusion",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La source des données",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement la moyenne finale",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Asteria ne dispose d’aucun temps de traitement fiable. Quelle conduite est la plus rigoureuse ?",
+            "explanation": "Il faut déclarer l’absence, organiser une mesure proportionnée et limiter les conclusions possibles.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Organiser une mesure courte avant le pilote et documenter ses limites",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Utiliser le gain annoncé comme référence",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer tout indicateur de temps",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Changer la définition des demandes simples entre la baseline et le pilote peut invalider la comparaison.",
+            "explanation": "Une rupture de périmètre modifie la population comparée et doit être contrôlée ou signalée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "indicateurs-equilibres-seuils-decision",
+        "assessmentTitle": "Mini-évaluation — Indicateurs et seuils",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel ensemble évite le mieux d’optimiser uniquement la vitesse ?",
+            "explanation": "Le cadrage équilibre résultat, exactitude, reprise, coût et risque.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Délai, exactitude, taux de reprise, coût par demande et incidents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Nombre de réponses générées uniquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Satisfaction du sponsor uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un seuil d’arrêt peut être défini après lecture des résultats afin de rester réaliste.",
+            "explanation": "Le définir avant le test évite d’adapter la règle au résultat observé.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit préciser une fiche d’indicateur ?",
+            "explanation": "La définition, la source, la fréquence, le responsable et le seuil rendent la mesure gouvernable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "La règle de calcul",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La source",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le propriétaire",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une interprétation sans seuil",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles de cadrage : formuler le résultat, rendre la comparaison possible, puis relier les mesures à une décision.",
+      "cycles": [
+        {
+          "conceptSlug": "objectif-metier-observable",
+          "contentKeys": [
+            "content-promesse-asteria",
+            "content-objectif-observable"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-map-measure"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-reformuler-objectif-asteria"
+          },
+          "assessmentKey": "concept-objectif-metier-observable-assessment-1",
+          "rationale": "L’ambiguïté du sponsor est confrontée à un cadre de valeur et d’objectifs avant reformulation."
+        },
+        {
+          "conceptSlug": "baseline-comparable",
+          "contentKeys": [
+            "content-baseline-definition",
+            "content-baseline-incomplete"
+          ],
+          "resourceKeys": [
+            "govuk-mesurer-benefices-service"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-baseline-asteria"
+          },
+          "assessmentKey": "concept-baseline-comparable-assessment-1",
+          "rationale": "La définition est immédiatement transformée en plan de collecte sans inventer les données manquantes."
+        },
+        {
+          "conceptSlug": "indicateurs-equilibres-seuils-decision",
+          "contentKeys": [
+            "content-systeme-indicateurs",
+            "content-seuils-avant-test"
+          ],
+          "resourceKeys": [
+            "govuk-discovery-phase"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-fiche-indicateurs-seuils"
+          },
+          "assessmentKey": "concept-indicateurs-seuils-assessment-1",
+          "rationale": "La ressource situe la décision de fin de découverte ; la fiche relie chaque mesure à une action prévue."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon initial : revue éditoriale, métier et technique requise avant intégration.",
+        "Le cas Asteria et toutes ses mesures sont fictifs.",
+        "La version du NIST AI RMF doit être revérifiée avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur objectifs, baseline et indicateurs.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

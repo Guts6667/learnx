@@ -1,0 +1,736 @@
+{
+  "specId": "PEDAGOGY_SPEC_110",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "cadre-europeen-et-securite-genai",
+  "lesson": {
+    "title": "Concevoir supervision humaine et mécanismes d'escalade",
+    "slug": "concevoir-supervision-humaine-escalade",
+    "summary": "La leçon transforme l'étiquette « validation humaine » en dispositif effectif : information, compétence, temps, indépendance, autorité, déclencheurs, arrêt, traçabilité, retour et tests de fonctionnement.",
+    "objectives": [
+      "Décrire les conditions d'un contrôle humain effectif et proportionné.",
+      "Définir déclencheurs, niveaux d'escalade, autorité de correction, suspension et arrêt.",
+      "Concevoir des preuves et tests qui détectent l'automatisation de complaisance et les défaillances du dispositif."
+    ],
+    "prerequisites": [
+      "Disposer des risques, contrôles, responsabilités et flux de l'assistant Asteria."
+    ],
+    "estimatedMinutes": 45,
+    "position": 4,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Placer une personne dans la boucle ne garantit rien. Le dispositif précise objectif, cas soumis, information disponible, compétence, charge, délai, indépendance, action autorisée et conséquence d'un refus. L'article 14 du règlement IA décrit un contrôle humain effectif pour les systèmes à haut risque ; son applicabilité à Asteria doit être qualifiée par le juridique. Ces capacités restent néanmoins utiles comme grille de conception proportionnée.",
+          "sourceKeys": [
+            "eurlex-controle-humain-art14"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Les déclencheurs peuvent être une catégorie sensible, une source absente, un conflit documentaire, une faible qualité, une requête suspecte, une donnée personnelle inattendue, un incident ou un changement majeur. Chaque niveau indique qui reçoit, sous quel délai, ce qu'il peut décider et quand suspendre ou arrêter. Le consultant conçoit le circuit ; DPO, RSSI, juridique et métiers valident leurs responsabilités.",
+          "sourceKeys": [
+            "nist-escalade-supervision"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une supervision sur le papier peut échouer si l'interface masque les sources, si le volume empêche la vérification ou si le réviseur suit systématiquement la sortie. Les essais injectent des erreurs plausibles, sources contradictoires et données inattendues. Les métriques portent sur détection, correction, délai, contournement et charge. Les traces restent proportionnées et protégées ; elles servent à améliorer le système, pas à surveiller excessivement les personnes.",
+          "sourceKeys": [
+            "cnil-capacites-operateur-ia"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "eurlex-controle-humain-art14",
+        "type": "document",
+        "title": "Règlement (UE) 2024/1689 — Article 14, contrôle humain",
+        "author": "Parlement européen et Conseil de l'Union européenne",
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "citation": "Parlement européen et Conseil de l'Union européenne. (2024). Règlement (UE) 2024/1689, article 14, version consolidée au 27 juillet 2026. EUR-Lex.",
+        "description": "Lire l'article 14 comme référence juridique ciblée, puis distinguer ce principe du design opérationnel propre à Asteria.",
+        "guidance": {
+          "objective": "Identifier les capacités nécessaires à un contrôle humain effectif et les questions d'applicabilité à escalader.",
+          "instructions": "Lire l'article 14 et relever capacités, contexte et limites ; ne pas conclure seul à son applicabilité au cas.",
+          "scope": "Article 14 uniquement, avec définitions de l'article 3 si nécessaire",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML officielle en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "cnil-capacites-operateur-ia",
+        "type": "document",
+        "title": "IA : Garantir la sécurité du développement d'un système d'IA",
+        "author": "Commission nationale de l'informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/ia-garantir-la-securite-du-developpement",
+        "citation": "Commission nationale de l'informatique et des libertés. (2025). IA : Garantir la sécurité du développement d'un système d'IA.",
+        "description": "Approfondissement facultatif — Lire les passages sur limitations, interprétation, retours utilisateurs, journalisation et contrôle des sorties.",
+        "guidance": {
+          "objective": "Concevoir les informations, retours et traces qui permettent une supervision réelle.",
+          "instructions": "Facultatif — Lire les passages indiqués puis préciser ce que l'opérateur Asteria doit voir, pouvoir faire et signaler.",
+          "scope": "Mesures portant sur le fonctionnement du système",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 2
+      },
+      {
+        "key": "nist-escalade-supervision",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Approfondissement facultatif — Lire les résultats sur rôles, supervision, retour d'information et gestion afin de concevoir l'escalade Asteria.",
+        "guidance": {
+          "objective": "Relier supervision, autorité, surveillance et amélioration continue.",
+          "instructions": "Facultatif — Lire les passages indiqués et construire une matrice déclencheur-action-autorité-preuve.",
+          "scope": "Sections 5.1 à 5.4, sous-catégories pertinentes à la supervision et au retour d'information",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Contrôle humain effectif et situé",
+        "slug": "controle-humain-effectif-situe",
+        "description": "Un humain peut superviser seulement s'il comprend l'usage et les limites, reçoit une information utile, dispose du temps, de la compétence et d'une autorité réelle pour agir.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "eurlex-controle-humain-art14"
+        ],
+        "assessment": {
+          "key": "concept-controle-humain-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Reconnaître un contrôle effectif",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Déclencheurs, niveaux et autorité d'escalade",
+        "slug": "declencheurs-niveaux-autorite-escalade",
+        "description": "L'escalade associe un signal à une action, un délai, un destinataire, une autorité, une solution de repli et un retour vers l'utilisateur.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-escalade-supervision"
+        ],
+        "assessment": {
+          "key": "concept-escalade-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Construire une escalade actionnable",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Tests, traçabilité et biais d'automatisation",
+        "slug": "tests-supervision-tracabilite-automatisation",
+        "description": "Le dispositif est testé avec erreurs, ambiguïtés et pression temporelle ; les traces mesurent détection, correction, contournement, charge et effets indésirables.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-capacites-operateur-ia"
+        ],
+        "assessment": {
+          "key": "concept-tests-supervision-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Tester la supervision",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Spécifier un point de contrôle",
+        "description": "En 5 minutes, définir pour une réponse sensible le rôle, l'information visible, le temps, la compétence, les choix, le pouvoir de blocage et la suppléance.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Définir une escalade",
+        "description": "En 5 minutes, associer à deux déclencheurs un niveau, une action immédiate, un délai, un destinataire, une autorité et une condition de reprise.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Tester la supervision",
+        "description": "En 12 minutes, concevoir puis simuler trois injections : erreur plausible, source contradictoire et donnée inattendue. Relever détection, action, délai, trace et une amélioration.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "eurlex-controle-humain-art14"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-controle-humain-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-escalade-supervision"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-escalade-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-capacites-operateur-ia"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-tests-supervision-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-104-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Union européenne",
+        "title": "Règlement (UE) 2024/1689 — Article 14, contrôle humain",
+        "year": 2024,
+        "edition": "Version consolidée au 27 juillet 2026",
+        "publication": "Journal officiel de l'Union européenne",
+        "doi": null,
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation des documents de l'Union européenne selon la décision 2011/833/UE.",
+        "status": "verified",
+        "notes": "Texte officiel consulté le 9 août 2026 ; article relatif aux systèmes à haut risque. Applicabilité à faire qualifier juridiquement."
+      },
+      {
+        "id": "REF-104-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "CNIL",
+        "title": "IA : Garantir la sécurité du développement d'un système d'IA",
+        "year": 2025,
+        "edition": null,
+        "publication": "CNIL — Fiches pratiques IA",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/ia-garantir-la-securite-du-developpement",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation selon les mentions légales de la CNIL.",
+        "status": "verified",
+        "notes": "Recommandation centrée sur le développement ; ne pas extrapoler à toutes les obligations de déploiement."
+      },
+      {
+        "id": "REF-104-003",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "AI RMF 1.0, cadre volontaire en révision ; ne pas présenter les fonctions comme une séquence obligatoire."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-104-001",
+            "locator": "article 14, paragraphes 1 à 4",
+            "supports": "Finalité, proportionnalité et capacités associées au contrôle humain des systèmes à haut risque."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Texte juridique primaire ; l'usage pédagogique hors qualification est clairement distingué.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-104-003",
+            "locator": "sections 5.1 à 5.4, résultats relatifs aux rôles, surveillance, retour et gestion",
+            "supports": "Gouvernance des rôles, suivi, communication et réponse aux risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre officiel volontaire directement aligné avec gouvernance et gestion continue.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-104-002",
+            "locator": "mesures portant sur le fonctionnement : limitations, interprétation, retours, journalisation et contrôle des sorties",
+            "supports": "Information des utilisateurs, interprétation, retours, journalisation et contrôle des sorties."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Recommandation officielle ; les tests de scénario sont une transposition opérationnelle.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "eurlex-controle-humain-art14",
+        "referenceIds": [
+          "REF-104-001"
+        ],
+        "pedagogicalRationale": "Source juridique primaire pour le contrôle humain dans le champ défini par le règlement.",
+        "learnerInstructions": "Lire l'article 14 et relever capacités, contexte et limites ; ne pas conclure seul à son applicabilité au cas.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML officielle en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Vérifier la version consolidée et l'applicabilité avant publication."
+      },
+      {
+        "resourceKey": "cnil-capacites-operateur-ia",
+        "referenceIds": [
+          "REF-104-002"
+        ],
+        "pedagogicalRationale": "Source officielle sur limitations, interprétation, retours et contrôle des sorties.",
+        "learnerInstructions": "Facultatif — Lire les passages indiqués puis préciser ce que l'opérateur Asteria doit voir, pouvoir faire et signaler.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Périmètre développement à conserver explicitement."
+      },
+      {
+        "resourceKey": "nist-escalade-supervision",
+        "referenceIds": [
+          "REF-104-003"
+        ],
+        "pedagogicalRationale": "Cadre public pour la gouvernance, la surveillance et la réponse au risque.",
+        "learnerInstructions": "Facultatif — Lire les passages indiqués et construire une matrice déclencheur-action-autorité-preuve.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée ; revérifier l'état de révision."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "controle-humain-effectif-situe",
+        "assessmentTitle": "Mini-évaluation — Reconnaître un contrôle effectif",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles conditions soutiennent un contrôle effectif ?",
+            "explanation": "L'opérateur doit comprendre, disposer de temps et pouvoir agir.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Information sur le contexte et les limites",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Compétence et temps",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Autorité de corriger ou bloquer",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Simple présence d'un nom",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel contrôle est le plus crédible ?",
+            "explanation": "Il précise le moment, l'information et le pouvoir du réviseur.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Un référent vérifie les réponses sensibles avec sources et peut bloquer l'envoi",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un humain est responsable",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L'utilisateur peut signaler après coup seulement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L'article 14 peut être appliqué à Asteria sans qualification du système.",
+            "explanation": "Son applicabilité dépend notamment de la qualification réglementaire.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "declencheurs-niveaux-autorite-escalade",
+        "assessmentTitle": "Mini-évaluation — Construire une escalade actionnable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que doit déclencher une source documentaire contradictoire sur une procédure sensible ?",
+            "explanation": "Le système doit interrompre la réponse automatique et saisir le rôle compétent.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Escalade au propriétaire métier avec blocage ou avertissement défini",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réponse la plus plausible",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Suppression silencieuse de la source",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que contient un niveau d'escalade ?",
+            "explanation": "Il rend la réaction exécutable et auditable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Destinataire et délai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Autorité de décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Condition de reprise ou arrêt",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement une couleur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une escalade sans suppléant peut devenir inopérante en l'absence du titulaire.",
+            "explanation": "La continuité du contrôle exige une suppléance.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "tests-supervision-tracabilite-automatisation",
+        "assessmentTitle": "Mini-évaluation — Tester la supervision",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel résultat révèle une supervision fragile ?",
+            "explanation": "Une approbation systématique malgré des erreurs injectées indique que le contrôle ne fonctionne pas.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Les réviseurs valident 95 % des réponses tests, y compris les erreurs signalées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les réviseurs bloquent les cas contradictoires selon la procédure",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les délais respectent le seuil défini",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles métriques éclairent la supervision ?",
+            "explanation": "Elles mesurent détection, action et soutenabilité.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Taux de détection",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Taux de correction ou blocage",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Charge et délai",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Nombre total de mots générés seulement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Journaliser la supervision autorise une collecte illimitée d'informations sur les employés.",
+            "explanation": "Les traces doivent rester nécessaires, protégées et gouvernées.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : spécifier les capacités humaines, organiser l'escalade, puis tester le dispositif réel.",
+      "cycles": [
+        {
+          "conceptSlug": "controle-humain-effectif-situe",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "eurlex-controle-humain-art14"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-controle-humain-assessment-1",
+          "rationale": "La grille juridique est convertie en capacités concrètes sans présumer l'applicabilité."
+        },
+        {
+          "conceptSlug": "declencheurs-niveaux-autorite-escalade",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nist-escalade-supervision"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-escalade-assessment-1",
+          "rationale": "La matrice transforme des signaux en décisions et responsabilités testables."
+        },
+        {
+          "conceptSlug": "tests-supervision-tracabilite-automatisation",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "cnil-capacites-operateur-ia"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-tests-supervision-assessment-1",
+          "rationale": "Le test vérifie que l'autorité et l'information produisent réellement le comportement attendu."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "L'article 14 est présenté dans son champ relatif aux systèmes à haut risque ; applicabilité à confirmer juridiquement.",
+        "La grille de supervision sert à la conception et ne remplace ni le juridique, ni le DPO, ni le RSSI, ni le métier.",
+        "Une revue humaine juridique, facteurs humains, sécurité, métier et pédagogique est requise.",
+        "Les slugs parents ne sont pas encore intégrés au seed."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur supervision humaine et escalade avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

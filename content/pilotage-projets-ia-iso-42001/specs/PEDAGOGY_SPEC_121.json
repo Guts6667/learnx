@@ -1,0 +1,520 @@
+{
+  "specId": "PEDAGOGY_SPEC_121",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "moduleSlug": "integration-autonome-et-preparation",
+  "lesson": {
+    "title": "Vérifier la cohérence du dossier SGIA",
+    "slug": "verifier-coherence-dossier-sgia",
+    "summary": "Cette leçon apprend à relire le dossier cumulatif d’Asteria comme un système de décisions, de responsabilités et de preuves, plutôt que comme une collection de documents indépendants.",
+    "objectives": [
+      "Contrôler la cohérence entre besoin, périmètre, risques, objectifs, mesures et décisions.",
+      "Identifier les contradictions, ruptures de traçabilité et affirmations non étayées d’un dossier SGIA."
+    ],
+    "prerequisites": [
+      "Disposer des artefacts cumulés d’Asteria produits aux étapes 1 à 7."
+    ],
+    "estimatedMinutes": 60,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-coherence-decisionnelle",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un dossier SGIA est cohérent lorsque ses décisions se répondent : le besoin délimite le périmètre, le périmètre détermine les systèmes et acteurs gouvernés, les scénarios de risque conduisent à des mesures, et les mesures produisent des preuves utiles à une décision. La présence d’un document ne prouve donc ni son application ni son efficacité. La revue recherche les liens absents, les contradictions et les éléments devenus obsolètes.",
+          "sourceKeys": [
+            "nist-core-115"
+          ]
+        }
+      },
+      {
+        "key": "content-tracabilite-et-limites",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une chaîne de traçabilité défendable relie chaque décision importante à un motif, un propriétaire, une preuve et une date de réexamen. Elle distingue aussi ce qui est démontré, supposé, manquant ou soumis à expertise. Cette vérification prépare une discussion compétente ; elle ne constitue pas une attestation de conformité ni une correspondance détaillée avec ISO/IEC 42001.",
+          "sourceKeys": [
+            "nist-core-115",
+            "nist-playbook-115"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-core-115",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Parcourir les fonctions GOVERN, MAP, MEASURE et MANAGE pour contrôler que les décisions du dossier couvrent gouvernance, contexte, évaluation et traitement sans transformer le cadre en checklist universelle.",
+        "guidance": {
+          "objective": "Construire une grille de cohérence transversale fondée sur des résultats attendus.",
+          "instructions": "Choisir six résultats pertinents pour Asteria et relier chacun à une décision, une preuve et une lacune du dossier.",
+          "scope": "Introduction du Core et aperçu des quatre fonctions",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais, structurée par fonctions ; version 1.0 annoncée en cours de révision.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-playbook-115",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (s. d.). NIST AI RMF Playbook.",
+        "description": "Lire l’introduction et utiliser quelques suggestions adaptées au cas pour challenger les preuves, sans appliquer le Playbook comme une liste exhaustive.",
+        "guidance": {
+          "objective": "Tester la suffisance des activités et preuves au regard du contexte d’Asteria.",
+          "instructions": "Sélectionner quatre suggestions pertinentes, puis indiquer pour chacune pourquoi elle est applicable, à adapter ou hors périmètre.",
+          "scope": "Introduction, principes d’utilisation et liens vers les quatre fonctions",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; téléchargements alternatifs proposés par le NIST.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Cohérence décisionnelle du SGIA",
+        "slug": "coherence-decisionnelle-sgia",
+        "description": "La cohérence décisionnelle relie besoin, périmètre, gouvernance, risques, objectifs, mesures et décisions dans une chaîne explicable.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-core-115"
+        ],
+        "assessment": {
+          "key": "concept-coherence-decisionnelle-sgia-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Cohérence décisionnelle du SGIA",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Traçabilité des décisions et limites",
+        "slug": "tracabilite-decisions-limites",
+        "description": "Une décision défendable conserve son motif, son propriétaire, sa preuve, sa date de réexamen et les limites de ce qui est démontré.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-core-115",
+          "nist-playbook-115"
+        ],
+        "assessment": {
+          "key": "concept-tracabilite-decisions-limites-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Traçabilité des décisions et limites",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-test-coherence-dossier",
+        "title": "Tester cinq chaînes de décision",
+        "description": "Sélectionner cinq décisions majeures du dossier Asteria. Pour chacune, relier besoin, périmètre, risque ou opportunité, mesure, preuve et règle de réexamen ; marquer les ruptures et contradictions.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-note-integrite-dossier",
+        "title": "Rédiger la note d’intégrité du dossier",
+        "description": "Produire une note de deux pages distinguant éléments cohérents, contradictions, preuves manquantes, hypothèses non résolues, documents obsolètes et affirmations qui exigent une validation humaine ou normative autorisée.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-coherence-decisionnelle"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-core-115"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-test-coherence-dossier"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-coherence-decisionnelle-sgia-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tracabilite-et-limites"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-playbook-115"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-note-integrite-dossier"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-tracabilite-decisions-limites-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior consolidant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-115-NIST-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre public volontaire ; la version 1.0 est annoncée en cours de révision."
+      },
+      {
+        "id": "REF-115-NIST-PLAYBOOK",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI RMF Playbook",
+        "year": null,
+        "edition": "Ressource vivante consultée le 9 août 2026",
+        "publication": "NIST Trustworthy and Responsible AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Suggestions volontaires à adapter ; le Playbook n’est ni une checklist ni une séquence universelle."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-115-NIST-CORE",
+            "locator": "Introduction du Core et fonctions GOVERN, MAP, MEASURE, MANAGE",
+            "supports": "Articulation continue entre gouvernance, contexte, mesure et gestion des risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre public du NIST soutient directement l’approche systémique et continue ; aucune correspondance normative détaillée n’est inférée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-115-NIST-CORE",
+            "locator": "GOVERN, paragraphes introductifs et catégories de gouvernance",
+            "supports": "Documentation, responsabilité et réexamen continu des décisions."
+          },
+          {
+            "referenceId": "REF-115-NIST-PLAYBOOK",
+            "locator": "Introduction et principes d’utilisation",
+            "supports": "Adaptation contextuelle des actions et refus d’une checklist universelle."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources publiques soutiennent une traçabilité contextualisée ; le texte reste prudent sur toute conformité normative.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-core-115",
+        "referenceIds": [
+          "REF-115-NIST-CORE"
+        ],
+        "pedagogicalRationale": "Fournit une vue transversale pour tester la cohérence du dossier.",
+        "learnerInstructions": "Relier six résultats du Core aux décisions, preuves et lacunes d’Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-playbook-115",
+        "referenceIds": [
+          "REF-115-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Aide à challenger les activités sans transformer un cadre volontaire en audit de conformité.",
+        "learnerInstructions": "Sélectionner quatre suggestions et justifier leur adaptation au contexte.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML public avec formats téléchargeables.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource vivante à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "coherence-decisionnelle-sgia",
+        "assessmentTitle": "Mini-évaluation — Cohérence décisionnelle du SGIA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel constat révèle la rupture de cohérence la plus importante ?",
+            "explanation": "Un objectif sans risque, mesure, propriétaire ni décision associée rompt la chaîne de pilotage.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un objectif de fiabilité n’a ni mesure ni propriétaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Deux documents utilisent une mise en page différente",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le dossier comporte un glossaire",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels liens faut-il tester pour un risque prioritaire ?",
+            "explanation": "Le scénario doit conduire à un traitement, un propriétaire, une preuve d’exécution ou d’efficacité et une règle de décision.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Risque vers traitement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Traitement vers propriétaire et preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Preuve vers règle de décision",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Risque vers volume du dossier",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La présence d’une procédure démontre à elle seule que la pratique est appliquée et efficace.",
+            "explanation": "Il faut distinguer la conception de la procédure, son exécution et l’efficacité observée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "tracabilite-decisions-limites",
+        "assessmentTitle": "Mini-évaluation — Traçabilité des décisions et limites",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle trace rend une décision de lancement défendable ?",
+            "explanation": "La décision doit conserver son motif, son autorité, ses conditions et sa date de réexamen.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Motif, décideur, conditions, preuves et réexamen",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une validation orale sans date",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nom du fichier uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles catégories doivent être distinguées dans la note d’intégrité ?",
+            "explanation": "Séparer démontré, supposé, manquant et soumis à expertise évite de suraffirmer la maturité du dossier.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Éléments démontrés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Hypothèses et informations manquantes",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Points soumis à expertise ou validation autorisée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Éléments supposés présentés comme certains",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une revue de cohérence interne autorise à affirmer que l’organisation est certifiée ISO/IEC 42001.",
+            "explanation": "Selon la limite explicite de ce parcours, une revue interne n’établit aucune certification de l’organisation.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : contrôler les liens entre décisions, puis qualifier la traçabilité et les limites du dossier.",
+      "cycles": [
+        {
+          "conceptSlug": "coherence-decisionnelle-sgia",
+          "contentKeys": [
+            "content-coherence-decisionnelle"
+          ],
+          "resourceKeys": [
+            "nist-core-115"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-test-coherence-dossier"
+          },
+          "assessmentKey": "concept-coherence-decisionnelle-sgia-assessment-1",
+          "rationale": "La vue transversale du Core structure le test avant son application au dossier cumulatif."
+        },
+        {
+          "conceptSlug": "tracabilite-decisions-limites",
+          "contentKeys": [
+            "content-tracabilite-et-limites"
+          ],
+          "resourceKeys": [
+            "nist-playbook-115"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-note-integrite-dossier"
+          },
+          "assessmentKey": "concept-tracabilite-decisions-limites-assessment-1",
+          "rationale": "L’adaptation explicite des suggestions conduit à qualifier preuves et limites sans faux audit normatif."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Aucune affirmation de conformité ni correspondance détaillée avec ISO/IEC 42001 n’est produite.",
+        "Le NIST AI RMF 1.0 et son Playbook doivent être revérifiés avant publication.",
+        "Toutes les situations Asteria sont fictives."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon de vérification de cohérence du dossier SGIA.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_020",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "selectionner-cas-usage",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Identifier et prioriser les cas d'usage",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "À partir d'éléments de découverte nouveaux sur Asteria Services, construire un portefeuille court de cas d'usage comparables, appliquer une priorisation traçable et recommander explicitement une sélection, un report et un rejet.",
+    "instructions": [
+      "Assembler, comparer et corriger les cartes, fiches et matrices déjà produites pendant les trois leçons ; le temps imparti couvre cette synthèse, pas leur création intégrale depuis une page blanche.",
+      "Délimiter le processus actuel depuis la formulation d'une question interne jusqu'à la diffusion d'une réponse validée. Représenter six à dix étapes avec acteurs, canaux ou outils, informations, sorties et dépendances.",
+      "Identifier cinq irritants. Pour chacun, séparer observation disponible, effet, cause supposée, preuve manquante et personne pouvant fournir cette preuve.",
+      "Formuler trois cas d'usage orientés vers une tâche et un résultat. Pour chacun, préciser acteurs et personnes affectées, entrée, sortie, usage prévu de la sortie, bénéfice, limites, supervision, deux hypothèses critiques, une alternative non-IA et un critère d'abandon.",
+      "Construire une matrice commune couvrant valeur, faisabilité et maturité, risque et qualité des preuves. Définir l'échelle et au moins trois critères éliminatoires avant d'attribuer les notes.",
+      "Appliquer la matrice aux trois cas, indiquer preuve et confiance pour chaque appréciation, puis tester au moins une pondération alternative.",
+      "Recommander un cas à approfondir, en reporter un et en rejeter un. Justifier chaque décision, les conditions préalables, la prochaine preuve à collecter, le responsable et les sujets à escalader."
+    ],
+    "case": "Asteria Services précise sa situation. Sur un échantillon exploratoire de 60 questions internes recueillies pendant deux semaines, 28 concernaient une procédure administrative, 14 une règle RH, 10 une demande de rédaction et 8 d'autres sujets. L'échantillon n'est pas encore réputé représentatif. Pour 18 des 60 questions, l'agent interrogé dit avoir consulté au moins trois espaces documentaires ; aucun chronométrage fiable n'existe. La qualité gère 240 procédures centrales : 150 ont une date de revue de moins de douze mois, 50 sont plus anciennes et 40 n'affichent ni propriétaire ni date de revue. Les équipes locales conservent aussi des fichiers qui ne figurent pas dans cet inventaire. Le support emploie 32 agents et 6 référents métier. Les référents valident aujourd'hui les réponses sensibles, mais cette responsabilité n'est pas formalisée. Le fournisseur propose trois fonctions : recherche sémantique de passages, génération d'un brouillon de réponse et recommandation automatique de décisions RH. Il annonce une mise en service en six semaines, sans protocole d'évaluation ni estimation vérifiée du coût de contrôle humain. L'IT confirme qu'une recherche conventionnelle peut être améliorée en quatre semaines. La qualité estime qu'un chantier de propriétaires et de dates de validité demanderait huit à douze semaines. Les RH refusent que leurs dossiers soient utilisés tant que le DPO et le juridique n'ont pas instruit la finalité, les données, les responsabilités et les droits des personnes. Le sponsor demande quel premier cas mérite un cadrage approfondi et souhaite aussi savoir quelles propositions doivent être différées ou écartées.",
+    "estimatedMinutes": 50,
+    "submissionFormat": "Dossier de synthèse de 600 à 900 mots accompagné d’une carte du processus, d’un tableau des irritants, de trois fiches courtes de cas d’usage et d’une matrice de priorisation avec un test de sensibilité, tous repris des exercices de l’étape.",
+    "conceptSlugs": [
+      "processus-actuel-et-frontieres",
+      "acteurs-points-contact-dependances",
+      "irritant-effet-hypothese-preuve",
+      "fiche-cas-usage-orientee-resultat",
+      "alternatives-ia-non-ia-statu-quo",
+      "hypotheses-exclusions-criteres-abandon",
+      "criteres-valeur-faisabilite-maturite-risque",
+      "preuve-confiance-criteres-eliminatoires",
+      "decision-portefeuille-et-sensibilite"
+    ],
+    "rubric": [
+      {
+        "criterion": "Cartographie du processus actuel",
+        "weight": 20,
+        "requirements": [
+          "Le début, la fin, les étapes et les décisions représentent l'existant sans intégrer la future solution.",
+          "Les acteurs, canaux, informations, sorties et dépendances sont reliés aux étapes pertinentes.",
+          "Les irritants distinguent observation, effet, cause supposée et preuve à collecter."
+        ]
+      },
+      {
+        "criterion": "Qualité des fiches de cas d'usage",
+        "weight": 20,
+        "requirements": [
+          "Les trois fiches décrivent une tâche, un contexte, une sortie et son usage plutôt qu'une technologie générale.",
+          "Acteurs, personnes affectées, limites, supervision et bénéfice attendu sont explicites.",
+          "Chaque fiche comporte hypothèses, exclusions et critère d'abandon vérifiables."
+        ]
+      },
+      {
+        "criterion": "Comparaison des alternatives",
+        "weight": 15,
+        "requirements": [
+          "Chaque cas est comparé à une alternative non-IA ou organisationnelle crédible.",
+          "L'amélioration documentaire et la recherche conventionnelle sont considérées sans les présenter automatiquement comme inférieures.",
+          "Le report et le statu quo maîtrisé sont reconnus comme des options possibles."
+        ]
+      },
+      {
+        "criterion": "Priorisation traçable et prudente",
+        "weight": 30,
+        "requirements": [
+          "Les critères et l'échelle couvrent valeur, faisabilité et maturité, risque et qualité des preuves.",
+          "Chaque appréciation est reliée à une preuve ou une hypothèse ainsi qu'à un niveau de confiance.",
+          "Les critères éliminatoires sont appliqués avant le total et l'analyse de sensibilité rend visible la fragilité éventuelle du classement."
+        ]
+      },
+      {
+        "criterion": "Décision et communication de consultant",
+        "weight": 15,
+        "requirements": [
+          "La sélection, le report et le rejet sont tous justifiés sans promesse non étayée.",
+          "La recommandation précise conditions préalables, prochaine preuve, responsable et décision suivante.",
+          "Les sujets RH, juridiques, protection des données ou sécurité qui dépassent le mandat sont escaladés aux personnes compétentes."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre la leçon et l'artefact correspondants, puis joindre une version corrigée avec un journal des changements. Si la carte mélange existant et solution, reconstruire d'abord une carte as-is. Si les cas restent technocentrés, les reformuler à partir d'acteurs, tâches et résultats. Si le classement repose sur des scores non étayés, supprimer les totaux, compléter preuves, confiance et critères éliminatoires, puis recalculer. Une nouvelle soumission doit conserver les inconnues et expliquer tout changement de décision."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-087-001",
+      "REF-087-002",
+      "REF-087-003",
+      "REF-088-001",
+      "REF-088-002",
+      "REF-088-003",
+      "REF-089-001",
+      "REF-089-002"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas Asteria, les personnes, les chiffres, les fonctions proposées et les délais sont entièrement fictifs.",
+        "L'évaluation porte uniquement sur les neuf notions obligatoires enseignées dans les trois leçons de l'étape.",
+        "Les seuils, échelles et pondérations produits par l'apprenant sont des outils de décision à justifier, non une méthode normative.",
+        "Une revue humaine pédagogique et métier est requise avant publication.",
+        "Les quatre champs de assessment.seed sont compatibles avec le seed actuel ; l'intégration du cas et de la grille devra suivre le mécanisme prévu pour StageAssessment."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas finale de l'étape 2 et de sa grille à cinq critères.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

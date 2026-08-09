@@ -1,0 +1,124 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_026",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Conduire une mission de Lead Implementer",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Finaliser et défendre le dossier de pilotage et d’implémentation du SGIA d’Asteria à partir de nouveaux écarts contradictoires. L’évaluation vérifie la cohérence des décisions, la priorisation des actions, la qualité de la synthèse et la capacité à répondre aux objections. Elle évalue des compétences de mise en œuvre ; elle ne certifie ni l’apprenant ni l’organisation.",
+    "instructions": [
+      "Prendre connaissance seul du dossier cumulatif et des nouvelles informations du cas. Aucun canevas pas à pas n’est fourni pendant l’épreuve.",
+      "Identifier les contradictions et ruptures de traçabilité qui modifient matériellement le besoin, le périmètre, la valeur, l’architecture, les risques, la gouvernance, le déploiement ou les preuves.",
+      "Décider quelles parties du dossier restent valides, doivent être corrigées ou exigent une expertise ou une preuve supplémentaire. Toute affirmation de conformité normative détaillée doit être exclue si elle n’est pas étayée par un accès autorisé et une validation compétente.",
+      "Prioriser les écarts et actions correctives sur trente, soixante et quatre-vingt-dix jours. Pour chaque action prioritaire, préciser cause à vérifier, propriétaire, dépendances, preuve de clôture, test d’efficacité, risque résiduel et autorité de décision ou d’escalade.",
+      "Produire une synthèse exécutive autonome exposant décision demandée, options, recommandation, valeur attendue, risques et opportunités majeurs, preuves disponibles, limites, conditions et prochains jalons.",
+      "Préparer une soutenance de dix minutes maximum, puis répondre aux objections du comité. Chaque réponse doit distinguer preuve, hypothèse, arbitrage, limite et prochaine vérification.",
+      "Corriger explicitement toute confusion entre compétence personnelle, mise en œuvre du SGIA et certification de l’organisation. Ne revendiquer ni réussite à un examen ni certification ISO/IEC 42001.",
+      "Conclure par les cinq prochaines actions de la mission et deux priorités de développement personnel fondées sur les preuves produites pendant le parcours."
+    ],
+    "case": "Cas fictif — Trois semaines avant le comité final, Asteria envisage d’étendre l’assistant documentaire à quatre sites et d’annoncer publiquement une démarche de certification ISO/IEC 42001. Le sponsor présente une satisfaction de 86 %, mais l’échantillon ne couvre que les utilisateurs ayant répondu au questionnaire et aucune baseline comparable n’a été figée. Le fournisseur a changé la version du modèle sans préavis ; l’équipe a vérifié dix questions courantes mais n’a pas rejoué les cas de confidentialité, de refus ni de prompt injection. Le coût moyen par demande a augmenté de 38 % et le contrat ne précise pas encore le préavis applicable aux futurs changements. Pour réduire l’exposition de données, l’équipe a désactivé le contenu détaillé de certains journaux ; elle ne peut désormais pas reconstruire deux signalements de réponses inappropriées. L’inventaire officiel décrit le pilote du support, alors qu’un entretien révèle deux assistants non autorisés utilisés par les équipes RH et achats. Le responsable produit a signé l’acceptation d’un risque résiduel élevé relatif aux documents confidentiels, mais la matrice de responsabilités attribue cette autorité au comité IA. La formation est déclarée obligatoire ; 22 % des utilisateurs actifs n’ont aucune preuve de formation et le support ne sait pas distinguer absence de preuve et absence réelle de formation. Un audit interne est programmé : sa responsable a aussi conçu la procédure de gestion des incidents qu’elle doit examiner. Une personne affirme que l’assistant RH a résumé un document comportant des données personnelles, mais le fichier, la requête et la réponse ne sont pas encore disponibles. Enfin, la communication prépare la phrase « Asteria, certifiée ISO/IEC 42001 » alors qu’aucun organisme certificateur n’a été choisi et qu’aucun audit externe n’a eu lieu. Le comité propose trois options : étendre immédiatement, maintenir le pilote sous conditions, ou suspendre les nouveaux usages. Pendant la soutenance, six objections sont imposées : la direction générale veut conserver la date d’annonce ; la finance conteste le coût des actions ; la sécurité demande la suspension ; le DPO refuse de conclure sans données sur l’incident RH ; les métiers craignent de perdre les gains ; un administrateur demande si le dossier prouve déjà la conformité à ISO/IEC 42001. Toutes les données, personnes, performances, écarts et décisions sont fictifs.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Version finale du dossier cumulatif avec historique des corrections, note exécutive de 3 pages maximum, tableau priorisé des actions et soutenance simulée de 10 minutes suivie de 20 minutes d’objections. Le dossier antérieur est préparé avant l’épreuve ; les 90 minutes couvrent l’analyse des nouvelles informations, les mises à jour ciblées et la simulation.",
+    "conceptSlugs": [
+      "coherence-decisionnelle-sgia",
+      "tracabilite-decisions-limites",
+      "priorisation-actions-correctives",
+      "risque-residuel-autorite-escalade",
+      "preparation-transparente-preuves",
+      "certification-organisationnelle-roles-distincts",
+      "synthese-executive-orientee-decision",
+      "reponse-etayee-objections",
+      "methode-mission-lead-implementer",
+      "preuves-competence-preparation-ciblee"
+    ],
+    "rubric": [
+      {
+        "criterion": "Cadrage du besoin, valeur et faisabilité",
+        "weight": 20,
+        "requirements": [
+          "La décision tient compte de l’échantillon biaisé, de l’absence de baseline, de l’augmentation des coûts et du changement d’échelle.",
+          "Les options sont comparées avec hypothèses, bénéfices, coûts, dépendances, critères d’arrêt et informations manquantes.",
+          "Les affirmations de valeur restent proportionnées aux preuves disponibles."
+        ]
+      },
+      {
+        "criterion": "Pilotage, architecture fonctionnelle et évaluation",
+        "weight": 20,
+        "requirements": [
+          "Le changement de modèle déclenche une réévaluation proportionnée couvrant qualité, sécurité, confidentialité, coût et expérience.",
+          "Les assistants non autorisés, journaux incomplets, fournisseurs et interfaces sont réintégrés dans la cartographie et le pilotage.",
+          "La roadmap attribue décisions, responsables, jalons, dépendances et critères de passage."
+        ]
+      },
+      {
+        "criterion": "Gouvernance et mise en œuvre du SGIA",
+        "weight": 25,
+        "requirements": [
+          "Le dossier relie périmètre, inventaire, politique, objectifs, responsabilités, processus, preuves et amélioration sans contradiction majeure.",
+          "L’autorité d’acceptation du risque, l’indépendance de l’audit interne, la formation et les usages non autorisés font l’objet de décisions traçables.",
+          "Compétence personnelle, mise en œuvre du SGIA et certification tierce de l’organisation sont correctement distinguées."
+        ]
+      },
+      {
+        "criterion": "Risques, conformité, sécurité et supervision",
+        "weight": 20,
+        "requirements": [
+          "Les écarts sont formulés comme scénarios ou déficiences observables, puis priorisés sans fausse précision.",
+          "Chaque action prioritaire possède cause à vérifier, propriétaire, preuve, test d’efficacité, risque résiduel et voie d’escalade.",
+          "L’incident RH, la journalisation, la confidentialité, le changement fournisseur et la supervision sont traités prudemment avec les expertises nécessaires."
+        ]
+      },
+      {
+        "criterion": "Communication exécutive et amélioration",
+        "weight": 15,
+        "requirements": [
+          "La synthèse rend immédiatement visibles décision demandée, options, recommandation, preuves, limites et conditions.",
+          "Les réponses aux objections distinguent fait, hypothèse, arbitrage, limite et prochaine vérification sans promesse absolue.",
+          "Les prochaines actions et priorités de développement personnel sont réalistes, attribuées et fondées sur des preuves du parcours."
+        ]
+      }
+    ],
+    "remediation": "Si le score est inférieur à 70 %, reprendre uniquement les chaînes de décision et critères insuffisants en conservant l’historique. Commencer par les contradictions de périmètre, d’autorité et de preuve ; reconstruire ensuite les actions sans propriétaire ou test d’efficacité ; enfin réenregistrer la synthèse et les réponses aux objections. Une nouvelle tentative doit expliquer ce qui a changé, pourquoi et quelle preuve permet désormais la décision."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-115-NIST-CORE",
+      "REF-115-NIST-PLAYBOOK",
+      "REF-116-NIST-CORE",
+      "REF-116-NIST-PLAYBOOK",
+      "REF-117-NIST-CORE",
+      "REF-118-NIST-AI-RMF",
+      "REF-119-NIST-AI-RMF"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le cas, les personnes, les chiffres, les écarts et les objections sont entièrement fictifs.",
+        "L’évaluation mesure des compétences de mise en œuvre et de conseil ; elle ne délivre aucune certification personnelle.",
+        "Le dossier fictif et sa revue ne prouvent aucune certification ni conformité d’une organisation réelle.",
+        "Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé à l’édition applicable et une validation humaine compétente.",
+        "Aucune clause, contrôle ou question d’examen protégée n’est reproduit."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de l’évaluation finale autonome du programme et de la soutenance exécutive avec objections.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,505 @@
+{
+  "specId": "PEDAGOGY_SPEC_116",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "operer-et-ameliorer-sgia",
+  "lesson": {
+    "title": "Traiter écarts et améliorer le système",
+    "slug": "traiter-ecarts-ameliorer-sgia",
+    "summary": "Cette leçon apprend à qualifier et contenir un écart, préparer une remédiation systémique et vérifier son efficacité avant d’alimenter une amélioration continue proportionnée.",
+    "objectives": [
+      "Qualifier un écart, décider une mesure immédiate ou un confinement et préparer une remédiation systémique.",
+      "Prioriser des améliorations et vérifier leur efficacité avec des preuves."
+    ],
+    "prerequisites": [
+      "Disposer d’un tableau de bord, d’un plan d’audit et d’un registre de preuves Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-ecart-confinement-remediation",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un écart est d’abord qualifié par ses preuves, sa portée et ses conséquences. Une mesure immédiate ou un confinement limite l’exposition pendant l’analyse. La remédiation systémique traite ensuite les facteurs qui ont permis l’écart, avec un propriétaire, une échéance, une preuve et une vérification d’efficacité. Modifier rapidement un document peut contenir l’effet sans démontrer que le processus durable a été amélioré.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-110",
+            "nist-ai-rmf-110"
+          ]
+        }
+      },
+      {
+        "key": "content-verification-efficacite-amelioration",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une action n’est close qu’après vérification proportionnée de son efficacité. Les tendances, incidents, audits, retours et changements alimentent ensuite une feuille de route priorisée selon valeur, risque, effort et dépendances. L’amélioration continue ne signifie pas multiplier les initiatives : elle organise des décisions traçables et revoit aussi les actions inefficaces. Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé au texte applicable et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-110",
+            "nist-ai-rmf-110"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-110",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à GOVERN 1.5, MANAGE 2 et MANAGE 4 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à la qualification, au confinement et à la remédiation d’un écart.",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres GOVERN 1.5, MANAGE 2 et MANAGE 4 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-110",
+        "type": "website",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Consulter MANAGE 1 à 4 et GOVERN 5 et relever les pratiques publiques utiles à Asteria.",
+        "guidance": {
+          "objective": "Opérationnaliser vérification d’efficacité et amélioration continue à partir d’un cadre public.",
+          "instructions": "Choisir quatre sous-catégories pertinentes ; pour chacune, noter une action, un propriétaire et une preuve attendue.",
+          "scope": "MANAGE 1 à 4 et GOVERN 5",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais structurée, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Écart, confinement et remédiation systémique",
+        "slug": "ecart-confinement-remediation-systemique",
+        "description": "Un écart documenté déclenche une décision proportionnée : mesure immédiate ou confinement, analyse des facteurs, remédiation systémique et suivi du risque résiduel.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-110"
+        ],
+        "assessment": {
+          "key": "concept-ecart-confinement-remediation-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Écart, confinement et remédiation",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Vérification d’efficacité et amélioration continue",
+        "slug": "verification-efficacite-amelioration",
+        "description": "Une action n’est close qu’après vérification proportionnée de son efficacité. Les tendances, incidents, audits, retours et changements alimentent ensuite une feuille de route priorisée selon valeur, risque, effort et dépendances.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-110"
+        ],
+        "assessment": {
+          "key": "concept-verification-efficacite-amelioration-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Vérification d’efficacité et amélioration continue",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-fiche-ecart-remediation",
+        "title": "Traiter et contenir un écart d’Asteria",
+        "description": "À partir d’un écart fictif de corpus non revu, documenter constat, preuve, portée, risque immédiat, mesure de confinement, facteurs contributifs, remédiation systémique, propriétaire, échéance et risque résiduel.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-roadmap-amelioration-sgia",
+        "title": "Prioriser la roadmap d’amélioration",
+        "description": "Transformer huit constats en une feuille de route de quatre-vingt-dix jours : priorité, résultat attendu, dépendance, responsable, preuve de clôture, test d’efficacité et date de réexamen.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-ecart-confinement-remediation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-110"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-fiche-ecart-remediation"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-ecart-confinement-remediation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-verification-efficacite-amelioration"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-110"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-roadmap-amelioration-sgia"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-verification-efficacite-amelioration-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-110-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-110-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication technique NIST : œuvre fédérale généralement dans le domaine public aux États-Unis ; droits étrangers réservés avec droit mondial de réimpression accordé, sous réserve d’éventuels contenus tiers.",
+        "status": "verified",
+        "notes": "Cadre volontaire public ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-110-NIST-PLAYBOOK",
+            "locator": "Suggestions GOVERN 1.5, MANAGE 2 et MANAGE 4",
+            "supports": "Pratiques publiques utiles à la qualification, au confinement et à la remédiation d’un écart."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-110-NIST-AI-RMF",
+            "locator": "GOVERN 1.5, MANAGE 2 et MANAGE 4",
+            "supports": "Résultats publics utiles à vérification d’efficacité et amélioration continue."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Cadre institutionnel public ; adaptation professionnelle à faire confirmer en revue métier.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-110",
+        "referenceIds": [
+          "REF-110-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer GOVERN 1.5, MANAGE 2 et MANAGE 4, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-110",
+        "referenceIds": [
+          "REF-110-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Cadre public pour produire un livrable professionnel vérifiable.",
+        "learnerInstructions": "Consulter MANAGE 1 à 4 et GOVERN 5, puis relier actions, propriétaires et preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "ecart-confinement-remediation-systemique",
+        "assessmentTitle": "Mini-évaluation — Écart, confinement et remédiation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une revue du corpus manque depuis six semaines. Quelle première décision est la plus rigoureuse ?",
+            "explanation": "Il faut qualifier l’exposition et décider un confinement proportionné avant de traiter les facteurs systémiques.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Évaluer la portée, contenir si nécessaire et ouvrir une analyse documentée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Clore l’écart après avoir modifié la date de la procédure",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Attendre le prochain audit sans mesure",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une mesure immédiate qui limite l’exposition démontre à elle seule que la cause systémique a disparu.",
+            "explanation": "Le confinement et la remédiation systémique ont des finalités distinctes ; l’efficacité durable doit être vérifiée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent une remédiation systémique vérifiable ?",
+            "explanation": "La remédiation relie facteurs contributifs, action, responsabilité, preuve et test d’efficacité.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Les facteurs contributifs documentés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un propriétaire, une preuve et un test d’efficacité",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une promesse orale sans échéance",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "verification-efficacite-amelioration",
+        "assessmentTitle": "Mini-évaluation — Vérification d’efficacité et amélioration continue",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles sources alimentent l’amélioration ?",
+            "explanation": "La boucle d’amélioration sélectionne et vérifie des actions utiles.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Audits, incidents et tendances",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Retours et changements du contexte",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Seulement les succès",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Vérification d’efficacité et amélioration continue peut être démontré par une intention non documentée.",
+            "explanation": "L’amélioration continue ne signifie pas multiplier les initiatives : elle organise des décisions traçables et revoit aussi les actions inefficaces.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés soutiennent vérification d’efficacité et amélioration continue ?",
+            "explanation": "La boucle d’amélioration sélectionne et vérifie des actions utiles.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un propriétaire et une échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un critère et une preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une formulation non testable",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles appliqués : cadrer le principe, produire une preuve, puis valider la décision.",
+      "cycles": [
+        {
+          "conceptSlug": "ecart-confinement-remediation-systemique",
+          "contentKeys": [
+            "content-ecart-confinement-remediation"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-110"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-fiche-ecart-remediation"
+          },
+          "assessmentKey": "concept-ecart-confinement-remediation-assessment-1",
+          "rationale": "Le Playbook NIST aide à sélectionner une réponse proportionnée, documenter le risque et vérifier les résultats sans imposer une terminologie normative non étayée."
+        },
+        {
+          "conceptSlug": "verification-efficacite-amelioration",
+          "contentKeys": [
+            "content-verification-efficacite-amelioration"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-110"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-roadmap-amelioration-sgia"
+          },
+          "assessmentKey": "concept-verification-efficacite-amelioration-assessment-1",
+          "rationale": "Le cadre public NIST soutient la production sans remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon « Traiter écarts et améliorer le système ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

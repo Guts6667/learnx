@@ -1,0 +1,486 @@
+{
+  "specId": "PEDAGOGY_SPEC_125",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mission-lead-implementer",
+  "moduleSlug": "soutenance-et-consolidation",
+  "lesson": {
+    "title": "Consolider les acquis de type Lead Implementer",
+    "slug": "consolider-acquis-lead-implementer",
+    "summary": "Cette leçon consolide la méthode de mission acquise pendant le parcours et construit un plan de progression fondé sur des preuves, sans revendiquer une préparation à un examen encore non identifié.",
+    "objectives": [
+      "Relier les compétences de cadrage, pilotage, risque, gouvernance, déploiement et amélioration dans une méthode de mission cohérente.",
+      "Évaluer ses preuves de compétence et construire un plan de préparation adapté à une certification personnelle précisément identifiée ultérieurement."
+    ],
+    "prerequisites": [
+      "Avoir achevé le dossier cumulatif Asteria et préparé sa soutenance exécutive."
+    ],
+    "estimatedMinutes": 60,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-posture-implementer",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une posture de type Lead Implementer consiste ici à organiser une mise en œuvre : comprendre le contexte, faire expliciter les décisions, coordonner les acteurs, intégrer risques et impacts, obtenir des preuves, vérifier l’efficacité et soutenir l’amélioration. Elle n’accorde pas une autorité automatique, ne remplace pas les expertises juridiques ou techniques et ne confère aucune certification personnelle.",
+          "sourceKeys": [
+            "nist-core-119"
+          ]
+        }
+      },
+      {
+        "key": "content-preuves-et-plan-progression",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "La progression personnelle doit être démontrée par des décisions et productions observables : entretien, cadrage, arbitrage, registre, gouvernance, plan de déploiement, traitement d’incident et soutenance. Dans ce parcours, aucune équivalence avec une certification personnelle ou organisationnelle n’est présumée. Si une certification personnelle est choisie, l’organisme, l’intitulé, le programme et sa version, les conditions et les règles devront être obtenus officiellement et validés humainement avant toute adaptation.",
+          "sourceKeys": []
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-core-119",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/0-ai-rmf-1-0/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Utiliser GOVERN, MAP, MEASURE et MANAGE pour reconstruire la méthode de mission et identifier les étapes insuffisamment maîtrisées.",
+        "guidance": {
+          "objective": "Organiser les acquis en boucle de gouvernance et de gestion des risques.",
+          "instructions": "Pour chaque fonction, citer deux productions du dossier, une décision associée et une lacune personnelle à travailler.",
+          "scope": "Introduction et aperçu des quatre fonctions",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais ; version 1.0 annoncée en cours de révision.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-audience-119",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — Audience",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/2-sec-audience/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Audience. NIST AI 100-1.",
+        "description": "Consulter les catégories d’acteurs et de tâches du cycle de vie pour relier les preuves de progression à des contributions professionnelles observables.",
+        "guidance": {
+          "objective": "Relier ses preuves de compétence à des tâches, perspectives et limites de rôle observables.",
+          "instructions": "Choisir six tâches ou perspectives pertinentes, associer à chacune une production du parcours et identifier une limite ou une compétence à développer.",
+          "scope": "Section Audience",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique en anglais, avec schémas décrits dans le texte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Méthode de mission de type Lead Implementer",
+        "slug": "methode-mission-lead-implementer",
+        "description": "La méthode articule diagnostic, décision, mise en œuvre, preuve, évaluation et amélioration, avec des responsabilités et limites explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-core-119"
+        ],
+        "assessment": {
+          "key": "concept-methode-mission-lead-implementer-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Méthode de mission de type Lead Implementer",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Preuves de compétence et préparation ciblée",
+        "slug": "preuves-competence-preparation-ciblee",
+        "description": "Les compétences sont étayées par des productions observables ; une préparation d’examen ne commence qu’après identification du programme officiel applicable.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-audience-119"
+        ],
+        "assessment": {
+          "key": "concept-preuves-competence-preparation-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Preuves de compétence et préparation ciblée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-retour-experience-mission",
+        "title": "Construire le retour d’expérience de la mission",
+        "description": "Pour les huit étapes, sélectionner une décision, une production, une preuve de progression, une erreur ou limite et une pratique transférable. Conclure par une méthode de mission en dix actions maximum, non présentée comme une checklist normative.",
+        "type": "reflection",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-developpement-certification",
+        "title": "Établir le plan de développement à quatre-vingt-dix jours",
+        "description": "Évaluer chaque compétence sur preuve, pas sur confiance déclarée ; choisir quatre priorités, leurs exercices, mentors ou revues, preuves attendues et échéances. Ajouter les informations à obtenir avant toute préparation d’examen spécifique.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-posture-implementer"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-core-119"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-retour-experience-mission"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-methode-mission-lead-implementer-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-preuves-et-plan-progression"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-audience-119"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-developpement-certification"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-preuves-competence-preparation-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior consolidant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-119-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Les sections Audience et Core sont utilisées ; cadre public volontaire dont la version 1.0 est annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-119-NIST-AI-RMF",
+            "locator": "Core, fonctions GOVERN, MAP, MEASURE et MANAGE",
+            "supports": "Articulation continue entre contexte, gouvernance, évaluation et gestion des risques."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "La méthode de mission est une synthèse pédagogique appuyée sur le cadre public du NIST, sans équivalence normative détaillée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Règle de positionnement pédagogique validée dans le blueprint du programme : elle borne les prétentions du parcours et ne décrit aucune exigence normative ni modalité d’un organisme certificateur."
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-core-119",
+        "referenceIds": [
+          "REF-119-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Structure le retour d’expérience autour d’une boucle complète de gestion des risques.",
+        "learnerInstructions": "Associer productions, décisions et lacunes aux quatre fonctions.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-audience-119",
+        "referenceIds": [
+          "REF-119-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Relie les preuves de progression à des tâches et perspectives professionnelles observables.",
+        "learnerInstructions": "Associer six tâches ou perspectives à une production, une limite et une priorité de développement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique avec texte descriptif.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "methode-mission-lead-implementer",
+        "assessmentTitle": "Mini-évaluation — Méthode de mission de type Lead Implementer",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle séquence décrit le mieux une mise en œuvre gouvernée ?",
+            "explanation": "La mise en œuvre relie contexte et décision à l’exécution, aux preuves, à l’évaluation et à l’amélioration.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Contexte, décision, exécution, preuve, évaluation, amélioration",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choix d’un outil puis justification",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Rédaction de documents sans responsables",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles limites le consultant doit-il rendre explicites ?",
+            "explanation": "Autorité, expertise, preuves et accès normatif bornent ce qu’il peut conclure ou décider.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Son autorité de décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les expertises à mobiliser",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les preuves ou textes autorisés manquants",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Aucune limite si le dossier est long",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La méthode en dix actions produite dans l’exercice constitue une checklist normative ISO/IEC 42001.",
+            "explanation": "Il s’agit d’une synthèse de pratique ; aucune correspondance normative détaillée n’est établie.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "preuves-competence-preparation-ciblee",
+        "assessmentTitle": "Mini-évaluation — Preuves de compétence et préparation ciblée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle preuve soutient le mieux la compétence d’arbitrage ?",
+            "explanation": "Une décision argumentée, révisée après feedback et reliée à ses preuves démontre davantage qu’une autoévaluation.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une note d’arbitrage versionnée avec feedback et correction",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une déclaration de confiance sans production",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le temps passé dans l’application",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il obtenir avant de préparer un examen spécifique ?",
+            "explanation": "L’intitulé, l’organisme, le programme/version, les conditions et règles officielles délimitent la préparation.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Intitulé et organisme exacts",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Programme et version applicables",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Conditions et règles officielles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Questions supposées copiées d’un examen",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Achever ce parcours prouve qu’Asteria est certifiée ISO/IEC 42001.",
+            "explanation": "Le parcours développe des compétences sur un dossier fictif et n’établit, selon son périmètre explicite, aucune certification de l’organisation.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : reconstruire la méthode de mission depuis les preuves, puis transformer les lacunes en plan de progression ciblé.",
+      "cycles": [
+        {
+          "conceptSlug": "methode-mission-lead-implementer",
+          "contentKeys": [
+            "content-posture-implementer"
+          ],
+          "resourceKeys": [
+            "nist-core-119"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-retour-experience-mission"
+          },
+          "assessmentKey": "concept-methode-mission-lead-implementer-assessment-1",
+          "rationale": "La boucle publique du NIST aide à structurer le retour d’expérience sans devenir une checklist normative."
+        },
+        {
+          "conceptSlug": "preuves-competence-preparation-ciblee",
+          "contentKeys": [
+            "content-preuves-et-plan-progression"
+          ],
+          "resourceKeys": [
+            "nist-audience-119"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-developpement-certification"
+          },
+          "assessmentKey": "concept-preuves-competence-preparation-assessment-1",
+          "rationale": "Les catégories d’acteurs du NIST aident à relier productions et compétences ; les limites de certification restent une règle de positionnement du programme et les modalités externes doivent être confirmées."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le parcours construit une base de type Lead Implementer sans préparer un examen identifié ni délivrer de certification.",
+        "Aucune question d’examen protégée, clause ou contrôle ISO n’est reproduit.",
+        "Le plan devra être adapté au programme officiel lorsque la certification personnelle sera confirmée."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon de consolidation des acquis de type Lead Implementer.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

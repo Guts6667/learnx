@@ -1,0 +1,749 @@
+{
+  "specId": "PEDAGOGY_SPEC_092",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "posture-consultant-ia",
+  "moduleSlug": "role-et-systemes-ia",
+  "lesson": {
+    "title": "Conduire un entretien de découverte",
+    "slug": "conduire-entretien-decouverte",
+    "summary": "Un premier entretien de découverte ne sert pas à vendre immédiatement une solution d’IA. Il sert à comprendre le problème, les utilisateurs, le processus actuel, les résultats attendus, les contraintes et les inconnues afin de proposer une prochaine décision explicite.",
+    "objectives": [
+      "Reformuler une demande de solution IA sous la forme d’un problème professionnel à instruire.",
+      "Distinguer les faits disponibles, les attentes, les hypothèses et les questions ouvertes.",
+      "Construire un guide d’entretien qui couvre acteurs, processus, valeur, contraintes, risques et prochaine décision.",
+      "Produire un compte rendu de découverte qui n’invente pas les informations manquantes."
+    ],
+    "prerequisites": [
+      "Distinguer automatisation, apprentissage automatique et IA générative.",
+      "Reconnaître les principales composantes et parties prenantes d’un système d’IA."
+    ],
+    "estimatedMinutes": 70,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Un commanditaire ouvre souvent la discussion par une solution : « il nous faut un chatbot », « automatisons ce processus » ou « ajoutons de l’IA ». Le consultant ne rejette pas cette intuition, mais il la traite comme une proposition à examiner. Avant de recommander une construction, il cherche à comprendre ce que les personnes essaient d’accomplir, le fonctionnement actuel, les difficultés observées, les contraintes et la valeur attendue. La découverte réduit ainsi le risque de construire correctement une solution qui répond au mauvais problème.",
+          "sourceKeys": [
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un problème de découverte décrit un écart observable entre une situation actuelle et un résultat souhaité, pour des personnes et dans un contexte identifiés. Il ne présuppose pas encore la technologie. La formulation « Comment réduire le temps nécessaire aux équipes support pour retrouver une procédure fiable ? » ouvre plusieurs solutions ; « Construire un chatbot RAG » en sélectionne déjà une sans avoir établi sa pertinence.",
+          "sourceKeys": [
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "Le compte rendu sépare quatre catégories. Un fait est une information observée ou reliée à une preuve identifiable. Une attente décrit un résultat désiré ou une contrainte exprimée par une partie prenante. Une hypothèse est une explication ou une prédiction encore à vérifier. Une question ouverte désigne une information manquante qui peut modifier la décision. Cette séparation évite de transformer une conviction du commanditaire en donnée acquise.",
+          "sourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-1-0"
+          ]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "example",
+        "position": 4,
+        "content": {
+          "text": "Cas fictif Asteria : la directrice des opérations demande « un assistant qui répond à toutes les questions internes ». Le volume de demandes et la dispersion documentaire sont des sujets à mesurer ; le gain de 30 % annoncé est une attente ; l’idée que les réponses lentes viennent uniquement de la recherche documentaire est une hypothèse ; l’identité des futurs utilisateurs, la sensibilité des documents, le taux de réponses actuellement correctes et le propriétaire des contenus sont des questions ouvertes. Le consultant ne promet donc ni assistant ni gain avant la collecte de ces éléments.",
+          "sourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-1-0"
+          ]
+        }
+      },
+      {
+        "key": "content-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Un entretien utile couvre sept zones : objectif professionnel ; utilisateurs et personnes affectées ; processus et outils actuels ; éléments de preuve disponibles ; contraintes techniques, juridiques et organisationnelles ; inconnues et hypothèses risquées ; prochaine décision et responsables. Sa sortie n’est pas une solution définitive, mais une reformulation fidèle, une liste de vérifications et un accord sur la suite.",
+          "sourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-1-0"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "govuk-discovery-phase",
+        "type": "website",
+        "title": "How the discovery phase works",
+        "author": "GOV.UK Agile delivery community",
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "citation": "GOV.UK Agile delivery community. (2021). How the discovery phase works. Service Manual.",
+        "description": "Lire les sections « Define the problem », « What to find out in discovery » et « How you know discovery is finished ». Relever ce qui doit être compris avant de construire et les critères qui permettent de décider de poursuivre ou d’arrêter.",
+        "guidance": {
+          "objective": "Identifier les informations et décisions attendues d’une phase de découverte.",
+          "instructions": "Lire les trois sections indiquées et noter cinq informations à rechercher lors d’un premier entretien.",
+          "scope": "Sections Define the problem, What to find out in discovery et How you know discovery is finished",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, consultable sans compte ; traduction du navigateur possible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-1-0",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi, National Institute of Standards and Technology",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0) (NIST AI 100-1). National Institute of Standards and Technology. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Consulter la figure 2 et l’annexe A, pages 10 et 35 à 37 du document, pour repérer les contextes, acteurs et responsabilités qui peuvent être oubliés dans un entretien centré uniquement sur la technologie.",
+        "guidance": {
+          "objective": "Élargir l’entretien aux acteurs et au cycle de vie complet du système.",
+          "instructions": "Parcourir la figure 2 et l’annexe A, puis ajouter trois catégories de parties prenantes au guide d’entretien.",
+          "scope": "Figure 2, page 10 ; annexe A, pages 35 à 37",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Document PDF officiel en anglais ; texte sélectionnable et page de publication HTML disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Cadrage du problème avant la solution",
+        "slug": "cadrage-probleme-avant-solution",
+        "description": "La découverte reformule une solution présupposée en problème observable, situé dans un contexte, sans conclure prématurément que l’IA est nécessaire.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase"
+        ],
+        "assessment": {
+          "key": "concept-cadrage-probleme-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cadrer le problème",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Statut des informations de découverte",
+        "slug": "faits-attentes-hypotheses-questions",
+        "description": "Les faits, attentes, hypothèses et questions ouvertes sont consignés séparément afin que la décision repose sur des éléments vérifiables.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase",
+          "nist-ai-rmf-1-0"
+        ],
+        "assessment": {
+          "key": "concept-statut-informations-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Qualifier les informations",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Entretien orienté vers une décision",
+        "slug": "entretien-decouverte-oriente-decision",
+        "description": "L’entretien explore objectifs, utilisateurs, processus, preuves, contraintes, acteurs et inconnues, puis conclut par une prochaine décision et des responsables.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase",
+          "nist-ai-rmf-1-0"
+        ],
+        "assessment": {
+          "key": "concept-entretien-decision-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Conduire la découverte",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Repérer les sorties d’une découverte",
+        "description": "Lire les sections demandées du Service Manual et noter cinq informations à obtenir ainsi qu’une décision possible en fin de découverte.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": [
+          "govuk-discovery-phase"
+        ]
+      },
+      {
+        "key": "activity-2",
+        "title": "Qualifier les propos du commanditaire",
+        "description": "Qualifier chacun des huit énoncés suivants comme fait étayé, attente, hypothèse ou question ouverte : la direction souhaite améliorer l’accès aux procédures ; les équipes perdent 30 % de leur temps à chercher ; un assistant génératif est la solution la plus rapide ; les documents sont dispersés ; le volume mensuel de demandes n’est pas connu ; certaines procédures contiennent des données sensibles ; le propriétaire de chaque document n’est pas identifié ; le système devra répondre en moins de dix secondes. Indiquer ensuite la preuve nécessaire pour les deux énoncés les plus décisifs.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Préparer le premier entretien Asteria",
+        "description": "Rédiger un guide de 10 à 12 questions ouvertes couvrant les sept zones de découverte. Ajouter une trame de compte rendu avec les rubriques faits, attentes, hypothèses, questions ouvertes, parties prenantes et prochaine décision.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-discovery-phase"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-cadrage-probleme-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-statut-informations-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-1-0"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-entretien-decision-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-086-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "How the discovery phase works",
+        "year": 2021,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel de découverte de service ; la structure d’entretien LearnX est une synthèse originale adaptée au conseil IA."
+      },
+      {
+        "id": "REF-086-002",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "NIST AI 100-1",
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "NIST Technical Series publication ; conditions d’utilisation NIST applicables",
+        "status": "verified",
+        "notes": "Version 1.0 en cours de révision en 2026 ; conserver la version 2023 pour cette édition du cours."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-086-001",
+            "locator": "lignes 72 à 83 et 96 à 106 de la page HTML, sections d’introduction et Define the problem",
+            "supports": "Nécessité de comprendre le problème avant de construire et de reformuler une solution prédéfinie."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide institutionnel explicite et directement applicable à une phase de découverte.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-086-001",
+            "locator": "section Define the problem, lignes 96 à 106",
+            "supports": "Distinction entre formulation d’une solution et formulation du problème à résoudre."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La source fournit explicitement le principe et un exemple de reformulation.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-086-001",
+            "locator": "sections Define the problem et What to find out in discovery, lignes 96 à 137",
+            "supports": "Décomposition des hypothèses, recherche sur utilisateurs, contexte et contraintes."
+          },
+          {
+            "referenceId": "REF-086-002",
+            "locator": "section 5.2 MAP, pages 24 à 27",
+            "supports": "Documentation du contexte, des parties prenantes, des impacts et des informations nécessaires à l’analyse."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux cadres institutionnels convergent sur l’explicitation du contexte, des hypothèses et des informations manquantes.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-086-001",
+            "locator": "sections What to find out in discovery et How you’ll measure success, lignes 107 à 153",
+            "supports": "Catégories d’information à rechercher dans le cas fictif."
+          },
+          {
+            "referenceId": "REF-086-002",
+            "locator": "figure 2 page 10 et annexe A pages 35 à 37",
+            "supports": "Prise en compte du cycle de vie et de la diversité des acteurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cas est fictif et applique des catégories directement soutenues par les deux sources.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-086-001",
+            "locator": "sections What to find out in discovery et How you know discovery is finished, lignes 107 à 175",
+            "supports": "Éléments à comprendre et décision attendue en sortie de découverte."
+          },
+          {
+            "referenceId": "REF-086-002",
+            "locator": "figure 3 page 11 et annexe A pages 35 à 37",
+            "supports": "Diversité des acteurs nécessaires pour couvrir le système et ses impacts."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Synthèse originale fondée sur des catégories convergentes ; le nombre de zones est un outil pédagogique, pas une norme.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "govuk-discovery-phase",
+        "referenceIds": [
+          "REF-086-001"
+        ],
+        "pedagogicalRationale": "Guide ouvert qui montre concrètement comment partir du problème et préparer une décision avant la construction.",
+        "learnerInstructions": "Lire les trois sections indiquées et relever cinq informations à rechercher.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification ; traduction navigateur possible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Dernière mise à jour affichée par la page : 21 juin 2021."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-1-0",
+        "referenceIds": [
+          "REF-086-002"
+        ],
+        "pedagogicalRationale": "Le schéma de cycle de vie et l’annexe des acteurs évitent un entretien réduit au modèle ou à l’équipe technique.",
+        "learnerInstructions": "Parcourir la figure 2 et l’annexe A puis compléter la liste des parties prenantes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel avec texte sélectionnable et page de publication HTML.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; version 1.0 figée pour ce cours."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "cadrage-probleme-avant-solution",
+        "assessmentTitle": "Mini-évaluation — Cadrer le problème",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le commanditaire demande un chatbot pour réduire les demandes répétitives. Quelle première reformulation est la plus adaptée ?",
+            "explanation": "La découverte commence par le résultat et le problème observables, sans présupposer que le chatbot est la bonne solution.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Quel problème les demandes répétitives créent-elles, pour qui et comment le mesure-t-on aujourd’hui ?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quel fournisseur de chatbot devons-nous sélectionner ?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Combien de paramètres le modèle devra-t-il posséder ?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Quelle couleur doit avoir l’interface du chatbot ?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La phase de découverte est réussie seulement si elle confirme qu’il faut construire une solution IA.",
+            "explanation": "Décider de ne pas poursuivre ou de retenir une solution non-IA peut être une sortie valide lorsque les éléments recueillis le justifient.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation présuppose le moins la solution ?",
+            "explanation": "Elle décrit un résultat professionnel et laisse ouvertes les réponses techniques ou organisationnelles.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Comment permettre aux agents de retrouver une procédure fiable en moins de deux minutes ?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Comment déployer un LLM dans le cloud ?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Comment entraîner notre propre modèle ?",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "faits-attentes-hypotheses-questions",
+        "assessmentTitle": "Mini-évaluation — Qualifier les informations",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "La directrice affirme que l’assistant fera gagner 30 % de temps, sans mesure existante. Comment consigner cette information ?",
+            "explanation": "Il s’agit d’un résultat espéré à vérifier, pas d’un fait établi.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Comme une attente assortie d’une méthode de mesure à définir",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Comme un fait confirmé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Comme une exigence technique du modèle",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations sont des questions ouvertes dans le cas Asteria ?",
+            "explanation": "Ces éléments ne sont pas fournis et peuvent modifier le périmètre, les risques ou la solution.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Quels documents contiennent des données sensibles ?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Qui est responsable de la mise à jour des procédures ?",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La direction souhaite améliorer l’accès à l’information.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un assistant génératif est nécessaire.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une déclaration précise d’un dirigeant devient automatiquement un fait dans le compte rendu.",
+            "explanation": "La précision du propos ne remplace pas une preuve ; son statut et sa source doivent être indiqués.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "entretien-decouverte-oriente-decision",
+        "assessmentTitle": "Mini-évaluation — Conduire la découverte",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels sujets doivent être couverts avant de recommander la prochaine étape ?",
+            "explanation": "Une découverte utile relie le besoin, les personnes, le fonctionnement actuel, les contraintes et les inconnues.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Les utilisateurs et personnes affectées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le processus et les outils actuels",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les contraintes et hypothèses risquées",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement le fournisseur déjà préféré par la direction",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle est la meilleure conclusion d’un premier entretien incomplet ?",
+            "explanation": "Le consultant explicite les inconnues, les responsables et la prochaine décision au lieu de combler les lacunes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Documenter les points établis, les inconnues, les vérifications et les responsables avant la prochaine décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choisir immédiatement une architecture pour maintenir l’élan",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Présenter les hypothèses comme certaines afin de simplifier le compte rendu",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le compte rendu doit préciser la prochaine décision attendue et qui doit apporter les informations manquantes.",
+            "explanation": "Cette précision transforme la découverte en démarche actionnable sans prétendre que la solution est déjà choisie.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : cadrer le problème, qualifier les informations, puis préparer un entretien orienté vers une décision.",
+      "cycles": [
+        {
+          "conceptSlug": "cadrage-probleme-avant-solution",
+          "contentKeys": [
+            "content-1",
+            "content-2"
+          ],
+          "resourceKeys": [
+            "govuk-discovery-phase"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-cadrage-probleme-assessment-1",
+          "rationale": "La lecture guidée suit la reformulation du problème et fournit des repères avant la validation ciblée."
+        },
+        {
+          "conceptSlug": "faits-attentes-hypotheses-questions",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-statut-informations-assessment-1",
+          "rationale": "La qualification de propos réalistes oblige à distinguer les statuts avant la mini-évaluation."
+        },
+        {
+          "conceptSlug": "entretien-decouverte-oriente-decision",
+          "contentKeys": [
+            "content-4",
+            "content-5"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-1-0"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-entretien-decision-assessment-1",
+          "rationale": "Le cas puis le panorama des acteurs préparent la rédaction du guide d’entretien et sa validation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas Asteria est fictif.",
+        "Le payload de leçon respecte le contrat actuel, mais les slugs parents ne sont pas encore présents dans un bundle de seed ; la compatibilité d’intégration reste donc à valider.",
+        "Une revue humaine pédagogique et métier est requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon pilote sur l’entretien de découverte et de ses trois mini-évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

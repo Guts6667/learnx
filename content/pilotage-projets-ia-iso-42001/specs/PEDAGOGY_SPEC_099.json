@@ -1,0 +1,566 @@
+{
+  "specId": "PEDAGOGY_SPEC_099",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "piloter-realisation-ia",
+  "moduleSlug": "du-poc-a-la-production",
+  "lesson": {
+    "title": "Adapter Agile aux incertitudes d’un projet IA",
+    "slug": "adapter-agile-incertitude-ia",
+    "summary": "Cette leçon transforme l’incertitude d’un projet IA en hypothèses explicites, boucles d’apprentissage et décisions traçables, sans réduire Agile à une cadence de cérémonies.",
+    "objectives": [
+      "Distinguer objectif produit, hypothèse à tester et travail à réaliser.",
+      "Construire une boucle courte qui produit une preuve exploitable pour décider.",
+      "Adapter backlog, revue et critères de fin aux risques d’un système d’IA."
+    ],
+    "prerequisites": [
+      "Avoir défini une note d’opportunité et un cadre de mesure pour le cas Asteria."
+    ],
+    "estimatedMinutes": 65,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-asteria-incertitudes",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria veut annoncer une date de livraison avant d’avoir mesuré la qualité documentaire, la capacité de recherche ou l’utilité des réponses. Le consultant ne remplace pas ce manque de preuve par un planning détaillé : il rend les hypothèses visibles et organise les prochains apprentissages.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-empirisme-adapte",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Dans Scrum, l’empirisme repose sur transparence, inspection et adaptation. Pour un projet IA, cette logique implique de rendre visibles les hypothèses sur données, usages, performance et risques, d’examiner des résultats observables à intervalles courts, puis d’adapter le produit ou le plan. Un sprint n’est pas une garantie de performance : il doit produire un incrément utile ou une preuve qui réduit une incertitude de décision.",
+          "sourceKeys": [
+            "scrum-guide-fr-2020"
+          ]
+        }
+      },
+      {
+        "key": "content-hypothese-preuve-decision",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une boucle d’apprentissage professionnelle relie quatre éléments : une hypothèse réfutable, une expérience délimitée, une preuve attendue et une règle de décision définie avant le résultat. Par exemple : si la recherche documentaire retrouve une source approuvée dans au moins 85 % d’un jeu de questions représentatif, alors l’équipe peut tester la génération sur ce périmètre ; sinon elle corrige d’abord le corpus ou le mécanisme de recherche.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-definition-done-ia",
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "La Definition of Done protège la transparence sur la qualité de l’incrément, mais elle ne remplace pas les critères de valeur, de risque ou de passage à une phase suivante. Pour Asteria, elle peut exiger tests reproductibles, traçabilité des versions, revue de sécurité et documentation des limites. Les seuils métier et les décisions go/no-go restent des engagements de gouvernance distincts.",
+          "sourceKeys": [
+            "scrum-guide-fr-2020",
+            "nist-ai-rmf-core"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "scrum-guide-fr-2020",
+        "type": "document",
+        "title": "Le Guide Scrum — La définition officielle de Scrum",
+        "author": "Ken Schwaber et Jeff Sutherland",
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-French.pdf",
+        "citation": "Schwaber, K., & Sutherland, J. (2020). Le Guide Scrum — La définition officielle de Scrum.",
+        "description": "Lire les sections sur la théorie de Scrum, le Sprint, le Product Backlog et la Definition of Done ; relever ce qui rend une adaptation fondée sur des faits plutôt que sur une impression.",
+        "guidance": {
+          "objective": "Relier empirisme, objectif, backlog et qualité de l’incrément.",
+          "instructions": "Lire les sections indiquées et noter un exemple de transparence, d’inspection et d’adaptation applicable à Asteria.",
+          "scope": "Théorie de Scrum ; Sprint ; Product Backlog ; Definition of Done",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF français officiel ; téléchargement libre, structure de titres et texte sélectionnable.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-core",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0 — Core.",
+        "description": "Explorer MAP 1, MEASURE 1 et MANAGE 1 pour relier contexte, métriques et décision de poursuivre à une boucle d’apprentissage projet.",
+        "guidance": {
+          "objective": "Construire une expérience dont le résultat éclaire une décision de risque ou de passage.",
+          "instructions": "Lire MAP 1, MEASURE 1 et MANAGE 1.1, puis associer à chacun une question du projet Asteria.",
+          "scope": "MAP 1 ; MEASURE 1 ; MANAGE 1.1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Empirisme appliqué aux incertitudes IA",
+        "slug": "empirisme-applique-incertitudes-ia",
+        "description": "Les hypothèses sur la valeur, les données, la performance et les risques sont rendues visibles, inspectées avec des preuves, puis adaptées.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "scrum-guide-fr-2020"
+        ],
+        "assessment": {
+          "key": "concept-empirisme-incertitudes-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Empirisme et incertitudes IA",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Boucle hypothèse, preuve et décision",
+        "slug": "boucle-hypothese-preuve-decision",
+        "description": "Une expérimentation utile formule avant exécution l’hypothèse, la preuve attendue, le protocole et la décision associée.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core"
+        ],
+        "assessment": {
+          "key": "concept-boucle-preuve-decision-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Hypothèse, preuve et décision",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-rendre-incertitudes-visibles",
+        "title": "Transformer des certitudes en hypothèses",
+        "description": "Reformuler quatre affirmations d’Asteria — qualité des documents, adoption, exactitude et gain de temps — sous forme d’hypothèses réfutables. Pour chacune, préciser propriétaire et moment d’inspection.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-concevoir-boucle-apprentissage",
+        "title": "Concevoir une boucle d’apprentissage",
+        "description": "Choisir une hypothèse d’Asteria et produire une fiche comportant protocole, échantillon, métrique, seuil, durée, preuve conservée et décisions prévues en cas de succès, d’échec ou de résultat ambigu.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asteria-incertitudes"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-empirisme-adapte"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "scrum-guide-fr-2020"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-rendre-incertitudes-visibles"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-empirisme-incertitudes-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-hypothese-preuve-decision"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definition-done-ia"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-concevoir-boucle-apprentissage"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-boucle-preuve-decision-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-093-001",
+        "type": "professional_guide",
+        "authors": [
+          "Schwaber, K.",
+          "Sutherland, J."
+        ],
+        "organization": "Scrum Guides",
+        "title": "Le Guide Scrum — La définition officielle de Scrum",
+        "year": 2020,
+        "edition": "Version novembre 2020",
+        "publication": "Scrum Guides",
+        "doi": null,
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-French.pdf",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Attribution autorisée selon la notice du Guide Scrum ; reproduction non nécessaire dans la leçon.",
+        "status": "verified",
+        "notes": "Version française 2020 listée sur la page officielle Scrum Guides."
+      },
+      {
+        "id": "REF-093-002",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "AI RMF 1.0 en cours de révision en 2026 ; version figée dans cette spec."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Situation Asteria entièrement fictive créée pour l’exercice."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-093-001",
+            "locator": "sections Théorie de Scrum, Sprint et Definition of Done",
+            "supports": "Empirisme, inspection, adaptation et transparence de la qualité."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide officiel produit par les créateurs de Scrum ; adaptation au contexte IA explicitement présentée comme une application pédagogique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-093-002",
+            "locator": "MAP 1, MEASURE 1 et MANAGE 1.1",
+            "supports": "Lien entre contexte, mesure et décision de poursuivre."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel primaire ; exemple chiffré explicitement fictif et illustratif.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-093-001",
+            "locator": "section Definition of Done",
+            "supports": "Rôle de la Definition of Done dans la transparence de l’incrément."
+          },
+          {
+            "referenceId": "REF-093-002",
+            "locator": "MEASURE 2 et MANAGE 1.1",
+            "supports": "Évaluation documentée et décision de poursuivre ou non."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sources primaires convergent sur qualité visible, mesure et décision, avec rôles distincts.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "scrum-guide-fr-2020",
+        "referenceIds": [
+          "REF-093-001"
+        ],
+        "pedagogicalRationale": "Apporte le cadre empirique déjà partiellement connu de l’apprenant.",
+        "learnerInstructions": "Lire les sections ciblées et produire trois exemples appliqués à Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "PDF textuel officiel accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core",
+        "referenceIds": [
+          "REF-093-002"
+        ],
+        "pedagogicalRationale": "Relie l’itération projet à une mesure et une décision de risque explicites.",
+        "learnerInstructions": "Lire MAP 1, MEASURE 1 et MANAGE 1.1 et les appliquer à une hypothèse.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La page indique que l’AI RMF 1.0 est en cours de révision."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "empirisme-applique-incertitudes-ia",
+        "assessmentTitle": "Mini-évaluation — Empirisme et incertitudes IA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle action rend l’empirisme utile dans le projet Asteria ?",
+            "explanation": "Une hypothèse explicite et une preuve observable permettent inspection puis adaptation.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Documenter une hypothèse et la preuve qui permettra de la réviser",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Multiplier les cérémonies sans définir de résultat attendu",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Figer le périmètre avant d’examiner les données",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La fin d’un sprint prouve que l’assistant atteint sa valeur métier.",
+            "explanation": "La cadence ne prouve ni valeur ni maîtrise des risques ; celles-ci exigent critères et mesures dédiés.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que faut-il inspecter en priorité si la qualité documentaire est inconnue ?",
+            "explanation": "Il faut observer la qualité et la couverture du corpus avant de promettre la qualité des réponses.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un échantillon représentatif du corpus et ses défauts",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La vitesse de rédaction du planning",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de réunions prévues",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "boucle-hypothese-preuve-decision",
+        "assessmentTitle": "Mini-évaluation — Hypothèse, preuve et décision",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément doit être défini avant d’observer le résultat d’une expérience ?",
+            "explanation": "La règle de décision préalablement définie limite l’interprétation opportuniste.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "La preuve attendue et la décision associée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La conclusion finale favorable",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nom commercial du modèle",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent une hypothèse testable dans le cas Asteria ?",
+            "explanation": "Une population ou un périmètre, une mesure et un seuil permettent de confronter l’hypothèse à des observations.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Un périmètre de questions défini",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une métrique observable",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une promesse générale de performance",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Le résultat est ambigu. Quelle décision est la plus rigoureuse ?",
+            "explanation": "Un résultat ambigu déclenche l’analyse des limites et, si pertinent, une expérience révisée plutôt qu’un succès déclaré.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Documenter l’incertitude et réviser le protocole ou la décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choisir uniquement les exemples favorables",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Passer en production pour obtenir une réponse définitive",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : rendre les incertitudes transparentes, puis concevoir une boucle qui relie expérience et décision.",
+      "cycles": [
+        {
+          "conceptSlug": "empirisme-applique-incertitudes-ia",
+          "contentKeys": [
+            "content-asteria-incertitudes",
+            "content-empirisme-adapte"
+          ],
+          "resourceKeys": [
+            "scrum-guide-fr-2020"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-rendre-incertitudes-visibles"
+          },
+          "assessmentKey": "concept-empirisme-incertitudes-assessment-1",
+          "rationale": "Le cadre Scrum est appliqué aux incertitudes concrètes d’Asteria avant validation."
+        },
+        {
+          "conceptSlug": "boucle-hypothese-preuve-decision",
+          "contentKeys": [
+            "content-hypothese-preuve-decision",
+            "content-definition-done-ia"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-concevoir-boucle-apprentissage"
+          },
+          "assessmentKey": "concept-boucle-preuve-decision-assessment-1",
+          "rationale": "La seconde production oblige à définir la décision avant le résultat et distingue qualité d’incrément et seuil de passage."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Revue humaine Agile et IA requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

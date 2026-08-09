@@ -1,0 +1,932 @@
+{
+  "specId": "PEDAGOGY_SPEC_090",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "posture-consultant-ia",
+  "moduleSlug": "role-et-systemes-ia",
+  "lesson": {
+    "title": "Distinguer automatisation, ML et IA générative",
+    "slug": "distinguer-automatisation-ml-ia-generative",
+    "summary": "Cette leçon donne au consultant un langage commun pour distinguer une automatisation à règles explicites, un système fondé sur l’apprentissage automatique et un système d’IA générative. Elle apprend surtout à qualifier un besoin avant de proposer une technologie.",
+    "objectives": [
+      "Distinguer une automatisation déterministe d’un système d’IA à partir de son mode de production des résultats.",
+      "Expliquer la différence entre apprentissage et inférence dans un système de machine learning.",
+      "Identifier ce qui caractérise une IA générative sans assimiler toute IA au contenu généré.",
+      "Recommander une famille de solution proportionnée à un besoin métier et expliciter les informations manquantes."
+    ],
+    "prerequisites": [
+      "Connaître le fonctionnement général d’un processus métier et d’une application informatique."
+    ],
+    "estimatedMinutes": 75,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-situation-asteria",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria Services demande d’« automatiser le support avec l’IA ». Cette phrase ne décrit ni le problème à résoudre ni le résultat attendu. Une partie des demandes pourrait être routée avec des règles stables ; certaines pourraient être classées à partir d’exemples historiques ; d’autres nécessiteraient de produire une réponse nouvelle. Le premier travail du consultant consiste donc à séparer le besoin métier de la technologie pressentie.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-automatisation-et-inference",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une automatisation déterministe exécute des règles ou une séquence définies à l’avance : pour les mêmes entrées et les mêmes règles, le résultat attendu est reproductible. Un système d’IA produit au contraire des prédictions, contenus, recommandations ou décisions en inférant un résultat à partir de ses entrées et de son modèle. La frontière n’est pas toujours absolue : une solution réelle peut combiner workflow déterministe, règles métier et composants d’IA. Il faut donc décrire le mécanisme utile plutôt que coller une étiquette commerciale au produit entier.",
+          "sourceKeys": [
+            "oecd-definition-systeme-ia-2024"
+          ]
+        }
+      },
+      {
+        "key": "content-diagnostic-avant-technologie",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Réflexe de consultant : demander si les règles sont explicites et suffisamment stables, si des exemples de qualité existent, quelle sortie est attendue, quelle variabilité est acceptable et qui vérifiera le résultat. Si un workflow classique répond au besoin de manière plus simple et contrôlable, l’absence d’IA peut être la meilleure recommandation.",
+          "sourceKeys": [
+            "oecd-definition-systeme-ia-2024"
+          ]
+        }
+      },
+      {
+        "key": "content-machine-learning",
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "Le machine learning, ou apprentissage automatique, regroupe des techniques qui construisent un modèle à partir de données afin d’identifier des régularités utiles à une tâche. L’apprentissage est la phase où le modèle est ajusté à partir de données et de critères ; l’inférence est l’utilisation du modèle obtenu pour produire un résultat sur une nouvelle entrée. Un modèle entraîné ne « comprend » pas nécessairement le métier et sa performance dépend notamment des données, de la tâche, des métriques et des conditions d’utilisation.",
+          "sourceKeys": [
+            "oecd-definition-systeme-ia-2024",
+            "cnil-glossaire-ia-apprentissage-automatique"
+          ]
+        }
+      },
+      {
+        "key": "content-exemple-classification",
+        "type": "example",
+        "position": 5,
+        "content": {
+          "text": "Cas fictif — Asteria possède des milliers de tickets correctement étiquetés. Un modèle pourrait apprendre à estimer la catégorie d’un nouveau ticket. Pendant l’apprentissage, les exemples servent à ajuster le modèle ; pendant l’inférence, le texte d’un nouveau ticket produit une catégorie probable. Si cinq mots-clés stables suffisent réellement à router tous les tickets, une règle explicite resterait toutefois plus simple à expliquer et maintenir.",
+          "sourceKeys": [
+            "oecd-definition-systeme-ia-2024",
+            "cnil-glossaire-ia-apprentissage-automatique"
+          ]
+        }
+      },
+      {
+        "key": "content-ia-generative",
+        "type": "definition",
+        "position": 6,
+        "content": {
+          "text": "L’IA générative désigne des systèmes capables de créer des contenus tels que du texte, du code, des images, de l’audio ou de la vidéo. Elle constitue une famille d’usages de l’IA ; toute IA n’est donc pas générative. Pour un assistant documentaire, le modèle peut produire une réponse nouvelle à partir d’une consigne et d’un contexte, mais un résultat plausible peut être inexact. Le besoin de génération, la qualité attendue, les sources autorisées et la vérification humaine doivent être définis avant de retenir cette solution.",
+          "sourceKeys": [
+            "cnil-faq-utilisation-ia-generative"
+          ]
+        }
+      },
+      {
+        "key": "content-grille-de-choix",
+        "type": "callout",
+        "position": 7,
+        "content": {
+          "text": "Grille de décision : choisir une automatisation lorsque les étapes et règles sont connues ; envisager le machine learning lorsqu’une prédiction ou une classification doit exploiter des régularités apprises ; envisager l’IA générative lorsqu’il faut produire ou transformer un contenu variable. Ce classement est un point de départ, pas une décision d’architecture : valeur, données, risques, intégration, coût et supervision seront étudiés dans les étapes suivantes.",
+          "sourceKeys": [
+            "oecd-definition-systeme-ia-2024",
+            "cnil-glossaire-ia-apprentissage-automatique",
+            "cnil-faq-utilisation-ia-generative"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "oecd-definition-systeme-ia-2024",
+        "type": "article",
+        "title": "What is AI? Can you make a clear distinction between AI and non-AI systems?",
+        "author": "Marko Grobelnik, Karine Perset et Stuart Russell",
+        "url": "https://oecd.ai/en/wonk/definition",
+        "citation": "Grobelnik, M., Perset, K., & Russell, S. (2024, 6 mars). What is AI? Can you make a clear distinction between AI and non-AI systems? OECD.AI.",
+        "description": "Lire l’introduction, la définition révisée et la section « Types of AI systems and how they are built ». Relever les mots qui distinguent règles explicites, inférence et apprentissage automatique.",
+        "guidance": {
+          "objective": "Distinguer un système non-IA, un système d’IA et une technique de machine learning à partir de leur mécanisme.",
+          "instructions": "Lire les lignes d’introduction jusqu’à la fin de la section « Types of AI systems and how they are built », puis noter un critère qui ne dépend pas du mot commercial « IA ».",
+          "scope": "Introduction, définition révisée, sections « Input, including data » et « Types of AI systems and how they are built »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais ; texte structuré par titres et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "cnil-glossaire-ia-apprentissage-automatique",
+        "type": "website",
+        "title": "Glossaire de l’intelligence artificielle — Apprentissage automatique",
+        "author": "Commission nationale de l’informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia",
+        "citation": "Commission nationale de l’informatique et des libertés. (s. d.). Glossaire de l’intelligence artificielle (IA), entrée « Apprentissage automatique ».",
+        "description": "Consulter les entrées « Algorithme », « Apprentissage automatique » et « Apprentissage continu » afin de distinguer une suite d’étapes, la construction d’un modèle à partir de données et l’éventuelle adaptation après déploiement.",
+        "guidance": {
+          "objective": "Employer correctement les termes algorithme, apprentissage automatique, entraînement et adaptation.",
+          "instructions": "Lire les trois entrées indiquées et rédiger une phrase distinguant apprentissage et exécution d’une règle.",
+          "scope": "Entrées « Algorithme », « Apprentissage automatique » et « Apprentissage continu »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en français ; site déclaré partiellement conforme par la CNIL.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 6,
+        "position": 2
+      },
+      {
+        "key": "cnil-faq-utilisation-ia-generative",
+        "type": "article",
+        "title": "Les questions-réponses de la CNIL sur l’utilisation d’un système d’IA générative",
+        "author": "Commission nationale de l’informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative",
+        "citation": "Commission nationale de l’informatique et des libertés. (2024, 18 juillet). Les questions-réponses de la CNIL sur l’utilisation d’un système d’IA générative.",
+        "description": "Lire l’introduction et la réponse qui définit l’IA générative. Relever les catégories de contenus produits et la raison pour laquelle un résultat plausible doit rester vérifié.",
+        "guidance": {
+          "objective": "Reconnaître une IA générative et formuler une première exigence de vérification.",
+          "instructions": "Lire l’introduction et les deux premières réponses de la FAQ, puis noter un usage génératif et une limite à communiquer au commanditaire.",
+          "scope": "Introduction et deux premières questions-réponses",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en français, consultable sans compte ; site déclaré partiellement conforme par la CNIL.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Automatisation déterministe et système d’IA",
+        "slug": "automatisation-deterministe-et-systeme-ia",
+        "description": "Une automatisation applique des règles explicites, tandis qu’un système d’IA infère comment produire une sortie ; une solution peut combiner les deux mécanismes.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "oecd-definition-systeme-ia-2024"
+        ],
+        "assessment": {
+          "key": "concept-automatisation-systeme-ia-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Automatisation et système d’IA",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "Apprentissage et inférence en machine learning",
+        "slug": "apprentissage-et-inference-machine-learning",
+        "description": "L’apprentissage ajuste un modèle à partir de données et de critères ; l’inférence applique ce modèle à une nouvelle entrée pour produire une sortie.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "oecd-definition-systeme-ia-2024",
+          "cnil-glossaire-ia-apprentissage-automatique"
+        ],
+        "assessment": {
+          "key": "concept-apprentissage-inference-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Apprentissage et inférence",
+          "questionCount": 4
+        }
+      },
+      {
+        "title": "IA générative et production de contenu",
+        "slug": "ia-generative-et-production-contenu",
+        "description": "Une IA générative crée ou transforme un contenu ; cette capacité n’implique ni exactitude automatique ni adéquation au besoin métier.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-faq-utilisation-ia-generative"
+        ],
+        "assessment": {
+          "key": "concept-ia-generative-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — IA générative",
+          "questionCount": 4
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-classer-demandes-asteria",
+        "title": "Classer quatre demandes sans vendre l’IA",
+        "description": "Pour quatre demandes fictives d’Asteria — envoyer un rappel à échéance fixe, router un ticket, résumer une procédure et répondre librement à une question — choisir « automatisation », « machine learning », « IA générative » ou « informations insuffisantes ». Justifier chaque choix en une phrase et citer la donnée manquante lorsque la décision reste ouverte.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-separer-apprentissage-inference",
+        "title": "Séparer apprentissage et inférence",
+        "description": "À partir du mini-cas de classification des tickets, produire un tableau à deux colonnes : « apprentissage » et « inférence ». Y placer les données utilisées, l’action du système, la sortie attendue et un contrôle humain ou technique pour chaque phase.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-recommandation-commanditaire",
+        "title": "Formuler une recommandation proportionnée",
+        "description": "Rédiger une recommandation de 150 à 200 mots au commanditaire d’Asteria. Proposer le mécanisme le plus simple pour router les demandes et, séparément, l’usage éventuel d’une IA générative pour préparer une réponse. Mentionner au moins deux hypothèses à vérifier, une limite et la place de la validation humaine.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-situation-asteria"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-automatisation-et-inference"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-diagnostic-avant-technologie"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "oecd-definition-systeme-ia-2024"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-classer-demandes-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-automatisation-systeme-ia-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-machine-learning"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-exemple-classification"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-glossaire-ia-apprentissage-automatique"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-separer-apprentissage-inference"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-apprentissage-inference-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-ia-generative"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-grille-de-choix"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-faq-utilisation-ia-generative"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-recommandation-commanditaire"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-ia-generative-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en gestion de projet, Agile et usages de l’IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+        "type": "institutional_article",
+        "authors": [
+          "Grobelnik, M.",
+          "Perset, K.",
+          "Russell, S."
+        ],
+        "organization": "Organisation for Economic Co-operation and Development",
+        "title": "What is AI? Can you make a clear distinction between AI and non-AI systems?",
+        "year": 2024,
+        "edition": null,
+        "publication": "OECD.AI",
+        "doi": null,
+        "url": "https://oecd.ai/en/wonk/definition",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Article explicatif institutionnel fondé sur la définition de l’OCDE révisée en 2023 ; ne constitue pas une norme technique."
+      },
+      {
+        "id": "REF-002-CNIL-GLOSSAIRE-IA",
+        "type": "institutional_glossary",
+        "authors": [],
+        "organization": "Commission nationale de l’informatique et des libertés",
+        "title": "Glossaire de l’intelligence artificielle (IA)",
+        "year": null,
+        "edition": null,
+        "publication": "CNIL",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/intelligence-artificielle/glossaire-ia",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Glossaire institutionnel évolutif ; les entrées utilisées doivent être revérifiées avant publication."
+      },
+      {
+        "id": "REF-003-CNIL-FAQ-IA-GENERATIVE",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Commission nationale de l’informatique et des libertés",
+        "title": "Les questions-réponses de la CNIL sur l’utilisation d’un système d’IA générative",
+        "year": 2024,
+        "edition": null,
+        "publication": "CNIL",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "FAQ institutionnelle évolutive publiée le 18 juillet 2024 ; vérifier la date de mise à jour et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Situation Asteria explicitement fictive et consigne de découverte originale, sans affirmation sur une organisation réelle."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+            "locator": "Lignes 53 à 65 et section « Applying the updated definition »",
+            "supports": "Définition d’un système d’IA, rôle de l’inférence et absence de frontière unique entre systèmes IA et non-IA."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source institutionnelle directement consacrée à la définition et à ses limites d’application.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+            "locator": "Sections « Input, including data », « Types of AI systems and how they are built » et « Applying the updated definition »",
+            "supports": "Critères de qualification d’un système, diversité des techniques et nécessité d’adapter la définition au contexte d’usage."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La recommandation pédagogique synthétise des distinctions explicitement décrites par l’OCDE.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+            "locator": "Section « Types of AI systems and how they are built », paragraphe consacré au machine learning",
+            "supports": "Construction d’un modèle par exposition à des données d’entraînement et distinction avec des instructions humaines explicites."
+          },
+          {
+            "referenceId": "REF-002-CNIL-GLOSSAIRE-IA",
+            "locator": "Entrées « Apprentissage automatique » et « Apprentissage continu »",
+            "supports": "Définition française de l’apprentissage automatique et distinction entre apprentissage et déploiement."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sources institutionnelles convergent sur les notions d’apprentissage à partir de données et de modèle.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+            "locator": "Sections « Input, including data » et « Types of AI systems and how they are built »",
+            "supports": "Séparation entre données utilisées pour construire un modèle et nouvelles entrées traitées en fonctionnement."
+          },
+          {
+            "referenceId": "REF-002-CNIL-GLOSSAIRE-IA",
+            "locator": "Entrée « Apprentissage automatique »",
+            "supports": "Apprentissage d’un modèle à partir de données."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le mécanisme illustré est directement dérivé des définitions ; les données et l’entreprise sont explicitement fictives.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CNIL-FAQ-IA-GENERATIVE",
+            "locator": "Introduction et réponse définissant l’intelligence artificielle générative",
+            "supports": "Capacité à créer différentes catégories de contenus et possibilité de résultats inexacts mais plausibles."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Source institutionnelle française directement consacrée à l’usage des systèmes d’IA générative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 7,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OECD-DEFINITION-SYSTEME-IA",
+            "locator": "Définition révisée et section « Types of AI systems and how they are built »",
+            "supports": "Distinction entre règles, apprentissage et types de sorties d’un système d’IA."
+          },
+          {
+            "referenceId": "REF-002-CNIL-GLOSSAIRE-IA",
+            "locator": "Entrées « Algorithme » et « Apprentissage automatique »",
+            "supports": "Différence entre suite d’étapes explicites et apprentissage à partir de données."
+          },
+          {
+            "referenceId": "REF-003-CNIL-FAQ-IA-GENERATIVE",
+            "locator": "Introduction et réponse définissant l’intelligence artificielle générative",
+            "supports": "Production de contenu comme caractéristique de l’IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La grille synthétise trois définitions institutionnelles sans prétendre décider seule de l’architecture.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "oecd-definition-systeme-ia-2024",
+        "referenceIds": [
+          "REF-001-OECD-DEFINITION-SYSTEME-IA"
+        ],
+        "pedagogicalRationale": "Cette lecture officielle fournit la distinction la plus structurante entre un système d’IA, ses entrées, son modèle et ses sorties, tout en reconnaissant une frontière pratique non absolue.",
+        "learnerInstructions": "Lire l’introduction, la définition révisée et la section sur les types de systèmes, puis relever un critère utilisable en entretien.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée et accessible sans authentification ; lecture en anglais.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Titre, auteurs, date et sections contrôlés le 9 août 2026."
+      },
+      {
+        "resourceKey": "cnil-glossaire-ia-apprentissage-automatique",
+        "referenceIds": [
+          "REF-002-CNIL-GLOSSAIRE-IA"
+        ],
+        "pedagogicalRationale": "Le glossaire fournit une formulation française concise des termes nécessaires pour expliquer le machine learning à un commanditaire.",
+        "learnerInstructions": "Consulter les entrées « Algorithme », « Apprentissage automatique » et « Apprentissage continu », puis distinguer apprentissage et exécution.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML sans authentification ; le site se déclare partiellement conforme en matière d’accessibilité.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Entrées et URL contrôlées le 9 août 2026 ; glossaire évolutif à revérifier."
+      },
+      {
+        "resourceKey": "cnil-faq-utilisation-ia-generative",
+        "referenceIds": [
+          "REF-003-CNIL-FAQ-IA-GENERATIVE"
+        ],
+        "pedagogicalRationale": "La FAQ distingue l’IA générative par sa production de contenus et introduit immédiatement la nécessité de vérifier les résultats plausibles.",
+        "learnerInstructions": "Lire l’introduction et les deux premières réponses, puis relever un usage génératif et une limite à expliciter au commanditaire.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML sans authentification ; le site se déclare partiellement conforme en matière d’accessibilité.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Page accessible lors du contrôle du 9 août 2026 ; contenu évolutif à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "automatisation-deterministe-et-systeme-ia",
+        "assessmentTitle": "Mini-évaluation — Automatisation et système d’IA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel mécanisme décrit le mieux une automatisation déterministe ?",
+            "explanation": "Une automatisation déterministe exécute des règles explicites sur des entrées définies, sans apprendre un modèle à partir d’exemples.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Exécuter une suite de règles définies à l’avance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Créer librement un texte à partir d’une consigne",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Apprendre automatiquement des catégories sans données",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément caractérise un système d’IA dans la définition étudiée ?",
+            "explanation": "Le système infère, à partir de ses entrées, comment produire des prédictions, contenus, recommandations ou décisions.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Il infère comment produire une sortie à partir d’entrées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il doit obligatoirement dialoguer en langage naturel",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il remplace nécessairement toute décision humaine",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une même solution peut associer des règles déterministes et un composant d’IA.",
+            "explanation": "Les solutions réelles peuvent combiner workflow, règles, modèles et supervision ; il faut qualifier chaque mécanisme utile.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle réaction est la plus professionnelle face à la demande « nous voulons automatiser avec l’IA » ?",
+            "explanation": "Le consultant clarifie d’abord le problème, les sorties, les règles et les contraintes avant de sélectionner une technologie.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Qualifier le besoin et comparer aussi une solution sans IA",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choisir immédiatement le modèle génératif le plus récent",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Refuser toute automatisation parce que le besoin est encore vague",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "apprentissage-et-inference-machine-learning",
+        "assessmentTitle": "Mini-évaluation — Apprentissage et inférence",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que se passe-t-il principalement pendant l’apprentissage d’un modèle ?",
+            "explanation": "Le modèle est ajusté à partir de données et de critères pour réaliser une tâche définie.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Le modèle est ajusté à partir de données et d’un objectif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le modèle garantit chaque résultat futur",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’utilisateur rédige toutes les réponses finales",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel exemple correspond à une inférence ?",
+            "explanation": "L’inférence utilise le modèle déjà construit pour produire une sortie à partir d’une nouvelle entrée.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Attribuer une catégorie probable à un nouveau ticket",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rassembler et étiqueter l’historique d’apprentissage",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Définir les critères de validation du projet",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un modèle entraîné comprend automatiquement le contexte métier de l’organisation.",
+            "explanation": "Le modèle apprend des régularités utiles à une tâche ; la pertinence métier doit être définie et évaluée par l’organisation.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent être précisés pour évaluer une proposition de machine learning ?",
+            "explanation": "La tâche, les données et les critères d’évaluation conditionnent la pertinence d’un modèle ; le seul nom de l’algorithme ne suffit pas.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "La tâche à réaliser",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les données disponibles et leur qualité",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les métriques et seuils utiles au métier",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La présence du mot intelligence dans le nom du produit",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "ia-generative-et-production-contenu",
+        "assessmentTitle": "Mini-évaluation — IA générative",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels résultats peuvent relever d’une IA générative ?",
+            "explanation": "L’IA générative peut produire ou transformer plusieurs formes de contenus, notamment texte, code, image et audio.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un résumé rédigé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une image créée à partir d’une consigne",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Du code proposé à partir d’une demande",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une alerte déclenchée par une date fixe, sans génération",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Tout système de machine learning est une IA générative.",
+            "explanation": "L’IA générative est une famille particulière ; de nombreux modèles classent, prédisent ou recommandent sans générer un contenu nouveau.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi une réponse générée et convaincante doit-elle être vérifiée ?",
+            "explanation": "Un système génératif peut produire une information inexacte tout en lui donnant une forme plausible.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Parce que la plausibilité du texte ne garantit pas son exactitude",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Parce qu’une IA générative ne peut jamais produire de texte",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Parce que tout contenu généré est nécessairement confidentiel",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Asteria souhaite générer un brouillon de réponse à partir de procédures internes. Quelle condition minimale doit accompagner la proposition ?",
+            "explanation": "Le périmètre documentaire, les critères de qualité et la responsabilité de validation doivent être définis avant l’usage.",
+            "acceptedAnswers": [],
+            "position": 4,
+            "options": [
+              {
+                "label": "Définir les sources autorisées, les contrôles et la validation humaine",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Promettre que le modèle remplacera toute relecture",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Masquer aux utilisateurs qu’un contenu a été généré",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles professionnels : qualifier le mécanisme, appliquer la distinction à Asteria, puis valider la notion avant l’intégration finale.",
+      "cycles": [
+        {
+          "conceptSlug": "automatisation-deterministe-et-systeme-ia",
+          "contentKeys": [
+            "content-situation-asteria",
+            "content-automatisation-et-inference",
+            "content-diagnostic-avant-technologie"
+          ],
+          "resourceKeys": [
+            "oecd-definition-systeme-ia-2024"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-classer-demandes-asteria"
+          },
+          "assessmentKey": "concept-automatisation-systeme-ia-assessment-1",
+          "rationale": "La situation révèle l’ambiguïté du mot IA ; la source officielle fournit les critères, puis le classement oblige à recommander aussi une option non-IA."
+        },
+        {
+          "conceptSlug": "apprentissage-et-inference-machine-learning",
+          "contentKeys": [
+            "content-machine-learning",
+            "content-exemple-classification"
+          ],
+          "resourceKeys": [
+            "cnil-glossaire-ia-apprentissage-automatique"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-separer-apprentissage-inference"
+          },
+          "assessmentKey": "concept-apprentissage-inference-assessment-1",
+          "rationale": "Le vocabulaire est immédiatement appliqué au cycle de classification des tickets afin d’éviter de confondre entraînement et usage du modèle."
+        },
+        {
+          "conceptSlug": "ia-generative-et-production-contenu",
+          "contentKeys": [
+            "content-ia-generative",
+            "content-grille-de-choix"
+          ],
+          "resourceKeys": [
+            "cnil-faq-utilisation-ia-generative"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-recommandation-commanditaire"
+          },
+          "assessmentKey": "concept-ia-generative-assessment-1",
+          "rationale": "La lecture française situe la génération et ses limites avant une recommandation combinant mécanisme, hypothèses et supervision ; la mini-évaluation assure aussi la consolidation des trois distinctions."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon initial : validation éditoriale, technique et métier requise avant intégration.",
+        "Le cas Asteria est fictif ; aucune donnée réelle ou confidentielle ne doit être utilisée.",
+        "Les pages institutionnelles évolutives doivent être revérifiées avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon pilote sur la distinction entre automatisation, machine learning et IA générative.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

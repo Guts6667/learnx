@@ -1,0 +1,726 @@
+{
+  "specId": "PEDAGOGY_SPEC_105",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "analyse-risques-ia",
+  "lesson": {
+    "title": "Évaluer impacts, vraisemblance et incertitude",
+    "slug": "evaluer-impacts-vraisemblance-incertitude",
+    "summary": "La leçon apprend à comparer des risques sans fausse précision : impacts multidimensionnels, exposition et vraisemblance argumentées, confiance séparée du score et seuils d'escalade explicites.",
+    "objectives": [
+      "Décrire des impacts sur personnes, opérations, droits, sécurité, finances et réputation.",
+      "Estimer une vraisemblance à partir d'exposition, conditions et preuves disponibles.",
+      "Exprimer incertitude et confiance séparément de la priorité de traitement."
+    ],
+    "prerequisites": [
+      "Savoir formuler un scénario et tenir un registre de risques."
+    ],
+    "estimatedMinutes": 45,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L'impact d'un scénario ne se résume pas à une perte financière. Il peut concerner droits et libertés, santé ou sécurité, continuité opérationnelle, qualité du service, confidentialité, réputation ou charge humaine. La gravité dépend aussi de l'étendue, de la durée et de la réversibilité. Les dimensions restent visibles même si une échelle commune est utilisée.",
+          "sourceKeys": [
+            "nist-ai-rmf-measure-1-0"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "En l'absence de données robustes, écrire « 63 % » crée une précision fictive. Une classe ordinale peut être utile si ses critères sont définis : exposition rare ou fréquente, conditions nécessaires, contrôles déjà actifs, incidents ou tests observés, qualité et représentativité des données. Les hypothèses et la confiance accompagnent toujours l'estimation.",
+          "sourceKeys": [
+            "nist-genai-measure-600-1"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un risque peut être prioritaire malgré une confiance faible lorsque l'impact potentiel est grave ou qu'une obligation d'escalade s'applique. Le registre sépare donc classe d'impact, classe de vraisemblance, confiance, inconnues et décision. Une matrice aide à comparer ; elle ne remplace pas le jugement ni les critères éliminatoires.",
+          "sourceKeys": [
+            "nist-ai-rmf-manage-1-0"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-measure-1-0",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Lire le passage indiqué et relever les décisions que le cadre invite à documenter.",
+        "guidance": {
+          "objective": "Relier mesure, métriques, incertitude et contexte",
+          "instructions": "Lire la fonction MEASURE puis proposer pour deux scénarios une mesure, sa limite et une source d'incertitude.",
+          "scope": "Section 5.3, fonction MEASURE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-genai-measure-600-1",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio et al.",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., et al. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. NIST AI 600-1. https://doi.org/10.6028/NIST.AI.600-1",
+        "description": "Approfondissement facultatif — Consulter les tableaux de risques et d'actions afin de contextualiser le cas d'un assistant génératif.",
+        "guidance": {
+          "objective": "Identifier des risques propres ou amplifiés par l'IA générative et des réponses organisationnelles possibles.",
+          "instructions": "Facultatif — Repérer deux actions de mesure applicables à la recherche documentaire d'Asteria.",
+          "scope": "Section 3, actions MEASURE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 2
+      },
+      {
+        "key": "nist-ai-rmf-manage-1-0",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Approfondissement facultatif — Lire le passage indiqué et relever les décisions que le cadre invite à documenter.",
+        "guidance": {
+          "objective": "Prioriser et répondre aux risques mesurés",
+          "instructions": "Facultatif — Lire la fonction MANAGE puis justifier l'ordre de traitement de trois scénarios sans utiliser le total seul.",
+          "scope": "Section 5.4, fonction MANAGE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Impacts multidimensionnels",
+        "slug": "impacts-multidimensionnels-proportionnes",
+        "description": "L'impact est décrit par conséquence, personnes ou actifs touchés, étendue, durée et réversibilité, sans réduire toutes les dimensions à une moyenne opaque.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-measure-1-0"
+        ],
+        "assessment": {
+          "key": "concept-impacts-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Qualifier les impacts",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Vraisemblance fondée sur l'exposition",
+        "slug": "vraisemblance-exposition-conditions",
+        "description": "La vraisemblance est une appréciation argumentée des conditions, de la fréquence d'exposition, des contrôles existants et des observations, pas une probabilité inventée.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-genai-measure-600-1"
+        ],
+        "assessment": {
+          "key": "concept-vraisemblance-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Estimer la vraisemblance",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Incertitude, confiance et priorité",
+        "slug": "incertitude-confiance-priorite",
+        "description": "La confiance qualifie la solidité de l'estimation ; la priorité combine impacts, vraisemblance, obligations, exposition et possibilité d'agir, avec des critères éliminatoires.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-manage-1-0"
+        ],
+        "assessment": {
+          "key": "concept-incertitude-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Exprimer l'incertitude",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Décrire un impact",
+        "description": "En 5 minutes, décrire pour un scénario la conséquence, les personnes ou actifs, l'étendue, la durée, la réversibilité et les dimensions touchées avant toute notation.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Estimer sans inventer",
+        "description": "En 5 minutes, attribuer une classe de vraisemblance à un scénario en citant exposition, conditions, contrôle existant, observation et donnée manquante.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Calibrer trois priorités",
+        "description": "En 12 minutes, comparer trois risques en séparant impact, vraisemblance, confiance et inconnues, puis justifier deux priorités et un sujet à escalader.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-measure-1-0"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-impacts-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-measure-600-1"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-vraisemblance-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-manage-1-0"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-incertitude-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-099-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "Version 1.0 publiée en janvier 2023 ; le NIST signale une révision en cours. Ne pas présenter les fonctions comme une séquence obligatoire."
+      },
+      {
+        "id": "REF-099-002",
+        "type": "institutional_guidance",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "NIST AI 600-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "Profil transversal publié en juillet 2024, compagnon volontaire de l'AI RMF 1.0."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-099-001",
+            "locator": "section 5.3, fonction MEASURE",
+            "supports": "Mesure des caractéristiques de confiance, des impacts et de l'incertitude dans le contexte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre officiel ; la grille multidimensionnelle est une synthèse opérationnelle cohérente.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-099-002",
+            "locator": "section 3, actions MEASURE",
+            "supports": "Mesures et évaluations adaptées aux risques spécifiques de l'IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Profil officiel ; la prudence sur les probabilités est une application méthodologique explicite.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-099-001",
+            "locator": "section 5.4, fonction MANAGE",
+            "supports": "Priorisation, réponse, surveillance et communication des risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel directement centré sur la gestion et la priorisation des risques.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-measure-1-0",
+        "referenceIds": [
+          "REF-099-001"
+        ],
+        "pedagogicalRationale": "Cadre public de référence pour relier contexte, mesure, gouvernance et traitement du risque.",
+        "learnerInstructions": "Lire la fonction MEASURE puis proposer pour deux scénarios une mesure, sa limite et une source d'incertitude.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée pour cette leçon ; revérifier l'état de révision avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-measure-600-1",
+        "referenceIds": [
+          "REF-099-002"
+        ],
+        "pedagogicalRationale": "Profil public et spécifique à l'IA générative, utile au cas fil rouge.",
+        "learnerInstructions": "Facultatif — Repérer deux actions de mesure applicables à la recherche documentaire d'Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, accessible sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Publication NIST mise à jour administrativement en 2026 ; contenu cité comme NIST AI 600-1 (2024)."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-manage-1-0",
+        "referenceIds": [
+          "REF-099-001"
+        ],
+        "pedagogicalRationale": "Cadre public de référence pour relier contexte, mesure, gouvernance et traitement du risque.",
+        "learnerInstructions": "Facultatif — Lire la fonction MANAGE puis justifier l'ordre de traitement de trois scénarios sans utiliser le total seul.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée pour cette leçon ; revérifier l'état de révision avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "impacts-multidimensionnels-proportionnes",
+        "assessmentTitle": "Mini-évaluation — Qualifier les impacts",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions peuvent caractériser un impact ?",
+            "explanation": "L'analyse couvre plusieurs formes de préjudice ou de dégradation.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Droits et libertés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Continuité opérationnelle",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Confidentialité",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Popularité du fournisseur seulement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi décrire la réversibilité ?",
+            "explanation": "Deux conséquences de même étendue immédiate peuvent différer par leur possibilité de correction.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Elle influence la gravité et le traitement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Elle remplace l'analyse des personnes affectées",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Elle prouve la vraisemblance",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une moyenne unique peut masquer un impact grave dans une dimension.",
+            "explanation": "Les dimensions critiques doivent rester visibles.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "vraisemblance-exposition-conditions",
+        "assessmentTitle": "Mini-évaluation — Estimer la vraisemblance",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle estimation est la plus défendable sans historique robuste ?",
+            "explanation": "Une classe définie et ses preuves rendent l'incertitude visible.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Possible : exposition fréquente, un contrôle manuel partiel et aucun test représentatif",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "63 %",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Certain parce que l'IA générative hallucine",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Qu'est-ce qui éclaire la vraisemblance ?",
+            "explanation": "Elle dépend de l'exposition, des conditions, des contrôles et des observations.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Fréquence d'exposition",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Conditions nécessaires",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Résultats de tests pertinents",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Gravité seule",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La gravité d'un impact suffit à déterminer sa vraisemblance.",
+            "explanation": "Gravité et vraisemblance décrivent des dimensions différentes.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "incertitude-confiance-priorite",
+        "assessmentTitle": "Mini-évaluation — Exprimer l'incertitude",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un risque à impact potentiellement grave mais peu documenté doit-il être ignoré ?",
+            "explanation": "Il peut exiger précaution, preuve rapide ou escalade malgré une confiance faible.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Non, documenter l'incertitude et décider d'une action proportionnée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Oui, tant qu'aucun incident n'est prouvé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Oui, si son score moyen est faible",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il afficher à côté d'une priorité ?",
+            "explanation": "La décision reste auditable si preuves, inconnues et confiance sont visibles.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Niveau de confiance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Preuves utilisées",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Inconnues critiques",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement une couleur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une matrice de risque remplace le jugement professionnel.",
+            "explanation": "Elle structure la discussion mais ne décide pas seule.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : décrire les impacts, estimer l'exposition, puis séparer confiance et priorité.",
+      "cycles": [
+        {
+          "conceptSlug": "impacts-multidimensionnels-proportionnes",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-measure-1-0"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-impacts-assessment-1",
+          "rationale": "La description concrète précède le classement pour limiter l'effet d'une note abstraite."
+        },
+        {
+          "conceptSlug": "vraisemblance-exposition-conditions",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nist-genai-measure-600-1"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-vraisemblance-assessment-1",
+          "rationale": "L'apprenant construit une échelle justifiée et l'applique avant la mini-évaluation."
+        },
+        {
+          "conceptSlug": "incertitude-confiance-priorite",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-manage-1-0"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-incertitude-assessment-1",
+          "rationale": "La calibration montre comment l'incertitude influence une décision sans disparaître dans le score."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "Les classes et scores sont des outils de décision non normatifs ; aucune probabilité n'est inventée.",
+        "AI RMF 1.0 et son profil GAI sont utilisés comme cadres volontaires, versionnés.",
+        "Une revue humaine risque, métier et pédagogique est requise.",
+        "Les slugs parents ne sont pas encore intégrés au seed."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur l'évaluation prudente des risques avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

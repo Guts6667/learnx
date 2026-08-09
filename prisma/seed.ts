@@ -658,6 +658,10 @@ export async function readPlatformApmInterviewSeed(): Promise<SampleSeed> {
   return readSeedFile('seed/platform-apm-interview-program.json');
 }
 
+export async function readPilotageProjetsIaSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/pilotage-projets-ia-iso-42001-program.json');
+}
+
 export async function readPsychologyFoundationsPilotSeed(): Promise<SampleSeed> {
   return readSeedFile('seed/psychology-foundations-pilot-program.json');
 }
@@ -678,6 +682,10 @@ const seedDefinitions = [
   {
     read: readPlatformApmInterviewSeed,
     slug: 'platform-apm-entretien-tryhackme',
+  },
+  {
+    read: readPilotageProjetsIaSeed,
+    slug: 'pilotage-projets-ia-iso-42001',
   },
   {
     read: readPsychologyFoundationsPilotSeed,

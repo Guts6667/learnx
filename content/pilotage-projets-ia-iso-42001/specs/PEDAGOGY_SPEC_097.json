@@ -1,0 +1,814 @@
+{
+  "specId": "PEDAGOGY_SPEC_097",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "cadrer-valeur-faisabilite",
+  "moduleSlug": "business-case-ia",
+  "lesson": {
+    "title": "Évaluer la maturité des données et de l’organisation",
+    "slug": "evaluer-maturite-donnees-organisation",
+    "summary": "Cette leçon apprend à conduire un diagnostic ciblé de préparation : qualité et gouvernance des données, compétences, responsabilités, outils et capacité de changement. Le diagnostic produit des preuves, des écarts et des actions, pas une note décorative.",
+    "objectives": [
+      "Évaluer la maturité comme un profil multidimensionnel fondé sur des preuves.",
+      "Examiner si les données sont accessibles, gouvernées et adaptées à l’usage prévu.",
+      "Identifier les capacités organisationnelles manquantes et leurs effets sur la décision de projet."
+    ],
+    "prerequisites": [
+      "Avoir défini les objectifs, la baseline et les indicateurs du cas Asteria."
+    ],
+    "estimatedMinutes": 85,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-revelation-documents-asteria",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria estime posséder « toute la documentation nécessaire ». L’inventaire initial révèle pourtant plusieurs espaces de stockage, des versions contradictoires, des propriétaires inconnus, des restrictions d’accès hétérogènes et aucun processus commun d’archivage. L’existence de documents ne démontre donc pas leur aptitude à alimenter un assistant.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-maturite-profil",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La maturité décrit la capacité, l’efficacité et la préparation d’une organisation dans plusieurs dimensions. Elle ne se résume pas à un score moyen : une organisation peut disposer de bons outils tout en ayant une gouvernance, des compétences ou des responsabilités faibles. Pour un cas d’usage, le consultant produit un profil ciblé, cite les preuves et relie chaque faiblesse à un risque ou à une action.",
+          "sourceKeys": [
+            "govuk-data-maturity-framework-2026"
+          ]
+        }
+      },
+      {
+        "key": "content-qualite-adaptee-usage",
+        "type": "definition",
+        "position": 3,
+        "content": {
+          "text": "La qualité des données signifie qu’elles sont suffisamment adaptées à l’usage prévu. Pour l’assistant documentaire d’Asteria, il faut notamment examiner exactitude, actualité, complétude, cohérence, métadonnées, droits d’accès et possibilité d’identifier une source faisant autorité. Une donnée peut être correcte pour l’archivage mais insuffisante pour répondre à une question opérationnelle à jour.",
+          "sourceKeys": [
+            "govuk-data-quality-framework"
+          ]
+        }
+      },
+      {
+        "key": "content-echantillon-et-limites",
+        "type": "callout",
+        "position": 4,
+        "content": {
+          "text": "Un audit exhaustif n’est pas toujours proportionné au stade de l’opportunité. Un échantillon ciblé peut suffire pour décider d’une exploration, à condition d’indiquer sa méthode, les catégories couvertes et ses limites. L’absence de preuve reste un résultat du diagnostic ; elle n’est jamais convertie en niveau de maturité favorable.",
+          "sourceKeys": [
+            "govuk-data-quality-framework"
+          ]
+        }
+      },
+      {
+        "key": "content-capacites-organisationnelles",
+        "type": "definition",
+        "position": 5,
+        "content": {
+          "text": "La préparation organisationnelle couvre les acteurs métier et techniques, leurs compétences, la disponibilité des responsables, la capacité d’évaluer le système, la gouvernance des fournisseurs et l’aptitude à accompagner le changement. Un projet techniquement réalisable peut être prématuré si personne ne possède les décisions, ne maintient les contenus ou ne traite les retours et incidents.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-map-govern"
+          ]
+        }
+      },
+      {
+        "key": "content-ecart-action-decision",
+        "type": "callout",
+        "position": 6,
+        "content": {
+          "text": "Chaque constat doit conduire à l’une de quatre sorties : capacité suffisante, vérification supplémentaire, action préalable ou obstacle bloquant. Cette traduction empêche le diagnostic de maturité de devenir une liste générique. Pour Asteria, l’absence de propriétaire documentaire peut imposer une action avant pilote, tandis qu’une incertitude limitée sur les volumes peut être levée pendant une expérimentation courte.",
+          "sourceKeys": [
+            "govuk-data-maturity-framework-2026",
+            "nist-ai-rmf-core-map-govern"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "govuk-data-maturity-framework-2026",
+        "type": "document",
+        "title": "Data Maturity Assessment for Government: Framework",
+        "author": "Government Digital Service et Central Digital and Data Office",
+        "url": "https://www.gov.uk/government/publications/data-maturity-assessment-for-government-framework/data-maturity-assessment-for-government-framework-html",
+        "citation": "Government Digital Service, & Central Digital and Data Office. (2026). Data Maturity Assessment for Government: Framework.",
+        "description": "Lire l’introduction, les dix thèmes et les six dimensions. Identifier les dimensions utiles à un diagnostic ciblé d’Asteria sans calculer un score global.",
+        "guidance": {
+          "objective": "Évaluer la maturité comme un profil étayé plutôt qu’une moyenne unique.",
+          "instructions": "Lire l’introduction, les thèmes et les dimensions, puis sélectionner six axes pertinents pour Asteria et proposer une preuve observable pour chacun.",
+          "scope": "Introduction, sections 2 à 4 et résumés des dix thèmes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Version HTML en anglais, accessible sans compte ; une version PDF distincte existe mais n’est pas requise.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "govuk-data-quality-framework",
+        "type": "document",
+        "title": "The Government Data Quality Framework: guidance",
+        "author": "Government Data Quality Hub",
+        "url": "https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework-guidance",
+        "citation": "Government Data Quality Hub. (2020, mise à jour consultée en 2026). The Government Data Quality Framework: guidance. GOV.UK.",
+        "description": "Lire les principes de qualité, la section sur les besoins utilisateurs et l’application des modèles de maturité. Relever les preuves nécessaires pour déclarer un corpus adapté à l’usage.",
+        "guidance": {
+          "objective": "Relier la qualité des données à un usage, des utilisateurs et une amélioration continue.",
+          "instructions": "Lire les sections indiquées et construire une checklist de six questions pour le corpus documentaire d’Asteria.",
+          "scope": "Principes de qualité ; besoins des utilisateurs ; section « Applying maturity models in a data quality context »",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée par titres et tableaux, sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "nist-ai-rmf-core-map-govern",
+        "type": "document",
+        "title": "AI Risk Management Framework 1.0 — GOVERN et MAP",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI Risk Management Framework 1.0, fonctions GOVERN et MAP. NIST AI 100-1.",
+        "description": "Lire GOVERN 2 et 3 puis MAP 1.2, 3.4, 3.5 et 4.1. Relever les capacités, compétences et responsabilités à vérifier avant de poursuivre.",
+        "guidance": {
+          "objective": "Évaluer les capacités humaines et organisationnelles nécessaires au cas d’usage.",
+          "instructions": "Lire les sous-catégories indiquées et attribuer à chaque capacité une preuve attendue ou un propriétaire à confirmer chez Asteria.",
+          "scope": "GOVERN 2 et 3 ; MAP 1.2, 3.4, 3.5 et 4.1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée par tableaux, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Maturité multidimensionnelle fondée sur des preuves",
+        "slug": "maturite-multidimensionnelle-preuves",
+        "description": "La maturité est un profil de capacités observées dans plusieurs dimensions ; chaque appréciation doit être soutenue par une preuve et reliée au cas d’usage.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-data-maturity-framework-2026"
+        ],
+        "assessment": {
+          "key": "concept-maturite-preuves-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Maturité et preuves",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Qualité des données adaptée à l’usage",
+        "slug": "qualite-donnees-adaptee-usage",
+        "description": "La qualité se juge par rapport à l’usage prévu et inclut les caractéristiques, la gouvernance et la confiance nécessaires pour interpréter les données.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-data-quality-framework"
+        ],
+        "assessment": {
+          "key": "concept-qualite-donnees-usage-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Qualité adaptée à l’usage",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Capacité organisationnelle et conditions de préparation",
+        "slug": "capacite-organisationnelle-preparation",
+        "description": "La préparation dépend des compétences, rôles, ressources, processus de gouvernance et capacités de supervision nécessaires au cycle de vie du système.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-map-govern"
+        ],
+        "assessment": {
+          "key": "concept-capacite-organisationnelle-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Capacité organisationnelle",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-profil-maturite-asteria",
+        "title": "Construire un profil de maturité ciblé",
+        "description": "Évaluer Asteria sur six axes choisis. Pour chaque axe, indiquer constat, preuve disponible, preuve manquante, niveau de confiance et effet possible sur le cas d’usage. Ne pas calculer de moyenne globale.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-echantillon-corpus-asteria",
+        "title": "Préparer l’examen du corpus documentaire",
+        "description": "Définir un échantillon de documents couvrant au moins trois catégories. Pour chaque catégorie, préciser propriétaire, actualité, source faisant autorité, accès, défauts recherchés et limite de l’échantillon.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-preparation-organisationnelle",
+        "title": "Transformer les écarts en conditions de préparation",
+        "description": "Classer huit constats Asteria en capacité suffisante, vérification, action préalable ou obstacle bloquant. Nommer pour chaque sortie un propriétaire, une preuve attendue et l’effet sur la décision de pilote.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-revelation-documents-asteria"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-maturite-profil"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-data-maturity-framework-2026"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-profil-maturite-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-maturite-preuves-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-qualite-adaptee-usage"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-echantillon-et-limites"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-data-quality-framework"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-echantillon-corpus-asteria"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-qualite-donnees-usage-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-capacites-organisationnelles"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-ecart-action-decision"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-map-govern"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-preparation-organisationnelle"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-capacite-organisationnelle-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en gestion de projet, Agile et usages de l’IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-091-GOVUK-DATA-MATURITY",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "Government Digital Service et Central Digital and Data Office",
+        "title": "Data Maturity Assessment for Government: Framework",
+        "year": 2026,
+        "edition": "Version HTML mise à jour le 23 juillet 2026",
+        "publication": "GOV.UK",
+        "doi": null,
+        "url": "https://www.gov.uk/government/publications/data-maturity-assessment-for-government-framework/data-maturity-assessment-for-government-framework-html",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Autoévaluation conçue pour le secteur public britannique ; les dimensions sont utilisées comme questions de diagnostic, non comme benchmark privé."
+      },
+      {
+        "id": "REF-091-GOVUK-DATA-QUALITY",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "Government Data Quality Hub",
+        "title": "The Government Data Quality Framework: guidance",
+        "year": 2020,
+        "edition": null,
+        "publication": "GOV.UK",
+        "doi": null,
+        "url": "https://www.gov.uk/government/publications/the-government-data-quality-framework/the-government-data-quality-framework-guidance",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Cadre de qualité des données du gouvernement britannique ; transposition au cas fictif explicitement limitée."
+      },
+      {
+        "id": "REF-091-NIST-AI-RMF-CORE",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0) — Core",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre volontaire ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Révélation entièrement fictive du cas Asteria."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-091-GOVUK-DATA-MATURITY",
+            "locator": "Introduction, paragraphes 1 à 4 ; sections Topics, Themes et Maturity levels",
+            "supports": "Maturité comme capacité, efficacité et préparation ; matrice plutôt que score unique ; évaluation fondée sur des preuves."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre définit explicitement l’approche multidimensionnelle et non agrégée.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-091-GOVUK-DATA-QUALITY",
+            "locator": "Principes 1 à 5 et sections sur les besoins utilisateurs",
+            "supports": "Qualité adaptée à l’usage, gouvernance, cycle de vie et communication de la confiance."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel consacré à la qualité des données.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-091-GOVUK-DATA-QUALITY",
+            "locator": "Sections sur l’évaluation, les plans d’action et les modèles de maturité",
+            "supports": "Évaluation proportionnée, documentation des limites et amélioration ciblée."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "La recommandation d’échantillonnage est une application prudente du principe de proportionnalité et doit être revue métier.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-091-NIST-AI-RMF-CORE",
+            "locator": "GOVERN 2 et 3 ; MAP 1.2, 3.4, 3.5 et 4.1",
+            "supports": "Rôles, compétences, ressources, supervision, parties prenantes et dépendances tierces nécessaires."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le cadre recense directement les capacités organisationnelles du cycle de vie IA.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-091-GOVUK-DATA-MATURITY",
+            "locator": "Introduction, paragraphes 3 et 4",
+            "supports": "Priorisation fondée sur les forces, faiblesses et preuves du profil de maturité."
+          },
+          {
+            "referenceId": "REF-091-NIST-AI-RMF-CORE",
+            "locator": "MAP 1 et MANAGE 1.1",
+            "supports": "Le contexte et les capacités informent la décision de poursuivre le système."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les cadres convergent sur la traduction du diagnostic en priorités et décisions.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "govuk-data-maturity-framework-2026",
+        "referenceIds": [
+          "REF-091-GOVUK-DATA-MATURITY"
+        ],
+        "pedagogicalRationale": "La matrice permet de questionner plusieurs dimensions sans réduire la préparation à un score.",
+        "learnerInstructions": "Sélectionner six axes et une preuve observable par axe.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML accessible sans compte ; préférable au PDF signalé comme potentiellement inaccessible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Une nouvelle version du cadre est annoncée en préparation ; revérifier avant publication."
+      },
+      {
+        "resourceKey": "govuk-data-quality-framework",
+        "referenceIds": [
+          "REF-091-GOVUK-DATA-QUALITY"
+        ],
+        "pedagogicalRationale": "Le cadre fournit des questions concrètes sur l’aptitude des données à l’usage et leur gouvernance.",
+        "learnerInstructions": "Construire une checklist de six questions pour le corpus documentaire.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core-map-govern",
+        "referenceIds": [
+          "REF-091-NIST-AI-RMF-CORE"
+        ],
+        "pedagogicalRationale": "Le NIST complète la vue données par les rôles, compétences, fournisseurs et mécanismes de supervision propres à l’IA.",
+        "learnerInstructions": "Attribuer une preuve ou un propriétaire à chaque capacité sélectionnée.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 à figer avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "maturite-multidimensionnelle-preuves",
+        "assessmentTitle": "Mini-évaluation — Maturité et preuves",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi éviter une moyenne unique de maturité ?",
+            "explanation": "Une moyenne masque les écarts entre dimensions et peut cacher une faiblesse bloquante.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Parce qu’elle masque des profils et des obstacles différents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Parce que toute mesure de maturité est interdite",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Parce que seuls les outils techniques comptent",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves peuvent étayer un diagnostic de maturité ?",
+            "explanation": "Procédures, responsables, historiques et observations vérifiables valent mieux qu’une impression générale.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Une procédure effectivement utilisée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un propriétaire nommé et disponible",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un historique de contrôles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La seule confiance du sponsor",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une absence de preuve doit être transformée en niveau moyen pour compléter la matrice.",
+            "explanation": "L’absence de preuve est une incertitude à déclarer, pas une autorisation d’inventer un niveau.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "qualite-donnees-adaptee-usage",
+        "assessmentTitle": "Mini-évaluation — Qualité adaptée à l’usage",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel constat suffit le moins à déclarer le corpus prêt ?",
+            "explanation": "Le volume ne garantit ni exactitude, actualité, gouvernance ni pertinence.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Asteria possède beaucoup de documents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les propriétaires et versions de référence sont identifiés",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Les défauts sont mesurés sur un échantillon documenté",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels contrôles sont pertinents pour un assistant documentaire ?",
+            "explanation": "Actualité, autorité, accès et cohérence conditionnent l’usage fiable du corpus.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Identifier la version faisant autorité",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Vérifier les droits d’accès",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Mesurer l’actualité des documents",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Supposer que tout PDF est exact",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un échantillon ciblé peut soutenir une décision préliminaire si sa méthode et ses limites sont explicites.",
+            "explanation": "Une vérification proportionnée est recevable tant que sa portée n’est pas exagérée.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "capacite-organisationnelle-preparation",
+        "assessmentTitle": "Mini-évaluation — Capacité organisationnelle",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles capacités doivent être vérifiées avant le pilote ?",
+            "explanation": "Compétences, responsabilités, maintenance des contenus et traitement des retours sont nécessaires au cycle de vie.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un responsable métier disponible",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une capacité d’évaluation",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un processus de retour et d’escalade",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement une licence fournisseur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Personne ne possède la maintenance documentaire. Quelle sortie est la plus appropriée ?",
+            "explanation": "L’écart menace directement la qualité du service et appelle une responsabilité définie avant le pilote.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Action préalable avec propriétaire et preuve attendue",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Capacité suffisante",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ignorer l’écart jusqu’à la production",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La faisabilité technique suffit à conclure que l’organisation est prête.",
+            "explanation": "La préparation inclut responsabilités, compétences, gouvernance, supervision et changement.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles de preuve : profiler la maturité, vérifier l’aptitude des données, puis convertir les écarts organisationnels en conditions de décision.",
+      "cycles": [
+        {
+          "conceptSlug": "maturite-multidimensionnelle-preuves",
+          "contentKeys": [
+            "content-revelation-documents-asteria",
+            "content-maturite-profil"
+          ],
+          "resourceKeys": [
+            "govuk-data-maturity-framework-2026"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-profil-maturite-asteria"
+          },
+          "assessmentKey": "concept-maturite-preuves-assessment-1",
+          "rationale": "Le contraste entre perception et preuves introduit une matrice ciblée sans score trompeur."
+        },
+        {
+          "conceptSlug": "qualite-donnees-adaptee-usage",
+          "contentKeys": [
+            "content-qualite-adaptee-usage",
+            "content-echantillon-et-limites"
+          ],
+          "resourceKeys": [
+            "govuk-data-quality-framework"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-echantillon-corpus-asteria"
+          },
+          "assessmentKey": "concept-qualite-donnees-usage-assessment-1",
+          "rationale": "Les principes de qualité sont appliqués à un protocole d’examen proportionné du corpus."
+        },
+        {
+          "conceptSlug": "capacite-organisationnelle-preparation",
+          "contentKeys": [
+            "content-capacites-organisationnelles",
+            "content-ecart-action-decision"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-map-govern"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-preparation-organisationnelle"
+          },
+          "assessmentKey": "concept-capacite-organisationnelle-assessment-1",
+          "rationale": "Les capacités recensées par le NIST deviennent des conditions concrètes de poursuite, d’action ou d’arrêt."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon initial : revue éditoriale, métier et technique requise avant intégration.",
+        "Les cadres britanniques sont utilisés comme supports de diagnostic, pas comme obligations applicables à Asteria.",
+        "Le cas, les preuves et les constats Asteria sont fictifs."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur la maturité des données et de l’organisation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

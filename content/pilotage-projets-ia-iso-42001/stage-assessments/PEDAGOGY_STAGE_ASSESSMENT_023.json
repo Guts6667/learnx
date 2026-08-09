@@ -1,0 +1,160 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_023",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Maîtriser les risques, la conformité et la sécurité",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "À partir des micro-applications et productions intégrées réalisées dans les sept leçons, réviser puis assembler un dossier cohérent sur la révélation Asteria : cinq risques prioritaires, dont trois traités en détail, et une recommandation qui sépare décisions de consultant, contrôles techniques et sujets nécessitant une validation métier, sécurité, juridique ou protection des données.",
+    "instructions": [
+      "Reprendre les cartes, registres et matrices produits pendant les leçons. Les mettre à jour avec les faits nouveaux du cas final en conservant un court journal des modifications ; ne pas recréer tous les artefacts depuis zéro.",
+      "Sélectionner cinq scénarios qui couvrent ensemble qualité documentaire, données personnelles ou confidentialité, prompt injection ou agence excessive, dépendance fournisseur et supervision. Pour chacun, conserver source, événement, contexte, personnes ou actifs exposés, conséquence, signal, impact, vraisemblance, confiance, inconnues et priorité.",
+      "Choisir les trois risques les plus structurants et compléter pour chacun le traitement : option retenue, propriétaire, responsable d'action, échéance, preuve d'implémentation, test d'efficacité, seuil d'échec, risque résiduel et autorité d'acceptation. Pour les deux autres, indiquer uniquement la décision provisoire et la prochaine preuve.",
+      "Mettre à jour une note d'escalade d'une demi-page séparant faits, questions RGPD, questions relatives au règlement (UE) 2024/1689, mesures provisoires et décisions attendues du DPO, du juridique et du RSSI. Ne pas rendre d'avis juridique.",
+      "Joindre une synthèse de diligence fournisseur et de réversibilité limitée à huit points critiques, ainsi qu'un test de sortie sur table en cinq étapes.",
+      "Spécifier la supervision de trois catégories de réponse — courante, sensible et interdite — dans une seule matrice : information, compétence, délai, autorité, déclencheur, solution de repli, trace et test.",
+      "Conclure par une recommandation exécutive précisant conditions du pilote, contrôles bloquants, risques acceptables uniquement sous autorité, décisions à escalader et critères de suspension ou d'arrêt."
+    ],
+    "case": "Après la revue du prototype, Asteria Services lance un pilote limité à 80 collaborateurs. L'estimation initiale portait sur 8 000 documents et le prototype n'en utilisait que 1 800 ; un inventaire approfondi porte désormais le corpus candidat à 9 400 documents : 1 100 n'ont pas de propriétaire, 620 n'ont pas été revus depuis plus de deux ans et un échantillon de 100 documents révèle 7 doublons contradictoires. Les équipes découvrent que 4 % des documents indexés comportent des noms, coordonnées ou commentaires relatifs à des salariés ; aucune analyse complète des catégories de données n'a encore été menée. Le fournisseur héberge le service dans l'Union européenne mais indique qu'un sous-traitant peut assurer le support depuis un pays tiers. Le contrat préliminaire autorise par défaut la conservation de l'historique pendant 30 jours et reste ambigu sur la réutilisation des requêtes pour améliorer le service. Un changement de modèle peut être appliqué avec cinq jours de préavis. Asteria ne dispose pas encore d'un format d'export des index, configurations, prompts et jeux d'évaluation. Lors d'un test, un document contient l'instruction cachée de résumer un dossier confidentiel : l'assistant restitue un passage à un utilisateur qui ne devait pas y accéder. Sur 40 réponses contenant volontairement une erreur plausible, 31 sont validées par les agents sans consulter la source. Deux agents expliquent que le volume et le délai attendu les poussent à approuver rapidement. Le sponsor souhaite malgré tout ouvrir le pilote à 500 collaborateurs sous trois semaines. Le DPO, le RSSI et le juridique n'ont pas encore reçu un dossier commun. Tous les chiffres, acteurs, délais et événements de ce cas sont fictifs.",
+    "estimatedMinutes": 75,
+    "submissionFormat": "Dossier révisé de 1 000 à 1 400 mots, construit à partir des artefacts des leçons, avec registre de cinq risques, fiches détaillées des trois risques prioritaires, note d'escalade, synthèse fournisseur et réversibilité, matrice de supervision, recommandation exécutive et journal court des modifications.",
+    "conceptSlugs": [
+      "scenario-source-evenement-consequence",
+      "exposition-parties-cycle-vie",
+      "registre-risque-tracable-revisable",
+      "impacts-multidimensionnels-proportionnes",
+      "vraisemblance-exposition-conditions",
+      "incertitude-confiance-priorite",
+      "options-traitement-proportionnees",
+      "proprietaire-action-preuve",
+      "efficacite-risque-residuel-escalade",
+      "perimetres-rgpd-reglement-ia",
+      "roles-rgpd-ai-act-a-qualifier",
+      "escalade-juridique-dpo-aipd",
+      "flux-donnees-frontieres-confiance",
+      "scenarios-menace-llm-contextualises",
+      "controles-securite-testables-profondeur",
+      "diligence-fournisseur-preuves-risques",
+      "donnees-roles-contrat-changements",
+      "reversibilite-plan-sortie-testable",
+      "controle-humain-effectif-situe",
+      "declencheurs-niveaux-autorite-escalade",
+      "tests-supervision-tracabilite-automatisation"
+    ],
+    "rubric": [
+      {
+        "criterion": "Assemblage, scénarios et registre",
+        "weight": 20,
+        "requirements": [
+          "Le dossier réutilise et révise explicitement les artefacts produits pendant les leçons au lieu de les recréer sans trace.",
+          "Les cinq scénarios couvrent les familles demandées et distinguent source, événement, exposition, conséquence et signal.",
+          "Le registre conserve preuves, hypothèses, priorité, propriétaire, prochaine preuve et déclencheur de revue."
+        ]
+      },
+      {
+        "criterion": "Évaluation et priorisation prudentes",
+        "weight": 15,
+        "requirements": [
+          "Les cinq risques indiquent impacts, vraisemblance, confiance et inconnues sans fausse précision.",
+          "Les dimensions critiques, l'étendue et la réversibilité restent visibles lorsque pertinentes.",
+          "L'ordre de traitement est justifié par les preuves et critères éliminatoires, pas par le seul total."
+        ]
+      },
+      {
+        "criterion": "Traitement détaillé de trois risques",
+        "weight": 20,
+        "requirements": [
+          "Les trois risques prioritaires reçoivent une option proportionnée ; report ou évitement restent possibles.",
+          "Propriétaire, responsable, échéance, preuve et test d'efficacité sont explicites.",
+          "Risque résiduel, autorité d'acceptation et seuil d'escalade sont définis ; les deux autres risques ont une décision provisoire et une prochaine preuve."
+        ]
+      },
+      {
+        "criterion": "Conformité et escalade professionnelle",
+        "weight": 15,
+        "requirements": [
+          "La note distingue les périmètres et rôles possibles du RGPD et du règlement IA sans les confondre.",
+          "Elle sépare faits, questions à confirmer, mesures provisoires et décisions attendues.",
+          "Le consultant ne rend pas d'avis juridique et saisit DPO, juridique et RSSI selon leur mandat."
+        ]
+      },
+      {
+        "criterion": "Sécurité, fournisseur et réversibilité",
+        "weight": 15,
+        "requirements": [
+          "Au moins un scénario de menace est contextualisé sur un flux, un composant et un privilège d'Asteria.",
+          "Les huit points de diligence couvrent les dépendances critiques, les changements et les preuves attendues.",
+          "Le test de sortie couvre actifs, formats, suppression, continuité, responsabilités et écart bloquant."
+        ]
+      },
+      {
+        "criterion": "Supervision et recommandation exécutive",
+        "weight": 15,
+        "requirements": [
+          "La matrice distingue réponse courante, sensible et interdite avec information, compétence, autorité et repli.",
+          "Les déclencheurs, traces et tests permettent de vérifier le fonctionnement de la supervision.",
+          "La recommandation distingue contrôles bloquants, acceptation sous autorité, escalade et critères de suspension."
+        ]
+      }
+    ],
+    "remediation": "Pour tout critère sous 70 %, reprendre uniquement les artefacts et notions associés puis joindre leur nouvelle version au journal des modifications. Si les cinq risques restent des étiquettes, reformuler les scénarios avant de les prioriser. Si les trois traitements détaillés n'ont ni propriétaire, test ni preuve, compléter ces fiches avant toute décision résiduelle. Si la note contient une conclusion juridique autonome, la remplacer par une escalade factuelle. Si la supervision est nominale, refaire le test ciblé avec une erreur injectée et un pouvoir de blocage réel."
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "REF-098-001",
+      "REF-098-002",
+      "REF-099-001",
+      "REF-099-002",
+      "REF-100-001",
+      "REF-100-002",
+      "REF-101-001",
+      "REF-101-002",
+      "REF-102-001",
+      "REF-102-002",
+      "REF-103-001",
+      "REF-103-002",
+      "REF-103-003",
+      "REF-104-001",
+      "REF-104-002",
+      "REF-104-003"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 75 minutes : l'apprenant assemble et révise les productions déjà réalisées dans les sept leçons ; il ne recrée pas les cartes et matrices. Le périmètre est limité à cinq risques, dont trois seulement sont traités en détail.",
+        "Le cas Asteria, les chiffres, les acteurs et l'incident sont entièrement fictifs.",
+        "L'évaluation couvre uniquement les vingt et une notions obligatoires des sept leçons de l'étape.",
+        "Les analyses RGPD et règlement IA constituent une préparation à la décision ; toute qualification et tout avis doivent être confirmés par les experts compétents.",
+        "Les contrôles techniques et l'acceptation du risque doivent être validés par les propriétaires autorisés.",
+        "Une revue humaine pédagogique, métier, risque, sécurité, juridique et protection des données est requise avant publication.",
+        "Les quatre champs de assessment.seed sont compatibles avec le seed actuel ; l'intégration détaillée doit être validée séparément."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de l'étude de cas finale de l'étape 5 et de sa grille à six critères.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Recalibrage de l'évaluation finale autour de la révision d'artefacts existants, de cinq risques et de trois traitements détaillés.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

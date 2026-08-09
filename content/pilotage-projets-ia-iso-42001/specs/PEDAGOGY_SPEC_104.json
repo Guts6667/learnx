@@ -1,0 +1,726 @@
+{
+  "specId": "PEDAGOGY_SPEC_104",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "analyse-risques-ia",
+  "lesson": {
+    "title": "Construire des scénarios et un registre des risques",
+    "slug": "construire-scenarios-registre-risques",
+    "summary": "La leçon transforme des inquiétudes vagues en scénarios reliant source, événement, personnes ou actifs exposés, conséquence et conditions d'apparition, puis les consigne dans un registre révisable.",
+    "objectives": [
+      "Formuler un scénario de risque IA sans confondre danger, événement et conséquence.",
+      "Identifier les personnes, actifs, processus et moments du cycle de vie exposés.",
+      "Construire un registre traçable distinguant faits, hypothèses, signaux et décisions."
+    ],
+    "prerequisites": [
+      "Disposer de la cartographie fonctionnelle et du protocole d'évaluation d'Asteria."
+    ],
+    "estimatedMinutes": 45,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un risque exploitable n'est pas une étiquette comme « hallucination » ou « biais ». Le scénario précise la source ou condition, l'événement redouté, le contexte d'usage, les personnes ou actifs touchés et les conséquences. Pour Asteria, « le modèle se trompe » devient par exemple : une procédure obsolète est récupérée, une réponse plausible la reprend, un agent la transmet sans contrôle et un collaborateur applique une consigne erronée.",
+          "sourceKeys": [
+            "nist-ai-rmf-map-1-0"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Un même mécanisme peut affecter différemment utilisateurs, collaborateurs cités dans des documents, équipe qualité, client interne ou fournisseur. L'analyse couvre aussi les phases : sélection des données, indexation, test, déploiement, usage, mise à jour et retrait. Le registre indique donc où l'exposition apparaît et qui peut la détecter, la subir ou la réduire.",
+          "sourceKeys": [
+            "nist-genai-risks-600-1"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le registre n'est pas une liste figée. Chaque entrée contient un identifiant, le scénario, les éléments disponibles, les hypothèses, les personnes affectées, le propriétaire d'analyse, l'état, les décisions prises et la prochaine preuve attendue. Une date et un déclencheur de révision rendent visible l'évolution du risque quand le système, les données ou l'usage changent.",
+          "sourceKeys": [
+            "nist-ai-rmf-govern-1-0"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-map-1-0",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Lire le passage indiqué et relever les décisions que le cadre invite à documenter.",
+        "guidance": {
+          "objective": "Relier contexte, personnes affectées, impacts et risques",
+          "instructions": "Lire la fonction MAP et relever les informations qui manquent encore dans le cas Asteria.",
+          "scope": "Section 5.2, fonction MAP",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-genai-risks-600-1",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio et al.",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., et al. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. NIST AI 600-1. https://doi.org/10.6028/NIST.AI.600-1",
+        "description": "Approfondissement facultatif — Consulter les tableaux de risques et d'actions afin de contextualiser le cas d'un assistant génératif.",
+        "guidance": {
+          "objective": "Identifier des risques propres ou amplifiés par l'IA générative et des réponses organisationnelles possibles.",
+          "instructions": "Facultatif — Choisir deux risques GAI pertinents et les traduire en scénarios situés.",
+          "scope": "Section 2.5 et tableau 1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 2
+      },
+      {
+        "key": "nist-ai-rmf-govern-1-0",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "Elham Tabassi",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Approfondissement facultatif — Lire le passage indiqué et relever les décisions que le cadre invite à documenter.",
+        "guidance": {
+          "objective": "Organiser la responsabilité et la traçabilité du registre",
+          "instructions": "Facultatif — Lire les passages indiqués puis définir propriétaire, état et prochaine preuve de chaque scénario.",
+          "scope": "Sections 4.4 et 5.1, fonction GOVERN",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Scénario source–événement–conséquence",
+        "slug": "scenario-source-evenement-consequence",
+        "description": "Un scénario décrit comment une source ou condition peut produire un événement dans un contexte donné et entraîner des conséquences identifiées.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-map-1-0"
+        ],
+        "assessment": {
+          "key": "concept-scenario-risque-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Formuler un scénario de risque",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Exposition et cycle de vie",
+        "slug": "exposition-parties-cycle-vie",
+        "description": "L'exposition varie selon les acteurs, interfaces, données et phases ; elle doit être décrite au point où le risque peut se matérialiser.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-genai-risks-600-1"
+        ],
+        "assessment": {
+          "key": "concept-exposition-cycle-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Situer l'exposition",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Registre traçable et révisable",
+        "slug": "registre-risque-tracable-revisable",
+        "description": "Le registre conserve scénario, preuves, incertitudes, propriétaire, état, décisions et prochain examen afin de soutenir l'action et l'apprentissage.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-govern-1-0"
+        ],
+        "assessment": {
+          "key": "concept-registre-tracable-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Tenir un registre traçable",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Décomposer un scénario",
+        "description": "En 5 minutes, transformer une inquiétude Asteria en un scénario comprenant source ou condition, événement, contexte, personne ou actif exposé, conséquence et signal observable.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Situer une exposition",
+        "description": "En 5 minutes, reprendre ce scénario et indiquer une phase du cycle de vie, une interface, une donnée, une personne affectée et un acteur capable de détecter le signal.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Créer trois entrées de registre",
+        "description": "En 12 minutes, produire trois entrées de registre avec identifiant, scénario, phase, personnes ou actifs, preuve, hypothèse, propriétaire, état, prochaine preuve et déclencheur de revue.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-map-1-0"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-scenario-risque-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-risks-600-1"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-exposition-cycle-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-govern-1-0"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-registre-tracable-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-098-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://doi.org/10.6028/NIST.AI.100-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "Version 1.0 publiée en janvier 2023 ; le NIST signale une révision en cours. Ne pas présenter les fonctions comme une séquence obligatoire."
+      },
+      {
+        "id": "REF-098-002",
+        "type": "institutional_guidance",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "NIST AI 600-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "Profil transversal publié en juillet 2024, compagnon volontaire de l'AI RMF 1.0."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-098-001",
+            "locator": "section 5.2, fonction MAP",
+            "supports": "Contextualisation du système, des impacts, des personnes affectées et des risques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel officiel directement consacré à la cartographie des risques IA.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-098-002",
+            "locator": "section 2.5 et tableau 1",
+            "supports": "Risques GAI transversaux, sources de risque et impacts possibles sur différents acteurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Profil officiel spécifique à l'IA générative ; l'application à Asteria reste une analyse pédagogique.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-098-001",
+            "locator": "sections 4.4 et 5.1, fonction GOVERN",
+            "supports": "Gouvernance transversale, documentation, responsabilités et culture de gestion continue du risque."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le NIST soutient la traçabilité et la gouvernance ; les colonnes proposées sont une synthèse opérationnelle originale.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-map-1-0",
+        "referenceIds": [
+          "REF-098-001"
+        ],
+        "pedagogicalRationale": "Cadre public de référence pour relier contexte, mesure, gouvernance et traitement du risque.",
+        "learnerInstructions": "Lire la fonction MAP et relever les informations qui manquent encore dans le cas Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée pour cette leçon ; revérifier l'état de révision avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-risks-600-1",
+        "referenceIds": [
+          "REF-098-002"
+        ],
+        "pedagogicalRationale": "Profil public et spécifique à l'IA générative, utile au cas fil rouge.",
+        "learnerInstructions": "Facultatif — Choisir deux risques GAI pertinents et les traduire en scénarios situés.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, accessible sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Publication NIST mise à jour administrativement en 2026 ; contenu cité comme NIST AI 600-1 (2024)."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-govern-1-0",
+        "referenceIds": [
+          "REF-098-001"
+        ],
+        "pedagogicalRationale": "Cadre public de référence pour relier contexte, mesure, gouvernance et traitement du risque.",
+        "learnerInstructions": "Facultatif — Lire les passages indiqués puis définir propriétaire, état et prochaine preuve de chaque scénario.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, structuré ; accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version 1.0 figée pour cette leçon ; revérifier l'état de révision avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "scenario-source-evenement-consequence",
+        "assessmentTitle": "Mini-évaluation — Formuler un scénario de risque",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation est un scénario de risque complet ?",
+            "explanation": "Elle relie condition, événement, usage et conséquence.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Une procédure obsolète est récupérée, reprise dans une réponse non vérifiée et conduit un salarié à appliquer une consigne erronée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Hallucination",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le modèle est risqué",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent être distingués dans un scénario ?",
+            "explanation": "Le scénario relie causalité plausible, exposition et conséquences sans prétendre à une certitude.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Source ou condition",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Événement",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Personnes ou actifs exposés",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Score final avant analyse",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le nom d'une catégorie de risque suffit à définir un scénario exploitable.",
+            "explanation": "Une catégorie doit être contextualisée par un mécanisme et une conséquence.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "exposition-parties-cycle-vie",
+        "assessmentTitle": "Mini-évaluation — Situer l'exposition",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi préciser la phase du cycle de vie ?",
+            "explanation": "Les mécanismes, personnes exposées et contrôles disponibles changent selon la phase.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Pour localiser quand le risque peut apparaître et être détecté",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour attribuer automatiquement le risque au développeur",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter de documenter les personnes affectées",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Qui peut être affecté par une réponse Asteria erronée ?",
+            "explanation": "L'analyse ne se limite pas à l'utilisateur direct.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le collaborateur qui applique la réponse",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La personne citée dans un document",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "L'équipe responsable du processus",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement le fournisseur du modèle",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un risque présent lors de l'indexation peut être ignoré si l'interface finale fonctionne.",
+            "explanation": "Des problèmes amont peuvent produire des conséquences en usage.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "registre-risque-tracable-revisable",
+        "assessmentTitle": "Mini-évaluation — Tenir un registre traçable",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles colonnes rendent un registre actionnable ?",
+            "explanation": "Elles relient preuve, responsabilité et prochaine décision.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Propriétaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Preuve et hypothèses",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Prochaine revue ou déclencheur",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur sans définition",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Que faire d'un scénario encore peu étayé ?",
+            "explanation": "Il reste visible comme hypothèse avec une action de vérification.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le documenter avec l'incertitude et la prochaine preuve",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L'effacer",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le déclarer critique sans justification",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un changement de fournisseur peut déclencher la révision d'une entrée du registre.",
+            "explanation": "Il peut modifier données, composants, responsabilités et exposition.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : formuler le scénario, situer l'exposition, puis le rendre gouvernable dans un registre.",
+      "cycles": [
+        {
+          "conceptSlug": "scenario-source-evenement-consequence",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-map-1-0"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-scenario-risque-assessment-1",
+          "rationale": "La structure du scénario est appliquée au cas avant d'être évaluée."
+        },
+        {
+          "conceptSlug": "exposition-parties-cycle-vie",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "nist-genai-risks-600-1"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-exposition-cycle-assessment-1",
+          "rationale": "Le profil GAI élargit les scénarios aux acteurs et phases avant la validation ciblée."
+        },
+        {
+          "conceptSlug": "registre-risque-tracable-revisable",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-govern-1-0"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-registre-tracable-assessment-1",
+          "rationale": "La production du registre transforme les scénarios en dispositif révisable avant l'évaluation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "Le cas Asteria et tous ses détails sont fictifs.",
+        "AI RMF 1.0 est un cadre volontaire en cours de révision ; aucune fonction n'est présentée comme une séquence obligatoire.",
+        "Une revue humaine métier, risque et pédagogique est requise avant publication.",
+        "Les slugs parents ne sont pas encore intégrés au seed ; la compatibilité d'intégration reste à vérifier."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur les scénarios et le registre des risques avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

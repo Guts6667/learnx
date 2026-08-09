@@ -1,0 +1,608 @@
+{
+  "specId": "PEDAGOGY_SPEC_118",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "deployer-adopter-surveiller",
+  "moduleSlug": "mise-en-production-et-adoption",
+  "lesson": {
+    "title": "Conduire adoption, formation et changement",
+    "slug": "conduire-adoption-formation-changement",
+    "summary": "Cette leçon conçoit l’adoption comme une capacité opérationnelle à construire et à observer : formation adaptée aux rôles, règles d’usage, soutien, alternatives et boucles de retour remplacent la simple communication de lancement.",
+    "objectives": [
+      "Concevoir une formation et des règles d’usage adaptées aux rôles, connaissances et risques du contexte.",
+      "Piloter l’adoption par l’usage réel, le support et le feedback sans confondre volume d’utilisation et succès."
+    ],
+    "prerequisites": [
+      "Avoir défini le périmètre de lancement et les rôles opérationnels du cas Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-asteria-adoption",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Asteria prévoit une démonstration de vingt minutes pour tous les collaborateurs. Pourtant, les utilisateurs ordinaires doivent savoir vérifier une source et signaler une réponse douteuse, les référents doivent trier les signalements, le support doit guider le retour au processus manuel et les décideurs doivent comprendre les limites des indicateurs. Une formation identique ne prépare pas ces responsabilités différentes.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-maitrise-ia-contextuelle",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "La maîtrise de l’IA est contextuelle : elle tient compte des connaissances, de l’expérience, de la formation, du contexte d’usage et des personnes concernées. Dans un plan opérationnel, cela se traduit par des objectifs observables par rôle : reconnaître les usages autorisés, vérifier selon le niveau de risque, protéger les données, appliquer le repli, signaler un problème et savoir quand escalader. Une attestation de présence ne prouve pas que ces gestes sont maîtrisés. L’article 4 n’impose toutefois pas de garantir à chaque personne un niveau individuel déterminé : le dispositif doit rester proportionné aux rôles et au contexte.",
+          "sourceKeys": [
+            "eu-ai-act-article-4",
+            "nist-ai-rmf-core-training"
+          ]
+        }
+      },
+      {
+        "key": "content-adoption-evidence-soutien",
+        "type": "rich_text",
+        "position": 3,
+        "content": {
+          "text": "L’adoption ne se résume ni au nombre de connexions ni à une obligation d’utiliser l’outil. Il faut observer qui accomplit quelle tâche, avec quel résultat, quelle charge de vérification et quels contournements. Le dispositif combine information avant usage, formation par rôle, support identifiable, voie de feedback, alternative lorsque le service ne convient pas et correction continue. Une faible utilisation peut révéler un manque de valeur, de confiance, d’accès ou de compétence ; elle doit être étudiée avant d’être traitée comme une résistance.",
+          "sourceKeys": [
+            "govuk-encouraging-digital-service",
+            "nist-ai-rmf-core-training"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "eu-ai-act-article-4",
+        "type": "document",
+        "title": "Règlement (UE) 2024/1689 — Article 4, Maîtrise de l’IA",
+        "author": "Parlement européen et Conseil de l’Union européenne",
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "citation": "Parlement européen et Conseil de l’Union européenne. (2024). Règlement (UE) 2024/1689, article 4, version consolidée au 27 juillet 2026. EUR-Lex.",
+        "description": "Lire l’article 4 et relever les facteurs à considérer pour adapter le niveau de maîtrise de l’IA aux personnes et au contexte d’usage.",
+        "guidance": {
+          "objective": "Adapter un objectif de formation au rôle et au contexte au lieu de diffuser un module générique.",
+          "instructions": "Lire l’article 4 uniquement, puis associer ses facteurs aux quatre publics Asteria : utilisateurs, référents, support et décideurs.",
+          "scope": "Article 4 — Maîtrise de l’IA",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Texte officiel français en HTML, accessible sans compte ; navigation longue par articles.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 5,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-core-training",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). Artificial Intelligence Risk Management Framework 1.0 — Core.",
+        "description": "Lire GOVERN 2.1 à 2.3, GOVERN 5.1 à 5.2 et MEASURE 3.3 pour relier responsabilités, formation et feedback à l’usage réel.",
+        "guidance": {
+          "objective": "Construire une adoption gouvernée avec rôles, compétences et mécanismes de retour.",
+          "instructions": "Identifier pour Asteria une responsabilité, une compétence et une voie de feedback pour chacun des quatre publics.",
+          "scope": "GOVERN 2.1 à 2.3 ; GOVERN 5.1 à 5.2 ; MEASURE 3.3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 7,
+        "position": 2
+      },
+      {
+        "key": "govuk-encouraging-digital-service",
+        "type": "website",
+        "title": "Encouraging people to use your digital service",
+        "author": "Government Digital Service",
+        "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service/encouraging-people-to-use-your-digital-service",
+        "citation": "Government Digital Service. (2018). Encouraging people to use your digital service. GOV.UK Service Manual.",
+        "description": "Lire les sections sur les raisons de non-usage, le soutien et la formation du personnel ; transposer avec prudence ces principes de service numérique au cas interne Asteria.",
+        "guidance": {
+          "objective": "Diagnostiquer les obstacles à l’usage avant de prescrire davantage de communication.",
+          "instructions": "Relever quatre causes possibles de non-usage et, pour chacune, une observation et une réponse adaptée sans imposer l’outil.",
+          "scope": "Find out why people do not use your service online ; Train staff to improve users’ digital skills, confidence and trust",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 6,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Maîtrise de l’IA adaptée aux rôles",
+        "slug": "maitrise-ia-adaptee-roles",
+        "description": "La formation cible les gestes, limites, responsabilités et escalades réellement nécessaires à chaque rôle et contexte d’usage.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "eu-ai-act-article-4",
+          "nist-ai-rmf-core-training"
+        ],
+        "assessment": {
+          "key": "concept-maitrise-ia-roles-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Maîtrise de l’IA par rôle",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Adoption fondée sur l’usage et le soutien",
+        "slug": "adoption-fondee-usage-soutien",
+        "description": "L’adoption est évaluée par les tâches accomplies, résultats, difficultés, contournements et besoins de support, puis améliorée avec les utilisateurs.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-encouraging-digital-service",
+          "nist-ai-rmf-core-training"
+        ],
+        "assessment": {
+          "key": "concept-adoption-usage-soutien-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Adoption, usage et soutien",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-matrice-formation-par-role",
+        "title": "Concevoir la matrice de formation par rôle",
+        "description": "Pour utilisateurs, référents, support et décideurs, définir tâches autorisées, limites, connaissances préalables, deux gestes observables, scénario d’entraînement, preuve de maîtrise, rappel et voie d’escalade. Distinguer présence à la formation et capacité démontrée.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-adoption-support",
+        "title": "Construire un plan d’adoption et de soutien",
+        "description": "Produire un plan sur quatre semaines indiquant publics, messages, supports, canal d’aide, alternative au système, indicateurs d’usage par tâche, signaux de contournement, méthode de feedback, propriétaires et adaptations prévues. Inclure une hypothèse expliquant une faible adoption sans blâmer les utilisateurs.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asteria-adoption"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-maitrise-ia-contextuelle"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "eu-ai-act-article-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-training"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-matrice-formation-par-role"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-maitrise-ia-roles-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-adoption-evidence-soutien"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-encouraging-digital-service"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-adoption-support"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-adoption-usage-soutien-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-112-001",
+        "type": "regulation",
+        "authors": [
+          "Parlement européen",
+          "Conseil de l’Union européenne"
+        ],
+        "organization": "Union européenne",
+        "title": "Règlement (UE) 2024/1689 établissant des règles harmonisées concernant l’intelligence artificielle",
+        "year": 2024,
+        "edition": "Version consolidée au 27 juillet 2026",
+        "publication": "Journal officiel de l’Union européenne",
+        "doi": null,
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A02024R1689-20260727",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation soumise à la politique de réutilisation des documents de l’Union européenne.",
+        "status": "verified",
+        "notes": "Leçon limitée à l’article 4 de la version consolidée au 27 juillet 2026 ; cet article n’impose pas de garantir à chaque personne un niveau individuel déterminé. Ne constitue pas un avis juridique."
+      },
+      {
+        "id": "REF-112-002",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "AI RMF 1.0 en cours de révision en 2026 ; version figée dans cette spec."
+      },
+      {
+        "id": "REF-112-003",
+        "type": "government_guidance",
+        "authors": [
+          "Government Digital Service"
+        ],
+        "organization": "GOV.UK",
+        "title": "Encouraging people to use your digital service",
+        "year": 2018,
+        "edition": "Dernière mise à jour du 30 août 2018",
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/helping-people-to-use-your-service/encouraging-people-to-use-your-digital-service",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0, sauf indication contraire.",
+        "status": "verified",
+        "notes": "Guide général de service numérique ; transposition au service interne Asteria explicitement présentée comme adaptation."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Situation Asteria entièrement fictive créée pour l’exercice."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-112-001",
+            "locator": "article 4, Maîtrise de l’IA",
+            "supports": "Adaptation du niveau de maîtrise aux connaissances, à l’expérience, à la formation, au contexte et aux personnes concernées."
+          },
+          {
+            "referenceId": "REF-112-002",
+            "locator": "GOVERN 2.1 à 2.3",
+            "supports": "Clarté des responsabilités et formation permettant d’exercer les responsabilités de gestion des risques IA."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "Texte juridique primaire et cadre institutionnel convergent sur une préparation contextualisée des personnes ; les modalités pédagogiques restent proposées et non imposées par ces sources.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-112-003",
+            "locator": "Find out why people do not use your service online ; Train staff to improve users’ digital skills, confidence and trust",
+            "supports": "Recherche des causes de non-usage, soutien et formation du personnel."
+          },
+          {
+            "referenceId": "REF-112-002",
+            "locator": "GOVERN 5.1 à 5.2 ; MEASURE 3.3 ; MEASURE 4.2 à 4.3",
+            "supports": "Collecte et intégration du feedback et observation des performances dans le contexte d’usage."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux guides publics convergent sur feedback et soutien ; l’interprétation évite d’assimiler usage et valeur.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "eu-ai-act-article-4",
+        "referenceIds": [
+          "REF-112-001"
+        ],
+        "pedagogicalRationale": "Ancre la maîtrise de l’IA dans les rôles, connaissances et contextes plutôt que dans un module uniforme.",
+        "learnerInstructions": "Lire l’article 4 uniquement et associer les facteurs aux publics Asteria.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel lisible sans compte ; page longue.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Revalidation réglementaire requise avant publication."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core-training",
+        "referenceIds": [
+          "REF-112-002"
+        ],
+        "pedagogicalRationale": "Relie formation, responsabilités et feedback au dispositif de gouvernance.",
+        "learnerInstructions": "Lire les sous-catégories ciblées et produire responsabilité, compétence et voie de feedback par public.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La page signale la révision en cours de l’AI RMF 1.0."
+      },
+      {
+        "resourceKey": "govuk-encouraging-digital-service",
+        "referenceIds": [
+          "REF-112-003"
+        ],
+        "pedagogicalRationale": "Apporte une méthode publique simple pour examiner obstacles, soutien et confiance avant d’agir.",
+        "learnerInstructions": "Relever causes de non-usage, observation associée et réponse proportionnée.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "maitrise-ia-adaptee-roles",
+        "assessmentTitle": "Mini-évaluation — Maîtrise de l’IA par rôle",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formation prépare le mieux les référents Asteria ?",
+            "explanation": "La formation doit correspondre aux responsabilités réelles : qualifier, escalader et tracer les signalements.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un exercice de qualification, escalade et traçabilité d’un signalement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La même démonstration commerciale que pour tous",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un questionnaire sur le nom du fournisseur uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Signer une feuille de présence suffit à démontrer la maîtrise des gestes opérationnels.",
+            "explanation": "La présence est une trace de participation ; une mise en situation ou autre preuve observable est nécessaire pour vérifier la capacité à agir.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels facteurs doivent adapter le plan de maîtrise de l’IA ?",
+            "explanation": "Le texte européen cite notamment connaissances, expérience, formation et contexte d’usage.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Les responsabilités et le contexte d’usage",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les connaissances et l’expérience du public",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La préférence du fournisseur pour un module unique",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "adoption-fondee-usage-soutien",
+        "assessmentTitle": "Mini-évaluation — Adoption, usage et soutien",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Les connexions sont faibles après une semaine. Quelle première action est la plus rigoureuse ?",
+            "explanation": "Il faut rechercher les obstacles et les situations de tâche avant de conclure à une résistance ou d’imposer l’usage.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Observer les tâches, interroger utilisateurs et non-utilisateurs, puis qualifier les obstacles",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rendre immédiatement l’usage obligatoire",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Compter uniquement les invitations envoyées",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels signaux complètent le taux d’usage ?",
+            "explanation": "Résultats par tâche, charge de vérification, support et contournements montrent comment le service fonctionne réellement.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le taux de réussite par tâche et la charge de vérification",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les motifs de contact support et les contournements",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de slogans de lancement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi maintenir un canal alternatif pendant un lancement restreint ?",
+            "explanation": "L’alternative permet d’accomplir la tâche lorsque l’outil est inadapté, indisponible ou hors périmètre et soutient un déploiement réversible.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Pour permettre un repli et éviter de forcer un usage inadapté",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour masquer les problèmes au support",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour supprimer les indicateurs d’adoption",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : préparer les capacités par rôle, puis organiser l’usage, le soutien et le feedback dans les situations réelles.",
+      "cycles": [
+        {
+          "conceptSlug": "maitrise-ia-adaptee-roles",
+          "contentKeys": [
+            "content-asteria-adoption",
+            "content-maitrise-ia-contextuelle"
+          ],
+          "resourceKeys": [
+            "eu-ai-act-article-4",
+            "nist-ai-rmf-core-training"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-matrice-formation-par-role"
+          },
+          "assessmentKey": "concept-maitrise-ia-roles-assessment-1",
+          "rationale": "Les textes primaire et institutionnel conduisent à différencier gestes et preuves de maîtrise selon les responsabilités."
+        },
+        {
+          "conceptSlug": "adoption-fondee-usage-soutien",
+          "contentKeys": [
+            "content-adoption-evidence-soutien"
+          ],
+          "resourceKeys": [
+            "govuk-encouraging-digital-service"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-adoption-support"
+          },
+          "assessmentKey": "concept-adoption-usage-soutien-assessment-1",
+          "rationale": "Le plan d’adoption traite usage, non-usage, support et feedback comme des données à examiner, non comme un jugement sur les personnes."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas Asteria fictif.",
+        "Revue humaine en conduite du changement, formation, droit de l’IA et opérations requise avant publication.",
+        "Le passage sur l’article 4 ne constitue pas un avis juridique et doit être revérifié avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

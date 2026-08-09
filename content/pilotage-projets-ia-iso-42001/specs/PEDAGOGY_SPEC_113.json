@@ -1,0 +1,505 @@
+{
+  "specId": "PEDAGOGY_SPEC_113",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "concevoir-sgia",
+  "lesson": {
+    "title": "Planifier risques, impacts, contrôles et preuves",
+    "slug": "planifier-risques-impacts-controles-preuves",
+    "summary": "Cette leçon transforme le registre de risques en plan de mise en œuvre : impacts à examiner, mesures choisies, responsabilités, critères d’efficacité et preuves attendues.",
+    "objectives": [
+      "Relier risques et impacts aux priorités du SGIA sans fausse précision.",
+      "Planifier mesures, propriétaires, tests d’efficacité et preuves vérifiables."
+    ],
+    "prerequisites": [
+      "Avoir produit le registre des risques et la matrice de responsabilités d’Asteria."
+    ],
+    "estimatedMinutes": 60,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-couverture-risques-impacts",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La planification relie objectifs, scénarios de risque, personnes ou groupes affectés, impacts et décisions de traitement en conservant les incertitudes. Un score ne remplace pas l’explication du scénario, des personnes affectées et de l’incertitude.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-107",
+            "nist-ai-rmf-107"
+          ]
+        }
+      },
+      {
+        "key": "content-mesures-preuves-planifiees",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Une mesure planifiée possède un objectif, un propriétaire, une échéance, un test d’efficacité et une preuve attendue ; son choix reste proportionné au risque. Une politique signée n’est pas une preuve suffisante si l’on ne peut pas démontrer l’exécution et l’efficacité attendues. Toute correspondance précise avec ISO/IEC 42001 exige un accès autorisé au texte applicable et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-107",
+            "nist-ai-rmf-107"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-107",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à MAP 3, MEASURE 2 et MANAGE 1 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à « Couverture des risques et impacts ».",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres MAP 3, MEASURE 2 et MANAGE 1 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-107",
+        "type": "website",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), Core. NIST AI 100-1.",
+        "description": "Consulter MAP, MEASURE et MANAGE et relever les pratiques publiques utiles à Asteria.",
+        "guidance": {
+          "objective": "Opérationnaliser mesures et preuves planifiées à partir d’un cadre public.",
+          "instructions": "Choisir quatre sous-catégories pertinentes ; pour chacune, noter une action, un propriétaire et une preuve attendue.",
+          "scope": "MAP, MEASURE et MANAGE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais structurée, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Couverture des risques et impacts",
+        "slug": "couverture-risques-impacts",
+        "description": "La planification relie objectifs, scénarios de risque, personnes ou groupes affectés, impacts et décisions de traitement en conservant les incertitudes.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-107"
+        ],
+        "assessment": {
+          "key": "concept-couverture-risques-impacts-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Couverture des risques et impacts",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Mesures et preuves planifiées",
+        "slug": "mesures-preuves-planifiees",
+        "description": "Une mesure planifiée possède un objectif, un propriétaire, une échéance, un test d’efficacité et une preuve attendue ; son choix reste proportionné au risque.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-107"
+        ],
+        "assessment": {
+          "key": "concept-mesures-preuves-planifiees-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Mesures et preuves planifiées",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-matrice-couverture-risques-impacts",
+        "title": "Construire la matrice de couverture",
+        "description": "Relier six risques d’Asteria à l’objectif concerné, aux groupes affectés, aux impacts possibles, à l’incertitude et à la décision d’acceptation, traitement ou escalade.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-plan-mesures-preuves",
+        "title": "Établir le plan de mesures et de preuves",
+        "description": "Pour cinq mesures prioritaires, préciser résultat attendu, propriétaire, échéance, modalité de test, seuil d’efficacité, preuve et décision en cas d’échec.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-couverture-risques-impacts"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-107"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-matrice-couverture-risques-impacts"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-couverture-risques-impacts-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-mesures-preuves-planifiees"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-107"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-plan-mesures-preuves"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-mesures-preuves-planifiees-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-107-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-107-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication technique NIST : œuvre fédérale généralement dans le domaine public aux États-Unis ; droits étrangers réservés avec droit mondial de réimpression accordé, sous réserve d’éventuels contenus tiers.",
+        "status": "verified",
+        "notes": "Cadre volontaire public ; version 1.0 annoncée en cours de révision."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-107-NIST-PLAYBOOK",
+            "locator": "Suggestions MAP 3, MEASURE 2 et MANAGE 1",
+            "supports": "Pratiques publiques utiles à couverture des risques et impacts."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-107-NIST-AI-RMF",
+            "locator": "MAP 3, MEASURE 2 et MANAGE 1",
+            "supports": "Résultats publics utiles à mesures et preuves planifiées."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Cadre institutionnel public ; adaptation professionnelle à faire confirmer en revue métier.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-107",
+        "referenceIds": [
+          "REF-107-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer MAP 3, MEASURE 2 et MANAGE 1, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-107",
+        "referenceIds": [
+          "REF-107-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Cadre public pour produire un livrable professionnel vérifiable.",
+        "learnerInstructions": "Consulter MAP, MEASURE et MANAGE, puis relier actions, propriétaires et preuves.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "couverture-risques-impacts",
+        "assessmentTitle": "Mini-évaluation — Couverture des risques et impacts",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle ligne fournit la meilleure couverture ?",
+            "explanation": "Un score ne remplace pas l’explication du scénario, des personnes affectées et de l’incertitude.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Scénario, groupe affecté, impact, incertitude et décision",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Score isolé sans justification",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Intitulé générique sans propriétaire",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un score de risque suffit à justifier une mesure.",
+            "explanation": "Le score doit rester relié au scénario, aux impacts, aux preuves et aux incertitudes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent couverture des risques et impacts vérifiable ?",
+            "explanation": "Un score ne remplace pas l’explication du scénario, des personnes affectées et de l’incertitude.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Une responsabilité explicite",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une preuve reliée à une décision",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Un intitulé générique sans contexte",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "mesures-preuves-planifiees",
+        "assessmentTitle": "Mini-évaluation — Mesures et preuves planifiées",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que planifier pour une mesure ?",
+            "explanation": "La planification transforme les risques en actions vérifiables.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Propriétaire et échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Test d’efficacité et preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Seulement son intitulé",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Mesures et preuves planifiées peut être démontré par une intention non documentée.",
+            "explanation": "Une politique signée n’est pas une preuve suffisante si l’on ne peut pas démontrer l’exécution et l’efficacité attendues.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés soutiennent mesures et preuves planifiées ?",
+            "explanation": "La planification transforme les risques en actions vérifiables.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un propriétaire et une échéance",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un critère et une preuve",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une formulation non testable",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles appliqués : cadrer le principe, produire une preuve, puis valider la décision.",
+      "cycles": [
+        {
+          "conceptSlug": "couverture-risques-impacts",
+          "contentKeys": [
+            "content-couverture-risques-impacts"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-107"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-matrice-couverture-risques-impacts"
+          },
+          "assessmentKey": "concept-couverture-risques-impacts-assessment-1",
+          "rationale": "La source officielle situe le principe avant son application au cas fictif."
+        },
+        {
+          "conceptSlug": "mesures-preuves-planifiees",
+          "contentKeys": [
+            "content-mesures-preuves-planifiees"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-107"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-plan-mesures-preuves"
+          },
+          "assessmentKey": "concept-mesures-preuves-planifiees-assessment-1",
+          "rationale": "Le cadre public NIST soutient la production sans remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon « Planifier risques, impacts, contrôles et preuves ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

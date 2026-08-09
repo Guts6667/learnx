@@ -1,0 +1,746 @@
+{
+  "specId": "PEDAGOGY_SPEC_109",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "maitriser-risques-conformite",
+  "moduleSlug": "cadre-europeen-et-securite-genai",
+  "lesson": {
+    "title": "Conduire la diligence fournisseur et préparer la réversibilité",
+    "slug": "conduire-diligence-fournisseur-reversibilite",
+    "summary": "La leçon structure la diligence d'un service d'IA générative : preuves techniques et organisationnelles, rôles et chaîne de sous-traitance, changements du service, portabilité, réversibilité et plan de sortie testable.",
+    "objectives": [
+      "Construire une grille de diligence fondée sur risques et preuves.",
+      "Documenter données, rôles, sous-traitants, engagements et changements avec escalade juridique.",
+      "Concevoir et tester un plan de réversibilité couvrant données, configurations, connaissances et continuité."
+    ],
+    "prerequisites": [
+      "Savoir cartographier les flux et formuler les risques de la chaîne fournisseur."
+    ],
+    "estimatedMinutes": 45,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La fiche fournisseur relie chaque dépendance à une question, une réponse documentée et une preuve : architecture, données d'apprentissage et d'usage, provenance, évaluation, sécurité, incident, continuité, sous-traitants, changements et limitations. Les certifications sont examinées avec leur périmètre, leur date et leurs exclusions. Une absence de preuve devient un risque ou une condition de décision.",
+          "sourceKeys": [
+            "nist-preuves-tiers-genai"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "rich_text",
+        "position": 2,
+        "content": {
+          "text": "Asteria doit savoir quelles données quittent son environnement, où elles sont traitées, si les requêtes ou sorties sont conservées ou réutilisées, quels sous-traitants interviennent et comment un changement de modèle, de région ou de conditions est notifié. Le consultant constitue le dossier et signale les écarts ; le DPO, le juridique, les achats et le RSSI qualifient et négocient selon leur mandat.",
+          "sourceKeys": [
+            "cnil-faq-fournisseur-genai"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Sortir d'un service ne consiste pas seulement à télécharger un fichier. Le plan inventorie documents, index, configurations, prompts, évaluations, journaux, comptes, clés, dépendances et connaissances opératoires. Il précise formats, délais, coûts, assistance, suppression vérifiable, solution de continuité, responsabilités et test périodique. Les exigences de portabilité contractuelle ne sont pas confondues avec le droit RGPD à la portabilité des personnes.",
+          "sourceKeys": [
+            "cnil-roles-chaine-fournisseur"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-preuves-tiers-genai",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "Chloe Autio et al.",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "citation": "Autio, C., et al. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. NIST AI 600-1. https://doi.org/10.6028/NIST.AI.600-1",
+        "description": "Lire les actions relatives aux composants tiers, provenance, incident et changement de modèle.",
+        "guidance": {
+          "objective": "Évaluer les dépendances de la chaîne GAI et les preuves attendues du fournisseur.",
+          "instructions": "Lire les actions indiquées puis construire une liste de preuves et de déclencheurs de réévaluation.",
+          "scope": "Section 3, actions GOVERN et MAP relatives aux tiers, données et provenance",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "cnil-faq-fournisseur-genai",
+        "type": "document",
+        "title": "Les questions-réponses de la CNIL sur l'utilisation d'un système d'IA générative",
+        "author": "Commission nationale de l'informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative",
+        "citation": "Commission nationale de l'informatique et des libertés. (2024). Les questions-réponses de la CNIL sur l'utilisation d'un système d'IA générative.",
+        "description": "Approfondissement facultatif — Lire les questions sur choix, fournisseur, données et encadrement de l'usage afin de préparer les décisions Asteria.",
+        "guidance": {
+          "objective": "Identifier les précautions de données, de gouvernance et de fournisseur avant déploiement.",
+          "instructions": "Facultatif — Lire les questions indiquées puis dresser les clauses et preuves à soumettre au DPO, au juridique et au RSSI.",
+          "scope": "Questions 4 à 6, notamment choix du système, rôles, transferts, historique et réutilisation",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 2
+      },
+      {
+        "key": "cnil-roles-chaine-fournisseur",
+        "type": "document",
+        "title": "Déterminer la qualification juridique des acteurs",
+        "author": "Commission nationale de l'informatique et des libertés",
+        "url": "https://www.cnil.fr/fr/determiner-la-qualification-juridique-des-fournisseurs-de-systemes-dia",
+        "citation": "Commission nationale de l'informatique et des libertés. (2024). Déterminer la qualification juridique des acteurs.",
+        "description": "Approfondissement facultatif — Lire les passages sur responsable de traitement, sous-traitant et analyse au cas par cas.",
+        "guidance": {
+          "objective": "Préparer les faits et documents nécessaires à la qualification des acteurs.",
+          "instructions": "Facultatif — Lire les cas proposés puis compléter la fiche fournisseur Asteria sans conclure à la place du DPO ou du juridique.",
+          "scope": "Sections sur la qualification du fournisseur et le recours à un sous-traitant",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en français, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Diligence fondée sur les risques et les preuves",
+        "slug": "diligence-fournisseur-preuves-risques",
+        "description": "La diligence adapte les questions et preuves au service, aux données, aux usages, aux dépendances et aux scénarios prioritaires ; une attestation commerciale ne suffit pas.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-preuves-tiers-genai"
+        ],
+        "assessment": {
+          "key": "concept-diligence-preuves-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Évaluer les preuves fournisseur",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Données, rôles, contrat et changements",
+        "slug": "donnees-roles-contrat-changements",
+        "description": "Les faits déterminent les rôles ; le contrat documente instructions, données, réutilisation, sous-traitants, transferts, sécurité, incidents, audits et changements sans effacer les responsabilités légales.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-faq-fournisseur-genai"
+        ],
+        "assessment": {
+          "key": "concept-contrat-changements-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Préparer la revue contractuelle",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Réversibilité et plan de sortie testable",
+        "slug": "reversibilite-plan-sortie-testable",
+        "description": "La réversibilité prépare extraction, suppression, portabilité, reconstruction, transfert de connaissances, délais, coûts et continuité avant que la dépendance ne devienne bloquante.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cnil-roles-chaine-fournisseur"
+        ],
+        "assessment": {
+          "key": "concept-reversibilite-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Concevoir un plan de sortie",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Micro-application — Exiger une preuve fournisseur",
+        "description": "En 5 minutes, choisir trois questions critiques de diligence et préciser pour chacune le risque lié, la preuve acceptable et la conséquence d'une réponse insuffisante.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-2",
+        "title": "Micro-application — Préparer une revue contractuelle",
+        "description": "En 5 minutes, documenter pour un sujet de données et un sujet de changement le fait, la pièce attendue, l'expert interne et la décision à confirmer.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Production intégrée — Tester une sortie sur table",
+        "description": "En 12 minutes, préparer un scénario de fin de contrat couvrant cinq actifs à récupérer, formats, preuve de suppression, continuité, rôles, délai et trois écarts bloquants.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-preuves-tiers-genai"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-diligence-preuves-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-faq-fournisseur-genai"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-contrat-changements-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cnil-roles-chaine-fournisseur"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-reversibilite-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.1",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-103-001",
+        "type": "institutional_guidance",
+        "authors": [
+          "Autio, C.",
+          "Schwartz, R.",
+          "Dunietz, J.",
+          "Jain, S.",
+          "Stanley, M.",
+          "Tabassi, E.",
+          "Hall, P.",
+          "Roberts, K."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "NIST AI 600-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.600-1",
+        "url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement fédéral des États-Unis ; conditions NIST applicables.",
+        "status": "verified",
+        "notes": "Profil NIST AI 600-1 publié en 2024 ; volontaire et non contractuel."
+      },
+      {
+        "id": "REF-103-002",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "CNIL",
+        "title": "Les questions-réponses de la CNIL sur l'utilisation d'un système d'IA générative",
+        "year": 2024,
+        "edition": null,
+        "publication": "CNIL",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation selon les mentions légales de la CNIL.",
+        "status": "verified",
+        "notes": "FAQ opérationnelle consultée le 9 août 2026 ; vérifier sa date de mise à jour avant publication."
+      },
+      {
+        "id": "REF-103-003",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "CNIL",
+        "title": "Déterminer la qualification juridique des acteurs",
+        "year": 2024,
+        "edition": null,
+        "publication": "CNIL — Fiches pratiques IA",
+        "doi": null,
+        "url": "https://www.cnil.fr/fr/determiner-la-qualification-juridique-des-fournisseurs-de-systemes-dia",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": "Réutilisation selon les mentions légales de la CNIL.",
+        "status": "verified",
+        "notes": "Fiche officielle consultée le 9 août 2026 ; qualification au cas par cas."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-103-001",
+            "locator": "section 3, actions GOVERN et MAP relatives aux tiers, données et provenance",
+            "supports": "Gestion des risques liés aux composants, données et acteurs tiers dans les systèmes GAI."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Profil institutionnel directement pertinent pour la chaîne de valeur.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-103-002",
+            "locator": "questions 4 à 6, rôles, transferts, réutilisation et historique",
+            "supports": "Précautions lors du choix et de l'encadrement d'un service d'IA générative."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "FAQ officielle ; la négociation et la qualification sont explicitement escaladées.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-103-003",
+            "locator": "sections sur qualification, sous-traitance et instructions documentées",
+            "supports": "Importance de la chaîne contractuelle, des instructions et des responsabilités des acteurs."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "La source soutient la gouvernance des acteurs ; le plan de sortie est une synthèse opérationnelle à revoir par achats et juridique.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-preuves-tiers-genai",
+        "referenceIds": [
+          "REF-103-001"
+        ],
+        "pedagogicalRationale": "Cadre public pour les risques de tiers et de chaîne de valeur GAI.",
+        "learnerInstructions": "Lire les actions indiquées puis construire une liste de preuves et de déclencheurs de réévaluation.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel en anglais, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ne remplace ni audit fournisseur ni clauses contractuelles."
+      },
+      {
+        "resourceKey": "cnil-faq-fournisseur-genai",
+        "referenceIds": [
+          "REF-103-002"
+        ],
+        "pedagogicalRationale": "Position opérationnelle de l'autorité française de protection des données.",
+        "learnerInstructions": "Facultatif — Lire les questions indiquées puis dresser les clauses et preuves à soumettre au DPO, au juridique et au RSSI.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français, accessible sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ne pas transformer des recommandations générales en avis sur le cas."
+      },
+      {
+        "resourceKey": "cnil-roles-chaine-fournisseur",
+        "referenceIds": [
+          "REF-103-003"
+        ],
+        "pedagogicalRationale": "Source officielle pour documenter les rôles dans la chaîne de traitement.",
+        "learnerInstructions": "Facultatif — Lire les cas proposés puis compléter la fiche fournisseur Asteria sans conclure à la place du DPO ou du juridique.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français, accessible sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Faire confirmer toute qualification juridique."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "diligence-fournisseur-preuves-risques",
+        "assessmentTitle": "Mini-évaluation — Évaluer les preuves fournisseur",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle preuve de sécurité est la plus exploitable ?",
+            "explanation": "Le périmètre et la période déterminent ce que la preuve couvre réellement.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un rapport ou certificat daté avec périmètre et exclusions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le mot « sécurisé » sur une brochure",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de clients",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels sujets appartiennent à la diligence ?",
+            "explanation": "Ils couvrent la chaîne technique et opérationnelle.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Sous-traitants et localisation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Évaluation et limites",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Notification des incidents et changements",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Nom commercial seulement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "L'absence de réponse à une question critique doit être conservée comme inconnue et condition de décision.",
+            "explanation": "Elle ne doit pas être transformée en hypothèse favorable.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "donnees-roles-contrat-changements",
+        "assessmentTitle": "Mini-évaluation — Préparer la revue contractuelle",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Que faut-il vérifier sur les données d'usage ?",
+            "explanation": "Conservation, réutilisation, localisation et accès influencent risque et conformité.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Conservation de l'historique",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réutilisation par le fournisseur",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Lieux de traitement et transferts",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur du logo",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Qui doit confirmer une clause de transfert de données ?",
+            "explanation": "La décision juridique et protection des données dépasse le rôle autonome du consultant.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Le juridique et le DPO selon leurs rôles",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le consultant seul",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le modèle génératif",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une clause contractuelle peut rendre inutile l'analyse des activités effectives des acteurs.",
+            "explanation": "La qualification et les risques dépendent aussi des faits.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "reversibilite-plan-sortie-testable",
+        "assessmentTitle": "Mini-évaluation — Concevoir un plan de sortie",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément rend la réversibilité vérifiable ?",
+            "explanation": "Un exercice démontre formats, délais, responsabilités et lacunes.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Un test de sortie documenté",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une intention générale",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La promesse orale du commercial",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels actifs peuvent devoir être repris ?",
+            "explanation": "La continuité dépend de plus que des documents sources.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Configurations et prompts",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Jeux d'évaluation",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Journaux autorisés et connaissances opératoires",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Données d'autres clients",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "La portabilité contractuelle d'un service est identique au droit RGPD à la portabilité.",
+            "explanation": "Ce sont des objets distincts, même si le mot est similaire.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : exiger des preuves, préparer la revue contractuelle, puis tester la sortie.",
+      "cycles": [
+        {
+          "conceptSlug": "diligence-fournisseur-preuves-risques",
+          "contentKeys": [
+            "content-1"
+          ],
+          "resourceKeys": [
+            "nist-preuves-tiers-genai"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-diligence-preuves-assessment-1",
+          "rationale": "La grille relie risques et preuves avant d'examiner le contrat."
+        },
+        {
+          "conceptSlug": "donnees-roles-contrat-changements",
+          "contentKeys": [
+            "content-2"
+          ],
+          "resourceKeys": [
+            "cnil-faq-fournisseur-genai"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-contrat-changements-assessment-1",
+          "rationale": "La matrice rend la revue pluridisciplinaire traçable sans produire un avis juridique."
+        },
+        {
+          "conceptSlug": "reversibilite-plan-sortie-testable",
+          "contentKeys": [
+            "content-3"
+          ],
+          "resourceKeys": [
+            "cnil-roles-chaine-fournisseur"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-reversibilite-assessment-1",
+          "rationale": "Le test sur table révèle les dépendances avant la décision d'engagement."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Calibrage 45 minutes : une lecture principale de 8 à 10 minutes, deux micro-applications de 5 minutes, une production intégrée de 12 minutes et environ 13 à 15 minutes pour les apports et neuf questions courtes ; les deux autres ressources sont facultatives.",
+        "Aucune clause ni qualification juridique n'est validée par cette leçon ; revue juridique, DPO, achats et RSSI requise.",
+        "Le plan de réversibilité est une synthèse opérationnelle originale, à adapter au contrat réel.",
+        "Les données et fournisseurs Asteria sont fictifs.",
+        "Une revue humaine fournisseur, sécurité, juridique et pédagogique est requise.",
+        "Les slugs parents ne sont pas encore intégrés au seed."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur diligence fournisseur et réversibilité avec neuf questions corrigées.",
+        "reviewRequired": "editorial_and_subject"
+      },
+      {
+        "version": "1.0.1",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Réduction de la charge obligatoire : une ressource principale, deux approfondissements facultatifs, deux micro-applications et une production intégrée calibrée.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

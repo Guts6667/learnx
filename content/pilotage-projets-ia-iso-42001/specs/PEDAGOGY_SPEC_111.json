@@ -1,0 +1,536 @@
+{
+  "specId": "PEDAGOGY_SPEC_111",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "mettre-en-oeuvre-sgia",
+  "moduleSlug": "concevoir-sgia",
+  "lesson": {
+    "title": "Définir contexte, périmètre, politique et objectifs",
+    "slug": "definir-contexte-perimetre-politique-objectifs",
+    "summary": "Cette leçon transforme les enjeux d’Asteria en limites explicites du SGIA, puis relie une politique courte à des objectifs pilotables sans prétendre reproduire ISO/IEC 42001.",
+    "objectives": [
+      "Analyser le contexte et les parties intéressées utiles au SGIA.",
+      "Délimiter un périmètre défendable et relier politique, objectifs et mesures."
+    ],
+    "prerequisites": [
+      "Disposer du registre des risques et de la cartographie du système Asteria produits aux étapes 4 et 5."
+    ],
+    "estimatedMinutes": 60,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-contexte-sgia",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le contexte d’un SGIA décrit les objectifs de l’organisation, les usages d’IA concernés, les contraintes internes et externes ainsi que les attentes des parties intéressées pertinentes. Ce diagnostic sert à décider ce que le système de management doit gouverner. Il ne consiste pas à recopier une liste générique d’enjeux : chaque élément retenu doit influencer une décision, un risque, une responsabilité ou un objectif.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-105",
+            "nist-govern-map-105"
+          ]
+        }
+      },
+      {
+        "key": "content-perimetre-politique-objectifs",
+        "type": "callout",
+        "position": 2,
+        "content": {
+          "text": "Un périmètre utile nomme les activités, systèmes, sites, données et interfaces inclus, puis explicite les limites et dépendances. La politique donne une direction commune ; les objectifs la rendent pilotable par des responsables, échéances et mesures. Chez Asteria, exclure un fournisseur du périmètre ne supprime pas la dépendance : l’organisation doit encore gouverner la relation et les preuves attendues. Toute correspondance précise avec une exigence de la norme nécessite un exemplaire autorisé et une validation compétente.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-105",
+            "nist-govern-map-105"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-playbook-105",
+        "type": "website",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "citation": "National Institute of Standards and Technology. (2023, ressource évolutive). NIST AI RMF Playbook.",
+        "description": "Explorer les suggestions associées à GOVERN 1 et MAP 1 et sélectionner uniquement celles qui répondent au contexte d’Asteria ; le Playbook est volontaire et ne constitue pas une checklist exhaustive.",
+        "guidance": {
+          "objective": "Transformer les résultats attendus du NIST AI RMF en pratiques adaptées à « Contexte et parties intéressées du SGIA ».",
+          "instructions": "Sélectionner trois suggestions pertinentes, puis indiquer pour chacune le responsable, la preuve attendue et la raison de son adaptation au cas.",
+          "scope": "Filtres GOVERN 1 et MAP 1 dans le Playbook",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML et téléchargements structurés en anglais, accessibles sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 1
+      },
+      {
+        "key": "nist-govern-map-105",
+        "type": "website",
+        "title": "AI Risk Management Framework 1.0 — GOVERN et MAP",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0), fonctions GOVERN et MAP. NIST AI 100-1.",
+        "description": "Consulter GOVERN 1 et MAP 1 afin d’identifier contexte, politiques, exigences et parties prenantes utiles au cadrage d’Asteria.",
+        "guidance": {
+          "objective": "Relier le contexte d’usage à une gouvernance et à des objectifs documentés.",
+          "instructions": "Choisir quatre sous-catégories pertinentes, puis noter pour chacune une preuve déjà disponible et une information manquante.",
+          "scope": "GOVERN 1 et MAP 1 dans AI RMF Core",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML en anglais, structurée par fonctions et sous-catégories, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 8,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Contexte et parties intéressées du SGIA",
+        "slug": "contexte-parties-interessees-sgia",
+        "description": "Le contexte relie objectifs, usages, contraintes et attentes pertinentes aux décisions de gouvernance du SGIA.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-105"
+        ],
+        "assessment": {
+          "key": "concept-contexte-parties-interessees-sgia-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Contexte et parties intéressées",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Périmètre, politique et objectifs alignés",
+        "slug": "perimetre-politique-objectifs-alignes",
+        "description": "Le périmètre fixe les limites gouvernées ; la politique oriente les décisions et les objectifs rendent cette orientation mesurable et attribuée.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-govern-map-105"
+        ],
+        "assessment": {
+          "key": "concept-perimetre-politique-objectifs-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Périmètre, politique et objectifs",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-carte-contexte-sgia",
+        "title": "Construire la carte de contexte d’Asteria",
+        "description": "Produire un tableau de huit à douze enjeux internes ou externes et parties intéressées. Pour chaque ligne, indiquer la décision SGIA influencée, la preuve disponible et l’information à confirmer.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-fiche-perimetre-politique-objectifs",
+        "title": "Rédiger la fiche de cadrage du SGIA",
+        "description": "Rédiger un périmètre d’une page avec inclusions, exclusions justifiées, interfaces et dépendances ; ajouter une politique de cinq engagements maximum et trois objectifs dotés d’un responsable, d’une échéance et d’une mesure.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-contexte-sgia"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-105"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-carte-contexte-sgia"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-contexte-parties-interessees-sgia-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-perimetre-politique-objectifs"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-govern-map-105"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-fiche-perimetre-politique-objectifs"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-perimetre-politique-objectifs-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior préparant une pratique de mise en œuvre d’un SGIA",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-105-NIST-PLAYBOOK",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI Risk Management Framework Playbook",
+        "year": 2023,
+        "edition": "Ressource évolutive liée à AI RMF 1.0",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Informations du site NIST considérées publiques sauf mention de copyright ; distribution ou copie permise avec crédit approprié demandé.",
+        "status": "verified",
+        "notes": "Suggestions volontaires et adaptables ; le Playbook sera mis à jour après la révision annoncée de l’AI RMF."
+      },
+      {
+        "id": "REF-105-NIST-AI-RMF",
+        "type": "institutional_framework",
+        "authors": [
+          "Tabassi, E."
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": "Version 1.0",
+        "publication": "NIST AI 100-1",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication technique NIST : œuvre fédérale généralement dans le domaine public aux États-Unis ; droits étrangers réservés avec droit mondial de réimpression accordé, sous réserve d’éventuels contenus tiers.",
+        "status": "verified",
+        "notes": "Cadre public volontaire ; la version 1.0 est annoncée en cours de révision."
+      },
+      {
+        "id": "REF-105-PATTISON-2025",
+        "type": "book",
+        "authors": [
+          "Pattison, A."
+        ],
+        "organization": null,
+        "title": "Managing AI Risk: A Practical Approach to Responsibly Managing AI with ISO 42001",
+        "year": 2025,
+        "edition": null,
+        "publication": "IT Governance Publishing",
+        "doi": null,
+        "url": null,
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Ouvrage protégé ; exemplaire fourni par l’apprenant, non reproduit",
+        "status": "needs_verification",
+        "notes": "Note bibliographique secondaire non mappée. Édition, traduction française et droits d’accès à vérifier ; aucune page locale n’est utilisée comme preuve d’authoring."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-105-NIST-PLAYBOOK",
+            "locator": "Suggestions GOVERN 1 et MAP 1",
+            "supports": "Pratiques publiques utiles à contexte et parties intéressées du sgia."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Playbook institutionnel volontaire et adaptable, relié au contexte du cas sans prétention normative.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-105-NIST-AI-RMF",
+            "locator": "GOVERN 1 et MAP 1",
+            "supports": "Résultats publics utiles à périmètre, politique et objectifs alignés."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Cadre institutionnel public ; adaptation professionnelle à faire confirmer en revue métier.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-playbook-105",
+        "referenceIds": [
+          "REF-105-NIST-PLAYBOOK"
+        ],
+        "pedagogicalRationale": "Source publique et réutilisable proposant des actions adaptables pour produire le livrable de la leçon.",
+        "learnerInstructions": "Filtrer GOVERN 1 et MAP 1, sélectionner trois suggestions et justifier leur adaptation à Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré et téléchargements accessibles sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Suggestions volontaires ; ne pas les traiter comme une checklist normative."
+      },
+      {
+        "resourceKey": "nist-govern-map-105",
+        "referenceIds": [
+          "REF-105-NIST-AI-RMF"
+        ],
+        "pedagogicalRationale": "Cadre public exploitable pour relier contexte, politique et objectifs.",
+        "learnerInstructions": "Consulter GOVERN 1 et MAP 1, puis renseigner preuves et lacunes d’Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Vérifier la version avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "contexte-parties-interessees-sgia",
+        "assessmentTitle": "Mini-évaluation — Contexte et parties intéressées",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément mérite d’entrer dans l’analyse de contexte du SGIA d’Asteria ?",
+            "explanation": "Un enjeu est pertinent lorsqu’il influence une décision, une responsabilité, un risque ou un objectif du SGIA.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "L’absence de propriétaire pour une partie du corpus documentaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La couleur historique du logo d’Asteria",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une tendance technologique sans lien établi avec le projet",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations rendent une partie intéressée utile à la gouvernance ?",
+            "explanation": "Son attente, son influence, les décisions concernées et la preuve attendue rendent l’analyse actionnable.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Ses attentes pertinentes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les décisions qu’elle peut prendre ou influencer",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les preuves qu’elle attend",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Son ancienneté uniquement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une liste générique d’enjeux suffit même si aucun lien avec une décision d’Asteria n’est établi.",
+            "explanation": "Le contexte doit expliquer pourquoi chaque enjeu est retenu et ce qu’il change dans le SGIA.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "perimetre-politique-objectifs-alignes",
+        "assessmentTitle": "Mini-évaluation — Périmètre, politique et objectifs",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel périmètre est le plus défendable pour le pilote d’Asteria ?",
+            "explanation": "Un périmètre utile précise système, activité, population, interfaces et limites sans masquer les dépendances.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "L’assistant documentaire du support sur un site, ses données, interfaces et fournisseurs identifiés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toute l’IA d’Asteria sans inventaire",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le modèle génératif uniquement",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Exclure contractuellement un fournisseur du périmètre supprime la nécessité de gouverner la dépendance.",
+            "explanation": "Une limite organisationnelle n’efface ni l’interface ni les risques et preuves attendues du fournisseur.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit comporter un objectif SGIA pilotable ?",
+            "explanation": "Un objectif pilotable combine résultat, responsable, échéance et mesure.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Un résultat attendu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un responsable",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Une échéance et une mesure",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une formule vague sans preuve",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : diagnostiquer le contexte, puis transformer ce diagnostic en cadrage gouvernable.",
+      "cycles": [
+        {
+          "conceptSlug": "contexte-parties-interessees-sgia",
+          "contentKeys": [
+            "content-contexte-sgia"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-105"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-carte-contexte-sgia"
+          },
+          "assessmentKey": "concept-contexte-parties-interessees-sgia-assessment-1",
+          "rationale": "La finalité publique du SGIA cadre l’analyse avant son application au cas fictif."
+        },
+        {
+          "conceptSlug": "perimetre-politique-objectifs-alignes",
+          "contentKeys": [
+            "content-perimetre-politique-objectifs"
+          ],
+          "resourceKeys": [
+            "nist-govern-map-105"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-fiche-perimetre-politique-objectifs"
+          },
+          "assessmentKey": "concept-perimetre-politique-objectifs-assessment-1",
+          "rationale": "Le cadre public NIST fournit un point d’appui réutilisable sans prétendre remplacer la norme."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, métier et technique requise.",
+        "Le NIST AI RMF 1.0 doit être revérifié avant publication.",
+        "Les sources d’authoring sont publiques NIST ; aucune page ISO ni aucun texte normatif protégé n’est utilisé comme preuve.",
+        "Le NIST AI RMF 1.0 et son Playbook sont en cours d’évolution et doivent être revérifiés avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur le contexte et le cadrage du SGIA.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

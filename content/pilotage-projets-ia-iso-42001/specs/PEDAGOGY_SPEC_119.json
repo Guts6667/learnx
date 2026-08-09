@@ -1,0 +1,530 @@
+{
+  "specId": "PEDAGOGY_SPEC_119",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "deployer-adopter-surveiller",
+  "moduleSlug": "surveillance-et-amelioration",
+  "lesson": {
+    "title": "Surveiller valeur, qualité, coûts et risques",
+    "slug": "surveiller-valeur-qualite-couts-risques",
+    "summary": "Cette leçon construit une surveillance opérationnelle multidimensionnelle : les indicateurs sont reliés aux décisions, segmentés par contexte et accompagnés de seuils, propriétaires, cadences et limites.",
+    "objectives": [
+      "Construire un tableau de bord équilibrant valeur, usage, qualité, coûts et risques sans indicateur trompeur.",
+      "Définir seuils, cadences, propriétaires et décisions afin que la surveillance déclenche une action traçable."
+    ],
+    "prerequisites": [
+      "Disposer du cadre de mesure, du protocole d’évaluation et du registre des risques Asteria."
+    ],
+    "estimatedMinutes": 70,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-asteria-signaux-contradictoires",
+        "type": "example",
+        "position": 1,
+        "content": {
+          "text": "Cas fictif — Après trois semaines, Asteria compte 1 900 questions et 76 % d’utilisateurs actifs. Le coût unitaire baisse, mais les demandes support doublent ; les utilisateurs RH vérifient plus longtemps les réponses que le groupe pilote et les signalements de sources obsolètes se concentrent sur deux collections. Un indicateur global d’usage présenterait donc une image favorable tout en masquant des risques et une charge opérationnelle localisés.",
+          "sourceKeys": []
+        }
+      },
+      {
+        "key": "content-tableau-bord-equilibre",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un tableau de bord opérationnel relie chaque indicateur à une question et à une décision. Il combine valeur et résultat métier, usage par tâche, qualité de recherche et de réponse, coûts complets, expérience et charge de vérification, incidents et risques. Les résultats sont comparés à une baseline et segmentés par population, tâche, source, version et période lorsque ces distinctions sont utiles. Ce qui ne peut pas être mesuré de façon fiable est documenté plutôt que remplacé par un chiffre décoratif.",
+          "sourceKeys": [
+            "nist-ai-rmf-core-monitoring"
+          ]
+        }
+      },
+      {
+        "key": "content-seuils-cadence-decisions",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un indicateur devient actionnable lorsqu’il possède définition, source, fréquence, segment, propriétaire, seuils et décision associée. Un seuil d’attention déclenche l’analyse ; un seuil de restriction réduit le périmètre ; un seuil d’arrêt suspend l’usage concerné. La revue distingue variation normale, défaut de mesure, dérive du contexte et dégradation réelle. Toute modification du système, du corpus ou du fournisseur doit rester visible afin de ne pas comparer silencieusement des versions différentes.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook-monitoring"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf-core-monitoring",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). Artificial Intelligence Risk Management Framework 1.0 — Core.",
+        "description": "Lire MEASURE 1.1 à 1.3, MEASURE 2.3 à 2.13, MEASURE 3 et MEASURE 4 pour relier métriques, contexte, risques suivis et feedback.",
+        "guidance": {
+          "objective": "Choisir des indicateurs proportionnés aux objectifs et risques d’Asteria.",
+          "instructions": "Sélectionner huit résultats attendus pertinents et, pour chacun, préciser la question de décision qu’il éclaire ; signaler deux dimensions difficiles à mesurer.",
+          "scope": "MEASURE 1.1 à 1.3 ; MEASURE 2.3 à 2.13 ; MEASURE 3 ; MEASURE 4",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais, structurée et accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-playbook-monitoring",
+        "type": "website",
+        "title": "AI RMF Playbook — Manage",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/playbook/manage/",
+        "citation": "National Institute of Standards and Technology. (2023). AI RMF Playbook — Manage.",
+        "description": "Lire MANAGE 4.1 et 4.2 dans le Playbook pour identifier surveillance post-déploiement, feedback, documentation et amélioration mesurable.",
+        "guidance": {
+          "objective": "Transformer un tableau de bord en mécanisme de revue et d’action continue.",
+          "instructions": "Pour quatre indicateurs Asteria, définir fréquence, propriétaire, seuil d’attention ou d’arrêt, décision, preuve conservée et boucle de feedback.",
+          "scope": "MANAGE 4.1 et MANAGE 4.2 — About, Suggested Actions, Transparency and Documentation",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais ; sections repliables accessibles au clavier.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Surveillance multidimensionnelle contextualisée",
+        "slug": "surveillance-multidimensionnelle-contextualisee",
+        "description": "Le suivi combine valeur, usage, qualité, coût, expérience et risque, avec baseline, segmentation, version et limites de mesure explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core-monitoring"
+        ],
+        "assessment": {
+          "key": "concept-surveillance-multidimensionnelle-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Surveillance multidimensionnelle",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Seuils, revues et décisions opérationnelles",
+        "slug": "seuils-revues-decisions-operationnelles",
+        "description": "Chaque signal possède définition, cadence, propriétaire, seuil, voie d’analyse et décision possible, avec traçabilité des versions et changements.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-playbook-monitoring"
+        ],
+        "assessment": {
+          "key": "concept-seuils-revues-decisions-assessment-1",
+          "type": "case_question",
+          "title": "Mini-évaluation — Seuils et décisions",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-construire-arbre-indicateurs",
+        "title": "Construire l’arbre d’indicateurs Asteria",
+        "description": "Produire douze indicateurs répartis entre valeur, usage, qualité, coût, expérience et risque. Pour chacun, préciser question de décision, formule ou règle qualitative, baseline, source, segments, version, fréquence, propriétaire, limites et risque de mauvaise interprétation.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-designer-revue-operationnelle",
+        "title": "Designer la revue opérationnelle",
+        "description": "À partir des signaux fictifs Asteria, concevoir une page de revue avec six indicateurs prioritaires, seuils d’attention, restriction et arrêt, propriétaires, hypothèses d’analyse, décisions possibles et preuves à conserver. Distinguer changement réel, changement de version et défaut de mesure.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asteria-signaux-contradictoires"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tableau-bord-equilibre"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core-monitoring"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-construire-arbre-indicateurs"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-surveillance-multidimensionnelle-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-seuils-cadence-decisions"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook-monitoring"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-designer-revue-operationnelle"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-seuils-revues-decisions-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior ayant des bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-113-001",
+        "type": "institutional_framework",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "Artificial Intelligence Risk Management Framework 1.0 — Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "NIST",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; vérifier les éléments tiers signalés.",
+        "status": "verified",
+        "notes": "AI RMF 1.0 en cours de révision en 2026 ; version figée dans cette spec."
+      },
+      {
+        "id": "REF-113-002",
+        "type": "institutional_playbook",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "NIST",
+        "title": "AI RMF Playbook — Manage",
+        "year": 2023,
+        "edition": "Companion resource to AI RMF 1.0, version consultée le 9 août 2026",
+        "publication": "NIST AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/airmf-resources/playbook/manage/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication du gouvernement des États-Unis ; certaines ressources tierces liées ont leurs propres licences.",
+        "status": "verified",
+        "notes": "Le Playbook propose des actions volontaires à adapter au contexte ; il ne constitue pas une checklist obligatoire."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [],
+        "confidence": null,
+        "confidenceRationale": null,
+        "notApplicableReason": "Données et situation Asteria entièrement fictives créées pour l’exercice."
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-113-001",
+            "locator": "MEASURE 1.1 à 1.3 ; MEASURE 2.3 à 2.13 ; MEASURE 3.1 à 3.3 ; MEASURE 4.1 à 4.3",
+            "supports": "Sélection et documentation des métriques, suivi en production, risques émergents, feedback et contexte de déploiement."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Cadre institutionnel primaire couvrant mesure et suivi ; la structure du tableau de bord est une synthèse pédagogique adaptée au cas.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-113-002",
+            "locator": "MANAGE 4.1 et MANAGE 4.2 — Suggested Actions et Transparency and Documentation",
+            "supports": "Surveillance post-déploiement, documentation, feedback et amélioration mesurable."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide opérationnel officiel ; les trois niveaux de seuil sont une convention pédagogique à adapter et non un modèle imposé par NIST.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf-core-monitoring",
+        "referenceIds": [
+          "REF-113-001"
+        ],
+        "pedagogicalRationale": "Offre une couverture multidimensionnelle et contextuelle de la mesure et du suivi.",
+        "learnerInstructions": "Associer les résultats NIST pertinents à des questions de décision Asteria et documenter les angles morts.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML structurée, consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "La page signale la révision en cours de l’AI RMF 1.0."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-playbook-monitoring",
+        "referenceIds": [
+          "REF-113-002"
+        ],
+        "pedagogicalRationale": "Relie le suivi aux procédures, à la documentation et aux améliorations mesurables.",
+        "learnerInstructions": "Lire MANAGE 4.1 et 4.2 puis définir propriété, seuil, décision et preuve pour quatre indicateurs.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML officiel avec sections repliables.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "surveillance-multidimensionnelle-contextualisee",
+        "assessmentTitle": "Mini-évaluation — Surveillance multidimensionnelle",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi le taux global d’utilisateurs actifs ne suffit-il pas pour Asteria ?",
+            "explanation": "Il ne montre ni résultat par tâche, ni qualité, ni charge de vérification, ni risques localisés par population ou source.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Il peut masquer qualité, coûts, difficultés et risques selon les segments",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il est toujours techniquement faux",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il remplace automatiquement tous les autres indicateurs",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions doivent être suivies séparément ?",
+            "explanation": "Valeur et usage ne remplacent pas qualité, coût, expérience ou risque ; les dimensions éclairent des décisions différentes.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Résultat métier et usage par tâche",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Qualité, coût complet et signaux de risque",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Uniquement le volume total de requêtes",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une dimension importante ne peut pas être mesurée de manière fiable. Que faire ?",
+            "explanation": "La limite est documentée et peut être couverte par une observation qualitative ou une décision prudente, sans inventer de précision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Documenter l’angle mort et définir une méthode qualitative ou une prudence associée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Inventer un score pour compléter le tableau",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer le risque du périmètre",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "seuils-revues-decisions-operationnelles",
+        "assessmentTitle": "Mini-évaluation — Seuils et décisions",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel seuil est le plus actionnable ?",
+            "explanation": "Un seuil utile précise métrique, segment, période et action ; il n’est pas une alerte sans propriétaire.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Si les réponses sans source dépassent le seuil défini sur une semaine dans une collection, suspendre cette collection et alerter son propriétaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Si la qualité paraît moins bonne, faire attention",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Si un utilisateur se plaint, arrêter tout sans triage",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit documenter une revue après changement de modèle ?",
+            "explanation": "Version, date, périmètre, mesures comparables et décision permettent de distinguer changement de système et évolution du contexte.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "La version et la date du changement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les résultats avant et après sur un périmètre comparable",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Uniquement le nom commercial du nouveau modèle",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une alerte sans propriétaire ni décision associée constitue un contrôle opérationnel complet.",
+            "explanation": "Sans responsabilité et réponse définies, l’alerte peut rester sans action ; le mécanisme est incomplet.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Deux cycles : construire les mesures qui donnent une vue équilibrée, puis définir les mécanismes qui transforment les signaux en décisions et améliorations.",
+      "cycles": [
+        {
+          "conceptSlug": "surveillance-multidimensionnelle-contextualisee",
+          "contentKeys": [
+            "content-asteria-signaux-contradictoires",
+            "content-tableau-bord-equilibre"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core-monitoring"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-construire-arbre-indicateurs"
+          },
+          "assessmentKey": "concept-surveillance-multidimensionnelle-assessment-1",
+          "rationale": "Les signaux contradictoires obligent à segmenter et équilibrer le suivi plutôt qu’à optimiser un volume global."
+        },
+        {
+          "conceptSlug": "seuils-revues-decisions-operationnelles",
+          "contentKeys": [
+            "content-seuils-cadence-decisions"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-playbook-monitoring"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-designer-revue-operationnelle"
+          },
+          "assessmentKey": "concept-seuils-revues-decisions-assessment-1",
+          "rationale": "L’apprenant transforme les métriques en revue gouvernée avec seuils, analyses, propriétaires, versions et décisions."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Cas et données Asteria fictifs.",
+        "Revue humaine en mesure, exploitation, risque et IA générative requise avant publication.",
+        "Les seuils proposés sont des conventions d’exercice à adapter au contexte et à l’appétence au risque de l’organisation."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon en brouillon.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

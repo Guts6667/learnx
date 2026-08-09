@@ -1,0 +1,844 @@
+{
+  "specId": "PEDAGOGY_SPEC_094",
+  "schemaVersion": 1,
+  "programSlug": "pilotage-projets-ia-iso-42001",
+  "stageSlug": "selectionner-cas-usage",
+  "moduleSlug": "decouverte-et-priorisation",
+  "lesson": {
+    "title": "Formuler un cas d'usage et ses alternatives non-IA",
+    "slug": "formuler-cas-usage-alternatives",
+    "summary": "Un cas d'usage exploitable relie un acteur, une tâche, un contexte, un résultat attendu et des limites. Le consultant compare ensuite plusieurs réponses possibles, dont des options non-IA, avant de décider ce qui mérite une expérimentation.",
+    "objectives": [
+      "Transformer un irritant documenté en cas d'usage délimité et orienté vers un résultat.",
+      "Distinguer le besoin, la tâche soutenue, la capacité envisagée et la technologie possible.",
+      "Comparer une option IA avec des alternatives organisationnelles, documentaires, déterministes ou manuelles.",
+      "Expliciter hypothèses, limites, exclusions et critères d'abandon d'un cas d'usage."
+    ],
+    "prerequisites": [
+      "Cartographier le processus actuel, ses acteurs et ses dépendances.",
+      "Qualifier un irritant et la preuve disponible."
+    ],
+    "estimatedMinutes": 90,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-1",
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Une idée comme « créer un chatbot RH » mélange déjà besoin, interface et technologie. Pour comparer des opportunités, le consultant repart de l'acteur et de la tâche : dans quelle situation agit-il, quel résultat cherche-t-il, quel obstacle rencontre-t-il et quel changement observable serait utile ? Cette formulation permet de discuter la valeur avant d'engager la solution.",
+          "sourceKeys": [
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-2",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Dans ce parcours, une fiche de cas d'usage comporte : acteur principal et personnes affectées ; déclencheur et contexte ; tâche ou décision soutenue ; entrée disponible ; sortie attendue ; usage prévu de cette sortie ; bénéfice recherché ; limites et exclusions ; contrôle humain ; hypothèses à tester. Elle décrit une unité de décision, pas un programme de transformation entier.",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-3",
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Cas fictif Asteria : « lorsqu'un agent support reçoit une question sur une procédure interne, lui proposer les passages de documents approuvés susceptibles d'éclairer sa réponse, avec leur date et leur propriétaire, afin qu'il vérifie puis rédige la réponse ». Le cas exclut les décisions RH individuelles et les documents non approuvés. Il reste distinct de la solution technique : recherche améliorée, règles, moteur sémantique ou assistant génératif peuvent encore être comparés.",
+          "sourceKeys": [
+            "nist-ai-rmf-core"
+          ]
+        }
+      },
+      {
+        "key": "content-4",
+        "type": "definition",
+        "position": 4,
+        "content": {
+          "text": "Une alternative est une autre manière d'obtenir tout ou partie du résultat : clarifier la gouvernance documentaire, simplifier le processus, publier une foire aux questions, améliorer le moteur de recherche, utiliser des règles déterministes, former les équipes ou conserver une validation manuelle. Une comparaison honnête examine aussi l'option de ne rien construire tant que les données ou responsabilités ne sont pas prêtes.",
+          "sourceKeys": [
+            "nist-ai-rmf-playbook",
+            "govuk-discovery-phase"
+          ]
+        }
+      },
+      {
+        "key": "content-5",
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "L'IA n'est pas une catégorie de bénéfice. Elle est une option de conception qui introduit ses propres capacités, limites, coûts et risques. Le bon test n'est donc pas « peut-on utiliser un modèle ? », mais « quelle option produit un résultat suffisamment utile et maîtrisable dans ce contexte, comparée à une référence explicite ? »",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "nist-ai-rmf-playbook"
+          ]
+        }
+      },
+      {
+        "key": "content-6",
+        "type": "definition",
+        "position": 6,
+        "content": {
+          "text": "Une hypothèse de cas d'usage relie une condition vérifiable à une décision : qualité et disponibilité des documents, fréquence réelle de la tâche, capacité attendue, supervision possible, population concernée ou coût acceptable. Une limite déclare ce que le cas ne couvre pas. Un critère d'abandon précise une observation qui conduit à arrêter, réduire le périmètre ou retenir une alternative.",
+          "sourceKeys": [
+            "nist-ai-rmf-core",
+            "govuk-discovery-phase"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "govuk-discovery-phase",
+        "type": "website",
+        "title": "How the discovery phase works",
+        "author": "GOV.UK Agile delivery community",
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "citation": "GOV.UK Agile delivery community. (2021). How the discovery phase works. Service Manual.",
+        "description": "Lire « Define the problem », « Identify improvements you might be able to make » et « How you know discovery is finished ». Relever les raisons de comparer plusieurs réponses, y compris l'arrêt ou une solution plus simple.",
+        "guidance": {
+          "objective": "Garder le cas d'usage centré sur le problème et ouvrir plusieurs options de réponse.",
+          "instructions": "Lire les trois sections et noter quatre alternatives à la construction d'un nouvel assistant.",
+          "scope": "Sections Define the problem, Identify improvements you might be able to make et How you know discovery is finished",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML structurée en anglais, accessible sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf-core",
+        "type": "website",
+        "title": "AI RMF Core",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "citation": "National Institute of Standards and Technology. (2023). AI RMF Core. AI Risk Management Framework 1.0.",
+        "description": "Consulter les sous-catégories MAP 1.1 à MAP 3.5. Relever les éléments qui délimitent finalité, utilisateurs, tâche, bénéfices, coûts, portée et supervision d'un cas d'usage.",
+        "guidance": {
+          "objective": "Documenter le contexte et la portée d'un cas d'usage avant l'évaluation de sa solution.",
+          "instructions": "Lire MAP 1 à MAP 3 puis compléter une fiche Asteria avec finalité, tâche, bénéficiaires, coûts potentiels, limites et supervision.",
+          "scope": "Tableau de la fonction MAP, sous-catégories MAP 1.1 à MAP 3.5",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML officielle en anglais ; tableau lisible au clavier et document PDF associé disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "nist-ai-rmf-playbook",
+        "type": "document",
+        "title": "NIST AI RMF Playbook",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://airc.nist.gov/docs/AI_RMF_Playbook.pdf",
+        "citation": "National Institute of Standards and Technology. (s. d.). NIST AI RMF Playbook. AI Resource Center.",
+        "description": "Lire le passage de MAP 1.1 consacré au contexte et aux alternatives non-IA ou non technologiques. Relever les questions qui permettent de comparer l'IA à une option plus simple.",
+        "guidance": {
+          "objective": "Intégrer les alternatives non-IA dans l'analyse d'un cas d'usage.",
+          "instructions": "Lire le passage indiqué, puis construire pour Asteria une comparaison entre amélioration documentaire, recherche conventionnelle et assistant génératif.",
+          "scope": "MAP 1.1, passage Context mapping et Suggested Actions, pages PDF 61 à 62",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF officiel en anglais avec texte sélectionnable ; page AI Resource Center disponible.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": false,
+        "estimatedMinutes": 8,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Fiche de cas d'usage orientée résultat",
+        "slug": "fiche-cas-usage-orientee-resultat",
+        "description": "Un cas d'usage relie un acteur, un contexte, une tâche, une sortie et son usage à un résultat attendu et à des limites explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase",
+          "nist-ai-rmf-core"
+        ],
+        "assessment": {
+          "key": "concept-fiche-cas-usage-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Formuler un cas d'usage",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Alternatives IA, non-IA et statu quo",
+        "slug": "alternatives-ia-non-ia-statu-quo",
+        "description": "Chaque cas est comparé à des options organisationnelles, documentaires, déterministes ou manuelles, ainsi qu'à l'arrêt ou au report.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "govuk-discovery-phase",
+          "nist-ai-rmf-playbook"
+        ],
+        "assessment": {
+          "key": "concept-alternatives-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Comparer les alternatives",
+          "questionCount": 3
+        }
+      },
+      {
+        "title": "Hypothèses, exclusions et critères d'abandon",
+        "slug": "hypotheses-exclusions-criteres-abandon",
+        "description": "Le cas documente ce qui doit être vrai, ce qui est hors périmètre et les observations qui imposent de réduire, reporter ou arrêter.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf-core"
+        ],
+        "assessment": {
+          "key": "concept-hypotheses-abandon-assessment-1",
+          "type": "quiz",
+          "title": "Mini-évaluation — Encadrer le cas d'usage",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "activity-1",
+        "title": "Extraire les champs d'une fiche de cas d'usage",
+        "description": "Consulter MAP 1 à MAP 3 puis dresser une fiche vierge avec acteur, contexte, tâche, entrée, sortie, usage de la sortie, bénéfice, coût, portée, supervision et limites.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "resourceKeys": [
+          "nist-ai-rmf-core"
+        ]
+      },
+      {
+        "key": "activity-2",
+        "title": "Comparer trois réponses au même irritant",
+        "description": "Pour l'irritant Asteria « retrouver une procédure fiable », comparer au minimum une amélioration de gouvernance documentaire, une recherche conventionnelle et un assistant génératif. Pour chaque option, préciser résultat couvert, conditions, limites, charge humaine et nouvelle exposition au risque.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 2,
+        "resourceKeys": []
+      },
+      {
+        "key": "activity-3",
+        "title": "Rédiger le portefeuille initial Asteria",
+        "description": "Rédiger trois fiches de cas d'usage distinctes issues de la carte du processus. Pour chacune, ajouter deux hypothèses critiques, deux exclusions, une alternative non-IA et un critère d'abandon. Rejeter déjà toute fiche qui confond une ambition générale avec une tâche délimitée.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 3,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-core"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-fiche-cas-usage-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "govuk-discovery-phase"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf-playbook"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-alternatives-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-6"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-hypotheses-abandon-assessment-1"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Consultant Data/IA junior disposant de bases en Agile et en IA générative",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-088-001",
+        "type": "institutional_guidance",
+        "authors": [],
+        "organization": "Government Digital Service",
+        "title": "How the discovery phase works",
+        "year": 2021,
+        "edition": null,
+        "publication": "GOV.UK Service Manual",
+        "doi": null,
+        "url": "https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Open Government Licence v3.0",
+        "status": "verified",
+        "notes": "Guide institutionnel de découverte et de comparaison des améliorations possibles."
+      },
+      {
+        "id": "REF-088-002",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "AI RMF Core",
+        "year": 2023,
+        "edition": "AI RMF 1.0",
+        "publication": "AI Resource Center",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "NIST Technical Series publication ; conditions d'utilisation NIST applicables",
+        "status": "verified",
+        "notes": "Version 1.0 figée pour cette édition du cours ; le NIST signale une révision en cours en 2026."
+      },
+      {
+        "id": "REF-088-003",
+        "type": "institutional_playbook",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "NIST AI RMF Playbook",
+        "year": null,
+        "edition": null,
+        "publication": "AI Resource Center",
+        "doi": null,
+        "url": "https://airc.nist.gov/docs/AI_RMF_Playbook.pdf",
+        "accessedAt": "2026-08-09",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": "Publication NIST ; conditions d'utilisation NIST applicables",
+        "status": "verified",
+        "notes": "Document vivant consulté dans sa version disponible le 9 août 2026 ; la version doit être revérifiée avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-001",
+            "locator": "sections Define the problem et What to find out in discovery",
+            "supports": "Reformulation d'une solution prédéfinie en problème et compréhension de l'utilisateur et de son contexte."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Guide institutionnel direct sur la formulation du problème avant la solution.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-002",
+            "locator": "MAP 1.1 à MAP 3.5",
+            "supports": "Documentation de la finalité, des utilisateurs, tâches, bénéfices, coûts, portée et supervision."
+          },
+          {
+            "referenceId": "REF-088-001",
+            "locator": "sections Understanding users and their context et How you'll measure success",
+            "supports": "Ancrage du cas dans une tâche, un contexte et un résultat mesurable."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources convergent sur le contexte, la tâche et le résultat ; la fiche est une synthèse originale.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-002",
+            "locator": "MAP 1.1, MAP 2.1 à MAP 2.2 et MAP 3.3 à MAP 3.5",
+            "supports": "Délimitation de l'usage prévu, de la tâche, des sorties, de la portée et de la supervision."
+          }
+        ],
+        "confidence": "moderate",
+        "confidenceRationale": "Le cas et ses détails sont fictifs ; sa structure applique le cadre officiel.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-003",
+            "locator": "MAP 1.1, passage Context mapping et Suggested Actions, pages PDF 61 à 62",
+            "supports": "Examen explicite d'alternatives non-IA ou non technologiques."
+          },
+          {
+            "referenceId": "REF-088-001",
+            "locator": "section Identify improvements you might be able to make",
+            "supports": "Exemples d'alternatives à la construction d'un nouveau service."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Deux sources institutionnelles demandent d'examiner d'autres réponses possibles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-002",
+            "locator": "MAP 3.1 à MAP 3.3",
+            "supports": "Comparaison des bénéfices, coûts et portée à des références appropriées."
+          },
+          {
+            "referenceId": "REF-088-003",
+            "locator": "MAP 1.1, Suggested Actions, pages PDF 61 à 62",
+            "supports": "Considération des solutions non-IA et de l'utilité du projet."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Le principe de comparaison est explicite ; la formulation est originale.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 6,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-088-002",
+            "locator": "MAP 1.1, MAP 2.2 à MAP 2.3 et MAP 3.3",
+            "supports": "Documentation des hypothèses, limites de connaissance, conditions de test et portée ciblée."
+          },
+          {
+            "referenceId": "REF-088-001",
+            "locator": "section How you know discovery is finished",
+            "supports": "Possibilité de ne pas poursuivre lorsque les éléments recueillis le justifient."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les sources soutiennent la délimitation et une décision explicite de poursuite ou d'arrêt.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "govuk-discovery-phase",
+        "referenceIds": [
+          "REF-088-001"
+        ],
+        "pedagogicalRationale": "Le guide montre que la découverte doit comparer des améliorations et peut légitimement conclure à l'arrêt.",
+        "learnerInstructions": "Lire les sections indiquées et relever quatre alternatives à un nouvel assistant.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML structuré, sans authentification.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Dernière mise à jour affichée le 21 juin 2021."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-core",
+        "referenceIds": [
+          "REF-088-002"
+        ],
+        "pedagogicalRationale": "La fonction MAP fournit les dimensions nécessaires à une fiche de cas d'usage responsable et délimitée.",
+        "learnerInstructions": "Consulter MAP 1 à MAP 3 puis compléter la fiche Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle et PDF associé disponibles.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Version AI RMF 1.0 utilisée."
+      },
+      {
+        "resourceKey": "nist-ai-rmf-playbook",
+        "referenceIds": [
+          "REF-088-003"
+        ],
+        "pedagogicalRationale": "Le passage demandé traite explicitement l'examen d'alternatives non-IA.",
+        "learnerInstructions": "Lire le passage de MAP 1.1 puis comparer trois réponses au cas Asteria.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF officiel avec texte sélectionnable.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Ressource facultative ; document vivant à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "fiche-cas-usage-orientee-resultat",
+        "assessmentTitle": "Mini-évaluation — Formuler un cas d'usage",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle formulation décrit le mieux un cas d'usage ?",
+            "explanation": "Elle relie acteur, contexte, tâche, sortie et contrôle sans figer l'architecture.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Proposer à l'agent, lors d'une question de procédure, des passages approuvés qu'il vérifie avant de répondre",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Déployer un chatbot avec le meilleur LLM",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Transformer Asteria grâce à l'IA",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments appartiennent à une fiche de cas d'usage délimitée ?",
+            "explanation": "La fiche documente la tâche, les personnes, la sortie, son usage et les limites.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "L'acteur et les personnes affectées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "L'usage prévu de la sortie",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les exclusions",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Une promesse de retour sur investissement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le titre d'une technologie suffit à distinguer deux cas d'usage.",
+            "explanation": "Deux technologies différentes peuvent soutenir la même tâche, et une technologie peut couvrir plusieurs tâches distinctes.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "alternatives-ia-non-ia-statu-quo",
+        "assessmentTitle": "Mini-évaluation — Comparer les alternatives",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles alternatives doivent être examinées pour l'accès aux procédures Asteria ?",
+            "explanation": "Le résultat peut être amélioré par des changements organisationnels, documentaires ou techniques sans IA générative.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Clarifier les propriétaires et mises à jour des documents",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Améliorer la recherche conventionnelle",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Créer une FAQ approuvée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Choisir immédiatement le modèle le plus récent",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quand le report est-il une option raisonnable ?",
+            "explanation": "Une capacité technique ne compense pas l'absence des conditions minimales de qualité et de responsabilité.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Quand les documents critiques n'ont ni propriétaire ni statut fiable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quand le sponsor préfère une solution rapide",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quand un fournisseur propose une démonstration",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Comparer une option non-IA revient à être opposé à l'innovation.",
+            "explanation": "La comparaison sert à choisir l'option la plus utile et maîtrisable, ce qui relève d'une démarche de conseil rigoureuse.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "conceptSlug": "hypotheses-exclusions-criteres-abandon",
+        "assessmentTitle": "Mini-évaluation — Encadrer le cas d'usage",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle proposition est un critère d'abandon vérifiable ?",
+            "explanation": "Le critère décrit une observation et la décision qu'elle déclenche.",
+            "acceptedAnswers": [],
+            "position": 1,
+            "options": [
+              {
+                "label": "Si moins de 60 % des procédures du périmètre ont un propriétaire et une date de validité, reporter l'expérimentation",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Si le projet semble trop risqué, réfléchir davantage",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Si l'IA n'est pas parfaite, tout arrêter",
+                "isCorrect": false,
+                "position": 3
+              }
+            ]
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles mentions encadrent correctement un cas d'usage ?",
+            "explanation": "Les hypothèses, exclusions et limites empêchent d'étendre silencieusement l'usage.",
+            "acceptedAnswers": [],
+            "position": 2,
+            "options": [
+              {
+                "label": "Les documents inclus et exclus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les décisions qui restent humaines",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Les conditions de qualité à tester",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "La certitude que le modèle créera de la valeur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ]
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une hypothèse critique peut rester implicite si elle paraît évidente à l'équipe projet.",
+            "explanation": "Elle doit être documentée et testée car sa fausseté peut changer la décision.",
+            "acceptedAnswers": [],
+            "position": 3,
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Trois cycles : décrire le cas d'usage, comparer les alternatives, puis encadrer les hypothèses et les conditions d'arrêt.",
+      "cycles": [
+        {
+          "conceptSlug": "fiche-cas-usage-orientee-resultat",
+          "contentKeys": [
+            "content-1",
+            "content-2",
+            "content-3"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf-core"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-fiche-cas-usage-assessment-1",
+          "rationale": "Le cas et le cadre MAP fournissent les champs nécessaires avant la validation de la fiche."
+        },
+        {
+          "conceptSlug": "alternatives-ia-non-ia-statu-quo",
+          "contentKeys": [
+            "content-4",
+            "content-5"
+          ],
+          "resourceKeys": [
+            "govuk-discovery-phase",
+            "nist-ai-rmf-playbook"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-alternatives-assessment-1",
+          "rationale": "Les sources introduisent l'arrêt et les options non-IA avant la comparaison professionnelle."
+        },
+        {
+          "conceptSlug": "hypotheses-exclusions-criteres-abandon",
+          "contentKeys": [
+            "content-6"
+          ],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-hypotheses-abandon-assessment-1",
+          "rationale": "Le portefeuille exige de rendre chaque hypothèse et limite contestable avant la mini-évaluation."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": true,
+      "seedCompatibility": false,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "Le cas Asteria et les seuils d'exercice sont fictifs et ne constituent pas des recommandations universelles.",
+        "Le NIST AI RMF Playbook est un document vivant ; sa version et ses pages doivent être revérifiées avant publication.",
+        "Les slugs parents ne sont pas encore intégrés au seed ; une validation d'intégration reste requise.",
+        "Une revue humaine pédagogique et métier est requise avant publication."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Création de la leçon sur la formulation des cas d'usage et la comparaison d'alternatives.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
