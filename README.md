@@ -115,6 +115,11 @@ Production du projet Vercel :
 L'envoi des vérifications et invitations est désactivé tant que
 `LEARNX_EMAIL_VERIFICATION_ENABLED` n'est pas `true`. Une désactivation
 n'efface ni les demandes, ni les vérifications, ni les invitations déjà émises.
+En Production, `LEARNX_ACCESS_REQUESTS_ENABLED` doit également valoir `true`.
+Sans cette activation explicite, l'endpoint répond `503`. Si la fonctionnalité
+est activée alors que `APP_URL`, `LEARNX_EMAIL_FROM`, `RESEND_API_KEY` ou la
+vérification e-mail manque, l'endpoint échoue de la même manière avant toute
+écriture : aucune demande `PENDING_EMAIL` impossible à vérifier n'est créée.
 L'adaptateur fournisseur est isolé dans le serveur : un autre fournisseur peut
 remplacer Resend sans modifier le cycle de demande. Les liens placent leur
 token dans le fragment URL afin qu'il ne soit pas transmis dans les logs HTTP ;

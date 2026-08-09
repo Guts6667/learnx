@@ -87,6 +87,12 @@ administration, texte agrandi et réduction des animations.
 
 ### F-001 — P1 — Onboarding Production bloqué sans e-mail vérifiable
 
+**Remédiation V3-029.** Le serveur est désormais fail-closed : les demandes
+d'accès sont désactivées par défaut en Production et une activation avec une
+configuration e-mail absente ou incomplète répond `503` avant toute écriture.
+La levée opérationnelle du finding exige encore de configurer les variables
+Production, redéployer et réussir le cycle e-mail complet.
+
 **Preuve.** Les demandes d’accès sont activées par défaut. Quand
 `LEARNX_EMAIL_VERIFICATION_ENABLED` n’est pas `true`, l’API crée une demande
 `PENDING_EMAIL` sans e-mail. La liste admin ne retourne que les demandes dont

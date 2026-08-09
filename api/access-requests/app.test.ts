@@ -1,7 +1,10 @@
 import type { AccessRequestDependencies } from '../../src/server/api/_lib/access-request';
 import type { AccessRequestRateLimiter } from '../../src/server/api/_lib/access-request-rate-limit';
 import type { EmailVerificationDependencies } from '../../src/server/api/_lib/email-verification';
-import { createAccessRequestsApp } from '../../src/server/api/access-requests/app';
+import {
+  areAccessRequestsEnabled,
+  createAccessRequestsApp,
+} from '../../src/server/api/access-requests/app';
 
 const testNow = new Date('2026-08-05T10:00:00.000Z');
 const confirmation = {
@@ -63,6 +66,136 @@ async function submit(
 }
 
 describe('access requests API', () => {
+  it('defaults to disabled in production and remains enabled for local tests', () => {
+    expect(areAccessRequestsEnabled({ NODE_ENV: 'production' })).toBe(false);
+    expect(areAccessRequestsEnabled({ NODE_ENV: 'test' })).toBe(true);
+    expect(
+      areAccessRequestsEnabled({
+        LEARNX_ACCESS_REQUESTS_ENABLED: 'true',
+        NODE_ENV: 'production',
+      }),
+    ).toBe(true);
+    expect(
+      areAccessRequestsEnabled({
+        LEARNX_ACCESS_REQUESTS_ENABLED: 'false',
+        NODE_ENV: 'test',
+      }),
+    ).toBe(false);
+  });
+
+  it('rejects an implicit production activation before rate limiting or persistence', async () => {
+    const context = createTestContext();
+    const app = createAccessRequestsApp({
+      environment: { NODE_ENV: 'production' },
+      rateLimiter: context.rateLimiter,
+    });
+
+    const response = await submit(app, 'learner@example.com');
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      error: {
+        code: 'ACCESS_REQUESTS_DISABLED',
+        message: 'Access requests are temporarily unavailable.',
+      },
+    });
+    expect(context.rateLimitInputs).toEqual([]);
+    expect(context.requests).toEqual([]);
+  });
+
+  it('fails closed without mutating data when production email delivery is unavailable', async () => {
+    const context = createTestContext();
+    const app = createAccessRequestsApp({
+      environment: {
+        LEARNX_ACCESS_REQUESTS_ENABLED: 'true',
+        NODE_ENV: 'production',
+      },
+      rateLimiter: context.rateLimiter,
+    });
+
+    const response = await submit(app, 'learner@example.com');
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({
+      error: {
+        code: 'ACCESS_REQUESTS_UNAVAILABLE',
+        message: 'Access requests are temporarily unavailable.',
+      },
+    });
+    expect(context.requests).toEqual([]);
+  });
+
+  it('normalizes incomplete production email configuration to the same safe 503', async () => {
+    const context = createTestContext();
+    const app = createAccessRequestsApp({
+      environment: {
+        LEARNX_ACCESS_REQUESTS_ENABLED: 'true',
+        LEARNX_EMAIL_VERIFICATION_ENABLED: 'true',
+        NODE_ENV: 'production',
+      },
+      rateLimiter: context.rateLimiter,
+    });
+
+    const response = await submit(app, 'learner@example.com');
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toMatchObject({
+      error: { code: 'ACCESS_REQUESTS_UNAVAILABLE' },
+    });
+    expect(context.requests).toEqual([]);
+  });
+
+  it('keeps the indistinguishable 202 response when production email delivery is configured', async () => {
+    const context = createTestContext();
+    const sendVerificationEmail = vi.fn(async () => undefined);
+    const emailVerification: EmailVerificationDependencies = {
+      appUrl: 'https://learnx.example',
+      createAccessRequestId: () => 'request-1',
+      createToken: () => 'a'.repeat(43),
+      createVerificationId: () => 'verification-1',
+      emailProvider: {
+        name: 'test-provider',
+        sendVerificationEmail,
+      },
+      logger: { error() {} },
+      now: () => testNow,
+      repository: {
+        async consume() {
+          return false;
+        },
+        async invalidate() {},
+        async issue(input) {
+          return {
+            expiresAt: input.expiresAt,
+            locale: input.locale,
+            recipientEmail: input.email,
+            verificationId: input.verificationId,
+          };
+        },
+      },
+      ttlMilliseconds: 60_000,
+    };
+    const app = createAccessRequestsApp({
+      ...context,
+      emailVerification,
+      environment: {
+        LEARNX_ACCESS_REQUESTS_ENABLED: 'true',
+        NODE_ENV: 'production',
+      },
+    });
+
+    const response = await submit(app, ' Learner@Example.COM ');
+
+    expect(response.status).toBe(202);
+    expect(await response.json()).toEqual(confirmation);
+    expect(sendVerificationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientEmail: 'learner@example.com',
+        verificationUrl: expect.stringContaining('/verify-email#token='),
+      }),
+    );
+  });
+
   it('normalizes an email and makes retries idempotent', async () => {
     const context = createTestContext();
     const app = createAccessRequestsApp(context);

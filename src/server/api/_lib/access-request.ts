@@ -5,6 +5,7 @@ import {
   issueEmailVerification,
   type EmailVerificationDependencies,
 } from './email-verification.js';
+import { ApiError } from './errors.js';
 import type { SupportedLocale } from '../../../shared/locale.js';
 
 export interface AccessRequestRepository {
@@ -63,27 +64,57 @@ const baseDependencies: AccessRequestDependencies = {
   repository: prismaAccessRequestRepository,
 };
 
-function createDefaultDependencies(): AccessRequestDependencies {
+function unavailable(): ApiError {
+  return new ApiError(
+    'ACCESS_REQUESTS_UNAVAILABLE',
+    'Access requests are temporarily unavailable.',
+    503,
+  );
+}
+
+function createDefaultDependencies(
+  environment: NodeJS.ProcessEnv,
+): AccessRequestDependencies {
+  let emailVerification: EmailVerificationDependencies | undefined;
+
+  try {
+    emailVerification = createEmailVerificationDependencies(environment);
+  } catch {
+    throw unavailable();
+  }
+
+  if (environment.NODE_ENV === 'production' && !emailVerification) {
+    throw unavailable();
+  }
+
   return {
     ...baseDependencies,
-    emailVerification: createEmailVerificationDependencies(),
+    emailVerification,
   };
 }
 
 export async function requestAccess(
   email: string,
   locale: SupportedLocale,
-  dependencies = createDefaultDependencies(),
+  dependencies?: AccessRequestDependencies,
+  environment: NodeJS.ProcessEnv = process.env,
 ): Promise<void> {
-  if (dependencies.emailVerification) {
-    await issueEmailVerification(email, locale, dependencies.emailVerification);
+  const resolvedDependencies =
+    dependencies ?? createDefaultDependencies(environment);
+
+  if (resolvedDependencies.emailVerification) {
+    await issueEmailVerification(
+      email,
+      locale,
+      resolvedDependencies.emailVerification,
+    );
     return;
   }
 
-  await dependencies.repository.createPendingUnlessUserExists({
+  await resolvedDependencies.repository.createPendingUnlessUserExists({
     email,
-    id: dependencies.createId(),
+    id: resolvedDependencies.createId(),
     locale,
-    now: dependencies.now(),
+    now: resolvedDependencies.now(),
   });
 }

@@ -31,6 +31,7 @@ interface AccessRequestsAppOptions {
   dependencies?: AccessRequestDependencies;
   enabled?: boolean;
   emailVerification?: EmailVerificationDependencies;
+  environment?: NodeJS.ProcessEnv;
   rateLimiter?: AccessRequestRateLimiter;
   secureCookies?: boolean;
 }
@@ -41,6 +42,15 @@ const confirmation = {
 } as const;
 
 const sharedRateLimiter = new SharedAccessRequestRateLimiter();
+
+export function areAccessRequestsEnabled(
+  environment: NodeJS.ProcessEnv,
+): boolean {
+  if (environment.LEARNX_ACCESS_REQUESTS_ENABLED === 'true') return true;
+  if (environment.LEARNX_ACCESS_REQUESTS_ENABLED === 'false') return false;
+
+  return environment.NODE_ENV !== 'production';
+}
 
 async function parseBody(request: Request): Promise<unknown> {
   try {
@@ -58,11 +68,12 @@ export function createAccessRequestsApp(
   options: AccessRequestsAppOptions = {},
 ) {
   const app = new Hono();
+  const environment = options.environment ?? process.env;
   const enabled =
-    options.enabled ?? process.env.LEARNX_ACCESS_REQUESTS_ENABLED !== 'false';
+    options.enabled ?? areAccessRequestsEnabled(environment);
   const rateLimiter = options.rateLimiter ?? sharedRateLimiter;
   const secureCookies =
-    options.secureCookies ?? process.env.NODE_ENV === 'production';
+    options.secureCookies ?? environment.NODE_ENV === 'production';
   let defaultActivationService: AccessInvitationActivationService | undefined;
   async function getActivationService() {
     if (options.activationService) return options.activationService;
@@ -121,6 +132,7 @@ export function createAccessRequestsApp(
             emailVerification: options.emailVerification,
           }
         : options.dependencies,
+      environment,
     );
 
     context.header('Cache-Control', 'private, no-store');
