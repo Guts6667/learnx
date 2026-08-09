@@ -40,18 +40,30 @@ jobs:
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
-      - name: Resolve seed owner on isolated clone
+      - name: Create isolated seed owner
         shell: bash
         run: |
-          admin_email="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "
-            SELECT users.email
-            FROM users
-            INNER JOIN programs ON programs.owner_id = users.id
-            WHERE programs.slug = 'fondamentaux-psychologie'
-            ORDER BY programs.created_at
-            LIMIT 1;
-          ")"
-          test -n "$admin_email"
+          admin_email="platform-seed-ci@example.invalid"
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$admin_email" -c "
+            INSERT INTO users (
+              id,
+              email,
+              password_hash,
+              display_name,
+              role,
+              created_at,
+              updated_at
+            ) VALUES (
+              '00000000-0000-4000-8000-000000000001',
+              :'admin_email',
+              'ci-account-cannot-authenticate',
+              'Platform seed CI',
+              'admin',
+              CURRENT_TIMESTAMP,
+              CURRENT_TIMESTAMP
+            )
+            ON CONFLICT (email) DO NOTHING;
+          "
           echo "::add-mask::$admin_email"
           echo "ADMIN_EMAIL=$admin_email" >> "$GITHUB_ENV"
         env:
