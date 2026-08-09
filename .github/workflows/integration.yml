@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           admin_email="platform-seed-ci@example.invalid"
-          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$admin_email" -c "
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "
             INSERT INTO users (
               id,
               email,
@@ -55,7 +55,7 @@ jobs:
               updated_at
             ) VALUES (
               '00000000-0000-4000-8000-000000000001',
-              :'admin_email',
+              'platform-seed-ci@example.invalid',
               'ci-account-cannot-authenticate',
               'Platform seed CI',
               'admin',
@@ -72,9 +72,9 @@ jobs:
         shell: bash
         run: |
           pnpm prisma:seed
-          first_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$ADMIN_EMAIL" -Atc "$signature_query")"
+          first_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "$signature_query")"
           pnpm prisma:seed
-          second_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -v admin_email="$ADMIN_EMAIL" -Atc "$signature_query")"
+          second_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "$signature_query")"
           test "$first_signature" = "$second_signature"
           test "$second_signature" = "1|2|5|6|19|12|6|6|30|2|0|0|0"
           echo "Platform APM targeted seed is idempotent: $second_signature"
@@ -86,7 +86,10 @@ jobs:
             WITH target_program AS (
               SELECT id FROM programs
               WHERE slug = 'platform-apm-entretien-tryhackme'
-                AND owner_id = (SELECT id FROM users WHERE email = :'admin_email')
+                AND owner_id = (
+                  SELECT id FROM users
+                  WHERE email = 'platform-seed-ci@example.invalid'
+                )
             ), target_stages AS (
               SELECT id, is_published FROM stages
               WHERE program_id IN (SELECT id FROM target_program)
