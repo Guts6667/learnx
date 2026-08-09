@@ -882,20 +882,25 @@ model ExerciseSubmission {
 }
 
 model Note {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  programId String?  @map("program_id") @db.Uuid
-  lessonId  String?  @map("lesson_id") @db.Uuid
-  title     String
-  markdown  String   @default("")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  program   Program? @relation(fields: [programId], references: [id], onDelete: SetNull)
-  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  id             String              @id @default(uuid()) @db.Uuid
+  userId         String              @map("user_id") @db.Uuid
+  programId      String?             @map("program_id") @db.Uuid
+  lessonId       String?             @map("lesson_id") @db.Uuid
+  sequenceItemId String?             @map("sequence_item_id") @db.Uuid
+  creationKey    String?             @map("creation_key") @db.Uuid
+  title          String
+  markdown       String              @default("")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program        Program?            @relation(fields: [programId], references: [id], onDelete: SetNull)
+  lesson         Lesson?             @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  sequenceItem   LessonSequenceItem? @relation(fields: [sequenceItemId], references: [id], onDelete: SetNull)
 
+  @@unique([userId, creationKey])
   @@index([userId, updatedAt])
   @@index([userId, lessonId])
+  @@index([sequenceItemId])
   @@map("notes")
 }
 
@@ -978,6 +983,7 @@ model LessonSequenceItem {
   exercise            Exercise?          @relation("ExerciseSequenceItem", fields: [lessonId, exerciseId], references: [lessonId, id], onDelete: Cascade)
   quiz                Quiz?              @relation("QuizSequenceItem", fields: [lessonId, quizId], references: [lessonId, id], onDelete: Cascade)
   currentProgress     LessonProgress[]
+  notes               Note[]
 
   @@unique([lessonId, position])
   @@unique([lessonId, kind, key])

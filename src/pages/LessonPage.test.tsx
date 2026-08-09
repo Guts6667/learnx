@@ -148,12 +148,36 @@ function lessonResponse(isPublished: boolean, isLocked = false) {
       ],
       slug: 'demarrer',
       sequence: [
-        { kind: 'CONTENT', key: 'content-1' },
-        { kind: 'RESOURCE', key: 'article-reference' },
-        { kind: 'TASK', key: 'activity-1' },
-        { kind: 'CONCEPT_ASSESSMENT', key: 'assessment-1' },
-        { kind: 'EXERCISE', key: 'activity-2' },
-        { kind: 'QUIZ', key: 'quiz-1' },
+        {
+          id: '10000000-0000-4000-8000-000000000001',
+          kind: 'CONTENT',
+          key: 'content-1',
+        },
+        {
+          id: '10000000-0000-4000-8000-000000000002',
+          kind: 'RESOURCE',
+          key: 'article-reference',
+        },
+        {
+          id: '10000000-0000-4000-8000-000000000003',
+          kind: 'TASK',
+          key: 'activity-1',
+        },
+        {
+          id: '10000000-0000-4000-8000-000000000004',
+          kind: 'CONCEPT_ASSESSMENT',
+          key: 'assessment-1',
+        },
+        {
+          id: '10000000-0000-4000-8000-000000000005',
+          kind: 'EXERCISE',
+          key: 'activity-2',
+        },
+        {
+          id: '10000000-0000-4000-8000-000000000006',
+          kind: 'QUIZ',
+          key: 'quiz-1',
+        },
       ],
       summary: 'Les notions essentielles.',
       tasks: [
@@ -239,7 +263,32 @@ describe('LessonPage', () => {
   it('unifie le contenu et son sommaire en prévisualisation brouillon', async () => {
     const fetchMock = vi.fn((path: string, init?: RequestInit) => {
       if (path === '/api/notes' && init?.method === 'POST') {
-        return Promise.resolve(jsonResponse({ note: { id: 'note-1' } }));
+        return Promise.resolve(
+          jsonResponse({
+            note: {
+              createdAt: '2026-08-09T00:00:00.000Z',
+              id: 'note-1',
+              lesson: {
+                id: 'lesson-1',
+                slug: 'demarrer',
+                title: 'Démarrer',
+              },
+              markdown: '',
+              program: {
+                id: 'program-1',
+                slug: 'programme-test',
+                title: 'Programme test',
+              },
+              sequenceItem: {
+                id: '10000000-0000-4000-8000-000000000001',
+                key: 'content-1',
+                kind: 'CONTENT',
+              },
+              title: 'Notes — Démarrer',
+              updatedAt: '2026-08-09T00:00:00.000Z',
+            },
+          }),
+        );
       }
       return Promise.resolve(jsonResponse(lessonResponse(false)));
     });
@@ -301,7 +350,7 @@ describe('LessonPage', () => {
       name: 'Navigation pédagogique',
     });
     const noteButton = screen.getByRole('button', {
-      name: 'Prendre une note liée',
+      name: 'Prendre une note',
     });
     const previous = screen.getByText('Précédent');
     const continueButton = screen.getByRole('button', { name: 'Continuer' });
@@ -317,26 +366,26 @@ describe('LessonPage', () => {
       screen.queryByRole('link', { name: 'Continuer' }),
     ).not.toBeInTheDocument();
     expect(previous.parentElement).toBe(continueButton.parentElement);
-    expect(previous.parentElement).toHaveClass('justify-between');
+    expect(previous.parentElement).toHaveClass('grid-cols-2');
     expect(previous.compareDocumentPosition(continueButton)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Prendre une note liée' }),
+      screen.getByRole('button', { name: 'Prendre une note' }),
     );
-    await waitFor(() =>
-      expect(fetchMock).toHaveBeenCalledWith(
-        '/api/notes',
-        expect.objectContaining({
-          body: JSON.stringify({
-            lessonId: 'lesson-1',
-            title: 'Notes — Démarrer',
-          }),
-          method: 'POST',
-        }),
-      ),
-    );
+    await waitFor(() => {
+      const request = fetchMock.mock.calls.find(
+        ([path, init]) => path === '/api/notes' && init?.method === 'POST',
+      );
+      expect(request).toBeDefined();
+      expect(JSON.parse(String(request?.[1]?.body))).toEqual({
+        creationKey: expect.any(String),
+        lessonId: 'lesson-1',
+        sequenceItemId: '10000000-0000-4000-8000-000000000001',
+        title: 'Notes — Démarrer',
+      });
+    });
   });
 
   it('rend une ressource guidée à sa position et persiste sa consultation', async () => {

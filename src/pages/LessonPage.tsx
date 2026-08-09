@@ -1,6 +1,7 @@
 import { route } from 'preact-router';
 import { useEffect, useMemo, useRef } from 'preact/hooks';
 
+import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { LessonContextHeader } from '@/components/learning/LessonContextHeader';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { Badge } from '@/components/ui/Badge';
@@ -22,7 +23,6 @@ import {
   useLessonProgressQuery,
   useLessonQuery,
 } from '@/features/curriculum/queries';
-import { useNoteMutation } from '@/features/notes/queries';
 import {
   activityKey,
   buildLessonActivitySequence,
@@ -319,7 +319,6 @@ function LessonWorkspace({
 }) {
   const progressQuery = useLessonProgressQuery(lesson.id, lesson.isPublished);
   const mutation = useLessonProgressMutation(lesson.id);
-  const noteMutation = useNoteMutation();
   const lastReportedActivity = useRef<string | null>(null);
   const serverActivity = progressQuery.data?.currentActivity;
   const currentKey =
@@ -424,14 +423,6 @@ function LessonWorkspace({
     void route(sequence.next?.href ?? current.href);
   }
 
-  async function createNote() {
-    const note = await noteMutation.create({
-      lessonId: lesson.id,
-      title: `Notes — ${lesson.title}`,
-    });
-    void route(`/notes/${encodeURIComponent(note.id)}`);
-  }
-
   const resourcesByKey = new Map(
     lesson.resources.flatMap((resource) =>
       resource.key ? ([[resource.key, resource]] as const) : [],
@@ -534,13 +525,13 @@ function LessonWorkspace({
           {mutation.error ? (
             <ErrorState description="La progression n’a pas pu être mise à jour." />
           ) : null}
-          <Button
-            isLoading={noteMutation.isPending}
-            onClick={() => void createNote()}
-            variant="ghost"
-          >
-            Prendre une note liée
-          </Button>
+          {current ? (
+            <ContextualNoteAction
+              activity={current}
+              key={activityKey(current.kind, current.id)}
+              lesson={lesson}
+            />
+          ) : null}
         </section>
       </div>
       {current ? (

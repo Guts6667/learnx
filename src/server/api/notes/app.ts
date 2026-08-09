@@ -20,21 +20,30 @@ interface NoteContext {
   title: string;
 }
 
+interface NoteActivityContext {
+  id: string;
+  key: string;
+  kind: string;
+}
+
 interface NoteRecord {
   createdAt: Date;
   id: string;
   lesson: NoteContext | null;
   markdown: string;
   program: NoteContext | null;
+  sequenceItem: NoteActivityContext | null;
   title: string;
   updatedAt: Date;
 }
 
 interface CreateNoteInput {
+  creationKey: string | null;
   includeOwnerPreview?: boolean;
   lessonId: string | null;
   markdown: string;
   programId: string | null;
+  sequenceItemId: string | null;
   title: string;
   userId: string;
 }
@@ -73,10 +82,12 @@ const listSchema = z.object({
   search: z.string().trim().max(100).optional(),
 });
 const createSchema = z.object({
+  creationKey: identifierSchema.nullable().optional(),
   lessonId: identifierSchema.nullable().optional(),
   markdown: z.string().max(100_000).default(''),
+  sequenceItemId: identifierSchema.nullable().optional(),
   title: z.string().trim().min(1).max(200).default('Nouvelle note'),
-});
+}).refine((input) => !input.sequenceItemId || Boolean(input.lessonId));
 const updateSchema = z
   .object({
     markdown: z.string().max(100_000).optional(),
@@ -90,6 +101,7 @@ const noteSelect = {
   lesson: { select: { id: true, slug: true, title: true } },
   markdown: true,
   program: { select: { id: true, slug: true, title: true } },
+  sequenceItem: { select: { id: true, key: true, kind: true } },
   title: true,
   updatedAt: true,
 } as const;
@@ -100,6 +112,15 @@ function invalidRequest(): ApiError {
 
 function notFound(): ApiError {
   return new ApiError('RESOURCE_NOT_FOUND', 'Resource not found.', 404);
+}
+
+function hasPrismaErrorCode(error: unknown, code: string): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    error.code === code
+  );
 }
 
 function parseIdentifier(value: string): string {
@@ -172,26 +193,82 @@ export function createPrismaNotesRepository(
   return {
     async create(input) {
       const { includeOwnerPreview = false, ...data } = input;
-      if (!data.lessonId || !data.programId) {
-        return client.note.create({ data, select: noteSelect });
+      const findByCreationKey = () =>
+        data.creationKey
+          ? client.note.findUnique({
+              where: {
+                userId_creationKey: {
+                  creationKey: data.creationKey,
+                  userId: data.userId,
+                },
+              },
+              select: noteSelect,
+            })
+          : Promise.resolve(null);
+      const assertSameContext = (note: NoteRecord) => {
+        if (
+          note.lesson?.id !== data.lessonId ||
+          note.sequenceItem?.id !== data.sequenceItemId
+        ) {
+          throw invalidRequest();
+        }
+        return note;
+      };
+
+      try {
+        return await runSerializableProgressTransaction(
+          client,
+          async (transaction) => {
+            if (data.creationKey) {
+              const existing = await transaction.note.findUnique({
+                where: {
+                  userId_creationKey: {
+                    creationKey: data.creationKey,
+                    userId: data.userId,
+                  },
+                },
+                select: noteSelect,
+              });
+              if (existing) return assertSameContext(existing);
+            }
+
+            if (data.lessonId && data.programId) {
+              const lesson = await transaction.lesson.findFirst({
+                where: linkedLessonWhere(
+                  data.lessonId,
+                  data.userId,
+                  includeOwnerPreview,
+                  data.programId,
+                ),
+                select: { id: true },
+              });
+              if (!lesson) throw notFound();
+            }
+
+            if (data.sequenceItemId) {
+              const sequenceItem =
+                await transaction.lessonSequenceItem.findFirst({
+                  where: {
+                    id: data.sequenceItemId,
+                    lessonId: data.lessonId ?? '',
+                  },
+                  select: { id: true },
+                });
+              if (!sequenceItem) throw notFound();
+            }
+
+            return transaction.note.create({ data, select: noteSelect });
+          },
+        );
+      } catch (error) {
+        if (!data.creationKey || !hasPrismaErrorCode(error, 'P2002')) {
+          throw error;
+        }
+
+        const concurrentNote = await findByCreationKey();
+        if (!concurrentNote) throw error;
+        return assertSameContext(concurrentNote);
       }
-      const lessonId = data.lessonId;
-      const programId = data.programId;
-
-      return runSerializableProgressTransaction(client, async (transaction) => {
-        const lesson = await transaction.lesson.findFirst({
-          where: linkedLessonWhere(
-            lessonId,
-            data.userId,
-            includeOwnerPreview,
-            programId,
-          ),
-          select: { id: true },
-        });
-        if (!lesson) throw notFound();
-
-        return transaction.note.create({ data, select: noteSelect });
-      });
     },
     async deleteOwned(noteId, userId) {
       const result = await client.note.deleteMany({
@@ -315,10 +392,12 @@ export function createNotesApp(options: NotesAppOptions = {}) {
     if (parsed.data.lessonId && !lesson) throw notFound();
 
     const note = await repository.create({
+      creationKey: parsed.data.creationKey ?? null,
       includeOwnerPreview: true,
       lessonId: lesson?.id ?? null,
       markdown: parsed.data.markdown,
       programId: lesson?.programId ?? null,
+      sequenceItemId: parsed.data.sequenceItemId ?? null,
       title: parsed.data.title,
       userId,
     });

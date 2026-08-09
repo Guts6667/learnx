@@ -277,6 +277,7 @@ export interface LessonDetail extends Omit<
   quizzes: LessonQuizSummary[];
   resources: LessonResource[];
   sequence: Array<{
+    id: string;
     key: string;
     kind:
       | 'CONTENT'

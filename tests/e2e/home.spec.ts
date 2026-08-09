@@ -320,6 +320,7 @@ async function installJourneyApi(page: Page) {
             {
               content: { text: 'Contenu pédagogique du parcours E2E.' },
               id: 'block-1',
+              key: 'content-1',
               position: 1,
               type: 'RICH_TEXT',
             },
@@ -350,6 +351,7 @@ async function installJourneyApi(page: Page) {
               description: 'Vérifie que la progression est comprise.',
               id: 'quiz-1',
               isRequired: true,
+              key: 'quiz-1',
               passingScore: 80,
               position: 1,
               questionCount: 1,
@@ -357,11 +359,29 @@ async function installJourneyApi(page: Page) {
             },
           ],
           resources: [],
+          sequence: [
+            {
+              id: '00000000-0000-4000-8000-000000000001',
+              key: 'content-1',
+              kind: 'CONTENT',
+            },
+            {
+              id: '00000000-0000-4000-8000-000000000002',
+              key: 'task-1',
+              kind: 'TASK',
+            },
+            {
+              id: '00000000-0000-4000-8000-000000000003',
+              key: 'quiz-1',
+              kind: 'QUIZ',
+            },
+          ],
           tasks: [
             {
               description: 'Cochez cette tâche avant de passer le quiz.',
               id: 'task-1',
               isRequired: true,
+              key: 'task-1',
               position: 1,
               title: 'Tâche critique',
               type: 'CHECKLIST',
@@ -398,6 +418,51 @@ async function installJourneyApi(page: Page) {
 
     if (method === 'GET' && path === '/api/notes') {
       await respond({ notes: [] });
+      return;
+    }
+
+    if (method === 'POST' && path === '/api/notes') {
+      const input = request.postDataJSON() as Record<string, unknown>;
+      await respond(
+        {
+          note: {
+            createdAt: '2026-08-03T08:00:00.000Z',
+            id: 'note-contextuelle-1',
+            lesson: { id: 'lesson-1', title: lessonSummary.title },
+            markdown: '',
+            program: { id: 'program-1', title: program.title },
+            sequenceItem: {
+              id: input.sequenceItemId,
+              key: 'content-1',
+              kind: 'CONTENT',
+            },
+            title: input.title,
+            updatedAt: '2026-08-03T08:00:00.000Z',
+          },
+        },
+        201,
+      );
+      return;
+    }
+
+    if (method === 'PATCH' && path === '/api/notes/note-contextuelle-1') {
+      const input = request.postDataJSON() as Record<string, unknown>;
+      await respond({
+        note: {
+          createdAt: '2026-08-03T08:00:00.000Z',
+          id: 'note-contextuelle-1',
+          lesson: { id: 'lesson-1', title: lessonSummary.title },
+          markdown: input.markdown,
+          program: { id: 'program-1', title: program.title },
+          sequenceItem: {
+            id: '00000000-0000-4000-8000-000000000001',
+            key: 'content-1',
+            kind: 'CONTENT',
+          },
+          title: input.title,
+          updatedAt: '2026-08-03T08:01:00.000Z',
+        },
+      });
       return;
     }
 
@@ -849,6 +914,78 @@ test('affiche le sommaire pédagogique en une colonne sans débordement', async 
   await expect(
     page.getByRole('dialog', { name: 'Sommaire de la leçon' }),
   ).toBeVisible();
+});
+
+test('crée une note contextuelle accessible sans casser la lecture mobile', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+  await page.goto('/program/programme-e2e/lesson/lecon-critique');
+
+  const noteButton = page.getByRole('button', { name: 'Prendre une note' });
+  const navigation = page.getByRole('navigation', {
+    name: 'Navigation pédagogique',
+  });
+  await expect(noteButton).toBeVisible();
+  expect(
+    await noteButton.evaluate(
+      (button, navigationElement) =>
+        Boolean(
+          button.compareDocumentPosition(navigationElement as Node) &
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        ),
+      await navigation.elementHandle(),
+    ),
+  ).toBe(true);
+
+  const creationRequest = page.waitForRequest(
+    (request) =>
+      request.method() === 'POST' &&
+      new URL(request.url()).pathname === '/api/notes',
+  );
+  await noteButton.click();
+  const request = await creationRequest;
+  expect(request.postDataJSON()).toMatchObject({
+    lessonId: 'lesson-1',
+    sequenceItemId: '00000000-0000-4000-8000-000000000001',
+  });
+  expect(request.postDataJSON().creationKey).toMatch(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+  );
+
+  const dialog = page.getByRole('dialog', { name: 'Prendre une note' });
+  await expect(dialog).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Fermer le panneau' }),
+  ).toBeFocused();
+  await expect(dialog).toContainText(
+    `La note est automatiquement liée à la leçon « ${lessonSummary.title} » et à l’activité « Contenu 1 ».`,
+  );
+  await expectNoSeriousA11yViolations(page);
+
+  const autosaveRequest = page.waitForRequest(
+    (autosave) =>
+      autosave.method() === 'PATCH' &&
+      new URL(autosave.url()).pathname === '/api/notes/note-contextuelle-1',
+  );
+  await dialog.getByLabel('Contenu de la note').fill('Repère important.');
+  await autosaveRequest;
+  await expect(dialog.getByRole('status')).toHaveText('Note enregistrée.');
+
+  await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
+  await expectNoHorizontalOverflow(page);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(noteButton).toBeFocused();
 });
 
 test('reste utilisable avec texte agrandi et réduction des animations', async ({

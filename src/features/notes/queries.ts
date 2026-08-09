@@ -16,6 +16,11 @@ export interface NoteDetail {
   lesson: NoteContext | null;
   markdown: string;
   program: NoteContext | null;
+  sequenceItem: {
+    id: string;
+    key: string;
+    kind: string;
+  } | null;
   title: string;
   updatedAt: string;
 }
@@ -122,7 +127,13 @@ export function useNoteMutation() {
     [queryClient],
   );
   const create = useCallback(
-    (input: { lessonId?: string; markdown?: string; title?: string } = {}) =>
+    (input: {
+      creationKey?: string;
+      lessonId?: string;
+      markdown?: string;
+      sequenceItemId?: string;
+      title?: string;
+    } = {}) =>
       execute(() =>
         apiRequest<NoteResponse>('/api/notes', {
           body: JSON.stringify(input),

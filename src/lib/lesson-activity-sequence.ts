@@ -17,6 +17,7 @@ export interface LessonActivity {
   kind: LessonActivityKind;
   label: string;
   required: boolean;
+  sequenceItemId: string | null;
   status: LessonActivityStatus;
   title: string;
 }
@@ -60,6 +61,7 @@ export interface LessonSequenceInput {
   quizzes: PositionedActivity[];
   resources: Array<PositionedActivity & { estimatedMinutes?: number | null }>;
   sequence?: Array<{
+    id?: string;
     key: string;
     kind: Exclude<LessonActivityKind, 'COMPLETE'>;
   }>;
@@ -128,9 +130,10 @@ function status(
 
 function createActivity(
   baseHref: string,
-  input: Omit<LessonActivity, 'href' | 'label'> & {
+  input: Omit<LessonActivity, 'href' | 'label' | 'sequenceItemId'> & {
     href?: string;
     label?: string;
+    sequenceItemId?: string | null;
   },
 ): LessonActivity {
   const key = activityKey(input.kind, input.id);
@@ -138,6 +141,7 @@ function createActivity(
     ...input,
     href: input.href ?? anchoredHref(baseHref, key),
     label: input.label ?? activityLabels[input.kind],
+    sequenceItemId: input.sequenceItemId ?? null,
   };
 }
 
@@ -284,9 +288,13 @@ export function buildLessonActivitySequence(
       }
     }
   }
-  const resolved = input.sequence?.map((item) =>
-    candidates.get(`${item.kind}:${item.key}`),
-  );
+  const resolved = input.sequence?.map((item) => {
+    const activity = candidates.get(`${item.kind}:${item.key}`);
+
+    return activity
+      ? { ...activity, sequenceItemId: item.id ?? null }
+      : undefined;
+  });
   const canonicalActivities =
     resolved && resolved.length > 0 && resolved.every(Boolean)
       ? (resolved as LessonActivity[])

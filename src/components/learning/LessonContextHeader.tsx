@@ -1,3 +1,4 @@
+import { ContextualNoteAction } from '@/components/learning/ContextualNoteAction';
 import { PedagogicalNavigation } from '@/components/learning/PedagogicalNavigation';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { Badge } from '@/components/ui/Badge';
@@ -63,18 +64,21 @@ export function LessonContextHeader({
     <header class="space-y-4">
       {activityTitle ? (
         <a
-          class="inline-flex min-h-11 max-w-full items-center rounded-lg text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+          class="inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
           href={canonicalLessonHref}
         >
           Leçon : {lesson.title}
         </a>
       ) : null}
       <div class="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+        <div class="min-w-0 max-w-full flex-1">
+          <p class="break-words text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
             {activityTitle ? `Leçon · ${lesson.title}` : 'Leçon'}
           </p>
-          <h1 class="mt-2 text-3xl font-bold tracking-tight" id="lesson-title">
+          <h1
+            class="mt-2 break-words text-3xl font-bold tracking-tight"
+            id="lesson-title"
+          >
             {activityTitle ?? lesson.title}
           </h1>
         </div>
@@ -105,11 +109,20 @@ export function LessonActivitySummary({
   const sequence = lessonActivitySequence(lesson, currentKey);
 
   return (
-    <PedagogicalNavigation
-      activities={sequence.activities}
-      currentKey={currentKey}
-      lessonTitle={lesson.title}
-      moduleTitle={lesson.module.title}
-    />
+    <div class="space-y-6">
+      {sequence.current ? (
+        <ContextualNoteAction
+          activity={sequence.current}
+          key={currentKey}
+          lesson={lesson}
+        />
+      ) : null}
+      <PedagogicalNavigation
+        activities={sequence.activities}
+        currentKey={currentKey}
+        lessonTitle={lesson.title}
+        moduleTitle={lesson.module.title}
+      />
+    </div>
   );
 }

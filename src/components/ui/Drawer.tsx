@@ -28,7 +28,7 @@ export function Drawer({
   returnFocusElement,
   title,
 }: DrawerProps) {
-  const titleId = useId();
+  const titleId = `drawer-title-${useId()}`;
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);

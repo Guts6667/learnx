@@ -12,6 +12,7 @@ const userId = '7c777cf7-8f6b-421c-88f4-d17c8d530e93';
 const otherUserId = 'f3c7c0f0-7cc6-49ec-b841-095696d75416';
 const noteId = '87b72c3a-0b2f-4dda-b82c-5874c91df9c8';
 const lessonId = '42e12fb8-4b9d-4b7f-bf48-881539f8cdb8';
+const sequenceItemId = '71ef6280-158f-40d0-9269-14867c93cc6d';
 const programId = 'd53ae785-0d74-4a13-9e0c-f90675f9dd29';
 const now = new Date('2026-08-03T10:00:00.000Z');
 
@@ -50,6 +51,9 @@ function createRepository() {
         markdown: input.markdown,
         program: input.programId
           ? { id: programId, slug: 'programme-test', title: 'Programme test' }
+          : null,
+        sequenceItem: input.sequenceItemId
+          ? { id: sequenceItemId, key: 'content-1', kind: 'CONTENT' }
           : null,
         title: input.title,
         updatedAt: now,
@@ -152,7 +156,12 @@ describe('notes API', () => {
     });
     const response = await app.request(
       'http://localhost/api/notes',
-      jsonRequest({ lessonId, title: 'Note de leçon' }),
+      jsonRequest({
+        creationKey: '9cc28351-e07b-4ee3-a59b-b3fe7be3eaa9',
+        lessonId,
+        sequenceItemId,
+        title: 'Note de leçon',
+      }),
     );
 
     expect(response.status).toBe(201);
@@ -160,6 +169,7 @@ describe('notes API', () => {
       note: {
         lesson: { id: lessonId },
         program: { id: programId },
+        sequenceItem: { id: sequenceItemId },
         title: 'Note de leçon',
       },
     });
@@ -182,9 +192,11 @@ describe('notes API', () => {
   it('recherche dans le titre et le Markdown et filtre par leçon', async () => {
     const { listCalls, repository } = createRepository();
     await repository.create({
+      creationKey: null,
       lessonId,
       markdown: 'Mémoire et attention',
       programId,
+      sequenceItemId: null,
       title: 'Cognition',
       userId,
     });
@@ -206,9 +218,11 @@ describe('notes API', () => {
   it('autosauvegarde seulement une note possédée', async () => {
     const { repository } = createRepository();
     await repository.create({
+      creationKey: null,
       lessonId: null,
       markdown: '',
       programId: null,
+      sequenceItemId: null,
       title: 'Brouillon',
       userId,
     });
@@ -245,9 +259,11 @@ describe('notes API', () => {
   it('supprime atomiquement seulement une note possédée', async () => {
     const { records, repository } = createRepository();
     await repository.create({
+      creationKey: null,
       lessonId: null,
       markdown: 'À supprimer',
       programId: null,
+      sequenceItemId: null,
       title: 'Note privée',
       userId,
     });
@@ -306,6 +322,14 @@ describe('notes API', () => {
         )
       ).status,
     ).toBe(400);
+    expect(
+      (
+        await app.request(
+          'http://localhost/api/notes',
+          jsonRequest({ sequenceItemId, title: 'Sans leçon' }),
+        )
+      ).status,
+    ).toBe(400);
   });
 });
 
@@ -339,5 +363,155 @@ describe('notes persistence', () => {
     expect(deleteMany).toHaveBeenCalledWith({
       where: { id: noteId, userId },
     });
+  });
+
+  it('valide dans la transaction que l’activité appartient à la leçon', async () => {
+    const note = {
+      createdAt: now,
+      id: noteId,
+      lesson: { id: lessonId, slug: 'demarrer', title: 'Démarrer' },
+      markdown: '',
+      program: { id: programId, slug: 'programme-test', title: 'Programme' },
+      sequenceItem: {
+        id: sequenceItemId,
+        key: 'content-1',
+        kind: 'CONTENT',
+      },
+      title: 'Note contextuelle',
+      updatedAt: now,
+    };
+    const create = vi.fn(async () => note);
+    const findSequenceItem = vi.fn(async () => ({ id: sequenceItemId }));
+    const transaction = {
+      lesson: { findFirst: vi.fn(async () => ({ id: lessonId })) },
+      lessonSequenceItem: { findFirst: findSequenceItem },
+      note: { create, findUnique: vi.fn(async () => null) },
+    };
+    const client = {
+      $transaction: vi.fn(
+        async (
+          operation: (input: typeof transaction) => Promise<unknown>,
+        ) => operation(transaction),
+      ),
+      note: { findUnique: vi.fn(async () => null) },
+    } as unknown as PrismaClient;
+    const repository = createPrismaNotesRepository(client);
+
+    await repository.create({
+      creationKey: '9cc28351-e07b-4ee3-a59b-b3fe7be3eaa9',
+      includeOwnerPreview: true,
+      lessonId,
+      markdown: '',
+      programId,
+      sequenceItemId,
+      title: 'Note contextuelle',
+      userId,
+    });
+
+    expect(findSequenceItem).toHaveBeenCalledWith({
+      where: { id: sequenceItemId, lessonId },
+      select: { id: true },
+    });
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ lessonId, sequenceItemId, userId }),
+      }),
+    );
+  });
+
+  it('refuse une activité issue d’une autre leçon', async () => {
+    const create = vi.fn();
+    const transaction = {
+      lesson: { findFirst: vi.fn(async () => ({ id: lessonId })) },
+      lessonSequenceItem: { findFirst: vi.fn(async () => null) },
+      note: { create, findUnique: vi.fn(async () => null) },
+    };
+    const client = {
+      $transaction: vi.fn(
+        async (
+          operation: (input: typeof transaction) => Promise<unknown>,
+        ) => operation(transaction),
+      ),
+      note: { findUnique: vi.fn(async () => null) },
+    } as unknown as PrismaClient;
+    const repository = createPrismaNotesRepository(client);
+
+    await expect(
+      repository.create({
+        creationKey: '9cc28351-e07b-4ee3-a59b-b3fe7be3eaa9',
+        includeOwnerPreview: true,
+        lessonId,
+        markdown: '',
+        programId,
+        sequenceItemId,
+        title: 'Note mal reliée',
+        userId,
+      }),
+    ).rejects.toMatchObject({ status: 404 });
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('retourne la même note après une concurrence sur la clé de création', async () => {
+    const note = {
+      createdAt: now,
+      id: noteId,
+      lesson: { id: lessonId, slug: 'demarrer', title: 'Démarrer' },
+      markdown: '',
+      program: { id: programId, slug: 'programme-test', title: 'Programme' },
+      sequenceItem: {
+        id: sequenceItemId,
+        key: 'content-1',
+        kind: 'CONTENT',
+      },
+      title: 'Note contextuelle',
+      updatedAt: now,
+    };
+    const transaction = {
+      lesson: { findFirst: vi.fn(async () => ({ id: lessonId })) },
+      lessonSequenceItem: {
+        findFirst: vi.fn(async () => ({ id: sequenceItemId })),
+      },
+      note: {
+        create: vi.fn(async () => {
+          throw Object.assign(new Error('Unique constraint'), {
+            code: 'P2002',
+          });
+        }),
+        findUnique: vi.fn(async () => null),
+      },
+    };
+    const findUnique = vi.fn(async () => note);
+    const client = {
+      $transaction: vi.fn(
+        async (
+          operation: (input: typeof transaction) => Promise<unknown>,
+        ) => operation(transaction),
+      ),
+      note: { findUnique },
+    } as unknown as PrismaClient;
+    const repository = createPrismaNotesRepository(client);
+
+    await expect(
+      repository.create({
+        creationKey: '9cc28351-e07b-4ee3-a59b-b3fe7be3eaa9',
+        includeOwnerPreview: true,
+        lessonId,
+        markdown: '',
+        programId,
+        sequenceItemId,
+        title: 'Note contextuelle',
+        userId,
+      }),
+    ).resolves.toMatchObject({ id: noteId });
+    expect(findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          userId_creationKey: {
+            creationKey: '9cc28351-e07b-4ee3-a59b-b3fe7be3eaa9',
+            userId,
+          },
+        },
+      }),
+    );
   });
 });

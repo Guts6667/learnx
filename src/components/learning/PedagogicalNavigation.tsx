@@ -81,10 +81,10 @@ export function PedagogicalNavigation({
             Sommaire
           </button>
         </div>
-        <div class="mt-3 flex min-w-0 items-end justify-between gap-3 border-t border-slate-800 pt-3">
+        <div class="mt-3 grid min-w-0 grid-cols-2 items-end gap-3 border-t border-slate-800 pt-3">
           {previous ? (
             <NavigationAction
-              class="min-w-0"
+              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
               href={previous.href}
               size="sm"
               variant="secondary"
@@ -94,7 +94,7 @@ export function PedagogicalNavigation({
           ) : (
             <span
               aria-disabled="true"
-              class="inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-3 text-sm text-slate-500"
+              class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
             >
               Précédent
             </span>
@@ -102,7 +102,7 @@ export function PedagogicalNavigation({
           {onContinue ? (
             <button
               aria-busy={isContinuePending || undefined}
-              class="inline-flex min-h-11 min-w-0 items-center rounded-xl bg-cyan-400 px-3 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-500"
+              class="inline-flex min-h-11 w-full min-w-0 max-w-full items-center justify-center rounded-xl bg-cyan-400 px-3 text-center text-sm font-semibold text-slate-950 hyphens-auto [overflow-wrap:anywhere] disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-500"
               disabled={isContinueDisabled || isContinuePending}
               onClick={onContinue}
               type="button"
@@ -110,13 +110,17 @@ export function PedagogicalNavigation({
               {isContinuePending ? 'Chargement…' : continueLabel}
             </button>
           ) : nextHref ? (
-            <NavigationAction class="min-w-0" href={nextHref} size="sm">
+            <NavigationAction
+              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
+              href={nextHref}
+              size="sm"
+            >
               {continueLabel}
             </NavigationAction>
           ) : (
             <span
               aria-disabled="true"
-              class="inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-3 text-sm text-slate-500"
+              class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
             >
               {continueLabel}
             </span>

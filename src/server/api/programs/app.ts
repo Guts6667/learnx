@@ -592,7 +592,7 @@ export function createCurriculumApp(options: CurriculumAppOptions = {}) {
         resources: { orderBy: { position: 'asc' } },
         lessonSequenceItems: {
           orderBy: { position: 'asc' },
-          select: { key: true, kind: true },
+          select: { id: true, key: true, kind: true },
         },
         tasks: {
           where: { isCanonical: true },
