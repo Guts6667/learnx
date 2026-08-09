@@ -56,7 +56,13 @@ function lessonState(options: { conceptValidated?: boolean } = {}) {
         programId,
       },
     },
-    progress: [],
+    progress: [] as Array<{
+      completedAt: Date | null;
+      lastViewedAt: Date | null;
+      percent: number;
+      startedAt: Date | null;
+      status: LessonProgressStatus;
+    }>,
     quizzes: [{ _count: { attempts: 1 }, attempts: [{ id: 'attempt-1' }] }],
     resources: [
       {
@@ -165,7 +171,7 @@ describe('progress recalculation', () => {
       { completeRequested: true },
     );
 
-    expect(snapshot).toMatchObject({ canComplete: false, percent: 100 });
+    expect(snapshot).toMatchObject({ canComplete: false, percent: 75 });
     expect(transaction.lessonProgress.upsert).not.toHaveBeenCalled();
   });
 
@@ -204,6 +210,49 @@ describe('progress recalculation', () => {
     );
 
     expect(transaction.lessonProgress.upsert).not.toHaveBeenCalled();
+  });
+
+  it('recalcule un historique sans modifier sa date de consultation', async () => {
+    const state = lessonState({ conceptValidated: false });
+    state.isPublished = false;
+    state.module.isPublished = false;
+    state.progress = [
+      {
+        completedAt: null,
+        lastViewedAt: new Date('2026-08-01T08:00:00.000Z'),
+        percent: 100,
+        startedAt: new Date('2026-08-01T08:00:00.000Z'),
+        status: LessonProgressStatus.IN_PROGRESS,
+      },
+    ];
+    const lessonProgressUpsert = vi.fn(async (input: { update: object }) => ({
+      ...state.progress[0],
+      ...input.update,
+    }));
+    const transaction = {
+      lesson: { findFirst: vi.fn(async () => state) },
+      lessonProgress: { upsert: lessonProgressUpsert },
+      moduleRun: { findFirst: vi.fn(async () => moduleRun) },
+    };
+
+    await recalculateLessonProgress(
+      transaction as never,
+      lessonId,
+      userId,
+      now,
+      { preserveTimestamps: true, startIfMissing: false },
+    );
+
+    expect(lessonProgressUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.not.objectContaining({ lastViewedAt: expect.anything() }),
+      }),
+    );
+    expect(lessonProgressUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        update: expect.objectContaining({ percent: 75 }),
+      }),
+    );
   });
 
   it('persiste leçon, étape et programme dans la transaction courante', async () => {

@@ -39,37 +39,25 @@ async function main() {
     );
   }
 
-  const programs = await prisma.program.findMany({
+  const progressRecords = await prisma.lessonProgress.findMany({
     where: {
-      ...(programId ? { id: programId } : {}),
-      ...(userId ? { ownerId: userId } : {}),
+      ...(userId ? { userId } : {}),
+      ...(programId
+        ? {
+            lesson: {
+              module: { stage: { programId } },
+            },
+          }
+        : {}),
     },
     select: {
-      ownerId: true,
-      stages: {
-        select: {
-          modules: {
-            select: { lessons: { select: { id: true } } },
-          },
-        },
-      },
-      title: true,
+      lessonId: true,
+      userId: true,
     },
   });
-  const lessons = programs.flatMap((program) =>
-    program.stages.flatMap((stage) =>
-      stage.modules.flatMap((module) =>
-        module.lessons.map((lesson) => ({
-          lessonId: lesson.id,
-          programTitle: program.title,
-          userId: program.ownerId,
-        })),
-      ),
-    ),
-  );
 
   console.info(
-    `${apply ? 'Applying' : 'Dry run:'} ${lessons.length} lesson recalculation(s) across ${programs.length} program(s).`,
+    `${apply ? 'Applying' : 'Dry run:'} ${progressRecords.length} existing lesson progress recalculation(s).`,
   );
 
   if (!apply) {
@@ -78,19 +66,19 @@ async function main() {
   }
 
   const now = new Date();
-  for (const lesson of lessons) {
+  for (const progress of progressRecords) {
     await runSerializableProgressTransaction(prisma, (transaction) =>
       recalculateLessonProgress(
         transaction,
-        lesson.lessonId,
-        lesson.userId,
+        progress.lessonId,
+        progress.userId,
         now,
-        { startIfMissing: false },
+        { preserveTimestamps: true, startIfMissing: false },
       ),
     );
   }
 
-  console.info(`Recalculated ${lessons.length} lesson(s).`);
+  console.info(`Recalculated ${progressRecords.length} lesson progress record(s).`);
 }
 
 try {

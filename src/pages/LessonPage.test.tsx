@@ -569,6 +569,11 @@ describe('LessonPage', () => {
       await screen.findByRole('heading', { name: 'Lire la référence' }),
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('progressbar', {
+        name: 'Validation de la leçon — 0 %',
+      }),
+    ).toBeInTheDocument();
+    expect(
       screen.getAllByRole('link', { name: 'Article de référence' }),
     ).toHaveLength(1);
     fireEvent.click(

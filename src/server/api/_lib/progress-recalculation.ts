@@ -54,6 +54,7 @@ export interface LessonProgressSnapshot {
 
 interface RecalculationOptions {
   completeRequested?: boolean;
+  preserveTimestamps?: boolean;
   requirePublished?: boolean;
   startIfMissing?: boolean;
 }
@@ -352,6 +353,7 @@ export async function refreshStageAndProgram(
   userId: string,
   now: Date,
   knownLessonSnapshots: ReadonlyMap<string, LessonProgressSnapshot> = new Map(),
+  preserveTimestamps = false,
 ) {
   const stage = await transaction.stage.findUnique({
     where: { id: stageId },
@@ -507,7 +509,7 @@ export async function refreshStageAndProgram(
     },
     update: {
       completedAt,
-      lastViewedAt: now,
+      ...(preserveTimestamps ? {} : { lastViewedAt: now }),
       percent: stagePercent,
       startedAt,
       status: validation.status,
@@ -551,7 +553,7 @@ export async function refreshStageAndProgram(
       userId,
     },
     update: {
-      lastViewedAt: now,
+      ...(preserveTimestamps ? {} : { lastViewedAt: now }),
       percent: calculateProgramPercent(program.stages),
     },
   });
@@ -614,7 +616,7 @@ export async function recalculateLessonProgress(
     },
     update: {
       completedAt,
-      lastViewedAt: now,
+      ...(options.preserveTimestamps ? {} : { lastViewedAt: now }),
       percent: persistedPercent,
       startedAt: currentProgress?.startedAt ?? now,
       status,
@@ -638,6 +640,7 @@ export async function recalculateLessonProgress(
       userId,
       now,
       new Map([[lessonId, persistedSnapshot]]),
+      options.preserveTimestamps,
     );
   }
 

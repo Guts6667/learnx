@@ -864,7 +864,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
     page.getByRole('button', { name: 'Marquer comme à faire' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
+    page.getByRole('progressbar', { name: /Validation de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '50');
 
   await page.getByRole('button', { name: 'Continuer' }).click();
@@ -875,7 +875,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
 
   await page.getByRole('button', { name: 'Retour à la leçon' }).click();
   await expect(
-    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
+    page.getByRole('progressbar', { name: /Validation de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 
   await page
@@ -896,7 +896,7 @@ test('préserve le parcours critique après inscription et reconnexion', async (
     page.getByRole('heading', { level: 2, name: 'Contenu 1' }),
   ).toBeVisible();
   await expect(
-    page.getByRole('progressbar', { name: /Progression de la leçon/ }),
+    page.getByRole('progressbar', { name: /Validation de la leçon/ }),
   ).toHaveAttribute('aria-valuenow', '100');
 
   await page.setViewportSize({ height: 700, width: 320 });
