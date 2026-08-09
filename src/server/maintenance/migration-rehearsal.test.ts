@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   assertSafeReplaySchema,
   compareMigrationSnapshots,
+  parseMigrationRehearsalArguments,
   type MigrationSnapshot,
   withDatabaseSchema,
 } from '../../../scripts/migration-rehearsal.js';
@@ -24,6 +25,16 @@ function snapshot(checksum = 'stable'): MigrationSnapshot {
 }
 
 describe('migration rehearsal', () => {
+  it('ignores the pnpm argument separator', () => {
+    expect(
+      parseMigrationRehearsalArguments([
+        '--',
+        'snapshot',
+        'migration-before.json',
+      ]),
+    ).toEqual(['snapshot', 'migration-before.json']);
+  });
+
   it('accepts only disposable replay schemas', () => {
     expect(() =>
       assertSafeReplaySchema('ci_migration_replay_123_1'),

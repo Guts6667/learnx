@@ -74,6 +74,10 @@ export function withDatabaseSchema(
   return url.toString();
 }
 
+export function parseMigrationRehearsalArguments(args: string[]): string[] {
+  return args.filter((value) => value !== '--');
+}
+
 export function compareMigrationSnapshots(
   before: MigrationSnapshot,
   after: MigrationSnapshot,
@@ -334,7 +338,9 @@ function requiredArgument(value: string | undefined, label: string): string {
 }
 
 async function main(): Promise<void> {
-  const [command, first, second] = process.argv.slice(2);
+  const [command, first, second] = parseMigrationRehearsalArguments(
+    process.argv.slice(2),
+  );
   if (command === 'snapshot') {
     await writeSnapshot(requiredArgument(first, 'output path'));
     return;
