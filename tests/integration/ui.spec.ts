@@ -39,9 +39,11 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
     );
 
     await page.goto('/login');
-    await page.getByLabel('Adresse e-mail').fill(email);
-    await page.getByLabel('Mot de passe').fill(password);
-    await page.getByRole('button', { name: 'Se connecter' }).click();
+    await page.getByLabel(/Adresse e-mail|Email address/).fill(email);
+    await page.getByLabel(/Mot de passe|Password/).fill(password);
+    await page
+      .getByRole('button', { name: /Se connecter|Sign in/ })
+      .click();
     await expect(page).toHaveURL(/\/today$/);
 
     await page.goto(`/program/${fixture.programSlug}`);
