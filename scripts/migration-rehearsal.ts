@@ -42,6 +42,10 @@ interface MigrationRow {
   rolled_back_at: Date | null;
 }
 
+interface ExtensionFunctionRow {
+  available: boolean;
+}
+
 type RawClient = {
   $disconnect(): Promise<void>;
   $executeRawUnsafe(query: string): Promise<number>;
@@ -76,6 +80,15 @@ export function withDatabaseSchema(
 
 export function parseMigrationRehearsalArguments(args: string[]): string[] {
   return args.filter((value) => value !== '--');
+}
+
+export function buildDigestBridgeSql(schema: string): string {
+  assertSafeReplaySchema(schema);
+  return `CREATE FUNCTION ${quoteIdentifier(schema)}.digest(data bytea, algorithm text)
+          RETURNS bytea
+          LANGUAGE SQL
+          IMMUTABLE STRICT PARALLEL SAFE
+          AS 'SELECT public.digest(data, algorithm)'`;
 }
 
 export function compareMigrationSnapshots(
@@ -293,6 +306,14 @@ async function replayAllMigrations(schema: string): Promise<void> {
     await primaryClient.$executeRawUnsafe(
       `CREATE SCHEMA ${quoteIdentifier(schema)}`,
     );
+    const [digestFunction] = await primaryClient.$queryRawUnsafe<
+      ExtensionFunctionRow[]
+    >(
+      `SELECT to_regprocedure('public.digest(bytea,text)') IS NOT NULL AS available`,
+    );
+    if (digestFunction?.available) {
+      await primaryClient.$executeRawUnsafe(buildDigestBridgeSql(schema));
+    }
     const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
     const deploy = spawnSync(pnpm, ['prisma:deploy'], {
       env: {

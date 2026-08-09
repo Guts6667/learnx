@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   assertSafeReplaySchema,
+  buildDigestBridgeSql,
   compareMigrationSnapshots,
   parseMigrationRehearsalArguments,
   type MigrationSnapshot,
@@ -33,6 +34,13 @@ describe('migration rehearsal', () => {
         'migration-before.json',
       ]),
     ).toEqual(['snapshot', 'migration-before.json']);
+  });
+
+  it('keeps the pgcrypto bridge inside the disposable schema', () => {
+    const sql = buildDigestBridgeSql('ci_migration_replay_123_1');
+    expect(sql).toContain('"ci_migration_replay_123_1".digest');
+    expect(sql).toContain('public.digest(data, algorithm)');
+    expect(() => buildDigestBridgeSql('public')).toThrow();
   });
 
   it('accepts only disposable replay schemas', () => {
