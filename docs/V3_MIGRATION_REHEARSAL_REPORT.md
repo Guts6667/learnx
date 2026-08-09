@@ -77,4 +77,29 @@ au point restauré seraient perdues et nécessitent une décision explicite.
 
 ## Résultats
 
-Les résultats exacts du run V3-032 sont consignés après exécution du workflow.
+Validation effectuée sur le commit `51d1c9b` par le workflow Integration
+[#86](https://github.com/Guts6667/learnx/actions/runs/31336025921) :
+
+- branche Neon éphémère `ci-31336025921-1`, supprimée avec succès en fin de
+  job ;
+- 44 tables du clone Production préservées, avec décomptes et condensats
+  identiques sur leurs colonnes antérieures ;
+- 28 migrations Prisma vérifiées puis rejouées intégralement dans le schéma
+  jetable `ci_migration_replay_31336025921_1` ;
+- mesure des lectures bornées réussie ;
+- 8 scénarios d'intégration réels réussis en 5,1 minutes : cycle d'accès,
+  vérification e-mail, revue admin, suspension multi-session, isolation
+  multi-utilisateur et UI sur Chromium desktop/mobile et WebKit mobile ; les
+  10 entrées ignorées correspondent aux scénarios backend volontairement
+  limités à Chromium desktop ;
+- contrôles axe WCAG A/AA réussis sur les vues Programme, Leçon et Sommaire ;
+- seed Platform APM exécuté deux fois sans divergence, signature
+  `1|2|5|6|19|12|6|6|30|2|0|0|0` ;
+- seed du pilote anglais exécuté deux fois sans divergence, signature
+  `draft|private|2|2|6|30|22|5|13|18|90|2|0|0|0` ;
+- artefacts publiés : répétition migration, performance base et rapport
+  Playwright, conservés 90 jours par GitHub Actions.
+
+Matrice locale finale du même périmètre : lint, typecheck et build réussis ;
+99 fichiers de tests et 536 tests réussis ; 40 tests E2E réussis. Aucune
+écriture n'a été effectuée sur Production.
