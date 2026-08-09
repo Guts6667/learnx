@@ -403,8 +403,13 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     );
     await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
 
+    const fixtureCatalogSearch = fixture.programSlug.slice(
+      'integration-'.length,
+    );
     const catalogResponse = await expectStatus(
-      await outsider.get('/api/catalog/programs?pageSize=10'),
+      await outsider.get(
+        `/api/catalog/programs?pageSize=10&search=${encodeURIComponent(fixtureCatalogSearch)}`,
+      ),
       200,
     );
     expect(await catalogResponse.json()).toMatchObject({
