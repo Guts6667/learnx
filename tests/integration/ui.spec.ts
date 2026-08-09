@@ -4,6 +4,7 @@ import {
   cleanupIntegrationUsers,
   createIntegrationFixture,
 } from './fixture.js';
+import { expectNoSeriousA11yViolations } from '../e2e/accessibility.js';
 
 const password = 'Integration-Only-Password-2026!';
 
@@ -41,9 +42,7 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
     await page.goto('/login');
     await page.getByLabel(/Adresse e-mail|Email address/).fill(email);
     await page.getByLabel(/Mot de passe|Password/).fill(password);
-    await page
-      .getByRole('button', { name: /Se connecter|Sign in/ })
-      .click();
+    await page.getByRole('button', { name: /Se connecter|Sign in/ }).click();
     await expect(page).toHaveURL(/\/today$/);
 
     await page.goto(`/program/${fixture.programSlug}`);
@@ -53,6 +52,7 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
         name: new RegExp(`Programme intégration`),
       }),
     ).toBeVisible();
+    await expectNoSeriousA11yViolations(page);
 
     await page.goto(
       `/program/${fixture.programSlug}/lesson/${fixture.lessonSlug}`,
@@ -83,6 +83,17 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
       summary.getByText('Mini-évaluation intégration'),
     ).toBeVisible();
     await expect(summary.getByText('Exercice intégration')).toBeVisible();
+    await expectNoSeriousA11yViolations(page);
+
+    const logout = await page.request.post('/api/auth/logout');
+    expect(logout.status()).toBe(204);
+    await page.goto(
+      `/program/${fixture.programSlug}/lesson/${fixture.lessonSlug}`,
+    );
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(
+      page.getByRole('heading', { level: 1, name: /Connexion|Sign in/ }),
+    ).toBeVisible();
   } finally {
     await cleanupIntegrationUsers([email]);
   }

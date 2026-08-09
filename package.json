@@ -25,6 +25,7 @@
     "progress:recalculate": "tsx scripts/recalculate-progress.ts",
     "maintenance:cleanup": "tsx scripts/cleanup-expired-data.ts",
     "performance:measure": "tsx scripts/measure-database-performance.ts",
+    "migration:rehearse": "tsx scripts/migration-rehearsal.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

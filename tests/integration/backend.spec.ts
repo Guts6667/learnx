@@ -56,12 +56,17 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
 
   const ownerEmail = uniqueEmail('owner', testInfo.retry);
   const outsiderEmail = uniqueEmail('outsider', testInfo.retry);
+  const secondLearnerEmail = uniqueEmail('second-learner', testInfo.retry);
   const accessRequestEmail = uniqueEmail('access-request', testInfo.retry);
   const owner = await playwrightRequest.newContext({
     baseURL,
     timeout: 30_000,
   });
   const outsider = await playwrightRequest.newContext({
+    baseURL,
+    timeout: 30_000,
+  });
+  const secondLearner = await playwrightRequest.newContext({
     baseURL,
     timeout: 30_000,
   });
@@ -86,6 +91,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
 
     await register(owner, ownerEmail);
     await register(outsider, outsiderEmail);
+    await register(secondLearner, secondLearnerEmail);
 
     await expectStatus(
       await owner.post('/api/access-requests', {
@@ -409,15 +415,12 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     });
     expect(privateProgram.publishedVersionId).not.toBeNull();
     await expectStatus(
-      await owner.patch(
-        `/api/admin/programs/${fixture.programId}/visibility`,
-        {
-          data: {
-            expectedUpdatedAt: privateProgram.updatedAt.toISOString(),
-            visibility: 'PUBLIC',
-          },
+      await owner.patch(`/api/admin/programs/${fixture.programId}/visibility`, {
+        data: {
+          expectedUpdatedAt: privateProgram.updatedAt.toISOString(),
+          visibility: 'PUBLIC',
         },
-      ),
+      }),
       200,
     );
 
@@ -445,6 +448,10 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       await outsider.post(`/api/programs/${fixture.programId}/enrollment`),
       200,
     );
+    await expectStatus(
+      await secondLearner.post(`/api/programs/${fixture.programId}/enrollment`),
+      200,
+    );
     const activeEnrollments = await expectStatus(
       await outsider.get('/api/me/programs'),
       200,
@@ -465,10 +472,7 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       await outsider.get(`/api/lessons/${fixture.lessonSlug}`),
       200,
     );
-    await expectStatus(
-      await outsider.get(`/api/notes/${note.note.id}`),
-      404,
-    );
+    await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
     const outsiderAttempts = await expectStatus(
       await outsider.get(`/api/quizzes/${fixture.quizId}/attempts`),
       200,
@@ -478,11 +482,118 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       nextCursor: null,
     });
     await expectStatus(
+      await outsider.post(`/api/quizzes/${fixture.quizId}/attempts`, {
+        data: {
+          answers: [
+            {
+              optionIds: [fixture.quizCorrectOptionId],
+              questionId: fixture.quizQuestionId,
+            },
+          ],
+        },
+      }),
+      201,
+    );
+    const secondLearnerAttempts = await expectStatus(
+      await secondLearner.get(`/api/quizzes/${fixture.quizId}/attempts`),
+      200,
+    );
+    expect(await secondLearnerAttempts.json()).toEqual({
+      attempts: [],
+      nextCursor: null,
+    });
+    const outsiderNoteResponse = await expectStatus(
+      await outsider.post('/api/notes', {
+        data: {
+          lessonId: fixture.lessonId,
+          markdown: 'Note privée du premier apprenant.',
+          title: 'Note apprenant un',
+        },
+      }),
+      201,
+    );
+    const outsiderNote = (await outsiderNoteResponse.json()) as {
+      note: { id: string };
+    };
+    await expectStatus(
+      await secondLearner.get(`/api/notes/${outsiderNote.note.id}`),
+      404,
+    );
+    await expectStatus(
       await outsider.patch(`/api/tasks/${fixture.taskId}`, {
         data: { status: 'DONE' },
       }),
       200,
     );
+    await expectStatus(
+      await secondLearner.get(`/api/lessons/${fixture.lessonSlug}`),
+      200,
+    );
+
+    const secondLearnerAccount = await prisma.user.findUniqueOrThrow({
+      where: { email: secondLearnerEmail },
+      select: { id: true, updatedAt: true },
+    });
+    await expectStatus(
+      await owner.post(
+        `/api/admin/accounts/${secondLearnerAccount.id}/suspend`,
+        {
+          data: {
+            expectedStatus: 'ACTIVE',
+            expectedUpdatedAt: secondLearnerAccount.updatedAt.toISOString(),
+          },
+        },
+      ),
+      200,
+    );
+    const suspendedSession = await expectStatus(
+      await secondLearner.get('/api/auth/session'),
+      200,
+    );
+    expect(await suspendedSession.json()).toEqual({ user: null });
+    await expectStatus(await secondLearner.get('/api/me/programs'), 401);
+    await expectStatus(
+      await secondLearner.post('/api/auth/login', {
+        data: { email: secondLearnerEmail, password },
+      }),
+      401,
+    );
+
+    const suspendedAccount = await prisma.user.findUniqueOrThrow({
+      where: { id: secondLearnerAccount.id },
+      select: { accountStatus: true, updatedAt: true },
+    });
+    expect(suspendedAccount.accountStatus).toBe('SUSPENDED');
+    await expectStatus(
+      await owner.post(
+        `/api/admin/accounts/${secondLearnerAccount.id}/reactivate`,
+        {
+          data: {
+            expectedStatus: 'SUSPENDED',
+            expectedUpdatedAt: suspendedAccount.updatedAt.toISOString(),
+          },
+        },
+      ),
+      200,
+    );
+    await expectStatus(
+      await secondLearner.post('/api/auth/login', {
+        data: { email: secondLearnerEmail, password },
+      }),
+      200,
+    );
+    const preservedEnrollment = await expectStatus(
+      await secondLearner.get('/api/me/programs'),
+      200,
+    );
+    expect(await preservedEnrollment.json()).toMatchObject({
+      items: [
+        {
+          enrollment: { status: 'ACTIVE' },
+          program: { id: fixture.programId },
+        },
+      ],
+    });
     await expectStatus(
       await outsider.delete(`/api/programs/${fixture.programId}/enrollment`),
       200,
@@ -575,8 +686,13 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     await prisma.accessRequest.deleteMany({
       where: { emailNormalized: accessRequestEmail },
     });
-    await cleanupIntegrationUsers([ownerEmail, outsiderEmail]);
+    await cleanupIntegrationUsers([
+      ownerEmail,
+      outsiderEmail,
+      secondLearnerEmail,
+    ]);
     await owner.dispose();
     await outsider.dispose();
+    await secondLearner.dispose();
   }
 });
