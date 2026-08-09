@@ -1,4 +1,5 @@
 import { classNames } from '@/components/ui/classNames';
+import { useI18n } from '@/i18n';
 
 interface SkeletonProps {
   class?: string;
@@ -7,15 +8,17 @@ interface SkeletonProps {
 
 export function Skeleton({
   class: className,
-  label = 'Chargement du contenu',
+  label,
 }: SkeletonProps) {
+  const { t } = useI18n();
+  const accessibleLabel = label ?? t('common.loadingContent');
   return (
     <div
-      aria-label={label}
+      aria-label={accessibleLabel}
       class={classNames('animate-pulse space-y-4', className)}
       role="status"
     >
-      <span class="sr-only">{label}</span>
+      <span class="sr-only">{accessibleLabel}</span>
       <div class="h-5 w-2/5 rounded-full bg-slate-800" />
       <div class="h-4 w-full rounded-full bg-slate-800" />
       <div class="h-4 w-4/5 rounded-full bg-slate-800" />

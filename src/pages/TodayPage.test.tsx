@@ -86,4 +86,50 @@ describe('TodayPage', () => {
       await screen.findByRole('heading', { name: 'Aucun programme actif' }),
     ).toBeInTheDocument();
   });
+
+  it('traduit l’écran authentifié complet en anglais sans traduire les contenus', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve(
+          jsonResponse({
+            action: {
+              estimatedMinutes: 20,
+              href: '/program/psychologie/lesson/definition',
+              kind: 'INCOMPLETE_TASK',
+              lessonTitle: 'Définir la psychologie',
+              moduleTitle: 'Introduction',
+              programId: 'program-1',
+              programSlug: 'psychologie',
+              programTitle: 'Psychologie',
+              stageTitle: 'Fondations',
+              title: 'Lire le chapitre',
+            },
+            lastActivity: null,
+            program: {
+              id: 'program-1',
+              percent: 42,
+              slug: 'psychologie',
+              title: 'Psychologie',
+            },
+            reviewsDue: 2,
+          }),
+        ),
+      ),
+    );
+
+    render(
+      <AppProviders locale="en">
+        <TodayPage />
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Today' }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText('Task to continue')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Continue' })).toBeInTheDocument();
+    expect(screen.getByText('Active program')).toBeInTheDocument();
+    expect(screen.getByText('Lire le chapitre')).toBeInTheDocument();
+  });
 });

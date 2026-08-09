@@ -1,4 +1,5 @@
 import { classNames } from '@/components/ui/classNames';
+import { useI18n } from '@/i18n';
 
 type SpinnerSize = 'sm' | 'md' | 'lg';
 
@@ -16,12 +17,14 @@ const sizeClasses: Record<SpinnerSize, string> = {
 
 export function Spinner({
   class: className,
-  label = 'Chargement',
+  label,
   size = 'md',
 }: SpinnerProps) {
+  const { t } = useI18n();
+  const accessibleLabel = label ?? t('common.loading');
   return (
     <span
-      aria-label={label}
+      aria-label={accessibleLabel}
       class={classNames(
         'inline-block animate-spin rounded-full border-current border-r-transparent',
         sizeClasses[size],
@@ -29,7 +32,7 @@ export function Spinner({
       )}
       role="status"
     >
-      <span class="sr-only">{label}</span>
+      <span class="sr-only">{accessibleLabel}</span>
     </span>
   );
 }

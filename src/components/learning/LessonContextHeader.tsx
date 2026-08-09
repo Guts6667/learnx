@@ -5,6 +5,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { LessonDetail } from '@/features/curriculum/queries';
 import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
 import { buildLessonActivitySequence } from '@/lib/lesson-activity-sequence';
+import { useI18n } from '@/i18n';
 
 export function lessonHref(lesson: LessonDetail): string {
   return buildLessonHref(lesson.module.stage.program.slug, lesson.slug);
@@ -54,6 +55,7 @@ export function LessonContextHeader({
   percent?: number;
 }) {
   const canonicalLessonHref = lessonHref(lesson);
+  const { t } = useI18n();
 
   return (
     <header class="space-y-4">
@@ -62,13 +64,15 @@ export function LessonContextHeader({
           class="inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
           href={canonicalLessonHref}
         >
-          Leçon : {lesson.title}
+          {t('learning.lessonWithTitle', { title: lesson.title })}
         </a>
       ) : null}
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div class="min-w-0 max-w-full flex-1">
           <p class="break-words text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-            {activityTitle ? `Leçon · ${lesson.title}` : 'Leçon'}
+            {activityTitle
+              ? `${t('learning.lesson')} · ${lesson.title}`
+              : t('learning.lesson')}
           </p>
           <h1
             class="mt-2 break-words text-3xl font-bold tracking-tight"
@@ -77,16 +81,18 @@ export function LessonContextHeader({
             {activityTitle ?? lesson.title}
           </h1>
         </div>
-        {lesson.isPublished ? null : <Badge tone="warning">Brouillon</Badge>}
+        {lesson.isPublished ? null : (
+          <Badge tone="warning">{t('common.draft')}</Badge>
+        )}
       </div>
       <div class="text-sm text-slate-300">
         {lesson.estimatedMinutes === null ? null : (
-          <span>{lesson.estimatedMinutes} min</span>
+          <span>{t('common.minutes', { count: lesson.estimatedMinutes })}</span>
         )}
       </div>
       {percent === undefined ? null : (
         <ProgressBar
-          label={`Progression de la leçon — ${Math.round(percent)} %`}
+          label={t('learning.progress', { count: Math.round(percent) })}
           value={percent}
         />
       )}

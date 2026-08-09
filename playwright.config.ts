@@ -8,6 +8,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: 'http://127.0.0.1:4173',
+    locale: 'fr-FR',
     trace: 'on-first-retry',
   },
   projects: [

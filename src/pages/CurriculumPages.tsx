@@ -34,25 +34,30 @@ import {
   useStageQuery,
 } from '@/features/curriculum/queries';
 import { useI18n } from '@/i18n';
+import type { MessageKey } from '@/i18n/catalogs';
 import { programStageHref } from '@/lib/curriculum-navigation';
 
-function lessonStatusLabel(lesson: LessonSummary): string {
-  if (!lesson.isPublished) return 'Brouillon';
-  if (lesson.isLocked) return 'Verrouillée';
-  if (lesson.progress.status === 'COMPLETED') return 'Terminée';
-  if (lesson.progress.status === 'IN_PROGRESS') return 'En cours';
-  if (lesson.progress.status === 'NEEDS_REVIEW') return 'À revoir';
-  return 'Disponible';
+function lessonStatusLabel(lesson: LessonSummary, t: Translate): string {
+  if (!lesson.isPublished) return t('common.draft');
+  if (lesson.isLocked) return t('curriculum.status.locked');
+  if (lesson.progress.status === 'COMPLETED')
+    return t('curriculum.status.completed');
+  if (lesson.progress.status === 'IN_PROGRESS')
+    return t('curriculum.status.inProgress');
+  if (lesson.progress.status === 'NEEDS_REVIEW')
+    return t('curriculum.status.review');
+  return t('curriculum.status.available');
 }
 
-function nextActivityLabel(lesson: LessonSummary): string {
-  if (lesson.isLocked) return 'Prérequis à valider';
-  if (lesson.progress.status === 'COMPLETED') return 'Leçon à revoir';
+function nextActivityLabel(lesson: LessonSummary, t: Translate): string {
+  if (lesson.isLocked) return t('curriculum.lesson.next.locked');
+  if (lesson.progress.status === 'COMPLETED')
+    return t('curriculum.lesson.next.review');
   if (lesson.progress.status === 'IN_PROGRESS')
-    return 'Reprendre l’activité en cours';
+    return t('curriculum.lesson.next.resume');
   return lesson.isPublished
-    ? 'Commencer par le contenu'
-    : 'Prévisualiser le contenu';
+    ? t('curriculum.lesson.next.start')
+    : t('curriculum.lesson.next.preview');
 }
 
 function LessonSummaryCard({
@@ -64,6 +69,7 @@ function LessonSummaryCard({
   programSlug: string;
   stageSlug: string;
 }) {
+  const { t } = useI18n();
   const counts = lesson.activityCounts;
   const activityTotal =
     counts.resources +
@@ -73,10 +79,10 @@ function LessonSummaryCard({
     counts.quizzes;
   const actionLabel =
     lesson.progress.status === 'COMPLETED'
-      ? 'Revoir'
+      ? t('curriculum.lesson.review')
       : lesson.progress.status === 'IN_PROGRESS'
-        ? 'Continuer'
-        : 'Commencer';
+        ? t('common.continue')
+        : t('curriculum.lesson.start');
 
   return (
     <Card class="space-y-4">
@@ -86,32 +92,36 @@ function LessonSummaryCard({
           <p class="mt-2 text-sm leading-6 text-slate-300">{lesson.summary}</p>
         </div>
         <Badge tone={lesson.isPublished ? 'info' : 'warning'}>
-          {lessonStatusLabel(lesson)}
+          {lessonStatusLabel(lesson, t)}
         </Badge>
       </div>
       <p class="text-sm text-slate-400">
         {lesson.estimatedMinutes === null
-          ? 'Durée non renseignée'
+          ? t('curriculum.durationUnknown')
           : `${lesson.estimatedMinutes} min`}{' '}
-        · {activityTotal} activités
+        · {t('curriculum.activityCount', { count: activityTotal })}
       </p>
       <p class="text-sm text-slate-300">
-        Prochaine activité : {nextActivityLabel(lesson)}
+        {t('curriculum.lesson.nextLabel', {
+          activity: nextActivityLabel(lesson, t),
+        })}
       </p>
       <ProgressBar
-        label={`Progression — ${Math.round(lesson.progress.percent)} %`}
+        label={t('curriculum.lesson.progress', {
+          count: Math.round(lesson.progress.percent),
+        })}
         value={lesson.progress.percent}
       />
       <details class="rounded-xl border border-slate-800 px-4 py-3 text-sm">
         <summary class="min-h-11 cursor-pointer py-2 font-medium text-slate-200">
-          Détail des activités
+          {t('curriculum.lesson.details')}
         </summary>
         <ul class="space-y-1 pb-2 text-slate-400">
-          <li>{counts.resources} ressources</li>
-          <li>{counts.tasks} tâches</li>
-          <li>{counts.concepts} notions</li>
-          <li>{counts.exercises} exercices</li>
-          <li>{counts.quizzes} quiz</li>
+          <li>{t('curriculum.lesson.resources', { count: counts.resources })}</li>
+          <li>{t('curriculum.lesson.tasks', { count: counts.tasks })}</li>
+          <li>{t('curriculum.lesson.concepts', { count: counts.concepts })}</li>
+          <li>{t('curriculum.lesson.exercises', { count: counts.exercises })}</li>
+          <li>{t('curriculum.lesson.quizzes', { count: counts.quizzes })}</li>
         </ul>
       </details>
       <NavigationAction
@@ -122,40 +132,42 @@ function LessonSummaryCard({
         }
       >
         {lesson.isLocked
-          ? 'Voir les prérequis'
+          ? t('curriculum.lesson.prerequisites')
           : lesson.isPublished
             ? actionLabel
-            : 'Prévisualiser'}
+            : t('curriculum.lesson.preview')}
       </NavigationAction>
     </Card>
   );
 }
 
-function getQueryState(error: unknown, isPending: boolean) {
+function getQueryState(error: unknown, isPending: boolean, t: Translate) {
   if (isPending) {
-    return <Skeleton label="Chargement du parcours" />;
+    return <Skeleton label={t('curriculum.loading')} />;
   }
 
   if (error) {
-    return <ErrorState description="Le parcours n’a pas pu être chargé." />;
+    return <ErrorState description={t('curriculum.loadError')} />;
   }
 
   return null;
 }
 
 function ProgressPlaceholder() {
-  return <ProgressBar label="Progression — bientôt disponible" value={0} />;
+  const { t } = useI18n();
+  return <ProgressBar label={t('curriculum.progressSoon')} value={0} />;
 }
 
 function DraftBadge() {
-  return <Badge tone="warning">Brouillon</Badge>;
+  const { t } = useI18n();
+  return <Badge tone="warning">{t('common.draft')}</Badge>;
 }
 
-const compactProgressStatusLabels = {
-  AVAILABLE: 'Disponible',
-  COMPLETED: 'Terminée',
-  IN_PROGRESS: 'En cours',
-  LOCKED: 'Verrouillée',
+const progressStatusKeys = {
+  AVAILABLE: 'curriculum.status.available',
+  COMPLETED: 'curriculum.status.completed',
+  IN_PROGRESS: 'curriculum.status.inProgress',
+  LOCKED: 'curriculum.status.locked',
 } as const;
 
 const lessonProgressIcons = {
@@ -167,38 +179,38 @@ const lessonProgressIcons = {
   PREVIEW: '◇',
 } as const;
 
-function formatStageDuration(stage: StageSummary): string {
+function formatStageDuration(stage: StageSummary, t: Translate): string {
   if (stage.estimatedDurationDays !== null) {
     return `${stage.estimatedDurationDays} j`;
   }
   if (stage.estimatedMinutes !== null) return `${stage.estimatedMinutes} min`;
-  return 'Durée non renseignée';
+  return t('curriculum.durationUnknown');
 }
 
-function formatLessonDuration(lesson: LessonSummary): string {
+function formatLessonDuration(lesson: LessonSummary, t: Translate): string {
   return lesson.estimatedMinutes === null
-    ? 'Durée non renseignée'
+    ? t('curriculum.durationUnknown')
     : `${lesson.estimatedMinutes} min`;
 }
 
-function lessonLineStatus(lesson: LessonSummary) {
+function lessonLineStatus(lesson: LessonSummary, t: Translate) {
   if (!lesson.isPublished) {
     return {
       icon: lessonProgressIcons.PREVIEW,
-      label: 'Brouillon',
+      label: t('common.draft'),
       tone: 'warning' as const,
     };
   }
   if (lesson.isLocked) {
     return {
       icon: lessonProgressIcons.LOCKED,
-      label: 'Verrouillée',
+      label: t('curriculum.status.locked'),
       tone: 'neutral' as const,
     };
   }
   return {
     icon: lessonProgressIcons[lesson.progress.status],
-    label: lessonStatusLabel(lesson),
+    label: lessonStatusLabel(lesson, t),
     tone:
       lesson.progress.status === 'IN_PROGRESS'
         ? ('info' as const)
@@ -217,7 +229,8 @@ function ProgramLessonRow({
   moduleTitle: string;
   programSlug: string;
 }) {
-  const status = lessonLineStatus(lesson);
+  const { t } = useI18n();
+  const status = lessonLineStatus(lesson, t);
   const content = (
     <>
       <span class="min-w-0 flex-1 lg:flex lg:items-center lg:justify-between lg:gap-4">
@@ -230,7 +243,7 @@ function ProgramLessonRow({
         </span>
         <span class="mt-2 flex flex-wrap items-center gap-2 lg:mt-0 lg:shrink-0">
           <span class="text-sm text-slate-400">
-            {formatLessonDuration(lesson)}
+            {formatLessonDuration(lesson, t)}
           </span>
           <Badge class="gap-1" tone={status.tone}>
             <span aria-hidden="true">{status.icon}</span>
@@ -252,7 +265,11 @@ function ProgramLessonRow({
   if (lesson.isLocked) {
     return (
       <div
-        aria-label={`${lesson.title}, module ${moduleTitle}, ${status.label}`}
+        aria-label={t('curriculum.lesson.lockedAria', {
+          module: moduleTitle,
+          status: status.label,
+          title: lesson.title,
+        })}
         class={`${className} cursor-not-allowed text-slate-400`}
       >
         {content}
@@ -262,14 +279,19 @@ function ProgramLessonRow({
 
   const action =
     lesson.progress.status === 'COMPLETED'
-      ? 'Revoir'
+      ? t('curriculum.lesson.review')
       : lesson.progress.status === 'IN_PROGRESS'
-        ? 'Reprendre'
-        : 'Ouvrir';
+        ? t('curriculum.lesson.resume')
+        : t('curriculum.lesson.open');
 
   return (
     <a
-      aria-label={`${action} ${lesson.title}, module ${moduleTitle}, ${status.label}`}
+      aria-label={t('curriculum.lesson.aria', {
+        action,
+        module: moduleTitle,
+        status: status.label,
+        title: lesson.title,
+      })}
       class={`${className} rounded-lg hover:bg-slate-900/70 focus-visible:outline-2 focus-visible:outline-cyan-300`}
       href={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
     >
@@ -305,7 +327,9 @@ function ModuleLessonList({
       ) : null}
       <ul
         aria-label={
-          showHeading ? undefined : `Leçons du module ${module.title}`
+          showHeading
+            ? undefined
+            : t('curriculum.moduleLessons', { title: module.title })
         }
         id={listId}
       >
@@ -342,8 +366,8 @@ function StageAccordionItem({
   const { t } = useI18n();
   const panelId = `program-stage-panel-${stage.id}`;
   const statusLabel = stage.isPublished
-    ? compactProgressStatusLabels[stage.progress.status]
-    : 'Brouillon';
+    ? t(progressStatusKeys[stage.progress.status])
+    : t('common.draft');
   const statusTone = !stage.isPublished
     ? 'warning'
     : stage.progress.status === 'IN_PROGRESS'
@@ -370,7 +394,7 @@ function StageAccordionItem({
               </span>
             </span>
             <span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
-              <span>{formatStageDuration(stage)}</span>
+              <span>{formatStageDuration(stage, t)}</span>
               <Badge class="gap-1" tone={statusTone}>
                 <span aria-hidden="true">
                   {lessonProgressIcons[stage.progress.status]}
@@ -390,13 +414,13 @@ function StageAccordionItem({
         </button>
         {isExpanded ? (
           <div
-            aria-label={`Détails de l’étape ${stage.title}`}
+            aria-label={t('curriculum.stageDetails', { title: stage.title })}
             class="space-y-6 border-t border-slate-800 px-4 py-4 sm:px-5 sm:py-5"
             id={panelId}
             role="region"
           >
             {stage.modules.length === 0 ? (
-              <p class="text-sm text-slate-400">Aucun module disponible.</p>
+              <p class="text-sm text-slate-400">{t('curriculum.noModules')}</p>
             ) : (
               <div class="space-y-5">
                 {stage.modules.map((module) => (
@@ -422,54 +446,55 @@ function StageAccordionItem({
   );
 }
 
-const stageStatusLabels: Record<StageValidation['status'], string> = {
-  AVAILABLE: 'Disponible',
-  COMPLETED: 'Terminée',
-  IN_PROGRESS: 'En cours',
-  LOCKED: 'Verrouillée',
-};
-
 function StageValidationCard({
   validation,
 }: {
   validation: StageValidation | null;
 }) {
+  const { t } = useI18n();
   if (!validation) return null;
 
   return (
     <Card class="space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <h2 class="text-xl font-semibold">Validation de l’étape</h2>
+        <h2 class="text-xl font-semibold">{t('curriculum.stageValidation')}</h2>
         <Badge tone={validation.isValidated ? 'success' : 'info'}>
-          {stageStatusLabels[validation.status]}
+          {t(progressStatusKeys[validation.status])}
         </Badge>
       </div>
       <ul class="space-y-1 text-sm text-slate-300">
         <li>
-          Notions obligatoires : {validation.requiredConcepts.validated}/
-          {validation.requiredConcepts.total}
+          {t('curriculum.requiredConcepts', {
+            done: validation.requiredConcepts.validated,
+            total: validation.requiredConcepts.total,
+          })}
         </li>
         <li>
-          Tâches obligatoires : {validation.requiredTasks.validated}/
-          {validation.requiredTasks.total}
+          {t('curriculum.requiredTasks', {
+            done: validation.requiredTasks.validated,
+            total: validation.requiredTasks.total,
+          })}
         </li>
         <li>
-          Exercices obligatoires :{' '}
-          {validation.requiredExercises?.validated ?? 0}/
-          {validation.requiredExercises?.total ?? 0}
+          {t('curriculum.requiredExercises', {
+            done: validation.requiredExercises?.validated ?? 0,
+            total: validation.requiredExercises?.total ?? 0,
+          })}
         </li>
         <li>
-          Évaluations finales : {validation.finalAssessments.validated}/
-          {validation.finalAssessments.total}
+          {t('curriculum.finalAssessments', {
+            done: validation.finalAssessments.validated,
+            total: validation.finalAssessments.total,
+          })}
         </li>
       </ul>
       {validation.missingRequirements.length === 0 ? (
         <p class="text-sm text-emerald-300">
-          Toutes les exigences obligatoires sont validées.
+          {t('curriculum.requirementsComplete')}
         </p>
       ) : (
         <div>
-          <h3 class="font-semibold">Prérequis manquants</h3>
+          <h3 class="font-semibold">{t('curriculum.missingRequirements')}</h3>
           <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-200">
             {validation.missingRequirements.map((requirement) => (
               <li key={`${requirement.type}:${requirement.id ?? 'missing'}`}>
@@ -483,13 +508,23 @@ function StageValidationCard({
   );
 }
 
-function durationLabel(days: number | null) {
-  if (days === null) return 'Durée non renseignée';
-  return `${days} jour${days > 1 ? 's' : ''}`;
+type Translate = (key: MessageKey, parameters?: Record<string, string | number>) => string;
+
+function durationLabel(days: number | null, t: Translate) {
+  if (days === null) return t('programs.durationUnknown');
+  return t('programs.durationDays', { count: days });
 }
 
-function publishedVersionLabel(version: number) {
-  return `Version publiée ${version}`;
+function publishedVersionLabel(version: number, t: Translate) {
+  return t('programs.publishedVersion', { version });
+}
+
+function programLocaleLabel(locale: string | null | undefined, t: Translate): string {
+  return t(
+    locale?.toLocaleLowerCase().startsWith('en')
+      ? 'programs.language.en'
+      : 'programs.language.fr',
+  );
 }
 
 function CatalogProgramCard({
@@ -510,25 +545,24 @@ function CatalogProgramCard({
         <div class="flex flex-wrap items-start justify-between gap-3">
           <h2 class="text-xl font-semibold">{program.title}</h2>
           <Badge tone={program.isEnrolled ? 'success' : 'info'}>
-            {program.isEnrolled ? 'Inscrit' : 'Disponible'}
+            {t(program.isEnrolled ? 'programs.enrolled' : 'programs.available')}
           </Badge>
         </div>
         <p class="text-sm leading-6 text-slate-300">{program.description}</p>
         <ul class="space-y-1 text-sm text-slate-400">
-          <li>{t(`programs.language.${program.locale}`)}</li>
-          <li>{durationLabel(program.estimatedDurationDays)}</li>
+          <li>{programLocaleLabel(program.locale, t)}</li>
+          <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>
-            {program.stageCount} étape{program.stageCount > 1 ? 's' : ''}{' '}
-            publiée{program.stageCount > 1 ? 's' : ''}
+            {t('programs.publishedStageCount', { count: program.stageCount })}
           </li>
-          <li>{publishedVersionLabel(program.publishedVersion.number)}</li>
+          <li>{publishedVersionLabel(program.publishedVersion.number, t)}</li>
         </ul>
         {program.isEnrolled ? (
           <NavigationAction
             class="mt-auto"
             href={`/program/${encodeURIComponent(program.slug)}`}
           >
-            Ouvrir le programme
+            {t('programs.open')}
           </NavigationAction>
         ) : (
           <Button
@@ -537,7 +571,7 @@ function CatalogProgramCard({
             isLoading={isMutationLoading}
             onClick={() => onEnroll(program)}
           >
-            S’inscrire
+            {t('programs.enroll')}
           </Button>
         )}
       </Card>
@@ -572,21 +606,21 @@ function EnrolledProgramCard({
         <div class="flex flex-wrap items-start justify-between gap-3">
           <h2 class="text-xl font-semibold">{program.program.title}</h2>
           <Badge tone={isActive ? 'success' : 'warning'}>
-            {isActive ? 'Inscrit' : 'Désinscrit'}
+            {t(isActive ? 'programs.enrolled' : 'programs.withdrawnBadge')}
           </Badge>
         </div>
         <p class="text-sm leading-6 text-slate-300">
           {program.program.description}
         </p>
         <ul class="space-y-1 text-sm text-slate-400">
-          <li>{t(`programs.language.${program.program.locale}`)}</li>
-          <li>{durationLabel(program.program.estimatedDurationDays)}</li>
+          <li>{programLocaleLabel(program.program.locale, t)}</li>
+          <li>{durationLabel(program.program.estimatedDurationDays, t)}</li>
           <li>
-            {publishedVersionLabel(program.program.publishedVersion.number)}
+            {publishedVersionLabel(program.program.publishedVersion.number, t)}
           </li>
         </ul>
         <ProgressBar
-          label={`Progression — ${Math.round(percent)} %`}
+          label={t('today.progress', { count: Math.round(percent) })}
           value={percent}
         />
         {isActive ? (
@@ -594,7 +628,7 @@ function EnrolledProgramCard({
             <NavigationAction
               href={`/program/${encodeURIComponent(program.program.slug)}`}
             >
-              {percent > 0 ? 'Continuer' : 'Commencer'}
+              {percent > 0 ? t('common.continue') : t('programs.start')}
             </NavigationAction>
             {!isConfirming ? (
               <Button
@@ -602,17 +636,18 @@ function EnrolledProgramCard({
                 onClick={() => onRequestWithdrawal(program)}
                 variant="ghost"
               >
-                Se désinscrire
+                {t('programs.withdraw')}
               </Button>
             ) : (
               <div
-                aria-label={`Confirmer la désinscription de ${program.program.title}`}
+                aria-label={t('programs.confirmWithdrawAria', {
+                  title: program.program.title,
+                })}
                 class="space-y-3 rounded-xl border border-amber-800 bg-amber-950/30 p-4"
                 role="region"
               >
                 <p class="text-sm leading-6 text-amber-100">
-                  L’accès au programme sera retiré. Vos notes, votre progression
-                  et vos tentatives seront conservées.
+                  {t('programs.withdrawDescription')}
                 </p>
                 <div class="flex flex-col gap-3 sm:flex-row">
                   <Button
@@ -621,10 +656,10 @@ function EnrolledProgramCard({
                     onClick={() => onConfirm(program)}
                     variant="danger"
                   >
-                    Confirmer la désinscription
+                    {t('programs.confirmWithdraw')}
                   </Button>
                   <Button onClick={onCancel} variant="ghost">
-                    Annuler
+                    {t('programs.cancel')}
                   </Button>
                 </div>
               </div>
@@ -632,7 +667,7 @@ function EnrolledProgramCard({
           </>
         ) : (
           <p class="text-sm text-slate-400">
-            Vos données personnelles d’apprentissage sont conservées.
+            {t('programs.dataPreserved')}
           </p>
         )}
       </Card>
@@ -653,25 +688,29 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
         <div class="flex flex-wrap items-start justify-between gap-3">
           <h2 class="text-xl font-semibold">{program.title}</h2>
           <div class="flex flex-wrap gap-2">
-            <Badge tone="info">Propriétaire</Badge>
+            <Badge tone="info">{t('programs.owner')}</Badge>
             <Badge
               tone={program.visibility === 'PRIVATE' ? 'warning' : 'success'}
             >
-              {program.visibility === 'PRIVATE' ? 'Privé' : 'Public'}
+              {t(
+                program.visibility === 'PRIVATE'
+                  ? 'programs.private'
+                  : 'programs.public',
+              )}
             </Badge>
             {hasDraftContent ? <DraftBadge /> : null}
           </div>
         </div>
         <p class="text-sm leading-6 text-slate-300">{program.description}</p>
         <ul class="space-y-1 text-sm text-slate-400">
-          <li>{t(`programs.language.${program.locale}`)}</li>
-          <li>{durationLabel(program.estimatedDurationDays)}</li>
+          <li>{programLocaleLabel(program.locale, t)}</li>
+          <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>
-            {program.stages.length} étape{program.stages.length > 1 ? 's' : ''}
+            {t('programs.stageCount', { count: program.stages.length })}
           </li>
         </ul>
         <ProgressBar
-          label={`Progression — ${Math.round(percent)} %`}
+          label={t('today.progress', { count: Math.round(percent) })}
           value={percent}
         />
         <NavigationAction
@@ -679,8 +718,8 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
           href={`/program/${encodeURIComponent(program.slug)}`}
         >
           {hasDraftContent
-            ? 'Prévisualiser le programme'
-            : 'Ouvrir le programme'}
+            ? t('programs.preview')
+            : t('programs.open')}
         </NavigationAction>
       </Card>
     </li>
@@ -696,11 +735,12 @@ function DirectoryPagination({
   isLoading: boolean;
   onLoadMore: () => void;
 }) {
+  const { t } = useI18n();
   if (!hasMore) return null;
   return (
     <div class="flex justify-center">
       <Button isLoading={isLoading} onClick={onLoadMore} variant="secondary">
-        Afficher plus
+        {t('programs.showMore')}
       </Button>
     </div>
   );
@@ -725,11 +765,11 @@ export function ProgramsPage() {
   const enrolled = useEnrolledProgramsQuery(search, enrollmentStatus, isOnline);
   const owned = useProgramsQuery(isOnline);
   const mutation = useProgramEnrollmentMutation();
-  const normalizedOwnedSearch = search.toLocaleLowerCase('fr');
+  const normalizedOwnedSearch = search.toLocaleLowerCase(locale);
   const ownedPrograms = (owned.data?.programs ?? []).filter((program) =>
     normalizedOwnedSearch
       ? `${program.title} ${program.description}`
-          .toLocaleLowerCase('fr')
+          .toLocaleLowerCase(locale)
           .includes(normalizedOwnedSearch)
       : true,
   );
@@ -772,7 +812,7 @@ export function ProgramsPage() {
     try {
       await mutation.execute(program.id, 'enroll');
       await refreshDirectories();
-      setAnnouncement(`${program.title} a été ajouté à Mes programmes.`);
+      setAnnouncement(t('programs.addedAnnouncement', { title: program.title }));
     } catch {
       // The normalized error is rendered below.
     }
@@ -784,7 +824,9 @@ export function ProgramsPage() {
       await mutation.execute(program.program.id, 'withdraw');
       setConfirmingProgramId(undefined);
       await refreshDirectories();
-      setAnnouncement(`Vous êtes désinscrit de ${program.program.title}.`);
+      setAnnouncement(
+        t('programs.withdrawnAnnouncement', { title: program.program.title }),
+      );
     } catch {
       // The normalized error is rendered below.
     }
@@ -798,13 +840,13 @@ export function ProgramsPage() {
   return (
     <section aria-labelledby="programs-title" class="page-shell space-y-6">
       <PageHeader
-        description="Retrouvez vos apprentissages ou explorez les programmes disponibles."
-        eyebrow="Parcours"
+        description={t('programs.description')}
+        eyebrow={t('programs.eyebrow')}
         id="programs-title"
-        title="Programmes"
+        title={t('programs.title')}
       />
       <div
-        aria-label="Choisir une vue des programmes"
+        aria-label={t('programs.views')}
         class="grid grid-cols-2 gap-2 rounded-2xl border border-slate-700 bg-slate-900 p-1"
         role="tablist"
       >
@@ -819,7 +861,7 @@ export function ProgramsPage() {
           role="tab"
           type="button"
         >
-          Mes programmes
+          {t('programs.mine')}
         </button>
         <button
           aria-controls="catalog-programs-panel"
@@ -832,28 +874,28 @@ export function ProgramsPage() {
           role="tab"
           type="button"
         >
-          Explorer
+          {t('programs.explore')}
         </button>
       </div>
       <form class="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
         <label class="grid gap-2 text-sm font-medium text-slate-200">
-          Rechercher un programme
+          {t('programs.search')}
           <input
             class="min-h-11 min-w-0 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
             onInput={(event) => setSearchInput(event.currentTarget.value)}
-            placeholder="Titre ou description"
+            placeholder={t('programs.searchPlaceholder')}
             type="search"
             value={searchInput}
           />
         </label>
         <Button class="self-end" type="submit" variant="secondary">
-          Rechercher
+          {t('programs.searchAction')}
         </Button>
       </form>
       {!isOnline ? (
         <ErrorState
-          description="Reconnectez-vous pour consulter le catalogue privé et gérer vos inscriptions."
-          title="Programmes indisponibles hors ligne"
+          description={t('programs.offline.description')}
+          title={t('programs.offline.title')}
         />
       ) : (
         <div
@@ -865,7 +907,7 @@ export function ProgramsPage() {
           {activeView === 'enrolled' ? (
             <div class="space-y-5">
               <label class="grid max-w-xs gap-2 text-sm font-medium text-slate-200">
-                Statut de l’inscription
+                {t('programs.enrollmentStatus')}
                 <select
                   class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                   onChange={(event) => {
@@ -876,12 +918,12 @@ export function ProgramsPage() {
                   }}
                   value={enrollmentStatus}
                 >
-                  <option value="ACTIVE">Programmes en cours</option>
-                  <option value="WITHDRAWN">Programmes quittés</option>
+                  <option value="ACTIVE">{t('programs.active')}</option>
+                  <option value="WITHDRAWN">{t('programs.withdrawn')}</option>
                 </select>
               </label>
               {enrolled.isPending || owned.isPending ? (
-                <Skeleton label="Chargement de Mes programmes" />
+                <Skeleton label={t('programs.loadingMine')} />
               ) : enrolled.error || owned.error ? (
                 <ErrorState
                   action={
@@ -891,10 +933,10 @@ export function ProgramsPage() {
                         void owned.reload();
                       }}
                     >
-                      Réessayer
+                      {t('common.retry')}
                     </Button>
                   }
-                  description="Mes programmes n’ont pas pu être chargés."
+                  description={t('programs.mineError')}
                 />
               ) : enrolledPrograms.length === 0 &&
                 (enrollmentStatus !== 'ACTIVE' ||
@@ -903,19 +945,19 @@ export function ProgramsPage() {
                   action={
                     enrollmentStatus === 'ACTIVE' ? (
                       <Button onClick={() => selectView('catalog')}>
-                        Explorer les programmes
+                        {t('programs.exploreAction')}
                       </Button>
                     ) : undefined
                   }
                   description={
                     enrollmentStatus === 'ACTIVE'
-                      ? 'Inscrivez-vous à un programme pour le retrouver ici.'
-                      : 'Aucune ancienne inscription ne correspond à cette recherche.'
+                      ? t('programs.emptyMine.description')
+                      : t('programs.emptyWithdrawn.description')
                   }
                   title={
                     enrollmentStatus === 'ACTIVE'
-                      ? 'Aucun programme suivi'
-                      : 'Aucun programme quitté'
+                      ? t('programs.emptyMine.title')
+                      : t('programs.emptyWithdrawn.title')
                   }
                 />
               ) : (
@@ -929,7 +971,7 @@ export function ProgramsPage() {
                         class="text-lg font-semibold text-slate-100"
                         id="owned-programs-title"
                       >
-                        Programmes dont vous êtes propriétaire
+                        {t('programs.ownedSection')}
                       </h2>
                       <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {ownedPrograms.map((program) => (
@@ -950,7 +992,7 @@ export function ProgramsPage() {
                         class="text-lg font-semibold text-slate-100"
                         id="enrolled-programs-title"
                       >
-                        Programmes suivis
+                        {t('programs.enrolledSection')}
                       </h2>
                       <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {enrolledPrograms.map((program) => (
@@ -1000,20 +1042,20 @@ export function ProgramsPage() {
                 </select>
               </label>
               {catalog.isPending ? (
-                <Skeleton label="Chargement du catalogue" />
+                <Skeleton label={t('programs.loadingCatalog')} />
               ) : catalog.error ? (
                 <ErrorState
                   action={
                     <Button onClick={() => void catalog.reload()}>
-                      Réessayer
+                      {t('common.retry')}
                     </Button>
                   }
-                  description="Le catalogue n’a pas pu être chargé."
+                  description={t('programs.catalogError')}
                 />
               ) : catalog.data.items.length === 0 ? (
                 <EmptyState
-                  description="Aucun programme public ne correspond à votre recherche."
-                  title="Catalogue vide"
+                  description={t('programs.catalogEmpty.description')}
+                  title={t('programs.catalogEmpty.title')}
                 />
               ) : (
                 <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -1040,7 +1082,7 @@ export function ProgramsPage() {
         </div>
       )}
       {mutation.error ? (
-        <ErrorState description="L’inscription n’a pas pu être mise à jour. Réessayez." />
+        <ErrorState description={t('programs.enrollmentError')} />
       ) : null}
       <p aria-live="polite" class="text-sm text-emerald-200" role="status">
         {announcement}
@@ -1055,12 +1097,13 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
     labelKey: 'navigation.back.programs',
   });
   const query = useProgramQuery(programSlug);
+  const { t } = useI18n();
   const preference = useProgramViewPreference(programSlug);
   const [localPreference, setLocalPreference] = useState<{
     expandedStageId: string | null;
     programId: string;
   } | null>(null);
-  const state = getQueryState(query.error, query.isPending);
+  const state = getQueryState(query.error, query.isPending, t);
   const program = query.data?.program;
   const requestedStageSlug = new URLSearchParams(window.location.search).get(
     'stage',
@@ -1073,8 +1116,8 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
   if (!program) {
     return (
       <EmptyState
-        description="Ce programme est indisponible."
-        title="Programme introuvable"
+        description={t('curriculum.programNotFound.description')}
+        title={t('curriculum.programNotFound.title')}
       />
     );
   }
@@ -1094,7 +1137,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
     <section aria-labelledby="program-title" class="page-shell">
       <div class="min-w-0">
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Programme
+          {t('curriculum.program')}
         </p>
         <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
           <h1
@@ -1108,13 +1151,15 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         <p class="mt-3 break-words text-slate-300">{program.description}</p>
       </div>
       <ProgressBar
-        label={`Progression du programme — ${Math.round(program.timeline?.actualPercent ?? 0)} %`}
+        label={t('curriculum.programProgress', {
+          count: Math.round(program.timeline?.actualPercent ?? 0),
+        })}
         value={program.timeline?.actualPercent ?? 0}
       />
       {program.stages.length === 0 ? (
         <EmptyState
-          description="Les étapes publiées apparaîtront ici."
-          title="Aucune étape disponible"
+          description={t('curriculum.noStages.description')}
+          title={t('curriculum.noStages.title')}
         />
       ) : (
         <ol class="space-y-4">
@@ -1150,7 +1195,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
       )}
       {preference.error ? (
         <p aria-live="polite" class="text-sm text-rose-200" role="status">
-          L’étape ouverte n’a pas pu être mémorisée.
+          {t('curriculum.preferenceError')}
         </p>
       ) : null}
     </section>
@@ -1169,7 +1214,8 @@ export function StagePage({
     labelKey: 'navigation.back.program',
   });
   const query = useStageQuery(programSlug, stageSlug);
-  const state = getQueryState(query.error, query.isPending);
+  const { t } = useI18n();
+  const state = getQueryState(query.error, query.isPending, t);
 
   if (state) {
     return state;
@@ -1180,8 +1226,8 @@ export function StagePage({
   if (!stage) {
     return (
       <EmptyState
-        description="Cette étape est indisponible."
-        title="Étape introuvable"
+        description={t('curriculum.stageNotFound.description')}
+        title={t('curriculum.stageNotFound.title')}
       />
     );
   }
@@ -1190,7 +1236,7 @@ export function StagePage({
     <section aria-labelledby="stage-title" class="page-shell">
       <div>
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Étape
+          {t('curriculum.stage')}
         </p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <h1 id="stage-title" class="text-3xl font-bold tracking-tight">
@@ -1203,8 +1249,8 @@ export function StagePage({
       <StageValidationCard validation={stage.validation} />
       {stage.modules.length === 0 ? (
         <EmptyState
-          description="Les modules publiés apparaîtront ici."
-          title="Aucun module disponible"
+          description={t('curriculum.noModules.description')}
+          title={t('curriculum.noModules.title')}
         />
       ) : (
         <div class="grid gap-5 xl:grid-cols-2">
@@ -1219,7 +1265,7 @@ export function StagePage({
                 href={`/program/${programSlug}/module/${module.slug}`}
                 variant="secondary"
               >
-                Ouvrir le module
+                {t('curriculum.openModule')}
               </NavigationAction>
               {module.lessons.map((lesson) => (
                 <LessonSummaryCard
@@ -1259,7 +1305,8 @@ export function ModulePage({
       : null,
   );
   const restart = useModuleRestart(query.data?.module.id ?? '');
-  const state = getQueryState(query.error, query.isPending);
+  const { t } = useI18n();
+  const state = getQueryState(query.error, query.isPending, t);
 
   if (state) {
     return state;
@@ -1270,8 +1317,8 @@ export function ModulePage({
   if (!module) {
     return (
       <EmptyState
-        description="Ce module est indisponible."
-        title="Module introuvable"
+        description={t('curriculum.moduleNotFound.description')}
+        title={t('curriculum.moduleNotFound.title')}
       />
     );
   }
@@ -1280,7 +1327,7 @@ export function ModulePage({
     <section aria-labelledby="module-title" class="page-shell">
       <div>
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Module
+          {t('curriculum.module')}
         </p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <h1 id="module-title" class="text-3xl font-bold tracking-tight">
@@ -1293,8 +1340,8 @@ export function ModulePage({
       <ProgressPlaceholder />
       {module.lessons.length === 0 ? (
         <EmptyState
-          description="Les leçons publiées apparaîtront ici."
-          title="Aucune leçon disponible"
+          description={t('curriculum.noLessons.description')}
+          title={t('curriculum.noLessons.title')}
         />
       ) : (
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -1311,10 +1358,9 @@ export function ModulePage({
       {module.isPublished && module.stage.isPublished ? (
         <Card class="space-y-4 border border-red-950/80">
           <div>
-            <h2 class="font-semibold">Reprendre ce module depuis le début</h2>
+            <h2 class="font-semibold">{t('curriculum.restart.title')}</h2>
             <p class="mt-2 text-sm leading-6 text-slate-300">
-              Cette action crée une nouvelle reprise. L’historique reste
-              conservé.
+              {t('curriculum.restart.description')}
             </p>
           </div>
           {restart.preview ? (
@@ -1324,24 +1370,26 @@ export function ModulePage({
               aria-labelledby="restart-title"
             >
               <h3 class="font-semibold text-red-200" id="restart-title">
-                Confirmer la reprise du module
+                {t('curriculum.restart.confirmTitle')}
               </h3>
               <p class="text-sm leading-6 text-slate-300">
-                Seront remis à zéro : {restart.preview.reset.lessons} leçons,{' '}
-                {restart.preview.reset.tasks} tâches,{' '}
-                {restart.preview.reset.resources} ressources,{' '}
-                {restart.preview.reset.concepts} notions,{' '}
-                {restart.preview.reset.quizzes} quiz réussis et{' '}
-                {restart.preview.reset.exercises} exercices de la reprise
-                courante.
+                {t('curriculum.restart.resetSummary', {
+                  concepts: restart.preview.reset.concepts,
+                  exercises: restart.preview.reset.exercises,
+                  lessons: restart.preview.reset.lessons,
+                  quizzes: restart.preview.reset.quizzes,
+                  resources: restart.preview.reset.resources,
+                  tasks: restart.preview.reset.tasks,
+                })}
               </p>
               <p class="text-sm leading-6 text-slate-300">
-                Seront conservés : {restart.preview.preserved.notes} notes,{' '}
-                {restart.preview.preserved.quizAttempts} tentatives de quiz,{' '}
-                {restart.preview.preserved.conceptAttempts} tentatives de
-                mini-évaluation et{' '}
-                {restart.preview.preserved.exerciseSubmissions} soumissions
-                d’exercice.
+                {t('curriculum.restart.preservedSummary', {
+                  conceptAttempts: restart.preview.preserved.conceptAttempts,
+                  exerciseSubmissions:
+                    restart.preview.preserved.exerciseSubmissions,
+                  notes: restart.preview.preserved.notes,
+                  quizAttempts: restart.preview.preserved.quizAttempts,
+                })}
               </p>
               <div class="flex flex-wrap gap-3">
                 <Button
@@ -1356,10 +1404,10 @@ export function ModulePage({
                   }}
                   variant="danger"
                 >
-                  Oui, recommencer ce module
+                  {t('curriculum.restart.confirm')}
                 </Button>
                 <Button onClick={restart.cancel} variant="secondary">
-                  Annuler
+                  {t('programs.cancel')}
                 </Button>
               </div>
             </div>
@@ -1369,12 +1417,12 @@ export function ModulePage({
               onClick={() => void restart.loadPreview()}
               variant="danger"
             >
-              Recommencer ce module
+              {t('curriculum.restart.action')}
             </Button>
           )}
           {restart.error ? (
             <p class="text-sm text-red-300" role="alert">
-              La reprise du module n’a pas pu être effectuée.
+              {t('curriculum.restart.error')}
             </p>
           ) : null}
         </Card>

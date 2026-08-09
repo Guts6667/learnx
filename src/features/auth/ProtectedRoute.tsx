@@ -18,7 +18,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isOnline = useOnlineStatus();
   const sessionQuery = useSessionQuery();
   const [isReconnecting, setIsReconnecting] = useState(false);
-  const { setLocale } = useI18n();
+  const { setLocale, t } = useI18n();
 
   useEffect(() => {
     if (sessionQuery.data?.user) {
@@ -73,12 +73,10 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         role="status"
       >
         <h1 class="text-xl font-semibold" id="offline-private-title">
-          Mode hors ligne
+          {t('offline.privateTitle')}
         </h1>
         <p class="text-sm leading-6 text-slate-300">
-          Les contenus et actions privés nécessitent une connexion. Cette page
-          reste mémorisée : reconnectez-vous pour reprendre exactement où vous
-          en étiez.
+          {t('offline.privateDescription')}
         </p>
       </section>
     );
@@ -93,8 +91,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         <Spinner
           label={
             isReconnecting
-              ? 'Reconnexion et vérification de la session'
-              : 'Vérification de la session'
+              ? t('session.reconnecting')
+              : t('session.checking')
           }
         />
       </section>
@@ -108,16 +106,16 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         class="mx-auto max-w-md space-y-4 rounded-xl border border-slate-800 bg-slate-900 p-5 text-center"
       >
         <h1 class="text-xl font-semibold" id="session-retry-title">
-          Connexion impossible
+          {t('session.errorTitle')}
         </h1>
         <p class="text-sm leading-6 text-slate-300">
-          La session n’a pas pu être vérifiée. Votre destination est conservée.
+          {t('session.errorDescription')}
         </p>
         <Button
           isLoading={sessionQuery.isFetching}
           onClick={() => void sessionQuery.refetch()}
         >
-          Réessayer
+          {t('common.retry')}
         </Button>
       </section>
     );

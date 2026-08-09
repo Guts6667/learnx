@@ -60,8 +60,11 @@ export function I18nProvider({ children, locale = 'fr' }: I18nProviderProps) {
 
 export function useI18n(): I18nContextValue {
   const context = useContext(I18nContext);
-  if (!context) {
-    throw new Error('useI18n must be used within I18nProvider.');
-  }
-  return context;
+  return (
+    context ?? {
+      locale: 'fr',
+      setLocale: () => undefined,
+      t: (key, parameters) => translate('fr', key, parameters),
+    }
+  );
 }

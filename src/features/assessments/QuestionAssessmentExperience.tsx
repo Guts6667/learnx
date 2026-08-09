@@ -101,14 +101,14 @@ function formatAttemptDate(value: string, locale: UiLocale): string {
 }
 
 function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   return (
     <section aria-labelledby="assessment-history-title" class="space-y-3">
       <h2 class="text-xl font-semibold" id="assessment-history-title">
-        Tentatives précédentes
+        {t('assessment.previousAttempts')}
       </h2>
       {attempts.length === 0 ? (
-        <p class="text-sm text-slate-400">Aucune tentative enregistrée.</p>
+        <p class="text-sm text-slate-400">{t('assessment.noAttempts')}</p>
       ) : (
         <ol class="space-y-2">
           {attempts.map((attempt) => (
@@ -116,15 +116,24 @@ function AttemptHistory({ attempts }: { attempts: AssessmentAttempt[] }) {
               <Card class="flex items-center justify-between gap-4">
                 <div>
                   <p class="font-semibold">
-                    Score : {formatLocalizedNumber(Math.round(attempt.score), locale)} %
+                    {t('assessment.score', {
+                      score: formatLocalizedNumber(
+                        Math.round(attempt.score),
+                        locale,
+                      ),
+                    })}
                   </p>
                   <p class="mt-1 text-sm text-slate-400">
-                    Reprise {attempt.runSequence ?? 1} ·{' '}
-                    {formatAttemptDate(attempt.submittedAt, locale)}
+                    {t('assessment.run', {
+                      date: formatAttemptDate(attempt.submittedAt, locale),
+                      run: attempt.runSequence ?? 1,
+                    })}
                   </p>
                 </div>
                 <Badge tone={attempt.passed ? 'success' : 'danger'}>
-                  {attempt.passed ? 'Réussi' : 'À reprendre'}
+                  {t(
+                    attempt.passed ? 'assessment.passed' : 'assessment.retry',
+                  )}
                 </Badge>
               </Card>
             </li>
@@ -144,10 +153,11 @@ function QuestionOptions({
   onChange: (answer: DraftAnswer) => void;
   question: AssessmentQuestion;
 }) {
+  const { t } = useI18n();
   if (question.type === 'SHORT_ANSWER') {
     return (
       <Textarea
-        label="Votre réponse"
+        label={t('assessment.answer')}
         maxLength={500}
         onInput={(event) =>
           onChange({ ...answer, text: event.currentTarget.value })
@@ -204,6 +214,7 @@ function AssessmentResult({
   onRestart: () => void;
   result: AssessmentAttemptResponse;
 }) {
+  const { t } = useI18n();
   const questionsById = useMemo(
     () =>
       new Map(assessment.questions.map((question) => [question.id, question])),
@@ -218,7 +229,9 @@ function AssessmentResult({
         </Badge>
         <p class="text-4xl font-bold">{Math.round(result.attempt.score)} %</p>
         <p class="text-sm text-slate-300">
-          Seuil de réussite : {Math.round(assessment.passingScore)} %
+          {t('assessment.passingScore', {
+            count: Math.round(assessment.passingScore),
+          })}
         </p>
         <Button class="w-full" onClick={onRestart} size="lg">
           {labels.restart}
@@ -227,7 +240,7 @@ function AssessmentResult({
 
       <section aria-labelledby="assessment-corrections-title" class="space-y-3">
         <h2 class="text-xl font-semibold" id="assessment-corrections-title">
-          Correction
+          {t('assessment.correction')}
         </h2>
         {result.corrections.map((correction, index) => {
           const question = questionsById.get(correction.questionId);
@@ -243,10 +256,17 @@ function AssessmentResult({
             <Card class="space-y-2" key={correction.questionId}>
               <div class="flex items-start justify-between gap-3">
                 <h3 class="font-semibold">
-                  Question {index + 1} — {question?.prompt}
+                  {t('assessment.question', {
+                    count: index + 1,
+                    prompt: question?.prompt ?? '',
+                  })}
                 </h3>
                 <Badge tone={correction.correct ? 'success' : 'danger'}>
-                  {correction.correct ? 'Correct' : 'Incorrect'}
+                  {t(
+                    correction.correct
+                      ? 'assessment.correct'
+                      : 'assessment.incorrect',
+                  )}
                 </Badge>
               </div>
               <p class="text-sm leading-6 text-slate-300">
@@ -254,7 +274,7 @@ function AssessmentResult({
               </p>
               {!correction.correct && expected ? (
                 <p class="text-sm text-slate-200">
-                  Réponse attendue : {expected}
+                  {t('assessment.expectedAnswer', { answer: expected })}
                 </p>
               ) : null}
             </Card>
@@ -284,6 +304,7 @@ export function QuestionAssessmentExperience({
     answers: SubmittedAssessmentAnswer[],
   ) => Promise<AssessmentAttemptResponse>;
 }) {
+  const { t } = useI18n();
   const [answers, setAnswers] = useState<Record<string, DraftAnswer>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [message, setMessage] = useState<string>();
@@ -306,7 +327,7 @@ export function QuestionAssessmentExperience({
       <EmptyState
         action={
           <NavigationAction href={backHref} variant="secondary">
-            Ouvrir la leçon
+            {t('assessment.openLesson')}
           </NavigationAction>
         }
         description={labels.emptyDescription}
@@ -324,7 +345,7 @@ export function QuestionAssessmentExperience({
 
   async function continueAssessment() {
     if (!isAnswered(question, answers[question.id])) {
-      setMessage('Répondez à cette question avant de continuer.');
+      setMessage(t('assessment.answerRequired'));
       return;
     }
 
@@ -351,7 +372,7 @@ export function QuestionAssessmentExperience({
 
     return (
       <div
-        aria-label="Résultat de l’évaluation"
+        aria-label={t('assessment.result')}
         class="space-y-6 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
         ref={resultRef}
         tabindex={-1}
@@ -372,7 +393,10 @@ export function QuestionAssessmentExperience({
   return (
     <div class="space-y-6">
       <ProgressBar
-        label={`Question ${currentIndex + 1} sur ${assessment.questions.length}`}
+        label={t('assessment.questionPosition', {
+          current: currentIndex + 1,
+          total: assessment.questions.length,
+        })}
         max={assessment.questions.length}
         showValue={false}
         value={currentIndex + 1}
@@ -412,7 +436,7 @@ export function QuestionAssessmentExperience({
             </p>
           ) : null}
           {error ? (
-            <ErrorState description="La tentative n’a pas pu être enregistrée." />
+            <ErrorState description={t('assessment.saveError')} />
           ) : null}
           <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
             <Button
@@ -423,12 +447,12 @@ export function QuestionAssessmentExperience({
               }}
               variant="secondary"
             >
-              Question précédente
+              {t('assessment.previousQuestion')}
             </Button>
             <Button isLoading={isPending} size="lg" type="submit">
               {currentIndex === assessment.questions.length - 1
-                ? 'Envoyer mes réponses'
-                : 'Question suivante'}
+                ? t('assessment.submit')
+                : t('assessment.nextQuestion')}
             </Button>
           </div>
         </Card>

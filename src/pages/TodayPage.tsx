@@ -7,19 +7,20 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
+import type { MessageKey } from '@/i18n/catalogs';
 import type { RecommendationKind } from '@/lib/recommendation';
 import { useI18n, type UiLocale } from '@/i18n';
 import { formatLocalizedDate } from '@/shared/locale';
 
-const actionLabels: Record<RecommendationKind, string> = {
-  DUE_TODAY_REVIEW: 'Révision du jour',
-  INCOMPLETE_TASK: 'Tâche à poursuivre',
-  NEXT_LESSON: 'Prochaine leçon',
-  NEXT_MODULE: 'Prochain module',
-  NEXT_STAGE: 'Prochaine étape',
-  OVERDUE_REVIEW: 'Révision en retard',
-  REQUIRED_EXERCISE: 'Évaluation requise',
-  REQUIRED_QUIZ: 'Quiz requis',
+const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
+  DUE_TODAY_REVIEW: 'today.action.dueReview',
+  INCOMPLETE_TASK: 'today.action.incompleteTask',
+  NEXT_LESSON: 'today.action.nextLesson',
+  NEXT_MODULE: 'today.action.nextModule',
+  NEXT_STAGE: 'today.action.nextStage',
+  OVERDUE_REVIEW: 'today.action.overdueReview',
+  REQUIRED_EXERCISE: 'today.action.requiredExercise',
+  REQUIRED_QUIZ: 'today.action.requiredQuiz',
 };
 
 function formatLastActivity(value: string, locale: UiLocale): string {
@@ -31,30 +32,31 @@ function formatLastActivity(value: string, locale: UiLocale): string {
 
 export function TodayPage() {
   const query = useTodayQuery();
+  const { t } = useI18n();
 
   return (
     <section aria-labelledby="today-title" class="page-shell">
       <PageHeader
-        eyebrow="Parcours personnel"
+        eyebrow={t('today.eyebrow')}
         id="today-title"
-        title="Aujourd’hui"
+        title={t('today.title')}
       />
 
       {query.isPending ? (
-        <Skeleton label="Chargement d’aujourd’hui" />
+        <Skeleton label={t('today.loading')} />
       ) : query.error ? (
-        <ErrorState description="Les recommandations n’ont pas pu être chargées." />
+        <ErrorState description={t('today.error')} />
       ) : query.data?.program ? (
         <TodayContent data={query.data} program={query.data.program} />
       ) : (
         <EmptyState
           action={
             <NavigationAction href="/program" variant="secondary">
-              Voir les programmes
+              {t('today.viewPrograms')}
             </NavigationAction>
           }
-          description="Démarrez un programme publié pour recevoir une recommandation quotidienne."
-          title="Aucun programme actif"
+          description={t('today.emptyProgram.description')}
+          title={t('today.emptyProgram.title')}
         />
       )}
     </section>
@@ -68,7 +70,7 @@ function TodayContent({
   data: TodayResponse;
   program: NonNullable<TodayResponse['program']>;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   return (
     <div class="grid min-w-0 gap-5 lg:grid-cols-12">
       {data.action ? (
@@ -76,7 +78,7 @@ function TodayContent({
           <Badge
             tone={data.action.kind === 'OVERDUE_REVIEW' ? 'danger' : 'info'}
           >
-            {actionLabels[data.action.kind]}
+            {t(actionLabelKeys[data.action.kind])}
           </Badge>
           <div>
             <h2 class="text-xl font-semibold">{data.action.title}</h2>
@@ -89,40 +91,40 @@ function TodayContent({
             ) : null}
             {data.action.estimatedMinutes ? (
               <p class="mt-1 text-sm text-slate-400">
-                Durée indicative : {data.action.estimatedMinutes} min
+                {t('today.duration', { count: data.action.estimatedMinutes })}
               </p>
             ) : null}
           </div>
           <NavigationAction class="w-full" href={data.action.href} size="lg">
-            Continuer
+            {t('common.continue')}
           </NavigationAction>
         </Card>
       ) : (
         <EmptyState
           class="lg:col-span-7 lg:row-span-2"
-          description="Aucune action pédagogique n’est requise pour le moment."
-          title="Tout est à jour"
+          description={t('today.upToDate.description')}
+          title={t('today.upToDate.title')}
         />
       )}
 
       <Card class="space-y-4 lg:col-span-5">
         <div>
-          <p class="text-sm text-slate-400">Programme actif</p>
+          <p class="text-sm text-slate-400">{t('today.activeProgram')}</p>
           <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
         </div>
         <ProgressBar
-          label={`Progression — ${Math.round(program.percent)} %`}
+          label={t('today.progress', { count: Math.round(program.percent) })}
           value={program.percent}
         />
       </Card>
 
       <div class="grid gap-3 sm:grid-cols-2 lg:col-span-5">
         <Card>
-          <p class="text-sm text-slate-400">Révisions dues</p>
+          <p class="text-sm text-slate-400">{t('today.reviewsDue')}</p>
           <p class="mt-2 text-2xl font-bold">{data.reviewsDue}</p>
         </Card>
         <Card>
-          <p class="text-sm text-slate-400">Dernière activité</p>
+          <p class="text-sm text-slate-400">{t('today.lastActivity')}</p>
           {data.lastActivity ? (
             <NavigationAction
               class="mt-2 w-full"
@@ -133,7 +135,9 @@ function TodayContent({
               {formatLastActivity(data.lastActivity.at, locale)}
             </NavigationAction>
           ) : (
-            <p class="mt-2 text-sm text-slate-300">Aucune activité récente</p>
+            <p class="mt-2 text-sm text-slate-300">
+              {t('today.noRecentActivity')}
+            </p>
           )}
         </Card>
       </div>

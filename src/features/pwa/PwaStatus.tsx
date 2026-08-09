@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { useOnlineStatus } from '@/features/pwa/online-status';
+import { useI18n } from '@/i18n';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -123,6 +124,7 @@ export function PwaProvider({ children }: { children: ComponentChildren }) {
 }
 
 export function PwaStatus() {
+  const { t } = useI18n();
   const {
     isOnline,
     needRefresh,
@@ -137,7 +139,7 @@ export function PwaStatus() {
 
   return (
     <aside
-      aria-label="État de l’application"
+      aria-label={t('pwa.status')}
       aria-live="polite"
       class="mx-auto max-w-xl space-y-3 px-5 pt-4"
     >
@@ -146,15 +148,14 @@ export function PwaStatus() {
       {offlineReady ? (
         <Card class="flex items-center justify-between gap-3 border-emerald-900 py-3">
           <p class="text-sm text-emerald-100">
-            LearnX est installé. Les contenus privés restent disponibles
-            uniquement en ligne.
+            {t('pwa.ready')}
           </p>
           <Button
             onClick={() => setOfflineReady(false)}
             size="sm"
             variant="ghost"
           >
-            Fermer
+            {t('common.close')}
           </Button>
         </Card>
       ) : null}
@@ -162,18 +163,18 @@ export function PwaStatus() {
       {needRefresh ? (
         <Card class="space-y-3 border-cyan-900 py-3">
           <p class="text-sm text-cyan-100">
-            Une nouvelle version de LearnX est disponible.
+            {t('pwa.updateAvailable')}
           </p>
           <div class="flex gap-2">
             <Button onClick={() => void updateServiceWorker(true)} size="sm">
-              Mettre à jour
+              {t('pwa.update')}
             </Button>
             <Button
               onClick={() => setNeedRefresh(false)}
               size="sm"
               variant="ghost"
             >
-              Plus tard
+              {t('pwa.later')}
             </Button>
           </div>
         </Card>
@@ -183,6 +184,7 @@ export function PwaStatus() {
 }
 
 export function PwaInstallSettings() {
+  const { t } = useI18n();
   const {
     dismissIosHelp,
     installApplication,
@@ -198,34 +200,32 @@ export function PwaInstallSettings() {
     >
       <div>
         <h2 class="text-lg font-semibold" id="application-settings-title">
-          Application
+          {t('pwa.application')}
         </h2>
         <p class="mt-2 text-sm leading-6 text-slate-300">
-          Installez LearnX sur cet appareil pour l’ouvrir plus rapidement.
+          {t('pwa.description')}
         </p>
       </div>
       {standalone ? (
         <p class="text-sm text-emerald-200" role="status">
-          LearnX est déjà installé sur cet appareil.
+          {t('pwa.installed')}
         </p>
       ) : installPrompt ? (
         <Button onClick={() => void installApplication()} variant="secondary">
-          Installer LearnX
+          {t('pwa.install')}
         </Button>
       ) : showIosHelp ? (
         <div class="space-y-3">
           <p class="text-sm leading-6 text-slate-300">
-            Sur iPhone, touchez Partager puis « Sur l’écran d’accueil » pour
-            installer LearnX.
+            {t('pwa.iosHelp')}
           </p>
           <Button onClick={dismissIosHelp} variant="ghost">
-            J’ai compris
+            {t('pwa.understood')}
           </Button>
         </div>
       ) : (
         <p class="text-sm text-slate-400">
-          L’installation est proposée ici lorsqu’elle est disponible sur votre
-          navigateur.
+          {t('pwa.unavailable')}
         </p>
       )}
     </Card>

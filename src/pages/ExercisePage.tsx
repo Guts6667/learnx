@@ -11,6 +11,7 @@ import { ExerciseCard } from '@/features/exercises/ExerciseCard';
 import { useLessonQuery } from '@/features/curriculum/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 import { lessonHref } from '@/lib/curriculum-navigation';
+import { useI18n } from '@/i18n';
 
 export function ExercisePage({
   exerciseId,
@@ -21,6 +22,7 @@ export function ExercisePage({
   lessonSlug: string;
   programSlug: string;
 }) {
+  const { t } = useI18n();
   useBackNavigationTarget({
     href: lessonHref(programSlug, lessonSlug),
     labelKey: 'navigation.back.lesson',
@@ -36,16 +38,16 @@ export function ExercisePage({
   }, [exercise, lesson]);
 
   if (lessonQuery.isPending)
-    return <Spinner label="Chargement de l’exercice" />;
+    return <Spinner label={t('exercise.loading')} />;
   if (lessonQuery.error) {
-    return <ErrorState description="L’exercice n’a pas pu être chargé." />;
+    return <ErrorState description={t('exercise.loadError')} />;
   }
 
   if (!lesson || !exercise) {
     return (
       <EmptyState
-        description="Cet exercice n’appartient pas à la leçon accessible."
-        title="Exercice introuvable"
+        description={t('exercise.notFound.description')}
+        title={t('exercise.notFound.title')}
       />
     );
   }

@@ -30,7 +30,7 @@ function formatUpdatedAt(value: string, locale: UiLocale): string {
   });
 }
 
-function getExcerpt(markdown: string): string {
+function getExcerpt(markdown: string, emptyLabel: string): string {
   const normalized = markdown
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/^#{1,3}\s+/gm, '')
@@ -40,22 +40,22 @@ function getExcerpt(markdown: string): string {
     .replace(/\s+/g, ' ')
     .trim();
 
-  if (!normalized) return 'Note vide';
+  if (!normalized) return emptyLabel;
 
   return normalized.length > 140 ? `${normalized.slice(0, 137)}…` : normalized;
 }
 
 function NoteCard({ note }: { note: NoteDetail }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   return (
     <li>
       <Card class="space-y-3">
         <div class="flex items-start justify-between gap-3">
           <h2 class="font-semibold">{note.title}</h2>
-          {note.lesson ? <Badge tone="neutral">Liée à une leçon</Badge> : null}
+          {note.lesson ? <Badge tone="neutral">{t('notes.linkedLesson')}</Badge> : null}
         </div>
         <p class="text-sm leading-6 text-slate-300">
-          {getExcerpt(note.markdown)}
+          {getExcerpt(note.markdown, t('notes.emptyExcerpt'))}
         </p>
         {note.lesson ? (
           <p class="text-sm text-slate-400">
@@ -63,16 +63,16 @@ function NoteCard({ note }: { note: NoteDetail }) {
             {note.lesson.title}
           </p>
         ) : (
-          <p class="text-sm text-slate-400">Note personnelle</p>
+          <p class="text-sm text-slate-400">{t('notes.personal')}</p>
         )}
         <p class="text-xs text-slate-400">
-          Modifiée le {formatUpdatedAt(note.updatedAt, locale)}
+          {t('notes.updatedAt', { date: formatUpdatedAt(note.updatedAt, locale) })}
         </p>
         <NavigationAction
           href={`/notes/${encodeURIComponent(note.id)}`}
           variant="secondary"
         >
-          Modifier la note
+          {t('notes.edit')}
         </NavigationAction>
       </Card>
     </li>
@@ -84,6 +84,7 @@ export function NotesPage() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const query = useNotesQuery(debouncedSearch);
   const mutation = useNoteMutation();
+  const { t } = useI18n();
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setDebouncedSearch(search), 300);
@@ -103,17 +104,17 @@ export function NotesPage() {
   return (
     <section aria-labelledby="notes-title" class="page-shell">
       <PageHeader
-        description="Conservez vos idées libres ou rattachez-les à une leçon."
-        eyebrow="Espace personnel"
+        description={t('notes.description')}
+        eyebrow={t('notes.eyebrow')}
         id="notes-title"
-        title="Notes"
+        title={t('notes.title')}
       />
 
       <div class="grid items-end gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
         <TextField
-          label="Rechercher dans les notes"
+          label={t('notes.search')}
           onInput={(event) => setSearch(event.currentTarget.value)}
-          placeholder="Titre ou contenu"
+          placeholder={t('notes.searchPlaceholder')}
           type="search"
           value={search}
         />
@@ -123,25 +124,27 @@ export function NotesPage() {
           onClick={() => void createNote()}
           size="lg"
         >
-          Nouvelle note
+          {t('notes.new')}
         </Button>
       </div>
 
       {mutation.error ? (
-        <ErrorState description="La note n’a pas pu être créée." />
+        <ErrorState description={t('notes.createError')} />
       ) : null}
-      {query.isPending ? <Skeleton label="Chargement des notes" /> : null}
+      {query.isPending ? <Skeleton label={t('notes.loading')} /> : null}
       {query.error ? (
-        <ErrorState description="Les notes n’ont pas pu être chargées." />
+        <ErrorState description={t('notes.loadError')} />
       ) : null}
       {!query.isPending && !query.error && query.data?.notes.length === 0 ? (
         <EmptyState
           description={
             debouncedSearch
-              ? 'Essayez une autre recherche.'
-              : 'Créez votre première note personnelle ou depuis une leçon.'
+              ? t('notes.noResults.description')
+              : t('notes.empty.description')
           }
-          title={debouncedSearch ? 'Aucun résultat' : 'Aucune note'}
+          title={
+            debouncedSearch ? t('notes.noResults.title') : t('notes.empty.title')
+          }
         />
       ) : null}
       {query.data?.notes.length ? (
@@ -157,14 +160,6 @@ export function NotesPage() {
 
 type AutosaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
 
-function getAutosaveLabel(status: AutosaveStatus, hasTitle: boolean): string {
-  if (!hasTitle) return 'Ajoutez un titre pour enregistrer.';
-  if (status === 'dirty') return 'Modifications en attente…';
-  if (status === 'error') return 'Échec de l’enregistrement.';
-  if (status === 'saving') return 'Enregistrement…';
-  return 'Toutes les modifications sont enregistrées.';
-}
-
 function NoteEditor({ note }: { note: NoteDetail }) {
   const { error, isPending, remove, save } = useNoteMutation();
   const [title, setTitle] = useState(note.title);
@@ -174,6 +169,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const cancelDeleteRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
+  const { t } = useI18n();
 
   function markDirty() {
     revision.current += 1;
@@ -214,8 +210,8 @@ function NoteEditor({ note }: { note: NoteDetail }) {
   return (
     <div class="space-y-5">
       <TextField
-        error={!title.trim() ? 'Le titre est obligatoire.' : undefined}
-        label="Titre"
+        error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
+        label={t('notes.editor.title')}
         maxLength={200}
         onInput={(event) => {
           setTitle(event.currentTarget.value);
@@ -224,13 +220,9 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         value={title}
       />
       <div class="space-y-3">
-        <p class="text-sm leading-6 text-slate-300">
-          Markdown pris en charge : <code># Titre</code>,{' '}
-          <code>## Sous-titre</code>, listes, emphase et liens. Un titre
-          commence sur une nouvelle ligne avec un espace après les #.
-        </p>
+        <p class="text-sm leading-6 text-slate-300">{t('notes.editor.help')}</p>
         <div
-          aria-label="Mode d’édition de la note"
+          aria-label={t('notes.editor.mode')}
           class="inline-flex rounded-xl bg-slate-900 p-1"
           onKeyDown={(event) => {
             if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
@@ -259,7 +251,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             role="tab"
             type="button"
           >
-            Écrire
+            {t('notes.editor.write')}
           </button>
           <button
             aria-controls="note-preview-panel"
@@ -275,7 +267,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             role="tab"
             type="button"
           >
-            Aperçu
+            {t('notes.editor.preview')}
           </button>
         </div>
         {mode === 'write' ? (
@@ -285,8 +277,8 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             role="tabpanel"
           >
             <Textarea
-              description="Le texte est sauvegardé automatiquement."
-              label="Contenu de la note"
+              description={t('notes.editor.savedAutomatically')}
+              label={t('notes.editor.content')}
               maxLength={100_000}
               onInput={(event) => {
                 setMarkdown(event.currentTarget.value);
@@ -305,7 +297,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             {markdown.trim() ? (
               <SafeMarkdown content={markdown} />
             ) : (
-              <p class="text-sm text-slate-400">La note est vide.</p>
+              <p class="text-sm text-slate-400">{t('notes.editor.empty')}</p>
             )}
           </div>
         )}
@@ -316,11 +308,13 @@ function NoteEditor({ note }: { note: NoteDetail }) {
           status === 'error' ? 'text-sm text-red-300' : 'text-sm text-slate-400'
         }
       >
-        {getAutosaveLabel(status, Boolean(title.trim()))}
+        {!title.trim()
+          ? t('notes.autosave.missingTitle')
+          : t(`notes.autosave.${status}`)}
       </p>
       {note.lesson ? (
         <Card class="space-y-2">
-          <Badge tone="neutral">Liée à une leçon</Badge>
+          <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
           <p class="font-semibold">{note.lesson.title}</p>
           {note.program ? (
             <p class="text-sm text-slate-400">{note.program.title}</p>
@@ -330,12 +324,12 @@ function NoteEditor({ note }: { note: NoteDetail }) {
               href={`/program/${encodeURIComponent(note.program.slug)}/lesson/${encodeURIComponent(note.lesson.slug)}`}
               variant="secondary"
             >
-              Ouvrir la leçon
+              {t('notes.editor.openLesson')}
             </NavigationAction>
           ) : null}
         </Card>
       ) : (
-        <Badge tone="neutral">Note personnelle</Badge>
+        <Badge tone="neutral">{t('notes.personal')}</Badge>
       )}
       <Card class="space-y-4 border border-red-950/80">
         {isConfirmingDelete ? (
@@ -347,17 +341,17 @@ function NoteEditor({ note }: { note: NoteDetail }) {
           >
             <div>
               <h2 class="font-semibold text-red-200" id="delete-note-title">
-                Supprimer définitivement cette note ?
+                {t('notes.editor.deleteTitle')}
               </h2>
               <p
                 class="mt-2 text-sm leading-6 text-slate-300"
                 id="delete-note-description"
               >
-                « {note.title} » sera supprimée. Cette action est irréversible.
+                {t('notes.editor.deleteDescription')}
               </p>
             </div>
             {error ? (
-              <ErrorState description="La note n’a pas pu être supprimée." />
+              <ErrorState description={t('notes.editor.deleteError')} />
             ) : null}
             <div class="flex flex-col gap-3 sm:flex-row">
               <Button
@@ -367,7 +361,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
                 onClick={() => setIsConfirmingDelete(false)}
                 variant="secondary"
               >
-                Annuler
+                {t('notes.editor.cancel')}
               </Button>
               <Button
                 class="w-full sm:w-auto"
@@ -375,16 +369,16 @@ function NoteEditor({ note }: { note: NoteDetail }) {
                 onClick={() => void deleteNote()}
                 variant="danger"
               >
-                Confirmer la suppression
+                {t('notes.editor.confirmDelete')}
               </Button>
             </div>
           </div>
         ) : (
           <div class="space-y-3">
             <div>
-              <h2 class="font-semibold">Supprimer la note</h2>
+              <h2 class="font-semibold">{t('notes.editor.delete')}</h2>
               <p class="mt-2 text-sm leading-6 text-slate-300">
-                La suppression est définitive et nécessite une confirmation.
+                {t('notes.editor.deleteDescription')}
               </p>
             </div>
             <Button
@@ -392,7 +386,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
               onClick={() => setIsConfirmingDelete(true)}
               variant="danger"
             >
-              Supprimer la note
+              {t('notes.editor.delete')}
             </Button>
           </div>
         )}
@@ -407,20 +401,21 @@ export function NotePage({ noteId }: { noteId: string }) {
     labelKey: 'navigation.back.notes',
   });
   const query = useNoteQuery(noteId);
+  const { t } = useI18n();
 
-  if (query.isPending) return <Spinner label="Chargement de la note" />;
+  if (query.isPending) return <Spinner label={t('notes.editor.load')} />;
   if (query.error || !query.data?.note) {
-    return <ErrorState description="La note n’a pas pu être chargée." />;
+    return <ErrorState description={t('notes.editor.loadError')} />;
   }
 
   return (
     <article aria-labelledby="note-title" class="space-y-6">
       <header class="space-y-3">
         <NavigationAction href="/notes" variant="ghost">
-          Retour aux notes
+          {t('notes.editor.back')}
         </NavigationAction>
         <h1 class="text-3xl font-bold tracking-tight" id="note-title">
-          Modifier la note
+          {t('notes.edit')}
         </h1>
       </header>
       <NoteEditor key={query.data.note.id} note={query.data.note} />

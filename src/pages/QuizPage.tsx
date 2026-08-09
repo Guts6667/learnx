@@ -19,6 +19,7 @@ import {
 } from '@/features/quizzes/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
+import { useI18n } from '@/i18n';
 
 export function QuizPage({
   lessonSlug,
@@ -29,6 +30,7 @@ export function QuizPage({
   programSlug: string;
   quizId?: string;
 }) {
+  const { t } = useI18n();
   const lessonQuery = useLessonQuery(lessonSlug);
   const lesson = lessonQuery.data?.lesson;
   const selectedQuiz = quizId
@@ -53,11 +55,11 @@ export function QuizPage({
   }, [lesson, selectedQuiz]);
 
   if (lessonQuery.isPending) {
-    return <Spinner label="Chargement du quiz" />;
+    return <Spinner label={t('quiz.loading')} />;
   }
 
   if (lessonQuery.error) {
-    return <ErrorState description="Le quiz n’a pas pu être chargé." />;
+    return <ErrorState description={t('quiz.loadError')} />;
   }
 
   if (!lesson?.isPublished) {
@@ -65,11 +67,11 @@ export function QuizPage({
       <EmptyState
         action={
           <NavigationAction href={fallbackLessonHref} variant="secondary">
-            Ouvrir la leçon
+            {t('assessment.openLesson')}
           </NavigationAction>
         }
-        description="Les quiz d’une leçon brouillon sont disponibles uniquement après publication."
-        title="Quiz non publié"
+        description={t('quiz.unpublished.description')}
+        title={t('quiz.unpublished.title')}
       />
     );
   }
@@ -79,21 +81,21 @@ export function QuizPage({
       <EmptyState
         action={
           <NavigationAction href={fallbackLessonHref} variant="secondary">
-            Ouvrir la leçon
+            {t('assessment.openLesson')}
           </NavigationAction>
         }
-        description="Aucun quiz correspondant n’est disponible pour cette leçon."
-        title="Quiz introuvable"
+        description={t('quiz.notFound.description')}
+        title={t('quiz.notFound.title')}
       />
     );
   }
 
   if (quizQuery.isPending || attemptsQuery.isPending) {
-    return <Spinner label="Chargement du quiz" />;
+    return <Spinner label={t('quiz.loading')} />;
   }
 
   if (quizQuery.error || attemptsQuery.error || !quizQuery.data?.quiz) {
-    return <ErrorState description="Le quiz n’a pas pu être chargé." />;
+    return <ErrorState description={t('quiz.loadError')} />;
   }
 
   const quiz = quizQuery.data.quiz;
@@ -103,18 +105,22 @@ export function QuizPage({
   return (
     <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={quiz.title} lesson={lesson} />
-      <section class="space-y-3" aria-label="Informations du quiz">
+      <section class="space-y-3" aria-label={t('quiz.info')}>
         <div class="flex flex-wrap items-center gap-3">
           <Badge tone={quiz.isRequired ? 'warning' : 'neutral'}>
-            {quiz.isRequired ? 'Obligatoire' : 'Optionnel'}
+            {quiz.isRequired ? t('common.required') : t('quiz.optional')}
           </Badge>
         </div>
         {quiz.description ? (
           <p class="leading-7 text-slate-300">{quiz.description}</p>
         ) : null}
         <p class="text-sm text-slate-400">
-          {quiz.questionCount} questions · seuil de réussite :{' '}
-          {Math.round(quiz.passingScore)} %
+          {t('quiz.scoreSummary', {
+            questions: t('assessment.questionCount', {
+              count: quiz.questionCount,
+            }),
+            score: Math.round(quiz.passingScore),
+          })}
         </p>
       </section>
 
@@ -126,11 +132,11 @@ export function QuizPage({
         isPending={mutation.isPending}
         key={quiz.id}
         labels={{
-          emptyDescription: 'Ce quiz ne contient aucune question.',
-          emptyTitle: 'Quiz indisponible',
-          failure: 'Quiz à reprendre',
-          restart: 'Recommencer le quiz',
-          success: 'Quiz réussi',
+          emptyDescription: t('quiz.empty.description'),
+          emptyTitle: t('quiz.empty.title'),
+          failure: t('quiz.failure'),
+          restart: t('quiz.restart'),
+          success: t('quiz.success'),
         }}
         onSubmit={mutation.submit}
       />

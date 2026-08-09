@@ -6,6 +6,7 @@ import {
   type ActionVariant,
 } from '@/components/ui/actionStyles';
 import { Spinner } from '@/components/ui/Spinner';
+import { useI18n } from '@/i18n';
 
 interface ButtonProps extends Omit<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -32,6 +33,7 @@ export function Button({
   ...buttonProps
 }: ButtonProps) {
   const isDisabled = disabled || isLoading;
+  const { t } = useI18n();
 
   return (
     <button
@@ -46,7 +48,7 @@ export function Button({
       ref={elementRef}
       type={type ?? 'button'}
     >
-      {isLoading ? <Spinner label="Chargement" size="sm" /> : null}
+      {isLoading ? <Spinner label={t('common.loading')} size="sm" /> : null}
       {children}
     </button>
   );

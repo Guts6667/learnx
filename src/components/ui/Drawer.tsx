@@ -3,6 +3,7 @@ import { createPortal } from 'preact/compat';
 import { useEffect, useId, useRef } from 'preact/hooks';
 
 import { Button } from '@/components/ui/Button';
+import { useI18n } from '@/i18n';
 
 interface DrawerProps {
   children: ComponentChildren;
@@ -28,6 +29,7 @@ export function Drawer({
   returnFocusElement,
   title,
 }: DrawerProps) {
+  const { t } = useI18n();
   const titleId = `drawer-title-${useId()}`;
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -144,13 +146,13 @@ export function Drawer({
             {title}
           </h2>
           <Button
-            aria-label="Fermer le panneau"
+            aria-label={t('common.closePanel')}
             data-drawer-close
             onClick={dismiss}
             size="sm"
             variant="ghost"
           >
-            Fermer
+            {t('common.close')}
           </Button>
         </div>
         {children}

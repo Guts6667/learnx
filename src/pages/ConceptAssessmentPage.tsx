@@ -19,6 +19,7 @@ import {
 import { useLessonQuery } from '@/features/curriculum/queries';
 import { activityKey, rememberActivity } from '@/lib/lesson-activity-sequence';
 import { lessonHref as buildLessonHref } from '@/lib/curriculum-navigation';
+import { useI18n } from '@/i18n';
 
 export function ConceptAssessmentPage({
   assessmentId,
@@ -29,6 +30,7 @@ export function ConceptAssessmentPage({
   lessonSlug: string;
   programSlug: string;
 }) {
+  const { t } = useI18n();
   const lessonQuery = useLessonQuery(lessonSlug);
   const lesson = lessonQuery.data?.lesson;
   const selectedAssessment = assessmentId
@@ -66,12 +68,12 @@ export function ConceptAssessmentPage({
   }, [lesson, selectedAssessment]);
 
   if (lessonQuery.isPending) {
-    return <Spinner label="Chargement de la mini-évaluation" />;
+    return <Spinner label={t('conceptAssessment.loading')} />;
   }
 
   if (lessonQuery.error) {
     return (
-      <ErrorState description="La mini-évaluation n’a pas pu être chargée." />
+      <ErrorState description={t('conceptAssessment.loadError')} />
     );
   }
 
@@ -80,17 +82,17 @@ export function ConceptAssessmentPage({
       <EmptyState
         action={
           <NavigationAction href={fallbackLessonHref} variant="secondary">
-            Ouvrir la leçon
+            {t('assessment.openLesson')}
           </NavigationAction>
         }
-        description="Aucune mini-évaluation correspondante n’est disponible pour cette leçon."
-        title="Mini-évaluation introuvable"
+        description={t('conceptAssessment.notFound.description')}
+        title={t('conceptAssessment.notFound.title')}
       />
     );
   }
 
   if (assessmentQuery.isPending || attemptsQuery.isPending) {
-    return <Spinner label="Chargement de la mini-évaluation" />;
+    return <Spinner label={t('conceptAssessment.loading')} />;
   }
 
   if (
@@ -99,7 +101,7 @@ export function ConceptAssessmentPage({
     !assessmentQuery.data?.assessment
   ) {
     return (
-      <ErrorState description="La mini-évaluation n’a pas pu être chargée." />
+      <ErrorState description={t('conceptAssessment.loadError')} />
     );
   }
 
@@ -107,32 +109,40 @@ export function ConceptAssessmentPage({
   const passingScore = assessment.concept.masteryThreshold;
   const key = activityKey('CONCEPT_ASSESSMENT', assessment.id);
   const backHref = `${lessonHref(lesson)}?activity=${encodeURIComponent(key)}`;
-  const title = assessment.title ?? `Évaluation — ${assessment.concept.title}`;
+  const title =
+    assessment.title ??
+    t('conceptAssessment.defaultTitle', { title: assessment.concept.title });
 
   return (
     <article class="mx-auto w-full max-w-5xl space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
       <section
         class="space-y-3"
-        aria-label="Informations de la mini-évaluation"
+        aria-label={t('conceptAssessment.info')}
       >
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Notion · {assessment.concept.title}
+          {t('conceptAssessment.concept', { title: assessment.concept.title })}
         </p>
         <div class="flex flex-wrap items-center gap-3">
           <Badge tone={assessment.isRequired ? 'warning' : 'neutral'}>
-            {assessment.isRequired ? 'Obligatoire' : 'Optionnelle'}
+            {assessment.isRequired
+              ? t('common.required')
+              : t('conceptAssessment.optional')}
           </Badge>
-          {preview ? <Badge tone="warning">Brouillon</Badge> : null}
+          {preview ? <Badge tone="warning">{t('common.draft')}</Badge> : null}
         </div>
         {preview ? (
           <p class="text-sm text-amber-200">
-            Prévisualisation propriétaire : cette évaluation n’est pas publique.
+            {t('conceptAssessment.preview')}
           </p>
         ) : null}
         <p class="text-sm text-slate-400">
-          {assessment.questionCount} questions · seuil de maîtrise :{' '}
-          {Math.round(passingScore)} %
+          {t('conceptAssessment.scoreSummary', {
+            questions: t('assessment.questionCount', {
+              count: assessment.questionCount,
+            }),
+            score: Math.round(passingScore),
+          })}
         </p>
       </section>
 
@@ -144,12 +154,11 @@ export function ConceptAssessmentPage({
         isPending={mutation.isPending}
         key={assessment.id}
         labels={{
-          emptyDescription:
-            'Cette mini-évaluation ne contient aucune question.',
-          emptyTitle: 'Mini-évaluation indisponible',
-          failure: 'Notion à retravailler',
-          restart: 'Recommencer la mini-évaluation',
-          success: 'Notion maîtrisée',
+          emptyDescription: t('conceptAssessment.empty.description'),
+          emptyTitle: t('conceptAssessment.empty.title'),
+          failure: t('conceptAssessment.failure'),
+          restart: t('conceptAssessment.restart'),
+          success: t('conceptAssessment.success'),
         }}
         onSubmit={mutation.submit}
       />

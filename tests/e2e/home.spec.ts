@@ -554,7 +554,9 @@ async function openCriticalLesson(page: Page) {
   await expect(
     page.getByRole('heading', { level: 1, name: 'Programmes' }),
   ).toBeVisible();
-  await page.getByRole('link', { name: 'Commencer' }).click();
+  await page
+    .getByRole('link', { name: /Commencer|Ouvrir le programme/ })
+    .click();
   await expect(
     page.getByRole('heading', { level: 1, name: program.title }),
   ).toBeVisible();

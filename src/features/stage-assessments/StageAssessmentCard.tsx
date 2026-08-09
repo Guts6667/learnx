@@ -14,22 +14,24 @@ import {
   useStageAssessmentMutation,
   useStageAssessmentQuery,
 } from '@/features/stage-assessments/queries';
+import { useI18n } from '@/i18n';
+import type { MessageKey } from '@/i18n/catalogs';
 
-const typeLabels: Record<string, string> = {
-  CASE_STUDY: 'Étude de cas',
-  CUMULATIVE_EXAM: 'Examen cumulatif',
-  ORAL: 'Oral',
-  PRACTICAL_EXERCISE: 'Exercice pratique',
-  PROJECT: 'Projet',
-  SIMULATION: 'Simulation',
-  WRITTEN_ASSIGNMENT: 'Devoir écrit',
+const typeLabelKeys: Record<string, MessageKey> = {
+  CASE_STUDY: 'stageAssessment.type.caseStudy',
+  CUMULATIVE_EXAM: 'stageAssessment.type.cumulativeExam',
+  ORAL: 'stageAssessment.type.oral',
+  PRACTICAL_EXERCISE: 'stageAssessment.type.practicalExercise',
+  PROJECT: 'stageAssessment.type.project',
+  SIMULATION: 'stageAssessment.type.simulation',
+  WRITTEN_ASSIGNMENT: 'stageAssessment.type.writtenAssignment',
 };
 
-const statusLabels: Record<StageAssessmentStatus, string> = {
-  DRAFT: 'Brouillon',
-  NEEDS_REVISION: 'À réviser',
-  SUBMITTED: 'Soumise',
-  VALIDATED: 'Validée',
+const statusLabelKeys: Record<StageAssessmentStatus, MessageKey> = {
+  DRAFT: 'stageAssessment.status.draft',
+  NEEDS_REVISION: 'stageAssessment.status.needsRevision',
+  SUBMITTED: 'stageAssessment.status.submitted',
+  VALIDATED: 'stageAssessment.status.validated',
 };
 
 const statusTones = {
@@ -97,6 +99,7 @@ function getRubricCriteria(value: unknown): RubricCriterion[] {
 }
 
 function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
+  const { t } = useI18n();
   const mutation = useStageAssessmentMutation(assessment);
   const submission = assessment.submission;
   const [attachmentUrl, setAttachmentUrl] = useState(
@@ -119,7 +122,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
         isLoading={mutation.isPending}
         onClick={() => mutation.createDraft()}
       >
-        Commencer l’évaluation
+        {t('stageAssessment.start')}
       </Button>
     );
   }
@@ -127,11 +130,11 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
   return (
     <div class="space-y-4">
       <Badge tone={statusTones[submission.status]}>
-        {statusLabels[submission.status]}
+        {t(statusLabelKeys[submission.status])}
       </Badge>
       {submission.reviewFeedback ? (
         <p class="rounded-xl border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-100">
-          Retour : {submission.reviewFeedback}
+          {t('stageAssessment.feedback', { feedback: submission.reviewFeedback })}
         </p>
       ) : null}
       {editable ? (
@@ -139,13 +142,13 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
           <Textarea
             class="[&_textarea]:min-h-40"
             id="assessment-content"
-            label="Votre réponse"
+            label={t('stageAssessment.answer')}
             onInput={(event) => setContentMarkdown(event.currentTarget.value)}
             value={contentMarkdown}
           />
           <TextField
             id="assessment-attachment"
-            label="Lien vers une pièce jointe"
+            label={t('stageAssessment.attachment')}
             onInput={(event) => setAttachmentUrl(event.currentTarget.value)}
             type="url"
             value={attachmentUrl}
@@ -161,7 +164,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
               }
               variant="secondary"
             >
-              Enregistrer le brouillon
+              {t('stageAssessment.saveDraft')}
             </Button>
             <Button
               isLoading={mutation.isPending}
@@ -173,20 +176,25 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
                 await mutation.submit(submission.id);
               }}
             >
-              Soumettre
+              {t('stageAssessment.submit')}
             </Button>
           </div>
         </>
       ) : (
         <p class="text-sm text-slate-300">
           {submission.status === 'VALIDATED'
-            ? `Résultat : ${submission.score ?? 'validé'}${submission.score === null ? '' : ' %'}`
-            : 'Votre travail a été envoyé et attend une validation.'}
+            ? t('stageAssessment.result', {
+                result:
+                  submission.score === null
+                    ? t(statusLabelKeys.VALIDATED)
+                    : `${submission.score} %`,
+              })
+            : t('stageAssessment.awaitingReview')}
         </p>
       )}
       {mutation.error ? (
         <p role="alert" class="text-sm text-red-300">
-          L’action n’a pas pu être enregistrée.
+          {t('stageAssessment.saveError')}
         </p>
       ) : null}
     </div>
@@ -201,11 +209,12 @@ export function StageAssessmentCard({
   stageId: string;
 }) {
   const query = useStageAssessmentQuery(stageId);
+  const { t } = useI18n();
 
   if (query.isPending)
-    return <Spinner label="Chargement de l’évaluation finale" />;
+    return <Spinner label={t('stageAssessment.loading')} />;
   if (query.error || !query.data) {
-    return <ErrorState description="L’évaluation finale est indisponible." />;
+    return <ErrorState description={t('stageAssessment.unavailable')} />;
   }
 
   const assessment = query.data.assessment;
@@ -217,17 +226,23 @@ export function StageAssessmentCard({
   return (
     <Card class="space-y-6">
       <div class="flex flex-wrap items-center gap-2">
-        <h2 class="text-xl font-semibold">Évaluation finale</h2>
-        {isStagePublished ? null : <Badge tone="warning">Brouillon</Badge>}
+        <h2 class="text-xl font-semibold">{t('stageAssessment.final')}</h2>
+        {isStagePublished ? null : (
+          <Badge tone="warning">{t('common.draft')}</Badge>
+        )}
       </div>
       <div>
         <h3 class="font-semibold">{assessment.title}</h3>
         <p class="mt-2 text-sm text-slate-300">
-          Type : {typeLabels[assessment.type] ?? assessment.type}
+          {t('stageAssessment.type', {
+            type: typeLabelKeys[assessment.type]
+              ? t(typeLabelKeys[assessment.type])
+              : assessment.type,
+          })}
         </p>
         {assessment.passingScore === null ? null : (
           <p class="mt-1 text-sm text-slate-300">
-            Seuil de réussite : {assessment.passingScore} %
+            {t('assessment.passingScore', { count: assessment.passingScore })}
           </p>
         )}
       </div>
@@ -237,7 +252,7 @@ export function StageAssessmentCard({
             class="text-lg font-semibold"
             id={`assessment-objective-${assessment.id}`}
           >
-            Objectif
+            {t('stageAssessment.objective')}
           </h3>
           <SafeMarkdown class="mt-3" content={assessment.description} />
         </section>
@@ -266,7 +281,7 @@ export function StageAssessmentCard({
             class="text-lg font-semibold"
             id={`assessment-rubric-${assessment.id}`}
           >
-            Grille d’évaluation
+            {t('stageAssessment.rubric')}
           </h3>
           <ol class="mt-4 grid gap-3 md:grid-cols-2">
             {rubric.map((criterion, index) => (
@@ -298,8 +313,7 @@ export function StageAssessmentCard({
         <AssessmentForm assessment={assessment} />
       ) : (
         <p class="text-sm text-amber-200">
-          Prévisualisation en lecture seule. La soumission sera disponible après
-          publication de l’étape.
+          {t('stageAssessment.preview')}
         </p>
       )}
     </Card>

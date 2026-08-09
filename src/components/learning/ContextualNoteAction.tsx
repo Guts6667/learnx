@@ -8,15 +8,9 @@ import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 import { useNoteMutation, type NoteDetail } from '@/features/notes/queries';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';
+import { useI18n } from '@/i18n';
 
 type AutosaveStatus = 'dirty' | 'error' | 'saved' | 'saving';
-
-function autosaveLabel(status: AutosaveStatus): string {
-  if (status === 'dirty') return 'Modifications en attente…';
-  if (status === 'error') return 'Échec de l’enregistrement.';
-  if (status === 'saving') return 'Enregistrement…';
-  return 'Note enregistrée.';
-}
 
 export function ContextualNoteAction({
   activity,
@@ -26,12 +20,15 @@ export function ContextualNoteAction({
   lesson: { id: string; title: string };
 }) {
   const mutation = useNoteMutation();
+  const { t } = useI18n();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const revision = useRef(0);
   const [creationKey] = useState(() => crypto.randomUUID());
   const [isOpen, setIsOpen] = useState(false);
   const [note, setNote] = useState<NoteDetail | null>(null);
-  const [title, setTitle] = useState(`Notes — ${lesson.title}`);
+  const [title, setTitle] = useState(
+    t('notes.context.defaultTitle', { title: lesson.title }),
+  );
   const [markdown, setMarkdown] = useState('');
   const [status, setStatus] = useState<AutosaveStatus>('saved');
 
@@ -93,39 +90,41 @@ export function ContextualNoteAction({
         variant="secondary"
       >
         <span aria-hidden="true">✎</span>
-        Prendre une note
+        {t('notes.context.take')}
       </Button>
       <Drawer
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
         returnFocusElement={triggerRef.current}
-        title="Prendre une note"
+        title={t('notes.context.take')}
       >
         <div class="space-y-5">
           <p class="text-sm leading-6 text-slate-300">
-            La note est automatiquement liée à la leçon « {lesson.title} »
-            {activity.sequenceItemId
-              ? ` et à l’activité « ${activity.title} ».`
-              : '.'}
+            {t(
+              activity.sequenceItemId
+                ? 'notes.context.linkedActivity'
+                : 'notes.context.linked',
+              { activity: activity.title, lesson: lesson.title },
+            )}
           </p>
           {!note && mutation.isPending ? (
             <p aria-live="polite" class="text-sm text-slate-300">
-              Création de la note…
+              {t('notes.context.creating')}
             </p>
           ) : null}
           {!note && mutation.error ? (
             <div class="space-y-3">
-              <ErrorState description="La note n’a pas pu être créée." />
+              <ErrorState description={t('notes.createError')} />
               <Button onClick={() => void ensureNote()} variant="secondary">
-                Réessayer
+                {t('common.retry')}
               </Button>
             </div>
           ) : null}
           {note ? (
             <>
               <TextField
-                error={!title.trim() ? 'Le titre est obligatoire.' : undefined}
-                label="Titre"
+                error={!title.trim() ? t('notes.editor.titleRequired') : undefined}
+                label={t('notes.editor.title')}
                 maxLength={200}
                 onInput={(event) => {
                   setTitle(event.currentTarget.value);
@@ -134,8 +133,8 @@ export function ContextualNoteAction({
                 value={title}
               />
               <Textarea
-                description="Le texte est sauvegardé automatiquement."
-                label="Contenu de la note"
+                description={t('notes.editor.savedAutomatically')}
+                label={t('notes.editor.content')}
                 maxLength={100_000}
                 onInput={(event) => {
                   setMarkdown(event.currentTarget.value);
@@ -152,14 +151,20 @@ export function ContextualNoteAction({
                 }
                 role="status"
               >
-                {autosaveLabel(status)}
+                {status === 'saved'
+                  ? t('notes.context.created')
+                  : status === 'dirty'
+                    ? t('notes.autosave.dirty')
+                    : status === 'saving'
+                      ? t('notes.autosave.saving')
+                      : t('notes.autosave.error')}
               </p>
               <Button
                 class="w-full sm:w-auto"
                 onClick={() => void route(`/notes/${encodeURIComponent(note.id)}`)}
                 variant="secondary"
               >
-                Voir la note
+                {t('notes.context.view')}
               </Button>
             </>
           ) : null}

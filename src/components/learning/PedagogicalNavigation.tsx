@@ -4,6 +4,7 @@ import { Drawer } from '@/components/ui/Drawer';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';
 import { activityKey } from '@/lib/lesson-activity-sequence';
+import { useI18n } from '@/i18n';
 
 interface PedagogicalNavigationProps {
   activities: LessonActivity[];
@@ -18,18 +19,11 @@ interface PedagogicalNavigationProps {
   onContinue?: () => void;
 }
 
-const statusLabels: Record<LessonActivity['status'], string> = {
-  AVAILABLE: 'À faire',
-  COMPLETED: 'Terminée',
-  IN_PROGRESS: 'En cours',
-  PREVIEW: 'Brouillon',
-};
-
 export function PedagogicalNavigation({
   activities,
   continueActivity,
   continueHref,
-  continueLabel = 'Continuer',
+  continueLabel,
   currentKey,
   isContinueDisabled = false,
   isContinuePending = false,
@@ -37,6 +31,8 @@ export function PedagogicalNavigation({
   moduleTitle,
   onContinue,
 }: PedagogicalNavigationProps) {
+  const { t } = useI18n();
+  const resolvedContinueLabel = continueLabel ?? t('common.continue');
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const summaryTriggerRef = useRef<HTMLButtonElement>(null);
   const currentIndex = Math.max(
@@ -55,7 +51,7 @@ export function PedagogicalNavigation({
   return (
     <>
       <nav
-        aria-label="Navigation pédagogique"
+        aria-label={t('learning.navigation')}
         class="min-w-0 rounded-2xl border border-cyan-900/80 bg-slate-950 p-3"
       >
         <div class="flex min-w-0 items-start justify-between gap-3">
@@ -67,7 +63,10 @@ export function PedagogicalNavigation({
               {lessonTitle}
             </p>
             <p class="mt-1 text-xs text-slate-400">
-              Activité {currentIndex + 1} sur {activities.length}
+              {t('learning.activityPosition', {
+                current: currentIndex + 1,
+                total: activities.length,
+              })}
             </p>
           </div>
           <button
@@ -78,7 +77,7 @@ export function PedagogicalNavigation({
             ref={summaryTriggerRef}
             type="button"
           >
-            Sommaire
+            {t('learning.summaryAction')}
           </button>
         </div>
         <div class="mt-3 grid min-w-0 grid-cols-2 items-end gap-3 border-t border-slate-800 pt-3">
@@ -89,14 +88,14 @@ export function PedagogicalNavigation({
               size="sm"
               variant="secondary"
             >
-              Précédent
+              {t('common.previous')}
             </NavigationAction>
           ) : (
             <span
               aria-disabled="true"
               class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
             >
-              Précédent
+              {t('common.previous')}
             </span>
           )}
           {onContinue ? (
@@ -107,7 +106,9 @@ export function PedagogicalNavigation({
               onClick={onContinue}
               type="button"
             >
-              {isContinuePending ? 'Chargement…' : continueLabel}
+              {isContinuePending
+                ? `${t('common.loading')}…`
+                : resolvedContinueLabel}
             </button>
           ) : nextHref ? (
             <NavigationAction
@@ -115,14 +116,14 @@ export function PedagogicalNavigation({
               href={nextHref}
               size="sm"
             >
-              {continueLabel}
+              {resolvedContinueLabel}
             </NavigationAction>
           ) : (
             <span
               aria-disabled="true"
               class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
             >
-              {continueLabel}
+              {resolvedContinueLabel}
             </span>
           )}
         </div>
@@ -131,10 +132,13 @@ export function PedagogicalNavigation({
         isOpen={isSummaryOpen}
         onDismiss={() => setIsSummaryOpen(false)}
         returnFocusElement={summaryTriggerRef.current}
-        title="Sommaire de la leçon"
+        title={t('learning.summary')}
       >
         <p class="mb-4 text-sm text-slate-300">
-          Activité {currentIndex + 1} sur {activities.length}
+          {t('learning.activityPosition', {
+            current: currentIndex + 1,
+            total: activities.length,
+          })}
         </p>
         <ol class="grid min-w-0 grid-cols-1 gap-2 overflow-x-hidden">
           {activities.map((activity, index) => {
@@ -165,8 +169,16 @@ export function PedagogicalNavigation({
                     {activity.title}
                   </span>
                   <span class="col-start-2 mt-1 min-w-0 text-xs text-slate-400">
-                    {isCurrent ? 'Activité actuelle · ' : ''}
-                    {statusLabels[activity.status]}
+                    {isCurrent ? `${t('learning.currentActivity')} · ` : ''}
+                    {t(
+                      activity.status === 'COMPLETED'
+                        ? 'learning.status.completed'
+                        : activity.status === 'IN_PROGRESS'
+                          ? 'learning.status.current'
+                          : activity.status === 'PREVIEW'
+                            ? 'common.draft'
+                            : 'learning.status.todo',
+                    )}
                   </span>
                 </a>
               </li>

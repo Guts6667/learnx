@@ -43,8 +43,8 @@ describe('i18n foundation', () => {
     expect(document.querySelector('img')).not.toBeInTheDocument();
   });
 
-  it('keeps the catalog large enough to cover the first migrated domain', () => {
-    expect(Object.keys(frenchMessages).length).toBeGreaterThan(40);
+  it('keeps the catalog large enough to cover all authenticated surfaces', () => {
+    expect(Object.keys(frenchMessages).length).toBeGreaterThan(500);
   });
 
   it('synchronizes document and PWA metadata with the active locale', async () => {

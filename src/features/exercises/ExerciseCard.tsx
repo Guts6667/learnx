@@ -24,7 +24,7 @@ function formatSubmissionDate(value: string, locale: UiLocale): string {
 }
 
 function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const mutation = useExerciseMutation(exercise.id);
   const submission = exercise.submission;
   const [contentMarkdown, setContentMarkdown] = useState(
@@ -37,7 +37,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         isLoading={mutation.isPending}
         onClick={() => void mutation.createDraft()}
       >
-        Commencer l’exercice
+        {t('exercise.start')}
       </Button>
     );
   }
@@ -45,12 +45,13 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
   if (submission.status === 'SUBMITTED') {
     return (
       <div class="space-y-3">
-        <Badge tone="success">Soumis</Badge>
+        <Badge tone="success">{t('exercise.submitted')}</Badge>
         <p class="text-sm text-slate-300">
-          Envoyé le{' '}
-          {submission.submittedAt
-            ? formatSubmissionDate(submission.submittedAt, locale)
-            : 'date inconnue'}
+          {t('exercise.submittedAt', {
+            date: submission.submittedAt
+              ? formatSubmissionDate(submission.submittedAt, locale)
+              : t('exercise.unknownDate'),
+          })}
         </p>
         <pre class="whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-3 font-sans text-sm leading-6 text-slate-300">
           {submission.contentMarkdown}
@@ -72,10 +73,10 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
 
   return (
     <div class="space-y-4">
-      <Badge tone="neutral">Brouillon</Badge>
+      <Badge tone="neutral">{t('common.draft')}</Badge>
       <Textarea
-        description="Vous pouvez utiliser la syntaxe Markdown. Le brouillon est conservé comme texte brut."
-        label="Votre réponse en Markdown"
+        description={t('exercise.markdownHelp')}
+        label={t('exercise.answerMarkdown')}
         maxLength={100_000}
         onInput={(event) => setContentMarkdown(event.currentTarget.value)}
         value={contentMarkdown}
@@ -86,19 +87,19 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
           onClick={() => void saveDraft()}
           variant="secondary"
         >
-          Enregistrer le brouillon
+          {t('exercise.saveDraft')}
         </Button>
         <Button
           disabled={!contentMarkdown.trim()}
           isLoading={mutation.isPending}
           onClick={() => void submitExercise()}
         >
-          Soumettre l’exercice
+          {t('exercise.submit')}
         </Button>
       </div>
       {mutation.error ? (
         <p class="text-sm text-red-300" role="alert">
-          L’exercice n’a pas pu être enregistré.
+          {t('exercise.saveError')}
         </p>
       ) : null}
     </div>
@@ -107,13 +108,14 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
 
 function PublishedExerciseCard({ exerciseId }: { exerciseId: string }) {
   const query = useExerciseQuery(exerciseId);
+  const { t } = useI18n();
 
   if (query.isPending) {
-    return <Spinner label="Chargement de l’exercice" size="sm" />;
+    return <Spinner label={t('exercise.loading')} size="sm" />;
   }
 
   if (query.error || !query.data?.exercise) {
-    return <ErrorState description="L’exercice est indisponible." />;
+    return <ErrorState description={t('exercise.unavailable')} />;
   }
 
   return <ExerciseEditor exercise={query.data.exercise} />;
@@ -126,12 +128,13 @@ export function ExerciseCard({
   exercise: LessonExerciseSummary;
   isLessonPublished: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <Card class="space-y-4">
       <div class="flex items-start justify-between gap-3">
         <h3 class="font-semibold">{exercise.title}</h3>
         <Badge tone={exercise.isRequired ? 'warning' : 'neutral'}>
-          {exercise.isRequired ? 'Obligatoire' : 'Optionnel'}
+          {exercise.isRequired ? t('common.required') : t('exercise.optional')}
         </Badge>
       </div>
       <SafeMarkdown content={exercise.instructions} />
@@ -139,10 +142,9 @@ export function ExerciseCard({
         <PublishedExerciseCard exerciseId={exercise.id} />
       ) : (
         <div class="space-y-2">
-          <Badge tone="warning">Brouillon</Badge>
+          <Badge tone="warning">{t('common.draft')}</Badge>
           <p class="text-sm text-amber-200">
-            Prévisualisation en lecture seule. La rédaction sera disponible
-            après publication de la leçon.
+            {t('exercise.preview')}
           </p>
         </div>
       )}

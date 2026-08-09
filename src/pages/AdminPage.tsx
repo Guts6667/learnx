@@ -38,6 +38,9 @@ import {
   adminStageHref,
 } from '@/lib/admin-navigation';
 import { ApiClientError } from '@/lib/api-client';
+import { useI18n } from '@/i18n';
+import type { MessageKey } from '@/i18n/catalogs';
+import { formatLocalizedDate } from '@/shared/locale';
 
 interface AdminPageProps {
   lessonId?: string;
@@ -53,9 +56,10 @@ interface BreadcrumbItem {
 }
 
 function StatusBadge({ isPublished }: { isPublished: boolean }) {
+  const { t } = useI18n();
   return (
     <Badge tone={isPublished ? 'success' : 'warning'}>
-      {isPublished ? 'Publié' : 'Brouillon'}
+      {t(isPublished ? 'common.published' : 'common.draft')}
     </Badge>
   );
 }
@@ -65,7 +69,8 @@ function ProgramStatusBadge({
 }: {
   status: AdminProgramSummary['status'];
 }) {
-  if (status === 'ARCHIVED') return <Badge>Archivé</Badge>;
+  const { t } = useI18n();
+  if (status === 'ARCHIVED') return <Badge>{t('admin.archived')}</Badge>;
 
   return <StatusBadge isPublished={status === 'ACTIVE'} />;
 }
@@ -75,16 +80,20 @@ function VisibilityBadge({
 }: {
   visibility: AdminProgramSummary['visibility'];
 }) {
+  const { t } = useI18n();
   return (
     <Badge tone={visibility === 'PUBLIC' ? 'success' : 'warning'}>
-      {visibility === 'PUBLIC' ? 'Visible par les membres' : 'Privé'}
+      {t(
+        visibility === 'PUBLIC' ? 'admin.visibleMembers' : 'programs.private',
+      )}
     </Badge>
   );
 }
 
 function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
+  const { t } = useI18n();
   return (
-    <nav aria-label="Fil d’Ariane">
+    <nav aria-label={t('admin.breadcrumb')}>
       <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
         {items.map((item, index) => (
           <li class="flex items-center gap-2" key={`${item.label}-${index}`}>
@@ -108,34 +117,45 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   );
 }
 
-function getMutationError(error: unknown): string {
+type Translate = (key: MessageKey, parameters?: Record<string, string | number>) => string;
+
+function getMutationError(error: unknown, t: Translate): string {
   if (
     error instanceof ApiClientError &&
     error.code === 'PUBLICATION_PLAN_STALE'
   ) {
-    return 'Cet aperçu n’est plus à jour. Relancez la prévisualisation avant de confirmer.';
+    return t('admin.mutation.stale');
   }
   if (error instanceof ApiClientError && error.code === 'PUBLICATION_BLOCKED') {
-    return 'La publication reste bloquée par une précondition pédagogique.';
+    return t('admin.mutation.blocked');
   }
   if (error instanceof ApiClientError && error.code === 'LESSON_NOT_READY') {
-    return 'Publication impossible : vérifiez les évaluations des notions obligatoires.';
+    return t('admin.mutation.lessonNotReady');
   }
 
-  return 'La modification n’a pas pu être enregistrée.';
+  return t('admin.mutation.error');
 }
 
-function changeLabel(change: PublicationPlan['changes'][number]): string {
+function changeLabel(
+  change: PublicationPlan['changes'][number],
+  t: Translate,
+): string {
   const verb =
-    change.to === true || change.to === 'ACTIVE' ? 'Publier' : 'Dépublier';
-  const type = {
-    LESSON: 'la leçon',
-    MODULE: 'le module',
-    PROGRAM: 'le programme',
-    STAGE: 'l’étape',
-  }[change.type];
+    change.to === true || change.to === 'ACTIVE'
+      ? t('admin.publish')
+      : t('admin.unpublish');
+  const typeKey = ({
+    LESSON: 'admin.change.lesson',
+    MODULE: 'admin.change.module',
+    PROGRAM: 'admin.change.program',
+    STAGE: 'admin.change.stage',
+  } as const)[change.type];
 
-  return `${verb} ${type} « ${change.title} »`;
+  return t('admin.change.label', {
+    action: verb,
+    title: change.title,
+    type: t(typeKey),
+  });
 }
 
 function PublicationAction({
@@ -149,13 +169,15 @@ function PublicationAction({
   targetTitle: string;
   targetType: PublicationTargetType;
 }) {
+  const { t } = useI18n();
   const mutation = useAdminCurriculumMutation();
   const [mode, setMode] = useState<PublicationMode>('PARENT_ONLY');
   const [plan, setPlan] = useState<PublicationPlan>();
   const [success, setSuccess] = useState<string>();
   const action = isPublished ? 'UNPUBLISH' : 'PUBLISH';
   const effectiveMode = action === 'PUBLISH' ? 'FULL' : mode;
-  const actionLabel = isPublished ? 'Dépublier' : 'Publier';
+  const actionLabel = t(isPublished ? 'admin.unpublish' : 'admin.publish');
+  const actionLabelLower = actionLabel.toLocaleLowerCase();
 
   async function preview() {
     setSuccess(undefined);
@@ -185,7 +207,7 @@ function PublicationAction({
         targetType: plan.target.type,
       });
       setPlan(undefined);
-      setSuccess(`${actionLabel} : modification enregistrée.`);
+      setSuccess(t('admin.publication.success', { action: actionLabel }));
     } catch {
       // L’erreur normalisée est annoncée dans la zone de confirmation.
     }
@@ -194,12 +216,12 @@ function PublicationAction({
   return (
     <section aria-labelledby={`publication-${targetId}`} class="space-y-3">
       <h3 class="font-semibold" id={`publication-${targetId}`}>
-        Publication de « {targetTitle} »
+        {t('admin.publication.title', { title: targetTitle })}
       </h3>
       {isPublished ? (
         <fieldset class="space-y-2 text-sm">
           <legend class="font-medium text-slate-200">
-            Portée de la dépublication
+            {t('admin.publication.scope')}
           </legend>
           <label class="flex min-h-11 items-center gap-2">
             <input
@@ -211,7 +233,7 @@ function PublicationAction({
               }}
               type="radio"
             />
-            Masquer seulement ce niveau
+            {t('admin.publication.parentOnly')}
           </label>
           <label class="flex min-h-11 items-center gap-2">
             <input
@@ -223,7 +245,7 @@ function PublicationAction({
               }}
               type="radio"
             />
-            Dépublier toute la branche
+            {t('admin.publication.full')}
           </label>
         </fieldset>
       ) : null}
@@ -233,7 +255,7 @@ function PublicationAction({
         size="sm"
         variant={isPublished ? 'danger' : 'primary'}
       >
-        Prévisualiser — {actionLabel.toLowerCase()}
+        {t('admin.publication.preview', { action: actionLabelLower })}
       </Button>
       {success ? (
         <p class="text-sm text-emerald-200" role="status">
@@ -242,17 +264,19 @@ function PublicationAction({
       ) : null}
       {plan ? (
         <Card aria-live="polite" class="space-y-4 bg-slate-900" role="region">
-          <h4 class="font-semibold">Aperçu avant confirmation</h4>
+          <h4 class="font-semibold">{t('admin.publication.previewTitle')}</h4>
           <p class="text-sm text-slate-300">
             {plan.changes.length === 0
-              ? 'L’état demandé est déjà appliqué.'
-              : `${plan.changes.length} élément${plan.changes.length > 1 ? 's' : ''} concerné${plan.changes.length > 1 ? 's' : ''}.`}
+              ? t('admin.publication.noChanges')
+              : t('admin.publication.changeCount', {
+                  count: plan.changes.length,
+                })}
           </p>
           {plan.changes.length > 0 ? (
             <ul class="list-disc space-y-1 pl-5 text-sm text-slate-300">
               {plan.changes.map((change) => (
                 <li key={`${change.type}-${change.id}`}>
-                  {changeLabel(change)}
+                  {changeLabel(change, t)}
                 </li>
               ))}
             </ul>
@@ -264,7 +288,9 @@ function PublicationAction({
           ))}
           {plan.blockers.length > 0 ? (
             <div class="space-y-2" role="alert">
-              <p class="font-semibold text-red-200">Publication impossible</p>
+              <p class="font-semibold text-red-200">
+                {t('admin.publication.impossible')}
+              </p>
               <ul class="list-disc space-y-1 pl-5 text-sm text-red-200">
                 {plan.blockers.map((blocker) => (
                   <li key={`${blocker.code}-${blocker.id}`}>
@@ -275,7 +301,7 @@ function PublicationAction({
             </div>
           ) : null}
           {mutation.error ? (
-            <ErrorState description={getMutationError(mutation.error)} />
+            <ErrorState description={getMutationError(mutation.error, t)} />
           ) : null}
           <div class="flex flex-wrap gap-3">
             <Button
@@ -284,21 +310,22 @@ function PublicationAction({
               onClick={() => void apply()}
               variant={isPublished ? 'danger' : 'primary'}
             >
-              Confirmer — {actionLabel.toLowerCase()}
+              {t('admin.publication.confirm', { action: actionLabelLower })}
             </Button>
             <Button onClick={() => setPlan(undefined)} variant="ghost">
-              Annuler
+              {t('common.cancel')}
             </Button>
           </div>
         </Card>
       ) : mutation.error ? (
-        <ErrorState description={getMutationError(mutation.error)} />
+        <ErrorState description={getMutationError(mutation.error, t)} />
       ) : null}
     </section>
   );
 }
 
 function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
+  const { t } = useI18n();
   const mutation = useAdminCurriculumMutation();
   const nextVisibility = program.visibility === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC';
   const [isConfirming, setIsConfirming] = useState(false);
@@ -322,45 +349,43 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
     <section aria-labelledby={`visibility-${program.id}`} class="space-y-3">
       <div class="flex flex-wrap items-center gap-2">
         <h3 class="font-semibold" id={`visibility-${program.id}`}>
-          Visibilité du programme
+          {t('admin.visibility.title')}
         </h3>
         <VisibilityBadge visibility={program.visibility} />
       </div>
       <p class="text-sm leading-6 text-slate-300">
-        Un programme public et publié est consultable par les membres LearnX
-        authentifiés. Les brouillons restent privés et la validation
-        scientifique est indépendante.
+        {t('admin.visibility.description')}
       </p>
       {isConfirming ? (
         <Card class="space-y-3 bg-slate-900" role="alertdialog">
           <p class="text-sm text-slate-200">
             {nextVisibility === 'PUBLIC'
-              ? 'Rendre ce programme visible par tous les membres une fois publié ?'
-              : 'Rendre ce programme accessible uniquement à son propriétaire ?'}
+              ? t('admin.visibility.makePublicQuestion')
+              : t('admin.visibility.makePrivateQuestion')}
           </p>
           <div class="flex flex-wrap gap-3">
             <Button isLoading={mutation.isPending} onClick={() => void apply()}>
-              Confirmer
+              {t('common.confirm')}
             </Button>
             <Button onClick={() => setIsConfirming(false)} variant="ghost">
-              Annuler
+              {t('common.cancel')}
             </Button>
           </div>
         </Card>
       ) : (
         <Button onClick={() => setIsConfirming(true)} variant="secondary">
           {nextVisibility === 'PUBLIC'
-            ? 'Rendre visible par les membres'
-            : 'Rendre privé'}
+            ? t('admin.visibility.makePublic')
+            : t('admin.visibility.makePrivate')}
         </Button>
       )}
       {success ? (
         <p class="text-sm text-emerald-200" role="status">
-          Visibilité mise à jour.
+          {t('admin.visibility.saved')}
         </p>
       ) : null}
       {mutation.error ? (
-        <ErrorState description={getMutationError(mutation.error)} />
+        <ErrorState description={getMutationError(mutation.error, t)} />
       ) : null}
     </section>
   );
@@ -373,6 +398,7 @@ function isValidPosition(value: string): boolean {
 }
 
 function ModuleEditor({ module }: { module: AdminModuleSummary }) {
+  const { t } = useI18n();
   const mutation = useAdminCurriculumMutation();
   const [title, setTitle] = useState(module.title);
   const [description, setDescription] = useState(module.description);
@@ -397,22 +423,22 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
     <div class="space-y-6">
       <section class="space-y-4" aria-labelledby="module-details-title">
         <h3 class="font-semibold" id="module-details-title">
-          Détails du module
+          {t('admin.module.details')}
         </h3>
         <TextField
-          label="Titre du module"
+          label={t('admin.module.title')}
           maxLength={200}
           onInput={(event) => setTitle(event.currentTarget.value)}
           value={title}
         />
         <Textarea
-          label="Résumé du module"
+          label={t('admin.module.summary')}
           maxLength={5_000}
           onInput={(event) => setDescription(event.currentTarget.value)}
           value={description}
         />
         <TextField
-          label="Ordre du module"
+          label={t('admin.module.position')}
           min={0}
           max={10_000}
           onInput={(event) => setPosition(event.currentTarget.value)}
@@ -427,15 +453,15 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
           onClick={() => void save()}
           variant="secondary"
         >
-          Enregistrer le module
+          {t('admin.module.save')}
         </Button>
         {saved ? (
           <p class="text-sm text-emerald-200" role="status">
-            Module enregistré.
+            {t('admin.module.saved')}
           </p>
         ) : null}
         {mutation.error ? (
-          <ErrorState description={getMutationError(mutation.error)} />
+          <ErrorState description={getMutationError(mutation.error, t)} />
         ) : null}
       </section>
       <PublicationAction
@@ -449,6 +475,7 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
 }
 
 function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
+  const { t } = useI18n();
   const mutation = useAdminCurriculumMutation();
   const [title, setTitle] = useState(lesson.title);
   const [summary, setSummary] = useState(lesson.summary);
@@ -464,7 +491,7 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
         summary: summary.trim(),
         title: title.trim(),
       });
-      setMessage('Leçon enregistrée.');
+      setMessage(t('admin.lesson.saved'));
     } catch {
       // Le message accessible ci-dessous présente l’erreur.
     }
@@ -477,7 +504,13 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
         isPublished: !lesson.isPublished,
       });
       setConfirmPublication(false);
-      setMessage(lesson.isPublished ? 'Leçon dépubliée.' : 'Leçon publiée.');
+      setMessage(
+        t(
+          lesson.isPublished
+            ? 'admin.lesson.unpublished'
+            : 'admin.lesson.published',
+        ),
+      );
     } catch {
       // Le message accessible ci-dessous présente l’erreur.
     }
@@ -487,22 +520,22 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
     <div class="space-y-6">
       <section class="space-y-4" aria-labelledby="lesson-details-title">
         <h3 class="font-semibold" id="lesson-details-title">
-          Détails de la leçon
+          {t('admin.lesson.details')}
         </h3>
         <TextField
-          label="Titre de la leçon"
+          label={t('admin.lesson.title')}
           maxLength={200}
           onInput={(event) => setTitle(event.currentTarget.value)}
           value={title}
         />
         <Textarea
-          label="Résumé de la leçon"
+          label={t('admin.lesson.summary')}
           maxLength={5_000}
           onInput={(event) => setSummary(event.currentTarget.value)}
           value={summary}
         />
         <TextField
-          label="Ordre de la leçon"
+          label={t('admin.lesson.position')}
           min={0}
           max={10_000}
           onInput={(event) => setPosition(event.currentTarget.value)}
@@ -517,26 +550,33 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
           onClick={() => void save()}
           variant="secondary"
         >
-          Enregistrer la leçon
+          {t('admin.lesson.save')}
         </Button>
       </section>
       <section class="space-y-3" aria-labelledby="lesson-publication-title">
         <h3 class="font-semibold" id="lesson-publication-title">
-          Publication
+          {t('admin.lesson.publication')}
         </h3>
         {!confirmPublication ? (
           <Button
             onClick={() => setConfirmPublication(true)}
             variant={lesson.isPublished ? 'danger' : 'primary'}
           >
-            Prévisualiser — {lesson.isPublished ? 'dépublier' : 'publier'} la
-            leçon
+            {t('admin.lesson.previewAction', {
+              action: t(
+                lesson.isPublished ? 'admin.unpublish' : 'admin.publish',
+              ).toLocaleLowerCase(),
+            })}
           </Button>
         ) : (
           <Card class="space-y-3 bg-slate-900" role="region">
             <p class="text-sm text-slate-200">
-              La leçon « {lesson.title} » sera{' '}
-              {lesson.isPublished ? 'dépubliée' : 'publiée'}.
+              {t('admin.lesson.confirmAction', {
+                action: t(
+                  lesson.isPublished ? 'admin.unpublish' : 'admin.publish',
+                ).toLocaleLowerCase(),
+                title: lesson.title,
+              })}
             </p>
             <div class="flex flex-wrap gap-3">
               <Button
@@ -544,13 +584,13 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
                 onClick={() => void togglePublication()}
                 variant={lesson.isPublished ? 'danger' : 'primary'}
               >
-                Confirmer
+                {t('common.confirm')}
               </Button>
               <Button
                 onClick={() => setConfirmPublication(false)}
                 variant="ghost"
               >
-                Annuler
+                {t('common.cancel')}
               </Button>
             </div>
           </Card>
@@ -562,7 +602,7 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
         </p>
       ) : null}
       {mutation.error ? (
-        <ErrorState description={getMutationError(mutation.error)} />
+        <ErrorState description={getMutationError(mutation.error, t)} />
       ) : null}
     </div>
   );
@@ -575,6 +615,7 @@ function ManagementDrawer({
   children: ComponentChildren;
   title: string;
 }) {
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -587,7 +628,7 @@ function ManagementDrawer({
         elementRef={triggerRef}
         variant="secondary"
       >
-        Gérer ce contenu
+        {t('admin.manageContent')}
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -612,20 +653,21 @@ function EntityCard({
   status: ComponentChildren;
   title: string;
 }) {
+  const { t } = useI18n();
   return (
     <li>
       <Card class="space-y-3">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
-              Position {position}
+              {t('admin.position', { position })}
             </p>
             <h3 class="mt-1 text-lg font-semibold">{title}</h3>
           </div>
           {status}
         </div>
         <NavigationAction href={href} variant="secondary">
-          Ouvrir
+          {t('admin.open')}
         </NavigationAction>
       </Card>
     </li>
@@ -637,6 +679,7 @@ function childList(
   children: ComponentChildren,
   isEmpty: boolean,
 ) {
+  const { t } = useI18n();
   return (
     <section aria-labelledby="admin-children-title" class="space-y-4">
       <h2 class="text-xl font-semibold" id="admin-children-title">
@@ -644,8 +687,8 @@ function childList(
       </h2>
       {isEmpty ? (
         <EmptyState
-          description="Ajoutez d’abord un contenu enfant à ce niveau."
-          title="Aucun contenu"
+          description={t('admin.emptyChild.description')}
+          title={t('admin.emptyChild.title')}
         />
       ) : (
         <ul class="space-y-4">{children}</ul>
@@ -655,33 +698,34 @@ function childList(
 }
 
 function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
+  const { t } = useI18n();
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Administration' }]} />
-      <h1 class="text-3xl font-bold tracking-tight">Administration</h1>
+      <Breadcrumbs items={[{ label: t('admin.title') }]} />
+      <h1 class="text-3xl font-bold tracking-tight">{t('admin.title')}</h1>
       <Card class="space-y-3">
-        <h2 class="text-xl font-semibold">Demandes d’accès</h2>
+        <h2 class="text-xl font-semibold">{t('admin.requests.title')}</h2>
         <p class="leading-7 text-slate-300">
-          Examinez les demandes dont l’adresse e-mail a été vérifiée.
+          {t('admin.accessDescription')}
         </p>
         <NavigationAction href="/admin/access-requests" variant="secondary">
-          Gérer les demandes
+          {t('admin.requests')}
         </NavigationAction>
       </Card>
       <Card class="space-y-3">
-        <h2 class="text-xl font-semibold">Comptes utilisateurs</h2>
+        <h2 class="text-xl font-semibold">{t('admin.accounts.title')}</h2>
         <p class="leading-7 text-slate-300">
-          Suspendez un accès, révoquez ses sessions ou réactivez un compte.
+          {t('admin.accountsDescription')}
         </p>
         <NavigationAction href="/admin/accounts" variant="secondary">
-          Gérer les comptes
+          {t('admin.accounts')}
         </NavigationAction>
       </Card>
-      <h2 class="text-xl font-semibold">Programmes</h2>
+      <h2 class="text-xl font-semibold">{t('admin.programs')}</h2>
       {programs.length === 0 ? (
         <EmptyState
-          description="Créez d’abord un programme pour administrer son contenu."
-          title="Aucun contenu administrable"
+          description={t('admin.empty.description')}
+          title={t('admin.empty.title')}
         />
       ) : (
         <ul class="space-y-4">
@@ -701,13 +745,14 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
 }
 
 function ProgramView({ program }: { program: AdminProgram }) {
+  const { locale, t } = useI18n();
   const isPublished = program.status === 'ACTIVE';
 
   return (
     <>
       <Breadcrumbs
         items={[
-          { href: '/admin', label: 'Administration' },
+          { href: '/admin', label: t('admin.title') },
           { label: program.title },
         ]}
       />
@@ -717,12 +762,17 @@ function ProgramView({ program }: { program: AdminProgram }) {
       </div>
       <p class="text-sm text-slate-300">
         {program.publishedVersion
-          ? `Version publiée : v${program.publishedVersion.version} — ${new Date(
-              program.publishedVersion.publishedAt,
-            ).toLocaleDateString('fr-FR')}`
-          : 'Aucune version publiée enregistrée.'}
+          ? t('admin.publishedVersion', {
+              date: formatLocalizedDate(
+                program.publishedVersion.publishedAt,
+                locale,
+                { dateStyle: 'medium' },
+              ),
+              version: program.publishedVersion.version,
+            })
+          : t('admin.noPublishedVersion')}
       </p>
-      <ManagementDrawer title={`Gérer ${program.title}`}>
+      <ManagementDrawer title={t('admin.manage', { title: program.title })}>
         <ProgramVisibilityAction program={program} />
         <PublicationAction
           isPublished={isPublished}
@@ -732,7 +782,7 @@ function ProgramView({ program }: { program: AdminProgram }) {
         />
       </ManagementDrawer>
       {childList(
-        'Étapes',
+        t('admin.stages'),
         program.stages.map((stage) => (
           <EntityCard
             href={adminStageHref(program.id, stage.id)}
@@ -749,11 +799,12 @@ function ProgramView({ program }: { program: AdminProgram }) {
 }
 
 function StageView({ stage }: { stage: AdminStage }) {
+  const { t } = useI18n();
   return (
     <>
       <Breadcrumbs
         items={[
-          { href: '/admin', label: 'Administration' },
+          { href: '/admin', label: t('admin.title') },
           {
             href: adminProgramHref(stage.program.id),
             label: stage.program.title,
@@ -765,7 +816,7 @@ function StageView({ stage }: { stage: AdminStage }) {
         <h1 class="text-3xl font-bold tracking-tight">{stage.title}</h1>
         <StatusBadge isPublished={stage.isPublished} />
       </div>
-      <ManagementDrawer title={`Gérer ${stage.title}`}>
+      <ManagementDrawer title={t('admin.manage', { title: stage.title })}>
         <PublicationAction
           isPublished={stage.isPublished}
           targetId={stage.id}
@@ -774,7 +825,7 @@ function StageView({ stage }: { stage: AdminStage }) {
         />
       </ManagementDrawer>
       {childList(
-        'Modules',
+        t('admin.modules'),
         stage.modules.map((module) => (
           <EntityCard
             href={adminModuleHref(stage.program.id, stage.id, module.id)}
@@ -791,11 +842,12 @@ function StageView({ stage }: { stage: AdminStage }) {
 }
 
 function ModuleView({ module }: { module: AdminModule }) {
+  const { t } = useI18n();
   return (
     <>
       <Breadcrumbs
         items={[
-          { href: '/admin', label: 'Administration' },
+          { href: '/admin', label: t('admin.title') },
           {
             href: adminProgramHref(module.stage.program.id),
             label: module.stage.program.title,
@@ -811,11 +863,11 @@ function ModuleView({ module }: { module: AdminModule }) {
         <h1 class="text-3xl font-bold tracking-tight">{module.title}</h1>
         <StatusBadge isPublished={module.isPublished} />
       </div>
-      <ManagementDrawer title={`Gérer ${module.title}`}>
+      <ManagementDrawer title={t('admin.manage', { title: module.title })}>
         <ModuleEditor module={module} />
       </ManagementDrawer>
       {childList(
-        'Leçons',
+        t('admin.lessons'),
         module.lessons.map((lesson) => (
           <EntityCard
             href={adminLessonHref(
@@ -838,12 +890,13 @@ function ModuleView({ module }: { module: AdminModule }) {
 
 function LessonView({ lesson }: { lesson: AdminLesson }) {
   const { module } = lesson;
+  const { t } = useI18n();
 
   return (
     <>
       <Breadcrumbs
         items={[
-          { href: '/admin', label: 'Administration' },
+          { href: '/admin', label: t('admin.title') },
           {
             href: adminProgramHref(module.stage.program.id),
             label: module.stage.program.title,
@@ -869,9 +922,11 @@ function LessonView({ lesson }: { lesson: AdminLesson }) {
       </div>
       <Card class="space-y-3">
         <p class="leading-7 text-slate-300">{lesson.summary}</p>
-        <p class="text-sm text-slate-400">Position {lesson.position}</p>
+        <p class="text-sm text-slate-400">
+          {t('admin.position', { position: lesson.position })}
+        </p>
       </Card>
-      <ManagementDrawer title={`Gérer ${lesson.title}`}>
+      <ManagementDrawer title={t('admin.manage', { title: lesson.title })}>
         <LessonEditor lesson={lesson} />
       </ManagementDrawer>
     </>
@@ -933,23 +988,24 @@ function NavigationView({ data }: { data: AdminNavigationResponse }) {
 export function AdminPage(props: AdminPageProps) {
   useBackNavigationTarget(adminBackTarget(props));
   const query = useAdminNavigationQuery(navigationTarget(props));
+  const { t } = useI18n();
 
   if (query.isPending)
-    return <Skeleton label="Chargement de l’administration" />;
+    return <Skeleton label={t('admin.loading')} />;
   if (query.error || !query.data) {
     return (
-      <ErrorState description="Les contenus administrables n’ont pas pu être chargés." />
+      <ErrorState description={t('admin.loadError')} />
     );
   }
 
   return (
-    <section aria-label="Administration" class="page-shell">
+    <section aria-label={t('admin.title')} class="page-shell">
       <header class="space-y-2">
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          Zone sécurisée
+          {t('admin.eyebrow')}
         </p>
         <p class="leading-7 text-slate-300">
-          Parcourez un niveau à la fois et ouvrez son panneau de gestion.
+          {t('admin.description')}
         </p>
       </header>
       <NavigationView data={query.data} />

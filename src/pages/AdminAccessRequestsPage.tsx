@@ -19,29 +19,34 @@ import {
   useAdminAccessRequestsQuery,
 } from '@/features/admin/access-requests';
 import { ApiClientError } from '@/lib/api-client';
+import type { MessageKey } from '@/i18n/catalogs';
 
-const statusLabels: Record<AccessRequestStatus, string> = {
-  APPROVED: 'Acceptées',
-  PENDING_APPROVAL: 'À examiner',
-  REJECTED: 'Refusées',
+const statusLabelKeys: Record<AccessRequestStatus, MessageKey> = {
+  APPROVED: 'admin.requests.approved',
+  PENDING_APPROVAL: 'admin.requests.pending',
+  REJECTED: 'admin.requests.rejected',
 };
-const roleLabels: Record<AssignableRole, string> = {
-  ADMIN: 'Administrateur',
-  CREATOR: 'Créateur',
-  USER: 'Apprenant',
+const roleLabelKeys: Record<AssignableRole, MessageKey> = {
+  ADMIN: 'admin.role.admin',
+  CREATOR: 'admin.role.creator',
+  USER: 'admin.role.user',
 };
 
-function reviewError(error: unknown): string {
+function reviewError(
+  error: unknown,
+  t: (key: MessageKey) => string,
+): string {
   if (
     error instanceof ApiClientError &&
     error.code === 'ACCESS_REQUEST_CONFLICT'
   ) {
-    return 'Cette demande a été modifiée ou traitée. Rechargez la liste avant de recommencer.';
+    return t('admin.requests.conflict');
   }
-  return 'La décision n’a pas pu être enregistrée.';
+  return t('admin.requests.mutationError');
 }
 
 function RequestReview({ request }: { request: AdminAccessRequest }) {
+  const { t } = useI18n();
   const mutation = useAdminAccessRequestReviewMutation();
   const [action, setAction] = useState<'APPROVE' | 'REJECT'>();
   const [confirmation, setConfirmation] = useState(false);
@@ -55,7 +60,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
       await mutation.resend(request.id, {
         expectedVersion: request.version,
       });
-      setSuccess('Une nouvelle invitation a été envoyée.');
+      setSuccess(t('admin.requests.resendSuccess'));
     } catch {
       // The normalized mutation error is announced below.
     }
@@ -69,13 +74,13 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           expectedVersion: request.version,
           role,
         });
-        setSuccess('Demande acceptée et invitation préparée.');
+        setSuccess(t('admin.requests.approveSuccess'));
       } else if (action === 'REJECT') {
         await mutation.reject(request.id, {
           expectedVersion: request.version,
           reason: reason.trim(),
         });
-        setSuccess('Demande refusée.');
+        setSuccess(t('admin.requests.rejectSuccess'));
       }
       setAction(undefined);
       setConfirmation(false);
@@ -88,10 +93,18 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
     return (
       <div class="space-y-2 text-sm text-slate-300">
         {request.assignedRole ? (
-          <p>Rôle attribué : {roleLabels[request.assignedRole]}</p>
+          <p>
+            {t('admin.requests.assignedRole', {
+              role: t(roleLabelKeys[request.assignedRole]),
+            })}
+          </p>
         ) : null}
         {request.rejectionReason ? (
-          <p>Motif interne : {request.rejectionReason}</p>
+          <p>
+            {t('admin.requests.internalReason', {
+              reason: request.rejectionReason,
+            })}
+          </p>
         ) : null}
         {request.status === 'APPROVED' ? (
           <Button
@@ -99,7 +112,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
             onClick={() => void resendInvitation()}
             variant="secondary"
           >
-            Renvoyer l’invitation
+            {t('admin.requests.resend')}
           </Button>
         ) : null}
         {success ? (
@@ -108,7 +121,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           </p>
         ) : null}
         {mutation.error ? (
-          <ErrorState description={reviewError(mutation.error)} />
+          <ErrorState description={reviewError(mutation.error, t)} />
         ) : null}
       </div>
     );
@@ -118,16 +131,18 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
     <div class="space-y-4">
       {!action ? (
         <div class="grid gap-3 sm:grid-cols-2">
-          <Button onClick={() => setAction('APPROVE')}>Accepter</Button>
+          <Button onClick={() => setAction('APPROVE')}>
+            {t('admin.requests.accept')}
+          </Button>
           <Button onClick={() => setAction('REJECT')} variant="secondary">
-            Refuser
+            {t('admin.requests.reject')}
           </Button>
         </div>
       ) : (
         <div class="space-y-4 border-t border-slate-700 pt-4">
           {action === 'APPROVE' ? (
             <label class="grid gap-2 text-sm font-medium text-slate-200">
-              Rôle à attribuer
+              {t('admin.requests.role')}
               <select
                 class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                 onChange={(event) =>
@@ -135,17 +150,17 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
                 }
                 value={role}
               >
-                {Object.entries(roleLabels).map(([value, label]) => (
+                {Object.entries(roleLabelKeys).map(([value, key]) => (
                   <option key={value} value={value}>
-                    {label}
+                    {t(key)}
                   </option>
                 ))}
               </select>
             </label>
           ) : (
             <Textarea
-              description="Ce motif reste interne et n’est jamais affiché publiquement."
-              label="Motif du refus"
+              description={t('admin.requests.reasonHelp')}
+              label={t('admin.requests.reason')}
               maxLength={2_000}
               onInput={(event) => setReason(event.currentTarget.value)}
               required
@@ -159,19 +174,25 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
                 onClick={() => setConfirmation(true)}
                 variant={action === 'APPROVE' ? 'primary' : 'danger'}
               >
-                Prévisualiser la décision
+                {t('admin.requests.previewDecision')}
               </Button>
               <Button onClick={() => setAction(undefined)} variant="ghost">
-                Annuler
+                {t('admin.accounts.cancel')}
               </Button>
             </div>
           ) : (
             <Card class="space-y-3 bg-slate-950" role="region">
-              <h3 class="font-semibold">Confirmer la décision</h3>
+              <h3 class="font-semibold">
+                {t('admin.requests.confirmDecision')}
+              </h3>
               <p class="text-sm leading-6 text-slate-300">
                 {action === 'APPROVE'
-                  ? `La demande sera acceptée avec le rôle « ${roleLabels[role]} ». Une invitation sera préparée, sans créer de compte.`
-                  : `La demande sera refusée avec le motif interne « ${reason.trim()} ».`}
+                  ? t('admin.requests.approvePreview', {
+                      role: t(roleLabelKeys[role]),
+                    })
+                  : t('admin.requests.rejectPreview', {
+                      reason: reason.trim(),
+                    })}
               </p>
               <div class="flex flex-wrap gap-3">
                 <Button
@@ -179,10 +200,10 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
                   onClick={() => void applyDecision()}
                   variant={action === 'APPROVE' ? 'primary' : 'danger'}
                 >
-                  Confirmer
+                  {t('admin.accounts.confirm')}
                 </Button>
                 <Button onClick={() => setConfirmation(false)} variant="ghost">
-                  Modifier
+                  {t('admin.requests.edit')}
                 </Button>
               </div>
             </Card>
@@ -195,14 +216,14 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
         </p>
       ) : null}
       {mutation.error ? (
-        <ErrorState description={reviewError(mutation.error)} />
+        <ErrorState description={reviewError(mutation.error, t)} />
       ) : null}
     </div>
   );
 }
 
 function RequestCard({ request }: { request: AdminAccessRequest }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const tone =
     request.status === 'APPROVED'
       ? 'success'
@@ -219,14 +240,15 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
               {request.emailNormalized}
             </h2>
             <p class="mt-1 text-sm text-slate-400">
-              Vérifiée le{' '}
-              {formatLocalizedDate(request.emailVerifiedAt, locale, {
-                dateStyle: 'medium',
-                timeStyle: 'short',
+              {t('admin.requests.verifiedAt', {
+                date: formatLocalizedDate(request.emailVerifiedAt, locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                }),
               })}
             </p>
           </div>
-          <Badge tone={tone}>{statusLabels[request.status]}</Badge>
+          <Badge tone={tone}>{t(statusLabelKeys[request.status])}</Badge>
         </div>
         <RequestReview request={request} />
       </Card>
@@ -249,6 +271,7 @@ export function AdminAccessRequestsPage() {
     search,
     status,
   });
+  const { t } = useI18n();
 
   function submitSearch(event: SubmitEvent) {
     event.preventDefault();
@@ -262,27 +285,27 @@ export function AdminAccessRequestsPage() {
         class="inline-flex min-h-11 items-center text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
         href="/admin"
       >
-        Retour à l’administration
+        {t('navigation.back.admin')}
       </a>
       <PageHeader
-        description="Examinez les adresses vérifiées, attribuez un rôle et conservez une décision auditée."
-        eyebrow="Zone sécurisée"
+        description={t('admin.requests.description')}
+        eyebrow={t('admin.eyebrow')}
         id="access-review-title"
-        title="Demandes d’accès"
+        title={t('admin.requests.title')}
       />
       <form class="grid gap-4 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
         <TextField
-          label="Rechercher par e-mail"
+          label={t('admin.requests.search')}
           onInput={(event) => setSearchInput(event.currentTarget.value)}
           type="search"
           value={searchInput}
         />
         <Button class="self-end" type="submit" variant="secondary">
-          Rechercher
+          {t('programs.searchAction')}
         </Button>
       </form>
       <label class="grid gap-2 text-sm font-medium text-slate-200">
-        État des demandes
+        {t('admin.requests.status')}
         <select
           class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
           onChange={(event) => {
@@ -291,26 +314,26 @@ export function AdminAccessRequestsPage() {
           }}
           value={status}
         >
-          {Object.entries(statusLabels).map(([value, label]) => (
+          {Object.entries(statusLabelKeys).map(([value, key]) => (
             <option key={value} value={value}>
-              {label}
+              {t(key)}
             </option>
           ))}
         </select>
       </label>
       {query.isPending ? (
-        <p aria-live="polite">Chargement des demandes…</p>
+        <p aria-live="polite">{t('admin.requests.loading')}</p>
       ) : query.error || !query.data ? (
-        <ErrorState description="Les demandes d’accès n’ont pas pu être chargées." />
+        <ErrorState description={t('admin.requests.loadError')} />
       ) : query.data.items.length === 0 ? (
         <EmptyState
-          description="Aucune demande vérifiée ne correspond à ces filtres."
-          title="Aucune demande"
+          description={t('admin.requests.empty.description')}
+          title={t('admin.requests.empty.title')}
         />
       ) : (
         <>
           <p class="text-sm text-slate-400">
-            {query.data.total} demande{query.data.total > 1 ? 's' : ''}
+            {t('admin.requests.count', { count: query.data.total })}
           </p>
           <ul class="space-y-4">
             {query.data.items.map((request) => (
@@ -318,7 +341,7 @@ export function AdminAccessRequestsPage() {
             ))}
           </ul>
           <nav
-            aria-label="Pagination des demandes"
+            aria-label={t('admin.requests.pagination')}
             class="flex items-center justify-between gap-4"
           >
             <Button
@@ -326,17 +349,20 @@ export function AdminAccessRequestsPage() {
               onClick={() => setPage((value) => Math.max(1, value - 1))}
               variant="secondary"
             >
-              Précédent
+              {t('admin.accounts.previous')}
             </Button>
             <span class="text-sm text-slate-300">
-              Page {query.data.page} sur {query.data.totalPages}
+              {t('admin.accounts.page', {
+                page: query.data.page,
+                total: query.data.totalPages,
+              })}
             </span>
             <Button
               disabled={page >= query.data.totalPages}
               onClick={() => setPage((value) => value + 1)}
               variant="secondary"
             >
-              Suivant
+              {t('admin.accounts.next')}
             </Button>
           </nav>
         </>

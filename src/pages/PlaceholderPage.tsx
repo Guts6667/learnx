@@ -5,11 +5,8 @@ interface PlaceholderPageProps {
   title: string;
 }
 
-const defaultDescription =
-  'Cette page est prête à accueillir sa fonctionnalité dans un prochain ticket.';
-
 export function PlaceholderPage({
-  description = defaultDescription,
+  description,
   title,
 }: PlaceholderPageProps) {
   return (
@@ -21,7 +18,7 @@ export function PlaceholderPage({
         {title}
       </h1>
       <p class="mt-4 max-w-prose text-base leading-7 text-slate-300">
-        {description}
+        {description ?? ''}
       </p>
     </section>
   );
@@ -34,22 +31,24 @@ interface NotFoundPageProps {
 
 export function NotFoundPage(routeProps: NotFoundPageProps) {
   void routeProps;
+  const { t } = useI18n();
 
   return (
     <section aria-labelledby="page-title">
       <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-        Erreur 404
+        {t('notFound.eyebrow')}
       </p>
       <h1 id="page-title" class="mt-3 text-3xl font-bold tracking-tight">
-        Page introuvable
+        {t('notFound.title')}
       </h1>
       <p class="mt-4 text-base leading-7 text-slate-300">
-        L’adresse demandée ne correspond à aucune page LearnX.
+        {t('notFound.description')}
       </p>
       <NavigationAction class="mt-6" href="/today">
-        Retour à Aujourd’hui
+        {t('notFound.action')}
       </NavigationAction>
     </section>
   );
 }
 import { NavigationAction } from '@/components/ui/NavigationAction';
+import { useI18n } from '@/i18n';

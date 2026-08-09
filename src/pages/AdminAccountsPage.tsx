@@ -19,31 +19,36 @@ import {
 } from '@/features/admin/accounts';
 import { useSessionQuery } from '@/features/auth/session';
 import { ApiClientError } from '@/lib/api-client';
+import type { MessageKey } from '@/i18n/catalogs';
 
 const roleLabels = {
-  ADMIN: 'Administrateur',
-  CREATOR: 'Créateur',
-  USER: 'Apprenant',
+  ADMIN: 'admin.role.admin',
+  CREATOR: 'admin.role.creator',
+  USER: 'admin.role.user',
 } as const;
 
-function mutationError(error: unknown): string {
+function mutationError(
+  error: unknown,
+  t: (key: MessageKey) => string,
+): string {
   if (
     error instanceof ApiClientError &&
     error.code === 'ACCOUNT_STATE_CONFLICT'
   ) {
-    return 'Le compte a changé. Rechargez la liste avant de réessayer.';
+    return t('admin.accounts.changed');
   }
   if (
     error instanceof ApiClientError &&
     error.code === 'SELF_SUSPENSION_NOT_ALLOWED'
   ) {
-    return 'Vous ne pouvez pas suspendre votre propre compte.';
+    return t('admin.accounts.selfSuspend');
   }
 
-  return 'Le compte n’a pas pu être modifié.';
+  return t('admin.accounts.mutationError');
 }
 
 function AccountRoleAction({ account }: { account: AdminAccount }) {
+  const { t } = useI18n();
   const [isConfirming, setIsConfirming] = useState(false);
   const [success, setSuccess] = useState<string>();
   const mutation = useAdminAccountRoleMutation();
@@ -58,9 +63,11 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
     try {
       await mutation.execute(account, nextRole);
       setSuccess(
-        isCreator
-          ? 'Le compte est désormais Apprenant. Ses données personnelles sont conservées.'
-          : 'Le rôle Créateur est attribué. Il reste sans accès à l’administration et aux outils éditoriaux.',
+        t(
+          isCreator
+            ? 'admin.accounts.learner.success'
+            : 'admin.accounts.creator.success',
+        ),
       );
       setIsConfirming(false);
     } catch {
@@ -73,30 +80,30 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
       {!isConfirming ? (
         <Button onClick={() => setIsConfirming(true)} variant="secondary">
           {isCreator
-            ? 'Rétrograder en Apprenant'
-            : 'Attribuer le rôle Créateur'}
+            ? t('admin.accounts.creator.remove')
+            : t('admin.accounts.creator.assign')}
         </Button>
       ) : (
         <Card class="space-y-3 bg-slate-950" role="region">
           <h3 class="font-semibold">
             {isCreator
-              ? 'Confirmer le rôle Apprenant'
-              : 'Confirmer le rôle Créateur'}
+              ? t('admin.accounts.learner.confirm')
+              : t('admin.accounts.creator.confirm')}
           </h3>
           <p class="text-sm leading-6 text-slate-300">
             {isCreator
-              ? 'Les notes, progressions, tentatives et soumissions seront conservées. Le compte gardera uniquement les fonctions Apprenant.'
-              : 'Le compte conservera les fonctions Apprenant. Le rôle Créateur ne donne aucun accès à l’administration et ne permet ni création, ni édition, ni prévisualisation, ni publication avant V5.'}
+              ? t('admin.accounts.learner.description')
+              : t('admin.accounts.creator.description')}
           </p>
           <div class="flex flex-wrap gap-3">
             <Button
               isLoading={mutation.isPending}
               onClick={() => void confirm()}
             >
-              Confirmer
+              {t('admin.accounts.confirm')}
             </Button>
             <Button onClick={() => setIsConfirming(false)} variant="ghost">
-              Annuler
+              {t('admin.accounts.cancel')}
             </Button>
           </div>
         </Card>
@@ -107,7 +114,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
         </p>
       ) : null}
       {mutation.error ? (
-        <ErrorState description={mutationError(mutation.error)} />
+        <ErrorState description={mutationError(mutation.error, t)} />
       ) : null}
     </div>
   );
@@ -120,6 +127,7 @@ function AccountAction({
   account: AdminAccount;
   isCurrentAccount: boolean;
 }) {
+  const { t } = useI18n();
   const [isConfirming, setIsConfirming] = useState(false);
   const [success, setSuccess] = useState<string>();
   const mutation = useAdminAccountStatusMutation();
@@ -131,9 +139,11 @@ function AccountAction({
     try {
       await mutation.execute(account, action);
       setSuccess(
-        isSuspended
-          ? 'Compte réactivé. Une nouvelle connexion sera nécessaire.'
-          : 'Compte suspendu et toutes ses sessions ont été révoquées.',
+        t(
+          isSuspended
+            ? 'admin.accounts.reactivateSuccess'
+            : 'admin.accounts.suspendSuccess',
+        ),
       );
       setIsConfirming(false);
     } catch {
@@ -142,7 +152,7 @@ function AccountAction({
   }
 
   if (isCurrentAccount) {
-    return <p class="text-sm text-slate-400">Compte administrateur courant</p>;
+    return <p class="text-sm text-slate-400">{t('admin.accounts.current')}</p>;
   }
 
   return (
@@ -152,19 +162,23 @@ function AccountAction({
           onClick={() => setIsConfirming(true)}
           variant={isSuspended ? 'secondary' : 'danger'}
         >
-          {isSuspended ? 'Réactiver le compte' : 'Suspendre le compte'}
+          {t(
+            isSuspended
+              ? 'admin.accounts.reactivate'
+              : 'admin.accounts.suspend',
+          )}
         </Button>
       ) : (
         <Card class="space-y-3 bg-slate-950" role="region">
           <h3 class="font-semibold">
             {isSuspended
-              ? 'Confirmer la réactivation'
-              : 'Confirmer la suspension'}
+              ? t('admin.accounts.reactivateConfirm')
+              : t('admin.accounts.suspendConfirm')}
           </h3>
           <p class="text-sm leading-6 text-slate-300">
             {isSuspended
-              ? 'Le compte pourra de nouveau se connecter. Aucune ancienne session ne sera restaurée.'
-              : 'Toutes les sessions seront immédiatement révoquées. Les notes, progressions, tentatives et soumissions seront conservées.'}
+              ? t('admin.accounts.reactivateDescription')
+              : t('admin.accounts.suspendDescription')}
           </p>
           <div class="flex flex-wrap gap-3">
             <Button
@@ -172,10 +186,10 @@ function AccountAction({
               onClick={() => void confirm()}
               variant={isSuspended ? 'primary' : 'danger'}
             >
-              Confirmer
+              {t('admin.accounts.confirm')}
             </Button>
             <Button onClick={() => setIsConfirming(false)} variant="ghost">
-              Annuler
+              {t('admin.accounts.cancel')}
             </Button>
           </div>
         </Card>
@@ -186,7 +200,7 @@ function AccountAction({
         </p>
       ) : null}
       {mutation.error ? (
-        <ErrorState description={mutationError(mutation.error)} />
+        <ErrorState description={mutationError(mutation.error, t)} />
       ) : null}
     </div>
   );
@@ -199,7 +213,7 @@ function AccountCard({
   account: AdminAccount;
   currentUserId?: string;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const isSuspended = account.accountStatus === 'SUSPENDED';
 
   return (
@@ -213,16 +227,23 @@ function AccountCard({
             <p class="mt-1 break-all text-sm text-slate-300">{account.email}</p>
           </div>
           <Badge tone={isSuspended ? 'danger' : 'success'}>
-            {isSuspended ? 'Suspendu' : 'Actif'}
+            {t(
+              isSuspended
+                ? 'admin.accounts.suspended'
+                : 'admin.accounts.active',
+            )}
           </Badge>
         </div>
-        <p class="text-sm text-slate-400">Rôle : {roleLabels[account.role]}</p>
+        <p class="text-sm text-slate-400">
+          {t('admin.accounts.role', { role: t(roleLabels[account.role] as MessageKey) })}
+        </p>
         {account.suspendedAt ? (
           <p class="text-sm text-slate-400">
-            Suspendu le{' '}
-            {formatLocalizedDate(account.suspendedAt, locale, {
-              dateStyle: 'medium',
-              timeStyle: 'short',
+            {t('admin.accounts.suspendedAt', {
+              date: formatLocalizedDate(account.suspendedAt, locale, {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+              }),
             })}
           </p>
         ) : null}
@@ -252,6 +273,7 @@ export function AdminAccountsPage() {
     search,
     status: status || undefined,
   });
+  const { t } = useI18n();
 
   function submitSearch(event: SubmitEvent) {
     event.preventDefault();
@@ -265,27 +287,27 @@ export function AdminAccountsPage() {
         class="inline-flex min-h-11 items-center text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
         href="/admin"
       >
-        Retour à l’administration
+        {t('navigation.back.admin')}
       </a>
       <PageHeader
-        description="Suspendez ou réactivez les comptes sans supprimer leurs données personnelles d’apprentissage."
-        eyebrow="Zone sécurisée"
+        description={t('admin.accounts.description')}
+        eyebrow={t('admin.eyebrow')}
         id="accounts-title"
-        title="Comptes utilisateurs"
+        title={t('admin.accounts.title')}
       />
       <form class="grid gap-4 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
         <TextField
-          label="Rechercher un compte"
+          label={t('admin.accounts.search')}
           onInput={(event) => setSearchInput(event.currentTarget.value)}
           type="search"
           value={searchInput}
         />
         <Button class="self-end" type="submit" variant="secondary">
-          Rechercher
+          {t('programs.searchAction')}
         </Button>
       </form>
       <label class="grid gap-2 text-sm font-medium text-slate-200">
-        Statut du compte
+        {t('admin.accounts.status')}
         <select
           class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
           onChange={(event) => {
@@ -294,24 +316,24 @@ export function AdminAccountsPage() {
           }}
           value={status}
         >
-          <option value="">Tous les comptes</option>
-          <option value="ACTIVE">Actifs</option>
-          <option value="SUSPENDED">Suspendus</option>
+          <option value="">{t('admin.accounts.all')}</option>
+          <option value="ACTIVE">{t('admin.accounts.activePlural')}</option>
+          <option value="SUSPENDED">{t('admin.accounts.suspendedPlural')}</option>
         </select>
       </label>
       {query.isPending ? (
-        <p aria-live="polite">Chargement des comptes…</p>
+        <p aria-live="polite">{t('admin.accounts.loading')}</p>
       ) : query.error || !query.data ? (
-        <ErrorState description="Les comptes n’ont pas pu être chargés." />
+        <ErrorState description={t('admin.accounts.loadError')} />
       ) : query.data.items.length === 0 ? (
         <EmptyState
-          description="Aucun compte ne correspond à ces filtres."
-          title="Aucun compte"
+          description={t('admin.accounts.empty.description')}
+          title={t('admin.accounts.empty.title')}
         />
       ) : (
         <>
           <p class="text-sm text-slate-400">
-            {query.data.total} compte{query.data.total > 1 ? 's' : ''}
+            {t('admin.accounts.count', { count: query.data.total })}
           </p>
           <ul class="space-y-4">
             {query.data.items.map((account) => (
@@ -323,7 +345,7 @@ export function AdminAccountsPage() {
             ))}
           </ul>
           <nav
-            aria-label="Pagination des comptes"
+            aria-label={t('admin.accounts.pagination')}
             class="flex items-center justify-between gap-4"
           >
             <Button
@@ -331,17 +353,20 @@ export function AdminAccountsPage() {
               onClick={() => setPage((value) => Math.max(1, value - 1))}
               variant="secondary"
             >
-              Précédent
+              {t('admin.accounts.previous')}
             </Button>
             <span class="text-sm text-slate-300">
-              Page {query.data.page} sur {query.data.totalPages}
+              {t('admin.accounts.page', {
+                page: query.data.page,
+                total: query.data.totalPages,
+              })}
             </span>
             <Button
               disabled={page >= query.data.totalPages}
               onClick={() => setPage((value) => value + 1)}
               variant="secondary"
             >
-              Suivant
+              {t('admin.accounts.next')}
             </Button>
           </nav>
         </>

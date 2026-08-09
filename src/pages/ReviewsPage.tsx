@@ -45,7 +45,7 @@ function ReviewCard({
   onComplete: (reviewId: string) => Promise<unknown>;
   pendingId: string | null;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const assessmentHref = `/program/${encodeURIComponent(item.program.slug)}/lesson/${encodeURIComponent(item.lesson.slug)}/assessment?assessmentId=${encodeURIComponent(item.sourceId)}`;
 
   return (
@@ -53,9 +53,9 @@ function ReviewCard({
       <Card class="space-y-4">
         <div class="flex flex-wrap items-center gap-2">
           <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'warning'}>
-            {isOverdue(item.dueAt) ? 'En retard' : 'À réviser'}
+            {t(isOverdue(item.dueAt) ? 'reviews.overdue' : 'reviews.due')}
           </Badge>
-          {item.isDraft ? <Badge tone="neutral">Brouillon</Badge> : null}
+          {item.isDraft ? <Badge tone="neutral">{t('common.draft')}</Badge> : null}
         </div>
         <div>
           <h2 class="text-lg font-semibold">
@@ -65,7 +65,7 @@ function ReviewCard({
             {item.program.title} · {item.lesson.title}
           </p>
           <p class="mt-2 text-sm text-slate-400">
-            À revoir le {formatDueAt(item.dueAt, locale)}
+            {t('reviews.dueAt', { date: formatDueAt(item.dueAt, locale) })}
           </p>
         </div>
         {item.assessmentTitle ? (
@@ -74,7 +74,7 @@ function ReviewCard({
         {item.resources.length > 0 ? (
           <div>
             <h3 class="text-sm font-semibold text-slate-200">
-              Ressources suggérées
+              {t('reviews.resources')}
             </h3>
             <ul class="mt-2 space-y-2">
               {item.resources.map((resource) => {
@@ -102,14 +102,14 @@ function ReviewCard({
         ) : null}
         <div class="grid gap-3 sm:grid-cols-2">
           <NavigationAction href={assessmentHref} variant="secondary">
-            Refaire l’évaluation
+            {t('reviews.retake')}
           </NavigationAction>
           <Button
             isLoading={pendingId === item.id}
             onClick={() => void onComplete(item.id)}
             variant="secondary"
           >
-            Marquer comme terminée
+            {t('reviews.complete')}
           </Button>
         </div>
       </Card>
@@ -120,6 +120,7 @@ function ReviewCard({
 export function ReviewsPage() {
   const query = useReviewsQuery();
   const mutation = useCompleteReviewMutation();
+  const { t } = useI18n();
 
   async function completeReview(reviewId: string) {
     try {
@@ -132,23 +133,23 @@ export function ReviewsPage() {
   return (
     <section aria-labelledby="reviews-title" class="page-shell">
       <PageHeader
-        description="Reprenez les notions à renforcer et leurs ressources recommandées."
-        eyebrow="Consolidation"
+        description={t('reviews.description')}
+        eyebrow={t('reviews.eyebrow')}
         id="reviews-title"
-        title="Révisions"
+        title={t('reviews.title')}
       />
 
       {mutation.error ? (
-        <ErrorState description="La révision n’a pas pu être mise à jour." />
+        <ErrorState description={t('reviews.updateError')} />
       ) : null}
-      {query.isPending ? <Skeleton label="Chargement des révisions" /> : null}
+      {query.isPending ? <Skeleton label={t('reviews.loading')} /> : null}
       {query.error ? (
-        <ErrorState description="Les révisions n’ont pas pu être chargées." />
+        <ErrorState description={t('reviews.loadError')} />
       ) : null}
       {!query.isPending && !query.error && query.data?.reviews.length === 0 ? (
         <EmptyState
-          description="Une révision apparaîtra ici lorsqu’une notion devra être renforcée."
-          title="Aucune révision en attente"
+          description={t('reviews.empty.description')}
+          title={t('reviews.empty.title')}
         />
       ) : null}
       {query.data?.reviews.length ? (

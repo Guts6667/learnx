@@ -26,6 +26,7 @@ import {
 } from '@/features/curriculum/queries';
 import { programStageHref } from '@/lib/curriculum-navigation';
 import { useI18n } from '@/i18n';
+import type { MessageKey } from '@/i18n/catalogs';
 import {
   activityKey,
   buildLessonActivitySequence,
@@ -34,15 +35,15 @@ import {
   rememberActivity,
 } from '@/lib/lesson-activity-sequence';
 
-const contentBlockLabels: Record<LessonContentBlock['type'], string> = {
-  CALLOUT: 'À retenir',
-  DEFINITION: 'Définition',
-  DIVIDER: 'Séparation',
-  EMBED: 'Contenu intégré',
-  EXAMPLE: 'Exemple',
-  OBJECTIVE: 'Objectif',
-  QUOTE: 'Citation',
-  RICH_TEXT: 'Contenu',
+const contentBlockLabelKeys: Record<LessonContentBlock['type'], MessageKey> = {
+  CALLOUT: 'learning.content.callout',
+  DEFINITION: 'learning.content.definition',
+  DIVIDER: 'learning.content.divider',
+  EMBED: 'learning.content.embed',
+  EXAMPLE: 'learning.content.example',
+  OBJECTIVE: 'learning.content.objective',
+  QUOTE: 'learning.content.quote',
+  RICH_TEXT: 'learning.content.richText',
 };
 
 function getText(value: unknown): string {
@@ -84,6 +85,7 @@ function ContentActivity({
   block: LessonContentBlock;
   resourcesByKey: Map<string, LessonResource>;
 }) {
+  const { t } = useI18n();
   if (block.type === 'DIVIDER') return <hr class="border-slate-700" />;
   const sources = getSourceKeys(block.content)
     .map((key) => resourcesByKey.get(key))
@@ -92,13 +94,13 @@ function ContentActivity({
   return (
     <Card class="space-y-4">
       <p class="text-sm font-semibold text-cyan-300">
-        {contentBlockLabels[block.type]}
+        {t(contentBlockLabelKeys[block.type])}
       </p>
       <SafeMarkdown content={getText(block.content)} />
       {sources.length === 0 ? null : (
         <details class="border-t border-slate-700 pt-3">
           <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-300 focus-visible:outline-2 focus-visible:outline-cyan-300">
-            Sources de ce contenu
+            {t('learning.sources')}
           </summary>
           <ul class="mt-2 space-y-2 text-sm text-slate-400">
             {sources.map((source) => {
@@ -115,7 +117,7 @@ function ContentActivity({
                       rel="noreferrer"
                       target="_blank"
                     >
-                      Ouvrir la source
+                      {t('learning.source.open')}
                     </a>
                   ) : null}
                 </li>
@@ -128,11 +130,13 @@ function ContentActivity({
   );
 }
 
-function resourceVerb(type: string): string {
-  if (type === 'VIDEO') return 'Regarder';
-  if (type === 'PODCAST') return 'Écouter';
-  if (['COURSE', 'TOOL', 'WEBSITE'].includes(type)) return 'Explorer';
-  return 'Lire';
+function resourceVerbKey(type: string): MessageKey {
+  if (type === 'VIDEO') return 'learning.resource.watch';
+  if (type === 'PODCAST') return 'learning.resource.listen';
+  if (['COURSE', 'TOOL', 'WEBSITE'].includes(type)) {
+    return 'learning.resource.explore';
+  }
+  return 'learning.resource.read';
 }
 
 function ResourceActivity({
@@ -150,33 +154,38 @@ function ResourceActivity({
   resource: LessonResource;
   status: 'COMPLETED' | 'NOT_STARTED' | 'STARTED';
 }) {
+  const { t } = useI18n();
   const guidance = resource.guidance;
   const unavailable = ['broken', 'restricted'].includes(
     guidance?.urlStatus ?? 'ok',
   );
   const href = unavailable ? null : getSafeExternalUrl(resource.url);
   const alternativeHref = getSafeExternalUrl(alternative?.url ?? null);
-  const verb = resourceVerb(resource.type);
+  const verb = t(resourceVerbKey(resource.type));
 
   return (
     <Card class="space-y-4">
       <div class="flex flex-wrap items-center gap-2">
         <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
-          {resource.isRequired ? 'Obligatoire' : 'Pour aller plus loin'}
+          {resource.isRequired ? t('common.required') : t('learning.resource.further')}
         </Badge>
         <Badge tone={status === 'COMPLETED' ? 'success' : 'neutral'}>
-          {status === 'COMPLETED' ? 'Consultée' : 'À consulter'}
+          {status === 'COMPLETED'
+            ? t('learning.resource.consulted')
+            : t('learning.resource.toConsult')}
         </Badge>
       </div>
       {guidance?.objective ? (
         <div>
-          <h3 class="font-semibold text-slate-100">Objectif</h3>
+          <h3 class="font-semibold text-slate-100">
+            {t('learning.resource.objective')}
+          </h3>
           <p class="mt-1 leading-7 text-slate-300">{guidance.objective}</p>
         </div>
       ) : null}
       {guidance?.scope ? (
         <p class="text-sm text-slate-300">
-          <strong>Périmètre :</strong> {guidance.scope}
+          <strong>{t('learning.resource.scope')}</strong> {guidance.scope}
         </p>
       ) : null}
       <p class="leading-7 text-slate-300">
@@ -187,7 +196,7 @@ function ResourceActivity({
           role="status"
           class="space-y-2 rounded-lg border border-amber-700 p-3"
         >
-          <p>Cette ressource est actuellement indisponible.</p>
+          <p>{t('learning.resource.unavailable')}</p>
           {alternativeHref ? (
             <a
               class="inline-flex min-h-11 items-center text-cyan-300 underline"
@@ -195,7 +204,9 @@ function ResourceActivity({
               rel="noreferrer"
               target="_blank"
             >
-              Ouvrir l’alternative : {alternative?.title}
+              {t('learning.resource.openAlternative', {
+                title: alternative?.title ?? '',
+              })}
             </a>
           ) : null}
         </div>
@@ -207,10 +218,12 @@ function ResourceActivity({
           rel="noreferrer"
           target="_blank"
         >
-          {verb === 'Lire' ? 'Ouvrir la lecture' : `${verb} la ressource`}
+          {resourceVerbKey(resource.type) === 'learning.resource.read'
+            ? t('learning.resource.openReading')
+            : t('learning.resource.open', { verb })}
         </a>
       ) : (
-        <p role="status">Aucun lien sûr n’est disponible.</p>
+        <p role="status">{t('learning.source.none')}</p>
       )}
       {onComplete && status !== 'COMPLETED' ? (
         <Button
@@ -218,7 +231,7 @@ function ResourceActivity({
           onClick={() => void onComplete()}
           variant="secondary"
         >
-          Marquer comme consultée
+          {t('learning.resource.markConsulted')}
         </Button>
       ) : null}
     </Card>
@@ -236,14 +249,15 @@ function TaskActivity({
   status: TaskCompletionStatus;
   task: LessonTask;
 }) {
+  const { t } = useI18n();
   return (
     <Card class="space-y-4">
       <Badge tone={task.isRequired ? 'warning' : 'neutral'}>
-        {task.isRequired ? 'Obligatoire' : 'Optionnelle'}
+        {task.isRequired ? t('common.required') : t('learning.task.optional')}
       </Badge>
       <p class="leading-7 text-slate-300">{task.description}</p>
       {(task.resources ?? []).length === 0 ? null : (
-        <ul class="space-y-2" aria-label="Supports de la tâche">
+        <ul class="space-y-2" aria-label={t('learning.task.supports')}>
           {(task.resources ?? []).map((resource) => {
             const href = getSafeExternalUrl(resource.url);
             return (
@@ -272,8 +286,8 @@ function TaskActivity({
           variant="secondary"
         >
           {status === 'DONE'
-            ? 'Marquer comme à faire'
-            : 'Marquer comme terminé'}
+            ? t('learning.task.markTodo')
+            : t('learning.task.markComplete')}
         </Button>
       ) : null}
     </Card>
@@ -281,14 +295,14 @@ function TaskActivity({
 }
 
 function SecondaryActivity({ activity }: { activity: LessonActivity }) {
+  const { t } = useI18n();
   return (
     <Card class="space-y-3">
       <Badge tone={activity.required ? 'warning' : 'neutral'}>
-        {activity.required ? 'Obligatoire' : 'Optionnel'}
+        {activity.required ? t('common.required') : t('learning.secondary.optional')}
       </Badge>
       <p class="leading-7 text-slate-300">
-        Cette activité s’ouvre dans une vue dédiée tout en conservant le
-        contexte de la leçon.
+        {t('learning.secondary.description')}
       </p>
     </Card>
   );
@@ -384,15 +398,15 @@ function LessonWorkspace({
   }, [current, lesson.id, lesson.isPublished]);
 
   if (lesson.isPublished && progressQuery.isPending) {
-    return <Spinner label="Chargement du parcours de la leçon" />;
+    return <Spinner label={t('learning.pathLoading')} />;
   }
   if (lesson.isPublished && progressQuery.error) {
     return navigator.onLine ? (
-      <ErrorState description="Le parcours de la leçon n’a pas pu être chargé." />
+      <ErrorState description={t('learning.pathError')} />
     ) : (
       <EmptyState
-        description="Reconnectez-vous puis rechargez cette activité. Aucune progression n’a été simulée."
-        title="Leçon indisponible hors ligne"
+        description={t('learning.offline.description')}
+        title={t('learning.offline.title')}
       />
     );
   }
@@ -453,9 +467,9 @@ function LessonWorkspace({
     ? isLessonCompleted && !sequence.next
       ? t('learning.returnProgram')
       : isLessonCompleted
-        ? 'Leçon suivante'
-        : 'Terminer la leçon'
-    : 'Continuer';
+        ? t('learning.nextLesson')
+        : t('learning.finishLesson')
+    : t('common.continue');
   const isContinueDisabled = isCompletionActivity
     ? !lesson.isPublished || (!isLessonCompleted && !progress?.canComplete)
     : !sequence.next;
@@ -475,10 +489,10 @@ function LessonWorkspace({
       {lesson.isPublished ? null : (
         <Card class="border border-amber-800/70 bg-amber-950/30">
           <p class="font-semibold text-amber-200">
-            Prévisualisation en lecture seule
+            {t('learning.draftPreview')}
           </p>
           <p class="mt-2 text-sm text-amber-100/80">
-            La séquence est consultable, mais aucune progression ne sera créée.
+            {t('learning.previewDescription')}
           </p>
         </Card>
       )}
@@ -496,7 +510,7 @@ function LessonWorkspace({
               </h2>
               {current.estimatedMinutes === null ? null : (
                 <p class="mt-2 text-sm text-slate-400">
-                  Durée indicative : {current.estimatedMinutes} min
+                  {t('learning.duration', { count: current.estimatedMinutes })}
                 </p>
               )}
             </div>
@@ -545,13 +559,13 @@ function LessonWorkspace({
             <Card>
               <p class="text-sm text-slate-300">
                 {progress?.canComplete
-                  ? 'Toutes les activités obligatoires sont validées.'
-                  : 'Des activités obligatoires restent à terminer.'}
+                  ? t('learning.allRequiredComplete')
+                  : t('learning.requiredRemaining')}
               </p>
             </Card>
           ) : null}
           {mutation.error ? (
-            <ErrorState description="La progression n’a pas pu être mise à jour." />
+            <ErrorState description={t('learning.progressUpdateError')} />
           ) : null}
           {current ? (
             <ContextualNoteAction
@@ -595,6 +609,7 @@ export function LessonPage({
   lessonSlug: string;
   programSlug: string;
 }) {
+  const { t } = useI18n();
   const query = useLessonQuery(lessonSlug);
   const stageSlug = query.data?.lesson.module.stage.slug;
   useBackNavigationTarget(
@@ -606,22 +621,22 @@ export function LessonPage({
       : null,
   );
 
-  if (query.isPending) return <Spinner label="Chargement de la leçon" />;
+  if (query.isPending) return <Spinner label={t('common.loading')} />;
   if (query.error) {
     return navigator.onLine ? (
-      <ErrorState description="La leçon n’a pas pu être chargée." />
+      <ErrorState description={t('learning.loadError')} />
     ) : (
       <EmptyState
-        description="Reconnectez-vous puis relancez cette activité. Aucune progression n’a été simulée."
-        title="Leçon indisponible hors ligne"
+        description={t('learning.offline.description')}
+        title={t('learning.offline.title')}
       />
     );
   }
   if (!query.data?.lesson) {
     return (
       <EmptyState
-        description="Cette leçon est indisponible."
-        title="Leçon introuvable"
+        description={t('learning.notFound.description')}
+        title={t('learning.notFound.title')}
       />
     );
   }
@@ -635,11 +650,11 @@ export function LessonPage({
             href={`/program/${encodeURIComponent(programSlug)}/stage/${encodeURIComponent(stage.slug)}`}
             variant="secondary"
           >
-            Voir les prérequis
+            {t('learning.viewPrerequisites')}
           </NavigationAction>
         }
-        description="Terminez les prérequis de l’étape précédente avant de commencer cette leçon."
-        title="Leçon verrouillée"
+        description={t('learning.locked.description')}
+        title={t('learning.locked.title')}
       />
     );
   }
