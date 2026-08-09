@@ -11,6 +11,7 @@ import { TextField } from '@/components/ui/TextField';
 import { ApiClientError } from '@/lib/api-client';
 import { useLoginMutation, useSessionQuery } from '@/features/auth/session';
 import { useOnlineStatus } from '@/features/pwa/online-status';
+import { useI18n } from '@/i18n';
 
 interface LoginPageProps {
   path?: string;
@@ -23,6 +24,7 @@ export function LoginPage({ path }: LoginPageProps) {
   const isOnline = useOnlineStatus();
   const loginMutation = useLoginMutation();
   const sessionQuery = useSessionQuery();
+  const { t } = useI18n();
 
   useEffect(() => {
     if (sessionQuery.data?.user) {
@@ -33,7 +35,7 @@ export function LoginPage({ path }: LoginPageProps) {
   if (sessionQuery.isPending) {
     return (
       <section class="mx-auto min-h-48 max-w-xl" aria-live="polite">
-        <Skeleton label="Vérification de la session" />
+        <Skeleton label={t('auth.login.sessionCheck')} />
       </section>
     );
   }
@@ -47,7 +49,7 @@ export function LoginPage({ path }: LoginPageProps) {
     error instanceof ApiClientError
       ? error.message
       : error
-        ? 'La connexion a échoué. Réessaie dans quelques instants.'
+        ? t('auth.login.error')
         : undefined;
 
   async function handleSubmit(event: SubmitEvent) {
@@ -64,20 +66,17 @@ export function LoginPage({ path }: LoginPageProps) {
   return (
     <section aria-labelledby="login-title" class="page-shell mx-auto max-w-xl">
       <PageHeader
-        description="Connecte-toi pour retrouver tes parcours d’apprentissage."
-        eyebrow="LearnX"
+        description={t('auth.login.description')}
+        eyebrow={t('auth.login.eyebrow')}
         id="login-title"
-        title="Connexion"
+        title={t('auth.login.title')}
       />
-      <OfflineBanner
-        isOffline={!isOnline}
-        message="Reconnectez-vous pour vérifier votre session et vous connecter."
-      />
+      <OfflineBanner isOffline={!isOnline} message={t('auth.login.offline')} />
       <Card>
         <form class="space-y-5" onSubmit={handleSubmit}>
           <TextField
             autoComplete="email"
-            label="Adresse e-mail"
+            label={t('auth.email.label')}
             name="email"
             onInput={(event) => setEmail(event.currentTarget.value)}
             required
@@ -86,7 +85,7 @@ export function LoginPage({ path }: LoginPageProps) {
           />
           <TextField
             autoComplete="current-password"
-            label="Mot de passe"
+            label={t('auth.password.label')}
             name="password"
             onInput={(event) => setPassword(event.currentTarget.value)}
             required
@@ -104,13 +103,13 @@ export function LoginPage({ path }: LoginPageProps) {
             isLoading={loginMutation.isPending}
             type="submit"
           >
-            Se connecter
+            {t('auth.login.submit')}
           </Button>
           <a
             class={actionClassNames('secondary', 'md', 'w-full')}
             href="/request-access"
           >
-            Demander un accès
+            {t('auth.login.requestAccess')}
           </a>
         </form>
       </Card>

@@ -5,6 +5,7 @@ import { useCallback, useState } from 'preact/hooks';
 import { BackNavigationProvider } from '@/components/layout/BackNavigationContext';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { PwaProvider, PwaStatus } from '@/features/pwa/PwaStatus';
+import { useI18n } from '@/i18n';
 
 interface MobileLayoutProps {
   canGoBack?: boolean;
@@ -25,6 +26,7 @@ export function MobileLayout({
   children,
   currentPath = window.location.pathname,
 }: MobileLayoutProps) {
+  const { t } = useI18n();
   const [backTarget, setBackTarget] = useState<string | null>(null);
   const updateBackTarget = useCallback((href: string | null) => {
     setBackTarget(href);
@@ -58,31 +60,33 @@ export function MobileLayout({
           href="#main-content"
           onClick={focusMainContent}
         >
-          Aller au contenu principal
+          {t('navigation.skipToContent')}
         </a>
         <header class="app-safe-header border-b border-slate-800 bg-slate-950">
           <div class="app-frame mx-auto flex items-center justify-between gap-3">
             <div class="flex items-center gap-2">
               {!rootPaths.has(currentPath) ? (
                 <button
-                  aria-label="Revenir à la page précédente"
+                  aria-label={t('navigation.back.ariaLabel')}
                   class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-slate-800 px-3 font-semibold text-slate-100 transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                   onClick={goBack}
                   type="button"
                 >
                   <span aria-hidden="true">←</span>
-                  <span class="ml-2 hidden sm:inline">Retour</span>
+                  <span class="ml-2 hidden sm:inline">
+                    {t('navigation.back.label')}
+                  </span>
                 </button>
               ) : null}
               <a
                 class="inline-flex min-h-11 items-center rounded-lg text-lg font-bold tracking-tight text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
                 href="/today"
               >
-                LearnX
+                {t('app.name')}
               </a>
             </div>
             <span class="hidden text-sm text-slate-400 sm:inline">
-              Parcours personnel
+              {t('app.tagline')}
             </span>
           </div>
         </header>

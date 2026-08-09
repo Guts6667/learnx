@@ -9,6 +9,7 @@ import { TextField } from '@/components/ui/TextField';
 import { useAccessRequestMutation } from '@/features/auth/access-request';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { ApiClientError } from '@/lib/api-client';
+import { useI18n } from '@/i18n';
 
 interface AccessRequestPageProps {
   path?: string;
@@ -19,12 +20,13 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
   const [email, setEmail] = useState('');
   const isOnline = useOnlineStatus();
   const requestMutation = useAccessRequestMutation();
+  const { t } = useI18n();
   const error = requestMutation.error;
   const errorMessage =
     error instanceof ApiClientError
       ? error.message
       : error
-        ? 'La demande n’a pas pu être enregistrée. Réessaie dans quelques instants.'
+        ? t('auth.access.error')
         : undefined;
 
   async function handleSubmit(event: SubmitEvent) {
@@ -43,37 +45,34 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
       class="page-shell mx-auto max-w-xl"
     >
       <PageHeader
-        description="Indique ton adresse e-mail pour demander l’accès à LearnX. Aucun mot de passe n’est nécessaire à cette étape."
-        eyebrow="LearnX"
+        description={t('auth.access.description')}
+        eyebrow={t('auth.access.eyebrow')}
         id="access-request-title"
-        title="Demander un accès"
+        title={t('auth.access.title')}
       />
-      <OfflineBanner
-        isOffline={!isOnline}
-        message="Reconnectez-vous pour envoyer votre demande d’accès."
-      />
+      <OfflineBanner isOffline={!isOnline} message={t('auth.access.offline')} />
       <Card>
         {requestMutation.data ? (
           <div class="space-y-5" role="status">
             <h2 class="text-xl font-semibold text-white">
-              Demande enregistrée
+              {t('auth.access.successTitle')}
             </h2>
             <p class="leading-7 text-slate-300">
-              {requestMutation.data.message}
+              {t('auth.access.successDescription')}
             </p>
             <a
               class={actionClassNames('secondary', 'md', 'w-full')}
               href="/login"
             >
-              Revenir à la connexion
+              {t('auth.backToLogin')}
             </a>
           </div>
         ) : (
           <form class="space-y-5" onSubmit={handleSubmit}>
             <TextField
               autoComplete="email"
-              description="Nous utiliserons cette adresse uniquement pour le suivi de ta demande."
-              label="Adresse e-mail"
+              description={t('auth.access.emailDescription')}
+              label={t('auth.email.label')}
               name="email"
               onInput={(event) => setEmail(event.currentTarget.value)}
               required
@@ -91,10 +90,10 @@ export function AccessRequestPage({ path }: AccessRequestPageProps) {
               isLoading={requestMutation.isPending}
               type="submit"
             >
-              Envoyer ma demande
+              {t('auth.access.submit')}
             </Button>
             <a class={actionClassNames('ghost', 'md', 'w-full')} href="/login">
-              J’ai déjà un compte
+              {t('auth.access.existingAccount')}
             </a>
           </form>
         )}

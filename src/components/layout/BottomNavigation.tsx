@@ -2,17 +2,19 @@ import {
   NavigationIcon,
   type NavigationIconName,
 } from '@/components/layout/NavigationIcon';
+import type { MessageKey } from '@/i18n/catalogs';
+import { useI18n } from '@/i18n';
 
 const navigationItems = [
-  { href: '/today', icon: 'home', label: 'Accueil' },
-  { href: '/program', icon: 'journey', label: 'Parcours' },
-  { href: '/reviews', icon: 'review', label: 'Réviser' },
-  { href: '/notes', icon: 'notes', label: 'Notes' },
-  { href: '/profile', icon: 'profile', label: 'Profil' },
+  { href: '/today', icon: 'home', labelKey: 'navigation.home' },
+  { href: '/program', icon: 'journey', labelKey: 'navigation.programs' },
+  { href: '/reviews', icon: 'review', labelKey: 'navigation.reviews' },
+  { href: '/notes', icon: 'notes', labelKey: 'navigation.notes' },
+  { href: '/profile', icon: 'profile', labelKey: 'navigation.profile' },
 ] as const satisfies ReadonlyArray<{
   href: string;
   icon: NavigationIconName;
-  label: string;
+  labelKey: MessageKey;
 }>;
 
 function isCurrentPage(currentPath: string, href: string): boolean {
@@ -23,14 +25,17 @@ function isCurrentPage(currentPath: string, href: string): boolean {
 }
 
 export function BottomNavigation({ currentPath = window.location.pathname }) {
+  const { t } = useI18n();
+
   return (
     <nav
-      aria-label="Navigation principale"
+      aria-label={t('navigation.main.ariaLabel')}
       class="app-main-navigation app-safe-navigation fixed right-0 bottom-0 left-0 z-40 border-t border-slate-800 bg-slate-950/95 backdrop-blur lg:top-0 lg:right-auto lg:w-[var(--app-navigation-width)] lg:border-t-0 lg:border-r"
     >
       <ul class="mx-auto grid max-w-xl grid-cols-5 items-stretch gap-1 lg:flex lg:h-full lg:max-w-none lg:flex-col lg:justify-center lg:gap-2">
-        {navigationItems.map(({ href, icon, label }) => {
+        {navigationItems.map(({ href, icon, labelKey }) => {
           const current = isCurrentPage(currentPath, href);
+          const label = t(labelKey);
 
           return (
             <li class="min-w-0 lg:w-full" key={href}>

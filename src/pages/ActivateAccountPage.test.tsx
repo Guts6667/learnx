@@ -117,4 +117,24 @@ describe('ActivateAccountPage', () => {
       screen.getByRole('button', { name: 'Activer mon compte' }),
     ).toBeDisabled();
   });
+
+  it('renders the activation form in English with accessible labels', () => {
+    vi.stubGlobal('fetch', vi.fn());
+
+    render(
+      <AppProviders locale="en">
+        <ActivateAccountPage />
+      </AppProviders>,
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Activate my account' }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Display name')).toBeRequired();
+    expect(screen.getByLabelText('Password')).toBeRequired();
+    expect(screen.getByLabelText('Confirm password')).toBeRequired();
+    expect(
+      screen.getByRole('button', { name: 'Activate my account' }),
+    ).toBeEnabled();
+  });
 });

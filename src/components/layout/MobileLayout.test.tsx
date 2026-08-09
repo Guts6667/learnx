@@ -4,6 +4,7 @@ import { route } from 'preact-router';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
 import { useBackNavigationTarget } from '@/components/layout/BackNavigationContext';
 import { MobileLayout } from '@/components/layout/MobileLayout';
+import { I18nProvider } from '@/i18n';
 
 vi.mock('preact-router', async (importOriginal) => ({
   ...(await importOriginal<typeof import('preact-router')>()),
@@ -16,6 +17,13 @@ function PageWithStableBackTarget() {
   return <h1>Leçon</h1>;
 }
 
+function renderWithLocale(
+  children: preact.ComponentChildren,
+  locale: 'fr' | 'en' = 'fr',
+) {
+  return render(<I18nProvider locale={locale}>{children}</I18nProvider>);
+}
+
 describe('navigation accessible', () => {
   afterEach(() => vi.restoreAllMocks());
 
@@ -25,7 +33,7 @@ describe('navigation accessible', () => {
       return 1;
     });
 
-    render(
+    renderWithLocale(
       <MobileLayout currentPath="/today">
         <h1>Contenu</h1>
       </MobileLayout>,
@@ -41,7 +49,7 @@ describe('navigation accessible', () => {
   it('affiche un retour clavier sur une page secondaire', () => {
     const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
 
-    render(
+    renderWithLocale(
       <MobileLayout canGoBack currentPath="/notes/note-1">
         <h1>Note</h1>
       </MobileLayout>,
@@ -59,14 +67,10 @@ describe('navigation accessible', () => {
   });
 
   it('utilise la destination contextuelle stable avant l’historique', () => {
-    window.history.pushState(
-      {},
-      '',
-      '/program/programme-test/lesson/demarrer',
-    );
+    window.history.pushState({}, '', '/program/programme-test/lesson/demarrer');
     const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
 
-    render(
+    renderWithLocale(
       <MobileLayout
         canGoBack
         currentPath="/program/programme-test/lesson/demarrer"
@@ -86,7 +90,9 @@ describe('navigation accessible', () => {
   });
 
   it('affiche cinq destinations courtes avec des icônes décoratives', () => {
-    render(<BottomNavigation currentPath="/program/programme-test" />);
+    renderWithLocale(
+      <BottomNavigation currentPath="/program/programme-test" />,
+    );
 
     const navigation = screen.getByRole('navigation', {
       name: 'Navigation principale',
@@ -110,7 +116,9 @@ describe('navigation accessible', () => {
   });
 
   it('annonce et matérialise la page active sans simple soulignement', () => {
-    render(<BottomNavigation currentPath="/program/programme-test" />);
+    renderWithLocale(
+      <BottomNavigation currentPath="/program/programme-test" />,
+    );
 
     const activeLink = screen.getByRole('link', { name: 'Parcours' });
 
@@ -127,7 +135,7 @@ describe('navigation accessible', () => {
   });
 
   it('utilise un cadre responsive sans limiter le desktop à une largeur mobile', () => {
-    render(
+    renderWithLocale(
       <MobileLayout currentPath="/today">
         <h1>Contenu large</h1>
       </MobileLayout>,
@@ -135,5 +143,29 @@ describe('navigation accessible', () => {
 
     expect(document.getElementById('main-content')).toHaveClass('app-frame');
     expect(document.getElementById('main-content')).not.toHaveClass('max-w-xl');
+  });
+
+  it('renders long English navigation labels without changing the five-item structure', () => {
+    renderWithLocale(
+      <BottomNavigation currentPath="/program/programme-test" />,
+      'en',
+    );
+
+    const navigation = screen.getByRole('navigation', {
+      name: 'Main navigation',
+    });
+    const links = within(navigation).getAllByRole('link');
+    expect(links.map((link) => link.textContent)).toEqual([
+      'Home',
+      'Learning paths',
+      'Review',
+      'Notes',
+      'Profile',
+    ]);
+    expect(
+      screen
+        .getByRole('link', { name: 'Learning paths' })
+        .querySelector('span'),
+    ).toHaveClass('break-words');
   });
 });

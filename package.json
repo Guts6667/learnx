@@ -25,7 +25,8 @@
     "progress:recalculate": "tsx scripts/recalculate-progress.ts",
     "deployment:check": "tsx scripts/check-deployment.ts",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "i18n:check": "tsx scripts/check-i18n-catalogs.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

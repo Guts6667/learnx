@@ -8,6 +8,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { useEmailVerificationMutation } from '@/features/auth/access-request';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { ApiClientError } from '@/lib/api-client';
+import { useI18n } from '@/i18n';
 
 interface VerifyEmailPageProps {
   path?: string;
@@ -23,12 +24,13 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
   const [token] = useState(readTokenFromFragment);
   const isOnline = useOnlineStatus();
   const verificationMutation = useEmailVerificationMutation();
+  const { t } = useI18n();
   const error = verificationMutation.error;
   const errorMessage =
     error instanceof ApiClientError
       ? error.message
       : error
-        ? 'La vérification a échoué. Demande un nouveau lien puis réessaie.'
+        ? t('auth.verify.error')
         : undefined;
 
   async function handleVerification() {
@@ -48,38 +50,36 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
       class="page-shell mx-auto max-w-xl"
     >
       <PageHeader
-        description="Confirme ton adresse pour transmettre ta demande à l’administrateur LearnX."
-        eyebrow="Demande d’accès"
+        description={t('auth.verify.description')}
+        eyebrow={t('auth.verify.eyebrow')}
         id="email-verification-title"
-        title="Vérifier mon adresse e-mail"
+        title={t('auth.verify.title')}
       />
-      <OfflineBanner
-        isOffline={!isOnline}
-        message="Reconnectez-vous pour vérifier votre adresse e-mail."
-      />
+      <OfflineBanner isOffline={!isOnline} message={t('auth.verify.offline')} />
       <Card>
         {verificationMutation.data ? (
           <div class="space-y-5" role="status">
-            <h2 class="text-xl font-semibold text-white">Adresse vérifiée</h2>
+            <h2 class="text-xl font-semibold text-white">
+              {t('auth.verify.successTitle')}
+            </h2>
             <p class="leading-7 text-slate-300">
-              {verificationMutation.data.message}
+              {t('auth.verify.successDescription')}
             </p>
             <a
               class={actionClassNames('secondary', 'md', 'w-full')}
               href="/login"
             >
-              Revenir à la connexion
+              {t('auth.backToLogin')}
             </a>
           </div>
         ) : (
           <div class="space-y-5">
             <p class="leading-7 text-slate-300">
-              Cette confirmation ne crée pas encore de compte. Après validation,
-              ta demande devra être approuvée par un administrateur.
+              {t('auth.verify.explanation')}
             </p>
             {!token ? (
               <p class="text-sm text-red-300" role="alert">
-                Ce lien de vérification est invalide ou incomplet.
+                {t('auth.verify.invalidLink')}
               </p>
             ) : null}
             {errorMessage ? (
@@ -94,13 +94,13 @@ export function VerifyEmailPage({ path }: VerifyEmailPageProps) {
               onClick={handleVerification}
               type="button"
             >
-              Vérifier mon adresse
+              {t('auth.verify.submit')}
             </Button>
             <a
               class={actionClassNames('ghost', 'md', 'w-full')}
               href="/request-access"
             >
-              Demander un nouveau lien
+              {t('auth.verify.requestNewLink')}
             </a>
           </div>
         )}

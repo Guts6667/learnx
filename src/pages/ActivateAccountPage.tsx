@@ -9,6 +9,7 @@ import { TextField } from '@/components/ui/TextField';
 import { useAccessInvitationActivationMutation } from '@/features/auth/access-invitation';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { ApiClientError } from '@/lib/api-client';
+import { useI18n } from '@/i18n';
 
 interface ActivateAccountPageProps {
   path?: string;
@@ -28,22 +29,23 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
   const [validationError, setValidationError] = useState<string>();
   const isOnline = useOnlineStatus();
   const mutation = useAccessInvitationActivationMutation();
+  const { t } = useI18n();
   const requestError =
     mutation.error instanceof ApiClientError
       ? mutation.error.message
       : mutation.error
-        ? 'L’activation a échoué. Réessaie dans quelques instants.'
+        ? t('auth.activate.error')
         : undefined;
 
   async function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     setValidationError(undefined);
     if (!token) {
-      setValidationError('Cette invitation est invalide ou incomplète.');
+      setValidationError(t('auth.activate.invalidInvitation'));
       return;
     }
     if (password !== passwordConfirmation) {
-      setValidationError('Les deux mots de passe doivent être identiques.');
+      setValidationError(t('auth.activate.passwordMismatch'));
       return;
     }
 
@@ -57,22 +59,25 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
   }
 
   return (
-    <section aria-labelledby="activation-title" class="page-shell mx-auto max-w-xl">
+    <section
+      aria-labelledby="activation-title"
+      class="page-shell mx-auto max-w-xl"
+    >
       <PageHeader
-        description="Choisis tes informations de connexion pour finaliser ton accès à LearnX."
-        eyebrow="Invitation acceptée"
+        description={t('auth.activate.description')}
+        eyebrow={t('auth.activate.eyebrow')}
         id="activation-title"
-        title="Activer mon compte"
+        title={t('auth.activate.title')}
       />
       <OfflineBanner
         isOffline={!isOnline}
-        message="Reconnectez-vous pour activer votre compte."
+        message={t('auth.activate.offline')}
       />
       <Card>
         <form class="space-y-5" onSubmit={handleSubmit}>
           <TextField
             autoComplete="name"
-            label="Nom affiché"
+            label={t('auth.activate.displayName')}
             maxLength={80}
             name="displayName"
             onInput={(event) => setDisplayName(event.currentTarget.value)}
@@ -81,8 +86,8 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
           />
           <TextField
             autoComplete="new-password"
-            description="Utilise entre 12 et 128 caractères."
-            label="Mot de passe"
+            description={t('auth.activate.passwordDescription')}
+            label={t('auth.password.label')}
             maxLength={128}
             minLength={12}
             name="password"
@@ -93,7 +98,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
           />
           <TextField
             autoComplete="new-password"
-            label="Confirmer le mot de passe"
+            label={t('auth.activate.passwordConfirmation')}
             maxLength={128}
             minLength={12}
             name="passwordConfirmation"
@@ -106,7 +111,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
           />
           {!token ? (
             <p class="text-sm text-red-300" role="alert">
-              Cette invitation est invalide ou incomplète.
+              {t('auth.activate.invalidInvitation')}
             </p>
           ) : null}
           {validationError || requestError ? (
@@ -120,7 +125,7 @@ export function ActivateAccountPage({ path }: ActivateAccountPageProps) {
             isLoading={mutation.isPending}
             type="submit"
           >
-            Activer mon compte
+            {t('auth.activate.submit')}
           </Button>
         </form>
       </Card>

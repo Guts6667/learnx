@@ -21,6 +21,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Validate i18n catalogs
+        run: pnpm i18n:check
       - run: pnpm exec playwright install --with-deps chromium webkit
       - name: Create isolated Neon branch
         id: neon
