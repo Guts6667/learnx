@@ -335,6 +335,7 @@ async function runSerializableTransaction<T>(
     try {
       return await client.$transaction(operation, {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        timeout: 15_000,
       });
     } catch (error) {
       if (!isRetryableTransactionError(error) || attempt === 3) throw error;
