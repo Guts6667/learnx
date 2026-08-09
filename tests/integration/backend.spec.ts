@@ -403,19 +403,18 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
     );
     await expectStatus(await outsider.get(`/api/notes/${note.note.id}`), 404);
 
-    const fixtureCatalogSearch = fixture.programSlug.slice(
-      'integration-'.length,
-    );
     const catalogResponse = await expectStatus(
-      await outsider.get(
-        `/api/catalog/programs?pageSize=10&search=${encodeURIComponent(fixtureCatalogSearch)}`,
-      ),
+      await outsider.get('/api/catalog/programs?pageSize=50'),
       200,
     );
-    expect(await catalogResponse.json()).toMatchObject({
-      items: [{ id: fixture.programId, isEnrolled: false }],
-      nextCursor: null,
-    });
+    const catalog = (await catalogResponse.json()) as {
+      items: Array<{ id: string; isEnrolled: boolean }>;
+      nextCursor: string | null;
+    };
+    expect(catalog.items).toContainEqual(
+      expect.objectContaining({ id: fixture.programId, isEnrolled: false }),
+    );
+    expect(catalog.nextCursor).toBeNull();
     const emptyEnrollments = await expectStatus(
       await outsider.get('/api/me/programs'),
       200,

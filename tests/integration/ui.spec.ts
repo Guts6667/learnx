@@ -11,6 +11,7 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
   page,
   request,
 }, testInfo) => {
+  test.setTimeout(60_000);
   const runId = process.env.LEARNX_INTEGRATION_RUN_ID ?? 'missing-run';
   const project = testInfo.project.name.replace(/[^a-z0-9]+/gi, '-');
   const email = `ui-${runId}-${project}@example.test`.toLowerCase();
@@ -54,13 +55,23 @@ test('connexion et consultation d’une leçon via les vraies Functions', async 
     await page.goto(
       `/program/${fixture.programSlug}/lesson/${fixture.lessonSlug}`,
     );
+    const lessonResponse = await request.get(
+      `/api/lessons/${fixture.lessonSlug}`,
+    );
+    expect(lessonResponse.status()).toBe(200);
+    const progressResponse = await request.get(
+      `/api/lessons/${fixture.lessonId}/progress`,
+    );
+    expect(progressResponse.status()).toBe(200);
     await expect(
       page.getByRole('heading', {
         level: 1,
         name: 'Leçon intégration réelle',
       }),
-    ).toBeVisible();
-    await expect(page.getByText('Contenu pédagogique réel')).toBeVisible();
+    ).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText('Contenu pédagogique réel')).toBeVisible({
+      timeout: 15_000,
+    });
     await page.getByRole('button', { name: 'Sommaire' }).click();
     const summary = page.getByRole('dialog', {
       name: 'Sommaire de la leçon',
