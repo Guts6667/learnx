@@ -375,6 +375,8 @@ describe('sample program seed', () => {
     );
 
     expect(seed.program).toMatchObject({
+      canonicalProgramKey: 'officine-express',
+      locale: 'fr',
       slug: 'officine-express',
       status: 'active',
     });
@@ -428,6 +430,8 @@ describe('sample program seed', () => {
     const lessons = modules.flatMap((module) => module.lessons);
 
     expect(seed.program).toMatchObject({
+      canonicalProgramKey: 'platform-apm-entretien-tryhackme',
+      locale: 'fr',
       slug: 'platform-apm-entretien-tryhackme',
       status: 'active',
     });
@@ -619,7 +623,11 @@ describe('sample program seed', () => {
   it('reads the curriculum hierarchy from the example JSON', async () => {
     const sampleProgram = await readSampleProgram();
 
-    expect(sampleProgram.slug).toBe('fondamentaux-psychologie');
+    expect(sampleProgram).toMatchObject({
+      canonicalProgramKey: 'fondamentaux-psychologie',
+      locale: 'fr',
+      slug: 'fondamentaux-psychologie',
+    });
     expect(sampleProgram.stages).toHaveLength(13);
     expect(sampleProgram.stages.flatMap((stage) => stage.modules)).toHaveLength(
       22,

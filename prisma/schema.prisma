@@ -373,22 +373,24 @@ model AuditEvent {
 }
 
 model Program {
-  id                    String              @id @default(uuid()) @db.Uuid
-  ownerId               String              @map("owner_id") @db.Uuid
+  id                    String                  @id @default(uuid()) @db.Uuid
+  ownerId               String                  @map("owner_id") @db.Uuid
   title                 String
   slug                  String
+  canonicalProgramKey   String                  @map("canonical_program_key")
+  locale                String                  @default("fr") @db.VarChar(2)
   description           String
-  status                ProgramStatus       @default(DRAFT)
-  visibility            ProgramVisibility   @default(PRIVATE)
+  status                ProgramStatus           @default(DRAFT)
+  visibility            ProgramVisibility       @default(PRIVATE)
   icon                  String?
-  position              Int                 @default(0)
-  estimatedDurationDays Int?                @map("estimated_duration_days")
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
-  publishedVersionId    String?             @unique @map("published_version_id") @db.Uuid
-  owner                 User                @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  publishedVersion      ProgramVersion?     @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
-  versions              ProgramVersion[]    @relation("ProgramVersions")
+  position              Int                     @default(0)
+  estimatedDurationDays Int?                    @map("estimated_duration_days")
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  publishedVersionId    String?                 @unique @map("published_version_id") @db.Uuid
+  owner                 User                    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  publishedVersion      ProgramVersion?         @relation("CurrentPublishedProgramVersion", fields: [publishedVersionId], references: [id], onDelete: SetNull)
+  versions              ProgramVersion[]        @relation("ProgramVersions")
   enrollments           ProgramEnrollment[]
   viewPreferences       ProgramViewPreference[]
   stages                Stage[]
@@ -397,7 +399,9 @@ model Program {
   notes                 Note[]
 
   @@unique([ownerId, slug])
+  @@unique([ownerId, canonicalProgramKey, locale])
   @@index([ownerId, position])
+  @@index([locale, visibility, status, position])
   @@index([visibility, status, position])
   @@map("programs")
 }
@@ -461,24 +465,26 @@ model ProgramViewPreference {
 }
 
 model Stage {
-  id                    String            @id @default(uuid()) @db.Uuid
-  programId             String            @map("program_id") @db.Uuid
+  id                    String                  @id @default(uuid()) @db.Uuid
+  programId             String                  @map("program_id") @db.Uuid
   title                 String
   slug                  String
+  canonicalKey          String                  @map("canonical_key")
   description           String
-  position              Int               @default(0)
-  estimatedMinutes      Int?              @map("estimated_minutes")
-  estimatedDurationDays Int?              @map("estimated_duration_days")
-  isPublished           Boolean           @default(false) @map("is_published")
-  createdAt             DateTime          @default(now()) @map("created_at")
-  updatedAt             DateTime          @updatedAt @map("updated_at")
-  program               Program           @relation(fields: [programId], references: [id], onDelete: Cascade)
+  position              Int                     @default(0)
+  estimatedMinutes      Int?                    @map("estimated_minutes")
+  estimatedDurationDays Int?                    @map("estimated_duration_days")
+  isPublished           Boolean                 @default(false) @map("is_published")
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  program               Program                 @relation(fields: [programId], references: [id], onDelete: Cascade)
   modules               Module[]
   progress              StageProgress[]
   assessments           StageAssessment[]
   expandedPreferences   ProgramViewPreference[]
 
   @@unique([programId, slug])
+  @@unique([programId, canonicalKey])
   @@unique([programId, id])
   @@index([programId, position])
   @@map("stages")
@@ -531,6 +537,7 @@ model Module {
   stageId          String      @map("stage_id") @db.Uuid
   title            String
   slug             String
+  canonicalKey     String      @map("canonical_key")
   description      String
   position         Int         @default(0)
   estimatedMinutes Int?        @map("estimated_minutes")
@@ -542,6 +549,7 @@ model Module {
   runs             ModuleRun[]
 
   @@unique([stageId, slug])
+  @@unique([stageId, canonicalKey])
   @@index([stageId, position])
   @@map("modules")
 }
@@ -572,6 +580,7 @@ model Lesson {
   moduleId                     String                        @map("module_id") @db.Uuid
   title                        String
   slug                         String
+  canonicalKey                 String                        @map("canonical_key")
   summary                      String
   objectives                   Json                          @map("objectives_json")
   prerequisites                Json                          @map("prerequisites_json")
@@ -595,6 +604,7 @@ model Lesson {
   lessonSequenceItems          LessonSequenceItem[]
 
   @@unique([moduleId, slug])
+  @@unique([moduleId, canonicalKey])
   @@index([moduleId, position])
   @@map("lessons")
 }

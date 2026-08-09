@@ -65,6 +65,7 @@ export async function createIntegrationFixture(
   const lessonSlug = `lesson-${key}`;
   const program = await prisma.program.create({
     data: {
+      canonicalProgramKey: programSlug,
       description: 'Programme isolé pour les tests d’intégration LearnX.',
       estimatedDurationDays: 1,
       ownerId: owner.id,
@@ -76,6 +77,7 @@ export async function createIntegrationFixture(
   });
   const stage = await prisma.stage.create({
     data: {
+      canonicalKey: stageSlug,
       description: 'Étape publiée de test.',
       estimatedDurationDays: 1,
       estimatedMinutes: 30,
@@ -88,6 +90,7 @@ export async function createIntegrationFixture(
   });
   const module = await prisma.module.create({
     data: {
+      canonicalKey: moduleSlug,
       description: 'Module publié de test.',
       estimatedMinutes: 30,
       isPublished: true,
@@ -99,6 +102,7 @@ export async function createIntegrationFixture(
   });
   const lesson = await prisma.lesson.create({
     data: {
+      canonicalKey: lessonSlug,
       estimatedMinutes: 30,
       isPublished: true,
       moduleId: module.id,

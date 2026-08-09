@@ -9,7 +9,13 @@ const migration = readFileSync(
 
 describe('account locale schema', () => {
   it('stores a French fallback on users and access requests', () => {
-    expect(schema.match(/locale\s+String\s+@default\("fr"\)/g)).toHaveLength(2);
+    for (const model of ['User', 'AccessRequest']) {
+      expect(schema).toMatch(
+        new RegExp(
+          `model ${model} \\{[\\s\\S]*?locale\\s+String\\s+@default\\("fr"\\)[\\s\\S]*?\\n\\}`,
+        ),
+      );
+    }
     expect(migration).toContain(
       'ADD COLUMN "locale" VARCHAR(2) NOT NULL DEFAULT \'fr\'',
     );

@@ -24,6 +24,7 @@ function authentication(
       displayName: 'Learner',
       email: 'learner@example.com',
       id,
+      locale: 'fr',
       role: role as Role,
     });
     await next();
@@ -76,10 +77,31 @@ describe('catalog API', () => {
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ items: [], nextCursor: null });
     expect(services.directoryService.listCatalog).toHaveBeenCalledWith({
+      locale: 'fr',
       pageSize: 5,
       search: 'psychologie',
       userId,
     });
+  });
+
+  it('filtre le catalogue par langue sans modifier la locale du compte', async () => {
+    const services = createServices();
+    const app = createCatalogApp({
+      authentication: authentication(),
+      ...services,
+    });
+
+    expect(
+      (await app.request('/api/catalog/programs?locale=en')).status,
+    ).toBe(200);
+    expect(services.directoryService.listCatalog).toHaveBeenCalledWith({
+      locale: 'en',
+      pageSize: 20,
+      userId,
+    });
+    expect(
+      (await app.request('/api/catalog/programs?locale=de')).status,
+    ).toBe(400);
   });
 
   it('refuse les tailles non bornées et les capacités inconnues', async () => {

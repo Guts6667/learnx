@@ -33,9 +33,11 @@ describe('CurriculumPages', () => {
             jsonResponse({
               programs: [
                 {
+                  canonicalProgramKey: 'platform-apm',
                   description: 'Préparer un entretien produit.',
                   estimatedDurationDays: 2,
                   id: 'program-owned',
+                  locale: 'fr',
                   slug: 'platform-apm',
                   stages: [
                     {
@@ -68,11 +70,13 @@ describe('CurriculumPages', () => {
             jsonResponse({
               items: [
                 {
+                  canonicalProgramKey: 'approfondir',
                   description: 'Approfondir les bases.',
                   estimatedDurationDays: 12,
                   icon: null,
                   id: 'program-2',
                   isEnrolled: false,
+                  locale: 'fr',
                   publishedVersion: {
                     checksum: 'catalog-checksum',
                     id: 'version-2',
@@ -100,10 +104,12 @@ describe('CurriculumPages', () => {
                   withdrawnAt: null,
                 },
                 program: {
+                  canonicalProgramKey: 'bases',
                   description: 'Découvrir les bases.',
                   estimatedDurationDays: 10,
                   icon: null,
                   id: 'program-1',
+                  locale: 'fr',
                   publishedVersion: {
                     checksum: 'checksum',
                     id: 'version-1',
@@ -158,7 +164,20 @@ describe('CurriculumPages', () => {
     expect(
       await screen.findByRole('heading', { level: 2, name: 'Approfondir' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'S’inscrire' })).toBeEnabled();
+    expect(screen.getAllByText('Français').length).toBeGreaterThan(0);
+    fireEvent.change(screen.getByLabelText('Langue du programme'), {
+      target: { value: 'en' },
+    });
+    await waitFor(() =>
+      expect(
+        vi.mocked(fetch).mock.calls.some(([path]) =>
+          String(path).includes('locale=en'),
+        ),
+      ).toBe(true),
+    );
+    expect(
+      await screen.findByRole('button', { name: 'S’inscrire' }),
+    ).toBeEnabled();
   });
 
   it('confirme l’inscription côté serveur avant de mettre à jour le catalogue', async () => {
@@ -176,11 +195,13 @@ describe('CurriculumPages', () => {
           jsonResponse({
             items: [
               {
+                canonicalProgramKey: 'programme-public',
                 description: 'Un programme public.',
                 estimatedDurationDays: 8,
                 icon: null,
                 id: 'program-public',
                 isEnrolled,
+                locale: 'fr',
                 publishedVersion: {
                   checksum: 'checksum',
                   id: 'version-public',
@@ -237,11 +258,13 @@ describe('CurriculumPages', () => {
         jsonResponse({
           items: [
             {
+              canonicalProgramKey: isNextPage ? 'second' : 'premier',
               description: isNextPage ? 'Seconde page.' : 'Première page.',
               estimatedDurationDays: 5,
               icon: null,
               id: isNextPage ? 'program-2' : 'program-1',
               isEnrolled: false,
+              locale: 'fr',
               publishedVersion: {
                 checksum: 'checksum',
                 id: 'version',
@@ -309,10 +332,12 @@ describe('CurriculumPages', () => {
                       withdrawnAt: null,
                     },
                     program: {
+                      canonicalProgramKey: 'programme-actif',
                       description: 'Programme à quitter.',
                       estimatedDurationDays: null,
                       icon: null,
                       id: 'program-active',
+                      locale: 'fr',
                       publishedVersion: {
                         checksum: 'checksum',
                         id: 'version',

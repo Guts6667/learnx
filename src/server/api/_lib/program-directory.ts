@@ -7,10 +7,12 @@ import {
   type Prisma,
   type PrismaClient,
 } from '../../../../generated/prisma/client.js';
+import type { SupportedLocale } from '../../../shared/locale.js';
 
 const catalogCursorSchema = z.object({
   id: z.string().uuid(),
   position: z.number().int(),
+  locale: z.enum(['fr', 'en']),
   scope: z.literal('catalog'),
   search: z.string().nullable(),
   version: z.literal(1),
@@ -38,11 +40,13 @@ export interface ProgramDirectoryPage<T> {
 }
 
 export interface CatalogProgramSummary {
+  canonicalProgramKey: string;
   description: string;
   estimatedDurationDays: number | null;
   icon: string | null;
   id: string;
   isEnrolled: boolean;
+  locale: SupportedLocale;
   publishedVersion: {
     checksum: string;
     id: string;
@@ -63,10 +67,12 @@ export interface EnrolledProgramSummary {
     withdrawnAt: string | null;
   };
   program: {
+    canonicalProgramKey: string;
     description: string;
     estimatedDurationDays: number | null;
     icon: string | null;
     id: string;
+    locale: SupportedLocale;
     publishedVersion: {
       checksum: string;
       id: string;
@@ -89,6 +95,7 @@ export interface ProgramDirectoryService {
   listCatalog(input: {
     cursor?: string;
     pageSize: number;
+    locale: SupportedLocale;
     search?: string;
     userId: string;
   }): Promise<ProgramDirectoryPage<CatalogProgramSummary>>;
@@ -118,10 +125,18 @@ function decodeCursor(cursor: string): unknown {
   }
 }
 
-function parseCatalogCursor(cursor: string | undefined, search?: string) {
+function parseCatalogCursor(
+  cursor: string | undefined,
+  search: string | undefined,
+  locale: SupportedLocale,
+) {
   if (!cursor) return undefined;
   const parsed = catalogCursorSchema.safeParse(decodeCursor(cursor));
-  if (!parsed.success || parsed.data.search !== (search ?? null)) {
+  if (
+    !parsed.success ||
+    parsed.data.search !== (search ?? null) ||
+    parsed.data.locale !== locale
+  ) {
     throw new InvalidProgramDirectoryCursorError();
   }
   return parsed.data;
@@ -147,6 +162,7 @@ function parseEnrolledCursor(
 const catalogSelect = {
   _count: { select: { stages: { where: { isPublished: true } } } },
   description: true,
+  canonicalProgramKey: true,
   enrollments: {
     select: { id: true },
     take: 1,
@@ -155,6 +171,7 @@ const catalogSelect = {
   estimatedDurationDays: true,
   icon: true,
   id: true,
+  locale: true,
   position: true,
   publishedVersion: {
     select: {
@@ -176,9 +193,11 @@ const enrolledSelect = {
   program: {
     select: {
       description: true,
+      canonicalProgramKey: true,
       estimatedDurationDays: true,
       icon: true,
       id: true,
+      locale: true,
       progress: {
         select: {
           completedAt: true,
@@ -215,11 +234,13 @@ function serializeCatalogProgram(record: CatalogRecord): CatalogProgramSummary {
     throw new Error('Catalog program has no published version.');
   }
   return {
+    canonicalProgramKey: record.canonicalProgramKey,
     description: record.description,
     estimatedDurationDays: record.estimatedDurationDays,
     icon: record.icon,
     id: record.id,
     isEnrolled: record.enrollments.length > 0,
+    locale: record.locale as SupportedLocale,
     publishedVersion: {
       checksum: record.publishedVersion.checksum,
       id: record.publishedVersion.id,
@@ -248,10 +269,12 @@ function serializeEnrolledProgram(
       withdrawnAt: record.withdrawnAt?.toISOString() ?? null,
     },
     program: {
+      canonicalProgramKey: record.program.canonicalProgramKey,
       description: record.program.description,
       estimatedDurationDays: record.program.estimatedDurationDays,
       icon: record.program.icon,
       id: record.program.id,
+      locale: record.program.locale as SupportedLocale,
       publishedVersion: {
         checksum: record.program.publishedVersion.checksum,
         id: record.program.publishedVersion.id,
@@ -280,7 +303,7 @@ export function createPrismaProgramDirectoryService(
   return {
     async listCatalog(input) {
       const search = normalizeProgramSearch(input.search);
-      const cursor = parseCatalogCursor(input.cursor, search);
+      const cursor = parseCatalogCursor(input.cursor, search, input.locale);
       const records = await client.program.findMany({
         orderBy: [{ position: 'asc' }, { id: 'asc' }],
         select: {
@@ -295,6 +318,7 @@ export function createPrismaProgramDirectoryService(
         },
         take: input.pageSize + 1,
         where: {
+          locale: input.locale,
           publishedVersionId: { not: null },
           status: ProgramStatus.ACTIVE,
           visibility: ProgramVisibility.PUBLIC,
@@ -328,6 +352,7 @@ export function createPrismaProgramDirectoryService(
           records.length > input.pageSize && lastRecord
             ? encodeCursor({
                 id: lastRecord.id,
+                locale: input.locale,
                 position: lastRecord.position,
                 scope: 'catalog',
                 search: search ?? null,

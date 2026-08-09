@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 
 import { apiRequest } from '@/lib/api-client';
+import type { UiLocale } from '@/i18n';
 
 export interface CatalogProgram {
+  canonicalProgramKey: string;
   description: string;
   estimatedDurationDays: number | null;
   icon: string | null;
   id: string;
   isEnrolled: boolean;
+  locale: UiLocale;
   publishedVersion: {
     checksum: string;
     id: string;
@@ -30,10 +33,12 @@ export interface EnrolledProgram {
     withdrawnAt: string | null;
   };
   program: {
+    canonicalProgramKey: string;
     description: string;
     estimatedDurationDays: number | null;
     icon: string | null;
     id: string;
+    locale: UiLocale;
     publishedVersion: {
       checksum: string;
       id: string;
@@ -147,10 +152,12 @@ function programDirectoryPath(
   basePath: string,
   search: string,
   status?: EnrollmentStatus,
+  locale?: UiLocale,
 ) {
   const searchParams = new URLSearchParams({ pageSize: '12' });
   if (search) searchParams.set('search', search);
   if (status) searchParams.set('status', status);
+  if (locale) searchParams.set('locale', locale);
   return `${basePath}?${searchParams}`;
 }
 
@@ -162,9 +169,13 @@ function enrolledProgramIdentifier(program: EnrolledProgram) {
   return program.enrollment.id;
 }
 
-export function useCatalogProgramsQuery(search: string, enabled = true) {
+export function useCatalogProgramsQuery(
+  search: string,
+  locale: UiLocale,
+  enabled = true,
+) {
   return useDirectoryPage<CatalogProgram>(
-    programDirectoryPath('/api/catalog/programs', search),
+    programDirectoryPath('/api/catalog/programs', search, undefined, locale),
     enabled,
     catalogProgramIdentifier,
   );

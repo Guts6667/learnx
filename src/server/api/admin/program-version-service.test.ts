@@ -26,6 +26,31 @@ describe('program versions', () => {
     expect(second.snapshot).toEqual(first.snapshot);
   });
 
+  it('versionne séparément la langue et l’identité canonique du programme', () => {
+    const french = createCanonicalProgramSnapshot({
+      canonicalProgramKey: 'psychology-foundations',
+      id: programId,
+      locale: 'fr',
+      stages: [],
+      title: 'Fondamentaux de la psychologie',
+    });
+    const english = createCanonicalProgramSnapshot({
+      canonicalProgramKey: 'psychology-foundations',
+      id: programId,
+      locale: 'en',
+      stages: [],
+      title: 'Psychology Foundations',
+    });
+
+    expect(french.snapshot).toMatchObject({
+      program: {
+        canonicalProgramKey: 'psychology-foundations',
+        locale: 'fr',
+      },
+    });
+    expect(english.checksum).not.toBe(french.checksum);
+  });
+
   it('réutilise une version identique et incrémente après une modification réelle', async () => {
     let title = 'Programme initial';
     let currentVersionId: string | null = null;

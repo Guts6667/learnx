@@ -503,6 +503,7 @@ function CatalogProgramCard({
   onEnroll: (program: CatalogProgram) => void;
   program: CatalogProgram;
 }) {
+  const { t } = useI18n();
   return (
     <li>
       <Card class="flex h-full flex-col space-y-4">
@@ -514,6 +515,7 @@ function CatalogProgramCard({
         </div>
         <p class="text-sm leading-6 text-slate-300">{program.description}</p>
         <ul class="space-y-1 text-sm text-slate-400">
+          <li>{t(`programs.language.${program.locale}`)}</li>
           <li>{durationLabel(program.estimatedDurationDays)}</li>
           <li>
             {program.stageCount} étape{program.stageCount > 1 ? 's' : ''}{' '}
@@ -560,6 +562,7 @@ function EnrolledProgramCard({
   onRequestWithdrawal: (program: EnrolledProgram) => void;
   program: EnrolledProgram;
 }) {
+  const { t } = useI18n();
   const isActive = program.enrollment.status === 'ACTIVE';
   const percent = program.progress?.percent ?? 0;
 
@@ -576,6 +579,7 @@ function EnrolledProgramCard({
           {program.program.description}
         </p>
         <ul class="space-y-1 text-sm text-slate-400">
+          <li>{t(`programs.language.${program.program.locale}`)}</li>
           <li>{durationLabel(program.program.estimatedDurationDays)}</li>
           <li>
             {publishedVersionLabel(program.program.publishedVersion.number)}
@@ -637,6 +641,7 @@ function EnrolledProgramCard({
 }
 
 function OwnedProgramCard({ program }: { program: ProgramSummary }) {
+  const { t } = useI18n();
   const hasDraftContent =
     program.status === 'DRAFT' ||
     program.stages.some((stage) => !stage.isPublished);
@@ -659,6 +664,7 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
         </div>
         <p class="text-sm leading-6 text-slate-300">{program.description}</p>
         <ul class="space-y-1 text-sm text-slate-400">
+          <li>{t(`programs.language.${program.locale}`)}</li>
           <li>{durationLabel(program.estimatedDurationDays)}</li>
           <li>
             {program.stages.length} étape{program.stages.length > 1 ? 's' : ''}
@@ -703,17 +709,19 @@ function DirectoryPagination({
 type ProgramsView = 'catalog' | 'enrolled';
 
 export function ProgramsPage() {
+  const { locale, t } = useI18n();
   const isOnline = useOnlineStatus();
   const [activeView, setActiveView] = useState<ProgramsView>('enrolled');
   const [enrollmentStatus, setEnrollmentStatus] =
     useState<EnrollmentStatus>('ACTIVE');
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const [catalogLocale, setCatalogLocale] = useState(locale);
   const [confirmingProgramId, setConfirmingProgramId] = useState<string>();
   const [announcement, setAnnouncement] = useState<string>();
   const enrolledTabRef = useRef<HTMLButtonElement>(null);
   const catalogTabRef = useRef<HTMLButtonElement>(null);
-  const catalog = useCatalogProgramsQuery(search, isOnline);
+  const catalog = useCatalogProgramsQuery(search, catalogLocale, isOnline);
   const enrolled = useEnrolledProgramsQuery(search, enrollmentStatus, isOnline);
   const owned = useProgramsQuery(isOnline);
   const mutation = useProgramEnrollmentMutation();
@@ -978,6 +986,19 @@ export function ProgramsPage() {
             </div>
           ) : (
             <div class="space-y-5">
+              <label class="grid max-w-xs gap-2 text-sm font-medium text-slate-200">
+                {t('programs.language.label')}
+                <select
+                  class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  onChange={(event) =>
+                    setCatalogLocale(event.currentTarget.value as typeof locale)
+                  }
+                  value={catalogLocale}
+                >
+                  <option value="fr">{t('programs.language.fr')}</option>
+                  <option value="en">{t('programs.language.en')}</option>
+                </select>
+              </label>
               {catalog.isPending ? (
                 <Skeleton label="Chargement du catalogue" />
               ) : catalog.error ? (

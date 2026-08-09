@@ -18,11 +18,13 @@ const now = new Date('2026-08-05T10:00:00.000Z');
 function catalogRecord(id: string, position: number) {
   return {
     _count: { stages: 3 },
+    canonicalProgramKey: 'programme-canonique',
     description: 'Programme partagé',
     enrollments: id === programId ? [{ id: enrollmentId }] : [],
     estimatedDurationDays: 30,
     icon: null,
     id,
+    locale: 'fr',
     position,
     publishedVersion: {
       checksum: 'checksum',
@@ -40,10 +42,12 @@ function enrolledRecord() {
     enrolledAt: now,
     id: enrollmentId,
     program: {
+      canonicalProgramKey: 'programme-canonique',
       description: 'Programme suivi',
       estimatedDurationDays: 30,
       icon: null,
       id: programId,
+      locale: 'fr',
       progress: [
         {
           completedAt: null,
@@ -77,6 +81,7 @@ describe('program directory service', () => {
     } as unknown as PrismaClient);
 
     const page = await service.listCatalog({
+      locale: 'fr',
       pageSize: 20,
       search: '  psychologie   scientifique ',
       userId,
@@ -84,8 +89,10 @@ describe('program directory service', () => {
 
     expect(page.items).toHaveLength(1);
     expect(page.items[0]).toMatchObject({
+      canonicalProgramKey: 'programme-canonique',
       id: programId,
       isEnrolled: true,
+      locale: 'fr',
       stageCount: 3,
     });
     expect(page.items[0]).not.toHaveProperty('progress');
@@ -93,6 +100,7 @@ describe('program directory service', () => {
       expect.objectContaining({
         take: 21,
         where: expect.objectContaining({
+          locale: 'fr',
           publishedVersionId: { not: null },
           status: 'ACTIVE',
           visibility: 'PUBLIC',
@@ -127,10 +135,15 @@ describe('program directory service', () => {
       programEnrollment: { findMany: vi.fn() },
     } as unknown as PrismaClient);
 
-    const firstPage = await service.listCatalog({ pageSize: 1, userId });
+    const firstPage = await service.listCatalog({
+      locale: 'fr',
+      pageSize: 1,
+      userId,
+    });
     expect(firstPage.nextCursor).toEqual(expect.any(String));
     const secondPage = await service.listCatalog({
       cursor: firstPage.nextCursor ?? undefined,
+      locale: 'fr',
       pageSize: 1,
       userId,
     });
@@ -147,13 +160,27 @@ describe('program directory service', () => {
     await expect(
       service.listCatalog({
         cursor: firstPage.nextCursor ?? undefined,
+        locale: 'fr',
         pageSize: 1,
         search: 'autre',
         userId,
       }),
     ).rejects.toBeInstanceOf(InvalidProgramDirectoryCursorError);
     await expect(
-      service.listCatalog({ cursor: 'not-a-cursor', pageSize: 1, userId }),
+      service.listCatalog({
+        cursor: 'not-a-cursor',
+        locale: 'fr',
+        pageSize: 1,
+        userId,
+      }),
+    ).rejects.toBeInstanceOf(InvalidProgramDirectoryCursorError);
+    await expect(
+      service.listCatalog({
+        cursor: firstPage.nextCursor ?? undefined,
+        locale: 'en',
+        pageSize: 1,
+        userId,
+      }),
     ).rejects.toBeInstanceOf(InvalidProgramDirectoryCursorError);
   });
 
@@ -172,6 +199,10 @@ describe('program directory service', () => {
     });
 
     expect(page.items[0]?.progress?.percent).toBe(25);
+    expect(page.items[0]?.program).toMatchObject({
+      canonicalProgramKey: 'programme-canonique',
+      locale: 'fr',
+    });
     expect(page.items[0]?.enrollment.status).toBe('ACTIVE');
     expect(findMany).toHaveBeenCalledWith(
       expect.objectContaining({

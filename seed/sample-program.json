@@ -2,6 +2,8 @@
   "program": {
     "title": "Fondamentaux de la psychologie",
     "slug": "fondamentaux-psychologie",
+    "canonicalProgramKey": "fondamentaux-psychologie",
+    "locale": "fr",
     "description": "Parcours autonome pour comprendre les bases scientifiques de la psychologie.",
     "status": "active",
     "position": 1,

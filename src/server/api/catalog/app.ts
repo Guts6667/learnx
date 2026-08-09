@@ -18,11 +18,16 @@ import {
   type ProgramEnrollmentService,
   type ProgramEnrollmentSummary,
 } from '../_lib/program-enrollment.js';
+import { normalizeLocale } from '../../../shared/locale.js';
 
 const directoryQuerySchema = z.object({
   cursor: z.string().min(1).max(1_000).optional(),
   pageSize: z.coerce.number().int().min(1).max(50).default(20),
   search: z.string().max(100).optional(),
+});
+
+const catalogQuerySchema = directoryQuerySchema.extend({
+  locale: z.enum(['fr', 'en']).optional(),
 });
 
 const enrolledQuerySchema = directoryQuerySchema.extend({
@@ -99,12 +104,16 @@ export function createCatalogApp(options: CatalogAppOptions = {}) {
     '/api/catalog/programs',
     requireCapability('program.catalog.read'),
     async (context) => {
-      const query = directoryQuerySchema.safeParse(context.req.query());
+      const query = catalogQuerySchema.safeParse(context.req.query());
       if (!query.success) throw invalidRequest();
       const user = context.get('user');
       const page = await (
         await getDirectoryService()
-      ).listCatalog({ ...query.data, userId: user.id });
+      ).listCatalog({
+        ...query.data,
+        locale: normalizeLocale(query.data.locale ?? user.locale),
+        userId: user.id,
+      });
       return context.json(page);
     },
   );

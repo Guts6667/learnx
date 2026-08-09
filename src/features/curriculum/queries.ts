@@ -3,11 +3,14 @@ import { useCallback, useEffect, useMemo, useState } from 'preact/hooks';
 
 import { useAppQueryClient } from '@/app/providers';
 import { ApiClientError, apiRequest } from '@/lib/api-client';
+import type { UiLocale } from '@/i18n';
 
 export interface ProgramSummary {
+  canonicalProgramKey: string;
   description: string;
   estimatedDurationDays: number | null;
   id: string;
+  locale: UiLocale;
   slug: string;
   stages: Array<{
     id: string;

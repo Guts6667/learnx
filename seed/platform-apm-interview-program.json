@@ -2,6 +2,8 @@
   "program": {
     "title": "Platform APM — Entretien TryHackMe",
     "slug": "platform-apm-entretien-tryhackme",
+    "canonicalProgramKey": "platform-apm-entretien-tryhackme",
+    "locale": "fr",
     "description": "Parcours intensif de préparation à l’entretien Head of Product pour le poste d’Associate Product Manager (Platform) chez TryHackMe. Il privilégie l’exécution, la clarté, le cadrage et le dialogue avec l’ingénierie.",
     "status": "active",
     "position": 3,

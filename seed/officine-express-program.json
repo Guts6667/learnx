@@ -2,6 +2,8 @@
   "program": {
     "title": "Officine Express",
     "slug": "officine-express",
+    "canonicalProgramKey": "officine-express",
+    "locale": "fr",
     "description": "Parcours personnel et rapide de reconnaissance de quelques DCI et noms de spécialités rencontrés en officine. Il ne forme ni à la posologie, ni à la substitution, ni au conseil clinique : toute décision reste du ressort du pharmacien.",
     "status": "active",
     "position": 2,
