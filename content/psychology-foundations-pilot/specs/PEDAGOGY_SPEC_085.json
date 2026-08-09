@@ -1,0 +1,968 @@
+{
+  "specId": "PEDAGOGY_SPEC_085",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "discovering-the-discipline",
+  "moduleSlug": "what-is-psychology",
+  "lesson": {
+    "title": "The major fields of psychology",
+    "slug": "major-fields-of-psychology",
+    "summary": "Psychology includes fields that differ in their questions, levels of analysis and settings of application. This lesson shows how several perspectives can be relevant to the same phenomenon without reducing the discipline to clinical psychology or forcing every situation into a single field.",
+    "objectives": [
+      "Identify the characteristic questions of several major fields of psychology.",
+      "Distinguish a field of research, a level of explanation and a professional setting.",
+      "Use biological, cognitive, developmental and social perspectives to analyse the same situation.",
+      "Distinguish the production of fundamental knowledge from the application of psychological knowledge."
+    ],
+    "prerequisites": [
+      "Define psychology as the scientific study of behaviour and mental processes.",
+      "Distinguish observable behaviour, mental processes and indicators."
+    ],
+    "estimatedMinutes": 120,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Psychology is not a single, uniform field. Its areas develop around different questions, populations, levels of analysis and settings. Cognitive psychology studies attention, memory, language and reasoning; developmental psychology examines change across the lifespan; social psychology investigates the influence of other people and groups; and biopsychology connects biological functioning with behaviour. This map is useful, but it is neither exhaustive nor made of rigid boundaries.",
+          "sourceKeys": ["openstax-psychology-2e-1-3"]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "A field is a set of questions and methods, whereas a level of explanation describes the angle from which a phenomenon is studied. To explain difficulty concentrating, researchers might examine sleep and biological functioning, attentional mechanisms, developmental change or the influence of the social environment. These explanations may complement one another when they concern distinct mechanisms.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-3",
+            "yale-psyc110-lecture-1-domains"
+          ]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Invented example: a student repeatedly postpones her work. A cognitive approach might examine working memory and attentional control; a developmental approach, the development of self-regulation; a social approach, group norms and comparison with peers; and a health approach, sleep and stress. Naming several fields does not remove the need to formulate testable hypotheses and collect evidence.",
+          "sourceKeys": ["openstax-psychology-2e-1-3"]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "The distinction between fundamental research and application concerns the immediate purpose of the work, not a hierarchy of value. Fundamental research primarily seeks to understand a mechanism. Applied work uses or evaluates knowledge in health, education, employment, justice or other settings. The same field can combine research and practice: clinical, occupational and health psychology also produce knowledge, while cognitive or social findings can guide interventions.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-3",
+            "apa-subfields-careers-guide"
+          ]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Common misconception: psychology and psychotherapy are not the same thing. Clinical psychology is important, but the discipline also studies the brain and behaviour, perception, learning, development, personality, social relationships, health, education, work and many other topics. To place a question, first ask what phenomenon is being studied, at what level, and for what purpose.",
+          "sourceKeys": ["openstax-psychology-2e-1-3"]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-1-3",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.3 Contemporary Psychology",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 1.3 Contemporary Psychology. In Psychology 2e. OpenStax, Rice University.",
+        "description": "Read the full section and create a three-column table: field, typical question and example application. Do not try to memorise an exhaustive list.",
+        "isRequired": true,
+        "estimatedMinutes": 30,
+        "position": 1,
+        "guidance": {
+          "objective": "Map the main contemporary fields of psychology.",
+          "instructions": "Read section 1.3 and record at least eight fields, a typical question for each, and two overlaps between fields.",
+          "scope": "Section 1.3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Accessible HTML in English.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "yale-psyc110-lecture-1-domains",
+        "type": "course",
+        "title": "Introduction to Psychology — Lecture 1: General Goals for the Course",
+        "author": "Paul Bloom, Yale University",
+        "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+        "citation": "Bloom, P. (2007). PSYC 110: Introduction to Psychology, Lecture 1, chapitre 2. Open Yale Courses.",
+        "description": "Watch or read 00:10:03–00:13:08, note the broad perspectives presented, and explain why the list necessarily simplifies the discipline.",
+        "isRequired": false,
+        "estimatedMinutes": 13,
+        "position": 2,
+        "guidance": {
+          "objective": "Compare two introductory maps of psychology.",
+          "instructions": "Use chapter 2 of the lecture and identify the perspectives and the limits of this summary.",
+          "scope": "00:10:03–00:13:08",
+          "urlStatus": "ok",
+          "accessibilityNotes": "English transcript and audio available.",
+          "alternativeResourceKey": "openstax-psychology-2e-1-3"
+        }
+      },
+      {
+        "key": "apa-subfields-careers-guide",
+        "type": "website",
+        "title": "Psychology education and careers guidebook for college students of color",
+        "author": "American Psychological Association",
+        "url": "https://www.apa.org/education-career/guide/college-students",
+        "citation": "American Psychological Association. (2023). Psychology education and careers guidebook for college students of color.",
+        "description": "Browse the section on subfields and select two fields that were absent from your initial picture of psychology. Record one research question and one possible workplace for each.",
+        "isRequired": false,
+        "estimatedMinutes": 20,
+        "position": 3,
+        "guidance": {
+          "objective": "Broaden the map of fields and professional settings.",
+          "instructions": "Select two unfamiliar subfields and record a question and a setting for each.",
+          "scope": "Sections describing psychology subfields and careers",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Long HTML page in English.",
+          "alternativeResourceKey": "openstax-psychology-2e-1-3"
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Diversity of psychological fields",
+        "slug": "diversite-domaines-psychologiques",
+        "description": "Fields of psychology differ in questions, methods, populations and settings, and their boundaries often overlap.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-3",
+          "apa-subfields-careers-guide"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Diversity of fields",
+          "questionCount": 5,
+          "key": "concept-diversite-domaines-psychologiques-assessment-1"
+        }
+      },
+      {
+        "title": "Complementary levels of explanation",
+        "slug": "niveaux-explication-complementaires",
+        "description": "The same behaviour can be studied at biological, cognitive, developmental and social levels that answer different questions.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-3",
+          "yale-psyc110-lecture-1-domains"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Levels of explanation",
+          "questionCount": 5,
+          "key": "concept-niveaux-explication-complementaires-assessment-1"
+        }
+      },
+      {
+        "title": "Research and applications",
+        "slug": "recherche-et-applications",
+        "description": "Research produces knowledge, while applications use or evaluate knowledge in a setting; one field may perform both functions.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-3",
+          "apa-subfields-careers-guide"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Research and applications",
+          "questionCount": 5,
+          "key": "concept-recherche-et-applications-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Map the fields",
+        "description": "After reading OpenStax, produce a table of eight fields with a typical question, a main level of analysis and an application for each. Identify two overlaps between fields.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": ["openstax-psychology-2e-1-3"]
+      },
+      {
+        "title": "Place six questions",
+        "description": "Assign six supplied or invented questions to one or more fields. Justify each choice using the object of study rather than a keyword, and accept more than one field when the questions differ.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Build a multilevel analysis",
+        "description": "Choose an everyday situation and formulate four distinct questions: biological, cognitive, developmental and social. Propose one observable measure for each.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "yale-psyc110-lecture-1-domains"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-diversite-domaines-psychologiques-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-subfields-careers-guide"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-niveaux-explication-complementaires-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-recherche-et-applications-assessment-1"
+      }
+    ],
+    "canonicalKey": "grands-domaines"
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-002-OPENSTAX",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.3 Contemporary Psychology",
+        "year": 2020,
+        "edition": "2e éd.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Manuel universitaire d’introduction ; la liste des domaines est illustrative et non exhaustive."
+      },
+      {
+        "id": "REF-002-YALE",
+        "type": "open_course",
+        "authors": ["Bloom, P."],
+        "organization": "Yale University",
+        "title": "PSYC 110 — Lecture 1: Introduction",
+        "year": 2007,
+        "edition": null,
+        "publication": "Open Yale Courses",
+        "doi": null,
+        "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Cours institutionnel utilisé comme illustration ; transcription disponible."
+      },
+      {
+        "id": "REF-002-APA",
+        "type": "institutional_guide",
+        "authors": [],
+        "organization": "American Psychological Association",
+        "title": "Psychology education and careers guidebook for college students of color",
+        "year": 2023,
+        "edition": null,
+        "publication": "American Psychological Association",
+        "doi": null,
+        "url": "https://www.apa.org/education-career/guide/college-students",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Guide institutionnel pour illustrer la diversité des sous-domaines et trajectoires."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-002-OPENSTAX",
+            "locator": "section 1.3, introduction et sous-sections principales",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-002-OPENSTAX",
+            "locator": "sections Biopsychology, Cognitive Psychology, Developmental Psychology et Social Psychology",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-002-YALE",
+            "locator": "chapitre 2, 00:10:03–00:13:08",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-002-OPENSTAX",
+            "locator": "sections Cognitive, Developmental, Social et Health Psychology",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-002-OPENSTAX",
+            "locator": "sections Industrial-Organizational, Health et Clinical Psychology",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-002-APA",
+            "locator": "section consacrée aux sous-domaines et carrières",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-002-OPENSTAX",
+            "locator": "section Clinical Psychology, dernier paragraphe, et ensemble de la section 1.3",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-1-3",
+        "referenceIds": ["REF-002-OPENSTAX"],
+        "pedagogicalRationale": "Read the full section and create a three-column table: field, typical question and example application. Do not try to memorise an exhaustive list.",
+        "learnerInstructions": "Read section 1.3 and record at least eight fields, a typical question for each, and two overlaps between fields.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "HTML accessible et options d’affichage ; contenu en anglais.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "yale-psyc110-lecture-1-domains",
+        "referenceIds": ["REF-002-YALE"],
+        "pedagogicalRationale": "Watch or read 00:10:03–00:13:08, note the broad perspectives presented, and explain why the list necessarily simplifies the discipline.",
+        "learnerInstructions": "Use chapter 2 of the lecture and identify the perspectives and the limits of this summary.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Transcription HTML et audio disponibles.",
+        "alternativeResourceKey": "openstax-psychology-2e-1-3",
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": "00:10:03-00:13:08",
+        "transcriptAvailable": true,
+        "notes": null
+      },
+      {
+        "resourceKey": "apa-subfields-careers-guide",
+        "referenceIds": ["REF-002-APA"],
+        "pedagogicalRationale": "Browse the section on subfields and select two fields that were absent from your initial picture of psychology. Record one research question and one possible workplace for each.",
+        "learnerInstructions": "Select two unfamiliar subfields and record a question and a setting for each.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML longue en anglais.",
+        "alternativeResourceKey": "openstax-psychology-2e-1-3",
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "diversite-domaines-psychologiques",
+        "assessmentTitle": "Concept check — Diversity of fields",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which field primarily studies psychological change across the lifespan?",
+            "explanation": "Developmental psychology studies change and continuity at different ages.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Developmental psychology",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Social psychology",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Occupational psychology",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Forensic psychology",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which question most directly belongs to cognitive psychology?",
+            "explanation": "Cognitive psychology studies attention, memory, language and reasoning.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "How does attention affect recall of a word list?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "How should a team schedule be organised?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "How does average population height change?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Which law regulates a professional title?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which statements about fields of psychology are accurate?",
+            "explanation": "Fields can overlap and differ in their questions, methods or settings; an introductory list is not exhaustive.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Their boundaries can overlap.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "They can differ in questions and methods.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Every situation belongs to exactly one field.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "A list of fields is always final.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "Clinical psychology represents the whole of psychology.",
+            "explanation": "Clinical psychology is one field among many fundamental and applied areas.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "What is the best criterion for placing a new question within a field?",
+            "explanation": "Start with the phenomenon, question and level of analysis rather than a keyword.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "The precise object and research question",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The first psychological word encountered",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "The reader’s preference",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "The length of the questionnaire",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "niveaux-explication-complementaires",
+        "assessmentTitle": "Concept check — Levels of explanation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which question mainly uses a social level of explanation?",
+            "explanation": "The effect of group norms on behaviour is a social-psychological question.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "How do group norms influence risk-taking?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "What brain activity accompanies risk-taking?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Which reasoning strategy is used?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "How does the ability change between ages 6 and 12?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which question mainly uses a biological level of explanation?",
+            "explanation": "Measures of neural or physiological mechanisms mainly concern a biological level.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Which brain networks are active during the task?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Which expectations does the group communicate?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Which reasoning strategy is used?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "How does this ability change with age?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Why can several levels of explanation be relevant to one behaviour?",
+            "explanation": "They can address different mechanisms and support complementary hypotheses, all of which still require evidence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "They can concern different mechanisms.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "They can generate complementary hypotheses.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "They prove that evidence is unnecessary.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "They guarantee that every explanation is true.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "A brain-based explanation automatically makes cognitive or social explanations unnecessary.",
+            "explanation": "Different levels may answer different questions and can complement one another.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "After proposing four levels of explanation for procrastination, what comes next scientifically?",
+            "explanation": "The perspectives must become testable hypotheses linked to relevant evidence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Formulate testable hypotheses and define the required evidence",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choose the explanation that feels most intuitive",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Declare all four explanations proven",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Remove the social explanations",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "recherche-et-applications",
+        "assessmentTitle": "Concept check — Research and applications",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which statement best describes fundamental research?",
+            "explanation": "Its immediate purpose is to understand a mechanism or pattern, even if applications may follow.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Studying how attention selects competing information",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Immediately implementing a recruitment process",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Prescribing treatment to a person",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Choosing a slogan without evaluating it",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which statement best describes applied work?",
+            "explanation": "Applied work uses or evaluates knowledge in a concrete setting.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Evaluating a workplace change intended to reduce errors",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Only describing the history of a concept",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Stating a personal preference",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Avoiding any outcome measure",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which statements about research and application are correct?",
+            "explanation": "A field may create and apply knowledge, and applications can be evaluated empirically.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "One field can combine research and practice.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "An application can be evaluated scientifically.",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Fundamental research can never become useful.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Every practice automatically produces evidence.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "“Applied” means that scientific methods are no longer necessary.",
+            "explanation": "Applications also need clear objectives, outcome measures and acknowledged limits.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "An occupational psychologist tests whether a new organisation reduces errors. Which description is most accurate?",
+            "explanation": "Applied work and empirical evaluation can occur together.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Application and empirical evaluation can be combined.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "It cannot be psychology because it occurs at work.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Any reduction immediately proves causation.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Applied work excludes hypotheses.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "English pilot produced from French program version 1; human linguistic, pedagogical, and cultural/legal reviews are required before approval or publication.",
+        "Translation approval is independent from scientific validation."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English pilot while preserving canonical keys, evidence links, resources and the authored sequence.",
+        "reviewRequired": "linguistic_pedagogical_and_cultural_legal"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Three concept cycles: focused input, guided consultation or application, then a concept check. No mechanical grouping by activity type.",
+      "cycles": [
+        {
+          "conceptSlug": "diversite-domaines-psychologiques",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-3",
+            "yale-psyc110-lecture-1-domains"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-diversite-domaines-psychologiques-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "niveaux-explication-complementaires",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": ["apa-subfields-careers-guide"],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-niveaux-explication-complementaires-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "recherche-et-applications",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-recherche-et-applications-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        }
+      ]
+    }
+  }
+}

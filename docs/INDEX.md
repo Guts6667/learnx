@@ -63,6 +63,21 @@ pharmacien.
 Ce parcours intensif prépare un entretien précis. Les informations relatives au
 poste doivent être revérifiées avant toute réutilisation ultérieure.
 
+## Psychology Foundations — English pilot
+
+- Blueprint : `content/psychology-foundations-pilot/CURRICULUM_BLUEPRINT.md`
+- Spécifications : `content/psychology-foundations-pilot/specs/`
+- Évaluation d'étape :
+  `content/psychology-foundations-pilot/stage-assessments/`
+- Manifeste :
+  `content/psychology-foundations-pilot/TRANSLATION_MANIFEST_en.json`
+- Bundle Prisma : `seed/psychology-foundations-pilot-program.json`
+
+Ce pilote reste un brouillon privé tant que les revues humaines linguistique,
+pédagogique et culturelle/juridique ne sont pas approuvées dans le workflow
+bilingue. Sa publication et sa progression sont indépendantes du programme
+français.
+
 ## Archives
 
 - `docs/archive/v1/` : backlog et point d'entrée historique V1.

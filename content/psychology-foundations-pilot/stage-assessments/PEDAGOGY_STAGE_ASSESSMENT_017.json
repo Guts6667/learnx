@@ -1,0 +1,115 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_017",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "discovering-the-discipline",
+  "assessment": {
+    "seed": {
+      "title": "Final assessment — Discovering the discipline",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Analyse a proposed workplace intervention by distinguishing psychological claims, scientific questions, relevant fields, professional titles and ethical requirements.",
+    "instructions": [
+      "Read the NovaWork case and separate observed facts, interpretations and claims that require evidence.",
+      "Formulate two testable psychological questions and propose at least one observable indicator for each.",
+      "Use at least three different fields or levels of explanation and justify how they complement one another.",
+      "Distinguish the possible roles of an occupational psychologist, clinical psychologist, psychiatrist and psychotherapist without assuming competence from a title alone.",
+      "Identify at least five ethical or professional issues, including purpose, information, consent, confidentiality, competence and referral.",
+      "Propose a cautious action plan that states the missing information, required checks and limits of the conclusion."
+    ],
+    "case": "NovaWork employs 120 people. Following an increase in absence, management buys an application advertised as “validated by neuroscience”. A ten-item questionnaire classifies each employee as motivated, fragile or resilient. The provider claims it can identify future sickness absence with 95% accuracy but supplies no study and does not describe the population on which the tool was evaluated. Participation is described as voluntary, yet team leaders publicly remind people who have not responded. The notice calls the results anonymous, but management requests individual scores to decide work assignments. The provider calls himself a “psycho-expert and analyst” without naming a protected title or verifiable qualification. An employee reports panic attacks and asks whether the provider can prescribe treatment. Management intends to launch the system the following week and asks you for a reasoned opinion.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "A structured 900–1,200 word report using the six required sections and citing resources from the stage.",
+    "conceptSlugs": [
+      "objet-psychologie",
+      "comportements-processus-mentaux",
+      "demarche-empirique",
+      "diversite-domaines-psychologiques",
+      "niveaux-explication-complementaires",
+      "recherche-et-applications",
+      "titres-et-roles-france",
+      "competence-limites-orientation",
+      "droits-consentement-confidentialite"
+    ],
+    "rubric": [
+      {
+        "criterion": "Scientific framing",
+        "weight": 25,
+        "requirements": [
+          "Facts, interpretations and claims are distinguished.",
+          "Two testable questions and their indicators are formulated.",
+          "The accuracy claim is treated as a claim requiring verification."
+        ]
+      },
+      {
+        "criterion": "Use of psychological fields",
+        "weight": 20,
+        "requirements": [
+          "At least three fields or levels are used accurately.",
+          "Their relevance and complementarity are justified.",
+          "No field is presented as a complete explanation by default."
+        ]
+      },
+      {
+        "criterion": "Titles, competence and referral",
+        "weight": 20,
+        "requirements": [
+          "Professional titles and roles are distinguished without extrapolation.",
+          "The provider’s qualifications are identified as requiring verification.",
+          "The request for medication and the panic attacks lead to an appropriate and cautious referral."
+        ]
+      },
+      {
+        "criterion": "Ethical analysis and protection of people",
+        "weight": 25,
+        "requirements": [
+          "Purpose, information, consent, confidentiality, competence and power are analysed.",
+          "The conflict between anonymity and individual scores is explicit.",
+          "The proposals concretely reduce risks to employees."
+        ]
+      },
+      {
+        "criterion": "Argument and limits",
+        "weight": 10,
+        "requirements": [
+          "The response is structured, evidence-based and understandable.",
+          "Missing information and limits are stated.",
+          "The action plan does not promise an unsupported outcome."
+        ]
+      }
+    ],
+    "remediation": "For every criterion below 70%, revisit the corresponding concepts, revise that part while identifying the changes, and submit a new version. Keep the sources and state any remaining limits."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "createdAt": "2026-08-09",
+    "referenceIds": [
+      "PEDAGOGY_SPEC_084",
+      "PEDAGOGY_SPEC_085",
+      "PEDAGOGY_SPEC_086",
+      "French source program version 1 (495c52a37f5bf47ec40927568c7c908ee7176f735e412cdf987f31bfa764eac7)"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "The case is fictional.",
+        "Human linguistic, pedagogical, and cultural/legal reviews are required before publication.",
+        "The France-specific legal framework and French-language resources must be reviewed by a competent human reviewer."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English pilot assessment from the French source edition.",
+        "reviewRequired": "linguistic_pedagogical_and_cultural_legal"
+      }
+    ]
+  }
+}

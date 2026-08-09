@@ -1,0 +1,987 @@
+{
+  "specId": "PEDAGOGY_SPEC_086",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "discovering-the-discipline",
+  "moduleSlug": "what-is-psychology",
+  "lesson": {
+    "title": "Professions and ethics",
+    "slug": "professions-and-ethics",
+    "summary": "In France, the titles psychologist, psychiatrist and psychotherapist and the description psychoanalyst do not imply the same training or scope of practice. This lesson explains the French framework and shows how competence, informed consent, confidentiality, rights and referral support responsible practice.",
+    "objectives": [
+      "Distinguish the titles psychologist, psychiatrist and psychotherapist and the description psychoanalyst in France.",
+      "Identify the limits of a practitioner’s competence and situations that require referral.",
+      "Analyse a situation using consent, confidentiality, respect for the person and protection from abuse of power.",
+      "Distinguish legal requirements, professional rules and context-sensitive ethical decisions."
+    ],
+    "prerequisites": [
+      "Define psychology as a scientific discipline.",
+      "Distinguish a field of research, a level of explanation and a setting of application."
+    ],
+    "estimatedMinutes": 135,
+    "position": 3,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "In France, professional use of the title psychologist is protected by law and depends on specified qualifications or authorisations. A psychiatrist is a specialist physician who can make a medical diagnosis and prescribe medication. Holding the title psychologist does not in itself make someone a physician and does not authorise medication prescribing. Both professions may work in care, research, teaching or other settings depending on their training and role.",
+          "sourceKeys": [
+            "legifrance-titre-psychologue-article-44",
+            "service-public-psychologue-psychiatre"
+          ]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Use of the title psychotherapist is also regulated and requires registration; it is not interchangeable with psychologist or the medical specialty of psychiatry. Someone describing themselves as a psychoanalyst may also be a psychologist or psychiatrist, but this is not automatic. Each protected title, relevant qualification, registration, advertised method and actual scope of competence must therefore be checked separately.",
+          "sourceKeys": ["service-public-psychologue-psychiatre"]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Invented example: an occupational psychologist meets an employee who reports panic attacks and an immediate risk to her safety. The psychologist can listen, assess the situation within the limits of her role, and refer the employee to appropriate services. She must not imply that occupational training automatically covers every clinical or medical intervention. Recognising limits and arranging a referral are parts of competent practice.",
+          "sourceKeys": ["cncdp-code-deontologie-2021"]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Professional ethics organise responsibility towards people. The 2021 French code emphasises rights and dignity, autonomy, information, privacy, professional secrecy and confidentiality. These principles require practitioners to explain the purpose and framework of an intervention, seek free and informed consent, protect information, and limit sharing to what is justified. Applicable legal duties remain binding and must be assessed in context.",
+          "sourceKeys": ["cncdp-code-deontologie-2021"]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "A professional title does not guarantee universal competence or the quality of a particular intervention. Before placing trust in a service, ask for the exact title, relevant training, confidentiality framework, purpose and limits, consent arrangements, and referral options. Refusing to explain the framework, guaranteeing outcomes, pressuring someone to continue, or requesting information without a clear purpose are warning signs.",
+          "sourceKeys": [
+            "cncdp-code-deontologie-2021",
+            "legifrance-titre-psychologue-article-44"
+          ]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "service-public-psychologue-psychiatre",
+        "type": "website",
+        "title": "Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ?",
+        "author": "Direction de l’information légale et administrative — Service-Public.fr",
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917?lang=fr",
+        "citation": "Direction de l’information légale et administrative. (2026). Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ? Service-Public.fr.",
+        "description": "French official guidance. Read only the section comparing psychologists, psychiatrists and psychoanalysts. Record training, medical status and prescribing rights. Pricing information is outside this lesson.",
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1,
+        "guidance": {
+          "objective": "Distinguish the main professional titles in the French context.",
+          "instructions": "Read the comparison section in French and record what each title establishes and what it does not establish.",
+          "scope": "“Psychologue, psychiatre, psychanalyste : quelles différences ?”",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Official HTML page in French.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "legifrance-titre-psychologue-article-44",
+        "type": "document",
+        "title": "Loi n° 85-772 du 25 juillet 1985 — Article 44",
+        "author": "République française",
+        "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000033678864",
+        "citation": "République française. (1985, version en vigueur depuis le 24 décembre 2016). Loi n° 85-772 du 25 juillet 1985, article 44.",
+        "description": "French legal text. Read paragraph I on professional use of the title and paragraph IV on misuse. Summarise what the law protects without listing every qualification.",
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2,
+        "guidance": {
+          "objective": "Identify the legal protection of the title psychologist in France.",
+          "instructions": "Read paragraphs I and IV and write a two-sentence summary.",
+          "scope": "Article 44, paragraphs I and IV",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Official French HTML; dense legal wording.",
+          "alternativeResourceKey": "service-public-psychologue-psychiatre"
+        }
+      },
+      {
+        "key": "cncdp-code-deontologie-2021",
+        "type": "document",
+        "title": "Code de déontologie des psychologues — version consolidée 2021",
+        "author": "CNCDP et organisations signataires du CERéDéPsy",
+        "url": "https://cncdp.fr/index.php/code-de-deontologie/code-de-deontologie-2021",
+        "citation": "Commission Nationale Consultative de Déontologie des Psychologues. (2021). Code de déontologie des psychologues, version consolidée au 9 septembre 2021.",
+        "description": "Read the preamble and principles 1–3 of the French code. Identify one requirement concerning rights, one concerning confidentiality, and one concerning competence. Do not treat the code as the whole of applicable law.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 3,
+        "guidance": {
+          "objective": "Apply professional principles concerning rights, confidentiality and competence.",
+          "instructions": "Read the preamble and principles 1–3 in French and produce one example for each requested principle.",
+          "scope": "Preamble and principles 1–3",
+          "urlStatus": "ok",
+          "accessibilityNotes": "HTML version in French; targeted reading limits the length.",
+          "alternativeResourceKey": null
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Professional titles and roles in France",
+        "slug": "titres-et-roles-france",
+        "description": "Psychologist, psychiatrist and psychotherapist have distinct frameworks; a label alone does not establish every competence a person has.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "legifrance-titre-psychologue-article-44"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Professional titles and roles",
+          "questionCount": 5,
+          "key": "concept-titres-et-roles-france-assessment-1"
+        }
+      },
+      {
+        "title": "Competence, limits and referral",
+        "slug": "competence-limites-orientation",
+        "description": "Responsible practice stays within the practitioner’s training and role, explains its limits and arranges referral when needed.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "cncdp-code-deontologie-2021"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Competence and referral",
+          "questionCount": 5,
+          "key": "concept-competence-limites-orientation-assessment-1"
+        }
+      },
+      {
+        "title": "Rights, consent and confidentiality",
+        "slug": "droits-consentement-confidentialite",
+        "description": "Respect for people requires information, autonomy, appropriate consent, protection of information and context-sensitive consideration of applicable duties.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "cncdp-code-deontologie-2021",
+          "legifrance-titre-psychologue-article-44"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Rights and confidentiality",
+          "questionCount": 5,
+          "key": "concept-droits-consentement-confidentialite-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Compare four professional descriptions",
+        "description": "Create a table for psychologist, psychiatrist, psychotherapist and psychoanalyst. For each, state what the description establishes, what cannot be inferred from it, and which source you used.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": [
+          "service-public-psychologue-psychiatre",
+          "legifrance-titre-psychologue-article-44",
+          "cncdp-code-deontologie-2021"
+        ]
+      },
+      {
+        "title": "Decide on a referral",
+        "description": "Analyse three fictional situations: a learning difficulty, psychological distress that may require medical care, and a team conflict. Suggest an appropriate practitioner or service, justify the choice and identify missing information.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Identify ethical issues",
+        "description": "In a case where an organisation requests individual questionnaire results, identify issues of purpose, information, consent, confidentiality, competence and power. Propose a safer framework in 250–350 words.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "service-public-psychologue-psychiatre"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "legifrance-titre-psychologue-article-44"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "cncdp-code-deontologie-2021"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-titres-et-roles-france-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-competence-limites-orientation-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-droits-consentement-confidentialite-assessment-1"
+      }
+    ],
+    "canonicalKey": "metiers-et-ethique"
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-003-LOI-PSYCHOLOGUE",
+        "type": "law",
+        "authors": [],
+        "organization": "République française",
+        "title": "Loi n° 85-772 du 25 juillet 1985 — Article 44",
+        "year": 1985,
+        "edition": "Version en vigueur depuis le 24 décembre 2016",
+        "publication": "Légifrance",
+        "doi": null,
+        "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000033678864",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Texte juridique encadrant l’usage professionnel du titre de psychologue."
+      },
+      {
+        "id": "REF-003-DECRET-PSYCHOTHERAPEUTE",
+        "type": "regulation",
+        "authors": [],
+        "organization": "République française",
+        "title": "Décret n° 2010-534 du 20 mai 2010 relatif à l’usage du titre de psychothérapeute",
+        "year": 2010,
+        "edition": "Version consultée le 3 août 2026",
+        "publication": "Légifrance",
+        "doi": null,
+        "url": "https://www.legifrance.gouv.fr/jorf/id/JORFSCTA000022244497",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Cadre réglementaire de la formation et de l’enregistrement liés au titre de psychothérapeute."
+      },
+      {
+        "id": "REF-003-SERVICE-PUBLIC",
+        "type": "government_guidance",
+        "authors": [],
+        "organization": "Direction de l’information légale et administrative",
+        "title": "Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ?",
+        "year": 2026,
+        "edition": null,
+        "publication": "Service-Public.fr",
+        "doi": null,
+        "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917?lang=fr",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Synthèse administrative des différences de statut et de prescription."
+      },
+      {
+        "id": "REF-003-CODE-2021",
+        "type": "professional_code",
+        "authors": [],
+        "organization": "CNCDP et organisations signataires du CERéDéPsy",
+        "title": "Code de déontologie des psychologues — version consolidée au 9 septembre 2021",
+        "year": 2021,
+        "edition": "Version consolidée 2021",
+        "publication": "Commission Nationale Consultative de Déontologie des Psychologues",
+        "doi": null,
+        "url": "https://cncdp.fr/index.php/code-de-deontologie/code-de-deontologie-2021",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "fr",
+        "license": null,
+        "status": "verified",
+        "notes": "Code professionnel signé par 21 organisations ; ne résume pas à lui seul toutes les obligations légales."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-LOI-PSYCHOLOGUE",
+            "locator": "article 44, paragraphes I et IV",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-003-SERVICE-PUBLIC",
+            "locator": "rubrique « Psychologue, psychiatre, psychanalyste : quelles différences ? »",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "very_high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-DECRET-PSYCHOTHERAPEUTE",
+            "locator": "articles 1, 6 et 7",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-003-SERVICE-PUBLIC",
+            "locator": "lignes consacrées au psychothérapeute et au psychanalyste",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "principes généraux relatifs à la compétence et à la responsabilité",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "principes 1 à 3",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-003-CODE-2021",
+            "locator": "préambule et principes généraux",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-003-LOI-PSYCHOLOGUE",
+            "locator": "article 44",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "service-public-psychologue-psychiatre",
+        "referenceIds": ["REF-003-SERVICE-PUBLIC"],
+        "pedagogicalRationale": "French official guidance. Read only the section comparing psychologists, psychiatrists and psychoanalysts. Record training, medical status and prescribing rights. Pricing information is outside this lesson.",
+        "learnerInstructions": "Read the comparison section in French and record what each title establishes and what it does not establish.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML officielle en français.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Les tarifs et remboursements peuvent évoluer et ne sont pas enseignés ici."
+      },
+      {
+        "resourceKey": "legifrance-titre-psychologue-article-44",
+        "referenceIds": ["REF-003-LOI-PSYCHOLOGUE"],
+        "pedagogicalRationale": "French legal text. Read paragraph I on professional use of the title and paragraph IV on misuse. Summarise what the law protects without listing every qualification.",
+        "learnerInstructions": "Read paragraphs I and IV and write a two-sentence summary.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Texte HTML officiel ; formulation juridique dense.",
+        "alternativeResourceKey": "service-public-psychologue-psychiatre",
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "cncdp-code-deontologie-2021",
+        "referenceIds": ["REF-003-CODE-2021"],
+        "pedagogicalRationale": "Read the preamble and principles 1–3 of the French code. Identify one requirement concerning rights, one concerning confidentiality, and one concerning competence. Do not treat the code as the whole of applicable law.",
+        "learnerInstructions": "Read the preamble and principles 1–3 in French and produce one example for each requested principle.",
+        "language": "fr",
+        "accessType": "open",
+        "accessibilityNotes": "Version HTML disponible ; document long mais lecture ciblée.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "titres-et-roles-france",
+        "assessmentTitle": "Concept check — Professional titles and roles",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "In France, who is necessarily a physician by virtue of their title?",
+            "explanation": "A psychiatrist is a specialist physician. The title psychologist is not a medical title.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Psychiatrist",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Psychologist",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Psychoanalyst",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Coach",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "true_false",
+            "prompt": "A psychologist can prescribe medication solely by virtue of the title psychologist.",
+            "explanation": "A psychologist is not a physician solely by virtue of that title and cannot prescribe medication on that basis.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which titles discussed in this lesson are governed by specific French legal frameworks?",
+            "explanation": "Psychologist and psychotherapist are regulated by distinct texts; psychiatrist is a medical specialty.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Psychologist",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Psychotherapist",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Life coach",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Intuitive adviser",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "true_false",
+            "prompt": "Calling oneself a psychoanalyst automatically proves that the person is also a psychologist or psychiatrist.",
+            "explanation": "A psychoanalyst may hold either title, but this must be checked separately.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "What is the most reliable response to a professional description?",
+            "explanation": "Check the exact title, training, relevant registration and scope of competence separately.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Check title, training, registration and competence separately",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rely only on popularity on social media",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Treat every “psy” description as equivalent",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Infer training from the fee",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "competence-limites-orientation",
+        "assessmentTitle": "Concept check — Competence and referral",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "A practitioner encounters a situation outside their training. What is the most responsible response?",
+            "explanation": "They should explain their limits and arrange an appropriate referral rather than claim universal competence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Acknowledge the limit and suggest an appropriate referral",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Improvise care without explaining it",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Guarantee a rapid result",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Avoid giving the person any explanation",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "true_false",
+            "prompt": "Holding the title psychologist means being competent in every specialty of psychology.",
+            "explanation": "A title does not replace the training and experience required for a particular intervention.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which information helps assess whether an intervention falls within a practitioner’s competence?",
+            "explanation": "Relevant training, experience, role and the nature of the need are more informative than a general label.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "The practitioner’s relevant training",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The nature and urgency of the need",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "The number of online followers",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "A guarantee of success",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Why can referral to another professional demonstrate competence?",
+            "explanation": "It shows that the practitioner recognises the limits of their role and seeks an appropriate response.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "It protects the person and respects professional limits",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "It proves the first practitioner knows nothing",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "It removes the need for consent",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "It permits sharing all information",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "What takes priority when a person faces an immediate safety risk?",
+            "explanation": "The urgency must be assessed and appropriate services involved under the relevant professional and legal framework.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Assess the urgency and involve appropriate services",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Wait for the next appointment without acting",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Publish the situation to ask for advice",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Promise absolute secrecy without examining the framework",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "droits-consentement-confidentialite",
+        "assessmentTitle": "Concept check — Rights and confidentiality",
+        "questions": [
+          {
+            "type": "multiple_choice",
+            "prompt": "What should be clarified before a psychological intervention?",
+            "explanation": "People need understandable information about purpose, framework, information use and relevant limits.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "The purpose of the intervention",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The intended use of information",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "A guaranteed result",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "An obligation to accept without questions",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "A company requests individual scores from a questionnaire presented as anonymous. What is the first problem?",
+            "explanation": "Individual disclosure contradicts the promise of anonymity; purpose, consent and access must be clarified.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "The contradiction between promised anonymity and individual disclosure",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The questionnaire must be too short",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "The results should be published online",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Consent is unnecessary at work",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Consent is valid even when the person does not know the purpose or use of their data.",
+            "explanation": "Informed consent requires understandable information about purpose, framework and relevant consequences.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which practices support confidentiality?",
+            "explanation": "Limiting collection and access, explaining the rules and sharing only justified information reduce privacy risks.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Limit access to authorised people",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Collect only necessary information",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Share the whole record by default",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Keep the purpose secret",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which statement best describes the relationship between professional ethics and law?",
+            "explanation": "Ethical reflection guides practice, while applicable legal duties must also be identified and followed.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Professional ethics guide practice without replacing legal duties.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "A professional code overrides every law.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Law automatically resolves every situation.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ethics and law are unrelated to practice.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "English pilot produced from French program version 1; human linguistic, pedagogical, and cultural/legal reviews are required before approval or publication.",
+        "Translation approval is independent from scientific validation."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English pilot while preserving canonical keys, evidence links, resources and the authored sequence.",
+        "reviewRequired": "linguistic_pedagogical_and_cultural_legal"
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Three concept cycles: focused input, guided consultation or application, then a concept check. No mechanical grouping by activity type.",
+      "cycles": [
+        {
+          "conceptSlug": "titres-et-roles-france",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "service-public-psychologue-psychiatre",
+            "legifrance-titre-psychologue-article-44",
+            "cncdp-code-deontologie-2021"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-titres-et-roles-france-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "competence-limites-orientation",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-competence-limites-orientation-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "droits-consentement-confidentialite",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-droits-consentement-confidentialite-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        }
+      ]
+    }
+  }
+}

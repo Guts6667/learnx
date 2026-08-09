@@ -1,0 +1,1082 @@
+{
+  "specId": "PEDAGOGY_SPEC_084",
+  "schemaVersion": 1,
+  "programSlug": "psychology-foundations-pilot",
+  "stageSlug": "discovering-the-discipline",
+  "moduleSlug": "what-is-psychology",
+  "lesson": {
+    "title": "Defining psychology",
+    "slug": "defining-psychology",
+    "summary": "Psychology is the scientific study of behaviour and mental processes. This lesson establishes a rigorous definition of the discipline, distinguishes direct observation from inference, and explains why psychological claims must be tested against evidence.",
+    "objectives": [
+      "Define psychology as a scientific discipline.",
+      "Distinguish observable behaviour from a mental process.",
+      "Turn a broad question about people into an empirically testable question.",
+      "Explain why intuition and personal experience are not enough to establish psychological knowledge."
+    ],
+    "prerequisites": [],
+    "position": 1,
+    "estimatedMinutes": 90,
+    "contentBlocks": [
+      {
+        "type": "rich_text",
+        "position": 1,
+        "content": {
+          "text": "Psychology is not limited to psychotherapy or the study of mental disorders. It investigates how people and, depending on the question, other animals perceive, learn, remember, feel, decide and act. Some research primarily develops fundamental knowledge; other work applies that knowledge in health, education, employment or ergonomics.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-1",
+            "apa-definition-psychology"
+          ]
+        },
+        "key": "content-1"
+      },
+      {
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Psychology is the scientific study of behaviour and mental processes. Behaviour is an activity that can be observed or measured. A mental process includes perception, thought, emotion, memory or decision-making. It is not always directly observable, but it can be studied through indicators defined in advance.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-1",
+            "openstax-psychology-2e-2-1",
+            "apa-definition-psychology"
+          ]
+        },
+        "key": "content-2"
+      },
+      {
+        "type": "example",
+        "position": 3,
+        "content": {
+          "text": "Saying that someone “lacks motivation” is too vague to count as a scientific observation. A study could instead measure how long the person works on a task, how many attempts they make after failure, and their responses on a validated motivation scale. The abstract concept is then connected to explicit observations without being reduced to a single measure.",
+          "sourceKeys": [
+            "openstax-psychology-2e-2-1",
+            "openstax-psychology-2e-2-2"
+          ]
+        },
+        "key": "content-3"
+      },
+      {
+        "type": "rich_text",
+        "position": 4,
+        "content": {
+          "text": "Scientific describes a way of working: formulating a precise question, proposing a testable explanation, collecting data systematically, and accepting that conclusions may be corrected by new observations. A single study does not establish a final truth. Findings become more robust when other researchers examine and replicate them and when they are considered alongside the wider body of evidence.",
+          "sourceKeys": ["openstax-psychology-2e-2-1"]
+        },
+        "key": "content-4"
+      },
+      {
+        "type": "callout",
+        "position": 5,
+        "content": {
+          "text": "Key point: psychology studies behaviour and mental processes; it uses observations and measurements; it does not read minds; and psychological claims must be open to discussion using evidence rather than intuition alone.",
+          "sourceKeys": [
+            "openstax-psychology-2e-1-1",
+            "openstax-psychology-2e-2-1"
+          ]
+        },
+        "key": "content-5"
+      }
+    ],
+    "resources": [
+      {
+        "key": "openstax-psychology-2e-1-1",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 1.1 What Is Psychology?",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/1-1-what-is-psychology",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.1. OpenStax.",
+        "description": "Open-access resource in English. Read section 1.1 and identify the definition of psychology, what makes its approach scientific, and one example of a researchable question.",
+        "isRequired": true,
+        "estimatedMinutes": 25,
+        "position": 1,
+        "guidance": {
+          "objective": "Identify an academic definition of psychology and the role of scientific evidence.",
+          "instructions": "Read all of section 1.1 and record the object of psychology, one feature of scientific inquiry, and one researchable question.",
+          "scope": "Section 1.1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Structured HTML version available.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "apa-definition-psychology",
+        "type": "website",
+        "title": "How does the APA define psychology?",
+        "author": "American Psychological Association",
+        "url": "https://www.apa.org/support/about-apa.html",
+        "citation": "American Psychological Association. Frequently Asked Questions About APA, section “How does the APA define psychology?”.",
+        "description": "Read the APA’s short institutional definition to check the breadth of the discipline, from brain function to collective behaviour.",
+        "isRequired": true,
+        "estimatedMinutes": 5,
+        "position": 2,
+        "guidance": {
+          "objective": "Compare an institutional definition with the lesson definition.",
+          "instructions": "Read the answer to “How does the APA define psychology?” and note two levels of analysis it mentions.",
+          "scope": "FAQ entry “How does the APA define psychology?”",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Short HTML page in English.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "yale-psyc110-lecture-1",
+        "type": "course",
+        "title": "Introduction to Psychology — Lecture 1: Introduction",
+        "author": "Paul Bloom, Yale University",
+        "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+        "citation": "Bloom, P. PSYC 110: Introduction to Psychology, Lecture 1. Open Yale Courses.",
+        "description": "Optional open course with a transcript. Watch or read “General Goals for the Course” from 10:03; the full lecture is further reading.",
+        "isRequired": false,
+        "estimatedMinutes": 15,
+        "position": 3,
+        "guidance": {
+          "objective": "Recognise the range of questions covered by introductory psychology.",
+          "instructions": "Watch or read the segment beginning at 10:03 and note the main goals presented.",
+          "scope": "From 00:10:03, “General Goals for the Course”",
+          "urlStatus": "ok",
+          "accessibilityNotes": "English transcript and video available.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-2-1",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 2.1 Why Is Research Important?",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.1. OpenStax.",
+        "isRequired": false,
+        "position": 4,
+        "description": "Optional further reading on why empirical research is needed to move beyond intuition and authority.",
+        "estimatedMinutes": 20,
+        "guidance": {
+          "objective": "Explain why psychological claims require systematic evidence.",
+          "instructions": "Read section 2.1 and identify two limits of intuition.",
+          "scope": "Section 2.1",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Structured HTML version available.",
+          "alternativeResourceKey": null
+        }
+      },
+      {
+        "key": "openstax-psychology-2e-2-2",
+        "type": "book_chapter",
+        "title": "Psychology 2e — 2.2 Approaches to Research",
+        "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+        "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research",
+        "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax.",
+        "isRequired": false,
+        "position": 5,
+        "description": "Optional further reading introducing research methods suited to different psychological questions.",
+        "estimatedMinutes": 20,
+        "guidance": {
+          "objective": "Recognise that research questions require appropriate methods and measures.",
+          "instructions": "Read the overview of section 2.2 and compare two approaches.",
+          "scope": "Section 2.2",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Structured HTML version available.",
+          "alternativeResourceKey": null
+        }
+      }
+    ],
+    "concepts": [
+      {
+        "title": "The subject matter of psychology",
+        "slug": "objet-psychologie",
+        "description": "Psychology studies behaviour and mental processes at biological, individual and social levels.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-1",
+          "apa-definition-psychology"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — The subject matter of psychology",
+          "questionCount": 5,
+          "key": "concept-objet-psychologie-assessment-1"
+        }
+      },
+      {
+        "title": "Behaviour and mental processes",
+        "slug": "comportements-processus-mentaux",
+        "description": "Behaviour can be observed or measured directly, whereas mental processes are studied using explicit indicators and cautious inference.",
+        "position": 2,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openstax-psychology-2e-1-1",
+          "yale-psyc110-lecture-1"
+        ],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Behaviour and mental processes",
+          "questionCount": 5,
+          "key": "concept-comportements-processus-mentaux-assessment-1"
+        }
+      },
+      {
+        "title": "Empirical inquiry",
+        "slug": "demarche-empirique",
+        "description": "Scientific psychological knowledge relies on testable questions, systematic observations and revisable conclusions.",
+        "position": 3,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openstax-psychology-2e-1-1"],
+        "assessment": {
+          "type": "quiz",
+          "title": "Concept check — Empirical inquiry",
+          "questionCount": 5,
+          "key": "concept-demarche-empirique-assessment-1"
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "title": "Read an academic definition of psychology",
+        "description": "Read section 1.1 of Psychology 2e and record separately: the subject matter of psychology, what makes its approach scientific, and one example of a researchable question.",
+        "type": "reading",
+        "isRequired": true,
+        "weight": 1,
+        "position": 1,
+        "key": "activity-1",
+        "resourceKeys": ["openstax-psychology-2e-1-1"]
+      },
+      {
+        "title": "Write your own definition",
+        "description": "Write an 80–120 word definition of psychology using the terms “behaviour”, “mental processes”, “scientific” and “evidence”, without copying the resources.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 1,
+        "position": 2,
+        "key": "activity-2",
+        "resourceKeys": []
+      },
+      {
+        "title": "Make a question observable",
+        "description": "Choose a common claim, such as “stress harms memory”, then propose a research question and two measurable indicators. You do not need to design a full study yet.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 1,
+        "position": 3,
+        "key": "activity-3",
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-1-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "apa-definition-psychology"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "yale-psyc110-lecture-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-1"
+      },
+      {
+        "kind": "TASK",
+        "key": "activity-1"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-objet-psychologie-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-3"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-4"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openstax-psychology-2e-2-2"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-2"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-comportements-processus-mentaux-assessment-1"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-5"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "activity-3"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "concept-demarche-empirique-assessment-1"
+      }
+    ],
+    "canonicalKey": "definir-la-psychologie"
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "editorial_review",
+    "language": "en",
+    "audience": "Adult beginners with no university prerequisites",
+    "owner": "LearnX",
+    "createdAt": "2026-08-09",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-001-OPENSTAX-PSYCHOLOGY-2E-1-1",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 1.1 What Is Psychology?",
+        "year": 2020,
+        "edition": "2e ed.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/1-1-what-is-psychology",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.1. OpenStax."
+      },
+      {
+        "id": "REF-001-APA-DEFINITION-PSYCHOLOGY",
+        "type": "institutional_guide",
+        "authors": [],
+        "organization": "American Psychological Association",
+        "title": "How does the APA define psychology?",
+        "year": null,
+        "edition": null,
+        "publication": "American Psychological Association",
+        "doi": null,
+        "url": "https://www.apa.org/support/about-apa.html",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "American Psychological Association. Frequently Asked Questions About APA, section “How does the APA define psychology?”."
+      },
+      {
+        "id": "REF-001-YALE-PSYC110-LECTURE-1",
+        "type": "open_course",
+        "authors": ["Bloom, P."],
+        "organization": "Yale University",
+        "title": "Introduction to Psychology — Lecture 1: Introduction",
+        "year": 2007,
+        "edition": null,
+        "publication": "Open Yale Courses",
+        "doi": null,
+        "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "E",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Bloom, P. PSYC 110: Introduction to Psychology, Lecture 1. Open Yale Courses."
+      },
+      {
+        "id": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 2.1 Why Is Research Important?",
+        "year": 2020,
+        "edition": "2e ed.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.1. OpenStax."
+      },
+      {
+        "id": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-2",
+        "type": "textbook",
+        "authors": ["Spielman, R. M.", "Jenkins, W. J.", "Lovett, M. D."],
+        "organization": "OpenStax",
+        "title": "Psychology 2e — 2.2 Approaches to Research",
+        "year": 2020,
+        "edition": "2e ed.",
+        "publication": "OpenStax, Rice University",
+        "doi": null,
+        "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research",
+        "accessedAt": "2026-08-03",
+        "evidenceLevel": "B",
+        "peerReviewed": true,
+        "language": "en",
+        "license": "CC BY-NC-SA 4.0",
+        "status": "verified",
+        "notes": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-1-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-001-APA-DEFINITION-PSYCHOLOGY",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-1-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-001-APA-DEFINITION-PSYCHOLOGY",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-2",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 4,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 5,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-1-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          },
+          {
+            "referenceId": "REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1",
+            "locator": "Section ciblée par la ressource liée.",
+            "supports": "Evidence supporting the corresponding translated content block."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "The evidence and locators are inherited unchanged from the French source edition.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openstax-psychology-2e-1-1",
+        "referenceIds": ["REF-001-OPENSTAX-PSYCHOLOGY-2E-1-1"],
+        "pedagogicalRationale": "Open-access resource in English. Read section 1.1 and identify the definition of psychology, what makes its approach scientific, and one example of a researchable question.",
+        "learnerInstructions": "Read all of section 1.1 and record the object of psychology, one feature of scientific inquiry, and one researchable question.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version web disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "apa-definition-psychology",
+        "referenceIds": ["REF-001-APA-DEFINITION-PSYCHOLOGY"],
+        "pedagogicalRationale": "Read the APA’s short institutional definition to check the breadth of the discipline, from brain function to collective behaviour.",
+        "learnerInstructions": "Read the answer to “How does the APA define psychology?” and note two levels of analysis it mentions.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version web disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "yale-psyc110-lecture-1",
+        "referenceIds": ["REF-001-YALE-PSYC110-LECTURE-1"],
+        "pedagogicalRationale": "Optional open course with a transcript. Watch or read “General Goals for the Course” from 10:03; the full lecture is further reading.",
+        "learnerInstructions": "Watch or read the segment beginning at 10:03 and note the main goals presented.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version web disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": true,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-2-1",
+        "referenceIds": ["REF-001-OPENSTAX-PSYCHOLOGY-2E-2-1"],
+        "pedagogicalRationale": "Optional further reading on why empirical research is needed to move beyond intuition and authority.",
+        "learnerInstructions": "Read section 2.1 and identify two limits of intuition.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version web disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      },
+      {
+        "resourceKey": "openstax-psychology-2e-2-2",
+        "referenceIds": ["REF-001-OPENSTAX-PSYCHOLOGY-2E-2-2"],
+        "pedagogicalRationale": "Optional further reading introducing research methods suited to different psychological questions.",
+        "learnerInstructions": "Read the overview of section 2.2 and compare two approaches.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Version web disponible.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-09",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": null
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "objet-psychologie",
+        "assessmentTitle": "Concept check — The subject matter of psychology",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which definition best describes scientific psychology?",
+            "explanation": "Psychology studies behaviour and mental processes through explicit questions and evidence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "The scientific study of behaviour and mental processes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "The intuitive interpretation of personality",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Psychotherapy only",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "The exclusive study of the brain",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which topics can psychology study?",
+            "explanation": "The discipline studies observable behaviour as well as processes such as memory, emotion and perception.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Memory",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Cooperation",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Mental disorders only",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Personal opinions only",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Psychology is limited to therapeutic support.",
+            "explanation": "Clinical practice is one part of a discipline that also includes fundamental research and many applications.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which is clearly a psychological research question?",
+            "explanation": "The influence of social context on decisions concerns measurable behaviour and mental processes.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "How does the presence of other people affect a decision?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "What is the atomic mass of carbon?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Which grammar rule applies here?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Which planet is closest to the Sun?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "true_false",
+            "prompt": "Psychology can produce fundamental knowledge and practical applications.",
+            "explanation": "Psychology connects the study of mechanisms with uses in health, education, work and other settings.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "comportements-processus-mentaux",
+        "assessmentTitle": "Concept check — Behaviour and mental processes",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which is directly observable behaviour?",
+            "explanation": "Raising a hand is observable, while remembering, feeling and intending are mental processes inferred from indicators.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Raising a hand",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Remembering a face",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Feeling worried",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Forming an intention",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Why are indicators used to study a mental process?",
+            "explanation": "A mental process is not always directly observable, so defined measures support cautious inference.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Because the process is not always directly observable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Because an indicator always proves causation",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Because every measure replaces theory",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Because behaviour is irrelevant",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Reaction time is the mental process itself.",
+            "explanation": "Reaction time is an observable indicator; it is not identical to the process being studied.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which measures could indicate attention?",
+            "explanation": "Response time and errors are observable measures; vague labels without criteria are not.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Response time",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Number of errors",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "The statement “they are inattentive” without a criterion",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "An undescribed intuition",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Which conclusion is the most cautious?",
+            "explanation": "A measure supports a bounded interpretation; it does not reveal a person’s mind directly.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "These results are consistent with lower attention on this task.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "We know exactly what the person is thinking.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "One error reveals the whole personality.",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "The indicator rules out every alternative explanation.",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 5
+          }
+        ]
+      },
+      {
+        "conceptSlug": "demarche-empirique",
+        "assessmentTitle": "Concept check — Empirical inquiry",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Which question is most directly testable?",
+            "explanation": "It specifies a measurable condition and an observable result.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Does a shorter night of sleep increase errors on this task?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Does sleep possess a beneficial essence?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Why are some people simply better?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Is my intuition always right?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Which features belong to empirical inquiry?",
+            "explanation": "Empirical inquiry uses systematic observation, explicit measures and revisable conclusions.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Collect data systematically",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Define measures in advance",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Protect a conclusion from criticism",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Replace observation with authority",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "One personal experience is enough to establish a general pattern.",
+            "explanation": "Experience may suggest a question, but general conclusions require systematically collected evidence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          },
+          {
+            "type": "single_choice",
+            "prompt": "What should researchers do when robust results contradict their original hypothesis?",
+            "explanation": "Scientific explanations must be revised or rejected when evidence does not support them.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Revise the explanation and examine the method",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Remove the conflicting results",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Keep the hypothesis as truth",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Replace the data with an anecdote",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 4
+          },
+          {
+            "type": "true_false",
+            "prompt": "Replication and scrutiny by other researchers can strengthen or correct a conclusion.",
+            "explanation": "New observations and criticism make scientific knowledge cumulative and revisable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "True",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "False",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 5
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Three concept cycles: focused input, guided consultation or application, then a concept check. No mechanical grouping by activity type.",
+      "cycles": [
+        {
+          "conceptSlug": "objet-psychologie",
+          "contentKeys": ["content-1", "content-2"],
+          "resourceKeys": [
+            "openstax-psychology-2e-1-1",
+            "apa-definition-psychology",
+            "yale-psyc110-lecture-1",
+            "openstax-psychology-2e-2-1"
+          ],
+          "activity": {
+            "kind": "TASK",
+            "key": "activity-1"
+          },
+          "assessmentKey": "concept-objet-psychologie-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "comportements-processus-mentaux",
+          "contentKeys": ["content-3", "content-4"],
+          "resourceKeys": ["openstax-psychology-2e-2-2"],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-2"
+          },
+          "assessmentKey": "concept-comportements-processus-mentaux-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        },
+        {
+          "conceptSlug": "demarche-empirique",
+          "contentKeys": ["content-5"],
+          "resourceKeys": [],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "activity-3"
+          },
+          "assessmentKey": "concept-demarche-empirique-assessment-1",
+          "rationale": "The original pedagogical placement and stable activity keys are preserved from the approved French sequence."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": true,
+      "linksAndMedia": true,
+      "readyForPublication": false,
+      "notes": [
+        "English pilot produced from French program version 1; human linguistic, pedagogical, and cultural/legal reviews are required before approval or publication.",
+        "Translation approval is independent from scientific validation."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-09",
+        "author": "LearnX",
+        "change": "Created the English pilot while preserving canonical keys, evidence links, resources and the authored sequence.",
+        "reviewRequired": "linguistic_pedagogical_and_cultural_legal"
+      }
+    ]
+  }
+}

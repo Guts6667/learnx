@@ -1,0 +1,2241 @@
+{
+  "program": {
+    "title": "Psychology Foundations — Pilot",
+    "slug": "psychology-foundations-pilot",
+    "canonicalProgramKey": "fondamentaux-psychologie",
+    "locale": "en",
+    "description": "A human-reviewed pilot translation of the first Psychology Foundations module.",
+    "status": "draft",
+    "position": 1,
+    "estimatedDurationDays": 14,
+    "stages": [
+      {
+        "title": "Discovering the discipline",
+        "slug": "discovering-the-discipline",
+        "canonicalKey": "decouvrir-discipline",
+        "position": 1,
+        "estimatedDurationDays": 14,
+        "assessment": {
+          "title": "Final assessment — Discovering the discipline",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Analyse a proposed workplace intervention by distinguishing psychological claims, scientific questions, relevant fields, professional titles and ethical requirements.",
+          "instructions": "## Instructions\n1. Read the NovaWork case and separate observed facts, interpretations and claims that require evidence.\n2. Formulate two testable psychological questions and propose at least one observable indicator for each.\n3. Use at least three different fields or levels of explanation and justify how they complement one another.\n4. Distinguish the possible roles of an occupational psychologist, clinical psychologist, psychiatrist and psychotherapist without assuming competence from a title alone.\n5. Identify at least five ethical or professional issues, including purpose, information, consent, confidentiality, competence and referral.\n6. Propose a cautious action plan that states the missing information, required checks and limits of the conclusion.\n\n## NovaWork case\nNovaWork employs 120 people. Following an increase in absence, management buys an application advertised as “validated by neuroscience”. A ten-item questionnaire classifies each employee as motivated, fragile or resilient. The provider claims it can identify future sickness absence with 95% accuracy but supplies no study and does not describe the population on which the tool was evaluated. Participation is described as voluntary, yet team leaders publicly remind people who have not responded. The notice calls the results anonymous, but management requests individual scores to decide work assignments. The provider calls himself a “psycho-expert and analyst” without naming a protected title or verifiable qualification. An employee reports panic attacks and asks whether the provider can prescribe treatment. Management intends to launch the system the following week and asks you for a reasoned opinion.\n\n## Submission format\nA structured 900–1,200 word report using the six required sections and citing resources from the stage.\n\n## Remediation\nFor every criterion below 70%, revisit the corresponding concepts, revise that part while identifying the changes, and submit a new version. Keep the sources and state any remaining limits.",
+          "rubric": [
+            {
+              "criterion": "Scientific framing",
+              "weight": 25,
+              "requirements": [
+                "Facts, interpretations and claims are distinguished.",
+                "Two testable questions and their indicators are formulated.",
+                "The accuracy claim is treated as a claim requiring verification."
+              ]
+            },
+            {
+              "criterion": "Use of psychological fields",
+              "weight": 20,
+              "requirements": [
+                "At least three fields or levels are used accurately.",
+                "Their relevance and complementarity are justified.",
+                "No field is presented as a complete explanation by default."
+              ]
+            },
+            {
+              "criterion": "Titles, competence and referral",
+              "weight": 20,
+              "requirements": [
+                "Professional titles and roles are distinguished without extrapolation.",
+                "The provider’s qualifications are identified as requiring verification.",
+                "The request for medication and the panic attacks lead to an appropriate and cautious referral."
+              ]
+            },
+            {
+              "criterion": "Ethical analysis and protection of people",
+              "weight": 25,
+              "requirements": [
+                "Purpose, information, consent, confidentiality, competence and power are analysed.",
+                "The conflict between anonymity and individual scores is explicit.",
+                "The proposals concretely reduce risks to employees."
+              ]
+            },
+            {
+              "criterion": "Argument and limits",
+              "weight": 10,
+              "requirements": [
+                "The response is structured, evidence-based and understandable.",
+                "Missing information and limits are stated.",
+                "The action plan does not promise an unsupported outcome."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "What is psychology?",
+            "slug": "what-is-psychology",
+            "canonicalKey": "definition-psychologie",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Defining psychology",
+                "slug": "defining-psychology",
+                "summary": "Psychology is the scientific study of behaviour and mental processes. This lesson establishes a rigorous definition of the discipline, distinguishes direct observation from inference, and explains why psychological claims must be tested against evidence.",
+                "objectives": [
+                  "Define psychology as a scientific discipline.",
+                  "Distinguish observable behaviour from a mental process.",
+                  "Turn a broad question about people into an empirically testable question.",
+                  "Explain why intuition and personal experience are not enough to establish psychological knowledge."
+                ],
+                "prerequisites": [],
+                "position": 1,
+                "estimatedMinutes": 90,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Psychology is not limited to psychotherapy or the study of mental disorders. It investigates how people and, depending on the question, other animals perceive, learn, remember, feel, decide and act. Some research primarily develops fundamental knowledge; other work applies that knowledge in health, education, employment or ergonomics.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "apa-definition-psychology"
+                      ]
+                    },
+                    "key": "content-1"
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Psychology is the scientific study of behaviour and mental processes. Behaviour is an activity that can be observed or measured. A mental process includes perception, thought, emotion, memory or decision-making. It is not always directly observable, but it can be studied through indicators defined in advance.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "openstax-psychology-2e-2-1",
+                        "apa-definition-psychology"
+                      ]
+                    },
+                    "key": "content-2"
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Saying that someone “lacks motivation” is too vague to count as a scientific observation. A study could instead measure how long the person works on a task, how many attempts they make after failure, and their responses on a validated motivation scale. The abstract concept is then connected to explicit observations without being reduced to a single measure.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-2-1",
+                        "openstax-psychology-2e-2-2"
+                      ]
+                    },
+                    "key": "content-3"
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Scientific describes a way of working: formulating a precise question, proposing a testable explanation, collecting data systematically, and accepting that conclusions may be corrected by new observations. A single study does not establish a final truth. Findings become more robust when other researchers examine and replicate them and when they are considered alongside the wider body of evidence.",
+                      "sourceKeys": ["openstax-psychology-2e-2-1"]
+                    },
+                    "key": "content-4"
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Key point: psychology studies behaviour and mental processes; it uses observations and measurements; it does not read minds; and psychological claims must be open to discussion using evidence rather than intuition alone.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-1",
+                        "openstax-psychology-2e-2-1"
+                      ]
+                    },
+                    "key": "content-5"
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.1 What Is Psychology?",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-1-what-is-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 1.1. OpenStax.",
+                    "description": "Open-access resource in English. Read section 1.1 and identify the definition of psychology, what makes its approach scientific, and one example of a researchable question.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 1,
+                    "guidance": {
+                      "objective": "Identify an academic definition of psychology and the role of scientific evidence.",
+                      "instructions": "Read all of section 1.1 and record the object of psychology, one feature of scientific inquiry, and one researchable question.",
+                      "scope": "Section 1.1",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Structured HTML version available.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "apa-definition-psychology",
+                    "type": "website",
+                    "title": "How does the APA define psychology?",
+                    "author": "American Psychological Association",
+                    "url": "https://www.apa.org/support/about-apa.html",
+                    "citation": "American Psychological Association. Frequently Asked Questions About APA, section “How does the APA define psychology?”.",
+                    "description": "Read the APA’s short institutional definition to check the breadth of the discipline, from brain function to collective behaviour.",
+                    "isRequired": true,
+                    "estimatedMinutes": 5,
+                    "position": 2,
+                    "guidance": {
+                      "objective": "Compare an institutional definition with the lesson definition.",
+                      "instructions": "Read the answer to “How does the APA define psychology?” and note two levels of analysis it mentions.",
+                      "scope": "FAQ entry “How does the APA define psychology?”",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Short HTML page in English.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "yale-psyc110-lecture-1",
+                    "type": "course",
+                    "title": "Introduction to Psychology — Lecture 1: Introduction",
+                    "author": "Paul Bloom, Yale University",
+                    "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+                    "citation": "Bloom, P. PSYC 110: Introduction to Psychology, Lecture 1. Open Yale Courses.",
+                    "description": "Optional open course with a transcript. Watch or read “General Goals for the Course” from 10:03; the full lecture is further reading.",
+                    "isRequired": false,
+                    "estimatedMinutes": 15,
+                    "position": 3,
+                    "guidance": {
+                      "objective": "Recognise the range of questions covered by introductory psychology.",
+                      "instructions": "Watch or read the segment beginning at 10:03 and note the main goals presented.",
+                      "scope": "From 00:10:03, “General Goals for the Course”",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "English transcript and video available.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "openstax-psychology-2e-2-1",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 2.1 Why Is Research Important?",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/2-1-why-is-research-important",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.1. OpenStax.",
+                    "isRequired": false,
+                    "position": 4,
+                    "description": "Optional further reading on why empirical research is needed to move beyond intuition and authority.",
+                    "estimatedMinutes": 20,
+                    "guidance": {
+                      "objective": "Explain why psychological claims require systematic evidence.",
+                      "instructions": "Read section 2.1 and identify two limits of intuition.",
+                      "scope": "Section 2.1",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Structured HTML version available.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "openstax-psychology-2e-2-2",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 2.2 Approaches to Research",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/2-2-approaches-to-research",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). Psychology 2e, section 2.2. OpenStax.",
+                    "isRequired": false,
+                    "position": 5,
+                    "description": "Optional further reading introducing research methods suited to different psychological questions.",
+                    "estimatedMinutes": 20,
+                    "guidance": {
+                      "objective": "Recognise that research questions require appropriate methods and measures.",
+                      "instructions": "Read the overview of section 2.2 and compare two approaches.",
+                      "scope": "Section 2.2",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Structured HTML version available.",
+                      "alternativeResourceKey": null
+                    }
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "The subject matter of psychology",
+                    "slug": "objet-psychologie",
+                    "description": "Psychology studies behaviour and mental processes at biological, individual and social levels.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-1",
+                      "apa-definition-psychology"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — The subject matter of psychology",
+                      "questionCount": 5,
+                      "key": "concept-objet-psychologie-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Behaviour and mental processes",
+                    "slug": "comportements-processus-mentaux",
+                    "description": "Behaviour can be observed or measured directly, whereas mental processes are studied using explicit indicators and cautious inference.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-1",
+                      "yale-psyc110-lecture-1"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Behaviour and mental processes",
+                      "questionCount": 5,
+                      "key": "concept-comportements-processus-mentaux-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Empirical inquiry",
+                    "slug": "demarche-empirique",
+                    "description": "Scientific psychological knowledge relies on testable questions, systematic observations and revisable conclusions.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openstax-psychology-2e-1-1"],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Empirical inquiry",
+                      "questionCount": 5,
+                      "key": "concept-demarche-empirique-assessment-1"
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Read an academic definition of psychology",
+                    "description": "Read section 1.1 of Psychology 2e and record separately: the subject matter of psychology, what makes its approach scientific, and one example of a researchable question.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "key": "activity-1",
+                    "resourceKeys": ["openstax-psychology-2e-1-1"]
+                  },
+                  {
+                    "title": "Write your own definition",
+                    "description": "Write an 80–120 word definition of psychology using the terms “behaviour”, “mental processes”, “scientific” and “evidence”, without copying the resources.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2,
+                    "key": "activity-2",
+                    "resourceKeys": []
+                  },
+                  {
+                    "title": "Make a question observable",
+                    "description": "Choose a common claim, such as “stress harms memory”, then propose a research question and two measurable indicators. You do not need to design a full study yet.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3,
+                    "key": "activity-3",
+                    "resourceKeys": []
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openstax-psychology-2e-1-1"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "apa-definition-psychology"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "yale-psyc110-lecture-1"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openstax-psychology-2e-2-1"
+                  },
+                  {
+                    "kind": "TASK",
+                    "key": "activity-1"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-objet-psychologie-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openstax-psychology-2e-2-2"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-2"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-comportements-processus-mentaux-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-5"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-3"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-demarche-empirique-assessment-1"
+                  }
+                ],
+                "canonicalKey": "definir-la-psychologie"
+              },
+              {
+                "title": "The major fields of psychology",
+                "slug": "major-fields-of-psychology",
+                "summary": "Psychology includes fields that differ in their questions, levels of analysis and settings of application. This lesson shows how several perspectives can be relevant to the same phenomenon without reducing the discipline to clinical psychology or forcing every situation into a single field.",
+                "objectives": [
+                  "Identify the characteristic questions of several major fields of psychology.",
+                  "Distinguish a field of research, a level of explanation and a professional setting.",
+                  "Use biological, cognitive, developmental and social perspectives to analyse the same situation.",
+                  "Distinguish the production of fundamental knowledge from the application of psychological knowledge."
+                ],
+                "prerequisites": [
+                  "Define psychology as the scientific study of behaviour and mental processes.",
+                  "Distinguish observable behaviour, mental processes and indicators."
+                ],
+                "estimatedMinutes": 120,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "Psychology is not a single, uniform field. Its areas develop around different questions, populations, levels of analysis and settings. Cognitive psychology studies attention, memory, language and reasoning; developmental psychology examines change across the lifespan; social psychology investigates the influence of other people and groups; and biopsychology connects biological functioning with behaviour. This map is useful, but it is neither exhaustive nor made of rigid boundaries.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                    },
+                    "key": "content-1"
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "A field is a set of questions and methods, whereas a level of explanation describes the angle from which a phenomenon is studied. To explain difficulty concentrating, researchers might examine sleep and biological functioning, attentional mechanisms, developmental change or the influence of the social environment. These explanations may complement one another when they concern distinct mechanisms.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3",
+                        "yale-psyc110-lecture-1-domains"
+                      ]
+                    },
+                    "key": "content-2"
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Invented example: a student repeatedly postpones her work. A cognitive approach might examine working memory and attentional control; a developmental approach, the development of self-regulation; a social approach, group norms and comparison with peers; and a health approach, sleep and stress. Naming several fields does not remove the need to formulate testable hypotheses and collect evidence.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                    },
+                    "key": "content-3"
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "The distinction between fundamental research and application concerns the immediate purpose of the work, not a hierarchy of value. Fundamental research primarily seeks to understand a mechanism. Applied work uses or evaluates knowledge in health, education, employment, justice or other settings. The same field can combine research and practice: clinical, occupational and health psychology also produce knowledge, while cognitive or social findings can guide interventions.",
+                      "sourceKeys": [
+                        "openstax-psychology-2e-1-3",
+                        "apa-subfields-careers-guide"
+                      ]
+                    },
+                    "key": "content-4"
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "Common misconception: psychology and psychotherapy are not the same thing. Clinical psychology is important, but the discipline also studies the brain and behaviour, perception, learning, development, personality, social relationships, health, education, work and many other topics. To place a question, first ask what phenomenon is being studied, at what level, and for what purpose.",
+                      "sourceKeys": ["openstax-psychology-2e-1-3"]
+                    },
+                    "key": "content-5"
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openstax-psychology-2e-1-3",
+                    "type": "book_chapter",
+                    "title": "Psychology 2e — 1.3 Contemporary Psychology",
+                    "author": "Rose M. Spielman, William J. Jenkins et Marilyn D. Lovett",
+                    "url": "https://openstax.org/books/psychology-2e/pages/1-3-contemporary-psychology",
+                    "citation": "Spielman, R. M., Jenkins, W. J., & Lovett, M. D. (2020). 1.3 Contemporary Psychology. In Psychology 2e. OpenStax, Rice University.",
+                    "description": "Read the full section and create a three-column table: field, typical question and example application. Do not try to memorise an exhaustive list.",
+                    "isRequired": true,
+                    "estimatedMinutes": 30,
+                    "position": 1,
+                    "guidance": {
+                      "objective": "Map the main contemporary fields of psychology.",
+                      "instructions": "Read section 1.3 and record at least eight fields, a typical question for each, and two overlaps between fields.",
+                      "scope": "Section 1.3",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Accessible HTML in English.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "yale-psyc110-lecture-1-domains",
+                    "type": "course",
+                    "title": "Introduction to Psychology — Lecture 1: General Goals for the Course",
+                    "author": "Paul Bloom, Yale University",
+                    "url": "https://oyc.yale.edu/psychology/psyc-110/lecture-1",
+                    "citation": "Bloom, P. (2007). PSYC 110: Introduction to Psychology, Lecture 1, chapitre 2. Open Yale Courses.",
+                    "description": "Watch or read 00:10:03–00:13:08, note the broad perspectives presented, and explain why the list necessarily simplifies the discipline.",
+                    "isRequired": false,
+                    "estimatedMinutes": 13,
+                    "position": 2,
+                    "guidance": {
+                      "objective": "Compare two introductory maps of psychology.",
+                      "instructions": "Use chapter 2 of the lecture and identify the perspectives and the limits of this summary.",
+                      "scope": "00:10:03–00:13:08",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "English transcript and audio available.",
+                      "alternativeResourceKey": "openstax-psychology-2e-1-3"
+                    }
+                  },
+                  {
+                    "key": "apa-subfields-careers-guide",
+                    "type": "website",
+                    "title": "Psychology education and careers guidebook for college students of color",
+                    "author": "American Psychological Association",
+                    "url": "https://www.apa.org/education-career/guide/college-students",
+                    "citation": "American Psychological Association. (2023). Psychology education and careers guidebook for college students of color.",
+                    "description": "Browse the section on subfields and select two fields that were absent from your initial picture of psychology. Record one research question and one possible workplace for each.",
+                    "isRequired": false,
+                    "estimatedMinutes": 20,
+                    "position": 3,
+                    "guidance": {
+                      "objective": "Broaden the map of fields and professional settings.",
+                      "instructions": "Select two unfamiliar subfields and record a question and a setting for each.",
+                      "scope": "Sections describing psychology subfields and careers",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Long HTML page in English.",
+                      "alternativeResourceKey": "openstax-psychology-2e-1-3"
+                    }
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Diversity of psychological fields",
+                    "slug": "diversite-domaines-psychologiques",
+                    "description": "Fields of psychology differ in questions, methods, populations and settings, and their boundaries often overlap.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-3",
+                      "apa-subfields-careers-guide"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Diversity of fields",
+                      "questionCount": 5,
+                      "key": "concept-diversite-domaines-psychologiques-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Complementary levels of explanation",
+                    "slug": "niveaux-explication-complementaires",
+                    "description": "The same behaviour can be studied at biological, cognitive, developmental and social levels that answer different questions.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-3",
+                      "yale-psyc110-lecture-1-domains"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Levels of explanation",
+                      "questionCount": 5,
+                      "key": "concept-niveaux-explication-complementaires-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Research and applications",
+                    "slug": "recherche-et-applications",
+                    "description": "Research produces knowledge, while applications use or evaluate knowledge in a setting; one field may perform both functions.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "openstax-psychology-2e-1-3",
+                      "apa-subfields-careers-guide"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Research and applications",
+                      "questionCount": 5,
+                      "key": "concept-recherche-et-applications-assessment-1"
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Map the fields",
+                    "description": "After reading OpenStax, produce a table of eight fields with a typical question, a main level of analysis and an application for each. Identify two overlaps between fields.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "key": "activity-1",
+                    "resourceKeys": ["openstax-psychology-2e-1-3"]
+                  },
+                  {
+                    "title": "Place six questions",
+                    "description": "Assign six supplied or invented questions to one or more fields. Justify each choice using the object of study rather than a keyword, and accept more than one field when the questions differ.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2,
+                    "key": "activity-2",
+                    "resourceKeys": []
+                  },
+                  {
+                    "title": "Build a multilevel analysis",
+                    "description": "Choose an everyday situation and formulate four distinct questions: biological, cognitive, developmental and social. Propose one observable measure for each.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3,
+                    "key": "activity-3",
+                    "resourceKeys": []
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openstax-psychology-2e-1-3"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "yale-psyc110-lecture-1-domains"
+                  },
+                  {
+                    "kind": "TASK",
+                    "key": "activity-1"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-diversite-domaines-psychologiques-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "apa-subfields-careers-guide"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-2"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-niveaux-explication-complementaires-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-5"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-3"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-recherche-et-applications-assessment-1"
+                  }
+                ],
+                "canonicalKey": "grands-domaines"
+              },
+              {
+                "title": "Professions and ethics",
+                "slug": "professions-and-ethics",
+                "summary": "In France, the titles psychologist, psychiatrist and psychotherapist and the description psychoanalyst do not imply the same training or scope of practice. This lesson explains the French framework and shows how competence, informed consent, confidentiality, rights and referral support responsible practice.",
+                "objectives": [
+                  "Distinguish the titles psychologist, psychiatrist and psychotherapist and the description psychoanalyst in France.",
+                  "Identify the limits of a practitioner’s competence and situations that require referral.",
+                  "Analyse a situation using consent, confidentiality, respect for the person and protection from abuse of power.",
+                  "Distinguish legal requirements, professional rules and context-sensitive ethical decisions."
+                ],
+                "prerequisites": [
+                  "Define psychology as a scientific discipline.",
+                  "Distinguish a field of research, a level of explanation and a setting of application."
+                ],
+                "estimatedMinutes": 135,
+                "position": 3,
+                "contentBlocks": [
+                  {
+                    "type": "rich_text",
+                    "position": 1,
+                    "content": {
+                      "text": "In France, professional use of the title psychologist is protected by law and depends on specified qualifications or authorisations. A psychiatrist is a specialist physician who can make a medical diagnosis and prescribe medication. Holding the title psychologist does not in itself make someone a physician and does not authorise medication prescribing. Both professions may work in care, research, teaching or other settings depending on their training and role.",
+                      "sourceKeys": [
+                        "legifrance-titre-psychologue-article-44",
+                        "service-public-psychologue-psychiatre"
+                      ]
+                    },
+                    "key": "content-1"
+                  },
+                  {
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Use of the title psychotherapist is also regulated and requires registration; it is not interchangeable with psychologist or the medical specialty of psychiatry. Someone describing themselves as a psychoanalyst may also be a psychologist or psychiatrist, but this is not automatic. Each protected title, relevant qualification, registration, advertised method and actual scope of competence must therefore be checked separately.",
+                      "sourceKeys": ["service-public-psychologue-psychiatre"]
+                    },
+                    "key": "content-2"
+                  },
+                  {
+                    "type": "example",
+                    "position": 3,
+                    "content": {
+                      "text": "Invented example: an occupational psychologist meets an employee who reports panic attacks and an immediate risk to her safety. The psychologist can listen, assess the situation within the limits of her role, and refer the employee to appropriate services. She must not imply that occupational training automatically covers every clinical or medical intervention. Recognising limits and arranging a referral are parts of competent practice.",
+                      "sourceKeys": ["cncdp-code-deontologie-2021"]
+                    },
+                    "key": "content-3"
+                  },
+                  {
+                    "type": "rich_text",
+                    "position": 4,
+                    "content": {
+                      "text": "Professional ethics organise responsibility towards people. The 2021 French code emphasises rights and dignity, autonomy, information, privacy, professional secrecy and confidentiality. These principles require practitioners to explain the purpose and framework of an intervention, seek free and informed consent, protect information, and limit sharing to what is justified. Applicable legal duties remain binding and must be assessed in context.",
+                      "sourceKeys": ["cncdp-code-deontologie-2021"]
+                    },
+                    "key": "content-4"
+                  },
+                  {
+                    "type": "callout",
+                    "position": 5,
+                    "content": {
+                      "text": "A professional title does not guarantee universal competence or the quality of a particular intervention. Before placing trust in a service, ask for the exact title, relevant training, confidentiality framework, purpose and limits, consent arrangements, and referral options. Refusing to explain the framework, guaranteeing outcomes, pressuring someone to continue, or requesting information without a clear purpose are warning signs.",
+                      "sourceKeys": [
+                        "cncdp-code-deontologie-2021",
+                        "legifrance-titre-psychologue-article-44"
+                      ]
+                    },
+                    "key": "content-5"
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "service-public-psychologue-psychiatre",
+                    "type": "website",
+                    "title": "Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ?",
+                    "author": "Direction de l’information légale et administrative — Service-Public.fr",
+                    "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F34917?lang=fr",
+                    "citation": "Direction de l’information légale et administrative. (2026). Consultation d’un psychologue ou d’un psychiatre : quelle prise en charge ? Service-Public.fr.",
+                    "description": "French official guidance. Read only the section comparing psychologists, psychiatrists and psychoanalysts. Record training, medical status and prescribing rights. Pricing information is outside this lesson.",
+                    "isRequired": true,
+                    "estimatedMinutes": 10,
+                    "position": 1,
+                    "guidance": {
+                      "objective": "Distinguish the main professional titles in the French context.",
+                      "instructions": "Read the comparison section in French and record what each title establishes and what it does not establish.",
+                      "scope": "“Psychologue, psychiatre, psychanalyste : quelles différences ?”",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Official HTML page in French.",
+                      "alternativeResourceKey": null
+                    }
+                  },
+                  {
+                    "key": "legifrance-titre-psychologue-article-44",
+                    "type": "document",
+                    "title": "Loi n° 85-772 du 25 juillet 1985 — Article 44",
+                    "author": "République française",
+                    "url": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000033678864",
+                    "citation": "République française. (1985, version en vigueur depuis le 24 décembre 2016). Loi n° 85-772 du 25 juillet 1985, article 44.",
+                    "description": "French legal text. Read paragraph I on professional use of the title and paragraph IV on misuse. Summarise what the law protects without listing every qualification.",
+                    "isRequired": true,
+                    "estimatedMinutes": 10,
+                    "position": 2,
+                    "guidance": {
+                      "objective": "Identify the legal protection of the title psychologist in France.",
+                      "instructions": "Read paragraphs I and IV and write a two-sentence summary.",
+                      "scope": "Article 44, paragraphs I and IV",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Official French HTML; dense legal wording.",
+                      "alternativeResourceKey": "service-public-psychologue-psychiatre"
+                    }
+                  },
+                  {
+                    "key": "cncdp-code-deontologie-2021",
+                    "type": "document",
+                    "title": "Code de déontologie des psychologues — version consolidée 2021",
+                    "author": "CNCDP et organisations signataires du CERéDéPsy",
+                    "url": "https://cncdp.fr/index.php/code-de-deontologie/code-de-deontologie-2021",
+                    "citation": "Commission Nationale Consultative de Déontologie des Psychologues. (2021). Code de déontologie des psychologues, version consolidée au 9 septembre 2021.",
+                    "description": "Read the preamble and principles 1–3 of the French code. Identify one requirement concerning rights, one concerning confidentiality, and one concerning competence. Do not treat the code as the whole of applicable law.",
+                    "isRequired": true,
+                    "estimatedMinutes": 25,
+                    "position": 3,
+                    "guidance": {
+                      "objective": "Apply professional principles concerning rights, confidentiality and competence.",
+                      "instructions": "Read the preamble and principles 1–3 in French and produce one example for each requested principle.",
+                      "scope": "Preamble and principles 1–3",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "HTML version in French; targeted reading limits the length.",
+                      "alternativeResourceKey": null
+                    }
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Professional titles and roles in France",
+                    "slug": "titres-et-roles-france",
+                    "description": "Psychologist, psychiatrist and psychotherapist have distinct frameworks; a label alone does not establish every competence a person has.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "service-public-psychologue-psychiatre",
+                      "legifrance-titre-psychologue-article-44"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Professional titles and roles",
+                      "questionCount": 5,
+                      "key": "concept-titres-et-roles-france-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Competence, limits and referral",
+                    "slug": "competence-limites-orientation",
+                    "description": "Responsible practice stays within the practitioner’s training and role, explains its limits and arranges referral when needed.",
+                    "position": 2,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "service-public-psychologue-psychiatre",
+                      "cncdp-code-deontologie-2021"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Competence and referral",
+                      "questionCount": 5,
+                      "key": "concept-competence-limites-orientation-assessment-1"
+                    }
+                  },
+                  {
+                    "title": "Rights, consent and confidentiality",
+                    "slug": "droits-consentement-confidentialite",
+                    "description": "Respect for people requires information, autonomy, appropriate consent, protection of information and context-sensitive consideration of applicable duties.",
+                    "position": 3,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": [
+                      "cncdp-code-deontologie-2021",
+                      "legifrance-titre-psychologue-article-44"
+                    ],
+                    "assessment": {
+                      "type": "quiz",
+                      "title": "Concept check — Rights and confidentiality",
+                      "questionCount": 5,
+                      "key": "concept-droits-consentement-confidentialite-assessment-1"
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "title": "Compare four professional descriptions",
+                    "description": "Create a table for psychologist, psychiatrist, psychotherapist and psychoanalyst. For each, state what the description establishes, what cannot be inferred from it, and which source you used.",
+                    "type": "reading",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 1,
+                    "key": "activity-1",
+                    "resourceKeys": [
+                      "service-public-psychologue-psychiatre",
+                      "legifrance-titre-psychologue-article-44",
+                      "cncdp-code-deontologie-2021"
+                    ]
+                  },
+                  {
+                    "title": "Decide on a referral",
+                    "description": "Analyse three fictional situations: a learning difficulty, psychological distress that may require medical care, and a team conflict. Suggest an appropriate practitioner or service, justify the choice and identify missing information.",
+                    "type": "practice",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 2,
+                    "key": "activity-2",
+                    "resourceKeys": []
+                  },
+                  {
+                    "title": "Identify ethical issues",
+                    "description": "In a case where an organisation requests individual questionnaire results, identify issues of purpose, information, consent, confidentiality, competence and power. Propose a safer framework in 250–350 words.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 1,
+                    "position": 3,
+                    "key": "activity-3",
+                    "resourceKeys": []
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-2"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "service-public-psychologue-psychiatre"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "legifrance-titre-psychologue-article-44"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "cncdp-code-deontologie-2021"
+                  },
+                  {
+                    "kind": "TASK",
+                    "key": "activity-1"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-titres-et-roles-france-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-3"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-4"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-2"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-competence-limites-orientation-assessment-1"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-5"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "activity-3"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "concept-droits-consentement-confidentialite-assessment-1"
+                  }
+                ],
+                "canonicalKey": "metiers-et-ethique"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "conceptAssessmentBanks": [
+    {
+      "programSlug": "psychology-foundations-pilot",
+      "stageSlug": "discovering-the-discipline",
+      "moduleSlug": "what-is-psychology",
+      "lessonSlug": "defining-psychology",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "objet-psychologie",
+          "assessmentTitle": "Concept check — The subject matter of psychology",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which definition best describes scientific psychology?",
+              "explanation": "Psychology studies behaviour and mental processes through explicit questions and evidence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "The scientific study of behaviour and mental processes",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "The intuitive interpretation of personality",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Psychotherapy only",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "The exclusive study of the brain",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which topics can psychology study?",
+              "explanation": "The discipline studies observable behaviour as well as processes such as memory, emotion and perception.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Memory",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Cooperation",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Mental disorders only",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Personal opinions only",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Psychology is limited to therapeutic support.",
+              "explanation": "Clinical practice is one part of a discipline that also includes fundamental research and many applications.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which is clearly a psychological research question?",
+              "explanation": "The influence of social context on decisions concerns measurable behaviour and mental processes.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "How does the presence of other people affect a decision?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "What is the atomic mass of carbon?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Which grammar rule applies here?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Which planet is closest to the Sun?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "Psychology can produce fundamental knowledge and practical applications.",
+              "explanation": "Psychology connects the study of mechanisms with uses in health, education, work and other settings.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "comportements-processus-mentaux",
+          "assessmentTitle": "Concept check — Behaviour and mental processes",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which is directly observable behaviour?",
+              "explanation": "Raising a hand is observable, while remembering, feeling and intending are mental processes inferred from indicators.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Raising a hand",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Remembering a face",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Feeling worried",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Forming an intention",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Why are indicators used to study a mental process?",
+              "explanation": "A mental process is not always directly observable, so defined measures support cautious inference.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Because the process is not always directly observable",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Because an indicator always proves causation",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Because every measure replaces theory",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Because behaviour is irrelevant",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Reaction time is the mental process itself.",
+              "explanation": "Reaction time is an observable indicator; it is not identical to the process being studied.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which measures could indicate attention?",
+              "explanation": "Response time and errors are observable measures; vague labels without criteria are not.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Response time",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Number of errors",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "The statement “they are inattentive” without a criterion",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "An undescribed intuition",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which conclusion is the most cautious?",
+              "explanation": "A measure supports a bounded interpretation; it does not reveal a person’s mind directly.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "These results are consistent with lower attention on this task.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "We know exactly what the person is thinking.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "One error reveals the whole personality.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "The indicator rules out every alternative explanation.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "demarche-empirique",
+          "assessmentTitle": "Concept check — Empirical inquiry",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which question is most directly testable?",
+              "explanation": "It specifies a measurable condition and an observable result.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Does a shorter night of sleep increase errors on this task?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Does sleep possess a beneficial essence?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Why are some people simply better?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Is my intuition always right?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which features belong to empirical inquiry?",
+              "explanation": "Empirical inquiry uses systematic observation, explicit measures and revisable conclusions.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Collect data systematically",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Define measures in advance",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Protect a conclusion from criticism",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Replace observation with authority",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "One personal experience is enough to establish a general pattern.",
+              "explanation": "Experience may suggest a question, but general conclusions require systematically collected evidence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "single_choice",
+              "prompt": "What should researchers do when robust results contradict their original hypothesis?",
+              "explanation": "Scientific explanations must be revised or rejected when evidence does not support them.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Revise the explanation and examine the method",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Remove the conflicting results",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Keep the hypothesis as truth",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Replace the data with an anecdote",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "true_false",
+              "prompt": "Replication and scrutiny by other researchers can strengthen or correct a conclusion.",
+              "explanation": "New observations and criticism make scientific knowledge cumulative and revisable.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "psychology-foundations-pilot",
+      "stageSlug": "discovering-the-discipline",
+      "moduleSlug": "what-is-psychology",
+      "lessonSlug": "major-fields-of-psychology",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "diversite-domaines-psychologiques",
+          "assessmentTitle": "Concept check — Diversity of fields",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which field primarily studies psychological change across the lifespan?",
+              "explanation": "Developmental psychology studies change and continuity at different ages.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Developmental psychology",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Social psychology",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Occupational psychology",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Forensic psychology",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which question most directly belongs to cognitive psychology?",
+              "explanation": "Cognitive psychology studies attention, memory, language and reasoning.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "How does attention affect recall of a word list?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "How should a team schedule be organised?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "How does average population height change?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Which law regulates a professional title?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which statements about fields of psychology are accurate?",
+              "explanation": "Fields can overlap and differ in their questions, methods or settings; an introductory list is not exhaustive.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Their boundaries can overlap.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "They can differ in questions and methods.",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Every situation belongs to exactly one field.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "A list of fields is always final.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Clinical psychology represents the whole of psychology.",
+              "explanation": "Clinical psychology is one field among many fundamental and applied areas.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "What is the best criterion for placing a new question within a field?",
+              "explanation": "Start with the phenomenon, question and level of analysis rather than a keyword.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "The precise object and research question",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "The first psychological word encountered",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "The reader’s preference",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "The length of the questionnaire",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "niveaux-explication-complementaires",
+          "assessmentTitle": "Concept check — Levels of explanation",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which question mainly uses a social level of explanation?",
+              "explanation": "The effect of group norms on behaviour is a social-psychological question.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "How do group norms influence risk-taking?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "What brain activity accompanies risk-taking?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Which reasoning strategy is used?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "How does the ability change between ages 6 and 12?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which question mainly uses a biological level of explanation?",
+              "explanation": "Measures of neural or physiological mechanisms mainly concern a biological level.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Which brain networks are active during the task?",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Which expectations does the group communicate?",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Which reasoning strategy is used?",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "How does this ability change with age?",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Why can several levels of explanation be relevant to one behaviour?",
+              "explanation": "They can address different mechanisms and support complementary hypotheses, all of which still require evidence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "They can concern different mechanisms.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "They can generate complementary hypotheses.",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "They prove that evidence is unnecessary.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "They guarantee that every explanation is true.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "A brain-based explanation automatically makes cognitive or social explanations unnecessary.",
+              "explanation": "Different levels may answer different questions and can complement one another.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "After proposing four levels of explanation for procrastination, what comes next scientifically?",
+              "explanation": "The perspectives must become testable hypotheses linked to relevant evidence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Formulate testable hypotheses and define the required evidence",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Choose the explanation that feels most intuitive",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Declare all four explanations proven",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Remove the social explanations",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "recherche-et-applications",
+          "assessmentTitle": "Concept check — Research and applications",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Which statement best describes fundamental research?",
+              "explanation": "Its immediate purpose is to understand a mechanism or pattern, even if applications may follow.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Studying how attention selects competing information",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Immediately implementing a recruitment process",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Prescribing treatment to a person",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Choosing a slogan without evaluating it",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which statement best describes applied work?",
+              "explanation": "Applied work uses or evaluates knowledge in a concrete setting.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Evaluating a workplace change intended to reduce errors",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Only describing the history of a concept",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Stating a personal preference",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Avoiding any outcome measure",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which statements about research and application are correct?",
+              "explanation": "A field may create and apply knowledge, and applications can be evaluated empirically.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "One field can combine research and practice.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "An application can be evaluated scientifically.",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Fundamental research can never become useful.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Every practice automatically produces evidence.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "“Applied” means that scientific methods are no longer necessary.",
+              "explanation": "Applications also need clear objectives, outcome measures and acknowledged limits.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "An occupational psychologist tests whether a new organisation reduces errors. Which description is most accurate?",
+              "explanation": "Applied work and empirical evaluation can occur together.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Application and empirical evaluation can be combined.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "It cannot be psychology because it occurs at work.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Any reduction immediately proves causation.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Applied work excludes hypotheses.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "psychology-foundations-pilot",
+      "stageSlug": "discovering-the-discipline",
+      "moduleSlug": "what-is-psychology",
+      "lessonSlug": "professions-and-ethics",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "titres-et-roles-france",
+          "assessmentTitle": "Concept check — Professional titles and roles",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "In France, who is necessarily a physician by virtue of their title?",
+              "explanation": "A psychiatrist is a specialist physician. The title psychologist is not a medical title.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Psychiatrist",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Psychologist",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Psychoanalyst",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Coach",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "true_false",
+              "prompt": "A psychologist can prescribe medication solely by virtue of the title psychologist.",
+              "explanation": "A psychologist is not a physician solely by virtue of that title and cannot prescribe medication on that basis.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which titles discussed in this lesson are governed by specific French legal frameworks?",
+              "explanation": "Psychologist and psychotherapist are regulated by distinct texts; psychiatrist is a medical specialty.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Psychologist",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Psychotherapist",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Life coach",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Intuitive adviser",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "true_false",
+              "prompt": "Calling oneself a psychoanalyst automatically proves that the person is also a psychologist or psychiatrist.",
+              "explanation": "A psychoanalyst may hold either title, but this must be checked separately.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "What is the most reliable response to a professional description?",
+              "explanation": "Check the exact title, training, relevant registration and scope of competence separately.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Check title, training, registration and competence separately",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Rely only on popularity on social media",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Treat every “psy” description as equivalent",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Infer training from the fee",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "competence-limites-orientation",
+          "assessmentTitle": "Concept check — Competence and referral",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "A practitioner encounters a situation outside their training. What is the most responsible response?",
+              "explanation": "They should explain their limits and arrange an appropriate referral rather than claim universal competence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Acknowledge the limit and suggest an appropriate referral",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Improvise care without explaining it",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Guarantee a rapid result",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Avoid giving the person any explanation",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "true_false",
+              "prompt": "Holding the title psychologist means being competent in every specialty of psychology.",
+              "explanation": "A title does not replace the training and experience required for a particular intervention.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which information helps assess whether an intervention falls within a practitioner’s competence?",
+              "explanation": "Relevant training, experience, role and the nature of the need are more informative than a general label.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "The practitioner’s relevant training",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "The nature and urgency of the need",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "The number of online followers",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "A guarantee of success",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Why can referral to another professional demonstrate competence?",
+              "explanation": "It shows that the practitioner recognises the limits of their role and seeks an appropriate response.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "It protects the person and respects professional limits",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "It proves the first practitioner knows nothing",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "It removes the need for consent",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "It permits sharing all information",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "What takes priority when a person faces an immediate safety risk?",
+              "explanation": "The urgency must be assessed and appropriate services involved under the relevant professional and legal framework.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Assess the urgency and involve appropriate services",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Wait for the next appointment without acting",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Publish the situation to ask for advice",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Promise absolute secrecy without examining the framework",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        },
+        {
+          "conceptSlug": "droits-consentement-confidentialite",
+          "assessmentTitle": "Concept check — Rights and confidentiality",
+          "questions": [
+            {
+              "type": "multiple_choice",
+              "prompt": "What should be clarified before a psychological intervention?",
+              "explanation": "People need understandable information about purpose, framework, information use and relevant limits.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "The purpose of the intervention",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "The intended use of information",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "A guaranteed result",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "An obligation to accept without questions",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "single_choice",
+              "prompt": "A company requests individual scores from a questionnaire presented as anonymous. What is the first problem?",
+              "explanation": "Individual disclosure contradicts the promise of anonymity; purpose, consent and access must be clarified.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "The contradiction between promised anonymity and individual disclosure",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "The questionnaire must be too short",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "The results should be published online",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Consent is unnecessary at work",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Consent is valid even when the person does not know the purpose or use of their data.",
+              "explanation": "Informed consent requires understandable information about purpose, framework and relevant consequences.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "True",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "False",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Which practices support confidentiality?",
+              "explanation": "Limiting collection and access, explaining the rules and sharing only justified information reduce privacy risks.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Limit access to authorised people",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Collect only necessary information",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Share the whole record by default",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Keep the purpose secret",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 4
+            },
+            {
+              "type": "single_choice",
+              "prompt": "Which statement best describes the relationship between professional ethics and law?",
+              "explanation": "Ethical reflection guides practice, while applicable legal duties must also be identified and followed.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Professional ethics guide practice without replacing legal duties.",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "A professional code overrides every law.",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Law automatically resolves every situation.",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Ethics and law are unrelated to practice.",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
