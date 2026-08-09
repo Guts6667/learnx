@@ -159,7 +159,8 @@ async function appliedMigrationChecksums(
 
 async function listTableColumns(client: RawClient): Promise<ColumnRow[]> {
   return client.$queryRawUnsafe<ColumnRow[]>(
-    `SELECT table_name, column_name
+    `SELECT table_name::text AS table_name,
+            column_name::text AS column_name
      FROM information_schema.columns
      WHERE table_schema = current_schema()
        AND table_name <> '_prisma_migrations'
