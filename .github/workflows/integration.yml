@@ -40,6 +40,84 @@ jobs:
         env:
           DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
           DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+      - name: Create isolated seed owner
+        shell: bash
+        run: |
+          admin_email="platform-seed-ci@example.invalid"
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "
+            INSERT INTO users (
+              id,
+              email,
+              password_hash,
+              display_name,
+              role,
+              created_at,
+              updated_at
+            ) VALUES (
+              '00000000-0000-4000-8000-000000000001',
+              'platform-seed-ci@example.invalid',
+              'ci-account-cannot-authenticate',
+              'Platform seed CI',
+              'admin',
+              CURRENT_TIMESTAMP,
+              CURRENT_TIMESTAMP
+            )
+            ON CONFLICT (email) DO NOTHING;
+          "
+          echo "::add-mask::$admin_email"
+          echo "ADMIN_EMAIL=$admin_email" >> "$GITHUB_ENV"
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+      - name: Validate targeted Platform APM seed twice
+        shell: bash
+        run: |
+          pnpm prisma:seed
+          first_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "$signature_query")"
+          pnpm prisma:seed
+          second_signature="$(psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -Atc "$signature_query")"
+          test "$first_signature" = "$second_signature"
+          test "$second_signature" = "1|2|5|6|19|12|6|6|30|2|0|0|0"
+          echo "Platform APM targeted seed is idempotent: $second_signature"
+        env:
+          DATABASE_URL: ${{ steps.neon.outputs.db_url_pooled }}
+          DIRECT_URL: ${{ steps.neon.outputs.db_url }}
+          LEARNX_SEED_PROGRAM_SLUG: platform-apm-entretien-tryhackme
+          signature_query: |
+            WITH target_program AS (
+              SELECT id FROM programs
+              WHERE slug = 'platform-apm-entretien-tryhackme'
+                AND owner_id = (
+                  SELECT id FROM users
+                  WHERE email = 'platform-seed-ci@example.invalid'
+                )
+            ), target_stages AS (
+              SELECT id, is_published FROM stages
+              WHERE program_id IN (SELECT id FROM target_program)
+            ), target_modules AS (
+              SELECT id, is_published FROM modules
+              WHERE stage_id IN (SELECT id FROM target_stages)
+            ), target_lessons AS (
+              SELECT id, is_published FROM lessons
+              WHERE module_id IN (SELECT id FROM target_modules)
+            ), target_concept_assessments AS (
+              SELECT id FROM concept_assessments
+              WHERE lesson_id IN (SELECT id FROM target_lessons)
+            )
+            SELECT concat_ws('|',
+              (SELECT count(*) FROM target_program),
+              (SELECT count(*) FROM target_stages),
+              (SELECT count(*) FROM target_modules),
+              (SELECT count(*) FROM target_lessons),
+              (SELECT count(*) FROM content_blocks WHERE lesson_id IN (SELECT id FROM target_lessons)),
+              (SELECT count(*) FROM resources WHERE lesson_id IN (SELECT id FROM target_lessons)),
+              (SELECT count(*) FROM exercises WHERE lesson_id IN (SELECT id FROM target_lessons) AND is_canonical),
+              (SELECT count(*) FROM target_concept_assessments),
+              (SELECT count(*) FROM concept_assessment_questions WHERE assessment_id IN (SELECT id FROM target_concept_assessments)),
+              (SELECT count(*) FROM stage_assessments WHERE stage_id IN (SELECT id FROM target_stages)),
+              (SELECT count(*) FROM target_stages WHERE is_published),
+              (SELECT count(*) FROM target_modules WHERE is_published),
+              (SELECT count(*) FROM target_lessons WHERE is_published)
+            );
       - name: Run real Functions and browser integration tests
         run: pnpm test:integration
         env:
