@@ -473,7 +473,10 @@ test('parcours backend réel et isolation multi-utilisateurs', async ({
       await outsider.get(`/api/quizzes/${fixture.quizId}/attempts`),
       200,
     );
-    expect(await outsiderAttempts.json()).toEqual({ attempts: [] });
+    expect(await outsiderAttempts.json()).toEqual({
+      attempts: [],
+      nextCursor: null,
+    });
     await expectStatus(
       await outsider.patch(`/api/tasks/${fixture.taskId}`, {
         data: { status: 'DONE' },
