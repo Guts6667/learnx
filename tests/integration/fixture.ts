@@ -2,6 +2,7 @@ import {
   ConceptAssessmentType,
   ConceptQuestionType,
   ContentBlockType,
+  LessonSequenceKind,
   ProgramStatus,
   QuizQuestionType,
   ResourceType,
@@ -110,7 +111,7 @@ export async function createIntegrationFixture(
     },
   });
 
-  await prisma.contentBlock.create({
+  const contentBlock = await prisma.contentBlock.create({
     data: {
       content: { text: 'Contenu pédagogique réel de la fixture.' },
       key: 'content-1',
@@ -257,6 +258,53 @@ export async function createIntegrationFixture(
     },
   });
 
+  await prisma.lessonSequenceItem.createMany({
+    data: [
+      {
+        contentBlockId: contentBlock.id,
+        key: contentBlock.key,
+        kind: LessonSequenceKind.CONTENT,
+        lessonId: lesson.id,
+        position: 1,
+      },
+      {
+        key: resource.key,
+        kind: LessonSequenceKind.RESOURCE,
+        lessonId: lesson.id,
+        position: 2,
+        resourceId: resource.id,
+      },
+      {
+        key: task.key,
+        kind: LessonSequenceKind.TASK,
+        lessonId: lesson.id,
+        position: 3,
+        taskId: task.id,
+      },
+      {
+        conceptAssessmentId: conceptAssessment.id,
+        key: conceptAssessment.key,
+        kind: LessonSequenceKind.CONCEPT_ASSESSMENT,
+        lessonId: lesson.id,
+        position: 4,
+      },
+      {
+        exerciseId: exercise.id,
+        key: exercise.key,
+        kind: LessonSequenceKind.EXERCISE,
+        lessonId: lesson.id,
+        position: 5,
+      },
+      {
+        key: quiz.key,
+        kind: LessonSequenceKind.QUIZ,
+        lessonId: lesson.id,
+        position: 6,
+        quizId: quiz.id,
+      },
+    ],
+  });
+
   return {
     conceptAssessmentId: conceptAssessment.id,
     conceptCorrectOptionId: conceptCorrectOption.id,
@@ -284,6 +332,9 @@ export async function createIntegrationFixture(
 export async function cleanupIntegrationUsers(emails: string[]): Promise<void> {
   requireEphemeralIntegrationDatabase();
   const { prisma } = await import('../../src/server/prisma.js');
+  await prisma.program.deleteMany({
+    where: { owner: { email: { in: emails } } },
+  });
   await prisma.auditEvent.deleteMany({
     where: { actor: { email: { in: emails } } },
   });
