@@ -43,8 +43,10 @@
   --app-text: var(--color-text);
   --app-text-muted: var(--color-text-muted);
   --app-accent: var(--color-accent);
-  --app-content-max: 80rem;
+  --app-content-max: 112rem;
   --app-reading-max: 72ch;
+  --app-work-max: 92rem;
+  --app-admin-max: 108rem;
   --app-navigation-height: 5.5rem;
   --app-navigation-width: 6.75rem;
   color-scheme: dark;
@@ -108,6 +110,49 @@ body {
   width: min(100%, var(--app-content-max));
 }
 
+.page-layout {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.page-layout--reading {
+  max-width: var(--app-reading-max);
+}
+
+.page-layout--work {
+  max-width: var(--app-work-max);
+}
+
+.page-layout--admin {
+  max-width: var(--app-admin-max);
+}
+
+.page-layout--admin .page-header {
+  max-width: 72ch;
+}
+
+.admin-toolbar {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  align-items: end;
+}
+
+.admin-collection {
+  min-width: 0;
+  border-block: 1px solid var(--color-border);
+}
+
+.admin-collection > li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-collection-item {
+  min-width: 0;
+  padding-block: 1.25rem;
+}
+
 .page-shell {
   display: grid;
   gap: 1.5rem;
@@ -143,6 +188,36 @@ body {
   max-width: 65ch;
   color: var(--app-text-muted);
   line-height: 1.75;
+}
+
+@media (min-width: 48rem) {
+  .admin-toolbar {
+    grid-template-columns: minmax(16rem, 1fr) minmax(12rem, 18rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .app-safe-header,
+  .app-safe-main {
+    padding-right: 2rem;
+    padding-left: calc(var(--app-navigation-width) + 2rem);
+  }
+
+  .app-safe-main {
+    padding-bottom: 3rem;
+  }
+
+  .ui-main-navigation__link[aria-current='page'] {
+    box-shadow: inset 3px 0 0 var(--color-accent);
+  }
+}
+
+@media (min-width: 90rem) {
+  .app-safe-header,
+  .app-safe-main {
+    padding-right: 3rem;
+    padding-left: calc(var(--app-navigation-width) + 3rem);
+  }
 }
 
 .ui-card {
@@ -196,6 +271,20 @@ body {
 
 .ui-list-row__aside {
   flex: none;
+}
+
+@media (max-width: 39.999rem) {
+  .ui-list-row {
+    flex-wrap: wrap;
+  }
+
+  .ui-list-row__aside {
+    width: 100%;
+  }
+
+  .ui-list-row__aside > :where(a, button) {
+    width: 100%;
+  }
 }
 
 .ui-text {
@@ -669,9 +758,7 @@ body {
 
 @media (min-width: 64rem) {
   .app-layout {
-    padding-left: calc(
-      var(--app-navigation-width) + env(safe-area-inset-left)
-    );
+    padding-left: calc(var(--app-navigation-width) + env(safe-area-inset-left));
   }
 
   .app-safe-main {

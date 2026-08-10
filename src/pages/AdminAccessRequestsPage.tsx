@@ -32,10 +32,7 @@ const roleLabelKeys: Record<AssignableRole, MessageKey> = {
   USER: 'admin.role.user',
 };
 
-function reviewError(
-  error: unknown,
-  t: (key: MessageKey) => string,
-): string {
+function reviewError(error: unknown, t: (key: MessageKey) => string): string {
   if (
     error instanceof ApiClientError &&
     error.code === 'ACCESS_REQUEST_CONFLICT'
@@ -233,13 +230,13 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
 
   return (
     <li>
-      <Card class="space-y-4">
+      <div class="admin-collection-item space-y-4">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div class="min-w-0">
             <h2 class="break-words text-lg font-semibold">
               {request.emailNormalized}
             </h2>
-            <p class="mt-1 text-sm text-slate-400">
+            <p class="ui-text-muted mt-1 text-sm">
               {t('admin.requests.verifiedAt', {
                 date: formatLocalizedDate(request.emailVerifiedAt, locale, {
                   dateStyle: 'medium',
@@ -251,7 +248,7 @@ function RequestCard({ request }: { request: AdminAccessRequest }) {
           <Badge tone={tone}>{t(statusLabelKeys[request.status])}</Badge>
         </div>
         <RequestReview request={request} />
-      </Card>
+      </div>
     </li>
   );
 }
@@ -280,47 +277,49 @@ export function AdminAccessRequestsPage() {
   }
 
   return (
-    <section aria-labelledby="access-review-title" class="page-shell space-y-6">
-      <a
-        class="inline-flex min-h-11 items-center text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-        href="/admin"
-      >
-        {t('navigation.back.admin')}
-      </a>
+    <section
+      aria-labelledby="access-review-title"
+      class="page-layout page-layout--admin page-shell space-y-6"
+    >
       <PageHeader
         description={t('admin.requests.description')}
         eyebrow={t('admin.eyebrow')}
         id="access-review-title"
         title={t('admin.requests.title')}
       />
-      <form class="grid gap-4 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
-        <TextField
-          label={t('admin.requests.search')}
-          onInput={(event) => setSearchInput(event.currentTarget.value)}
-          type="search"
-          value={searchInput}
-        />
-        <Button class="self-end" type="submit" variant="secondary">
-          {t('programs.searchAction')}
-        </Button>
-      </form>
-      <label class="grid gap-2 text-sm font-medium text-slate-200">
-        {t('admin.requests.status')}
-        <select
-          class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-          onChange={(event) => {
-            setPage(1);
-            setStatus(event.currentTarget.value as AccessRequestStatus);
-          }}
-          value={status}
+      <div class="admin-toolbar">
+        <form
+          class="grid gap-3 sm:grid-cols-[1fr_auto]"
+          onSubmit={submitSearch}
         >
-          {Object.entries(statusLabelKeys).map(([value, key]) => (
-            <option key={value} value={value}>
-              {t(key)}
-            </option>
-          ))}
-        </select>
-      </label>
+          <TextField
+            label={t('admin.requests.search')}
+            onInput={(event) => setSearchInput(event.currentTarget.value)}
+            type="search"
+            value={searchInput}
+          />
+          <Button class="self-end" type="submit" variant="secondary">
+            {t('programs.searchAction')}
+          </Button>
+        </form>
+        <label class="ui-field">
+          <span class="ui-field__label">{t('admin.requests.status')}</span>
+          <select
+            class="ui-field__control"
+            onChange={(event) => {
+              setPage(1);
+              setStatus(event.currentTarget.value as AccessRequestStatus);
+            }}
+            value={status}
+          >
+            {Object.entries(statusLabelKeys).map(([value, key]) => (
+              <option key={value} value={value}>
+                {t(key)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
       {query.isPending ? (
         <p aria-live="polite">{t('admin.requests.loading')}</p>
       ) : query.error || !query.data ? (
@@ -335,7 +334,7 @@ export function AdminAccessRequestsPage() {
           <p class="text-sm text-slate-400">
             {t('admin.requests.count', { count: query.data.total })}
           </p>
-          <ul class="space-y-4">
+          <ul class="admin-collection">
             {query.data.items.map((request) => (
               <RequestCard key={request.id} request={request} />
             ))}

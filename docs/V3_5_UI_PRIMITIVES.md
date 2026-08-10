@@ -32,6 +32,23 @@ refontes complètes mobile et desktop restent dans V3.5-003 et V3.5-004.
 | action GET | `NavigationAction` | bouton avec changement d'URL manuel |
 | mutation | `Button` | lien stylé comme une mutation |
 
+## Gabarits de page desktop
+
+Chaque écran authentifié déclare une intention de largeur avec `.page-layout`
+et une seule variante. Le cadre global reste suffisamment large pour
+l'administration, tandis que le gabarit borne réellement son contenu.
+
+| Gabarit | Usage | Règles |
+| --- | --- | --- |
+| `page-layout--reading` | leçon et contenu pédagogique long | colonne centrée, maximum 72 caractères ; l'ordre séquentiel reste vertical |
+| `page-layout--work` | accueil, programmes, programme, exercice, révisions, notes et profil | espace de travail large ; colonnes uniquement pour comparer ou parcourir des éléments indépendants |
+| `page-layout--admin` | navigation, filtres, listes et formulaires administratifs | largeur dense, barre d'outils stable et lignes séparées ; aucune carte décorative imbriquée |
+
+À 1024 px avec un zoom de 200 %, les variantes retombent naturellement sur
+une colonne sans défilement horizontal global. Les panneaux administratifs
+peuvent être plus larges sur desktop, mais restent des dialogues bornés au
+viewport avec un seul défilement vertical.
+
 ## Actions
 
 ### Intention et anatomie

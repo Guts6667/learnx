@@ -606,7 +606,10 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
   for (const viewport of [
     { height: 700, width: 320 },
     { height: 844, width: 390 },
-    { height: 900, width: 1280 },
+    { height: 900, width: 768 },
+    { height: 900, width: 1024 },
+    { height: 1000, width: 1440 },
+    { height: 1080, width: 1920 },
   ]) {
     await page.setViewportSize(viewport);
     await expectNoHorizontalOverflow(page);
@@ -616,6 +619,58 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
     ).toBeVisible();
   }
 
+  await expectNoSeriousA11yViolations(page);
+});
+
+test('applique les gabarits desktop sans étirer la lecture pédagogique', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+
+  const screens = [
+    { path: '/today', template: 'work' },
+    { path: `/program/${program.slug}`, template: 'work' },
+    {
+      path: `/program/${program.slug}/lesson/${lessonSummary.slug}`,
+      template: 'reading',
+    },
+    { path: '/notes', template: 'work' },
+  ] as const;
+
+  for (const viewport of [
+    { height: 900, width: 768 },
+    { height: 900, width: 1024 },
+    { height: 1000, width: 1440 },
+    { height: 1080, width: 1920 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const screen of screens) {
+      await page.goto(screen.path);
+      const layout = page.locator(`.page-layout--${screen.template}`).first();
+      await expect(layout).toBeVisible();
+      await expectNoHorizontalOverflow(page);
+    }
+  }
+
+  await page.setViewportSize({ height: 900, width: 1024 });
+  await page.goto(`/program/${program.slug}/lesson/${lessonSummary.slug}`);
+  await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
+  await expectNoHorizontalOverflow(page);
+  expect(
+    await page
+      .locator('.page-layout--reading')
+      .evaluate((element) =>
+        getComputedStyle(element).getPropertyValue('--app-reading-max').trim(),
+      ),
+  ).toBe('72ch');
   await expectNoSeriousA11yViolations(page);
 });
 

@@ -102,14 +102,31 @@ test('navigation admin profonde et tiroir accessibles sur mobile et desktop', as
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(trigger).toBeFocused();
 
-  await page.setViewportSize({ height: 900, width: 1280 });
-  await page.reload();
-  await expect(
-    page.getByRole('heading', { level: 1, name: 'Module administrable' }),
-  ).toBeVisible();
+  for (const viewport of [
+    { height: 900, width: 768 },
+    { height: 900, width: 1024 },
+    { height: 1000, width: 1440 },
+    { height: 1080, width: 1920 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.reload();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Module administrable' }),
+    ).toBeVisible();
+    await expect(page.locator('.page-layout--admin')).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+  }
+
+  await page.setViewportSize({ height: 900, width: 1024 });
+  await page.addStyleTag({ content: ':root { font-size: 200% !important; }' });
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
   ).toBe(true);
+  await expectNoSeriousA11yViolations(page);
 });

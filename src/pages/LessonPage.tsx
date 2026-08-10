@@ -169,7 +169,9 @@ function ResourceActivity({
     <Card class="space-y-4">
       <div class="flex flex-wrap items-center gap-2">
         <Badge tone={resource.isRequired ? 'warning' : 'neutral'}>
-          {resource.isRequired ? t('common.required') : t('learning.resource.further')}
+          {resource.isRequired
+            ? t('common.required')
+            : t('learning.resource.further')}
         </Badge>
         <Badge tone={status === 'COMPLETED' ? 'success' : 'neutral'}>
           {status === 'COMPLETED'
@@ -194,10 +196,7 @@ function ResourceActivity({
         {guidance?.instructions ?? resource.description}
       </p>
       {unavailable ? (
-        <div
-          role="status"
-          class="ui-feedback ui-feedback--warning space-y-2"
-        >
+        <div role="status" class="ui-feedback ui-feedback--warning space-y-2">
           <p>{t('learning.resource.unavailable')}</p>
           {alternativeHref ? (
             <a
@@ -301,11 +300,11 @@ function SecondaryActivity({ activity }: { activity: LessonActivity }) {
   return (
     <Card class="space-y-3">
       <Badge tone={activity.required ? 'warning' : 'neutral'}>
-        {activity.required ? t('common.required') : t('learning.secondary.optional')}
+        {activity.required
+          ? t('common.required')
+          : t('learning.secondary.optional')}
       </Badge>
-      <p class="ui-reading-copy">
-        {t('learning.secondary.description')}
-      </p>
+      <p class="ui-reading-copy">{t('learning.secondary.description')}</p>
     </Card>
   );
 }
@@ -481,7 +480,7 @@ function LessonWorkspace({
 
   return (
     <article
-      class="mx-auto w-full max-w-6xl space-y-6"
+      class="page-layout page-layout--reading space-y-6"
       aria-labelledby="lesson-title"
     >
       <LessonContextHeader

@@ -137,7 +137,7 @@ export function Drawer({
       <div
         aria-labelledby={titleId}
         aria-modal="true"
-        class="ui-drawer-panel min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto rounded-t-2xl border-t px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] md:h-full md:max-h-none md:max-w-md md:rounded-none md:border-t-0 md:border-l md:px-5 md:py-6"
+        class="ui-drawer-panel min-w-0 w-full max-w-[100vw] max-h-[calc(100dvh-var(--app-navigation-height)-env(safe-area-inset-bottom))] overflow-x-hidden overflow-y-auto rounded-t-2xl border-t px-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] md:h-full md:max-h-none md:max-w-2xl md:rounded-none md:border-t-0 md:border-l md:px-6 md:py-6"
         ref={panelRef}
         role="dialog"
       >

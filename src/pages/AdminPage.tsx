@@ -11,7 +11,9 @@ import { Card } from '@/components/ui/Card';
 import { Drawer } from '@/components/ui/Drawer';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
+import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -83,9 +85,7 @@ function VisibilityBadge({
   const { t } = useI18n();
   return (
     <Badge tone={visibility === 'PUBLIC' ? 'success' : 'warning'}>
-      {t(
-        visibility === 'PUBLIC' ? 'admin.visibleMembers' : 'programs.private',
-      )}
+      {t(visibility === 'PUBLIC' ? 'admin.visibleMembers' : 'programs.private')}
     </Badge>
   );
 }
@@ -117,7 +117,10 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   );
 }
 
-type Translate = (key: MessageKey, parameters?: Record<string, string | number>) => string;
+type Translate = (
+  key: MessageKey,
+  parameters?: Record<string, string | number>,
+) => string;
 
 function getMutationError(error: unknown, t: Translate): string {
   if (
@@ -144,12 +147,14 @@ function changeLabel(
     change.to === true || change.to === 'ACTIVE'
       ? t('admin.publish')
       : t('admin.unpublish');
-  const typeKey = ({
-    LESSON: 'admin.change.lesson',
-    MODULE: 'admin.change.module',
-    PROGRAM: 'admin.change.program',
-    STAGE: 'admin.change.stage',
-  } as const)[change.type];
+  const typeKey = (
+    {
+      LESSON: 'admin.change.lesson',
+      MODULE: 'admin.change.module',
+      PROGRAM: 'admin.change.program',
+      STAGE: 'admin.change.stage',
+    } as const
+  )[change.type];
 
   return t('admin.change.label', {
     action: verb,
@@ -656,20 +661,24 @@ function EntityCard({
   const { t } = useI18n();
   return (
     <li>
-      <Card class="space-y-3">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">
+      <ListRow
+        aside={
+          <NavigationAction href={href} variant="secondary">
+            {t('admin.open')}
+          </NavigationAction>
+        }
+        class="items-start"
+      >
+        <div class="flex min-w-0 flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="ui-text-muted text-xs font-semibold tracking-wide uppercase">
               {t('admin.position', { position })}
             </p>
-            <h3 class="mt-1 text-lg font-semibold">{title}</h3>
+            <h3 class="mt-1 break-words text-lg font-semibold">{title}</h3>
           </div>
           {status}
         </div>
-        <NavigationAction href={href} variant="secondary">
-          {t('admin.open')}
-        </NavigationAction>
-      </Card>
+      </ListRow>
     </li>
   );
 }
@@ -691,7 +700,7 @@ function childList(
           title={t('admin.emptyChild.title')}
         />
       ) : (
-        <ul class="space-y-4">{children}</ul>
+        <ul class="ui-list">{children}</ul>
       )}
     </section>
   );
@@ -703,24 +712,20 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
     <>
       <Breadcrumbs items={[{ label: t('admin.title') }]} />
       <h1 class="text-3xl font-bold tracking-tight">{t('admin.title')}</h1>
-      <Card class="space-y-3">
+      <Section class="space-y-3">
         <h2 class="text-xl font-semibold">{t('admin.requests.title')}</h2>
-        <p class="leading-7 text-slate-300">
-          {t('admin.accessDescription')}
-        </p>
+        <p class="ui-text-muted leading-7">{t('admin.accessDescription')}</p>
         <NavigationAction href="/admin/access-requests" variant="secondary">
           {t('admin.requests')}
         </NavigationAction>
-      </Card>
-      <Card class="space-y-3">
+      </Section>
+      <Section class="space-y-3">
         <h2 class="text-xl font-semibold">{t('admin.accounts.title')}</h2>
-        <p class="leading-7 text-slate-300">
-          {t('admin.accountsDescription')}
-        </p>
+        <p class="ui-text-muted leading-7">{t('admin.accountsDescription')}</p>
         <NavigationAction href="/admin/accounts" variant="secondary">
           {t('admin.accounts')}
         </NavigationAction>
-      </Card>
+      </Section>
       <h2 class="text-xl font-semibold">{t('admin.programs')}</h2>
       {programs.length === 0 ? (
         <EmptyState
@@ -728,7 +733,7 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
           title={t('admin.empty.title')}
         />
       ) : (
-        <ul class="space-y-4">
+        <ul class="ui-list">
           {programs.map((program) => (
             <EntityCard
               href={adminProgramHref(program.id)}
@@ -920,12 +925,12 @@ function LessonView({ lesson }: { lesson: AdminLesson }) {
         <h1 class="text-3xl font-bold tracking-tight">{lesson.title}</h1>
         <StatusBadge isPublished={lesson.isPublished} />
       </div>
-      <Card class="space-y-3">
-        <p class="leading-7 text-slate-300">{lesson.summary}</p>
-        <p class="text-sm text-slate-400">
+      <Section class="space-y-3">
+        <p class="ui-text-muted leading-7">{lesson.summary}</p>
+        <p class="ui-text-muted text-sm">
           {t('admin.position', { position: lesson.position })}
         </p>
-      </Card>
+      </Section>
       <ManagementDrawer title={t('admin.manage', { title: lesson.title })}>
         <LessonEditor lesson={lesson} />
       </ManagementDrawer>
@@ -990,23 +995,19 @@ export function AdminPage(props: AdminPageProps) {
   const query = useAdminNavigationQuery(navigationTarget(props));
   const { t } = useI18n();
 
-  if (query.isPending)
-    return <Skeleton label={t('admin.loading')} />;
+  if (query.isPending) return <Skeleton label={t('admin.loading')} />;
   if (query.error || !query.data) {
-    return (
-      <ErrorState description={t('admin.loadError')} />
-    );
+    return <ErrorState description={t('admin.loadError')} />;
   }
 
   return (
-    <section aria-label={t('admin.title')} class="page-shell">
-      <header class="space-y-2">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-          {t('admin.eyebrow')}
-        </p>
-        <p class="leading-7 text-slate-300">
-          {t('admin.description')}
-        </p>
+    <section
+      aria-label={t('admin.title')}
+      class="page-layout page-layout--admin page-shell"
+    >
+      <header class="page-header space-y-2">
+        <p class="page-eyebrow">{t('admin.eyebrow')}</p>
+        <p class="page-description mt-0">{t('admin.description')}</p>
       </header>
       <NavigationView data={query.data} />
     </section>

@@ -27,10 +27,7 @@ const roleLabels = {
   USER: 'admin.role.user',
 } as const;
 
-function mutationError(
-  error: unknown,
-  t: (key: MessageKey) => string,
-): string {
+function mutationError(error: unknown, t: (key: MessageKey) => string): string {
   if (
     error instanceof ApiClientError &&
     error.code === 'ACCOUNT_STATE_CONFLICT'
@@ -218,13 +215,13 @@ function AccountCard({
 
   return (
     <li>
-      <Card class="space-y-4">
+      <div class="admin-collection-item space-y-4">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div class="min-w-0">
             <h2 class="break-words text-lg font-semibold">
               {account.displayName}
             </h2>
-            <p class="mt-1 break-all text-sm text-slate-300">{account.email}</p>
+            <p class="ui-text-muted mt-1 break-all text-sm">{account.email}</p>
           </div>
           <Badge tone={isSuspended ? 'danger' : 'success'}>
             {t(
@@ -234,11 +231,13 @@ function AccountCard({
             )}
           </Badge>
         </div>
-        <p class="text-sm text-slate-400">
-          {t('admin.accounts.role', { role: t(roleLabels[account.role] as MessageKey) })}
+        <p class="ui-text-muted text-sm">
+          {t('admin.accounts.role', {
+            role: t(roleLabels[account.role] as MessageKey),
+          })}
         </p>
         {account.suspendedAt ? (
-          <p class="text-sm text-slate-400">
+          <p class="ui-text-muted text-sm">
             {t('admin.accounts.suspendedAt', {
               date: formatLocalizedDate(account.suspendedAt, locale, {
                 dateStyle: 'medium',
@@ -252,7 +251,7 @@ function AccountCard({
           account={account}
           isCurrentAccount={account.id === currentUserId}
         />
-      </Card>
+      </div>
     </li>
   );
 }
@@ -282,45 +281,49 @@ export function AdminAccountsPage() {
   }
 
   return (
-    <section aria-labelledby="accounts-title" class="page-shell space-y-6">
-      <a
-        class="inline-flex min-h-11 items-center text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-        href="/admin"
-      >
-        {t('navigation.back.admin')}
-      </a>
+    <section
+      aria-labelledby="accounts-title"
+      class="page-layout page-layout--admin page-shell space-y-6"
+    >
       <PageHeader
         description={t('admin.accounts.description')}
         eyebrow={t('admin.eyebrow')}
         id="accounts-title"
         title={t('admin.accounts.title')}
       />
-      <form class="grid gap-4 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
-        <TextField
-          label={t('admin.accounts.search')}
-          onInput={(event) => setSearchInput(event.currentTarget.value)}
-          type="search"
-          value={searchInput}
-        />
-        <Button class="self-end" type="submit" variant="secondary">
-          {t('programs.searchAction')}
-        </Button>
-      </form>
-      <label class="grid gap-2 text-sm font-medium text-slate-200">
-        {t('admin.accounts.status')}
-        <select
-          class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
-          onChange={(event) => {
-            setPage(1);
-            setStatus(event.currentTarget.value as AccountStatus | '');
-          }}
-          value={status}
+      <div class="admin-toolbar">
+        <form
+          class="grid gap-3 sm:grid-cols-[1fr_auto]"
+          onSubmit={submitSearch}
         >
-          <option value="">{t('admin.accounts.all')}</option>
-          <option value="ACTIVE">{t('admin.accounts.activePlural')}</option>
-          <option value="SUSPENDED">{t('admin.accounts.suspendedPlural')}</option>
-        </select>
-      </label>
+          <TextField
+            label={t('admin.accounts.search')}
+            onInput={(event) => setSearchInput(event.currentTarget.value)}
+            type="search"
+            value={searchInput}
+          />
+          <Button class="self-end" type="submit" variant="secondary">
+            {t('programs.searchAction')}
+          </Button>
+        </form>
+        <label class="ui-field">
+          <span class="ui-field__label">{t('admin.accounts.status')}</span>
+          <select
+            class="ui-field__control"
+            onChange={(event) => {
+              setPage(1);
+              setStatus(event.currentTarget.value as AccountStatus | '');
+            }}
+            value={status}
+          >
+            <option value="">{t('admin.accounts.all')}</option>
+            <option value="ACTIVE">{t('admin.accounts.activePlural')}</option>
+            <option value="SUSPENDED">
+              {t('admin.accounts.suspendedPlural')}
+            </option>
+          </select>
+        </label>
+      </div>
       {query.isPending ? (
         <p aria-live="polite">{t('admin.accounts.loading')}</p>
       ) : query.error || !query.data ? (
@@ -335,7 +338,7 @@ export function AdminAccountsPage() {
           <p class="text-sm text-slate-400">
             {t('admin.accounts.count', { count: query.data.total })}
           </p>
-          <ul class="space-y-4">
+          <ul class="admin-collection">
             {query.data.items.map((account) => (
               <AccountCard
                 account={account}

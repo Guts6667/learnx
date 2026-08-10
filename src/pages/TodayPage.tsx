@@ -36,7 +36,10 @@ export function TodayPage() {
   const { t } = useI18n();
 
   return (
-    <section aria-labelledby="today-title" class="page-shell">
+    <section
+      aria-labelledby="today-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <PageHeader
         eyebrow={t('today.eyebrow')}
         id="today-title"

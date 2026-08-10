@@ -5,8 +5,10 @@ import { expectNoSeriousA11yViolations } from './accessibility';
 const viewports = [
   { height: 720, width: 320 },
   { height: 844, width: 390 },
+  { height: 900, width: 768 },
   { height: 900, width: 1024 },
   { height: 1000, width: 1440 },
+  { height: 1080, width: 1920 },
 ] as const;
 
 test('les primitives restent lisibles et actionnables aux largeurs de référence', async ({

@@ -37,8 +37,7 @@ export function ExercisePage({
     }
   }, [exercise, lesson]);
 
-  if (lessonQuery.isPending)
-    return <Spinner label={t('exercise.loading')} />;
+  if (lessonQuery.isPending) return <Spinner label={t('exercise.loading')} />;
   if (lessonQuery.error) {
     return <ErrorState description={t('exercise.loadError')} />;
   }
@@ -54,7 +53,7 @@ export function ExercisePage({
 
   const key = activityKey('EXERCISE', exercise.id);
   return (
-    <article class="mx-auto w-full max-w-5xl space-y-6">
+    <article class="page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={exercise.title} lesson={lesson} />
       <ExerciseCard
         exercise={exercise}

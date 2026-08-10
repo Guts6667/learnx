@@ -117,10 +117,14 @@ function LessonSummaryCard({
           {t('curriculum.lesson.details')}
         </summary>
         <ul class="ui-text-muted space-y-1 pb-2">
-          <li>{t('curriculum.lesson.resources', { count: counts.resources })}</li>
+          <li>
+            {t('curriculum.lesson.resources', { count: counts.resources })}
+          </li>
           <li>{t('curriculum.lesson.tasks', { count: counts.tasks })}</li>
           <li>{t('curriculum.lesson.concepts', { count: counts.concepts })}</li>
-          <li>{t('curriculum.lesson.exercises', { count: counts.exercises })}</li>
+          <li>
+            {t('curriculum.lesson.exercises', { count: counts.exercises })}
+          </li>
           <li>{t('curriculum.lesson.quizzes', { count: counts.quizzes })}</li>
         </ul>
       </details>
@@ -508,7 +512,10 @@ function StageValidationCard({
   );
 }
 
-type Translate = (key: MessageKey, parameters?: Record<string, string | number>) => string;
+type Translate = (
+  key: MessageKey,
+  parameters?: Record<string, string | number>,
+) => string;
 
 function durationLabel(days: number | null, t: Translate) {
   if (days === null) return t('programs.durationUnknown');
@@ -519,7 +526,10 @@ function publishedVersionLabel(version: number, t: Translate) {
   return t('programs.publishedVersion', { version });
 }
 
-function programLocaleLabel(locale: string | null | undefined, t: Translate): string {
+function programLocaleLabel(
+  locale: string | null | undefined,
+  t: Translate,
+): string {
   return t(
     locale?.toLocaleLowerCase().startsWith('en')
       ? 'programs.language.en'
@@ -666,9 +676,7 @@ function EnrolledProgramCard({
             )}
           </>
         ) : (
-          <p class="ui-text-muted text-sm">
-            {t('programs.dataPreserved')}
-          </p>
+          <p class="ui-text-muted text-sm">{t('programs.dataPreserved')}</p>
         )}
       </Card>
     </li>
@@ -705,9 +713,7 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
         <ul class="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.locale, t)}</li>
           <li>{durationLabel(program.estimatedDurationDays, t)}</li>
-          <li>
-            {t('programs.stageCount', { count: program.stages.length })}
-          </li>
+          <li>{t('programs.stageCount', { count: program.stages.length })}</li>
         </ul>
         <ProgressBar
           label={t('today.progress', { count: Math.round(percent) })}
@@ -717,9 +723,7 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
           class="mt-auto"
           href={`/program/${encodeURIComponent(program.slug)}`}
         >
-          {hasDraftContent
-            ? t('programs.preview')
-            : t('programs.open')}
+          {hasDraftContent ? t('programs.preview') : t('programs.open')}
         </NavigationAction>
       </Card>
     </li>
@@ -812,7 +816,9 @@ export function ProgramsPage() {
     try {
       await mutation.execute(program.id, 'enroll');
       await refreshDirectories();
-      setAnnouncement(t('programs.addedAnnouncement', { title: program.title }));
+      setAnnouncement(
+        t('programs.addedAnnouncement', { title: program.title }),
+      );
     } catch {
       // The normalized error is rendered below.
     }
@@ -838,7 +844,10 @@ export function ProgramsPage() {
   }
 
   return (
-    <section aria-labelledby="programs-title" class="page-shell space-y-6">
+    <section
+      aria-labelledby="programs-title"
+      class="page-layout page-layout--work page-shell space-y-6"
+    >
       <PageHeader
         description={t('programs.description')}
         eyebrow={t('programs.eyebrow')}
@@ -1134,11 +1143,12 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         null);
 
   return (
-    <section aria-labelledby="program-title" class="page-shell">
+    <section
+      aria-labelledby="program-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <div class="min-w-0">
-        <p class="page-eyebrow">
-          {t('curriculum.program')}
-        </p>
+        <p class="page-eyebrow">{t('curriculum.program')}</p>
         <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
           <h1
             id="program-title"
@@ -1233,11 +1243,12 @@ export function StagePage({
   }
 
   return (
-    <section aria-labelledby="stage-title" class="page-shell">
+    <section
+      aria-labelledby="stage-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <div>
-        <p class="page-eyebrow">
-          {t('curriculum.stage')}
-        </p>
+        <p class="page-eyebrow">{t('curriculum.stage')}</p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <h1 id="stage-title" class="text-3xl font-bold tracking-tight">
             {stage.title}
@@ -1324,11 +1335,12 @@ export function ModulePage({
   }
 
   return (
-    <section aria-labelledby="module-title" class="page-shell">
+    <section
+      aria-labelledby="module-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <div>
-        <p class="page-eyebrow">
-          {t('curriculum.module')}
-        </p>
+        <p class="page-eyebrow">{t('curriculum.module')}</p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <h1 id="module-title" class="text-3xl font-bold tracking-tight">
             {module.title}

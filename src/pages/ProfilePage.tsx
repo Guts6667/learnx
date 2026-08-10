@@ -53,7 +53,10 @@ export function ProfilePage() {
   }
 
   return (
-    <section aria-labelledby="profile-title" class="page-shell">
+    <section
+      aria-labelledby="profile-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <PageHeader
         eyebrow={t('profile.eyebrow')}
         id="profile-title"
@@ -61,16 +64,22 @@ export function ProfilePage() {
       />
       <Card class="max-w-2xl p-0">
         <Section class="px-5 sm:px-6">
-        <div class="min-w-0">
-          <p class="ui-text-muted text-sm">{t('profile.email')}</p>
-          <p class="ui-text mt-1 break-all text-base">{user.email}</p>
-        </div>
+          <div class="min-w-0">
+            <p class="ui-text-muted text-sm">{t('profile.email')}</p>
+            <p class="ui-text mt-1 break-all text-base">{user.email}</p>
+          </div>
         </Section>
         <Section class="px-5 sm:px-6">
-          <label class="ui-text block text-sm font-semibold" for="profile-locale">
+          <label
+            class="ui-text block text-sm font-semibold"
+            for="profile-locale"
+          >
             {t('profile.language')}
           </label>
-          <p class="ui-text-muted mt-1 text-sm leading-6" id="profile-locale-description">
+          <p
+            class="ui-text-muted mt-1 text-sm leading-6"
+            id="profile-locale-description"
+          >
             {t('profile.languageDescription')}
           </p>
           <select

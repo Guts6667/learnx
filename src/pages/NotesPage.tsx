@@ -112,7 +112,10 @@ export function NotesPage() {
   }
 
   return (
-    <section aria-labelledby="notes-title" class="page-shell">
+    <section
+      aria-labelledby="notes-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <PageHeader
         description={t('notes.description')}
         eyebrow={t('notes.eyebrow')}
@@ -142,9 +145,7 @@ export function NotesPage() {
         <ErrorState description={t('notes.createError')} />
       ) : null}
       {query.isPending ? <Skeleton label={t('notes.loading')} /> : null}
-      {query.error ? (
-        <ErrorState description={t('notes.loadError')} />
-      ) : null}
+      {query.error ? <ErrorState description={t('notes.loadError')} /> : null}
       {!query.isPending && !query.error && query.data?.notes.length === 0 ? (
         <EmptyState
           description={
@@ -153,7 +154,9 @@ export function NotesPage() {
               : t('notes.empty.description')
           }
           title={
-            debouncedSearch ? t('notes.noResults.title') : t('notes.empty.title')
+            debouncedSearch
+              ? t('notes.noResults.title')
+              : t('notes.empty.title')
           }
         />
       ) : null}
@@ -434,7 +437,10 @@ export function NotePage({ noteId }: { noteId: string }) {
   }
 
   return (
-    <article aria-labelledby="note-title" class="space-y-6">
+    <article
+      aria-labelledby="note-title"
+      class="page-layout page-layout--work space-y-6"
+    >
       <header class="space-y-3">
         <NavigationAction href="/notes" variant="ghost">
           {t('notes.editor.back')}

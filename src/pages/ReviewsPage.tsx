@@ -56,7 +56,9 @@ function ReviewCard({
           <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'warning'}>
             {t(isOverdue(item.dueAt) ? 'reviews.overdue' : 'reviews.due')}
           </Badge>
-          {item.isDraft ? <Badge tone="neutral">{t('common.draft')}</Badge> : null}
+          {item.isDraft ? (
+            <Badge tone="neutral">{t('common.draft')}</Badge>
+          ) : null}
         </div>
         <div>
           <h2 class="text-lg font-semibold">
@@ -132,7 +134,10 @@ export function ReviewsPage() {
   }
 
   return (
-    <section aria-labelledby="reviews-title" class="page-shell">
+    <section
+      aria-labelledby="reviews-title"
+      class="page-layout page-layout--work page-shell"
+    >
       <PageHeader
         description={t('reviews.description')}
         eyebrow={t('reviews.eyebrow')}
@@ -144,9 +149,7 @@ export function ReviewsPage() {
         <ErrorState description={t('reviews.updateError')} />
       ) : null}
       {query.isPending ? <Skeleton label={t('reviews.loading')} /> : null}
-      {query.error ? (
-        <ErrorState description={t('reviews.loadError')} />
-      ) : null}
+      {query.error ? <ErrorState description={t('reviews.loadError')} /> : null}
       {!query.isPending && !query.error && query.data?.reviews.length === 0 ? (
         <EmptyState
           description={t('reviews.empty.description')}

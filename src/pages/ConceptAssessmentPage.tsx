@@ -72,9 +72,7 @@ export function ConceptAssessmentPage({
   }
 
   if (lessonQuery.error) {
-    return (
-      <ErrorState description={t('conceptAssessment.loadError')} />
-    );
+    return <ErrorState description={t('conceptAssessment.loadError')} />;
   }
 
   if (!lesson || !selectedAssessment) {
@@ -100,9 +98,7 @@ export function ConceptAssessmentPage({
     attemptsQuery.error ||
     !assessmentQuery.data?.assessment
   ) {
-    return (
-      <ErrorState description={t('conceptAssessment.loadError')} />
-    );
+    return <ErrorState description={t('conceptAssessment.loadError')} />;
   }
 
   const assessment = assessmentQuery.data.assessment;
@@ -114,12 +110,9 @@ export function ConceptAssessmentPage({
     t('conceptAssessment.defaultTitle', { title: assessment.concept.title });
 
   return (
-    <article class="mx-auto w-full max-w-5xl space-y-6">
+    <article class="page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
-      <section
-        class="space-y-3"
-        aria-label={t('conceptAssessment.info')}
-      >
+      <section class="space-y-3" aria-label={t('conceptAssessment.info')}>
         <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
           {t('conceptAssessment.concept', { title: assessment.concept.title })}
         </p>
@@ -132,9 +125,7 @@ export function ConceptAssessmentPage({
           {preview ? <Badge tone="warning">{t('common.draft')}</Badge> : null}
         </div>
         {preview ? (
-          <p class="text-sm text-amber-200">
-            {t('conceptAssessment.preview')}
-          </p>
+          <p class="text-sm text-amber-200">{t('conceptAssessment.preview')}</p>
         ) : null}
         <p class="text-sm text-slate-400">
           {t('conceptAssessment.scoreSummary', {
