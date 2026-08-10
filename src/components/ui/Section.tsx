@@ -26,7 +26,7 @@ export function Section({
       {title || description || action ? (
         <header class="mb-4 flex min-w-0 items-start justify-between gap-4">
           <div class="min-w-0">
-            {title ? <h2 class="text-lg font-semibold">{title}</h2> : null}
+            {title ? <h2 class="text-lg font-medium">{title}</h2> : null}
             {description ? (
               <div class="mt-1 text-sm leading-6 text-[var(--color-text-muted)]">
                 {description}

@@ -4,9 +4,9 @@
 
 **Statut : ACTIF**
 
-Ce document applique la direction « Minéral calme » approuvée dans
+Ce document applique la direction « Atlas sans vert » approuvée dans
 `docs/V3_5_BRAND_DIRECTION.md`. Il décrit les primitives partagées ; les
-refontes complètes mobile et desktop restent dans V3.5-003 et V3.5-004.
+refontes complètes mobile et desktop restent dans V3.5-004 et V3.5-005.
 
 ## Principes communs
 
@@ -195,10 +195,10 @@ dépréciée et ne doit plus être introduite.
 
 | Contexte | V3 | Fondation V3.5-002 | Migration complète |
 | --- | --- | --- | --- |
-| Programme | une carte sobre par étape, mais couleurs directes | carte sémantique sans ombre ; badges et progression unifiés | V3.5-003/004 |
-| Leçon | chaque contenu dans une carte | contenu courant devient `Section`; activités autonomes gardent une surface | V3.5-003 |
-| Administration | cartes et faux dialogues hétérogènes | actions, champs, statuts et surfaces partagent les mêmes rôles | V3.5-004 |
-| Notes | une carte complète par note | note représentative rendue en `ListRow` avec filets | V3.5-003/004 |
+| Programme | une carte sobre par étape, mais couleurs directes | carte sémantique sans ombre ; badges et progression unifiés | V3.5-004/005 |
+| Leçon | chaque contenu dans une carte | contenu courant devient `Section`; activités autonomes gardent une surface | V3.5-004 |
+| Administration | cartes et faux dialogues hétérogènes | actions, champs, statuts et surfaces partagent les mêmes rôles | V3.5-005 |
+| Notes | une carte complète par note | note représentative rendue en `ListRow` avec filets | V3.5-004/005 |
 
 Cette passe réduit le chrome commun sans modifier l'information, les routes ou
 les actions. Les tickets d'écran restent responsables de retirer les derniers
@@ -221,6 +221,21 @@ groupes surfacés et styles directs.
 | grands rayons et ombres de contenu | déprécier |
 
 ## Validation et rollback
+
+Avant d'introduire ou de modifier une primitive :
+
+1. vérifier qu'aucune primitive existante ne porte déjà le rôle recherché ;
+2. utiliser exclusivement les tokens de `V3_5_BRAND_DIRECTION.md` ;
+3. couvrir les états default, hover, focus, disabled, loading, empty et error
+   applicables ;
+4. tester 320 et 390 px, zoom 200 %, reduced motion et forced colors ;
+5. exécuter le contrôle Atlas, les tests composants, la matrice E2E concernée,
+   lint, typecheck et build ;
+6. faire examiner toute exception visuelle avant de modifier une baseline.
+
+Une capture mise à jour n'est jamais, seule, la preuve qu'une régression est
+corrigée. Les valeurs arbitraires, variantes vertes/cyan électriques, rayons
+hors échelle et CTA laiton sont refusés.
 
 Tests obligatoires : composants, ordre clavier, focus, annonces, contrastes et
 largeurs 320, 390, 1024 et 1440 px. Le zoom 200 % et reduced motion sont revus

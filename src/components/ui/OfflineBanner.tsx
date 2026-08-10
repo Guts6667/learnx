@@ -26,7 +26,7 @@ export function OfflineBanner({
       )}
       role="status"
     >
-      <span class="font-semibold">{t('offline.title')} </span>
+      <span class="font-medium">{t('offline.title')} </span>
       {message ?? t('offline.description')}
     </div>
   );
