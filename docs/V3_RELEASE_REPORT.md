@@ -4,28 +4,26 @@
 
 - Ticket : `V3-033`.
 - Date : 10 août 2026.
-- SHA candidat : `f1353a3ed565bd40fdeee7162d7a9d734ca8421f`.
-- Branches lors des validations : `dev` et `staging` alignées sur le SHA
-  applicatif candidat ; `main` reste sur
-  `221e34fccbf24445a55c47f93294a5799668cce2`. Le commit documentaire de ce
-  rapport avance ensuite uniquement `dev` sans modifier le candidat déployé.
-- Verdict : **GO staging ; NO-GO clôture V3 tant que la promotion Production,
-  le smoke post-déploiement et la validation manuelle VoiceOver ne sont pas
-  réalisés**.
+- SHA promu : `413071a15518ffcc3f1ffad3b6522596f1a3c999` ; le code
+  applicatif est celui du candidat `f1353a3ed565bd40fdeee7162d7a9d734ca8421f`,
+  suivi uniquement du présent rapport de release.
+- Branches : `dev`, `staging` et `main` alignées par fast-forward sur
+  `413071a`.
+- Verdict : **GO Production ; V3 techniquement promue**. La vérification
+  manuelle VoiceOver sur appareil réel reste une validation humaine résiduelle
+  et ne doit pas être présentée comme exécutée par l'automatisation.
 
 Le candidat est validé localement, par le workflow Integration sur un clone
-Neon éphémère et par un déploiement Vercel staging relié à une branche Neon
-distincte. Aucun P0/P1 applicatif connu ne reste ouvert. Le domaine canonique
-`https://learn-x.app` est maintenant correctement relié à Vercel. Ce rapport ne
-constitue pas une autorisation de fusion vers `main`.
+Neon éphémère, par un déploiement Vercel staging relié à une branche Neon
+distincte, puis par un déploiement et des smoke tests Production. Aucun P0/P1
+applicatif connu ne reste ouvert. Le domaine canonique est
+`https://learn-x.app`.
 
 ## État Git et périmètre
 
-- `origin/dev` : `f1353a3` au moment des validations, puis le commit
-  documentaire autonome de ce rapport.
-- `origin/staging` : `f1353a3`, promotion fast-forward effectuée pendant la
-  répétition de release.
-- `origin/main` : `221e34f`, 22 commits derrière le candidat.
+- `origin/dev`, `origin/staging` et `origin/main` : `413071a` après promotion.
+- La promotion vers `staging`, puis vers `main`, a été effectuée uniquement par
+  fast-forward ; aucun historique n'a été réécrit.
 - Les trois migrations nouvelles depuis `main` sont :
   - `20260809150000_add_account_locale` ;
   - `20260809170000_add_program_language_variants` ;
@@ -64,6 +62,11 @@ le SHA exact `f1353a3`. Il crée une branche Neon éphémère, photographie le c
 Production, applique et rejoue les 28 migrations, exécute les tests Functions et
 navigateurs multi-utilisateurs, mesure les lectures, valide les seeds ciblés
 idempotents, puis supprime la branche.
+
+Le workflow Integration
+[#88](https://github.com/Guts6667/learnx/actions/runs/31362936465) est également
+vert sur le SHA promu `413071a`, y compris migrations, replay, tests Functions
+et navigateurs, seeds ciblés et suppression de la branche Neon éphémère.
 
 La répétition détaillée de V3-032 reste décrite dans
 `docs/V3_MIGRATION_REHEARSAL_REPORT.md` : 44 tables et leurs données antérieures
@@ -116,12 +119,37 @@ Photographie Production en lecture seule avant promotion :
 
 - 2 comptes ;
 - 4 programmes ;
-- 4 notes ;
+- 5 notes ;
 - 9 progressions de leçon ;
 - 28 migrations Prisma appliquées sans rollback.
 
 Cette photographie sert de minimum de comparaison après déploiement. Elle ne
 contient aucune donnée personnelle ni secret.
+
+## Promotion Production réalisée
+
+- Sauvegarde Neon pré-release : `backup-pre-v3-release-20260810`, branche
+  `br-gentle-leaf-as9fpxt5`, créée depuis Production et conservée.
+- Vérification de la sauvegarde : `2 | 4 | 5 | 9 | 28` pour comptes,
+  programmes, notes, progressions de leçon et migrations réussies.
+- Déploiement Vercel Production :
+  `https://learnx-71lzzjikv-guts6667s-projects.vercel.app`, statut `Ready`,
+  branche `main`, commit `413071a`.
+- `prisma migrate deploy` : 28 migrations trouvées, aucune migration en
+  attente.
+- `pnpm deployment:check -- https://learn-x.app` : succès.
+- Smoke authentifié avec compte temporaire : login `200`, session `200`,
+  programmes `200`, Catalogue `200`, Mes programmes `200`, Aujourd'hui `200`,
+  Révisions `200`, logout `204`. Le compte temporaire a ensuite été supprimé.
+- Photographie post-smoke : `2 | 4 | 5 | 9 | 28`, identique à la sauvegarde.
+- Domaine : apex `200`, `www` et l'ancien domaine Vercel redirigent en `308`
+  vers `https://learn-x.app/`.
+- Logs observés pendant le smoke : aucune réponse `5xx`; les deux `404`
+  observées provenaient exclusivement de sondes initiales sur des chemins
+  inexistants, aussitôt corrigées vers les routes canoniques en `200`.
+- Surveillance continue du endpoint de session pendant plus de 30 minutes :
+  toutes les sondes en `200`, temps client compris entre 0,10 s et 0,26 s ;
+  revue finale des logs sans `5xx`.
 
 ## Fenêtre, responsabilités et seuils d'arrêt
 
@@ -142,10 +170,10 @@ Arrêt immédiat si l'un des événements suivants survient :
 - événement `api_request` 5xx dans les logs pendant le smoke, ou latences
   critiques répétées au-dessus de 1 000 ms sans cause identifiée.
 
-## Procédure de promotion autorisée
+## Procédure de promotion exécutée
 
 1. Obtenir l'autorisation explicite de promotion Production.
-2. Figer `f1353a3` et vérifier que `dev` et `staging` n'ont pas avancé.
+2. Figer `413071a` et vérifier les relations fast-forward.
 3. Créer une branche Neon de sauvegarde au point immédiatement antérieur au
    déploiement et vérifier connexion, 28 migrations et décomptes critiques.
 4. Fast-forward `main` vers le SHA validé, sans merge divergent ni réécriture.
@@ -181,12 +209,13 @@ de restauration serait perdue et exige une décision explicite.
 - [x] smoke staging public et authentifié ;
 - [x] domaine canonique corrigé et vérifié ;
 - [x] audit dépendances et absence de P0/P1 applicatif connu ;
-- [ ] autorisation explicite de promotion Production ;
-- [ ] sauvegarde Neon immédiatement pré-déploiement ;
-- [ ] fast-forward `main` et déploiement Production ;
-- [ ] smoke Production authentifié multi-utilisateur ;
+- [x] autorisation explicite de promotion Production ;
+- [x] sauvegarde Neon immédiatement pré-déploiement ;
+- [x] fast-forward `main` et déploiement Production ;
+- [x] smoke Production authentifié ;
 - [ ] validation iPhone réel et VoiceOver ;
-- [ ] surveillance 30 minutes et clôture explicite V3.
+- [x] surveillance Production supérieure à 30 minutes, sans incident.
 
-Tant que les cases restantes ne sont pas validées, V3-033 est en état
-pré-promotion et la V3 n'est pas officiellement clôturée.
+La V3 est officiellement promue en Production. La validation VoiceOver reste
+une vérification manuelle résiduelle à faire sur appareil réel ; elle n'est pas
+déclarée réussie dans ce rapport.
