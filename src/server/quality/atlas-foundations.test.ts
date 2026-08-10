@@ -122,5 +122,8 @@ describe('Atlas visual foundations', () => {
     expect(contrast('#89acbe', '#121c24')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#466b82', '#f1eee6')).toBeGreaterThanOrEqual(4.5);
     expect(contrast('#60747e', '#121c24')).toBeGreaterThanOrEqual(3);
+    expect(stylesheet).toMatch(
+      /\.ui-action--danger \{[\s\S]*?color: color-mix\([\s\S]*?var\(--color-danger\) 90%[\s\S]*?var\(--color-ivory\) 10%/,
+    );
   });
 });

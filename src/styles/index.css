@@ -888,7 +888,11 @@ body {
 .ui-action--danger {
   border-color: var(--color-danger);
   background: transparent;
-  color: var(--color-danger);
+  color: color-mix(
+    in srgb,
+    var(--color-danger) 90%,
+    var(--color-ivory) 10%
+  );
 }
 
 .ui-action--danger:hover {
