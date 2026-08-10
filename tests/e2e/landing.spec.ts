@@ -44,6 +44,23 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
       page.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
     ).toBeVisible();
     await expect(page.getByText(/The Scrum Guide 2020/)).toBeVisible();
+    if (viewport.width >= 1024) {
+      expect(
+        await page.evaluate(() => {
+          const heading = document.querySelector('.landing-hero h1');
+          const preview = document.querySelector(
+            '.landing-hero .landing-product-preview',
+          );
+          if (!heading || !preview) return false;
+          const headingText = document.createRange();
+          headingText.selectNodeContents(heading);
+          return (
+            headingText.getBoundingClientRect().right <=
+            preview.getBoundingClientRect().left
+          );
+        }),
+      ).toBe(true);
+    }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
