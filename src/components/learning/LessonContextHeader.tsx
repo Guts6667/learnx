@@ -61,7 +61,7 @@ export function LessonContextHeader({
     <header class="space-y-4">
       {activityTitle ? (
         <a
-          class="inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+          class="ui-link inline-flex min-h-11 max-w-full min-w-0 items-center break-words rounded-lg text-sm font-medium"
           href={canonicalLessonHref}
         >
           {t('learning.lessonWithTitle', { title: lesson.title })}
@@ -69,7 +69,7 @@ export function LessonContextHeader({
       ) : null}
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div class="min-w-0 max-w-full flex-1">
-          <p class="break-words text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+          <p class="page-eyebrow break-words">
             {activityTitle
               ? `${t('learning.lesson')} · ${lesson.title}`
               : t('learning.lesson')}
@@ -85,7 +85,7 @@ export function LessonContextHeader({
           <Badge tone="warning">{t('common.draft')}</Badge>
         )}
       </div>
-      <div class="text-sm text-slate-300">
+      <div class="ui-text-muted text-sm">
         {lesson.estimatedMinutes === null ? null : (
           <span>{t('common.minutes', { count: lesson.estimatedMinutes })}</span>
         )}

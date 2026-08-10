@@ -1,5 +1,6 @@
 import { useRef, useState } from 'preact/hooks';
 
+import { Button } from '@/components/ui/Button';
 import { Drawer } from '@/components/ui/Drawer';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import type { LessonActivity } from '@/lib/lesson-activity-sequence';
@@ -52,35 +53,36 @@ export function PedagogicalNavigation({
     <>
       <nav
         aria-label={t('learning.navigation')}
-        class="min-w-0 rounded-2xl border border-cyan-900/80 bg-slate-950 p-3"
+        class="ui-learning-navigation min-w-0 py-4"
       >
         <div class="flex min-w-0 items-start justify-between gap-3">
           <div class="min-w-0">
-            <p class="break-words text-xs font-semibold text-cyan-300">
+            <p class="page-eyebrow break-words text-xs">
               {moduleTitle}
             </p>
-            <p class="break-words text-sm font-medium text-slate-100">
+            <p class="ui-text break-words text-sm font-medium">
               {lessonTitle}
             </p>
-            <p class="mt-1 text-xs text-slate-400">
+            <p class="ui-text-muted mt-1 text-xs">
               {t('learning.activityPosition', {
                 current: currentIndex + 1,
                 total: activities.length,
               })}
             </p>
           </div>
-          <button
+          <Button
             aria-expanded={isSummaryOpen}
             aria-haspopup="dialog"
-            class="inline-flex min-h-11 shrink-0 items-center rounded-xl border border-cyan-700 bg-cyan-950 px-3 text-sm font-semibold text-cyan-100"
+            class="shrink-0"
             onClick={() => setIsSummaryOpen(true)}
-            ref={summaryTriggerRef}
-            type="button"
+            elementRef={summaryTriggerRef}
+            size="sm"
+            variant="secondary"
           >
             {t('learning.summaryAction')}
-          </button>
+          </Button>
         </div>
-        <div class="mt-3 grid min-w-0 grid-cols-2 items-end gap-3 border-t border-slate-800 pt-3">
+        <div class="ui-divider mt-4 grid min-w-0 grid-cols-2 items-end gap-3 border-t pt-4">
           {previous ? (
             <NavigationAction
               class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
@@ -93,23 +95,22 @@ export function PedagogicalNavigation({
           ) : (
             <span
               aria-disabled="true"
-              class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
+              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center hyphens-auto opacity-60 [overflow-wrap:anywhere]"
             >
               {t('common.previous')}
             </span>
           )}
           {onContinue ? (
-            <button
+            <Button
               aria-busy={isContinuePending || undefined}
-              class="inline-flex min-h-11 w-full min-w-0 max-w-full items-center justify-center rounded-xl bg-cyan-400 px-3 text-center text-sm font-semibold text-slate-950 hyphens-auto [overflow-wrap:anywhere] disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-500"
+              class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
               disabled={isContinueDisabled || isContinuePending}
+              isLoading={isContinuePending}
               onClick={onContinue}
-              type="button"
+              size="sm"
             >
-              {isContinuePending
-                ? `${t('common.loading')}…`
-                : resolvedContinueLabel}
-            </button>
+              {resolvedContinueLabel}
+            </Button>
           ) : nextHref ? (
             <NavigationAction
               class="w-full min-w-0 max-w-full text-center hyphens-auto [overflow-wrap:anywhere]"
@@ -121,7 +122,7 @@ export function PedagogicalNavigation({
           ) : (
             <span
               aria-disabled="true"
-              class="inline-flex min-h-11 min-w-0 max-w-full items-center justify-center rounded-xl bg-slate-900 px-3 text-center text-sm text-slate-500 hyphens-auto [overflow-wrap:anywhere]"
+              class="ui-action ui-action--secondary ui-action--sm min-w-0 max-w-full text-center hyphens-auto opacity-60 [overflow-wrap:anywhere]"
             >
               {resolvedContinueLabel}
             </span>
@@ -134,7 +135,7 @@ export function PedagogicalNavigation({
         returnFocusElement={summaryTriggerRef.current}
         title={t('learning.summary')}
       >
-        <p class="mb-4 text-sm text-slate-300">
+        <p class="ui-text-muted mb-4 text-sm">
           {t('learning.activityPosition', {
             current: currentIndex + 1,
             total: activities.length,
@@ -148,27 +149,23 @@ export function PedagogicalNavigation({
               <li class="min-w-0" key={key}>
                 <a
                   aria-current={isCurrent ? 'step' : undefined}
-                  class={`grid min-h-11 min-w-0 grid-cols-[2rem_minmax(0,1fr)] gap-x-2 rounded-xl border px-3 py-3 text-sm ${
-                    isCurrent
-                      ? 'border-cyan-400 bg-cyan-950 text-cyan-100 outline outline-1 outline-cyan-400'
-                      : 'border-slate-800 text-slate-200 hover:bg-slate-900'
-                  }`}
+                  class="ui-learning-navigation__activity grid min-h-11 min-w-0 grid-cols-[2rem_minmax(0,1fr)] gap-x-2 rounded-lg px-3 py-3 text-sm"
                   href={activity.href}
                   onClick={() => setIsSummaryOpen(false)}
                 >
                   <span
                     aria-hidden="true"
-                    class="row-span-2 text-center text-xs text-slate-400"
+                    class="ui-text-muted row-span-2 text-center text-xs"
                   >
                     {index + 1}
                   </span>
-                  <span class="min-w-0 text-xs font-semibold text-slate-400">
+                  <span class="ui-text-muted min-w-0 text-xs font-semibold">
                     {activity.label}
                   </span>
                   <span class="min-w-0 break-words font-medium">
                     {activity.title}
                   </span>
-                  <span class="col-start-2 mt-1 min-w-0 text-xs text-slate-400">
+                  <span class="ui-text-muted col-start-2 mt-1 min-w-0 text-xs">
                     {isCurrent ? `${t('learning.currentActivity')} · ` : ''}
                     {t(
                       activity.status === 'COMPLETED'

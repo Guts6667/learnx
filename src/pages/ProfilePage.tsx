@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { Section } from '@/components/ui/Section';
 import {
   useLocaleMutation,
   useLogoutMutation,
@@ -58,21 +59,23 @@ export function ProfilePage() {
         id="profile-title"
         title={user.displayName}
       />
-      <Card class="max-w-2xl">
+      <Card class="max-w-2xl p-0">
+        <Section class="px-5 sm:px-6">
         <div class="min-w-0">
-          <p class="text-sm text-slate-400">{t('profile.email')}</p>
-          <p class="mt-1 break-all text-base text-slate-100">{user.email}</p>
+          <p class="ui-text-muted text-sm">{t('profile.email')}</p>
+          <p class="ui-text mt-1 break-all text-base">{user.email}</p>
         </div>
-        <div class="mt-6 border-t border-slate-800 pt-5">
-          <label class="block text-sm font-semibold text-slate-200" for="profile-locale">
+        </Section>
+        <Section class="px-5 sm:px-6">
+          <label class="ui-text block text-sm font-semibold" for="profile-locale">
             {t('profile.language')}
           </label>
-          <p class="mt-1 text-sm leading-6 text-slate-400" id="profile-locale-description">
+          <p class="ui-text-muted mt-1 text-sm leading-6" id="profile-locale-description">
             {t('profile.languageDescription')}
           </p>
           <select
             aria-describedby="profile-locale-description"
-            class="mt-3 min-h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30"
+            class="ui-field__control mt-3"
             disabled={localeMutation.isPending}
             id="profile-locale"
             onInput={handleLocaleChange}
@@ -82,21 +85,21 @@ export function ProfilePage() {
             <option value="en">{t('profile.languageEnglish')}</option>
           </select>
           {localeMutation.error ? (
-            <p class="mt-2 text-sm text-red-300" role="alert">
+            <p class="ui-text-danger mt-2 text-sm" role="alert">
               {t('profile.languageError')}
             </p>
           ) : savedLocale === locale ? (
-            <p class="mt-2 text-sm text-emerald-200" role="status">
+            <p class="ui-text-success mt-2 text-sm" role="status">
               {t('profile.languageSaved')}
             </p>
           ) : null}
-        </div>
-        <div
+        </Section>
+        <Section
           aria-labelledby="profile-actions-title"
-          class="mt-6 space-y-3 border-t border-slate-800 pt-5"
+          class="space-y-3 px-5 sm:px-6"
         >
           <h2
-            class="text-sm font-semibold text-slate-300"
+            class="ui-text-muted text-sm font-semibold"
             id="profile-actions-title"
           >
             {t('profile.actions')}
@@ -120,7 +123,7 @@ export function ProfilePage() {
               {t('profile.logout')}
             </Button>
           </div>
-        </div>
+        </Section>
       </Card>
       <PwaInstallSettings />
     </section>

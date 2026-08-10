@@ -89,19 +89,19 @@ function LessonSummaryCard({
       <div class="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 class="text-lg font-semibold">{lesson.title}</h3>
-          <p class="mt-2 text-sm leading-6 text-slate-300">{lesson.summary}</p>
+          <p class="ui-text-muted mt-2 text-sm leading-6">{lesson.summary}</p>
         </div>
         <Badge tone={lesson.isPublished ? 'info' : 'warning'}>
           {lessonStatusLabel(lesson, t)}
         </Badge>
       </div>
-      <p class="text-sm text-slate-400">
+      <p class="ui-text-muted text-sm">
         {lesson.estimatedMinutes === null
           ? t('curriculum.durationUnknown')
           : `${lesson.estimatedMinutes} min`}{' '}
         · {t('curriculum.activityCount', { count: activityTotal })}
       </p>
-      <p class="text-sm text-slate-300">
+      <p class="ui-text-muted text-sm">
         {t('curriculum.lesson.nextLabel', {
           activity: nextActivityLabel(lesson, t),
         })}
@@ -112,11 +112,11 @@ function LessonSummaryCard({
         })}
         value={lesson.progress.percent}
       />
-      <details class="rounded-xl border border-slate-800 px-4 py-3 text-sm">
-        <summary class="min-h-11 cursor-pointer py-2 font-medium text-slate-200">
+      <details class="ui-divider rounded-lg border px-4 py-3 text-sm">
+        <summary class="ui-text min-h-11 cursor-pointer py-2 font-medium">
           {t('curriculum.lesson.details')}
         </summary>
-        <ul class="space-y-1 pb-2 text-slate-400">
+        <ul class="ui-text-muted space-y-1 pb-2">
           <li>{t('curriculum.lesson.resources', { count: counts.resources })}</li>
           <li>{t('curriculum.lesson.tasks', { count: counts.tasks })}</li>
           <li>{t('curriculum.lesson.concepts', { count: counts.concepts })}</li>
@@ -236,13 +236,13 @@ function ProgramLessonRow({
       <span class="min-w-0 flex-1 lg:flex lg:items-center lg:justify-between lg:gap-4">
         <span
           class={`block min-w-0 break-words font-medium ${
-            lesson.isLocked ? 'text-slate-400' : 'text-slate-100'
+            lesson.isLocked ? 'ui-text-muted' : 'ui-text'
           }`}
         >
           {lesson.title}
         </span>
         <span class="mt-2 flex flex-wrap items-center gap-2 lg:mt-0 lg:shrink-0">
-          <span class="text-sm text-slate-400">
+          <span class="ui-text-muted text-sm">
             {formatLessonDuration(lesson, t)}
           </span>
           <Badge class="gap-1" tone={status.tone}>
@@ -253,14 +253,14 @@ function ProgramLessonRow({
       </span>
       <span
         aria-hidden="true"
-        class="flex min-h-11 w-8 shrink-0 items-center justify-end text-lg text-slate-400"
+        class="ui-text-muted flex min-h-11 w-8 shrink-0 items-center justify-end text-lg"
       >
         {lesson.isLocked ? '⌧' : '›'}
       </span>
     </>
   );
   const className =
-    'flex min-h-16 w-full min-w-0 items-center gap-3 border-t border-slate-800 px-2 py-4 text-left first:border-t-0 sm:px-1';
+    'ui-divider flex min-h-16 w-full min-w-0 items-center gap-3 border-t px-2 py-4 text-left first:border-t-0 sm:px-1';
 
   if (lesson.isLocked) {
     return (
@@ -270,7 +270,7 @@ function ProgramLessonRow({
           status: status.label,
           title: lesson.title,
         })}
-        class={`${className} cursor-not-allowed text-slate-400`}
+        class={`${className} ui-text-muted cursor-not-allowed`}
       >
         {content}
       </div>
@@ -292,7 +292,7 @@ function ProgramLessonRow({
         status: status.label,
         title: lesson.title,
       })}
-      class={`${className} rounded-lg hover:bg-slate-900/70 focus-visible:outline-2 focus-visible:outline-cyan-300`}
+      class={`${className} rounded-lg hover:bg-[var(--color-surface-subtle)] focus-visible:outline-2 focus-visible:outline-[var(--color-focus)]`}
       href={`/program/${encodeURIComponent(programSlug)}/lesson/${encodeURIComponent(lesson.slug)}`}
     >
       {content}
@@ -317,7 +317,7 @@ function ModuleLessonList({
     <section aria-labelledby={showHeading ? `${listId}-title` : undefined}>
       {showHeading ? (
         <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-          <h3 class="font-semibold text-slate-200" id={`${listId}-title`}>
+          <h3 class="ui-text font-semibold" id={`${listId}-title`}>
             {module.title}
           </h3>
           <NavigationAction href={optionsHref} variant="ghost">
@@ -383,17 +383,17 @@ function StageAccordionItem({
         <button
           aria-controls={panelId}
           aria-expanded={isExpanded}
-          class="flex min-h-20 w-full items-center gap-3 rounded-2xl px-4 py-5 text-left transition-colors hover:bg-slate-800/50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cyan-300 motion-reduce:transition-none sm:px-5"
+          class="flex min-h-20 w-full items-center gap-3 rounded-lg px-4 py-5 text-left transition-colors hover:bg-[var(--color-surface-raised)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)] motion-reduce:transition-none sm:px-5"
           onClick={onToggle}
           type="button"
         >
           <span class="min-w-0 flex-1">
             <span class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-slate-100">
+              <span class="ui-text font-semibold">
                 {stage.position}. {stage.title}
               </span>
             </span>
-            <span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
+            <span class="ui-text-muted mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
               <span>{formatStageDuration(stage, t)}</span>
               <Badge class="gap-1" tone={statusTone}>
                 <span aria-hidden="true">
@@ -405,7 +405,7 @@ function StageAccordionItem({
           </span>
           <span
             aria-hidden="true"
-            class={`text-xl text-slate-300 transition-transform motion-reduce:transition-none ${
+            class={`ui-text-muted text-xl transition-transform motion-reduce:transition-none ${
               isExpanded ? 'rotate-180' : ''
             }`}
           >
@@ -415,12 +415,12 @@ function StageAccordionItem({
         {isExpanded ? (
           <div
             aria-label={t('curriculum.stageDetails', { title: stage.title })}
-            class="space-y-6 border-t border-slate-800 px-4 py-4 sm:px-5 sm:py-5"
+            class="ui-divider space-y-6 border-t px-4 py-4 sm:px-5 sm:py-5"
             id={panelId}
             role="region"
           >
             {stage.modules.length === 0 ? (
-              <p class="text-sm text-slate-400">{t('curriculum.noModules')}</p>
+              <p class="ui-text-muted text-sm">{t('curriculum.noModules')}</p>
             ) : (
               <div class="space-y-5">
                 {stage.modules.map((module) => (
@@ -462,7 +462,7 @@ function StageValidationCard({
           {t(progressStatusKeys[validation.status])}
         </Badge>
       </div>
-      <ul class="space-y-1 text-sm text-slate-300">
+      <ul class="ui-text-muted space-y-1 text-sm">
         <li>
           {t('curriculum.requiredConcepts', {
             done: validation.requiredConcepts.validated,
@@ -489,13 +489,13 @@ function StageValidationCard({
         </li>
       </ul>
       {validation.missingRequirements.length === 0 ? (
-        <p class="text-sm text-emerald-300">
+        <p class="ui-text-success text-sm">
           {t('curriculum.requirementsComplete')}
         </p>
       ) : (
         <div>
           <h3 class="font-semibold">{t('curriculum.missingRequirements')}</h3>
-          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-200">
+          <ul class="ui-text-warning mt-2 list-disc space-y-1 pl-5 text-sm">
             {validation.missingRequirements.map((requirement) => (
               <li key={`${requirement.type}:${requirement.id ?? 'missing'}`}>
                 {requirement.title}
@@ -548,8 +548,8 @@ function CatalogProgramCard({
             {t(program.isEnrolled ? 'programs.enrolled' : 'programs.available')}
           </Badge>
         </div>
-        <p class="text-sm leading-6 text-slate-300">{program.description}</p>
-        <ul class="space-y-1 text-sm text-slate-400">
+        <p class="ui-text-muted text-sm leading-6">{program.description}</p>
+        <ul class="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.locale, t)}</li>
           <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>
@@ -609,10 +609,10 @@ function EnrolledProgramCard({
             {t(isActive ? 'programs.enrolled' : 'programs.withdrawnBadge')}
           </Badge>
         </div>
-        <p class="text-sm leading-6 text-slate-300">
+        <p class="ui-text-muted text-sm leading-6">
           {program.program.description}
         </p>
-        <ul class="space-y-1 text-sm text-slate-400">
+        <ul class="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.program.locale, t)}</li>
           <li>{durationLabel(program.program.estimatedDurationDays, t)}</li>
           <li>
@@ -643,10 +643,10 @@ function EnrolledProgramCard({
                 aria-label={t('programs.confirmWithdrawAria', {
                   title: program.program.title,
                 })}
-                class="space-y-3 rounded-xl border border-amber-800 bg-amber-950/30 p-4"
+                class="ui-feedback ui-feedback--warning space-y-3"
                 role="region"
               >
-                <p class="text-sm leading-6 text-amber-100">
+                <p class="text-sm leading-6">
                   {t('programs.withdrawDescription')}
                 </p>
                 <div class="flex flex-col gap-3 sm:flex-row">
@@ -666,7 +666,7 @@ function EnrolledProgramCard({
             )}
           </>
         ) : (
-          <p class="text-sm text-slate-400">
+          <p class="ui-text-muted text-sm">
             {t('programs.dataPreserved')}
           </p>
         )}
@@ -701,8 +701,8 @@ function OwnedProgramCard({ program }: { program: ProgramSummary }) {
             {hasDraftContent ? <DraftBadge /> : null}
           </div>
         </div>
-        <p class="text-sm leading-6 text-slate-300">{program.description}</p>
-        <ul class="space-y-1 text-sm text-slate-400">
+        <p class="ui-text-muted text-sm leading-6">{program.description}</p>
+        <ul class="ui-text-muted space-y-1 text-sm">
           <li>{programLocaleLabel(program.locale, t)}</li>
           <li>{durationLabel(program.estimatedDurationDays, t)}</li>
           <li>
@@ -847,13 +847,13 @@ export function ProgramsPage() {
       />
       <div
         aria-label={t('programs.views')}
-        class="grid grid-cols-2 gap-2 rounded-2xl border border-slate-700 bg-slate-900 p-1"
+        class="ui-control-surface grid grid-cols-2 gap-1 rounded-lg p-1"
         role="tablist"
       >
         <button
           aria-controls="enrolled-programs-panel"
           aria-selected={activeView === 'enrolled'}
-          class={`min-h-11 rounded-xl px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${activeView === 'enrolled' ? 'bg-cyan-400 text-slate-950' : 'text-slate-200 hover:bg-slate-800'}`}
+          class={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'enrolled' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
           id="enrolled-programs-tab"
           onClick={() => selectView('enrolled')}
           onKeyDown={(event) => handleTabKeyDown(event, 'enrolled')}
@@ -866,7 +866,7 @@ export function ProgramsPage() {
         <button
           aria-controls="catalog-programs-panel"
           aria-selected={activeView === 'catalog'}
-          class={`min-h-11 rounded-xl px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 ${activeView === 'catalog' ? 'bg-cyan-400 text-slate-950' : 'text-slate-200 hover:bg-slate-800'}`}
+          class={`min-h-11 rounded-md px-3 py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] ${activeView === 'catalog' ? 'bg-[var(--color-action)] text-[var(--color-on-action)]' : 'ui-text hover:bg-[var(--color-surface-raised)]'}`}
           id="catalog-programs-tab"
           onClick={() => selectView('catalog')}
           onKeyDown={(event) => handleTabKeyDown(event, 'catalog')}
@@ -878,10 +878,10 @@ export function ProgramsPage() {
         </button>
       </div>
       <form class="grid gap-3 sm:grid-cols-[1fr_auto]" onSubmit={submitSearch}>
-        <label class="grid gap-2 text-sm font-medium text-slate-200">
+        <label class="ui-field__label grid gap-2">
           {t('programs.search')}
           <input
-            class="min-h-11 min-w-0 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            class="ui-field__control min-w-0"
             onInput={(event) => setSearchInput(event.currentTarget.value)}
             placeholder={t('programs.searchPlaceholder')}
             type="search"
@@ -906,10 +906,10 @@ export function ProgramsPage() {
         >
           {activeView === 'enrolled' ? (
             <div class="space-y-5">
-              <label class="grid max-w-xs gap-2 text-sm font-medium text-slate-200">
+              <label class="ui-field__label grid max-w-xs gap-2">
                 {t('programs.enrollmentStatus')}
                 <select
-                  class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  class="ui-field__control"
                   onChange={(event) => {
                     setConfirmingProgramId(undefined);
                     setEnrollmentStatus(
@@ -968,12 +968,12 @@ export function ProgramsPage() {
                       class="space-y-3"
                     >
                       <h2
-                        class="text-lg font-semibold text-slate-100"
+                        class="ui-text text-lg font-semibold"
                         id="owned-programs-title"
                       >
                         {t('programs.ownedSection')}
                       </h2>
-                      <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                      <ul class="grid gap-5 md:grid-cols-2">
                         {ownedPrograms.map((program) => (
                           <OwnedProgramCard
                             key={program.id}
@@ -989,12 +989,12 @@ export function ProgramsPage() {
                       class="space-y-3"
                     >
                       <h2
-                        class="text-lg font-semibold text-slate-100"
+                        class="ui-text text-lg font-semibold"
                         id="enrolled-programs-title"
                       >
                         {t('programs.enrolledSection')}
                       </h2>
-                      <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                      <ul class="grid gap-5 md:grid-cols-2">
                         {enrolledPrograms.map((program) => (
                           <EnrolledProgramCard
                             isConfirming={
@@ -1028,10 +1028,10 @@ export function ProgramsPage() {
             </div>
           ) : (
             <div class="space-y-5">
-              <label class="grid max-w-xs gap-2 text-sm font-medium text-slate-200">
+              <label class="ui-field__label grid max-w-xs gap-2">
                 {t('programs.language.label')}
                 <select
-                  class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                  class="ui-field__control"
                   onChange={(event) =>
                     setCatalogLocale(event.currentTarget.value as typeof locale)
                   }
@@ -1058,7 +1058,7 @@ export function ProgramsPage() {
                   title={t('programs.catalogEmpty.title')}
                 />
               ) : (
-                <ul class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                <ul class="grid gap-5 md:grid-cols-2">
                   {catalog.data.items.map((program) => (
                     <CatalogProgramCard
                       isMutationDisabled={Boolean(mutation.pendingProgramId)}
@@ -1136,7 +1136,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
   return (
     <section aria-labelledby="program-title" class="page-shell">
       <div class="min-w-0">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+        <p class="page-eyebrow">
           {t('curriculum.program')}
         </p>
         <div class="mt-3 flex min-w-0 flex-wrap items-center gap-3">
@@ -1148,7 +1148,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
           </h1>
           {program.status === 'DRAFT' ? <DraftBadge /> : null}
         </div>
-        <p class="mt-3 break-words text-slate-300">{program.description}</p>
+        <p class="page-description mt-3 break-words">{program.description}</p>
       </div>
       <ProgressBar
         label={t('curriculum.programProgress', {
@@ -1194,7 +1194,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
         </ol>
       )}
       {preference.error ? (
-        <p aria-live="polite" class="text-sm text-rose-200" role="status">
+        <p aria-live="polite" class="ui-text-danger text-sm" role="status">
           {t('curriculum.preferenceError')}
         </p>
       ) : null}
@@ -1235,7 +1235,7 @@ export function StagePage({
   return (
     <section aria-labelledby="stage-title" class="page-shell">
       <div>
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+        <p class="page-eyebrow">
           {t('curriculum.stage')}
         </p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
@@ -1253,7 +1253,7 @@ export function StagePage({
           title={t('curriculum.noModules.title')}
         />
       ) : (
-        <div class="grid gap-5 xl:grid-cols-2">
+        <div class="grid gap-5">
           {stage.modules.map((module) => (
             <Card class="space-y-4" key={module.id}>
               <div class="flex flex-wrap items-center gap-2">
@@ -1326,7 +1326,7 @@ export function ModulePage({
   return (
     <section aria-labelledby="module-title" class="page-shell">
       <div>
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+        <p class="page-eyebrow">
           {t('curriculum.module')}
         </p>
         <div class="mt-3 flex flex-wrap items-center gap-3">
@@ -1335,7 +1335,7 @@ export function ModulePage({
           </h1>
           {module.isPublished ? null : <DraftBadge />}
         </div>
-        <p class="mt-3 text-slate-300">{module.description}</p>
+        <p class="page-description mt-3">{module.description}</p>
       </div>
       <ProgressPlaceholder />
       {module.lessons.length === 0 ? (
@@ -1344,7 +1344,7 @@ export function ModulePage({
           title={t('curriculum.noLessons.title')}
         />
       ) : (
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div class="grid gap-4 md:grid-cols-2">
           {module.lessons.map((lesson) => (
             <LessonSummaryCard
               key={lesson.id}
@@ -1356,10 +1356,10 @@ export function ModulePage({
         </div>
       )}
       {module.isPublished && module.stage.isPublished ? (
-        <Card class="space-y-4 border border-red-950/80">
+        <Card class="space-y-4">
           <div>
             <h2 class="font-semibold">{t('curriculum.restart.title')}</h2>
-            <p class="mt-2 text-sm leading-6 text-slate-300">
+            <p class="ui-text-muted mt-2 text-sm leading-6">
               {t('curriculum.restart.description')}
             </p>
           </div>
@@ -1369,10 +1369,10 @@ export function ModulePage({
               role="alertdialog"
               aria-labelledby="restart-title"
             >
-              <h3 class="font-semibold text-red-200" id="restart-title">
+              <h3 class="ui-text-danger font-semibold" id="restart-title">
                 {t('curriculum.restart.confirmTitle')}
               </h3>
-              <p class="text-sm leading-6 text-slate-300">
+              <p class="ui-text-muted text-sm leading-6">
                 {t('curriculum.restart.resetSummary', {
                   concepts: restart.preview.reset.concepts,
                   exercises: restart.preview.reset.exercises,
@@ -1382,7 +1382,7 @@ export function ModulePage({
                   tasks: restart.preview.reset.tasks,
                 })}
               </p>
-              <p class="text-sm leading-6 text-slate-300">
+              <p class="ui-text-muted text-sm leading-6">
                 {t('curriculum.restart.preservedSummary', {
                   conceptAttempts: restart.preview.preserved.conceptAttempts,
                   exerciseSubmissions:
@@ -1421,7 +1421,7 @@ export function ModulePage({
             </Button>
           )}
           {restart.error ? (
-            <p class="text-sm text-red-300" role="alert">
+            <p class="ui-text-danger text-sm" role="alert">
               {t('curriculum.restart.error')}
             </p>
           ) : null}

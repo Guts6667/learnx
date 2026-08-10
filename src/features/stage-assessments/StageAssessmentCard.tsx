@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
+import { Section } from '@/components/ui/Section';
 import { Spinner } from '@/components/ui/Spinner';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
@@ -133,7 +134,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
         {t(statusLabelKeys[submission.status])}
       </Badge>
       {submission.reviewFeedback ? (
-        <p class="rounded-xl border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-100">
+        <p class="ui-feedback ui-feedback--warning text-sm">
           {t('stageAssessment.feedback', { feedback: submission.reviewFeedback })}
         </p>
       ) : null}
@@ -181,7 +182,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
           </div>
         </>
       ) : (
-        <p class="text-sm text-slate-300">
+        <p class="ui-text-muted text-sm">
           {submission.status === 'VALIDATED'
             ? t('stageAssessment.result', {
                 result:
@@ -193,7 +194,7 @@ function AssessmentForm({ assessment }: { assessment: StageAssessmentDetail }) {
         </p>
       )}
       {mutation.error ? (
-        <p role="alert" class="text-sm text-red-300">
+        <p role="alert" class="ui-text-danger text-sm">
           {t('stageAssessment.saveError')}
         </p>
       ) : null}
@@ -233,7 +234,7 @@ export function StageAssessmentCard({
       </div>
       <div>
         <h3 class="font-semibold">{assessment.title}</h3>
-        <p class="mt-2 text-sm text-slate-300">
+        <p class="ui-text-muted mt-2 text-sm">
           {t('stageAssessment.type', {
             type: typeLabelKeys[assessment.type]
               ? t(typeLabelKeys[assessment.type])
@@ -241,13 +242,13 @@ export function StageAssessmentCard({
           })}
         </p>
         {assessment.passingScore === null ? null : (
-          <p class="mt-1 text-sm text-slate-300">
+          <p class="ui-text-muted mt-1 text-sm">
             {t('assessment.passingScore', { count: assessment.passingScore })}
           </p>
         )}
       </div>
       {assessment.description ? (
-        <section aria-labelledby={`assessment-objective-${assessment.id}`}>
+        <Section aria-labelledby={`assessment-objective-${assessment.id}`}>
           <h3
             class="text-lg font-semibold"
             id={`assessment-objective-${assessment.id}`}
@@ -255,27 +256,25 @@ export function StageAssessmentCard({
             {t('stageAssessment.objective')}
           </h3>
           <SafeMarkdown class="mt-3" content={assessment.description} />
-        </section>
+        </Section>
       ) : null}
       {sections.map((section, index) => (
-        <section
+        <Section
           aria-labelledby={`assessment-section-${assessment.id}-${index}`}
-          class="border-t border-slate-800 pt-5"
           key={`${section.title}-${index}`}
         >
           <h3
-            class="text-lg font-semibold text-slate-100"
+            class="ui-text text-lg font-semibold"
             id={`assessment-section-${assessment.id}-${index}`}
           >
             {section.title}
           </h3>
           <SafeMarkdown class="mt-3" content={section.content} />
-        </section>
+        </Section>
       ))}
       {rubric.length > 0 ? (
-        <section
+        <Section
           aria-labelledby={`assessment-rubric-${assessment.id}`}
-          class="border-t border-slate-800 pt-5"
         >
           <h3
             class="text-lg font-semibold"
@@ -283,14 +282,14 @@ export function StageAssessmentCard({
           >
             {t('stageAssessment.rubric')}
           </h3>
-          <ol class="mt-4 grid gap-3 md:grid-cols-2">
+          <ol class="ui-list mt-4">
             {rubric.map((criterion, index) => (
               <li
-                class="rounded-xl border border-slate-700 bg-slate-950/55 p-4"
+                class="ui-list-row block"
                 key={`${criterion.criterion}-${index}`}
               >
                 <div class="flex flex-wrap items-start justify-between gap-2">
-                  <h4 class="font-semibold text-slate-100">
+                  <h4 class="ui-text font-semibold">
                     {criterion.criterion}
                   </h4>
                   {criterion.weight === null ? null : (
@@ -298,7 +297,7 @@ export function StageAssessmentCard({
                   )}
                 </div>
                 {criterion.requirements.length > 0 ? (
-                  <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-300">
+                  <ul class="ui-text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
                     {criterion.requirements.map((requirement) => (
                       <li key={requirement}>{requirement}</li>
                     ))}
@@ -307,12 +306,12 @@ export function StageAssessmentCard({
               </li>
             ))}
           </ol>
-        </section>
+        </Section>
       ) : null}
       {isStagePublished ? (
         <AssessmentForm assessment={assessment} />
       ) : (
-        <p class="text-sm text-amber-200">
+        <p class="ui-text-warning text-sm">
           {t('stageAssessment.preview')}
         </p>
       )}

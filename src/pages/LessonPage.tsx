@@ -179,29 +179,29 @@ function ResourceActivity({
       </div>
       {guidance?.objective ? (
         <div>
-          <h3 class="font-semibold text-slate-100">
+          <h3 class="ui-text font-semibold">
             {t('learning.resource.objective')}
           </h3>
-          <p class="mt-1 leading-7 text-slate-300">{guidance.objective}</p>
+          <p class="ui-reading-copy mt-1">{guidance.objective}</p>
         </div>
       ) : null}
       {guidance?.scope ? (
-        <p class="text-sm text-slate-300">
+        <p class="ui-text-muted text-sm">
           <strong>{t('learning.resource.scope')}</strong> {guidance.scope}
         </p>
       ) : null}
-      <p class="leading-7 text-slate-300">
+      <p class="ui-reading-copy">
         {guidance?.instructions ?? resource.description}
       </p>
       {unavailable ? (
         <div
           role="status"
-          class="space-y-2 rounded-lg border border-amber-700 p-3"
+          class="ui-feedback ui-feedback--warning space-y-2"
         >
           <p>{t('learning.resource.unavailable')}</p>
           {alternativeHref ? (
             <a
-              class="inline-flex min-h-11 items-center text-cyan-300 underline"
+              class="ui-link inline-flex min-h-11 items-center"
               href={alternativeHref}
               rel="noreferrer"
               target="_blank"
@@ -214,7 +214,7 @@ function ResourceActivity({
         </div>
       ) : href ? (
         <a
-          class="inline-flex min-h-11 items-center rounded-lg border border-cyan-600 px-4 py-2 font-semibold text-cyan-200 no-underline focus-visible:outline-2 focus-visible:outline-cyan-300"
+          class="ui-action ui-action--secondary ui-action--md"
           href={href}
           onClick={() => void onOpen?.()}
           rel="noreferrer"
@@ -257,7 +257,7 @@ function TaskActivity({
       <Badge tone={task.isRequired ? 'warning' : 'neutral'}>
         {task.isRequired ? t('common.required') : t('learning.task.optional')}
       </Badge>
-      <p class="leading-7 text-slate-300">{task.description}</p>
+      <p class="ui-reading-copy">{task.description}</p>
       {(task.resources ?? []).length === 0 ? null : (
         <ul class="space-y-2" aria-label={t('learning.task.supports')}>
           {(task.resources ?? []).map((resource) => {
@@ -266,7 +266,7 @@ function TaskActivity({
               <li key={resource.id}>
                 {href ? (
                   <a
-                    class="inline-flex min-h-11 items-center text-cyan-300 underline"
+                    class="ui-link inline-flex min-h-11 items-center"
                     href={href}
                     rel="noreferrer"
                     target="_blank"
@@ -303,7 +303,7 @@ function SecondaryActivity({ activity }: { activity: LessonActivity }) {
       <Badge tone={activity.required ? 'warning' : 'neutral'}>
         {activity.required ? t('common.required') : t('learning.secondary.optional')}
       </Badge>
-      <p class="leading-7 text-slate-300">
+      <p class="ui-reading-copy">
         {t('learning.secondary.description')}
       </p>
     </Card>
@@ -489,16 +489,16 @@ function LessonWorkspace({
         percent={progress?.lessonProgress.percent ?? 0}
       />
       {lesson.isPublished ? null : (
-        <Card class="border border-amber-800/70 bg-amber-950/30">
-          <p class="font-semibold text-amber-200">
+        <Card tone="muted">
+          <p class="ui-text-warning font-semibold">
             {t('learning.draftPreview')}
           </p>
-          <p class="mt-2 text-sm text-amber-100/80">
+          <p class="ui-text-muted mt-2 text-sm">
             {t('learning.previewDescription')}
           </p>
         </Card>
       )}
-      <p class="leading-7 text-slate-300">{lesson.summary}</p>
+      <p class="ui-reading-copy">{lesson.summary}</p>
       <div class="grid gap-6">
         <section class="space-y-4" aria-labelledby="current-activity-title">
           {current ? (
@@ -506,12 +506,12 @@ function LessonWorkspace({
               data-activity-key={activityKey(current.kind, current.id)}
               tabIndex={-1}
             >
-              <p class="text-sm font-semibold text-cyan-300">{current.label}</p>
+              <p class="page-eyebrow">{current.label}</p>
               <h2 class="mt-2 text-2xl font-bold" id="current-activity-title">
                 {current.title}
               </h2>
               {current.estimatedMinutes === null ? null : (
-                <p class="mt-2 text-sm text-slate-400">
+                <p class="ui-text-muted mt-2 text-sm">
                   {t('learning.duration', { count: current.estimatedMinutes })}
                 </p>
               )}
@@ -559,7 +559,7 @@ function LessonWorkspace({
           ) : null}
           {current?.kind === 'COMPLETE' ? (
             <Card>
-              <p class="text-sm text-slate-300">
+              <p class="ui-text-muted text-sm">
                 {progress?.canComplete
                   ? t('learning.allRequiredComplete')
                   : t('learning.requiredRemaining')}

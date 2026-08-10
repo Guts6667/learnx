@@ -46,14 +46,14 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
     return (
       <div class="space-y-3">
         <Badge tone="success">{t('exercise.submitted')}</Badge>
-        <p class="text-sm text-slate-300">
+        <p class="ui-text-muted text-sm">
           {t('exercise.submittedAt', {
             date: submission.submittedAt
               ? formatSubmissionDate(submission.submittedAt, locale)
               : t('exercise.unknownDate'),
           })}
         </p>
-        <pre class="whitespace-pre-wrap rounded-xl border border-slate-800 bg-slate-950 p-3 font-sans text-sm leading-6 text-slate-300">
+        <pre class="ui-control-surface whitespace-pre-wrap rounded-lg p-3 font-sans text-sm leading-6">
           {submission.contentMarkdown}
         </pre>
       </div>
@@ -98,7 +98,7 @@ function ExerciseEditor({ exercise }: { exercise: ExerciseDetail }) {
         </Button>
       </div>
       {mutation.error ? (
-        <p class="text-sm text-red-300" role="alert">
+        <p class="ui-text-danger text-sm" role="alert">
           {t('exercise.saveError')}
         </p>
       ) : null}
@@ -143,7 +143,7 @@ export function ExerciseCard({
       ) : (
         <div class="space-y-2">
           <Badge tone="warning">{t('common.draft')}</Badge>
-          <p class="text-sm text-amber-200">
+          <p class="ui-text-warning text-sm">
             {t('exercise.preview')}
           </p>
         </div>

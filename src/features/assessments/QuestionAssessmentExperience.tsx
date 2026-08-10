@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Textarea } from '@/components/ui/Textarea';
@@ -118,12 +119,22 @@ function AttemptHistory({
         {t('assessment.previousAttempts')}
       </h2>
       {attempts.length === 0 ? (
-        <p class="text-sm text-slate-400">{t('assessment.noAttempts')}</p>
+        <p class="ui-text-muted text-sm">{t('assessment.noAttempts')}</p>
       ) : (
-        <ol class="space-y-2">
+        <ol class="ui-list">
           {attempts.map((attempt) => (
             <li key={attempt.id}>
-              <Card class="flex items-center justify-between gap-4">
+              <ListRow
+                aside={
+                  <Badge tone={attempt.passed ? 'success' : 'danger'}>
+                    {t(
+                      attempt.passed
+                        ? 'assessment.passed'
+                        : 'assessment.retry',
+                    )}
+                  </Badge>
+                }
+              >
                 <div>
                   <p class="font-semibold">
                     {t('assessment.score', {
@@ -133,19 +144,14 @@ function AttemptHistory({
                       ),
                     })}
                   </p>
-                  <p class="mt-1 text-sm text-slate-400">
+                  <p class="ui-text-muted mt-1 text-sm">
                     {t('assessment.run', {
                       date: formatAttemptDate(attempt.submittedAt, locale),
                       run: attempt.runSequence ?? 1,
                     })}
                   </p>
                 </div>
-                <Badge tone={attempt.passed ? 'success' : 'danger'}>
-                  {t(
-                    attempt.passed ? 'assessment.passed' : 'assessment.retry',
-                  )}
-                </Badge>
-              </Card>
+              </ListRow>
             </li>
           ))}
         </ol>
@@ -195,12 +201,12 @@ function QuestionOptions({
 
         return (
           <label
-            class="flex min-h-12 cursor-pointer items-start gap-3 rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-cyan-400"
+            class="ui-assessment-option flex min-h-12 cursor-pointer items-start gap-3 rounded-lg px-4 py-3 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--color-focus)]"
             key={option.id}
           >
             <input
               checked={checked}
-              class="mt-0.5 size-5 shrink-0 accent-cyan-400"
+              class="ui-checkbox mt-0.5 shrink-0"
               name={question.id}
               onChange={() => {
                 const optionIds = multiple
@@ -214,7 +220,7 @@ function QuestionOptions({
               type={multiple ? 'checkbox' : 'radio'}
               value={option.id}
             />
-            <span class="text-sm leading-5 text-slate-200">{option.label}</span>
+            <span class="ui-text text-sm leading-5">{option.label}</span>
           </label>
         );
       })}
@@ -247,7 +253,7 @@ function AssessmentResult({
           {result.attempt.passed ? labels.success : labels.failure}
         </Badge>
         <p class="text-4xl font-bold">{Math.round(result.attempt.score)} %</p>
-        <p class="text-sm text-slate-300">
+        <p class="ui-text-muted text-sm">
           {t('assessment.passingScore', {
             count: Math.round(assessment.passingScore),
           })}
@@ -288,11 +294,11 @@ function AssessmentResult({
                   )}
                 </Badge>
               </div>
-              <p class="text-sm leading-6 text-slate-300">
+              <p class="ui-text-muted text-sm leading-6">
                 {correction.explanation}
               </p>
               {!correction.correct && expected ? (
-                <p class="text-sm text-slate-200">
+                <p class="ui-text text-sm">
                   {t('assessment.expectedAnswer', { answer: expected })}
                 </p>
               ) : null}
@@ -398,7 +404,7 @@ export function QuestionAssessmentExperience({
     return (
       <div
         aria-label={t('assessment.result')}
-        class="space-y-6 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+        class="space-y-6 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         ref={resultRef}
         tabindex={-1}
       >
@@ -442,7 +448,7 @@ export function QuestionAssessmentExperience({
         <Card class="space-y-5">
           <fieldset class="space-y-5">
             <legend
-              class="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+              class="rounded-lg text-xl font-semibold leading-7 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
               ref={questionTitleRef}
               tabindex={-1}
             >
@@ -461,7 +467,7 @@ export function QuestionAssessmentExperience({
             />
           </fieldset>
           {message ? (
-            <p class="text-sm text-red-300" role="alert">
+            <p class="ui-text-danger text-sm" role="alert">
               {message}
             </p>
           ) : null}

@@ -5,6 +5,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
 import type { MessageKey } from '@/i18n/catalogs';
@@ -83,14 +84,14 @@ function TodayContent({
           <div>
             <h2 class="text-xl font-semibold">{data.action.title}</h2>
             {data.action.stageTitle ? (
-              <p class="mt-2 text-sm text-slate-300">
+              <p class="ui-text-muted mt-2 text-sm">
                 {data.action.stageTitle}
                 {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
                 {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
               </p>
             ) : null}
             {data.action.estimatedMinutes ? (
-              <p class="mt-1 text-sm text-slate-400">
+              <p class="ui-text-muted mt-1 text-sm">
                 {t('today.duration', { count: data.action.estimatedMinutes })}
               </p>
             ) : null}
@@ -107,24 +108,24 @@ function TodayContent({
         />
       )}
 
-      <Card class="space-y-4 lg:col-span-5">
+      <Section class="space-y-4 lg:col-span-5">
         <div>
-          <p class="text-sm text-slate-400">{t('today.activeProgram')}</p>
+          <p class="ui-text-muted text-sm">{t('today.activeProgram')}</p>
           <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
         </div>
         <ProgressBar
           label={t('today.progress', { count: Math.round(program.percent) })}
           value={program.percent}
         />
-      </Card>
+      </Section>
 
       <div class="grid gap-3 sm:grid-cols-2 lg:col-span-5">
-        <Card>
-          <p class="text-sm text-slate-400">{t('today.reviewsDue')}</p>
+        <Section>
+          <p class="ui-text-muted text-sm">{t('today.reviewsDue')}</p>
           <p class="mt-2 text-2xl font-bold">{data.reviewsDue}</p>
-        </Card>
-        <Card>
-          <p class="text-sm text-slate-400">{t('today.lastActivity')}</p>
+        </Section>
+        <Section>
+          <p class="ui-text-muted text-sm">{t('today.lastActivity')}</p>
           {data.lastActivity ? (
             <NavigationAction
               class="mt-2 w-full"
@@ -135,11 +136,11 @@ function TodayContent({
               {formatLastActivity(data.lastActivity.at, locale)}
             </NavigationAction>
           ) : (
-            <p class="mt-2 text-sm text-slate-300">
+            <p class="ui-text-muted mt-2 text-sm">
               {t('today.noRecentActivity')}
             </p>
           )}
-        </Card>
+        </Section>
       </div>
     </div>
   );

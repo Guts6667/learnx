@@ -241,10 +241,10 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         value={title}
       />
       <div class="space-y-3">
-        <p class="text-sm leading-6 text-slate-300">{t('notes.editor.help')}</p>
+        <p class="ui-text-muted text-sm leading-6">{t('notes.editor.help')}</p>
         <div
           aria-label={t('notes.editor.mode')}
-          class="inline-flex rounded-xl bg-slate-900 p-1"
+          class="ui-subtle-surface inline-flex rounded-lg p-1"
           onKeyDown={(event) => {
             if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
             event.preventDefault();
@@ -264,7 +264,9 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             aria-controls="note-write-panel"
             aria-selected={mode === 'write'}
             class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
-              mode === 'write' ? 'bg-cyan-400 text-slate-950' : 'text-slate-300'
+              mode === 'write'
+                ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
+                : 'ui-text-muted'
             }`}
             data-note-mode="write"
             id="note-write-tab"
@@ -279,8 +281,8 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             aria-selected={mode === 'preview'}
             class={`min-h-11 rounded-lg px-4 text-sm font-semibold ${
               mode === 'preview'
-                ? 'bg-cyan-400 text-slate-950'
-                : 'text-slate-300'
+                ? 'bg-[var(--color-action)] text-[var(--color-on-action)]'
+                : 'ui-text-muted'
             }`}
             data-note-mode="preview"
             id="note-preview-tab"
@@ -311,14 +313,14 @@ function NoteEditor({ note }: { note: NoteDetail }) {
         ) : (
           <div
             aria-labelledby="note-preview-tab"
-            class="min-h-32 rounded-xl border border-slate-800 bg-slate-950 p-4"
+            class="ui-control-surface min-h-32 rounded-lg p-4"
             id="note-preview-panel"
             role="tabpanel"
           >
             {markdown.trim() ? (
               <SafeMarkdown content={markdown} />
             ) : (
-              <p class="text-sm text-slate-400">{t('notes.editor.empty')}</p>
+              <p class="ui-text-muted text-sm">{t('notes.editor.empty')}</p>
             )}
           </div>
         )}
@@ -326,7 +328,9 @@ function NoteEditor({ note }: { note: NoteDetail }) {
       <p
         aria-live="polite"
         class={
-          status === 'error' ? 'text-sm text-red-300' : 'text-sm text-slate-400'
+          status === 'error'
+            ? 'ui-text-danger text-sm'
+            : 'ui-text-muted text-sm'
         }
       >
         {!title.trim()
@@ -338,7 +342,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
           <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
           <p class="font-semibold">{note.lesson.title}</p>
           {note.program ? (
-            <p class="text-sm text-slate-400">{note.program.title}</p>
+            <p class="ui-text-muted text-sm">{note.program.title}</p>
           ) : null}
           {note.program ? (
             <NavigationAction
@@ -352,7 +356,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
       ) : (
         <Badge tone="neutral">{t('notes.personal')}</Badge>
       )}
-      <Card class="space-y-4 border border-red-950/80">
+      <Card class="space-y-4">
         {isConfirmingDelete ? (
           <div
             aria-describedby="delete-note-description"
@@ -361,11 +365,11 @@ function NoteEditor({ note }: { note: NoteDetail }) {
             role="alertdialog"
           >
             <div>
-              <h2 class="font-semibold text-red-200" id="delete-note-title">
+              <h2 class="ui-text-danger font-semibold" id="delete-note-title">
                 {t('notes.editor.deleteTitle')}
               </h2>
               <p
-                class="mt-2 text-sm leading-6 text-slate-300"
+                class="ui-text-muted mt-2 text-sm leading-6"
                 id="delete-note-description"
               >
                 {t('notes.editor.deleteDescription')}
@@ -398,7 +402,7 @@ function NoteEditor({ note }: { note: NoteDetail }) {
           <div class="space-y-3">
             <div>
               <h2 class="font-semibold">{t('notes.editor.delete')}</h2>
-              <p class="mt-2 text-sm leading-6 text-slate-300">
+              <p class="ui-text-muted mt-2 text-sm leading-6">
                 {t('notes.editor.deleteDescription')}
               </p>
             </div>

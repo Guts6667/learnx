@@ -58,7 +58,10 @@ describe('TodayPage', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Progression — 42 %')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getAllByRole('link', { name: 'Continuer' })).toHaveLength(1);
+    const primaryActions = screen.getAllByRole('link', { name: 'Continuer' });
+    expect(primaryActions).toHaveLength(1);
+    expect(primaryActions[0]).toHaveClass('ui-action--primary');
+    expect(screen.getByText('Programme actif').closest('.ui-section')).not.toBeNull();
   });
 
   it('affiche un état vide sans programme actif', async () => {

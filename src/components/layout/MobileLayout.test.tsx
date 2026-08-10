@@ -126,7 +126,7 @@ describe('navigation accessible', () => {
     const activeLink = screen.getByRole('link', { name: 'Parcours' });
 
     expect(activeLink).toHaveAttribute('aria-current', 'page');
-    expect(activeLink).toHaveClass('bg-cyan-400/15', 'ring-1');
+    expect(activeLink).toHaveClass('ui-main-navigation__link');
     expect(activeLink).not.toHaveClass('underline');
     expect(screen.getByRole('link', { name: 'Accueil' })).not.toHaveAttribute(
       'aria-current',
@@ -134,6 +134,7 @@ describe('navigation accessible', () => {
     expect(screen.getByRole('navigation')).toHaveClass(
       'app-main-navigation',
       'app-safe-navigation',
+      'ui-main-navigation',
     );
   });
 

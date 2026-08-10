@@ -85,6 +85,9 @@ describe('PedagogicalNavigation', () => {
     expect(navigation).not.toHaveClass('sticky');
     expect(navigation).not.toHaveClass('fixed');
     expect(navigation).not.toHaveAttribute('style');
+    expect(navigation).toHaveClass('ui-learning-navigation');
+    expect(summary).toHaveClass('ui-action--secondary');
+    expect(continueLink).toHaveClass('ui-action--primary');
   });
 
   it('ouvre un sommaire mono-colonne accessible et restaure le focus', async () => {
@@ -103,6 +106,9 @@ describe('PedagogicalNavigation', () => {
     expect(
       within(dialog).getByRole('link', { name: /Quiz de compréhension/ }),
     ).toHaveAttribute('aria-current', 'step');
+    expect(
+      within(dialog).getByRole('link', { name: /Quiz de compréhension/ }),
+    ).toHaveClass('ui-learning-navigation__activity');
     expect(dialog).toHaveTextContent('Activité actuelle · En cours');
 
     fireEvent.keyDown(dialog, { key: 'Escape' });

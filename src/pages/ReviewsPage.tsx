@@ -5,6 +5,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import {
   type ReviewItem,
@@ -61,19 +62,19 @@ function ReviewCard({
           <h2 class="text-lg font-semibold">
             {item.conceptTitle ?? item.lesson.title}
           </h2>
-          <p class="mt-1 text-sm text-slate-300">
+          <p class="ui-text-muted mt-1 text-sm">
             {item.program.title} · {item.lesson.title}
           </p>
-          <p class="mt-2 text-sm text-slate-400">
+          <p class="ui-text-muted mt-2 text-sm">
             {t('reviews.dueAt', { date: formatDueAt(item.dueAt, locale) })}
           </p>
         </div>
         {item.assessmentTitle ? (
-          <p class="text-sm text-slate-300">{item.assessmentTitle}</p>
+          <p class="ui-text-muted text-sm">{item.assessmentTitle}</p>
         ) : null}
         {item.resources.length > 0 ? (
-          <div>
-            <h3 class="text-sm font-semibold text-slate-200">
+          <Section>
+            <h3 class="ui-text text-sm font-semibold">
               {t('reviews.resources')}
             </h3>
             <ul class="mt-2 space-y-2">
@@ -84,7 +85,7 @@ function ReviewCard({
                   <li class="text-sm" key={resource.id}>
                     {href ? (
                       <a
-                        class="inline-flex min-h-11 items-center text-cyan-300 underline"
+                        class="ui-link inline-flex min-h-11 items-center"
                         href={href}
                         rel="noreferrer"
                         target="_blank"
@@ -92,13 +93,13 @@ function ReviewCard({
                         {resource.title}
                       </a>
                     ) : (
-                      <span class="text-slate-300">{resource.title}</span>
+                      <span class="ui-text-muted">{resource.title}</span>
                     )}
                   </li>
                 );
               })}
             </ul>
-          </div>
+          </Section>
         ) : null}
         <div class="grid gap-3 sm:grid-cols-2">
           <NavigationAction href={assessmentHref} variant="secondary">
@@ -154,7 +155,7 @@ export function ReviewsPage() {
       ) : null}
       {query.data?.reviews.length ? (
         <div class="space-y-4">
-          <ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <ul class="grid gap-4 md:grid-cols-2">
             {query.data.reviews.map((item) => (
               <ReviewCard
                 item={item}
