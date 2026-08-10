@@ -874,7 +874,8 @@ test('garde les cinq destinations lisibles et accessibles sur mobile et desktop'
   });
 
   expect(desktopGeometry.height).toBeGreaterThan(850);
-  expect(desktopGeometry.width).toBeLessThan(150);
+  expect(desktopGeometry.width).toBeGreaterThanOrEqual(208);
+  expect(desktopGeometry.width).toBeLessThanOrEqual(224);
   expect(desktopGeometry.linkTops).toEqual(
     [...desktopGeometry.linkTops].sort((left, right) => left - right),
   );

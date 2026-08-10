@@ -10,14 +10,14 @@ export function PlaceholderPage({
   title,
 }: PlaceholderPageProps) {
   return (
-    <section aria-labelledby="page-title">
-      <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+    <section aria-labelledby="page-title" class="page-shell page-layout">
+      <p class="page-eyebrow">
         LearnX
       </p>
-      <h1 id="page-title" class="mt-3 text-3xl font-bold tracking-tight">
+      <h1 id="page-title" class="page-title mt-3">
         {title}
       </h1>
-      <p class="mt-4 max-w-prose text-base leading-7 text-slate-300">
+      <p class="ui-text-muted mt-4 max-w-prose text-base leading-7">
         {description ?? ''}
       </p>
     </section>
@@ -34,14 +34,14 @@ export function NotFoundPage(routeProps: NotFoundPageProps) {
   const { t } = useI18n();
 
   return (
-    <section aria-labelledby="page-title">
-      <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+    <section aria-labelledby="page-title" class="page-shell page-layout">
+      <p class="page-eyebrow">
         {t('notFound.eyebrow')}
       </p>
-      <h1 id="page-title" class="mt-3 text-3xl font-bold tracking-tight">
+      <h1 id="page-title" class="page-title mt-3">
         {t('notFound.title')}
       </h1>
-      <p class="mt-4 text-base leading-7 text-slate-300">
+      <p class="ui-text-muted mt-4 text-base leading-7">
         {t('notFound.description')}
       </p>
       <NavigationAction class="mt-6" href="/today">
