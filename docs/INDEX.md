@@ -24,6 +24,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Audit sécurité et exploitation V3 | `docs/V3_AUDIT_REPORT.md` | Rapport de preuve V3-028 ; corrections dans V3-029 à V3-031 |
 | Performance et observabilité V3 | `docs/V3_PERFORMANCE_REPORT.md` | Mesures, budgets, alertes et rollback de V3-031 |
 | Répétition de migration V3 | `docs/V3_MIGRATION_REHEARSAL_REPORT.md` | Checksums clone Production, replay complet et matrice multi-utilisateur de V3-032 |
+| Release V3 | `docs/V3_RELEASE_REPORT.md` | Verdict, preuves staging, procédure de promotion et rollback de V3-033 |
 
 `PRODUCT_REQUIREMENTS.md` conserve la baseline MVP. Le consulter pour une
 décision fondatrice précise, pas comme état courant exhaustif de la V3.
