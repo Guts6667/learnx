@@ -27,6 +27,14 @@ const repository: RetentionRepository = {
       where: { windowStartedAt: { lt: cutoff } },
     });
   },
+  countExpiredPublicLeads(cutoff) {
+    return prisma.publicLead.count({
+      where: {
+        status: { in: ['PENDING_CONFIRMATION', 'UNSUBSCRIBED', 'DELETED'] },
+        updatedAt: { lt: cutoff },
+      },
+    });
+  },
   countExpiredSessions(cutoff) {
     return prisma.session.count({ where: { expiresAt: { lt: cutoff } } });
   },
@@ -72,6 +80,22 @@ const repository: RetentionRepository = {
     });
     return result.count;
   },
+  async deleteExpiredPublicLeads(cutoff, limit) {
+    const records = await prisma.publicLead.findMany({
+      orderBy: { updatedAt: 'asc' },
+      select: { id: true },
+      take: limit,
+      where: {
+        status: { in: ['PENDING_CONFIRMATION', 'UNSUBSCRIBED', 'DELETED'] },
+        updatedAt: { lt: cutoff },
+      },
+    });
+    if (records.length === 0) return 0;
+    const result = await prisma.publicLead.deleteMany({
+      where: { id: { in: records.map(({ id }) => id) } },
+    });
+    return result.count;
+  },
   async deleteExpiredSessions(cutoff, limit) {
     const records = await prisma.session.findMany({
       orderBy: { expiresAt: 'asc' },
@@ -105,7 +129,8 @@ async function main() {
     result.sessions.hasMore ||
     result.rateLimits.hasMore ||
     result.emailVerifications.hasMore ||
-    result.accessInvitations.hasMore
+    result.accessInvitations.hasMore ||
+    result.publicLeads.hasMore
   ) {
     console.info(
       'The batch limit was reached; run the command again if intended.',

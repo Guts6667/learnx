@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /today
+Disallow: /program
+Disallow: /reviews
+Disallow: /notes
+Disallow: /profile
+
+Sitemap: https://learn-x.app/sitemap.xml

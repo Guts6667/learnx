@@ -26,6 +26,8 @@ import { AdminPage } from '@/pages/AdminPage';
 import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
 import { AdminAccountsPage } from '@/pages/AdminAccountsPage';
 import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
+import { LandingPage } from '@/pages/LandingPage';
+import { PublicInterestPage } from '@/pages/PublicInterestPage';
 
 interface RouteParams {
   assessmentId?: string;
@@ -253,9 +255,8 @@ export function AppRoutes() {
   return (
     <MobileLayout {...navigation}>
       <Router onChange={handleRouteChange}>
-        <ProtectedRoute path="/">
-          <TodayPage />
-        </ProtectedRoute>
+        <LandingPage path="/" />
+        <PublicInterestPage path="/interest" />
         <ProtectedRoute path="/today">
           <TodayPage />
         </ProtectedRoute>

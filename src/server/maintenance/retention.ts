@@ -3,6 +3,7 @@ const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
 export interface RetentionPolicy {
   batchSize: number;
   maxBatches: number;
+  publicLeadRetentionMs: number;
   rateLimitRetentionMs: number;
   sessionGraceMs: number;
   tokenRetentionMs: number;
@@ -12,10 +13,12 @@ export interface RetentionRepository {
   countExpiredAccessInvitations(cutoff: Date): Promise<number>;
   countExpiredEmailVerifications(cutoff: Date): Promise<number>;
   countExpiredRateLimits(cutoff: Date): Promise<number>;
+  countExpiredPublicLeads(cutoff: Date): Promise<number>;
   countExpiredSessions(cutoff: Date): Promise<number>;
   deleteExpiredAccessInvitations(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredEmailVerifications(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredRateLimits(cutoff: Date, limit: number): Promise<number>;
+  deleteExpiredPublicLeads(cutoff: Date, limit: number): Promise<number>;
   deleteExpiredSessions(cutoff: Date, limit: number): Promise<number>;
 }
 
@@ -30,12 +33,14 @@ export interface RetentionCleanupResult {
   applied: boolean;
   emailVerifications: RetentionTargetResult;
   rateLimits: RetentionTargetResult;
+  publicLeads: RetentionTargetResult;
   sessions: RetentionTargetResult;
 }
 
 export const defaultRetentionPolicy: RetentionPolicy = {
   batchSize: 500,
   maxBatches: 20,
+  publicLeadRetentionMs: 730 * DAY_IN_MILLISECONDS,
   rateLimitRetentionMs: DAY_IN_MILLISECONDS,
   sessionGraceMs: 7 * DAY_IN_MILLISECONDS,
   tokenRetentionMs: 30 * DAY_IN_MILLISECONDS,
@@ -70,6 +75,11 @@ export function getRetentionPolicy(
       environment,
       'LEARNX_RETENTION_MAX_BATCHES',
       defaultRetentionPolicy.maxBatches,
+    ),
+    publicLeadRetentionMs: readPositiveInteger(
+      environment,
+      'LEARNX_RETENTION_PUBLIC_LEAD_MS',
+      defaultRetentionPolicy.publicLeadRetentionMs,
     ),
     rateLimitRetentionMs: readPositiveInteger(
       environment,
@@ -131,6 +141,9 @@ export async function runRetentionCleanup(
   const sessionCutoff = new Date(now.getTime() - policy.sessionGraceMs);
   const rateLimitCutoff = new Date(now.getTime() - policy.rateLimitRetentionMs);
   const tokenCutoff = new Date(now.getTime() - policy.tokenRetentionMs);
+  const publicLeadCutoff = new Date(
+    now.getTime() - policy.publicLeadRetentionMs,
+  );
 
   const sessions = await cleanupTarget(
     {
@@ -172,11 +185,22 @@ export async function runRetentionCleanup(
     options.apply,
     policy,
   );
+  const publicLeads = await cleanupTarget(
+    {
+      count: (cutoff) => repository.countExpiredPublicLeads(cutoff),
+      cutoff: publicLeadCutoff,
+      deleteBatch: (cutoff, limit) =>
+        repository.deleteExpiredPublicLeads(cutoff, limit),
+    },
+    options.apply,
+    policy,
+  );
 
   return {
     accessInvitations,
     applied: options.apply,
     emailVerifications,
+    publicLeads,
     rateLimits,
     sessions,
   };

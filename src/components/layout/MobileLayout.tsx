@@ -64,6 +64,10 @@ export function MobileLayout({
     route('/today');
   }
 
+  if (currentPath === '/' || currentPath === '/interest') {
+    return <PwaProvider>{children}</PwaProvider>;
+  }
+
   return (
     <PwaProvider>
       <div class="app-layout min-h-dvh bg-[var(--color-canvas)] text-[var(--color-text)]">

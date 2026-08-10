@@ -40,7 +40,7 @@ export default defineConfig({
         orientation: 'portrait-primary',
         scope: '/',
         short_name: 'LearnX',
-        start_url: '/',
+        start_url: '/today',
         theme_color: '#020617',
       },
       registerType: 'prompt',

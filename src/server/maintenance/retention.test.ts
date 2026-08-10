@@ -12,6 +12,7 @@ function createRepository(
     accessInvitations: 2,
     emailVerifications: 3,
     rateLimits: 4,
+    publicLeads: 6,
     sessions: 5,
   },
 ): RetentionRepository {
@@ -23,10 +24,12 @@ function createRepository(
       async () => candidates.emailVerifications,
     ),
     countExpiredRateLimits: vi.fn(async () => candidates.rateLimits),
+    countExpiredPublicLeads: vi.fn(async () => candidates.publicLeads),
     countExpiredSessions: vi.fn(async () => candidates.sessions),
     deleteExpiredAccessInvitations: vi.fn(async () => 2),
     deleteExpiredEmailVerifications: vi.fn(async () => 3),
     deleteExpiredRateLimits: vi.fn(async () => 4),
+    deleteExpiredPublicLeads: vi.fn(async () => 6),
     deleteExpiredSessions: vi.fn(async () => 5),
   };
 }
@@ -45,10 +48,12 @@ describe('retention cleanup', () => {
       applied: false,
       emailVerifications: { candidates: 3, deleted: 0, hasMore: true },
       rateLimits: { candidates: 4, deleted: 0, hasMore: true },
+      publicLeads: { candidates: 6, deleted: 0, hasMore: true },
       sessions: { candidates: 5, deleted: 0, hasMore: true },
     });
     expect(repository.deleteExpiredSessions).not.toHaveBeenCalled();
     expect(repository.deleteExpiredRateLimits).not.toHaveBeenCalled();
+    expect(repository.deleteExpiredPublicLeads).not.toHaveBeenCalled();
     expect(repository.deleteExpiredEmailVerifications).not.toHaveBeenCalled();
     expect(repository.deleteExpiredAccessInvitations).not.toHaveBeenCalled();
   });
@@ -58,6 +63,7 @@ describe('retention cleanup', () => {
       accessInvitations: 0,
       emailVerifications: 0,
       rateLimits: 0,
+      publicLeads: 0,
       sessions: 0,
     });
     const now = new Date('2026-08-09T12:00:00.000Z');
@@ -76,6 +82,9 @@ describe('retention cleanup', () => {
     expect(repository.countExpiredAccessInvitations).toHaveBeenCalledWith(
       new Date(now.getTime() - defaultRetentionPolicy.tokenRetentionMs),
     );
+    expect(repository.countExpiredPublicLeads).toHaveBeenCalledWith(
+      new Date(now.getTime() - defaultRetentionPolicy.publicLeadRetentionMs),
+    );
   });
 
   it('bounds applied deletion by batch size and maximum batches', async () => {
@@ -83,6 +92,7 @@ describe('retention cleanup', () => {
       accessInvitations: 0,
       emailVerifications: 0,
       rateLimits: 0,
+      publicLeads: 0,
       sessions: 12,
     });
     vi.mocked(repository.deleteExpiredSessions)

@@ -32,6 +32,25 @@ describe('App', () => {
     );
   }
 
+  it('affiche la landing sans requête privée ni navigation applicative', () => {
+    window.history.pushState({}, '', '/');
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Un parcours, pas une bibliothèque.',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('navigation', { name: 'Navigation principale' }),
+    ).not.toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('redirige une route privée vers la connexion sans session', async () => {
     window.history.pushState({}, '', '/today');
     mockSession(null);

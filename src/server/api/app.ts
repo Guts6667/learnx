@@ -13,6 +13,7 @@ import { moduleRunsApp } from './module-runs/app.js';
 import { notesApp } from './notes/app.js';
 import { curriculumApp } from './programs/app.js';
 import { progressApp } from './progress/app.js';
+import { publicLeadsApp } from './public-leads/app.js';
 import { quizzesApp } from './quizzes/app.js';
 import { reviewsApp } from './reviews/app.js';
 import { stageAssessmentsApp } from './stage-assessments/app.js';
@@ -46,6 +47,7 @@ export function createApiApp() {
   app.route('/', catalogApp);
   app.route('/', curriculumApp);
   app.route('/', progressApp);
+  app.route('/', publicLeadsApp);
   app.route('/', conceptsApp);
   app.route('/', conceptAssessmentsApp);
   app.route('/', quizzesApp);

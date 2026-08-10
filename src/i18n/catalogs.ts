@@ -4,6 +4,61 @@ export const frenchMessages = {
   'app.description':
     'LearnX, votre environnement personnel pour apprendre, pratiquer et réviser.',
   'app.tagline': 'Parcours personnel',
+  'landing.utilityNavigation': 'Navigation publique',
+  'landing.language': 'Langue',
+  'landing.login': 'Se connecter',
+  'landing.eyebrow': 'Apprendre avec une direction',
+  'landing.title': 'Un parcours, pas une bibliothèque.',
+  'landing.lead':
+    'LearnX relie cours, pratique et validation dans un chemin clair que vous pouvez reprendre sans perdre le fil.',
+  'landing.cta.early': 'Candidater comme early adopter',
+  'landing.cta.updates': 'Être informé du lancement',
+  'landing.product.eyebrow': 'Disponible aujourd’hui',
+  'landing.product.title': 'Avancer, pratiquer, vérifier.',
+  'landing.product.description':
+    'Chaque programme organise des étapes, des leçons et des activités. Votre progression, vos tentatives et vos notes restent personnelles.',
+  'landing.product.structuredTitle': 'Parcours structurés',
+  'landing.product.structured':
+    'Une progression guidée plutôt qu’une accumulation de contenus.',
+  'landing.product.practiceTitle': 'Pratique et tentatives',
+  'landing.product.practice':
+    'Des tâches, exercices et évaluations avec historique conservé.',
+  'landing.product.evidenceTitle': 'Sources au point d’usage',
+  'landing.product.evidence':
+    'Les références restent attachées aux contenus qu’elles étayent.',
+  'landing.roadmap.eyebrow': 'À venir',
+  'landing.roadmap.title': 'Une assistance plus guidée, sans fausse promesse.',
+  'landing.roadmap.description':
+    'Les corrections assistées par IA sont prévues pour V4 et la création guidée de parcours pour V5. Elles ne sont pas encore disponibles.',
+  'landing.early.eyebrow': 'Accès anticipé',
+  'landing.early.title': 'Participer aux premiers retours terrain',
+  'landing.early.description':
+    'Présentez brièvement votre usage. Une candidature ne crée ni compte ni accès automatique.',
+  'landing.updates.eyebrow': 'Actualités',
+  'landing.updates.title': 'Suivre le lancement',
+  'landing.updates.description':
+    'Recevez uniquement les informations importantes sur l’ouverture de LearnX.',
+  'landing.form.email': 'Adresse e-mail',
+  'landing.form.motivation': 'Comment souhaitez-vous utiliser LearnX ?',
+  'landing.form.consentEarly':
+    'J’accepte que LearnX utilise ces informations pour étudier ma candidature early adopter.',
+  'landing.form.consentUpdates':
+    'J’accepte de recevoir les informations de lancement de LearnX.',
+  'landing.form.privacy':
+    'Un e-mail de confirmation est requis. Vous pourrez vous désinscrire ou supprimer vos données depuis cet e-mail.',
+  'landing.form.success':
+    'Vérifiez votre boîte e-mail pour confirmer cette demande.',
+  'landing.form.error':
+    'La demande n’a pas pu être envoyée. Réessayez dans quelques instants.',
+  'landing.manage.loading': 'Traitement en cours',
+  'landing.manage.loadingDescription': 'Nous vérifions ce lien sécurisé.',
+  'landing.manage.success': 'Votre choix est enregistré',
+  'landing.manage.successDescription':
+    'La confirmation, la désinscription ou la suppression demandée a bien été prise en compte.',
+  'landing.manage.error': 'Lien indisponible',
+  'landing.manage.errorDescription':
+    'Ce lien est invalide, expiré ou a déjà été utilisé.',
+  'landing.manage.back': 'Retour à LearnX',
   'navigation.skipToContent': 'Aller au contenu principal',
   'navigation.back.ariaLabel': 'Revenir à la page précédente',
   'navigation.back.label': 'Retour',
@@ -153,8 +208,7 @@ export const frenchMessages = {
   'curriculum.noModules': 'Aucun module disponible.',
   'curriculum.moduleLessons': 'Leçons du module {title}',
   'curriculum.stageDetails': 'Détails de l’étape {title}',
-  'curriculum.preferenceError':
-    'L’étape ouverte n’a pas pu être mémorisée.',
+  'curriculum.preferenceError': 'L’étape ouverte n’a pas pu être mémorisée.',
   'curriculum.stage': 'Étape',
   'curriculum.stageNotFound.title': 'Étape introuvable',
   'curriculum.stageNotFound.description': 'Cette étape est indisponible.',
@@ -172,8 +226,7 @@ export const frenchMessages = {
   'curriculum.restart.confirmTitle': 'Confirmer la reprise du module',
   'curriculum.restart.confirm': 'Oui, recommencer ce module',
   'curriculum.restart.action': 'Recommencer ce module',
-  'curriculum.restart.error':
-    'La reprise du module n’a pas pu être effectuée.',
+  'curriculum.restart.error': 'La reprise du module n’a pas pu être effectuée.',
   'curriculum.stageValidation': 'Validation de l’étape',
   'curriculum.requiredConcepts': 'Notions obligatoires : {done}/{total}',
   'curriculum.requiredTasks': 'Tâches obligatoires : {done}/{total}',
@@ -190,8 +243,7 @@ export const frenchMessages = {
   'profile.languageFrench': 'Français',
   'profile.languageEnglish': 'English',
   'profile.languageSaved': 'Langue enregistrée.',
-  'profile.languageError':
-    'La langue n’a pas pu être enregistrée. Réessayez.',
+  'profile.languageError': 'La langue n’a pas pu être enregistrée. Réessayez.',
   'profile.actions': 'Actions',
   'profile.openAdmin': 'Ouvrir l’administration',
   'profile.logout': 'Se déconnecter',
@@ -446,8 +498,7 @@ export const frenchMessages = {
     'Toutes les activités obligatoires sont validées.',
   'learning.requiredRemaining':
     'Des activités obligatoires restent à terminer.',
-  'learning.progressUpdateError':
-    'La progression n’a pas pu être mise à jour.',
+  'learning.progressUpdateError': 'La progression n’a pas pu être mise à jour.',
   'assessment.previousAttempts': 'Tentatives précédentes',
   'assessment.noAttempts': 'Aucune tentative enregistrée.',
   'assessment.passed': 'Réussi',
@@ -455,8 +506,7 @@ export const frenchMessages = {
   'assessment.answer': 'Votre réponse',
   'assessment.passingScore': 'Seuil de réussite : {count} %',
   'assessment.expectedAnswer': 'Réponse attendue : {answer}',
-  'assessment.answerRequired':
-    'Répondez à cette question avant de continuer.',
+  'assessment.answerRequired': 'Répondez à cette question avant de continuer.',
   'assessment.result': 'Résultat de l’évaluation',
   'assessment.saveError': 'La tentative n’a pas pu être enregistrée.',
   'assessment.previousQuestion': 'Question précédente',
@@ -491,8 +541,7 @@ export const frenchMessages = {
   'quiz.restart': 'Recommencer le quiz',
   'quiz.success': 'Quiz réussi',
   'conceptAssessment.loading': 'Chargement de la mini-évaluation',
-  'conceptAssessment.loadError':
-    'La mini-évaluation n’a pas pu être chargée.',
+  'conceptAssessment.loadError': 'La mini-évaluation n’a pas pu être chargée.',
   'conceptAssessment.notFound.title': 'Mini-évaluation introuvable',
   'conceptAssessment.notFound.description':
     'Aucune mini-évaluation correspondante n’est disponible pour cette leçon.',
@@ -502,7 +551,8 @@ export const frenchMessages = {
   'conceptAssessment.preview':
     'Prévisualisation propriétaire : cette évaluation n’est pas publique.',
   'conceptAssessment.defaultTitle': 'Évaluation — {title}',
-  'conceptAssessment.scoreSummary': '{questions} · seuil de maîtrise : {score} %',
+  'conceptAssessment.scoreSummary':
+    '{questions} · seuil de maîtrise : {score} %',
   'conceptAssessment.empty.title': 'Mini-évaluation indisponible',
   'conceptAssessment.empty.description':
     'Cette mini-évaluation ne contient aucune question.',
@@ -638,8 +688,7 @@ export const frenchMessages = {
     'Cette demande a été modifiée ou traitée. Rechargez la liste avant de recommencer.',
   'admin.requests.mutationError': 'La décision n’a pas pu être enregistrée.',
   'admin.requests.resendSuccess': 'Une nouvelle invitation a été envoyée.',
-  'admin.requests.approveSuccess':
-    'Demande acceptée et invitation préparée.',
+  'admin.requests.approveSuccess': 'Demande acceptée et invitation préparée.',
   'admin.requests.rejectSuccess': 'Demande refusée.',
   'admin.requests.internalReason': 'Motif interne : {reason}',
   'admin.requests.reason': 'Motif du refus',
@@ -775,6 +824,60 @@ export const englishMessages = {
   'app.description':
     'LearnX, your personal environment to learn, practise and review.',
   'app.tagline': 'Personal learning journey',
+  'landing.utilityNavigation': 'Public navigation',
+  'landing.language': 'Language',
+  'landing.login': 'Sign in',
+  'landing.eyebrow': 'Learn with direction',
+  'landing.title': 'A journey, not a library.',
+  'landing.lead':
+    'LearnX connects learning, practice and validation in a clear path you can resume without losing context.',
+  'landing.cta.early': 'Apply as an early adopter',
+  'landing.cta.updates': 'Get launch updates',
+  'landing.product.eyebrow': 'Available today',
+  'landing.product.title': 'Move forward, practise, validate.',
+  'landing.product.description':
+    'Each programme organises stages, lessons and activities. Your progress, attempts and notes remain personal.',
+  'landing.product.structuredTitle': 'Structured journeys',
+  'landing.product.structured':
+    'A guided progression instead of an accumulation of content.',
+  'landing.product.practiceTitle': 'Practice and attempts',
+  'landing.product.practice':
+    'Tasks, exercises and assessments with preserved history.',
+  'landing.product.evidenceTitle': 'Sources at the point of use',
+  'landing.product.evidence':
+    'References remain attached to the content they support.',
+  'landing.roadmap.eyebrow': 'Coming later',
+  'landing.roadmap.title': 'More guidance, without false promises.',
+  'landing.roadmap.description':
+    'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
+  'landing.early.eyebrow': 'Early access',
+  'landing.early.title': 'Help shape the first real-world uses',
+  'landing.early.description':
+    'Briefly describe your use case. An application creates neither an account nor automatic access.',
+  'landing.updates.eyebrow': 'Updates',
+  'landing.updates.title': 'Follow the launch',
+  'landing.updates.description':
+    'Receive only important information about the opening of LearnX.',
+  'landing.form.email': 'Email address',
+  'landing.form.motivation': 'How would you like to use LearnX?',
+  'landing.form.consentEarly':
+    'I agree that LearnX may use this information to review my early-adopter application.',
+  'landing.form.consentUpdates':
+    'I agree to receive LearnX launch information.',
+  'landing.form.privacy':
+    'Email confirmation is required. You can unsubscribe or delete your data from that email.',
+  'landing.form.success': 'Check your inbox to confirm this request.',
+  'landing.form.error':
+    'The request could not be sent. Please try again in a moment.',
+  'landing.manage.loading': 'Processing your request',
+  'landing.manage.loadingDescription': 'We are checking this secure link.',
+  'landing.manage.success': 'Your choice has been recorded',
+  'landing.manage.successDescription':
+    'Your confirmation, unsubscribe or deletion request has been applied.',
+  'landing.manage.error': 'Link unavailable',
+  'landing.manage.errorDescription':
+    'This link is invalid, expired or has already been used.',
+  'landing.manage.back': 'Back to LearnX',
   'navigation.skipToContent': 'Skip to main content',
   'navigation.back.ariaLabel': 'Go back to the previous page',
   'navigation.back.label': 'Back',
@@ -809,8 +912,7 @@ export const englishMessages = {
   'programs.language.en': 'English',
   'programs.eyebrow': 'Learning paths',
   'programs.title': 'Programs',
-  'programs.description':
-    'Resume your learning or explore available programs.',
+  'programs.description': 'Resume your learning or explore available programs.',
   'programs.views': 'Choose a program view',
   'programs.mine': 'My programs',
   'programs.explore': 'Explore',
@@ -836,8 +938,7 @@ export const englishMessages = {
   'programs.loadingCatalog': 'Loading catalog',
   'programs.catalogError': 'The catalog could not be loaded.',
   'programs.catalogEmpty.title': 'Empty catalog',
-  'programs.catalogEmpty.description':
-    'No public program matches your search.',
+  'programs.catalogEmpty.description': 'No public program matches your search.',
   'programs.enrollmentError': 'Enrollment could not be updated. Try again.',
   'programs.enrolled': 'Enrolled',
   'programs.available': 'Available',
@@ -1245,12 +1346,12 @@ export const englishMessages = {
   'conceptAssessment.info': 'Concept assessment information',
   'conceptAssessment.concept': 'Concept · {title}',
   'conceptAssessment.optional': 'Optional',
-  'conceptAssessment.preview':
-    'Owner preview: this assessment is not public.',
+  'conceptAssessment.preview': 'Owner preview: this assessment is not public.',
   'conceptAssessment.defaultTitle': 'Assessment — {title}',
   'conceptAssessment.scoreSummary': '{questions} · mastery threshold: {score}%',
   'conceptAssessment.empty.title': 'Concept assessment unavailable',
-  'conceptAssessment.empty.description': 'This concept assessment has no questions.',
+  'conceptAssessment.empty.description':
+    'This concept assessment has no questions.',
   'conceptAssessment.failure': 'Concept needs more work',
   'conceptAssessment.restart': 'Restart concept assessment',
   'conceptAssessment.success': 'Concept mastered',
@@ -1362,7 +1463,8 @@ export const englishMessages = {
   'admin.requests.loading': 'Loading requests…',
   'admin.requests.loadError': 'Access requests could not be loaded.',
   'admin.requests.empty.title': 'No requests',
-  'admin.requests.empty.description': 'No verified request matches these filters.',
+  'admin.requests.empty.description':
+    'No verified request matches these filters.',
   'admin.requests.accept': 'Approve',
   'admin.requests.reject': 'Reject',
   'admin.requests.assignedRole': 'Assigned role: {role}',
