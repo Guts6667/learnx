@@ -12,6 +12,71 @@ interface InterestFormProps {
   purpose: PublicLeadPurpose;
 }
 
+function ProgramPreview() {
+  const { t } = useI18n();
+
+  return (
+    <section
+      aria-label={t('landing.preview.program.ariaLabel')}
+      class="landing-product-preview landing-program-preview"
+    >
+      <header class="landing-preview-header">
+        <span>{t('landing.preview.program.type')}</span>
+        <span>{t('landing.preview.realContent')}</span>
+      </header>
+      <div class="landing-preview-body">
+        <p class="landing-preview-kicker">
+          {t('landing.preview.program.stage')}
+        </p>
+        <h2>{t('landing.preview.program.title')}</h2>
+        <div class="landing-preview-module">
+          <strong>{t('landing.preview.program.module')}</strong>
+          <ol>
+            <li aria-current="step">
+              <span>01</span>
+              <strong>{t('landing.preview.lesson.title')}</strong>
+            </li>
+            <li>
+              <span>02</span>
+              <strong>{t('landing.preview.program.nextLesson')}</strong>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LessonPreview() {
+  const { t } = useI18n();
+
+  return (
+    <section
+      aria-label={t('landing.preview.lesson.ariaLabel')}
+      class="landing-product-preview landing-lesson-preview"
+    >
+      <header class="landing-preview-header">
+        <span>{t('landing.preview.lesson.type')}</span>
+        <span>{t('landing.preview.realContent')}</span>
+      </header>
+      <div class="landing-preview-body">
+        <p class="landing-preview-kicker">
+          {t('landing.preview.lesson.module')}
+        </p>
+        <h2>{t('landing.preview.lesson.title')}</h2>
+        <article>
+          <h3>{t('landing.preview.lesson.section')}</h3>
+          <p>{t('landing.preview.lesson.excerpt')}</p>
+          <footer>
+            <strong>{t('landing.preview.lesson.sourceLabel')}</strong>
+            <cite>{t('landing.preview.lesson.source')}</cite>
+          </footer>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 function InterestForm({ purpose }: InterestFormProps) {
   const { locale, t } = useI18n();
   const mutation = usePublicLeadMutation();
@@ -37,11 +102,7 @@ function InterestForm({ purpose }: InterestFormProps) {
   if (mutation.isSuccess) {
     return (
       <p class="landing-form-status" role="status">
-        {t(
-          early
-            ? 'landing.form.successEarly'
-            : 'landing.form.successUpdates',
-        )}
+        {t(early ? 'landing.form.successEarly' : 'landing.form.successUpdates')}
       </p>
     );
   }
@@ -146,17 +207,20 @@ export function LandingPage({ path }: { path?: string }) {
       </header>
       <main id="main-content" tabindex={-1}>
         <section class="landing-hero">
-          <p class="page-eyebrow">{t('landing.eyebrow')}</p>
-          <h1>{t('landing.title')}</h1>
-          <p class="landing-lead">{t('landing.lead')}</p>
-          <div class="landing-actions">
-            <a class="ui-action ui-action--primary" href="#early-adopter">
-              {t('landing.cta.early')}
-            </a>
-            <a class="ui-action ui-action--secondary" href="#launch-updates">
-              {t('landing.cta.updates')}
-            </a>
+          <div class="landing-hero-copy">
+            <p class="page-eyebrow">{t('landing.eyebrow')}</p>
+            <h1>{t('landing.title')}</h1>
+            <p class="landing-lead">{t('landing.lead')}</p>
+            <div class="landing-actions">
+              <a class="ui-action ui-action--primary" href="#early-adopter">
+                {t('landing.cta.early')}
+              </a>
+              <a class="ui-action ui-action--secondary" href="#launch-updates">
+                {t('landing.cta.updates')}
+              </a>
+            </div>
           </div>
+          <ProgramPreview />
         </section>
         <section aria-labelledby="landing-product" class="landing-section">
           <div>
@@ -178,6 +242,32 @@ export function LandingPage({ path }: { path?: string }) {
               <span>{t('landing.product.evidence')}</span>
             </li>
           </ul>
+        </section>
+        <section
+          aria-labelledby="landing-program-proof"
+          class="landing-section landing-feature-proof"
+        >
+          <div>
+            <p class="page-eyebrow">{t('landing.preview.program.type')}</p>
+            <h2 id="landing-program-proof">
+              {t('landing.preview.program.heading')}
+            </h2>
+            <p>{t('landing.preview.program.description')}</p>
+          </div>
+          <ProgramPreview />
+        </section>
+        <section
+          aria-labelledby="landing-lesson-proof"
+          class="landing-section landing-feature-proof"
+        >
+          <div>
+            <p class="page-eyebrow">{t('landing.preview.lesson.type')}</p>
+            <h2 id="landing-lesson-proof">
+              {t('landing.preview.lesson.heading')}
+            </h2>
+            <p>{t('landing.preview.lesson.description')}</p>
+          </div>
+          <LessonPreview />
         </section>
         <section
           aria-labelledby="landing-roadmap"

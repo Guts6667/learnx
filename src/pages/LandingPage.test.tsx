@@ -31,6 +31,21 @@ describe('LandingPage', () => {
     expect(
       screen.queryByRole('navigation', { name: 'Navigation principale' }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', {
+        name: 'Fondamentaux de la psychologie',
+      }),
+    ).toHaveLength(2);
+    expect(
+      screen.getByRole('heading', { name: 'Définir la psychologie' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Psychology 2e — 1\.1 What Is Psychology\?/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
   it('submits updates without creating an access request', async () => {
