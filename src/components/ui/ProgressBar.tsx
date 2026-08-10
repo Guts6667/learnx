@@ -25,10 +25,10 @@ export function ProgressBar({
 
   return (
     <div class={classNames('space-y-2', className)}>
-      <div class="flex items-center justify-between gap-3">
-        <span class="text-sm font-medium text-slate-200">{label}</span>
+      <div class="ui-progress__header">
+        <span class="ui-progress__label">{label}</span>
         {showValue ? (
-          <span class="text-sm tabular-nums text-slate-400">
+          <span class="ui-progress__value">
             {Math.round(percentage)} %
           </span>
         ) : null}
@@ -38,11 +38,11 @@ export function ProgressBar({
         aria-valuemax={safeMax}
         aria-valuemin={0}
         aria-valuenow={safeValue}
-        class="h-2.5 overflow-hidden rounded-full bg-slate-800"
+        class="ui-progress__track"
         role="progressbar"
       >
         <div
-          class="h-full rounded-full bg-cyan-400 transition-[width] duration-200"
+          class="ui-progress__bar"
           style={{ width: `${percentage}%` }}
         />
       </div>

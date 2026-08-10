@@ -22,14 +22,14 @@ export function EmptyState({
     <section
       aria-labelledby={titleId}
       class={classNames(
-        'rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-6 text-center',
+        'ui-feedback ui-feedback--empty p-6',
         className,
       )}
     >
-      <h2 class="text-lg font-semibold text-slate-100" id={titleId}>
+      <h2 class="ui-feedback__title" id={titleId}>
         {title}
       </h2>
-      <p class="mt-2 text-sm leading-6 text-slate-400">{description}</p>
+      <p class="ui-feedback__description">{description}</p>
       {action ? <div class="mt-5">{action}</div> : null}
     </section>
   );

@@ -19,10 +19,10 @@ export function Skeleton({
       role="status"
     >
       <span class="sr-only">{accessibleLabel}</span>
-      <div class="h-5 w-2/5 rounded-full bg-slate-800" />
-      <div class="h-4 w-full rounded-full bg-slate-800" />
-      <div class="h-4 w-4/5 rounded-full bg-slate-800" />
-      <div class="h-24 w-full rounded-2xl bg-slate-900" />
+      <div class="ui-skeleton-line h-5 w-2/5" />
+      <div class="ui-skeleton-line h-4 w-full" />
+      <div class="ui-skeleton-line h-4 w-4/5" />
+      <div class="ui-skeleton-block h-24 w-full" />
     </div>
   );
 }

@@ -6,11 +6,14 @@ import { Card } from '@/components/ui/Card';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ListRow } from '@/components/ui/ListRow';
+import { Metadata } from '@/components/ui/Metadata';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Spinner } from '@/components/ui/Spinner';
+import { Section } from '@/components/ui/Section';
 import { Textarea } from '@/components/ui/Textarea';
 import { TextField } from '@/components/ui/TextField';
 
@@ -30,6 +33,38 @@ describe('design system minimal', () => {
       screen.getByRole('progressbar', { name: 'Progression' }),
     ).toHaveAttribute('aria-valuenow', '35');
     expect(screen.getByText('35 %')).toBeInTheDocument();
+    expect(screen.getByText('Contenu de la carte')).toHaveClass('ui-card');
+    expect(screen.getByText('Validée')).toHaveClass(
+      'ui-badge',
+      'ui-badge--success',
+    );
+  });
+
+  it('structure une section, une ligne et des métadonnées sans carte imbriquée', () => {
+    const { container } = render(
+      <Section description="Description secondaire" title="Comprendre">
+        <div class="ui-list">
+          <ListRow aside={<span>12 min</span>}>
+            <strong>Leçon accessible</strong>
+          </ListRow>
+        </div>
+        <Metadata
+          items={[
+            { label: 'Durée', value: '12 min' },
+            { label: 'Statut', value: 'Disponible' },
+          ]}
+        />
+      </Section>,
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Comprendre' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Leçon accessible').closest('.ui-list-row')).toBe(
+      screen.getAllByText('12 min')[0]?.closest('.ui-list-row'),
+    );
+    expect(screen.getByText('Durée').closest('dl')).toHaveClass('ui-metadata');
+    expect(container.querySelector('.ui-card')).toBeNull();
   });
 
   it('gère les états désactivé et chargement du bouton', () => {
@@ -40,6 +75,11 @@ describe('design system minimal', () => {
     );
 
     expect(screen.getByRole('button', { name: /enregistrer/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /enregistrer/i })).toHaveClass(
+      'ui-action',
+      'ui-action--primary',
+      'ui-action--md',
+    );
     expect(
       screen.getByRole('status', { name: 'Chargement' }),
     ).toBeInTheDocument();
@@ -66,6 +106,7 @@ describe('design system minimal', () => {
       'aria-invalid',
       'true',
     );
+    expect(screen.getByLabelText('E-mail')).toHaveClass('ui-field__control');
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Adresse e-mail invalide',
     );

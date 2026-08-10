@@ -22,15 +22,15 @@ export function ErrorState({
     <section
       aria-labelledby={titleId}
       class={classNames(
-        'rounded-2xl border border-red-900 bg-red-950/40 p-5',
+        'ui-feedback ui-feedback--danger',
         className,
       )}
       role="alert"
     >
-      <h2 class="text-lg font-semibold text-red-100" id={titleId}>
+      <h2 class="ui-feedback__title" id={titleId}>
         {title}
       </h2>
-      <p class="mt-2 text-sm leading-6 text-red-200">{description}</p>
+      <p class="ui-feedback__description">{description}</p>
       {action ? <div class="mt-5">{action}</div> : null}
     </section>
   );

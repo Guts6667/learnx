@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
@@ -49,32 +50,41 @@ function NoteCard({ note }: { note: NoteDetail }) {
   const { locale, t } = useI18n();
   return (
     <li>
-      <Card class="space-y-3">
-        <div class="flex items-start justify-between gap-3">
-          <h2 class="font-semibold">{note.title}</h2>
-          {note.lesson ? <Badge tone="neutral">{t('notes.linkedLesson')}</Badge> : null}
-        </div>
-        <p class="text-sm leading-6 text-slate-300">
-          {getExcerpt(note.markdown, t('notes.emptyExcerpt'))}
-        </p>
-        {note.lesson ? (
-          <p class="text-sm text-slate-400">
-            {note.program?.title ? `${note.program.title} · ` : ''}
-            {note.lesson.title}
+      <ListRow class="items-stretch">
+        <div class="space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <h2 class="font-semibold">{note.title}</h2>
+            {note.lesson ? (
+              <Badge tone="neutral">{t('notes.linkedLesson')}</Badge>
+            ) : null}
+          </div>
+          <p class="text-sm leading-6 text-[var(--color-text)]">
+            {getExcerpt(note.markdown, t('notes.emptyExcerpt'))}
           </p>
-        ) : (
-          <p class="text-sm text-slate-400">{t('notes.personal')}</p>
-        )}
-        <p class="text-xs text-slate-400">
-          {t('notes.updatedAt', { date: formatUpdatedAt(note.updatedAt, locale) })}
-        </p>
-        <NavigationAction
-          href={`/notes/${encodeURIComponent(note.id)}`}
-          variant="secondary"
-        >
-          {t('notes.edit')}
-        </NavigationAction>
-      </Card>
+          {note.lesson ? (
+            <p class="text-sm text-[var(--color-text-muted)]">
+              {note.program?.title ? `${note.program.title} · ` : ''}
+              {note.lesson.title}
+            </p>
+          ) : (
+            <p class="text-sm text-[var(--color-text-muted)]">
+              {t('notes.personal')}
+            </p>
+          )}
+          <p class="text-xs text-[var(--color-text-muted)]">
+            {t('notes.updatedAt', {
+              date: formatUpdatedAt(note.updatedAt, locale),
+            })}
+          </p>
+          <NavigationAction
+            class="w-full sm:w-auto"
+            href={`/notes/${encodeURIComponent(note.id)}`}
+            variant="secondary"
+          >
+            {t('notes.edit')}
+          </NavigationAction>
+        </div>
+      </ListRow>
     </li>
   );
 }

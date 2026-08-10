@@ -42,7 +42,7 @@ export function Button({
       class={actionClassNames(
         variant,
         size,
-        `disabled:cursor-not-allowed disabled:opacity-50 ${className ?? ''}`,
+        className,
       )}
       disabled={isDisabled}
       ref={elementRef}

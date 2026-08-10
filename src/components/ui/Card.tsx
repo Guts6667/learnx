@@ -12,8 +12,8 @@ interface CardProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'class'> {
 
 const toneClasses: Record<CardTone, string> = {
   default: '',
-  accent: 'border-cyan-800/80 bg-cyan-950/25',
-  muted: 'bg-slate-900/60 shadow-none',
+  accent: 'ui-card--accent',
+  muted: 'ui-card--muted',
 };
 
 export function Card({

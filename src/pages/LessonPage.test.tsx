@@ -501,7 +501,10 @@ describe('LessonPage', () => {
     expect(
       screen.getAllByRole('link', { name: 'Leçon suivante' }),
     ).toHaveLength(1);
-    expect(nextLessonLink).toHaveClass('bg-cyan-400');
+    expect(nextLessonLink).toHaveClass(
+      'ui-action',
+      'ui-action--primary',
+    );
   });
 
   it('revient au programme et à la bonne étape après la dernière leçon', async () => {

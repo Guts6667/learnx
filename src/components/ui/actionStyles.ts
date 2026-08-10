@@ -4,16 +4,16 @@ export type ActionSize = 'sm' | 'md' | 'lg';
 export type ActionVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 const variantClasses: Record<ActionVariant, string> = {
-  danger: 'bg-red-500 text-white hover:bg-red-400',
-  ghost: 'bg-transparent text-slate-200 hover:bg-slate-800',
-  primary: 'bg-cyan-400 text-slate-950 hover:bg-cyan-300',
-  secondary: 'bg-slate-800 text-slate-100 hover:bg-slate-700',
+  danger: 'ui-action--danger',
+  ghost: 'ui-action--ghost',
+  primary: 'ui-action--primary',
+  secondary: 'ui-action--secondary',
 };
 
 const sizeClasses: Record<ActionSize, string> = {
-  lg: 'min-h-12 px-5 py-3 text-base',
-  md: 'min-h-11 px-4 py-2.5 text-sm',
-  sm: 'min-h-11 px-3 py-2 text-sm',
+  lg: 'ui-action--lg',
+  md: 'ui-action--md',
+  sm: 'ui-action--sm',
 };
 
 export function actionClassNames(
@@ -22,7 +22,7 @@ export function actionClassNames(
   className?: string,
 ): string {
   return classNames(
-    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400',
+    'ui-action',
     variantClasses[variant],
     sizeClasses[size],
     className,

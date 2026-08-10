@@ -21,7 +21,7 @@ export function OfflineBanner({
     <div
       aria-label={t('offline.ariaLabel')}
       class={classNames(
-        'rounded-xl border border-amber-800 bg-amber-950/70 px-4 py-3 text-sm text-amber-100',
+        'ui-feedback ui-feedback--warning text-sm',
         className,
       )}
       role="status"

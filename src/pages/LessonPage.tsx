@@ -12,6 +12,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { SafeMarkdown } from '@/components/ui/SafeMarkdown';
+import { Section } from '@/components/ui/Section';
 import { Spinner } from '@/components/ui/Spinner';
 import {
   type LessonContentBlock,
@@ -86,23 +87,24 @@ function ContentActivity({
   resourcesByKey: Map<string, LessonResource>;
 }) {
   const { t } = useI18n();
-  if (block.type === 'DIVIDER') return <hr class="border-slate-700" />;
+  if (block.type === 'DIVIDER')
+    return <hr class="border-[var(--color-border)]" />;
   const sources = getSourceKeys(block.content)
     .map((key) => resourcesByKey.get(key))
     .filter((resource): resource is LessonResource => Boolean(resource));
 
   return (
-    <Card class="space-y-4">
-      <p class="text-sm font-semibold text-cyan-300">
+    <Section class="space-y-4">
+      <p class="text-sm font-semibold text-[var(--color-accent)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
       <SafeMarkdown content={getText(block.content)} />
       {sources.length === 0 ? null : (
-        <details class="border-t border-slate-700 pt-3">
-          <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-slate-300 focus-visible:outline-2 focus-visible:outline-cyan-300">
+        <details class="border-t border-[var(--color-border)] pt-3">
+          <summary class="min-h-11 cursor-pointer py-3 text-sm font-semibold text-[var(--color-text-muted)]">
             {t('learning.sources')}
           </summary>
-          <ul class="mt-2 space-y-2 text-sm text-slate-400">
+          <ul class="mt-2 space-y-2 text-sm text-[var(--color-text-muted)]">
             {sources.map((source) => {
               const url = getSafeExternalUrl(source.url);
               return (
@@ -112,7 +114,7 @@ function ContentActivity({
                   {source.citation ? ` — ${source.citation}` : ''}
                   {url ? (
                     <a
-                      class="ml-2 text-cyan-300 underline"
+                      class="ml-2 text-[var(--color-action)] underline"
                       href={url}
                       rel="noreferrer"
                       target="_blank"
@@ -126,7 +128,7 @@ function ContentActivity({
           </ul>
         </details>
       )}
-    </Card>
+    </Section>
   );
 }
 

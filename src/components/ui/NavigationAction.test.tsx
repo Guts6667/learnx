@@ -14,7 +14,11 @@ describe('NavigationAction', () => {
     const action = screen.getByRole('link', { name: 'Ouvrir le parcours' });
 
     expect(action).toHaveAttribute('href', '/program');
-    expect(action).toHaveClass('min-h-11', 'bg-slate-800');
+    expect(action).toHaveClass(
+      'ui-action',
+      'ui-action--secondary',
+      'ui-action--md',
+    );
     expect(action).not.toHaveAttribute('role', 'button');
   });
 
@@ -33,7 +37,7 @@ describe('NavigationAction', () => {
       screen.getByRole('link', {
         name: 'Continuer vers la prochaine activité',
       }),
-    ).toHaveClass('min-h-12');
+    ).toHaveClass('ui-action--lg');
   });
 
   it('distingue une navigation GET d’une mutation', () => {

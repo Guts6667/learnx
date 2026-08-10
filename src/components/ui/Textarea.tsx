@@ -28,25 +28,22 @@ export function Textarea({
   const messageId = message ? `${textareaId}-message` : undefined;
 
   return (
-    <div class={classNames('space-y-2', className)}>
-      <label class="block text-sm font-medium text-slate-200" for={textareaId}>
+    <div class={classNames('ui-field', className)}>
+      <label class="ui-field__label" for={textareaId}>
         {label}
       </label>
       <textarea
         {...textareaProps}
         aria-describedby={messageId}
         aria-invalid={Boolean(error) || undefined}
-        class={classNames(
-          'min-h-28 w-full resize-y rounded-xl border bg-slate-950 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:outline-2 focus:outline-offset-2 focus:outline-cyan-400',
-          error ? 'border-red-400' : 'border-slate-700',
-        )}
+        class="ui-field__control min-h-28 resize-y"
         id={textareaId}
       />
       {message ? (
         <p
           class={classNames(
-            'text-sm',
-            error ? 'text-red-300' : 'text-slate-400',
+            'ui-field__message',
+            error && 'ui-field__message--error',
           )}
           id={messageId}
           role={error ? 'alert' : undefined}

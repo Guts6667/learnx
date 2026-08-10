@@ -28,25 +28,25 @@ export function Checkbox({
   const messageId = message ? `${inputId}-message` : undefined;
 
   return (
-    <div class={classNames('space-y-2', className)}>
+    <div class={classNames('ui-field', className)}>
       <div class="flex items-start gap-3">
         <input
           {...inputProps}
           aria-describedby={messageId}
           aria-invalid={Boolean(error) || undefined}
-          class="mt-0.5 size-5 shrink-0 rounded border-slate-600 bg-slate-950 text-cyan-400 focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+          class="ui-checkbox mt-0.5"
           id={inputId}
           type="checkbox"
         />
-        <label class="text-sm leading-5 text-slate-200" for={inputId}>
+        <label class="ui-field__label leading-5" for={inputId}>
           {label}
         </label>
       </div>
       {message ? (
         <p
           class={classNames(
-            'text-sm',
-            error ? 'text-red-300' : 'text-slate-400',
+            'ui-field__message',
+            error && 'ui-field__message--error',
           )}
           id={messageId}
           role={error ? 'alert' : undefined}
