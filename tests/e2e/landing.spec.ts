@@ -35,11 +35,26 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
     await expect(
       page.getByRole('navigation', { name: 'Navigation principale' }),
     ).toHaveCount(0);
+    await expect(
+      page
+        .getByRole('heading', { name: 'Fondamentaux de la psychologie' })
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Définir la psychologie' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Psychology 2e — 1\.1 What Is Psychology\?/),
+    ).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
+    await testInfo.attach(`landing-a5-${viewport.width}x${viewport.height}`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: 'image/png',
+    });
   }
 
   await page.setViewportSize({ height: 844, width: 390 });
@@ -53,6 +68,14 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   const manifest = await page.request.get('/manifest-en.webmanifest');
   expect(manifest.ok()).toBe(true);
   expect((await manifest.json()).start_url).toBe('/today');
+  for (const size of [1024, 512, 192, 180, 60, 40, 32, 29]) {
+    const icon = await page.request.get(`/learnx-icon-${size}.png`);
+    expect(icon.ok()).toBe(true);
+  }
+  const html = await page.request.get('/');
+  const source = await html.text();
+  expect(source).toContain('/learnx-icon-dark.svg?v=atlas-1');
+  expect(source).toContain('/learnx-icon-180.png?v=atlas-1');
   await expect(
     page.getByRole('link', { name: 'Sign in' }).first(),
   ).toHaveAttribute('href', '/login');
