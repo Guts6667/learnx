@@ -1,5 +1,5 @@
 {
-  "background_color": "#020617",
+  "background_color": "#121c24",
   "categories": ["education", "productivity"],
   "description": "Your personal environment to learn, practise and review.",
   "display": "standalone",
@@ -19,5 +19,5 @@
   "scope": "/",
   "short_name": "LearnX",
   "start_url": "/today",
-  "theme_color": "#020617"
+  "theme_color": "#121c24"
 }

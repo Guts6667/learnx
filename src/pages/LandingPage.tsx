@@ -37,7 +37,11 @@ function InterestForm({ purpose }: InterestFormProps) {
   if (mutation.isSuccess) {
     return (
       <p class="landing-form-status" role="status">
-        {t('landing.form.success')}
+        {t(
+          early
+            ? 'landing.form.successEarly'
+            : 'landing.form.successUpdates',
+        )}
       </p>
     );
   }
@@ -78,7 +82,7 @@ function InterestForm({ purpose }: InterestFormProps) {
         </span>
       </label>
       {mutation.error ? (
-        <p class="text-red-800" role="alert">
+        <p class="ui-text-danger" role="alert">
           {t('landing.form.error')}
         </p>
       ) : null}

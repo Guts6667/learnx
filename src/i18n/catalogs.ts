@@ -46,8 +46,10 @@ export const frenchMessages = {
     'J’accepte de recevoir les informations de lancement de LearnX.',
   'landing.form.privacy':
     'Un e-mail de confirmation est requis. Vous pourrez vous désinscrire ou supprimer vos données depuis cet e-mail.',
-  'landing.form.success':
-    'Vérifiez votre boîte e-mail pour confirmer cette demande.',
+  'landing.form.successEarly':
+    'Vérifiez votre boîte e-mail pour confirmer votre candidature early adopter.',
+  'landing.form.successUpdates':
+    'Vérifiez votre boîte e-mail pour confirmer votre inscription aux actualités.',
   'landing.form.error':
     'La demande n’a pas pu être envoyée. Réessayez dans quelques instants.',
   'landing.manage.loading': 'Traitement en cours',
@@ -866,7 +868,10 @@ export const englishMessages = {
     'I agree to receive LearnX launch information.',
   'landing.form.privacy':
     'Email confirmation is required. You can unsubscribe or delete your data from that email.',
-  'landing.form.success': 'Check your inbox to confirm this request.',
+  'landing.form.successEarly':
+    'Check your inbox to confirm your early-adopter application.',
+  'landing.form.successUpdates':
+    'Check your inbox to confirm your launch updates subscription.',
   'landing.form.error':
     'The request could not be sent. Please try again in a moment.',
   'landing.manage.loading': 'Processing your request',

@@ -65,5 +65,10 @@ describe('LandingPage', () => {
     expect(path).toBe('/api/public-leads');
     expect(String(request?.body)).toContain('LAUNCH_UPDATES');
     expect(String(request?.body)).not.toContain('EARLY_ADOPTER');
+    expect(
+      await screen.findByText(
+        'Check your inbox to confirm your launch updates subscription.',
+      ),
+    ).toBeInTheDocument();
   });
 });

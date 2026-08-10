@@ -146,8 +146,8 @@ export function PwaStatus() {
       <OfflineBanner isOffline={!isOnline} />
 
       {offlineReady ? (
-        <Card class="flex items-center justify-between gap-3 border-emerald-900 py-3">
-          <p class="text-sm text-emerald-100">
+        <Card class="flex items-center justify-between gap-3 border-[var(--color-success)] py-3">
+          <p class="text-sm text-[var(--color-success)]">
             {t('pwa.ready')}
           </p>
           <Button
@@ -161,8 +161,8 @@ export function PwaStatus() {
       ) : null}
 
       {needRefresh ? (
-        <Card class="space-y-3 border-cyan-900 py-3">
-          <p class="text-sm text-cyan-100">
+        <Card class="space-y-3 border-[var(--color-accent)] py-3">
+          <p class="text-sm text-[var(--color-accent-text)]">
             {t('pwa.updateAvailable')}
           </p>
           <div class="flex gap-2">
@@ -207,7 +207,7 @@ export function PwaInstallSettings() {
         </p>
       </div>
       {standalone ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {t('pwa.installed')}
         </p>
       ) : installPrompt ? (
