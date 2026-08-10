@@ -1,3 +1,38 @@
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/manrope/files/manrope-latin-400-normal.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('@fontsource/manrope/files/manrope-latin-500-normal.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('@fontsource/source-serif-4/files/source-serif-4-latin-500-normal.woff2')
+    format('woff2');
+}
 @import 'tailwindcss';
 
 @theme {
@@ -7,29 +42,44 @@
 }
 
 :root {
-  --color-canvas: #111a1b;
-  --color-surface: #1a2626;
-  --color-surface-raised: #233231;
-  --color-surface-subtle: #151f20;
-  --color-text: #f2eee6;
-  --color-text-muted: #b8c2be;
-  --color-border: #3b504d;
-  --color-control-border: #66847d;
-  --color-accent: #80b5a8;
-  --color-action: #9bc9bd;
-  --color-action-hover: #add6cc;
-  --color-on-action: #10201d;
-  --color-focus: #9bc9bd;
-  --color-success: #80b5a8;
-  --color-warning: #d9b77d;
-  --color-danger: #d88b82;
-  --color-disabled: #63706c;
-  --color-overlay: rgb(4 10 10 / 72%);
+  --color-canvas: #121c24;
+  --color-surface: #1a2933;
+  --color-surface-raised: #304650;
+  --color-surface-subtle: #243641;
+  --color-text: #f8f5ee;
+  --color-text-muted: #b8c4c9;
+  --color-border: #3a4e58;
+  --color-control-border: #60747e;
+  --color-accent: #557f9a;
+  --color-accent-text: #89acbe;
+  --color-action: #4c748c;
+  --color-action-hover: #557f9a;
+  --color-on-action: #f8f5ee;
+  --color-focus: #89acbe;
+  --color-success: #89acbe;
+  --color-warning: #bea169;
+  --color-danger: #c4766c;
+  --color-disabled: #89979c;
+  --color-overlay: rgb(18 28 36 / 78%);
+  --color-paper: #f1eee6;
+  --color-paper-deep: #e2ddd3;
+  --color-ivory: #f8f5ee;
+  --color-blue-soft: #d9e4e8;
+  --color-brass: #bea169;
   --font-interface: var(--font-sans);
   --font-editorial: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --radius-control: 0.625rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --radius-directional: 0.25rem;
+  --radius-control: 0.4375rem;
   --radius-group: 0.75rem;
-  --radius-overlay: 1rem;
+  --radius-overlay: 0.75rem;
+  --radius-mobile-frame: 1.25rem;
   --motion-fast: 120ms;
   --motion-standard: 180ms;
   --motion-overlay: 240ms;
@@ -48,7 +98,7 @@
   --app-work-max: 92rem;
   --app-admin-max: 108rem;
   --app-navigation-height: 5.5rem;
-  --app-navigation-width: 6.75rem;
+  --app-navigation-width: 216px;
   color-scheme: dark;
   font-family: var(--font-interface);
   font-synthesis: none;
@@ -89,7 +139,7 @@ body {
 .landing-brand {
   color: var(--color-text);
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -104,7 +154,7 @@ body {
 .landing-utility a,
 .landing-footer a {
   color: var(--color-action);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .landing-language {
@@ -117,7 +167,7 @@ body {
   min-height: 2.75rem;
   border-radius: var(--radius-control);
   color: var(--color-text-muted);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .landing-language button[aria-pressed='true'] {
@@ -306,20 +356,25 @@ body {
 }
 
 [data-color-regime='paper'] {
-  --color-canvas: #f4f0e7;
-  --color-surface: #fbf8f2;
-  --color-surface-raised: #ffffff;
-  --color-surface-subtle: #eee8dd;
-  --color-text: #1c2625;
-  --color-text-muted: #665f58;
-  --color-border: #d8cfc3;
-  --color-control-border: #6b7773;
-  --color-accent: #3f6b61;
-  --color-action: #365f56;
-  --color-action-hover: #294c45;
-  --color-on-action: #ffffff;
-  --color-focus: #365f56;
-  --color-overlay: rgb(28 38 37 / 45%);
+  --color-canvas: var(--color-paper);
+  --color-surface: var(--color-ivory);
+  --color-surface-raised: var(--color-ivory);
+  --color-surface-subtle: var(--color-paper-deep);
+  --color-text: #121c24;
+  --color-text-muted: #58676d;
+  --color-border: #c8cdca;
+  --color-control-border: #60747e;
+  --color-accent: #557f9a;
+  --color-accent-text: #466b82;
+  --color-action: #466b82;
+  --color-action-hover: #3f6176;
+  --color-on-action: #f8f5ee;
+  --color-focus: #466b82;
+  --color-success: #466b82;
+  --color-warning: #7f683e;
+  --color-danger: #944f49;
+  --color-disabled: #657277;
+  --color-overlay: rgb(18 28 36 / 45%);
   --app-accent: var(--color-accent);
   --app-background: var(--color-canvas);
   --app-border: var(--color-border);
@@ -404,7 +459,7 @@ body {
 }
 
 .page-eyebrow {
-  color: var(--app-accent);
+  color: var(--color-accent-text);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -652,7 +707,7 @@ body {
 }
 
 .ui-metadata__label {
-  font-weight: 650;
+  font-weight: 500;
   color: var(--color-text);
 }
 
@@ -664,7 +719,7 @@ body {
   gap: 0.5rem;
   border: 1px solid transparent;
   border-radius: var(--radius-control);
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.25;
   text-align: center;
   transition:
@@ -737,10 +792,10 @@ body {
   align-items: center;
   gap: 0.35rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius-directional);
   padding: 0.25rem 0.625rem;
   font-size: 0.75rem;
-  font-weight: 650;
+  font-weight: 500;
   line-height: 1.4;
 }
 
@@ -750,8 +805,8 @@ body {
 }
 
 .ui-badge--info {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-accent-text);
+  color: var(--color-accent-text);
 }
 
 .ui-badge--success {
@@ -778,7 +833,7 @@ body {
 .ui-field__label {
   color: var(--color-text);
   font-size: 0.875rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .ui-field__control {
@@ -826,7 +881,7 @@ body {
 .ui-progress__label {
   color: var(--color-text);
   font-size: 0.875rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .ui-progress__value {
@@ -838,7 +893,7 @@ body {
 .ui-progress__track {
   height: 0.5rem;
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: var(--radius-directional);
   background: var(--color-surface-raised);
 }
 
@@ -874,7 +929,7 @@ body {
 .ui-feedback__title {
   color: var(--color-text);
   font-size: 1.125rem;
-  font-weight: 650;
+  font-weight: 500;
 }
 
 .ui-feedback__description {
@@ -890,8 +945,15 @@ body {
 
 .ui-drawer-panel {
   border-color: var(--color-border);
+  border-radius: var(--radius-overlay) var(--radius-overlay) 0 0;
   background: var(--color-canvas);
   box-shadow: 0 18px 48px rgb(0 0 0 / 24%);
+}
+
+@media (min-width: 48rem) {
+  .ui-drawer-panel {
+    border-radius: 0;
+  }
 }
 
 .ui-drawer-header {
@@ -901,7 +963,7 @@ body {
 
 .ui-skeleton-line,
 .ui-skeleton-block {
-  border-radius: 999px;
+  border-radius: var(--radius-directional);
   background: var(--color-surface-raised);
 }
 
@@ -1020,5 +1082,28 @@ body {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .ui-action,
+  .ui-card,
+  .ui-field__control,
+  .ui-list-row,
+  .ui-feedback,
+  .ui-drawer-panel {
+    border: 1px solid CanvasText;
+  }
+
+  .ui-action:focus-visible,
+  .ui-field__control:focus-visible,
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .ui-progress__fill {
+    background: Highlight;
   }
 }
