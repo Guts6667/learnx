@@ -28,31 +28,29 @@ export const frenchMessages = {
     'Les références restent attachées aux contenus qu’elles étayent.',
   'landing.preview.realContent': 'Contenu réel',
   'landing.preview.program.ariaLabel':
-    'Aperçu réel du programme Fondamentaux de la psychologie',
+    'Aperçu réaliste du programme Piloter un projet en équipe',
   'landing.preview.program.type': 'Aperçu du programme',
   'landing.preview.program.heading': 'Le programme donne une direction.',
   'landing.preview.program.description':
     'Les étapes, modules et leçons rendent le chemin visible sans transformer LearnX en catalogue infini.',
-  'landing.preview.program.title': 'Fondamentaux de la psychologie',
-  'landing.preview.program.stage': 'Étape 1 · Découvrir la discipline',
-  'landing.preview.program.module': 'Qu’est-ce que la psychologie ?',
-  'landing.preview.program.nextLesson':
-    'Psychologie scientifique et sens commun',
+  'landing.preview.program.title': 'Piloter un projet en équipe',
+  'landing.preview.program.stage': 'Étape 1 · Cadrer le travail',
+  'landing.preview.program.module': 'Donner une direction commune',
+  'landing.preview.program.nextLesson': 'Définir des critères de réussite',
   'landing.preview.lesson.ariaLabel':
-    'Aperçu réel de la leçon Définir la psychologie',
+    'Aperçu réaliste de la leçon Formuler un objectif de sprint',
   'landing.preview.lesson.type': 'Aperçu de la leçon',
   'landing.preview.lesson.heading': 'La leçon reste lisible et sourcée.',
   'landing.preview.lesson.description':
     'Le contenu interne explique l’essentiel ; ses références restent consultables exactement là où elles sont utiles.',
-  'landing.preview.lesson.module': 'Qu’est-ce que la psychologie ?',
-  'landing.preview.lesson.title': 'Définir la psychologie',
-  'landing.preview.lesson.section':
-    'Comportements observables et processus mentaux',
+  'landing.preview.lesson.module': 'Donner une direction commune',
+  'landing.preview.lesson.title': 'Formuler un objectif de sprint',
+  'landing.preview.lesson.section': 'Un objectif unique et utile',
   'landing.preview.lesson.excerpt':
-    'La psychologie est l’étude scientifique des comportements et des processus mentaux. Un comportement peut être observé ou mesuré ; un processus mental est étudié à partir d’indicateurs définis à l’avance.',
+    'Un objectif de sprint exprime le résultat que l’équipe cherche à obtenir. Il donne une direction commune tout en laissant de la souplesse sur la manière de réaliser le travail.',
   'landing.preview.lesson.sourceLabel': 'Source du contenu',
   'landing.preview.lesson.source':
-    'Psychology 2e — 1.1 What Is Psychology? · OpenStax',
+    'The Scrum Guide 2020 · Ken Schwaber et Jeff Sutherland',
   'landing.roadmap.eyebrow': 'À venir',
   'landing.roadmap.title': 'Une assistance plus guidée, sans fausse promesse.',
   'landing.roadmap.description':
@@ -905,31 +903,29 @@ export const englishMessages = {
     'References remain attached to the content they support.',
   'landing.preview.realContent': 'Real content',
   'landing.preview.program.ariaLabel':
-    'Real preview of the Fondamentaux de la psychologie programme',
+    'Realistic preview of the Leading a team project programme',
   'landing.preview.program.type': 'Programme preview',
   'landing.preview.program.heading': 'The programme provides direction.',
   'landing.preview.program.description':
     'Stages, modules and lessons make the route visible without turning LearnX into an endless catalogue.',
-  'landing.preview.program.title': 'Fondamentaux de la psychologie',
-  'landing.preview.program.stage': 'Stage 1 · Découvrir la discipline',
-  'landing.preview.program.module': 'Qu’est-ce que la psychologie ?',
-  'landing.preview.program.nextLesson':
-    'Psychologie scientifique et sens commun',
+  'landing.preview.program.title': 'Leading a team project',
+  'landing.preview.program.stage': 'Stage 1 · Frame the work',
+  'landing.preview.program.module': 'Give the team a shared direction',
+  'landing.preview.program.nextLesson': 'Define success criteria',
   'landing.preview.lesson.ariaLabel':
-    'Real preview of the Définir la psychologie lesson',
+    'Realistic preview of the Write a sprint goal lesson',
   'landing.preview.lesson.type': 'Lesson preview',
   'landing.preview.lesson.heading': 'The lesson remains readable and sourced.',
   'landing.preview.lesson.description':
     'The internal content explains the essentials; its references remain available exactly where they are useful.',
-  'landing.preview.lesson.module': 'Qu’est-ce que la psychologie ?',
-  'landing.preview.lesson.title': 'Définir la psychologie',
-  'landing.preview.lesson.section':
-    'Comportements observables et processus mentaux',
+  'landing.preview.lesson.module': 'Give the team a shared direction',
+  'landing.preview.lesson.title': 'Write a sprint goal',
+  'landing.preview.lesson.section': 'One useful objective',
   'landing.preview.lesson.excerpt':
-    'La psychologie est l’étude scientifique des comportements et des processus mentaux. Un comportement peut être observé ou mesuré ; un processus mental est étudié à partir d’indicateurs définis à l’avance.',
+    'A sprint goal describes the outcome the team is working towards. It gives everyone a shared direction while leaving flexibility in how the work is completed.',
   'landing.preview.lesson.sourceLabel': 'Content source',
   'landing.preview.lesson.source':
-    'Psychology 2e — 1.1 What Is Psychology? · OpenStax',
+    'The Scrum Guide 2020 · Ken Schwaber and Jeff Sutherland',
   'landing.roadmap.eyebrow': 'Coming later',
   'landing.roadmap.title': 'More guidance, without false promises.',
   'landing.roadmap.description':

@@ -37,15 +37,13 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
     ).toHaveCount(0);
     await expect(
       page
-        .getByRole('heading', { name: 'Fondamentaux de la psychologie' })
+        .getByRole('heading', { name: 'Piloter un projet en équipe' })
         .first(),
     ).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: 'Définir la psychologie' }),
+      page.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
     ).toBeVisible();
-    await expect(
-      page.getByText(/Psychology 2e — 1\.1 What Is Psychology\?/),
-    ).toBeVisible();
+    await expect(page.getByText(/The Scrum Guide 2020/)).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -62,6 +60,14 @@ test('landing publique bilingue sans requête privée et PWA dédiée', async ({
   await expect(
     page.getByRole('heading', { level: 1, name: 'A journey, not a library.' }),
   ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Leading a team project' }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Write a sprint goal' }),
+  ).toBeVisible();
+  await expect(page.getByText(/A sprint goal describes the outcome/)).toBeVisible();
+  await expect(page.getByText(/Fondamentaux|psychologie/i)).toHaveCount(0);
   await expectNoSeriousA11yViolations(page);
   expect(privateRequests).toEqual([]);
 

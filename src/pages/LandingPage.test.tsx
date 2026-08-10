@@ -33,19 +33,41 @@ describe('LandingPage', () => {
     ).not.toBeInTheDocument();
     expect(
       screen.getAllByRole('heading', {
-        name: 'Fondamentaux de la psychologie',
+        name: 'Piloter un projet en équipe',
       }),
     ).toHaveLength(2);
     expect(
-      screen.getByRole('heading', { name: 'Définir la psychologie' }),
+      screen.getByRole('heading', { name: 'Formuler un objectif de sprint' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Psychology 2e — 1\.1 What Is Psychology\?/),
+      screen.getByText(/The Scrum Guide 2020/),
     ).toBeInTheDocument();
     expect(
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
+  });
+
+  it('localizes the complete product preview in English', () => {
+    render(
+      <I18nProvider locale="en">
+        <LandingPage />
+      </I18nProvider>,
+    );
+
+    expect(
+      screen.getAllByRole('heading', { name: 'Leading a team project' }),
+    ).toHaveLength(2);
+    expect(
+      screen.getByRole('heading', { name: 'Write a sprint goal' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('One useful objective')).toBeInTheDocument();
+    expect(
+      screen.getByText(/A sprint goal describes the outcome/),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
+    ).not.toBeInTheDocument();
   });
 
   it('submits updates without creating an access request', async () => {
