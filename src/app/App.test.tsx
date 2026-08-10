@@ -61,6 +61,9 @@ describe('App', () => {
       await screen.findByRole('heading', { level: 1, name: 'Connexion' }),
     ).toBeInTheDocument();
     expect(window.location.pathname).toBe('/login');
+    expect(
+      screen.queryByRole('navigation', { name: 'Navigation principale' }),
+    ).not.toBeInTheDocument();
   });
 
   it('affiche un état de chargement pendant la vérification de session', () => {
@@ -75,6 +78,9 @@ describe('App', () => {
     expect(
       screen.getByRole('status', { name: 'Vérification de la session' }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('navigation', { name: 'Navigation principale' }),
+    ).not.toBeInTheDocument();
   });
 
   it('affiche un état neutre hors ligne sans rediriger vers la connexion', () => {

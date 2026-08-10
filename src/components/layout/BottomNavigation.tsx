@@ -41,11 +41,13 @@ export function BottomNavigation({ currentPath = window.location.pathname }) {
             <li class="min-w-0 lg:w-full" key={href}>
               <a
                 aria-current={current ? 'page' : undefined}
-                class="ui-main-navigation__link flex min-h-16 w-full min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-0.5 py-2 text-center text-[0.8125rem] leading-tight font-semibold lg:min-h-16 lg:px-2"
+                class="ui-main-navigation__link flex min-h-16 w-full min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-0.5 py-2 text-center text-[0.8125rem] leading-tight font-medium lg:min-h-16 lg:flex-row lg:justify-start lg:gap-3 lg:px-3 lg:text-left"
                 href={href}
               >
                 <NavigationIcon name={icon} />
-                <span class="max-w-full break-words text-center">{label}</span>
+                <span class="max-w-full break-words text-center lg:text-left">
+                  {label}
+                </span>
               </a>
             </li>
           );

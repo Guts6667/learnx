@@ -7,6 +7,7 @@ import {
   type BackNavigationTarget,
 } from '@/components/layout/BackNavigationContext';
 import { BottomNavigation } from '@/components/layout/BottomNavigation';
+import { useSessionQuery } from '@/features/auth/session';
 import { PwaProvider, PwaStatus } from '@/features/pwa/PwaStatus';
 import { useI18n } from '@/i18n';
 
@@ -27,6 +28,27 @@ const rootPaths = new Set([
   '/notes',
   '/profile',
 ]);
+
+const authenticationPaths = new Set([
+  '/login',
+  '/request-access',
+  '/verify-email',
+  '/activate',
+]);
+
+function SessionNavigation({ currentPath }: { currentPath: string }) {
+  const sessionQuery = useSessionQuery();
+
+  if (!sessionQuery.data?.user) return null;
+
+  return <BottomNavigation currentPath={currentPath} />;
+}
+
+function PrivateNavigation({ currentPath }: { currentPath: string }) {
+  if (authenticationPaths.has(currentPath)) return null;
+
+  return <SessionNavigation currentPath={currentPath} />;
+}
 
 export function MobileLayout({
   canGoBack = false,
@@ -101,8 +123,8 @@ export function MobileLayout({
                 </button>
               ) : null}
               <a
-                class="inline-flex min-h-11 items-center rounded-lg text-lg font-bold tracking-tight text-[var(--color-text)]"
-                href="/today"
+                class="inline-flex min-h-11 items-center rounded-lg text-lg font-medium tracking-tight text-[var(--color-text)]"
+                href={authenticationPaths.has(currentPath) ? '/' : '/today'}
               >
                 {t('app.name')}
               </a>
@@ -122,7 +144,7 @@ export function MobileLayout({
             {children}
           </main>
         </BackNavigationProvider>
-        <BottomNavigation currentPath={currentPath} />
+        <PrivateNavigation currentPath={currentPath} />
       </div>
     </PwaProvider>
   );

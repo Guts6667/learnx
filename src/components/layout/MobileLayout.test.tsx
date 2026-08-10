@@ -6,6 +6,21 @@ import { useBackNavigationTarget } from '@/components/layout/BackNavigationConte
 import { MobileLayout } from '@/components/layout/MobileLayout';
 import { I18nProvider } from '@/i18n';
 
+vi.mock('@/features/auth/session', () => ({
+  useSessionQuery: () => ({
+    data: {
+      user: {
+        displayName: 'Learner',
+        email: 'learner@example.com',
+        id: 'user-1',
+        locale: 'fr',
+        role: 'USER',
+      },
+    },
+    isPending: false,
+  }),
+}));
+
 vi.mock('preact-router', async (importOriginal) => ({
   ...(await importOriginal<typeof import('preact-router')>()),
   route: vi.fn(),
@@ -148,6 +163,25 @@ describe('navigation accessible', () => {
     expect(document.getElementById('main-content')).toHaveClass('app-frame');
     expect(document.getElementById('main-content')).not.toHaveClass('max-w-xl');
   });
+
+  it.each(['/login', '/request-access', '/verify-email', '/activate'])(
+    "n'affiche aucune navigation privée dans le shell d'authentification %s",
+    (currentPath) => {
+      renderWithLocale(
+        <MobileLayout currentPath={currentPath}>
+          <h1>Authentification</h1>
+        </MobileLayout>,
+      );
+
+      expect(
+        screen.queryByRole('navigation', { name: 'Navigation principale' }),
+      ).not.toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'LearnX' })).toHaveAttribute(
+        'href',
+        '/',
+      );
+    },
+  );
 
   it('renders long English navigation labels without changing the five-item structure', () => {
     renderWithLocale(
