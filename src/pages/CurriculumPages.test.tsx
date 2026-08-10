@@ -747,7 +747,7 @@ describe('CurriculumPages', () => {
     expect(screen.getByRole('heading', { name: 'Module A' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Module B' })).toBeVisible();
     expect(
-      screen.getAllByRole('link', { name: 'Options du module' }),
+      screen.getAllByRole('link', { name: 'Options et reprise du module' }),
     ).toHaveLength(2);
     expect(
       screen.getByRole('link', { name: /Ouvrir Leçon disponible.*Module A/ }),
@@ -935,7 +935,7 @@ describe('CurriculumPages', () => {
       }),
     ).toHaveAttribute('href', '/program/bases/lesson/demarrer');
     expect(
-      screen.getByRole('link', { name: 'Options du module' }),
+      screen.getByRole('link', { name: 'Options et reprise du module' }),
     ).toHaveAttribute('href', '/program/bases/module/premiers-pas');
     expect(
       screen.getByRole('link', { name: 'Voir les prérequis de l’étape' }),
@@ -1088,6 +1088,169 @@ describe('CurriculumPages', () => {
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
         `/api/modules/${moduleId}/restart`,
+        expect.objectContaining({ method: 'POST' }),
+      ),
+    );
+  });
+});
+
+describe('program restart', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('confirme la reprise, annonce les données conservées et relance le programme', async () => {
+    const programId = '55555555-5555-4555-8555-555555555555';
+    const lesson = {
+      activityCounts: {
+        concepts: 1,
+        exercises: 1,
+        quizzes: 1,
+        resources: 1,
+        tasks: 1,
+      },
+      estimatedMinutes: 15,
+      id: 'lesson-1',
+      isLocked: false,
+      isPublished: true,
+      position: 1,
+      progress: { percent: 75, status: 'IN_PROGRESS' },
+      slug: 'premiere-lecon',
+      summary: 'Commencer le programme.',
+      title: 'Première leçon',
+    };
+    const preview = {
+      firstLesson: { slug: lesson.slug, title: lesson.title },
+      programId,
+      programTitle: 'Programme test',
+      preserved: {
+        conceptAttempts: 4,
+        exerciseSubmissions: 2,
+        notes: 3,
+        quizAttempts: 5,
+        stageAssessmentSubmissions: 1,
+      },
+      reset: {
+        concepts: 3,
+        exercises: 2,
+        lessons: 2,
+        modules: 1,
+        quizzes: 1,
+        resources: 4,
+        stages: 1,
+        tasks: 3,
+      },
+    };
+    const fetchMock = vi.fn((path: string, init?: RequestInit) => {
+      if (path === '/api/programs/programme-test?preview=true') {
+        return Promise.resolve(
+          jsonResponse({
+            program: {
+              canonicalProgramKey: 'programme-test',
+              description: 'Un programme à reprendre.',
+              estimatedDurationDays: 4,
+              id: programId,
+              locale: 'fr',
+              slug: 'programme-test',
+              stages: [
+                {
+                  description: 'Étape test',
+                  estimatedDurationDays: 2,
+                  estimatedMinutes: 60,
+                  id: 'stage-1',
+                  isPublished: true,
+                  modules: [
+                    {
+                      id: 'module-1',
+                      isPublished: true,
+                      lessons: [lesson],
+                      position: 1,
+                      progress: { percent: 75, status: 'IN_PROGRESS' },
+                      slug: 'module-test',
+                      title: 'Module test',
+                    },
+                  ],
+                  position: 1,
+                  progress: { percent: 75, status: 'IN_PROGRESS' },
+                  slug: 'etape-test',
+                  timeline: {
+                    actualPercent: 75,
+                    completedAt: null,
+                    expectedPercent: 50,
+                    progressDelta: 25,
+                    startedAt: '2026-08-01T00:00:00.000Z',
+                    targetEndAt: null,
+                    temporalStatus: 'ahead',
+                  },
+                  title: 'Étape test',
+                },
+              ],
+              status: 'ACTIVE',
+              timeline: {
+                actualPercent: 75,
+                completedAt: null,
+                expectedPercent: 50,
+                progressDelta: 25,
+                startedAt: '2026-08-01T00:00:00.000Z',
+                targetEndAt: null,
+                temporalStatus: 'ahead',
+              },
+              title: 'Programme test',
+              viewPreference: { expandedStageId: 'stage-1' },
+              visibility: 'PRIVATE',
+            },
+          }),
+        );
+      }
+      if (path === `/api/programs/${programId}/restart-preview`) {
+        return Promise.resolve(jsonResponse({ preview }));
+      }
+      if (
+        path === `/api/programs/${programId}/restart` &&
+        init?.method === 'POST'
+      ) {
+        return Promise.resolve(
+          jsonResponse({
+            result: {
+              ...preview,
+              idempotent: false,
+              runIds: ['run-1'],
+            },
+          }),
+        );
+      }
+      throw new Error(`Unexpected request: ${path}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    vi.stubGlobal('crypto', {
+      randomUUID: () => '33333333-3333-4333-8333-333333333333',
+    });
+
+    renderPage(<ProgramPage programSlug="programme-test" />);
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'Recommencer ce programme',
+      }),
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: 'Confirmer la reprise du programme',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/1 étapes, 1 modules, 2 leçons/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/3 notes, 5 tentatives de quiz/),
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Oui, recommencer ce programme',
+      }),
+    );
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/programs/${programId}/restart`,
         expect.objectContaining({ method: 'POST' }),
       ),
     );

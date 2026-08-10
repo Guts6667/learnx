@@ -114,6 +114,7 @@ export const frenchMessages = {
     'L’adresse demandée ne correspond à aucune page LearnX.',
   'notFound.action': 'Retour à Aujourd’hui',
   'curriculum.moduleOptions': 'Options du module',
+  'curriculum.moduleOptionsRestart': 'Options et reprise du module',
   'curriculum.stagePrerequisites': 'Voir les prérequis de l’étape',
   'learning.returnProgram': 'Retour au programme',
   'programs.language.label': 'Langue du programme',
@@ -254,6 +255,19 @@ export const frenchMessages = {
   'curriculum.restart.confirm': 'Oui, recommencer ce module',
   'curriculum.restart.action': 'Recommencer ce module',
   'curriculum.restart.error': 'La reprise du module n’a pas pu être effectuée.',
+  'curriculum.programRestart.title': 'Recommencer ce programme',
+  'curriculum.programRestart.description':
+    'La progression courante repartira du début. Les notes, tentatives et soumissions resteront conservées.',
+  'curriculum.programRestart.confirmTitle':
+    'Confirmer la reprise du programme',
+  'curriculum.programRestart.resetSummary':
+    'Seront remis à zéro : {stages} étapes, {modules} modules, {lessons} leçons, {tasks} tâches, {resources} ressources, {concepts} notions, {quizzes} quiz réussis et {exercises} exercices.',
+  'curriculum.programRestart.preservedSummary':
+    'Seront conservés : {notes} notes, {quizAttempts} tentatives de quiz, {conceptAttempts} tentatives de mini-évaluation, {exerciseSubmissions} soumissions d’exercice et {stageAssessmentSubmissions} évaluations finales.',
+  'curriculum.programRestart.confirm': 'Oui, recommencer ce programme',
+  'curriculum.programRestart.action': 'Recommencer ce programme',
+  'curriculum.programRestart.error':
+    'La reprise du programme n’a pas pu être effectuée.',
   'curriculum.stageValidation': 'Validation de l’étape',
   'curriculum.requiredConcepts': 'Notions obligatoires : {done}/{total}',
   'curriculum.requiredTasks': 'Tâches obligatoires : {done}/{total}',
@@ -988,6 +1002,7 @@ export const englishMessages = {
   'notFound.description': 'The requested address does not match a LearnX page.',
   'notFound.action': 'Back to Today',
   'curriculum.moduleOptions': 'Module options',
+  'curriculum.moduleOptionsRestart': 'Module options and restart',
   'curriculum.stagePrerequisites': 'View stage prerequisites',
   'learning.returnProgram': 'Back to the program',
   'programs.language.label': 'Program language',
@@ -1123,6 +1138,17 @@ export const englishMessages = {
   'curriculum.restart.confirm': 'Yes, restart this module',
   'curriculum.restart.action': 'Restart this module',
   'curriculum.restart.error': 'The module could not be restarted.',
+  'curriculum.programRestart.title': 'Restart this program',
+  'curriculum.programRestart.description':
+    'Current progress will restart from the beginning. Notes, attempts and submissions will be preserved.',
+  'curriculum.programRestart.confirmTitle': 'Confirm program restart',
+  'curriculum.programRestart.resetSummary':
+    'Will be reset: {stages} stages, {modules} modules, {lessons} lessons, {tasks} tasks, {resources} resources, {concepts} concepts, {quizzes} passed quizzes and {exercises} exercises.',
+  'curriculum.programRestart.preservedSummary':
+    'Will be preserved: {notes} notes, {quizAttempts} quiz attempts, {conceptAttempts} concept assessment attempts, {exerciseSubmissions} exercise submissions and {stageAssessmentSubmissions} final assessments.',
+  'curriculum.programRestart.confirm': 'Yes, restart this program',
+  'curriculum.programRestart.action': 'Restart this program',
+  'curriculum.programRestart.error': 'The program could not be restarted.',
   'curriculum.stageValidation': 'Stage validation',
   'curriculum.requiredConcepts': 'Required concepts: {done}/{total}',
   'curriculum.requiredTasks': 'Required tasks: {done}/{total}',

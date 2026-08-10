@@ -29,6 +29,7 @@ import {
   useModuleQuery,
   useModuleRestart,
   useProgramQuery,
+  useProgramRestart,
   useProgramsQuery,
   useProgramViewPreference,
   useStageQuery,
@@ -325,7 +326,7 @@ function ModuleLessonList({
             {module.title}
           </h3>
           <NavigationAction href={optionsHref} variant="ghost">
-            {t('curriculum.moduleOptions')}
+            {t('curriculum.moduleOptionsRestart')}
           </NavigationAction>
         </div>
       ) : null}
@@ -349,7 +350,7 @@ function ModuleLessonList({
       </ul>
       {!showHeading ? (
         <NavigationAction class="mt-3" href={optionsHref} variant="ghost">
-          {t('curriculum.moduleOptions')}
+          {t('curriculum.moduleOptionsRestart')}
         </NavigationAction>
       ) : null}
     </section>
@@ -1112,6 +1113,7 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
   const query = useProgramQuery(programSlug);
   const { t } = useI18n();
   const preference = useProgramViewPreference(programSlug);
+  const restart = useProgramRestart(query.data?.program.id ?? '');
   const [localPreference, setLocalPreference] = useState<{
     expandedStageId: string | null;
     programId: string;
@@ -1207,6 +1209,85 @@ export function ProgramPage({ programSlug }: { programSlug: string }) {
           ))}
         </ol>
       )}
+      {program.status === 'ACTIVE' ? (
+        <Card class="space-y-4">
+        <div>
+          <h2 class="font-semibold">{t('curriculum.programRestart.title')}</h2>
+          <p class="ui-text-muted mt-2 text-sm leading-6">
+            {t('curriculum.programRestart.description')}
+          </p>
+        </div>
+        {restart.preview ? (
+          <div
+            aria-labelledby="program-restart-title"
+            class="space-y-4"
+            role="alertdialog"
+          >
+            <h3
+              class="ui-text-danger font-semibold"
+              id="program-restart-title"
+            >
+              {t('curriculum.programRestart.confirmTitle')}
+            </h3>
+            <p class="ui-text-muted text-sm leading-6">
+              {t('curriculum.programRestart.resetSummary', {
+                concepts: restart.preview.reset.concepts,
+                exercises: restart.preview.reset.exercises,
+                lessons: restart.preview.reset.lessons,
+                modules: restart.preview.reset.modules,
+                quizzes: restart.preview.reset.quizzes,
+                resources: restart.preview.reset.resources,
+                stages: restart.preview.reset.stages,
+                tasks: restart.preview.reset.tasks,
+              })}
+            </p>
+            <p class="ui-text-muted text-sm leading-6">
+              {t('curriculum.programRestart.preservedSummary', {
+                conceptAttempts: restart.preview.preserved.conceptAttempts,
+                exerciseSubmissions:
+                  restart.preview.preserved.exerciseSubmissions,
+                notes: restart.preview.preserved.notes,
+                quizAttempts: restart.preview.preserved.quizAttempts,
+                stageAssessmentSubmissions:
+                  restart.preview.preserved.stageAssessmentSubmissions,
+              })}
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <Button
+                isLoading={restart.isPending}
+                onClick={() => {
+                  void restart.restart().then((result) => {
+                    if (!result.firstLesson) return;
+                    void route(
+                      `/program/${encodeURIComponent(program.slug)}/lesson/${encodeURIComponent(result.firstLesson.slug)}`,
+                    );
+                  });
+                }}
+                variant="danger"
+              >
+                {t('curriculum.programRestart.confirm')}
+              </Button>
+              <Button onClick={restart.cancel} variant="secondary">
+                {t('programs.cancel')}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <Button
+            isLoading={restart.isPending}
+            onClick={() => void restart.loadPreview()}
+            variant="danger"
+          >
+            {t('curriculum.programRestart.action')}
+          </Button>
+        )}
+        {restart.error ? (
+          <p class="ui-text-danger text-sm" role="alert">
+            {t('curriculum.programRestart.error')}
+          </p>
+        ) : null}
+        </Card>
+      ) : null}
       {preference.error ? (
         <p aria-live="polite" class="ui-text-danger text-sm" role="status">
           {t('curriculum.preferenceError')}

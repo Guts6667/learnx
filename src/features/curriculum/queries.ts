@@ -162,6 +162,21 @@ export interface ModuleRestartResult extends ModuleRestartPreview {
   runId: string;
 }
 
+export interface ProgramRestartPreview {
+  firstLesson: { slug: string; title: string } | null;
+  programId: string;
+  programTitle: string;
+  preserved: ModuleRestartPreview['preserved'] & {
+    stageAssessmentSubmissions: number;
+  };
+  reset: ModuleRestartPreview['reset'] & { modules: number; stages: number };
+}
+
+export interface ProgramRestartResult extends ProgramRestartPreview {
+  idempotent: boolean;
+  runIds: string[];
+}
+
 export type ContentBlockType =
   | 'CALLOUT'
   | 'DEFINITION'
@@ -525,6 +540,63 @@ export function useModuleRestart(moduleId: string) {
       setIsPending(false);
     }
   }, [moduleId, queryClient, restartKey]);
+
+  const cancel = useCallback(() => {
+    setError(undefined);
+    setPreview(undefined);
+    setRestartKey(undefined);
+  }, []);
+
+  return { cancel, error, isPending, loadPreview, preview, restart };
+}
+
+export function useProgramRestart(programId: string) {
+  const queryClient = useAppQueryClient();
+  const [error, setError] = useState<unknown>();
+  const [isPending, setIsPending] = useState(false);
+  const [preview, setPreview] = useState<ProgramRestartPreview>();
+  const [restartKey, setRestartKey] = useState<string>();
+
+  const loadPreview = useCallback(async () => {
+    setError(undefined);
+    setIsPending(true);
+    try {
+      const response = await apiRequest<{ preview: ProgramRestartPreview }>(
+        `/api/programs/${encodeURIComponent(programId)}/restart-preview`,
+      );
+      setPreview(response.preview);
+      setRestartKey(crypto.randomUUID());
+      return response.preview;
+    } catch (requestError) {
+      setError(requestError);
+      throw requestError;
+    } finally {
+      setIsPending(false);
+    }
+  }, [programId]);
+
+  const restart = useCallback(async () => {
+    if (!restartKey) throw new Error('Restart confirmation is required.');
+    setError(undefined);
+    setIsPending(true);
+    try {
+      const response = await apiRequest<{ result: ProgramRestartResult }>(
+        `/api/programs/${encodeURIComponent(programId)}/restart`,
+        {
+          body: JSON.stringify({ restartKey }),
+          headers: { 'content-type': 'application/json' },
+          method: 'POST',
+        },
+      );
+      await queryClient.invalidateQueries();
+      return response.result;
+    } catch (requestError) {
+      setError(requestError);
+      throw requestError;
+    } finally {
+      setIsPending(false);
+    }
+  }, [programId, queryClient, restartKey]);
 
   const cancel = useCallback(() => {
     setError(undefined);
