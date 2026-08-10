@@ -1,6 +1,6 @@
 # ADR-002 — Landing publique et entrée PWA
 
-**Statut : accepté — V3.5-005**
+**Statut : accepté — V3.5-006**
 
 ## Décision
 
@@ -40,3 +40,27 @@ mettre `LEARNX_PUBLIC_LEADS_ENABLED=false` et à restaurer l'ancienne route `/`
 et les anciens manifests. La table est conservée pendant le rollback afin de ne
 pas supprimer silencieusement des consentements ou demandes de suppression.
 La migration ne doit être promue qu'après répétition sur clone Neon.
+
+## Liens publics et transition de domaine
+
+Les routes `/login`, `/request-access`, `/verify-email`, `/activate` et
+`/interest` utilisent une stratégie réseau prioritaire lorsqu'une connexion est
+disponible. Le service worker s'actualise automatiquement : un ancien shell ne
+doit pas masquer une route publique ajoutée plus tard. Les API et leurs réponses
+restent exclues de tout cache.
+
+Les jetons de vérification et d'activation restent dans le fragment `#token=`.
+Ce fragment n'est transmis ni au serveur, ni aux logs, ni au cache. Toute
+redirection de domaine doit conserver chemin, requête et fragment côté navigateur.
+
+Pendant un changement de domaine :
+
+1. configurer une redirection temporaire (307) ;
+2. tester les liens profonds avec cache froid et chaud sur Chromium et WebKit ;
+3. contrôler l'origine finale et la conservation du fragment ;
+4. seulement alors promouvoir la redirection permanente (308).
+
+Pour un navigateur déjà affecté par un ancien 308 ou worker : fermer les onglets
+LearnX, supprimer les données du site `learn-x.app`, puis rouvrir le lien original.
+Le rollback doit publier une nouvelle version de worker qui purge les caches
+incompatibles ; redéployer uniquement un ancien bundle ne suffit pas.

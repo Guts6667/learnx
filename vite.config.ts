@@ -12,7 +12,7 @@ export default defineConfig({
     VitePWA({
       injectRegister: null,
       manifest: {
-        background_color: '#020617',
+        background_color: '#121c24',
         categories: ['education', 'productivity'],
         description:
           'Votre environnement personnel pour apprendre, pratiquer et réviser.',
@@ -41,15 +41,40 @@ export default defineConfig({
         scope: '/',
         short_name: 'LearnX',
         start_url: '/today',
-        theme_color: '#020617',
+        theme_color: '#121c24',
       },
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       workbox: {
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{css,html,js,png,svg,woff2}'],
         importScripts: ['/sw-cache-cleanup.js'],
         navigateFallback: 'index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [
+          /^\/api\//,
+          /^\/(?:login|request-access|verify-email|activate|interest)(?:\/|$)/,
+        ],
+        runtimeCaching: [
+          {
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'learnx-public-shell-v1',
+              expiration: {
+                maxAgeSeconds: 24 * 60 * 60,
+                maxEntries: 5,
+              },
+              networkTimeoutSeconds: 5,
+            },
+            urlPattern: ({ request, url }) =>
+              request.mode === 'navigate' &&
+              [
+                '/login',
+                '/request-access',
+                '/verify-email',
+                '/activate',
+                '/interest',
+              ].includes(url.pathname),
+          },
+        ],
       },
     }),
   ],

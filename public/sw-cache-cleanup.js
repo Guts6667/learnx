@@ -1,6 +1,9 @@
 /* global caches, self */
 
-const LEGACY_PRIVATE_CACHE_NAMES = ['learnx-pedagogy-v1'];
+const LEGACY_PRIVATE_CACHE_NAMES = [
+  'learnx-pedagogy-v1',
+  'learnx-public-shell-v0',
+];
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
