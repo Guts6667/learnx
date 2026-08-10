@@ -88,7 +88,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
 
   if (request.status !== 'PENDING_APPROVAL') {
     return (
-      <div class="space-y-2 text-sm text-slate-300">
+      <div class="ui-text-muted space-y-2 text-sm">
         {request.assignedRole ? (
           <p>
             {t('admin.requests.assignedRole', {
@@ -113,7 +113,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           </Button>
         ) : null}
         {success ? (
-          <p class="text-sm text-emerald-200" role="status">
+          <p class="text-sm text-[var(--color-success)]" role="status">
             {success}
           </p>
         ) : null}
@@ -136,12 +136,12 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
           </Button>
         </div>
       ) : (
-        <div class="space-y-4 border-t border-slate-700 pt-4">
+        <div class="space-y-4 border-t border-[var(--color-border)] pt-4">
           {action === 'APPROVE' ? (
-            <label class="grid gap-2 text-sm font-medium text-slate-200">
+            <label class="ui-field">
               {t('admin.requests.role')}
               <select
-                class="min-h-11 rounded-xl border border-slate-600 bg-slate-950 px-3 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                class="ui-field__control"
                 onChange={(event) =>
                   setRole(event.currentTarget.value as AssignableRole)
                 }
@@ -178,11 +178,11 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
               </Button>
             </div>
           ) : (
-            <Card class="space-y-3 bg-slate-950" role="region">
-              <h3 class="font-semibold">
+            <Card class="space-y-3" tone="muted" role="region">
+              <h3 class="font-medium">
                 {t('admin.requests.confirmDecision')}
               </h3>
-              <p class="text-sm leading-6 text-slate-300">
+              <p class="ui-text-muted text-sm leading-6">
                 {action === 'APPROVE'
                   ? t('admin.requests.approvePreview', {
                       role: t(roleLabelKeys[role]),
@@ -208,7 +208,7 @@ function RequestReview({ request }: { request: AdminAccessRequest }) {
         </div>
       )}
       {success ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -331,7 +331,7 @@ export function AdminAccessRequestsPage() {
         />
       ) : (
         <>
-          <p class="text-sm text-slate-400">
+          <p class="ui-text-muted text-sm">
             {t('admin.requests.count', { count: query.data.total })}
           </p>
           <ul class="admin-collection">
@@ -350,7 +350,7 @@ export function AdminAccessRequestsPage() {
             >
               {t('admin.accounts.previous')}
             </Button>
-            <span class="text-sm text-slate-300">
+            <span class="ui-text-muted text-sm">
               {t('admin.accounts.page', {
                 page: query.data.page,
                 total: query.data.totalPages,

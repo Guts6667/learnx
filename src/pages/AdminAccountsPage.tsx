@@ -73,7 +73,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
   }
 
   return (
-    <div class="space-y-3 border-t border-slate-700 pt-4">
+    <div class="space-y-3 border-t border-[var(--color-border)] pt-4">
       {!isConfirming ? (
         <Button onClick={() => setIsConfirming(true)} variant="secondary">
           {isCreator
@@ -81,13 +81,13 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
             : t('admin.accounts.creator.assign')}
         </Button>
       ) : (
-        <Card class="space-y-3 bg-slate-950" role="region">
-          <h3 class="font-semibold">
+        <Card class="space-y-3" tone="muted" role="region">
+          <h3 class="font-medium">
             {isCreator
               ? t('admin.accounts.learner.confirm')
               : t('admin.accounts.creator.confirm')}
           </h3>
-          <p class="text-sm leading-6 text-slate-300">
+          <p class="ui-text-muted text-sm leading-6">
             {isCreator
               ? t('admin.accounts.learner.description')
               : t('admin.accounts.creator.description')}
@@ -106,7 +106,7 @@ function AccountRoleAction({ account }: { account: AdminAccount }) {
         </Card>
       )}
       {success ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -149,11 +149,11 @@ function AccountAction({
   }
 
   if (isCurrentAccount) {
-    return <p class="text-sm text-slate-400">{t('admin.accounts.current')}</p>;
+    return <p class="ui-text-muted text-sm">{t('admin.accounts.current')}</p>;
   }
 
   return (
-    <div class="space-y-3 border-t border-slate-700 pt-4">
+    <div class="space-y-3 border-t border-[var(--color-border)] pt-4">
       {!isConfirming ? (
         <Button
           onClick={() => setIsConfirming(true)}
@@ -166,13 +166,13 @@ function AccountAction({
           )}
         </Button>
       ) : (
-        <Card class="space-y-3 bg-slate-950" role="region">
-          <h3 class="font-semibold">
+        <Card class="space-y-3" tone="muted" role="region">
+          <h3 class="font-medium">
             {isSuspended
               ? t('admin.accounts.reactivateConfirm')
               : t('admin.accounts.suspendConfirm')}
           </h3>
-          <p class="text-sm leading-6 text-slate-300">
+          <p class="ui-text-muted text-sm leading-6">
             {isSuspended
               ? t('admin.accounts.reactivateDescription')
               : t('admin.accounts.suspendDescription')}
@@ -192,7 +192,7 @@ function AccountAction({
         </Card>
       )}
       {success ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
@@ -335,7 +335,7 @@ export function AdminAccountsPage() {
         />
       ) : (
         <>
-          <p class="text-sm text-slate-400">
+          <p class="ui-text-muted text-sm">
             {t('admin.accounts.count', { count: query.data.total })}
           </p>
           <ul class="admin-collection">
@@ -358,7 +358,7 @@ export function AdminAccountsPage() {
             >
               {t('admin.accounts.previous')}
             </Button>
-            <span class="text-sm text-slate-300">
+            <span class="ui-text-muted text-sm">
               {t('admin.accounts.page', {
                 page: query.data.page,
                 total: query.data.totalPages,
