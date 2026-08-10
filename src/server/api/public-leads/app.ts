@@ -58,6 +58,12 @@ const exportSchema = z.object({
     .enum(['PENDING_CONFIRMATION', 'CONFIRMED', 'UNSUBSCRIBED', 'DELETED'])
     .optional(),
 });
+const listSchema = z.object({
+  limit: z.coerce.number().int().min(1).max(100).default(25),
+  offset: z.coerce.number().int().min(0).default(0),
+  purpose: z.enum(['LAUNCH_UPDATES', 'EARLY_ADOPTER']).optional(),
+  search: z.string().trim().max(320).optional(),
+});
 const identifierSchema = z.uuid();
 const limiter = new SharedAccessRequestRateLimiter();
 
@@ -179,6 +185,17 @@ export function createPublicLeadsApp(options: PublicLeadsAppOptions = {}) {
   });
 
   app.use('/api/admin/public-leads/*', options.authentication ?? requireUser);
+  app.get(
+    '/api/admin/public-leads',
+    options.authentication ?? requireUser,
+    async (context) => {
+      assertCapability(context.get('user').role, 'account.request.review');
+      const parsed = listSchema.safeParse(context.req.query());
+      if (!parsed.success)
+        throw new ApiError('INVALID_REQUEST', 'Invalid contact query.', 400);
+      return context.json({ page: await repository.list(parsed.data) });
+    },
+  );
   app.get('/api/admin/public-leads/export', async (context) => {
     assertCapability(context.get('user').role, 'account.request.review');
     const parsed = exportSchema.safeParse(context.req.query());

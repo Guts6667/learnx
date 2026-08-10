@@ -94,19 +94,19 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   const { t } = useI18n();
   return (
     <nav aria-label={t('admin.breadcrumb')}>
-      <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-400">
+      <ol class="ui-text-muted flex flex-wrap items-center gap-2 text-sm">
         {items.map((item, index) => (
           <li class="flex items-center gap-2" key={`${item.label}-${index}`}>
             {index > 0 ? <span aria-hidden="true">/</span> : null}
             {item.href ? (
               <a
-                class="inline-flex min-h-11 items-center rounded-lg text-cyan-300 hover:text-cyan-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                class="ui-link inline-flex min-h-11 items-center rounded-[var(--radius-control)]"
                 href={item.href}
               >
                 {item.label}
               </a>
             ) : (
-              <span aria-current="page" class="text-slate-200">
+              <span aria-current="page" class="ui-text">
                 {item.label}
               </span>
             )}
@@ -225,7 +225,7 @@ function PublicationAction({
       </h3>
       {isPublished ? (
         <fieldset class="space-y-2 text-sm">
-          <legend class="font-medium text-slate-200">
+          <legend class="ui-text font-medium">
             {t('admin.publication.scope')}
           </legend>
           <label class="flex min-h-11 items-center gap-2">
@@ -263,14 +263,14 @@ function PublicationAction({
         {t('admin.publication.preview', { action: actionLabelLower })}
       </Button>
       {success ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {success}
         </p>
       ) : null}
       {plan ? (
-        <Card aria-live="polite" class="space-y-4 bg-slate-900" role="region">
-          <h4 class="font-semibold">{t('admin.publication.previewTitle')}</h4>
-          <p class="text-sm text-slate-300">
+        <Card aria-live="polite" class="space-y-4" tone="muted" role="region">
+          <h4 class="font-medium">{t('admin.publication.previewTitle')}</h4>
+          <p class="ui-text-muted text-sm">
             {plan.changes.length === 0
               ? t('admin.publication.noChanges')
               : t('admin.publication.changeCount', {
@@ -278,7 +278,7 @@ function PublicationAction({
                 })}
           </p>
           {plan.changes.length > 0 ? (
-            <ul class="list-disc space-y-1 pl-5 text-sm text-slate-300">
+            <ul class="ui-text-muted list-disc space-y-1 pl-5 text-sm">
               {plan.changes.map((change) => (
                 <li key={`${change.type}-${change.id}`}>
                   {changeLabel(change, t)}
@@ -287,16 +287,16 @@ function PublicationAction({
             </ul>
           ) : null}
           {plan.warnings.map((warning) => (
-            <p class="text-sm text-amber-200" key={warning}>
+            <p class="ui-text-warning text-sm" key={warning}>
               {warning}
             </p>
           ))}
           {plan.blockers.length > 0 ? (
             <div class="space-y-2" role="alert">
-              <p class="font-semibold text-red-200">
+              <p class="ui-text-danger font-medium">
                 {t('admin.publication.impossible')}
               </p>
-              <ul class="list-disc space-y-1 pl-5 text-sm text-red-200">
+              <ul class="ui-text-danger list-disc space-y-1 pl-5 text-sm">
                 {plan.blockers.map((blocker) => (
                   <li key={`${blocker.code}-${blocker.id}`}>
                     {blocker.title} — {blocker.message}
@@ -358,12 +358,12 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
         </h3>
         <VisibilityBadge visibility={program.visibility} />
       </div>
-      <p class="text-sm leading-6 text-slate-300">
+      <p class="ui-text-muted text-sm leading-6">
         {t('admin.visibility.description')}
       </p>
       {isConfirming ? (
-        <Card class="space-y-3 bg-slate-900" role="alertdialog">
-          <p class="text-sm text-slate-200">
+        <Card class="space-y-3" tone="muted" role="alertdialog">
+          <p class="ui-text text-sm">
             {nextVisibility === 'PUBLIC'
               ? t('admin.visibility.makePublicQuestion')
               : t('admin.visibility.makePrivateQuestion')}
@@ -385,7 +385,7 @@ function ProgramVisibilityAction({ program }: { program: AdminProgram }) {
         </Button>
       )}
       {success ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {t('admin.visibility.saved')}
         </p>
       ) : null}
@@ -461,7 +461,7 @@ function ModuleEditor({ module }: { module: AdminModuleSummary }) {
           {t('admin.module.save')}
         </Button>
         {saved ? (
-          <p class="text-sm text-emerald-200" role="status">
+          <p class="text-sm text-[var(--color-success)]" role="status">
             {t('admin.module.saved')}
           </p>
         ) : null}
@@ -574,8 +574,8 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
             })}
           </Button>
         ) : (
-          <Card class="space-y-3 bg-slate-900" role="region">
-            <p class="text-sm text-slate-200">
+          <Card class="space-y-3" tone="muted" role="region">
+            <p class="ui-text text-sm">
               {t('admin.lesson.confirmAction', {
                 action: t(
                   lesson.isPublished ? 'admin.unpublish' : 'admin.publish',
@@ -602,7 +602,7 @@ function LessonEditor({ lesson }: { lesson: AdminLessonSummary }) {
         )}
       </section>
       {message ? (
-        <p class="text-sm text-emerald-200" role="status">
+        <p class="text-sm text-[var(--color-success)]" role="status">
           {message}
         </p>
       ) : null}
@@ -726,6 +726,15 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
           {t('admin.accounts')}
         </NavigationAction>
       </Section>
+      <Section class="space-y-3">
+        <h2 class="text-xl font-medium">{t('admin.contacts.title')}</h2>
+        <p class="ui-text-muted leading-7">
+          {t('admin.contacts.description')}
+        </p>
+        <NavigationAction href="/admin/contacts" variant="secondary">
+          {t('admin.contacts.open')}
+        </NavigationAction>
+      </Section>
       <h2 class="text-xl font-semibold">{t('admin.programs')}</h2>
       {programs.length === 0 ? (
         <EmptyState
@@ -765,7 +774,7 @@ function ProgramView({ program }: { program: AdminProgram }) {
         <h1 class="text-3xl font-bold tracking-tight">{program.title}</h1>
         <ProgramStatusBadge status={program.status} />
       </div>
-      <p class="text-sm text-slate-300">
+      <p class="ui-text-muted text-sm">
         {program.publishedVersion
           ? t('admin.publishedVersion', {
               date: formatLocalizedDate(

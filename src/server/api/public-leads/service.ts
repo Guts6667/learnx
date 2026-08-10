@@ -6,6 +6,29 @@ export type PublicLeadPurpose = 'LAUNCH_UPDATES' | 'EARLY_ADOPTER';
 export type PublicLeadStatus =
   'PENDING_CONFIRMATION' | 'CONFIRMED' | 'UNSUBSCRIBED' | 'DELETED';
 
+export interface PublicContactListItem {
+  createdAt: Date;
+  emailNormalized: string;
+  id: string;
+  purposes: Array<{
+    confirmedAt: Date | null;
+    createdAt: Date;
+    locale: string;
+    motivation: string | null;
+    purpose: PublicLeadPurpose;
+    status: PublicLeadStatus;
+  }>;
+}
+
+export interface PublicContactPage {
+  earlyAdopterApplications: number;
+  items: PublicContactListItem[];
+  launchUpdatesConfirmed: number;
+  limit: number;
+  offset: number;
+  total: number;
+}
+
 export interface PublicLeadRepository {
   convertToAccessRequest(leadId: string, now: Date): Promise<string | null>;
   confirm(tokenHash: string, now: Date): Promise<boolean>;
@@ -38,6 +61,12 @@ export interface PublicLeadRepository {
     now: Date;
     purpose: PublicLeadPurpose;
   }): Promise<string>;
+  list(input: {
+    limit: number;
+    offset: number;
+    purpose?: PublicLeadPurpose;
+    search?: string;
+  }): Promise<PublicContactPage>;
   unsubscribe(tokenHash: string, now: Date): Promise<boolean>;
 }
 
@@ -81,8 +110,8 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
     return prisma.$transaction(async (transaction) => {
       const lead = await transaction.publicLead.findFirst({
         select: {
+          contact: { select: { emailNormalized: true } },
           convertedAccessRequestId: true,
-          emailNormalized: true,
           locale: true,
         },
         where: { id: leadId, status: 'CONFIRMED' },
@@ -93,7 +122,7 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
       const existingRequest = await transaction.accessRequest.findFirst({
         orderBy: { createdAt: 'desc' },
         where: {
-          emailNormalized: lead.emailNormalized,
+          emailNormalized: lead.contact.emailNormalized,
           status: { in: ['PENDING_APPROVAL', 'APPROVED'] },
         },
       });
@@ -102,7 +131,7 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
         (
           await transaction.accessRequest.create({
             data: {
-              emailNormalized: lead.emailNormalized,
+              emailNormalized: lead.contact.emailNormalized,
               emailVerifiedAt: now,
               locale: lead.locale,
               status: 'PENDING_APPROVAL',
@@ -121,13 +150,22 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
     const { prisma } = await import('../../prisma.js');
     const lead = await prisma.$transaction(async (transaction) => {
       await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`${input.purpose}:${input.email}`}, 0))`;
+      const contact = await transaction.publicContact.upsert({
+        create: {
+          emailNormalized: input.email,
+          id: input.id,
+          updatedAt: input.now,
+        },
+        update: { updatedAt: input.now },
+        where: { emailNormalized: input.email },
+      });
       return transaction.publicLead.upsert({
         create: {
+          contactId: contact.id,
           confirmationExpiresAt: input.confirmationExpiresAt,
           confirmationTokenHash: input.confirmationTokenHash,
           consentVersion: input.consentVersion,
-          emailNormalized: input.email,
-          id: input.id,
+          id: randomUUID(),
           locale: input.locale,
           managementTokenHash: input.managementTokenHash,
           motivation: input.motivation,
@@ -147,8 +185,8 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
           updatedAt: input.now,
         },
         where: {
-          emailNormalized_purpose: {
-            emailNormalized: input.email,
+          contactId_purpose: {
+            contactId: contact.id,
             purpose: input.purpose,
           },
         },
@@ -187,24 +225,37 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
   },
   async delete(tokenHash, now) {
     const { prisma } = await import('../../prisma.js');
-    const lead = await prisma.publicLead.findUnique({
-      select: { id: true },
-      where: { managementTokenHash: tokenHash },
+    return prisma.$transaction(async (transaction) => {
+      const lead = await transaction.publicLead.findUnique({
+        select: { contactId: true, id: true },
+        where: { managementTokenHash: tokenHash },
+      });
+      if (!lead) return false;
+      await transaction.publicLead.update({
+        data: {
+          confirmationExpiresAt: null,
+          confirmationTokenHash: null,
+          deletedAt: now,
+          managementTokenHash: null,
+          motivation: null,
+          status: 'DELETED',
+        },
+        where: { id: lead.id },
+      });
+      const remaining = await transaction.publicLead.count({
+        where: { contactId: lead.contactId, status: { not: 'DELETED' } },
+      });
+      if (remaining === 0) {
+        await transaction.publicContact.update({
+          data: {
+            emailNormalized: `deleted-${lead.contactId}@invalid.local`,
+            updatedAt: now,
+          },
+          where: { id: lead.contactId },
+        });
+      }
+      return true;
     });
-    if (!lead) return false;
-    await prisma.publicLead.update({
-      data: {
-        confirmationExpiresAt: null,
-        confirmationTokenHash: null,
-        deletedAt: now,
-        emailNormalized: `deleted-${lead.id}@invalid.local`,
-        managementTokenHash: null,
-        motivation: null,
-        status: 'DELETED',
-      },
-      where: { id: lead.id },
-    });
-    return true;
   },
   async export(input) {
     const { prisma } = await import('../../prisma.js');
@@ -216,16 +267,80 @@ export const prismaPublicLeadRepository: PublicLeadRepository = {
         status: input.status,
       },
       select: {
+        contact: { select: { emailNormalized: true } },
         confirmedAt: true,
         createdAt: true,
-        emailNormalized: true,
         id: true,
         locale: true,
         motivation: true,
         purpose: true,
         status: true,
       },
-    });
+    }).then((rows) =>
+      rows.map(({ contact, ...row }) => ({
+        ...row,
+        emailNormalized: contact.emailNormalized,
+      })),
+    );
+  },
+  async list(input) {
+    const { prisma } = await import('../../prisma.js');
+    const leadFilter = input.purpose
+      ? { some: { purpose: input.purpose, status: { not: 'DELETED' as const } } }
+      : { some: { status: { not: 'DELETED' as const } } };
+    const where = {
+      emailNormalized: input.search
+        ? { contains: input.search, mode: 'insensitive' as const }
+        : undefined,
+      leads: leadFilter,
+    };
+    const [contacts, total, launchUpdatesConfirmed, earlyAdopterApplications] =
+      await prisma.$transaction([
+        prisma.publicContact.findMany({
+          orderBy: { createdAt: 'desc' },
+          skip: input.offset,
+          take: input.limit,
+          where,
+          select: {
+            createdAt: true,
+            emailNormalized: true,
+            id: true,
+            leads: {
+              orderBy: { createdAt: 'asc' },
+              where: { status: { not: 'DELETED' } },
+              select: {
+                confirmedAt: true,
+                createdAt: true,
+                locale: true,
+                motivation: true,
+                purpose: true,
+                status: true,
+              },
+            },
+          },
+        }),
+        prisma.publicContact.count({ where }),
+        prisma.publicLead.count({
+          where: { purpose: 'LAUNCH_UPDATES', status: 'CONFIRMED' },
+        }),
+        prisma.publicLead.count({
+          where: {
+            purpose: 'EARLY_ADOPTER',
+            status: { not: 'DELETED' },
+          },
+        }),
+      ]);
+    return {
+      earlyAdopterApplications,
+      items: contacts.map(({ leads, ...contact }) => ({
+        ...contact,
+        purposes: leads,
+      })),
+      launchUpdatesConfirmed,
+      limit: input.limit,
+      offset: input.offset,
+      total,
+    };
   },
 };
 

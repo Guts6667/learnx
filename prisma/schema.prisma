@@ -350,7 +350,7 @@ model AccessRequest {
 
 model PublicLead {
   id                       String            @id @default(uuid()) @db.Uuid
-  emailNormalized          String            @map("email_normalized")
+  contactId                String            @map("contact_id") @db.Uuid
   purpose                  PublicLeadPurpose
   status                   PublicLeadStatus  @default(PENDING_CONFIRMATION)
   locale                   String            @default("fr") @db.VarChar(2)
@@ -366,10 +366,21 @@ model PublicLead {
   createdAt                DateTime          @default(now()) @map("created_at")
   updatedAt                DateTime          @updatedAt @map("updated_at")
   convertedAccessRequest   AccessRequest?    @relation(fields: [convertedAccessRequestId], references: [id], onDelete: SetNull)
+  contact                  PublicContact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
-  @@unique([emailNormalized, purpose])
+  @@unique([contactId, purpose])
   @@index([purpose, status, createdAt])
   @@map("public_leads")
+}
+
+model PublicContact {
+  id              String       @id @default(uuid()) @db.Uuid
+  emailNormalized String       @unique @map("email_normalized")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  leads           PublicLead[]
+
+  @@map("public_contacts")
 }
 
 model EmailVerification {
