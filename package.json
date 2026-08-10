@@ -30,6 +30,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "i18n:check": "tsx scripts/check-i18n-catalogs.ts",
+    "icons:export": "tsx scripts/export-atlas-icons.ts",
     "editorial:bilingual:check": "tsx scripts/validate-bilingual-editorial.ts"
   },
   "packageManager": "pnpm@10.28.1",
