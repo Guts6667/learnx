@@ -1,122 +1,160 @@
 # Rapport de release V3.5
 
-**Statut : NO-GO temporaire**
+**Verdict technique : GO sur le candidat `dev`**
+
+**Clôture officielle : en attente de validation humaine finale**
 
 **Branche auditée : `dev`**
 
-**Baseline avant corrections : `a60ba17f7dad76c894bcade6cfd77e4ee6fd73f5`**
+**Commit candidat : `6893f5f39794ba4b8fe2efdeda1a7b763a606047`**
 
 **Date : 2026-08-10**
 
 ## Synthèse
 
-La revue d'écart contre `BACKLOG_V3_5.md` 0.7.1 est terminée pour
-V3.5-001 à V3.5-008. Les écarts automatisables constatés ont été corrigés sans
-réimplémenter les éléments déjà conformes. La suite locale est verte : lint,
-typecheck, 564 tests Vitest, build, 62 scénarios E2E exécutés sur Chromium et
-WebKit, contrôle i18n, validation Prisma et audit des dépendances de production.
+La revue de `BACKLOG_V3_5.md` 0.8.0 est terminée pour V3.5-001 à
+V3.5-008. Les écarts automatisables constatés ont été corrigés sans
+réimplémenter les éléments déjà conformes. Le candidat `dev` est vert sur la
+matrice locale, les tests multi-navigateurs, l'intégration réelle des Functions
+et la répétition des migrations sur une branche Neon isolée.
 
-La clôture reste en **NO-GO temporaire** tant que les preuves externes et
-humaines suivantes ne sont pas obtenues : répétition de la nouvelle migration
-Contacts sur un clone Neon, déploiement représentatif, smoke tests sur les
-domaines réels et revue humaine VoiceOver/zoom/design. Aucun P0/P1 applicatif
-confirmé n'est actuellement connu ; ces contrôles manquants constituent une
-porte de release, pas une réussite simulée.
+Le verdict est **GO technique** : aucun P0/P1 applicatif connu ne reste ouvert.
+La V3.5 ne doit toutefois être déclarée officiellement clôturée qu'après la
+validation humaine finale prévue par le backlog : installation/réouverture PWA
+sur appareil réel, VoiceOver/zoom 200 % et smoke authentifié sur le domaine
+promu. Ces contrôles ne sont pas simulés par ce rapport.
 
 ## État des tickets
 
 | Ticket | État | Preuve principale |
 | --- | --- | --- |
-| V3.5-001 | Conforme après correction | Tokens Atlas A2 exacts, fontes locales, absence de vert/cyan, contrastes et règle du laiton testés. |
-| V3.5-002 | Conforme après correction | Primitives, rayons, poids et états sémantiques alignés sur Atlas. |
-| V3.5-003 | Conforme après correction | Shell public sans navigation privée ; rail desktop Atlas ; tests de routes publiques. |
-| V3.5-004 | Conforme après revue d'écart | Surfaces apprenant nettoyées sans modifier le moteur pédagogique. |
-| V3.5-005 | Conforme après revue d'écart | Surfaces admin et états sémantiques harmonisés. |
-| V3.5-006 | Conforme après revue d'écart | Landing/PWA/i18n alignés ; messages de succès distincts. |
-| V3.5-006A | Conforme localement | Routes d'auth publiques en NetworkFirst, fallback SPA exclu, anciens caches supprimés ; smoke domaine restant. |
-| V3.5-007 | Conforme localement | Identité Contact dédupliquée, API admin paginée/filtrée, métriques exactes, UI et tests ; migration clone restant. |
-| V3.5-008 | Conforme automatiquement, revue humaine restante | Matrice 320/390/tablette/desktop, WebKit, zoom simulé, reduced-motion et axe. |
-| V3.5-009 | NO-GO temporaire | Les portes externes et humaines ci-dessous ne sont pas encore validées. |
+| V3.5-001 | Conforme | Tokens Atlas A2 exacts, fontes locales, absence de vert/cyan, contrastes et règle du laiton testés. |
+| V3.5-002 | Conforme | Primitives, rayons, espacements, poids et états sémantiques alignés sur Atlas. |
+| V3.5-003 | Conforme | Shell public sans navigation privée ; rail desktop Atlas ; tests des routes publiques. |
+| V3.5-004 | Conforme | Surfaces apprenant nettoyées sans modification du moteur pédagogique. |
+| V3.5-005 | Conforme | Surfaces admin et états sémantiques harmonisés. |
+| V3.5-006 | Conforme | Landing localisée avec aperçus réalistes Programme/Leçon, sans psychologie ni promesse de correction assistée disponible. |
+| V3.5-006A | Conforme automatiquement | Routes d'auth publiques en NetworkFirst, fallback SPA exclu et anciens caches purgés. |
+| V3.5-006B | Conforme | Géométrie Atlas canonique, exports 29 à 1024 px, manifestes et métadonnées raccordés. |
+| V3.5-007 | Conforme | Contact public dédupliqué, API admin paginée/filtrée, métriques exactes, UI et migration validées sur clone Neon. |
+| V3.5-008 | Conforme automatiquement | Matrice 320/390/tablette/desktop, Chromium/WebKit, zoom simulé, reduced-motion, axe et preuves A5/A6. |
+| V3.5-009 | GO technique | Matrice complète, Preview Ready, CI Neon isolée verte et smoke public du domaine officiel. |
 
 ## Commandes et résultats
 
 - `pnpm lint` : réussi.
 - `pnpm typecheck` : réussi.
-- `pnpm test` : réussi, 105 fichiers et 564 tests.
-- `pnpm build` : réussi.
+- `pnpm test` : réussi, 106 fichiers et 575 tests.
+- `pnpm build` : réussi, 120 modules transformés et PWA générée avec 24
+  entrées précachées.
 - `pnpm test:e2e` : réussi, 62 tests exécutés et 6 tests volontairement
-  ignorés selon la matrice de projets.
-- Matrice ciblée admin/accueil : 33/33 réussis.
-- `pnpm i18n:check` : réussi, 701 clés FR/EN cohérentes.
+  ignorés selon la matrice ; Chromium desktop/mobile/tablette et WebKit mobile.
+- `pnpm i18n:check` : réussi, 720 clés FR/EN cohérentes.
 - `pnpm prisma:generate` : réussi.
-- validation du schéma Prisma : réussie.
+- `pnpm exec prisma validate` : schéma valide.
 - `pnpm audit --prod` : aucune vulnérabilité connue.
 - `git diff --check` : réussi.
 
 Les avertissements `NO_COLOR` de Playwright n'affectent pas les résultats.
 
-## Sécurité et confidentialité
+## Intégration Neon et Preview
 
-- La navigation privée n'est plus rendue sur les routes publiques d'authentification.
-- Les routes publiques ne sont plus servies par un fallback PWA potentiellement
-  obsolète ; leur cache NetworkFirst dispose d'un fallback hors ligne borné.
-- Les métriques de contacts distinguent consentement de lancement confirmé et
-  candidature early adopter.
-- L'API Contacts exige une session administrateur et normalise recherche,
+Le workflow GitHub **Integration #95** est réussi sur le commit candidat :
+https://github.com/Guts6667/learnx/actions/runs/31400926940
+
+Il a créé une branche Neon éphémère, vérifié le clone avant migration, appliqué
+les migrations, rejoué l'historique complet dans un schéma isolé, exécuté les
+tests Functions/navigateurs et les doubles seeds ciblés, publié les rapports,
+puis supprimé la branche isolée. Aucune base partagée n'a été seedée par cette
+passe.
+
+Le Preview Vercel est `Ready` :
+https://learnx-5jk3gfyqo-guts6667s-projects.vercel.app
+
+Sa protection Vercel interdit un smoke navigateur anonyme direct. Le CLI Vercel
+authentifié confirme néanmoins HTTP 200 sur `/`, `/login` et `/request-access`,
+avec le même bundle versionné sur les trois routes.
+
+## Smoke du domaine officiel
+
+- `https://learn-x.app/` : HTTP 200.
+- `https://learn-x.app/login` : HTTP 200.
+- `https://learn-x.app/request-access` : HTTP 200.
+- `https://www.learn-x.app/` : une redirection vers l'apex, puis HTTP 200.
+- En-têtes vérifiés : CSP restrictive, HSTS, `X-Content-Type-Options: nosniff`,
+  `X-Frame-Options: DENY`, `Referrer-Policy` et `Permissions-Policy`.
+
+Le domaine Production sert encore la version promue antérieurement ; ces smoke
+tests prouvent la santé du domaine, pas que le candidat `dev` y est déjà déployé.
+
+## Sécurité, confidentialité et non-régression
+
+- Les routes publiques n'affichent plus la navigation privée.
+- Les routes d'authentification ne dépendent plus d'un fallback PWA obsolète.
+- L'API Contacts exige une session administrateur et borne recherche,
   pagination et filtres.
-- La suppression d'un contact respecte les autres finalités encore actives.
-- Aucun secret nouveau n'est suivi dans les changements inspectés.
+- Les finalités contact, le consentement lancement et la candidature early
+  adopter restent distincts.
+- Les tests serveur couvrent permissions, progression, activités, publication,
+  données privées, tentatives et reprises ; aucune autorité n'a été déplacée
+  vers le client.
+- Aucun secret ni brouillon local n'entre dans le candidat.
 - L'audit des dépendances de production ne remonte aucune vulnérabilité connue.
 
 ## Migration et rollback
 
 La migration `20260810160000_add_public_contact_identity` crée l'identité
 `PublicContact`, rattache les finalités existantes, puis remplace l'unicité par
-`(contactId, purpose)`. Elle est additive au début mais modifie ensuite la clé
-étrangère de `PublicLead`.
+`(contactId, purpose)`. Sa répétition sur clone Neon a réussi dans Integration
+#95.
 
-Avant promotion :
+Avant promotion Production :
 
-1. créer une branche/clone Neon à partir de la cible ;
-2. relever les comptes de contacts, finalités et doublons par e-mail normalisé ;
-3. appliquer les migrations et exécuter les tests d'intégration ;
-4. vérifier qu'un même e-mail portant deux finalités produit un Contact et deux
-   PublicLead, sans perte de dates, statuts ni consentements ;
-5. sauvegarder la base de production avant déploiement ;
-6. privilégier un roll-forward en cas d'incident ; restaurer le point Neon
-   pré-déploiement avec l'ancien code si un rollback complet est nécessaire.
+1. créer une sauvegarde/branche Neon au point pré-déploiement ;
+2. relever les comptes de contacts, finalités et doublons normalisés ;
+3. déployer le candidat et laisser `prisma migrate deploy` appliquer la migration ;
+4. vérifier Contact/Leads, authentification, programme, leçon, notes et reprise ;
+5. privilégier un roll-forward en cas d'incident ;
+6. si un rollback de schéma est indispensable, restaurer le point Neon
+   pré-déploiement avec le code antérieur compatible.
 
-La migration n'a pas encore été appliquée à une base partagée dans cette passe.
+Le ticket V3.5-009 n'a exécuté ni seed ni écriture sur une base partagée.
 
-## Contrôles restant à effectuer
+## Validation humaine restant à obtenir
 
-- Déployer le commit candidat dans un environnement dont la base est un clone
-  Neon isolé, jamais la production par défaut.
-- Vérifier `https://learn-x.app` et les liens e-mail en navigation normale et
-  privée : landing, demande d'accès, vérification, activation et connexion.
-- Vérifier installation puis réouverture PWA, mise à jour d'un ancien service
-  worker, logout et absence de données privées en cache.
-- Faire une revue humaine à 320 px, 390 px, desktop, zoom/texte 200 %, VoiceOver,
-  clavier seul, contraste et cohérence Atlas.
-- Vérifier en session réelle les parcours apprenant, admin Contacts, programme,
-  leçon, évaluations, notes et reprise.
+- Installer puis rouvrir la PWA sur iOS/Android/desktop, y compris depuis une
+  ancienne installation et après mise à jour du service worker.
+- Vérifier logout/changement de compte et absence de données privées restaurées
+  hors ligne.
+- Revoir à 320 px, 390 px, desktop et texte/zoom 200 % avec clavier seul et
+  VoiceOver réel.
+- Après promotion, effectuer un smoke authentifié réel : accueil multi-programme,
+  programme/leçon/activité, notes, reprise et administration Contacts.
+- Vérifier un cycle réel de demande d'accès, e-mail, vérification et activation
+  sans créer de contact de test avant l'autorisation de promotion.
 
 ## Procédure de promotion recommandée
 
-1. Isoler et committer uniquement les fichiers V3.5 ; exclure les brouillons
-   pédagogiques et les modifications documentaires parallèles.
-2. Pousser `dev` et obtenir CI + intégration Neon vertes.
-3. Déployer une Preview reliée au clone Neon et exécuter les smoke tests.
-4. Obtenir la validation humaine finale et passer ce rapport à GO.
-5. Sauvegarder Neon Production, promouvoir le code, appliquer les migrations,
-   puis exécuter immédiatement les smoke tests sur `learn-x.app`.
-6. Surveiller erreurs HTTP, authentification, e-mails et création de contacts.
-7. En incident de schéma, roll-forward prioritaire ; sinon restauration Neon au
-   point sauvegardé et redéploiement du code compatible.
+1. Faire approuver ce rapport et le rendu humain final.
+2. Vérifier que `dev` et sa CI sont toujours verts et que le worktree de merge
+   exclut tous les brouillons locaux.
+3. Sauvegarder Neon Production.
+4. Promouvoir le commit validé vers `main` sans réécriture d'historique.
+5. Surveiller le déploiement et l'application de migration.
+6. Exécuter immédiatement les smoke publics et authentifiés sur `learn-x.app`.
+7. Surveiller erreurs HTTP, authentification, e-mails, contacts et cache PWA.
+8. En incident, roll-forward prioritaire ; sinon restauration coordonnée de la
+   base et du code au point pré-déploiement.
+
+## Baseline V4
+
+V4 doit partir du commit V3.5 effectivement promu après validation humaine. Il
+ne doit pas supposer disponible une correction assistée tant que son ticket V4
+dédié et son rollout ne sont pas terminés.
 
 ## Fichiers locaux volontairement exclus
 
 Les brouillons utilisateur et travaux parallèles visibles dans le worktree ne
-font pas partie de la V3.5. Ils doivent rester hors de tout staging sélectif,
-notamment les documents Officine, audits, recommandations, V4 et modifications
-V3 parallèles.
+font pas partie de V3.5 : documents Officine, audits, recommandations, backlog
+V4, spécifications V3 parallèles et `design.md`. Ils restent hors de tout
+staging sélectif.
