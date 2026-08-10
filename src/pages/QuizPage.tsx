@@ -112,9 +112,9 @@ export function QuizPage({
           </Badge>
         </div>
         {quiz.description ? (
-          <p class="leading-7 text-slate-300">{quiz.description}</p>
+          <p class="ui-text-muted leading-7">{quiz.description}</p>
         ) : null}
-        <p class="text-sm text-slate-400">
+        <p class="ui-text-muted text-sm">
           {t('quiz.scoreSummary', {
             questions: t('assessment.questionCount', {
               count: quiz.questionCount,

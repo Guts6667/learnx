@@ -99,7 +99,7 @@ export function ContextualNoteAction({
         title={t('notes.context.take')}
       >
         <div class="space-y-5">
-          <p class="text-sm leading-6 text-slate-300">
+          <p class="ui-text-muted text-sm leading-6">
             {t(
               activity.sequenceItemId
                 ? 'notes.context.linkedActivity'
@@ -108,7 +108,7 @@ export function ContextualNoteAction({
             )}
           </p>
           {!note && mutation.isPending ? (
-            <p aria-live="polite" class="text-sm text-slate-300">
+            <p aria-live="polite" class="ui-text-muted text-sm">
               {t('notes.context.creating')}
             </p>
           ) : null}
@@ -146,8 +146,8 @@ export function ContextualNoteAction({
                 aria-live="polite"
                 class={
                   status === 'error'
-                    ? 'text-sm text-red-300'
-                    : 'text-sm text-emerald-200'
+                    ? 'ui-text-danger text-sm'
+                    : 'text-sm text-[var(--color-success)]'
                 }
                 role="status"
               >

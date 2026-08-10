@@ -1093,7 +1093,11 @@ export function ProgramsPage() {
       {mutation.error ? (
         <ErrorState description={t('programs.enrollmentError')} />
       ) : null}
-      <p aria-live="polite" class="text-sm text-emerald-200" role="status">
+      <p
+        aria-live="polite"
+        class="text-sm text-[var(--color-success)]"
+        role="status"
+      >
         {announcement}
       </p>
     </section>

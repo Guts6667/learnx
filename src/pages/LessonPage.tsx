@@ -95,7 +95,7 @@ function ContentActivity({
 
   return (
     <Section class="space-y-4">
-      <p class="text-sm font-semibold text-[var(--color-accent)]">
+      <p class="text-sm font-semibold text-[var(--color-accent-text)]">
         {t(contentBlockLabelKeys[block.type])}
       </p>
       <SafeMarkdown content={getText(block.content)} />

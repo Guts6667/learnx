@@ -113,7 +113,7 @@ export function ConceptAssessmentPage({
     <article class="page-layout page-layout--work space-y-6">
       <LessonContextHeader activityTitle={title} lesson={lesson} />
       <section class="space-y-3" aria-label={t('conceptAssessment.info')}>
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-400 uppercase">
+        <p class="page-eyebrow">
           {t('conceptAssessment.concept', { title: assessment.concept.title })}
         </p>
         <div class="flex flex-wrap items-center gap-3">
@@ -125,9 +125,11 @@ export function ConceptAssessmentPage({
           {preview ? <Badge tone="warning">{t('common.draft')}</Badge> : null}
         </div>
         {preview ? (
-          <p class="text-sm text-amber-200">{t('conceptAssessment.preview')}</p>
+          <p class="text-sm text-[var(--color-warning)]">
+            {t('conceptAssessment.preview')}
+          </p>
         ) : null}
-        <p class="text-sm text-slate-400">
+        <p class="ui-text-muted text-sm">
           {t('conceptAssessment.scoreSummary', {
             questions: t('assessment.questionCount', {
               count: assessment.questionCount,
