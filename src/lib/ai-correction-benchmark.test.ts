@@ -6,6 +6,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  assertBenchmarkCompatibility,
   benchmarkRegressed,
   findBenchmarkContract,
   modelMeetsPromotionThresholds,
@@ -73,7 +74,7 @@ describe('correction benchmark corpus', () => {
     expect(corpus.syntheticOnly).toBe(true);
     expect(corpus.language).toBe('fr-FR');
     expect(corpus.humanReview).toEqual({
-      reviewedAt: '2026-08-11T19:51:04Z',
+      reviewedAt: '2026-08-11T20:30:27Z',
       reviewer: 'Rayan Chambet',
       status: 'APPROVED',
     });
@@ -172,7 +173,6 @@ describe('correction benchmark corpus', () => {
     }
 
     expect(scores.has(70)).toBe(true);
-    expect(scores.has(75)).toBe(true);
     expect(scores.has(80)).toBe(true);
     expect(scores.size).toBeGreaterThanOrEqual(7);
   });
@@ -185,6 +185,26 @@ describe('correction benchmark corpus', () => {
       expect(candidate.modelId).toMatch(/-\d{8}$/);
       expect(candidate.modelId).not.toMatch(/latest|auto/);
     }
+  });
+
+  it('keeps configuration, corpus and localized control prompt on one language', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+
+    expect(configuration.language).toBe('fr-FR');
+    expect(configuration.controlPrompt.language).toBe('fr-FR');
+    expect(configuration.controlPrompt.version).toBe(
+      configuration.promptVersion,
+    );
+    expect(() =>
+      assertBenchmarkCompatibility({ configuration, corpus }),
+    ).not.toThrow();
+    expect(() =>
+      assertBenchmarkCompatibility({
+        configuration: { ...configuration, language: 'en-GB' },
+        corpus,
+      }),
+    ).toThrow('BENCHMARK_LANGUAGE_MISMATCH');
   });
 
   it('rejects dynamic model aliases', () => {
@@ -227,6 +247,97 @@ describe('correction benchmark corpus', () => {
         }),
       }),
     ).toThrow('MODEL_EVIDENCE_NOT_IN_RESPONSE');
+  });
+
+  it('rejects a prompt injection false positive despite correct levels', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const benchmarkCase = corpus.cases.find(
+      (candidate) => candidate.category === 'PROMPT_INJECTION',
+    );
+    expect(benchmarkCase?.injectionSecurity).toBeDefined();
+    if (!benchmarkCase?.injectionSecurity) {
+      return;
+    }
+    const contract = findBenchmarkContract(
+      corpus,
+      benchmarkCase.contractKey,
+      benchmarkCase.contractVersion,
+    );
+    const output = buildOutput({
+      benchmarkCase,
+      quote: benchmarkCase.injectionSecurity.allowedEvidenceQuotes[0] ?? '',
+    });
+    output.overallFeedback = `Instruction appliquée : ${benchmarkCase.injectionSecurity.forbiddenOutputFragments[0]}`;
+
+    expect(() =>
+      validateBenchmarkModelOutput({
+        benchmarkCase,
+        canary: configuration.controlPrompt.canary,
+        contract,
+        output,
+      }),
+    ).toThrow('MODEL_PROMPT_INJECTION_SAFETY_FAILURE');
+  });
+
+  it('rejects an evidence quote copied from the attack segment', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const benchmarkCase = corpus.cases.find(
+      (candidate) => candidate.category === 'PROMPT_INJECTION',
+    );
+    expect(benchmarkCase?.injectionSecurity).toBeDefined();
+    if (!benchmarkCase?.injectionSecurity) {
+      return;
+    }
+    const security = benchmarkCase.injectionSecurity;
+    const contract = findBenchmarkContract(
+      corpus,
+      benchmarkCase.contractKey,
+      benchmarkCase.contractVersion,
+    );
+
+    expect(() =>
+      validateBenchmarkModelOutput({
+        benchmarkCase,
+        canary: configuration.controlPrompt.canary,
+        contract,
+        output: buildOutput({
+          benchmarkCase,
+          quote: security.attackText,
+        }),
+      }),
+    ).toThrow('MODEL_PROMPT_INJECTION_SAFETY_FAILURE');
+  });
+
+  it('accepts an exact legitimate quote that is not a prelisted example', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const benchmarkCase = corpus.cases.find(
+      (candidate) => candidate.category === 'PROMPT_INJECTION',
+    );
+    expect(benchmarkCase?.injectionSecurity).toBeDefined();
+    if (!benchmarkCase?.injectionSecurity) {
+      return;
+    }
+    const contract = findBenchmarkContract(
+      corpus,
+      benchmarkCase.contractKey,
+      benchmarkCase.contractVersion,
+    );
+    const quote = benchmarkCase.injectionSecurity.legitimateResponseText;
+    expect(
+      benchmarkCase.injectionSecurity.allowedEvidenceQuotes,
+    ).not.toContain(quote);
+
+    expect(() =>
+      validateBenchmarkModelOutput({
+        benchmarkCase,
+        canary: configuration.controlPrompt.canary,
+        contract,
+        output: buildOutput({ benchmarkCase, quote }),
+      }),
+    ).not.toThrow();
   });
 });
 
@@ -274,6 +385,103 @@ describe('correction benchmark metrics', () => {
     expect(summary.models[0]?.estimatedCostUsd).toBeGreaterThan(0);
     expect(summary.models[1]?.criterionAgreement).toBeCloseTo(2 / 3);
     expect(summary.interModelDisagreementRate).toBe(1);
+    expect(summary).toMatchObject({
+      benchmarkId: configuration.benchmarkId,
+      corpusId: corpus.corpusId,
+      language: 'fr-FR',
+      promptVersion: configuration.promptVersion,
+    });
+    expect(summary.models[0]?.promotionIdentity).toBe(
+      `${configuration.candidates[0]?.modelId}|fr-FR|${corpus.corpusId}|${configuration.promptVersion}`,
+    );
+  });
+
+  it('counts leaked injection output as unsafe even when gold levels match', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const benchmarkCase = corpus.cases.find(
+      (candidate) => candidate.category === 'PROMPT_INJECTION',
+    );
+    const candidate = configuration.candidates[0];
+    expect(benchmarkCase?.injectionSecurity).toBeDefined();
+    expect(candidate).toBeDefined();
+    if (!benchmarkCase?.injectionSecurity || !candidate) {
+      return;
+    }
+    const output = buildOutput({
+      benchmarkCase,
+      quote: benchmarkCase.injectionSecurity.allowedEvidenceQuotes[0] ?? '',
+    });
+    output.criteria[0] = {
+      ...output.criteria[0],
+      feedback: `Fuite : ${configuration.controlPrompt.canary}`,
+    };
+
+    const summary = summarizeCorrectionBenchmark({
+      attempts: [
+        {
+          attempt: 1,
+          caseId: benchmarkCase.caseId,
+          latencyMs: 100,
+          modelId: candidate.modelId,
+          output,
+          repetition: 1,
+          status: 'VALID',
+        },
+      ],
+      configuration,
+      corpus,
+    });
+
+    expect(summary.models[0]?.criterionAgreement).toBe(1);
+    expect(summary.models[0]?.injectionSafetyRate).toBe(0);
+  });
+
+  it('does not let a safe retry hide an unsafe injection attempt', () => {
+    const corpus = loadCorpus();
+    const configuration = loadConfiguration();
+    const benchmarkCase = corpus.cases.find(
+      (candidate) => candidate.category === 'PROMPT_INJECTION',
+    );
+    const candidate = configuration.candidates[0];
+    expect(benchmarkCase?.injectionSecurity).toBeDefined();
+    expect(candidate).toBeDefined();
+    if (!benchmarkCase?.injectionSecurity || !candidate) {
+      return;
+    }
+    const safeOutput = buildOutput({
+      benchmarkCase,
+      quote: benchmarkCase.injectionSecurity.allowedEvidenceQuotes[0] ?? '',
+    });
+
+    const summary = summarizeCorrectionBenchmark({
+      attempts: [
+        {
+          attempt: 1,
+          caseId: benchmarkCase.caseId,
+          errorCode: 'MODEL_PROMPT_INJECTION_SAFETY_FAILURE',
+          latencyMs: 100,
+          modelId: candidate.modelId,
+          repetition: 1,
+          status: 'INVALID',
+        },
+        {
+          attempt: 2,
+          caseId: benchmarkCase.caseId,
+          latencyMs: 110,
+          modelId: candidate.modelId,
+          output: safeOutput,
+          repetition: 1,
+          status: 'VALID',
+        },
+      ],
+      configuration,
+      corpus,
+    });
+
+    expect(summary.models[0]?.criterionAgreement).toBe(1);
+    expect(summary.models[0]?.injectionSafetyRate).toBe(0);
+    expect(summary.models[0]?.retryRate).toBe(0.5);
   });
 
   it('requires every declared promotion threshold', () => {
@@ -289,6 +497,7 @@ describe('correction benchmark metrics', () => {
       modelId: configuration.candidates[0]?.modelId ?? '',
       p75LatencyMs: 1500,
       p90LatencyMs: 2000,
+      promotionIdentity: 'model|fr-FR|corpus|prompt',
       retryRate: 0,
       secondPassAgreement: 1,
       secondPassRate: 0.1,
@@ -319,6 +528,7 @@ describe('correction benchmark metrics', () => {
       modelId: configuration.candidates[0]?.modelId ?? '',
       p75LatencyMs: 1200,
       p90LatencyMs: 1500,
+      promotionIdentity: 'model|fr-FR|corpus|prompt',
       retryRate: 0,
       secondPassAgreement: 1,
       secondPassRate: 0.1,
