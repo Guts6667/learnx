@@ -50,6 +50,13 @@ describe('credit ledger domain', () => {
     expect(
       isRetryableCreditTransactionError({
         code: 'P2010',
+        message:
+          'Raw query failed. Code: `40001`. Message: `could not serialize access due to concurrent update`',
+      }),
+    ).toBe(true);
+    expect(
+      isRetryableCreditTransactionError({
+        code: 'P2010',
         meta: { code: '23514', message: 'check constraint failed' },
       }),
     ).toBe(false);

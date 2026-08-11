@@ -76,6 +76,7 @@ describe('V4-006 credit ledger schema', () => {
     expect(service).toContain('isRetryableCreditTransactionError');
     expect(service).toContain("candidate.code === 'P2034'");
     expect(service).toContain("candidate.code === 'P2002'");
+    expect(service).toContain("candidate.message.includes('40001')");
     expect(service).toContain("meta.code === '40001'");
   });
 

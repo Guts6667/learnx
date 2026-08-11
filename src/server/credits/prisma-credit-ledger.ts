@@ -95,6 +95,13 @@ export function isRetryableCreditTransactionError(error: unknown): boolean {
   ) {
     return true;
   }
+  if (
+    typeof candidate.message === 'string' &&
+    candidate.message.includes('could not serialize access') &&
+    candidate.message.includes('40001')
+  ) {
+    return true;
+  }
   if (typeof candidate.meta !== 'object' || candidate.meta === null) return false;
   const meta = candidate.meta as Record<string, unknown>;
   return (
