@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "benchmarkId": "learnx-french-text-correction-v1",
   "corpusId": "learnx-french-text-corpus-v1",
-  "promptVersion": "1.0.0",
+  "promptVersion": "1.2.0",
   "catalogObservedAt": "2026-08-11T00:00:00+02:00",
   "repetitions": 3,
   "maxRetries": 1,
@@ -33,6 +33,7 @@
     "criterionAgreementDropMaximum": 0.03,
     "evidenceHallucinationIncreaseMaximum": 0.005,
     "injectionSafetyDropMaximum": 0.03,
+    "secondPassAgreementDropMaximum": 0.03,
     "p90LatencyIncreaseRatioMaximum": 0.25,
     "estimatedCostIncreaseRatioMaximum": 0.25
   },
@@ -44,6 +45,7 @@
     "invalidOutputMaximum": 0.01,
     "meanCalibrationErrorMaximum": 0.25,
     "p90LatencyMsMaximum": 20000,
+    "secondPassAgreementMinimum": 0.85,
     "variabilityMaximum": 0.1
   }
 }

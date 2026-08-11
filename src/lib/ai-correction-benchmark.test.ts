@@ -53,7 +53,12 @@ function buildOutput(input: {
     })),
     overallConfidence: 0.95,
     overallFeedback: 'Évaluation synthétique.',
-    secondPass: { reasons: [], required: false },
+    secondPass: input.benchmarkCase.expectedSecondPass.required
+      ? {
+          reasons: [input.benchmarkCase.expectedSecondPass.rationale],
+          required: true,
+        }
+      : { reasons: [], required: false },
   };
 }
 
@@ -66,7 +71,12 @@ describe('correction benchmark corpus', () => {
     );
 
     expect(corpus.syntheticOnly).toBe(true);
-    expect(corpus.humanReview.status).toBe('PENDING');
+    expect(corpus.language).toBe('fr-FR');
+    expect(corpus.humanReview).toEqual({
+      reviewedAt: '2026-08-11T19:51:04Z',
+      reviewer: 'Rayan Chambet',
+      status: 'APPROVED',
+    });
     expect(corpus.cases).toHaveLength(24);
     expect(categories).toEqual(
       new Set([
@@ -96,6 +106,75 @@ describe('correction benchmark corpus', () => {
         ),
       ).toEqual(categories);
     }
+  });
+
+  it('accepts canonical language tags without coupling the engine to French', () => {
+    const input = readJson(
+      'benchmarks/ai-correction/corpus.v1.json',
+    ) as Record<string, unknown>;
+
+    expect(() =>
+      parseCorrectionBenchmarkCorpus({ ...input, language: 'en-GB' }),
+    ).not.toThrow();
+    expect(() =>
+      parseCorrectionBenchmarkCorpus({ ...input, language: 'not_a_tag' }),
+    ).toThrow();
+    expect(() =>
+      parseCorrectionBenchmarkCorpus({ ...input, language: 'fr-fr' }),
+    ).toThrow();
+  });
+
+  it('contains auditable, discriminating gold labels around the pass threshold', () => {
+    const corpus = loadCorpus();
+    const scores = new Set<number>();
+
+    for (const benchmarkCase of corpus.cases) {
+      const contract = findBenchmarkContract(
+        corpus,
+        benchmarkCase.contractKey,
+        benchmarkCase.contractVersion,
+      );
+      const expectedLevels = new Map(
+        benchmarkCase.expectedCriteria.map((criterion) => [
+          criterion.criterionKey,
+          criterion.levelKey,
+        ]),
+      );
+      const score = contract.criteria.reduce((total, criterion) => {
+        const expectedLevel = expectedLevels.get(criterion.key);
+        const level = criterion.performanceLevels.find(
+          (candidate) => candidate.key === expectedLevel,
+        );
+        return total + ((level?.score ?? 0) * criterion.weight) / 100;
+      }, 0);
+
+      scores.add(score);
+      expect(benchmarkCase.taskContext.length).toBeGreaterThan(80);
+      expect(benchmarkCase.taskPrompt.length).toBeGreaterThan(30);
+      expect(benchmarkCase.goldRationale.length).toBeGreaterThanOrEqual(35);
+      expect(contract.criteria).toHaveLength(3);
+      expect(
+        contract.criteria.every(
+          (criterion) => criterion.calibratedExamples.length >= 2,
+        ),
+      ).toBe(true);
+
+      if (benchmarkCase.category === 'AMBIGUOUS') {
+        expect(benchmarkCase.expectedSecondPass.required).toBe(true);
+      }
+      if (benchmarkCase.category === 'PROMPT_INJECTION') {
+        expect(
+          benchmarkCase.expectedCriteria.some(
+            (criterion) => criterion.levelKey !== 'insufficient',
+          ),
+        ).toBe(true);
+      }
+    }
+
+    expect(scores.has(70)).toBe(true);
+    expect(scores.has(75)).toBe(true);
+    expect(scores.has(80)).toBe(true);
+    expect(scores.size).toBeGreaterThanOrEqual(7);
   });
 
   it('pins at least three exact candidates without dynamic aliases', () => {
@@ -193,7 +272,7 @@ describe('correction benchmark metrics', () => {
     expect(summary.models[0]?.criterionAgreement).toBe(1);
     expect(summary.models[0]?.medianLatencyMs).toBe(1000);
     expect(summary.models[0]?.estimatedCostUsd).toBeGreaterThan(0);
-    expect(summary.models[1]?.criterionAgreement).toBe(0.5);
+    expect(summary.models[1]?.criterionAgreement).toBeCloseTo(2 / 3);
     expect(summary.interModelDisagreementRate).toBe(1);
   });
 
@@ -211,6 +290,7 @@ describe('correction benchmark metrics', () => {
       p75LatencyMs: 1500,
       p90LatencyMs: 2000,
       retryRate: 0,
+      secondPassAgreement: 1,
       secondPassRate: 0.1,
       variabilityRate: 0,
     };
@@ -240,6 +320,7 @@ describe('correction benchmark metrics', () => {
       p75LatencyMs: 1200,
       p90LatencyMs: 1500,
       retryRate: 0,
+      secondPassAgreement: 1,
       secondPassRate: 0.1,
       variabilityRate: 0,
     };

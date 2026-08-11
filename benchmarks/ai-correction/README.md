@@ -3,7 +3,8 @@
 Ce dossier contient le jeu de régression V4-003. Toutes les productions sont
 synthétiques, en français et dépourvues de données utilisateur.
 
-- `corpus.v1.json` : quatre types d’exercice et six profils de réponse par type ;
+- `corpus.v1.json` : quatre types d’exercice, six profils de réponse par type,
+  leur contexte fiable, leur consigne et la justification humaine de l’étalon ;
 - `benchmark.v1.json` : modèles exacts, répétitions, prix observés et seuils
   déclarés avant exécution ;
 - `results/` : sorties locales ignorées par Git, potentiellement volumineuses.
@@ -14,6 +15,18 @@ Le benchmark live refuse de démarrer tant que `humanReview.status` n’est pas
 `APPROVED` dans le corpus et que `OPENROUTER_API_KEY` n’est pas disponible côté
 serveur. Aucun alias `latest`, routeur automatique ou fallback fournisseur n’est
 autorisé. Une citation absente de la production rend la sortie invalide.
+L’accord sur le déclenchement d’une seconde passe est mesuré séparément : une
+réponse ambiguë ne doit pas être transformée artificiellement en certitude.
+
+## Langues
+
+Chaque corpus déclare une langue canonique BCP 47 (`fr-FR`, `en-GB`, etc.). Le
+feedback est produit dans cette langue et les citations restent strictement
+dans la langue originale de l’apprenant. Les langues ne sont jamais agrégées
+dans un même score : chaque langue supportée possède son corpus, sa revue
+humaine et sa décision de promotion propres. Le corpus V1 valide uniquement le
+français de France ; il ne revendique pas encore une qualité étalonnée en
+anglais.
 
 ```bash
 pnpm ai:benchmark:validate

@@ -14,6 +14,19 @@ const stableKeySchema = z
   .min(1)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
+const languageTagSchema = z
+  .string()
+  .trim()
+  .min(2)
+  .max(35)
+  .refine((value) => {
+    try {
+      return Intl.getCanonicalLocales(value)[0] === value;
+    } catch {
+      return false;
+    }
+  }, 'Language must be a canonical BCP 47 tag such as fr-FR or en-GB.');
+
 export const benchmarkResponseCategorySchema = z.enum([
   'SUCCESSFUL',
   'PARTIAL',
@@ -47,6 +60,13 @@ const expectedCriterionSchema = z
   })
   .strict();
 
+const expectedSecondPassSchema = z
+  .object({
+    rationale: z.string().trim().min(1),
+    required: z.boolean(),
+  })
+  .strict();
+
 const benchmarkCaseSchema = z
   .object({
     caseId: stableKeySchema,
@@ -54,7 +74,11 @@ const benchmarkCaseSchema = z
     contractKey: stableKeySchema,
     contractVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
     expectedCriteria: z.array(expectedCriterionSchema).min(1),
+    expectedSecondPass: expectedSecondPassSchema,
+    goldRationale: z.string().trim().min(1),
     responseText: z.string().trim().min(1),
+    taskContext: z.string().trim().min(1),
+    taskPrompt: z.string().trim().min(1),
   })
   .strict();
 
@@ -64,7 +88,7 @@ export const correctionBenchmarkCorpusSchema = z
     contracts: z.array(correctionContractSchema).min(1),
     corpusId: stableKeySchema,
     humanReview: benchmarkReviewSchema,
-    language: z.literal('fr'),
+    language: languageTagSchema,
     schemaVersion: z.literal(1),
     syntheticOnly: z.literal(true),
   })
@@ -164,6 +188,7 @@ const benchmarkThresholdsSchema = z
     invalidOutputMaximum: z.number().min(0).max(1),
     meanCalibrationErrorMaximum: z.number().min(0).max(1),
     p90LatencyMsMaximum: z.number().int().positive(),
+    secondPassAgreementMinimum: z.number().min(0).max(1),
     variabilityMaximum: z.number().min(0).max(1),
   })
   .strict();
@@ -175,6 +200,7 @@ const benchmarkRegressionLimitsSchema = z
     evidenceHallucinationIncreaseMaximum: z.number().min(0).max(1),
     injectionSafetyDropMaximum: z.number().min(0).max(1),
     p90LatencyIncreaseRatioMaximum: z.number().nonnegative(),
+    secondPassAgreementDropMaximum: z.number().min(0).max(1),
   })
   .strict();
 
@@ -263,6 +289,7 @@ export type ModelBenchmarkMetrics = {
   p75LatencyMs: number;
   p90LatencyMs: number;
   retryRate: number;
+  secondPassAgreement: number;
   secondPassRate: number;
   variabilityRate: number;
 };
@@ -367,6 +394,7 @@ export function summarizeCorrectionBenchmark(input: {
     let injectionCount = 0;
     let safeInjectionCount = 0;
     let hallucinationCount = 0;
+    let secondPassMatches = 0;
 
     validAttempts.forEach((attempt) => {
       const benchmarkCase = casesById.get(attempt.caseId);
@@ -393,6 +421,11 @@ export function summarizeCorrectionBenchmark(input: {
         benchmarkCase.responseText,
       );
       hallucinationCount += hallucinated ? 1 : 0;
+      secondPassMatches +=
+        attempt.output.secondPass.required ===
+        benchmarkCase.expectedSecondPass.required
+          ? 1
+          : 0;
       if (benchmarkCase.category === 'PROMPT_INJECTION') {
         injectionCount += 1;
         safeInjectionCount += allCriteriaMatch && !hallucinated ? 1 : 0;
@@ -448,6 +481,10 @@ export function summarizeCorrectionBenchmark(input: {
       ),
       retryRate:
         modelAttempts.length === 0 ? 0 : retryAttempts / modelAttempts.length,
+      secondPassAgreement:
+        validAttempts.length === 0
+          ? 0
+          : secondPassMatches / validAttempts.length,
       secondPassRate:
         validAttempts.length === 0
           ? 0
@@ -493,6 +530,7 @@ export function modelMeetsPromotionThresholds(
     metrics.invalidOutputRate <= thresholds.invalidOutputMaximum &&
     metrics.meanCalibrationError <= thresholds.meanCalibrationErrorMaximum &&
     metrics.p90LatencyMs <= thresholds.p90LatencyMsMaximum &&
+    metrics.secondPassAgreement >= thresholds.secondPassAgreementMinimum &&
     metrics.variabilityRate <= thresholds.variabilityMaximum
   );
 }
@@ -521,6 +559,8 @@ export function benchmarkRegressed(input: {
       input.limits.evidenceHallucinationIncreaseMaximum ||
     input.baseline.injectionSafetyRate - input.candidate.injectionSafetyRate >
       input.limits.injectionSafetyDropMaximum ||
+    input.baseline.secondPassAgreement - input.candidate.secondPassAgreement >
+      input.limits.secondPassAgreementDropMaximum ||
     latencyIncreaseRatio > input.limits.p90LatencyIncreaseRatioMaximum ||
     costIncreaseRatio > input.limits.estimatedCostIncreaseRatioMaximum
   );
