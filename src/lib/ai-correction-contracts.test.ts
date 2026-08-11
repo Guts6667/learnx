@@ -1,0 +1,305 @@
+import {
+  assertPublishedCorrectionContractIsImmutable,
+  correctionContractSchema,
+  correctionOutputSchema,
+  getCorrectionContractRuntimeEligibility,
+  legacyCorrectionRubricSchema,
+  validateCorrectionOutputForContract,
+} from '@/lib/ai-correction-contracts';
+
+const validContract = {
+  authorizedReferences: [
+    { locator: 'Section 2', referenceId: 'REF-PROJECT-FRAMING' },
+  ],
+  contractKey: 'project-framing-correction',
+  criteria: [
+    {
+      acceptableVariants: ['Un objectif formulé sous forme de résultat.'],
+      calibratedExamples: [
+        {
+          expectedLevelKey: 'mastered',
+          rationale: 'Le résultat et la mesure sont tous deux explicites.',
+          responseExcerpt: 'Livrer le prototype mesuré auprès de cinq usagers.',
+        },
+      ],
+      commonErrors: ['Confondre objectif et liste de tâches.'],
+      expectedElements: ['Un résultat observable.', 'Une mesure vérifiable.'],
+      key: 'direction',
+      label: 'Direction du projet',
+      objective: 'Formuler une direction commune et vérifiable.',
+      performanceLevels: [
+        {
+          description: 'La direction reste absente ou invérifiable.',
+          key: 'insufficient',
+          label: 'Insuffisant',
+          score: 0,
+        },
+        {
+          description: 'La direction est explicite et mesurable.',
+          key: 'mastered',
+          label: 'Maîtrisé',
+          score: 100,
+        },
+      ],
+      weight: 60,
+    },
+    {
+      acceptableVariants: [],
+      calibratedExamples: [],
+      commonErrors: ['Omettre les responsables.'],
+      expectedElements: ['Au moins un responsable identifié.'],
+      key: 'ownership',
+      label: 'Responsabilités',
+      objective: 'Attribuer les responsabilités principales.',
+      performanceLevels: [
+        {
+          description: 'Les responsabilités ne sont pas attribuées.',
+          key: 'insufficient',
+          label: 'Insuffisant',
+          score: 0,
+        },
+        {
+          description: 'Les responsabilités sont attribuées sans ambiguïté.',
+          key: 'mastered',
+          label: 'Maîtrisé',
+          score: 100,
+        },
+      ],
+      weight: 40,
+    },
+  ],
+  evidence: { acceptedKinds: ['TEXT'], primaryKind: 'TEXT' },
+  lifecycle: {
+    publishedAt: '2026-08-11T08:00:00+02:00',
+    status: 'PUBLISHED',
+  },
+  objectives: ['Évaluer une proposition de cadrage de projet.'],
+  passingScore: 70,
+  schemaVersion: 1,
+  secondPass: {
+    confidenceThreshold: 0.7,
+    enabled: true,
+    maxPasses: 2,
+    triggers: ['LOW_CONFIDENCE'],
+  },
+  target: {
+    activityKey: 'frame-a-project',
+    activityType: 'writing',
+    kind: 'EXERCISE',
+  },
+  version: '1.0.0',
+} as const;
+
+const validOutput = {
+  contractKey: 'project-framing-correction',
+  contractVersion: '1.0.0',
+  criteria: [
+    {
+      confidence: 0.9,
+      criterionKey: 'direction',
+      evidenceQuotes: ['Livrer le prototype mesuré auprès de cinq usagers.'],
+      feedback: 'Le résultat attendu est observable.',
+      levelKey: 'mastered',
+    },
+    {
+      confidence: 0.85,
+      criterionKey: 'ownership',
+      evidenceQuotes: ['La responsable produit valide les résultats.'],
+      feedback: 'La responsabilité principale est explicite.',
+      levelKey: 'mastered',
+    },
+  ],
+  overallConfidence: 0.85,
+  overallFeedback: 'Le cadrage est exploitable.',
+  secondPass: { reasons: [], required: false },
+} as const;
+
+describe('versioned AI correction contracts', () => {
+  it('accepts a published text contract whose authored weights total 100', () => {
+    expect(correctionContractSchema.parse(validContract)).toEqual(
+      validContract,
+    );
+    expect(
+      getCorrectionContractRuntimeEligibility(validContract),
+    ).toMatchObject({
+      eligible: true,
+    });
+  });
+
+  it('does not impose an arbitrary number of criteria', () => {
+    const oneCriterion = {
+      ...validContract,
+      criteria: [{ ...validContract.criteria[0], weight: 100 }],
+    };
+
+    expect(correctionContractSchema.safeParse(oneCriterion).success).toBe(true);
+  });
+
+  it('rejects inferred or incomplete criterion weights', () => {
+    const invalid = {
+      ...validContract,
+      criteria: [
+        { ...validContract.criteria[0], weight: 50 },
+        { ...validContract.criteria[1], weight: 40 },
+      ],
+    };
+
+    expect(correctionContractSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it('rejects duplicate criteria and invalid calibrated level references', () => {
+    const invalid = {
+      ...validContract,
+      criteria: [
+        validContract.criteria[0],
+        {
+          ...validContract.criteria[1],
+          calibratedExamples: [
+            {
+              expectedLevelKey: 'unknown',
+              rationale: 'Référence invalide.',
+              responseExcerpt: 'Extrait.',
+            },
+          ],
+          key: validContract.criteria[0].key,
+        },
+      ],
+    };
+
+    expect(correctionContractSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it('keeps drafts and future evidence kinds unavailable at runtime', () => {
+    const draft = {
+      ...validContract,
+      lifecycle: { publishedAt: null, status: 'DRAFT' },
+    };
+    const futureEvidence = {
+      ...validContract,
+      evidence: { acceptedKinds: ['TEXT', 'AUDIO'], primaryKind: 'TEXT' },
+    };
+
+    expect(getCorrectionContractRuntimeEligibility(draft)).toEqual({
+      eligible: false,
+      reasons: ['CONTRACT_NOT_PUBLISHED'],
+    });
+    expect(getCorrectionContractRuntimeEligibility(futureEvidence)).toEqual({
+      eligible: false,
+      reasons: ['EVIDENCE_KIND_NOT_SUPPORTED'],
+    });
+    expect(getCorrectionContractRuntimeEligibility(undefined)).toEqual({
+      eligible: false,
+      reasons: ['INVALID_CONTRACT'],
+    });
+  });
+
+  it('recognizes a valid historical rubric without treating it as a V4 contract', () => {
+    const legacyRubric = [
+      {
+        criterion: 'Exactitude',
+        requirements: ['Les concepts attendus sont employés correctement.'],
+        weight: 60,
+      },
+      {
+        criterion: 'Argumentation',
+        requirements: ['Chaque conclusion est justifiée.'],
+        weight: 40,
+      },
+    ];
+
+    expect(legacyCorrectionRubricSchema.safeParse(legacyRubric).success).toBe(
+      true,
+    );
+    expect(getCorrectionContractRuntimeEligibility(legacyRubric)).toEqual({
+      eligible: false,
+      reasons: ['INVALID_CONTRACT'],
+    });
+  });
+
+  it('keeps oral assessments unavailable in the V4 text runtime', () => {
+    const oralContract = {
+      ...validContract,
+      target: {
+        activityKey: 'documented-oral',
+        activityType: 'oral',
+        kind: 'STAGE_ASSESSMENT',
+      },
+    };
+
+    expect(getCorrectionContractRuntimeEligibility(oralContract)).toEqual({
+      eligible: false,
+      reasons: ['ACTIVITY_TYPE_NOT_SUPPORTED'],
+    });
+  });
+
+  it('makes a published contract version immutable while allowing a new version', () => {
+    const changedSameVersion = {
+      ...validContract,
+      passingScore: 80,
+    };
+    const nextVersion = {
+      ...changedSameVersion,
+      lifecycle: { publishedAt: null, status: 'DRAFT' },
+      version: '1.1.0',
+    };
+
+    expect(() =>
+      assertPublishedCorrectionContractIsImmutable(
+        validContract,
+        changedSameVersion,
+      ),
+    ).toThrow('A published correction contract version cannot be modified.');
+    expect(() =>
+      assertPublishedCorrectionContractIsImmutable(validContract, nextVersion),
+    ).not.toThrow();
+  });
+
+  it('validates structured output against criterion and level identities', () => {
+    expect(
+      validateCorrectionOutputForContract({
+        contract: validContract,
+        output: validOutput,
+      }),
+    ).toEqual(correctionOutputSchema.parse(validOutput));
+
+    expect(() =>
+      validateCorrectionOutputForContract({
+        contract: validContract,
+        output: {
+          ...validOutput,
+          criteria: [validOutput.criteria[0]],
+        },
+      }),
+    ).toThrow('Correction output must assess every criterion exactly once.');
+  });
+
+  it('requires a second pass below the authored confidence threshold', () => {
+    expect(() =>
+      validateCorrectionOutputForContract({
+        contract: validContract,
+        output: {
+          ...validOutput,
+          overallConfidence: 0.5,
+        },
+      }),
+    ).toThrow('Low-confidence output must require a second pass.');
+  });
+
+  it('requires a reason when the structured output requests a second pass', () => {
+    expect(
+      correctionOutputSchema.safeParse({
+        ...validOutput,
+        secondPass: { reasons: [], required: true },
+      }).success,
+    ).toBe(false);
+  });
+
+  it('rejects model-supplied fields outside the structured contract', () => {
+    expect(
+      correctionOutputSchema.safeParse({
+        ...validOutput,
+        score: 100,
+      }).success,
+    ).toBe(false);
+  });
+});

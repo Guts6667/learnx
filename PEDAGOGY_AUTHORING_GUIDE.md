@@ -770,3 +770,104 @@ l'historique Git et déclenche une nouvelle QA terminologique des variantes qui
 l'adoptent. Les champs de revue scientifique du sidecar ne valident jamais une
 traduction, et les revues de traduction ne produisent jamais une pastille
 scientifique.
+
+## 12. Contrat versionné de correction assistée par IA
+
+Une rubrique historique ne suffit pas à autoriser une correction IA. Toute
+production libre candidate possède un contrat séparé, relu humainement et
+validé par `correctionContractSchema` dans
+`src/lib/ai-correction-contracts.ts`.
+
+Le contrat suit cette structure :
+
+```json
+{
+  "schemaVersion": 1,
+  "contractKey": "project-framing-correction",
+  "version": "1.0.0",
+  "lifecycle": {
+    "status": "DRAFT",
+    "publishedAt": null
+  },
+  "target": {
+    "kind": "EXERCISE",
+    "activityKey": "frame-a-project",
+    "activityType": "writing"
+  },
+  "evidence": {
+    "primaryKind": "TEXT",
+    "acceptedKinds": ["TEXT"]
+  },
+  "objectives": ["Évaluer une proposition de cadrage de projet."],
+  "criteria": [
+    {
+      "key": "direction",
+      "label": "Direction du projet",
+      "objective": "Formuler une direction commune et vérifiable.",
+      "weight": 100,
+      "expectedElements": ["Un résultat observable."],
+      "acceptableVariants": [],
+      "commonErrors": ["Confondre objectif et liste de tâches."],
+      "performanceLevels": [
+        {
+          "key": "insufficient",
+          "label": "Insuffisant",
+          "score": 0,
+          "description": "La direction reste invérifiable."
+        },
+        {
+          "key": "mastered",
+          "label": "Maîtrisé",
+          "score": 100,
+          "description": "La direction est explicite et mesurable."
+        }
+      ],
+      "calibratedExamples": [
+        {
+          "responseExcerpt": "Livrer le prototype mesuré auprès de cinq usagers.",
+          "expectedLevelKey": "mastered",
+          "rationale": "Le résultat et la mesure sont explicites."
+        }
+      ]
+    }
+  ],
+  "authorizedReferences": [
+    {
+      "referenceId": "REF-PROJECT-FRAMING",
+      "locator": "Section 2"
+    }
+  ],
+  "passingScore": 70,
+  "secondPass": {
+    "enabled": true,
+    "confidenceThreshold": 0.7,
+    "maxPasses": 2,
+    "triggers": ["LOW_CONFIDENCE"]
+  }
+}
+```
+
+Règles bloquantes :
+
+- les poids des critères sont des entiers positifs et totalisent exactement
+  100 ; ils ne sont jamais déduits au runtime ;
+- le nombre de critères dépend de la production et n'est pas fixé par le
+  moteur ;
+- chaque clé de critère et de niveau est stable et unique dans sa portée ;
+- chaque exemple étalonné référence un niveau déclaré ;
+- `authorizedReferences` contient des identifiants du sidecar éditorial, pas
+  des ressources apprenant copiées ni le contenu intégral des sources ;
+- `PUBLISHED` exige `publishedAt`. Une version publiée est immuable ; toute
+  évolution crée une nouvelle version sémantique et ne modifie jamais les
+  corrections historiques ;
+- le runtime V4 accepte uniquement `TEXT`. `FILE`, `IMAGE`, `AUDIO`,
+  `TRANSCRIPT` et `STRUCTURED_DATA` sont réservés à de futurs tickets ;
+- `oral` reste indisponible au runtime V4, même si le contrat le décrit ;
+- l'absence de contrat publié et valide masque ou désactive la correction IA ;
+- le modèle choisit un niveau authoré et cite la réponse. Il ne fournit jamais
+  le score autoritaire : le serveur le recalcule depuis niveaux et poids.
+
+Les contrats ne sont pas ajoutés automatiquement aux rubriques existantes. Leur
+inventaire de départ est consigné dans
+`docs/V4_CORRECTION_CONTRACT_INVENTORY.md` et chaque conversion requiert une
+revue pédagogique humaine.
