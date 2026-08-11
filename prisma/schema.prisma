@@ -28,6 +28,7 @@ enum AuditAction {
   ACCOUNT_SUSPEND                     @map("account_suspend")
   ACCOUNT_REACTIVATE                  @map("account_reactivate")
   PROGRAM_TRANSLATION_WORKFLOW_UPDATE @map("program_translation_workflow_update")
+  CREDIT_ADMIN_ADJUSTMENT             @map("credit_admin_adjustment")
 
   @@map("audit_action")
 }
@@ -280,6 +281,39 @@ enum AiCorrectionAttemptStatus {
   @@map("ai_correction_attempt_status")
 }
 
+enum CreditCurrency {
+  LEARNX_CREDIT @map("learnx_credit")
+
+  @@map("credit_currency")
+}
+
+enum CreditProvenance {
+  FREE_ALLOCATION @map("free_allocation")
+  PURCHASED       @map("purchased")
+
+  @@map("credit_provenance")
+}
+
+enum CreditLedgerEntryType {
+  GRANT               @map("grant")
+  RESERVATION_HOLD    @map("reservation_hold")
+  RESERVATION_RELEASE @map("reservation_release")
+  SETTLEMENT          @map("settlement")
+  EXPIRATION          @map("expiration")
+  ADMIN_ADJUSTMENT    @map("admin_adjustment")
+
+  @@map("credit_ledger_entry_type")
+}
+
+enum CreditReservationStatus {
+  RESERVED         @map("reserved")
+  SETTLED          @map("settled")
+  RELEASED         @map("released")
+  EXPIRED_RELEASED @map("expired_released")
+
+  @@map("credit_reservation_status")
+}
+
 enum ReviewSourceType {
   CONCEPT_ASSESSMENT @map("concept_assessment")
 
@@ -317,6 +351,8 @@ model User {
   exerciseSubmissions             ExerciseSubmission[]
   stageAssessmentSubmissions      StageAssessmentSubmission[]
   aiCorrections                   AiCorrection[]
+  creditAccounts                  CreditAccount[]               @relation("CreditAccountOwner")
+  creditAdjustmentEntries         CreditLedgerEntry[]           @relation("CreditLedgerAdjustmentActor")
   reviewItems                     ReviewItem[]
   notes                           Note[]
   moduleRuns                      ModuleRun[]
@@ -1086,6 +1122,116 @@ model AiCorrectionAttempt {
   @@unique([provider, generationId])
   @@index([status, createdAt])
   @@map("ai_correction_attempts")
+}
+
+model CreditAccount {
+  id               String              @id @default(uuid()) @db.Uuid
+  userId           String              @map("user_id") @db.Uuid
+  currency         CreditCurrency      @default(LEARNX_CREDIT)
+  freeBalance      BigInt              @default(0) @map("free_balance")
+  purchasedBalance BigInt              @default(0) @map("purchased_balance")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+  user             User                @relation("CreditAccountOwner", fields: [userId], references: [id], onDelete: Restrict)
+  lots             CreditLot[]
+  ledgerEntries    CreditLedgerEntry[]
+  reservations     CreditReservation[]
+
+  @@unique([userId, currency])
+  @@unique([id, userId])
+  @@map("credit_accounts")
+}
+
+model CreditLot {
+  id                     String                        @id @default(uuid()) @db.Uuid
+  accountId              String                        @map("account_id") @db.Uuid
+  provenance             CreditProvenance
+  initialAmount          BigInt                        @map("initial_amount")
+  remainingAmount        BigInt                        @map("remaining_amount")
+  expiresAt              DateTime?                     @map("expires_at")
+  sourceReferenceType    String                        @map("source_reference_type")
+  sourceReferenceId      String                        @map("source_reference_id")
+  createdAt              DateTime                      @default(now()) @map("created_at")
+  account                CreditAccount                 @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  ledgerEntries          CreditLedgerEntry[]
+  reservationAllocations CreditReservationAllocation[]
+
+  @@unique([id, accountId])
+  @@index([accountId, provenance, expiresAt, createdAt])
+  @@map("credit_lots")
+}
+
+model CreditReservation {
+  id                 String                        @id @default(uuid()) @db.Uuid
+  accountId          String                        @map("account_id") @db.Uuid
+  userId             String                        @map("user_id") @db.Uuid
+  status             CreditReservationStatus       @default(RESERVED)
+  ceilingAmount      BigInt                        @map("ceiling_amount")
+  settledAmount      BigInt?                       @map("settled_amount")
+  idempotencyKey     String                        @map("idempotency_key")
+  requestFingerprint String                        @map("request_fingerprint") @db.Char(64)
+  referenceType      String                        @map("reference_type")
+  referenceId        String                        @map("reference_id")
+  expiresAt          DateTime                      @map("expires_at")
+  settledAt          DateTime?                     @map("settled_at")
+  releasedAt         DateTime?                     @map("released_at")
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+  account            CreditAccount                 @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  allocations        CreditReservationAllocation[]
+  ledgerEntries      CreditLedgerEntry[]
+
+  @@unique([accountId, idempotencyKey])
+  @@unique([id, accountId])
+  @@index([status, expiresAt])
+  @@map("credit_reservations")
+}
+
+model CreditReservationAllocation {
+  id            String            @id @default(uuid()) @db.Uuid
+  reservationId String            @map("reservation_id") @db.Uuid
+  accountId     String            @map("account_id") @db.Uuid
+  lotId         String            @map("lot_id") @db.Uuid
+  amount        BigInt
+  position      Int
+  createdAt     DateTime          @default(now()) @map("created_at")
+  reservation   CreditReservation @relation(fields: [reservationId, accountId], references: [id, accountId], onDelete: Restrict)
+  lot           CreditLot         @relation(fields: [lotId, accountId], references: [id, accountId], onDelete: Restrict)
+
+  @@unique([reservationId, lotId])
+  @@unique([reservationId, position])
+  @@index([accountId, lotId])
+  @@map("credit_reservation_allocations")
+}
+
+model CreditLedgerEntry {
+  id                 String                @id @default(uuid()) @db.Uuid
+  accountId          String                @map("account_id") @db.Uuid
+  userId             String                @map("user_id") @db.Uuid
+  lotId              String                @map("lot_id") @db.Uuid
+  reservationId      String?               @map("reservation_id") @db.Uuid
+  currency           CreditCurrency        @default(LEARNX_CREDIT)
+  provenance         CreditProvenance
+  type               CreditLedgerEntryType
+  amount             BigInt
+  operationKey       String                @map("operation_key")
+  operationSequence  Int                   @map("operation_sequence")
+  requestFingerprint String                @map("request_fingerprint") @db.Char(64)
+  referenceType      String                @map("reference_type")
+  referenceId        String                @map("reference_id")
+  reason             String?
+  actorUserId        String?               @map("actor_user_id") @db.Uuid
+  createdAt          DateTime              @default(now()) @map("created_at")
+  account            CreditAccount         @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  lot                CreditLot             @relation(fields: [lotId, accountId], references: [id, accountId], onDelete: Restrict)
+  reservation        CreditReservation?    @relation(fields: [reservationId, accountId], references: [id, accountId], onDelete: Restrict)
+  actor              User?                 @relation("CreditLedgerAdjustmentActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([accountId, operationKey, operationSequence])
+  @@index([accountId, createdAt, id])
+  @@index([reservationId, createdAt])
+  @@index([referenceType, referenceId])
+  @@map("credit_ledger_entries")
 }
 
 model Note {
