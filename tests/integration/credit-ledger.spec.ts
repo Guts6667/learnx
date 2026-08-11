@@ -10,8 +10,11 @@ function integrationEmail(label: string): string {
   return `${label}-${runId}-${randomUUID()}@example.test`.toLowerCase();
 }
 
-test('ledger réel atomique, reconstructible et immuable', async (_fixtures, testInfo) => {
+test('ledger réel atomique, reconstructible et immuable', async ({
+  baseURL,
+}, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
+  expect(baseURL).toBeTruthy();
   const now = new Date('2026-08-12T12:00:00.000Z');
   const learner = await prisma.user.create({
     data: {
