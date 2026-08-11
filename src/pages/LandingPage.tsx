@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { route } from 'preact-router';
 
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
@@ -6,6 +7,7 @@ import {
   usePublicLeadMutation,
   type PublicLeadPurpose,
 } from '@/features/public-leads/public-leads';
+import { isStandaloneDisplayMode } from '@/features/pwa/display-mode';
 import { useI18n } from '@/i18n';
 
 interface InterestFormProps {
@@ -158,7 +160,12 @@ function InterestForm({ purpose }: InterestFormProps) {
 export function LandingPage({ path }: { path?: string }) {
   void path;
   const { locale, setLocale, t } = useI18n();
+  const standalone = isStandaloneDisplayMode();
   useEffect(() => {
+    if (standalone) route('/today', true);
+  }, [standalone]);
+  useEffect(() => {
+    if (standalone) return;
     document.title =
       locale === 'en'
         ? 'LearnX — A journey, not a library'
@@ -171,7 +178,10 @@ export function LandingPage({ path }: { path?: string }) {
       document.title = t('app.documentTitle');
       if (description) description.content = t('app.description');
     };
-  }, [locale, t]);
+  }, [locale, standalone, t]);
+
+  if (standalone) return null;
+
   return (
     <div class="landing-page" data-color-regime="paper">
       <header class="landing-header">

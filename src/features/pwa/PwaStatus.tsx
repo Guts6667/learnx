@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'preact/hooks';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { OfflineBanner } from '@/components/ui/OfflineBanner';
+import { isStandaloneDisplayMode } from '@/features/pwa/display-mode';
 import { useOnlineStatus } from '@/features/pwa/online-status';
 import { useI18n } from '@/i18n';
 
@@ -31,14 +32,6 @@ const PwaContext = createContext<PwaContextValue | null>(null);
 
 function isIosDevice(): boolean {
   return /iPad|iPhone|iPod/.test(navigator.userAgent);
-}
-
-function isStandalone(): boolean {
-  return (
-    (typeof window.matchMedia === 'function' &&
-      window.matchMedia('(display-mode: standalone)').matches) ||
-    (navigator as Navigator & { standalone?: boolean }).standalone === true
-  );
 }
 
 function readIosHelpDismissed(): boolean {
@@ -101,7 +94,8 @@ export function PwaProvider({ children }: { children: ComponentChildren }) {
     }
   }
 
-  const showIosHelp = isIosDevice() && !isStandalone() && !installHelpDismissed;
+  const showIosHelp =
+    isIosDevice() && !isStandaloneDisplayMode() && !installHelpDismissed;
 
   return (
     <PwaContext.Provider
@@ -191,7 +185,7 @@ export function PwaInstallSettings() {
     installPrompt,
     showIosHelp,
   } = usePwaContext();
-  const standalone = isStandalone();
+  const standalone = isStandaloneDisplayMode();
 
   return (
     <Card

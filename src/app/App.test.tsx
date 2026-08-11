@@ -51,6 +51,31 @@ describe('App', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("ouvre la connexion depuis une ancienne installation PWA sans session", async () => {
+    window.history.pushState({}, '', '/');
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(display-mode: standalone)',
+        media: query,
+      })),
+    );
+    mockSession(null);
+
+    render(<App />);
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Connexion' }),
+    ).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/login');
+    expect(
+      screen.getByRole('link', { name: 'Demander un accès' }),
+    ).toHaveAttribute('href', '/request-access');
+    expect(
+      screen.queryByRole('navigation', { name: 'Navigation principale' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('redirige une route privée vers la connexion sans session', async () => {
     window.history.pushState({}, '', '/today');
     mockSession(null);

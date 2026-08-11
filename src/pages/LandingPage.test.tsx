@@ -4,9 +4,36 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { I18nProvider } from '@/i18n/I18nProvider';
 import { LandingPage } from '@/pages/LandingPage';
 
-afterEach(() => vi.restoreAllMocks());
+const routeMock = vi.hoisted(() => vi.fn());
+vi.mock('preact-router', () => ({ route: routeMock }));
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+  routeMock.mockClear();
+  window.history.replaceState({}, '', '/');
+});
 
 describe('LandingPage', () => {
+  it('opens the learner application instead of the landing page in standalone mode', async () => {
+    vi.stubGlobal('matchMedia', vi.fn().mockImplementation(
+      (query) =>
+        ({
+          matches: query === '(display-mode: standalone)',
+          media: query,
+        }) as MediaQueryList,
+    ));
+
+    const { container } = render(
+      <I18nProvider locale="fr">
+        <LandingPage />
+      </I18nProvider>,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+    await waitFor(() => expect(routeMock).toHaveBeenCalledWith('/today', true));
+  });
+
   it('presents the promise, two separate purposes and the login utility', () => {
     render(
       <I18nProvider locale="fr">
