@@ -10,6 +10,7 @@ import {
   reconstructCreditBalance,
   type SpendableCreditLot,
 } from './credit-ledger.js';
+import { isRetryableCreditTransactionError } from './prisma-credit-ledger.js';
 
 const now = new Date('2026-08-12T12:00:00.000Z');
 
@@ -34,6 +35,26 @@ function lot(
 }
 
 describe('credit ledger domain', () => {
+  it('recognizes direct and Prisma-wrapped serialization conflicts', () => {
+    expect(isRetryableCreditTransactionError({ code: 'P2034' })).toBe(true);
+    expect(isRetryableCreditTransactionError({ code: '40001' })).toBe(true);
+    expect(
+      isRetryableCreditTransactionError({
+        code: 'P2010',
+        meta: {
+          code: '40001',
+          message: 'could not serialize access due to concurrent update',
+        },
+      }),
+    ).toBe(true);
+    expect(
+      isRetryableCreditTransactionError({
+        code: 'P2010',
+        meta: { code: '23514', message: 'check constraint failed' },
+      }),
+    ).toBe(false);
+  });
+
   it('reconstructs the two balances from immutable signed entries', () => {
     expect(
       reconstructCreditBalance([

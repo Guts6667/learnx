@@ -73,8 +73,10 @@ describe('V4-006 credit ledger schema', () => {
   it('serializes account mutations and retries transaction conflicts', () => {
     expect(service).toContain('Prisma.TransactionIsolationLevel.Serializable');
     expect(service).toContain('FOR UPDATE');
-    expect(service).toContain("error.code === 'P2034'");
-    expect(service).toContain("error.code === 'P2002'");
+    expect(service).toContain('isRetryableCreditTransactionError');
+    expect(service).toContain("candidate.code === 'P2034'");
+    expect(service).toContain("candidate.code === 'P2002'");
+    expect(service).toContain("meta.code === '40001'");
   });
 
   it('keeps the ledger as source of truth and treats projections as rebuildable', () => {

@@ -85,12 +85,22 @@ export interface CreditOperationResult {
   };
 }
 
-function isRetryableTransactionError(error: unknown): boolean {
+export function isRetryableCreditTransactionError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) return false;
+  const candidate = error as Record<string, unknown>;
+  if (
+    candidate.code === 'P2034' ||
+    candidate.code === 'P2002' ||
+    candidate.code === '40001'
+  ) {
+    return true;
+  }
+  if (typeof candidate.meta !== 'object' || candidate.meta === null) return false;
+  const meta = candidate.meta as Record<string, unknown>;
   return (
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    (error.code === 'P2034' || error.code === 'P2002')
+    meta.code === '40001' ||
+    (typeof meta.message === 'string' &&
+      meta.message.includes('could not serialize access'))
   );
 }
 
@@ -133,7 +143,10 @@ export class PrismaCreditLedger {
           timeout: TRANSACTION_TIMEOUT_MS,
         });
       } catch (error) {
-        if (!isRetryableTransactionError(error) || attempt === MAX_TRANSACTION_ATTEMPTS) {
+        if (
+          !isRetryableCreditTransactionError(error) ||
+          attempt === MAX_TRANSACTION_ATTEMPTS
+        ) {
           throw error;
         }
       }
