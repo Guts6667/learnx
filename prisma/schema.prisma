@@ -246,6 +246,40 @@ enum ExerciseSubmissionStatus {
   @@map("exercise_submission_status")
 }
 
+enum AiCorrectionMethod {
+  DETERMINISTIC @map("deterministic")
+  AI            @map("ai")
+
+  @@map("ai_correction_method")
+}
+
+enum AiCorrectionStatus {
+  RESERVED           @map("reserved")
+  PROCESSING         @map("processing")
+  COMPLETED          @map("completed")
+  AI_REVIEW_REQUIRED @map("ai_review_required")
+  RETRY_PENDING      @map("retry_pending")
+  FAILED_RELEASED    @map("failed_released")
+
+  @@map("ai_correction_status")
+}
+
+enum AiCorrectionDecision {
+  PASSED          @map("passed")
+  NOT_PASSED      @map("not_passed")
+  REVIEW_REQUIRED @map("review_required")
+
+  @@map("ai_correction_decision")
+}
+
+enum AiCorrectionAttemptStatus {
+  PROCESSING @map("processing")
+  SUCCEEDED  @map("succeeded")
+  FAILED     @map("failed")
+
+  @@map("ai_correction_attempt_status")
+}
+
 enum ReviewSourceType {
   CONCEPT_ASSESSMENT @map("concept_assessment")
 
@@ -282,6 +316,7 @@ model User {
   quizAttempts                    QuizAttempt[]
   exerciseSubmissions             ExerciseSubmission[]
   stageAssessmentSubmissions      StageAssessmentSubmission[]
+  aiCorrections                   AiCorrection[]
   reviewItems                     ReviewItem[]
   notes                           Note[]
   moduleRuns                      ModuleRun[]
@@ -620,8 +655,10 @@ model StageAssessmentSubmission {
   updatedAt         DateTime                        @updatedAt @map("updated_at")
   user              User                            @relation(fields: [userId], references: [id], onDelete: Cascade)
   stageAssessment   StageAssessment                 @relation(fields: [stageAssessmentId], references: [id], onDelete: Cascade)
+  aiCorrections     AiCorrection[]
 
   @@unique([userId, stageAssessmentId])
+  @@unique([id, userId])
   @@index([stageAssessmentId, status])
   @@map("stage_assessment_submissions")
 }
@@ -981,10 +1018,74 @@ model ExerciseSubmission {
   user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   exercise        Exercise                 @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   moduleRun       ModuleRun                @relation(fields: [moduleRunId], references: [id], onDelete: Cascade)
+  aiCorrections   AiCorrection[]
 
   @@unique([userId, exerciseId, moduleRunId])
+  @@unique([id, userId])
   @@index([exerciseId, status])
   @@map("exercise_submissions")
+}
+
+model AiCorrection {
+  id                          String                     @id @default(uuid()) @db.Uuid
+  userId                      String                     @map("user_id") @db.Uuid
+  exerciseSubmissionId        String?                    @map("exercise_submission_id") @db.Uuid
+  stageAssessmentSubmissionId String?                    @map("stage_assessment_submission_id") @db.Uuid
+  method                      AiCorrectionMethod         @default(AI)
+  status                      AiCorrectionStatus         @default(RESERVED)
+  decision                    AiCorrectionDecision?
+  idempotencyKey              String                     @map("idempotency_key")
+  requestFingerprint          String                     @map("request_fingerprint") @db.Char(64)
+  submissionSnapshot          Json                       @map("submission_snapshot_json")
+  contractSnapshot            Json                       @map("contract_snapshot_json")
+  promptSnapshot              Json                       @map("prompt_snapshot_json")
+  promptVersion               String                     @map("prompt_version")
+  modelRole                   String                     @map("model_role")
+  provider                    String?
+  modelId                     String?                    @map("model_id")
+  structuredResult            Json?                      @map("structured_result_json")
+  score                       Float?
+  confidence                  Float?
+  completedAt                 DateTime?                  @map("completed_at")
+  createdAt                   DateTime                   @default(now()) @map("created_at")
+  updatedAt                   DateTime                   @updatedAt @map("updated_at")
+  user                        User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseSubmission          ExerciseSubmission?        @relation(fields: [exerciseSubmissionId, userId], references: [id, userId], onDelete: Restrict)
+  stageAssessmentSubmission   StageAssessmentSubmission? @relation(fields: [stageAssessmentSubmissionId, userId], references: [id, userId], onDelete: Restrict)
+  attempts                    AiCorrectionAttempt[]
+
+  @@unique([userId, idempotencyKey])
+  @@index([exerciseSubmissionId, createdAt])
+  @@index([stageAssessmentSubmissionId, createdAt])
+  @@index([status, updatedAt])
+  @@map("ai_corrections")
+}
+
+model AiCorrectionAttempt {
+  id               String                    @id @default(uuid()) @db.Uuid
+  correctionId     String                    @map("correction_id") @db.Uuid
+  sequence         Int
+  status           AiCorrectionAttemptStatus @default(PROCESSING)
+  provider         String?
+  modelId          String?                   @map("model_id")
+  modelRole        String                    @map("model_role")
+  generationId     String?                   @map("generation_id")
+  structuredResult Json?                     @map("structured_result_json")
+  errorCode        String?                   @map("error_code")
+  retryable        Boolean?
+  promptTokens     Int?                      @map("prompt_tokens")
+  completionTokens Int?                      @map("completion_tokens")
+  totalTokens      Int?                      @map("total_tokens")
+  costUsd          Decimal?                  @map("cost_usd") @db.Decimal(18, 8)
+  latencyMs        Int?                      @map("latency_ms")
+  completedAt      DateTime?                 @map("completed_at")
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  correction       AiCorrection              @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+
+  @@unique([correctionId, sequence])
+  @@unique([provider, generationId])
+  @@index([status, createdAt])
+  @@map("ai_correction_attempts")
 }
 
 model Note {

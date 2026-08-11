@@ -8,6 +8,7 @@ const migration = readFileSync(
   resolve('prisma/migrations/20260805013000_add_rbac_and_audit/migration.sql'),
   'utf8',
 );
+const auditModel = schema.match(/model AuditEvent \{[\s\S]*?\n\}/)?.[0];
 
 describe('V3 RBAC and audit schema', () => {
   it('adds CREATOR without assigning it to existing users', () => {
@@ -19,11 +20,9 @@ describe('V3 RBAC and audit schema', () => {
   });
 
   it('stores append-only audit facts without secret or PII columns', () => {
-    expect(schema).toContain('model AuditEvent {');
-    expect(schema).toContain('idempotencyKey');
-    expect(schema).not.toMatch(
-      /model AuditEvent \{[\s\S]*?(email|token|password)/i,
-    );
+    expect(auditModel).toContain('model AuditEvent {');
+    expect(auditModel).toContain('idempotencyKey');
+    expect(auditModel).not.toMatch(/email|token|password/i);
     expect(migration).toContain('audit_events_metadata_object_check');
     expect(migration).not.toMatch(/UPDATE\s+"audit_events"/i);
   });
