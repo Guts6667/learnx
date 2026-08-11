@@ -14,6 +14,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
+| Correction IA, crédits et frontières de confiance V4 | `ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md` | ADR V4-001 ; les gates externes restent bloquants |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
