@@ -218,10 +218,11 @@ const exactModelIdSchema = z
   .string()
   .trim()
   .min(1)
-  .regex(/^[a-z0-9.-]+\/[a-z0-9.-]+-\d{8}$/)
+  .regex(/^[a-z0-9.-]+\/[a-z0-9.-]+$/)
   .refine(
-    (value) => !value.includes('latest') && !value.includes('auto'),
-    'Model identifiers must be exact and must not use latest or auto routing.',
+    (value) =>
+      !/(^|[./-])(auto|latest|free|nitro|floor)([./-]|$)/.test(value),
+    'Model identifiers must be exact and must not use dynamic or free routing.',
   );
 
 const benchmarkCandidateSchema = z

@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
+import { sanitizeStructuredOutputJsonSchema } from '@/lib/ai-json-schema.js';
+
 import type { OpenRouterConfiguration } from './openrouter-configuration.js';
 import {
   AiProviderError,
@@ -142,7 +144,9 @@ export class OpenRouterStructuredProvider implements StructuredAiProvider {
       JSON.stringify({
         maxOutputTokens: request.maxOutputTokens,
         messages: request.messages,
-        outputSchema: z.toJSONSchema(request.outputSchema),
+        outputSchema: sanitizeStructuredOutputJsonSchema(
+          z.toJSONSchema(request.outputSchema),
+        ),
         outputSchemaName: request.outputSchemaName,
         role: request.role,
       }),
@@ -281,7 +285,9 @@ export class OpenRouterStructuredProvider implements StructuredAiProvider {
         response_format: {
           json_schema: {
             name: request.outputSchemaName,
-            schema: z.toJSONSchema(request.outputSchema),
+            schema: sanitizeStructuredOutputJsonSchema(
+              z.toJSONSchema(request.outputSchema),
+            ),
             strict: true,
           },
           type: 'json_schema',

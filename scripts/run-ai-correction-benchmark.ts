@@ -17,6 +17,7 @@ import {
   type CorrectionBenchmarkCorpus,
 } from '../src/lib/ai-correction-benchmark.ts';
 import { correctionOutputSchema } from '../src/lib/ai-correction-contracts.ts';
+import { sanitizeStructuredOutputJsonSchema } from '../src/lib/ai-json-schema.ts';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const benchmarkDirectory = path.resolve('benchmarks/ai-correction');
@@ -117,7 +118,9 @@ async function callCandidate(input: {
       response_format: {
         json_schema: {
           name: 'learnx_correction_output',
-          schema: z.toJSONSchema(correctionOutputSchema),
+          schema: sanitizeStructuredOutputJsonSchema(
+            z.toJSONSchema(correctionOutputSchema),
+          ),
           strict: true,
         },
         type: 'json_schema',
@@ -155,12 +158,14 @@ async function callCandidate(input: {
 
 async function runBenchmark(input: {
   apiKey: string;
+  candidates?: CorrectionBenchmarkConfiguration['candidates'];
   configuration: CorrectionBenchmarkConfiguration;
   corpus: CorrectionBenchmarkCorpus;
+  onProgress?: (attempts: BenchmarkAttempt[]) => Promise<void>;
 }): Promise<BenchmarkAttempt[]> {
   const attempts: BenchmarkAttempt[] = [];
 
-  for (const candidate of input.configuration.candidates) {
+  for (const candidate of input.candidates ?? input.configuration.candidates) {
     for (const benchmarkCase of input.corpus.cases) {
       const contract = findBenchmarkContract(
         input.corpus,
@@ -204,6 +209,7 @@ async function runBenchmark(input: {
                 usage: result.usage,
               }),
             );
+            await input.onProgress?.(attempts);
             break;
           } catch (error) {
             const errorCode =
@@ -221,6 +227,7 @@ async function runBenchmark(input: {
                 status: 'INVALID',
               }),
             );
+            await input.onProgress?.(attempts);
             if (attemptNumber > input.configuration.maxRetries) {
               break;
             }
@@ -256,7 +263,53 @@ async function main(): Promise<void> {
     throw new Error('OPENROUTER_API_KEY_REQUIRED');
   }
 
-  const attempts = await runBenchmark({ apiKey, configuration, corpus });
+  const modelArgument = process.argv.find((argument) =>
+    argument.startsWith('--model='),
+  );
+  const requestedModelId = modelArgument?.slice('--model='.length);
+  const selectedCandidates = requestedModelId
+    ? configuration.candidates.filter(
+        (candidate) => candidate.modelId === requestedModelId,
+      )
+    : configuration.candidates;
+  if (selectedCandidates.length === 0) {
+    throw new Error('BENCHMARK_MODEL_NOT_CONFIGURED');
+  }
+  const selectedModelIds = new Set(
+    selectedCandidates.map((candidate) => candidate.modelId),
+  );
+  const runId = new Date().toISOString().replaceAll(/[:.]/g, '-');
+  await mkdir(resultDirectory, { recursive: true });
+  const attemptsPath = path.join(
+    resultDirectory,
+    `${runId}.attempts.json`,
+  );
+  const writeAttempts = async (attempts: BenchmarkAttempt[]): Promise<void> => {
+    await writeFile(
+      attemptsPath,
+      `${JSON.stringify(
+        {
+          benchmarkId: configuration.benchmarkId,
+          corpusId: configuration.corpusId,
+          language: configuration.language,
+          modelIds: selectedCandidates.map((candidate) => candidate.modelId),
+          promptVersion: configuration.promptVersion,
+          attempts,
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+  };
+
+  const attempts = await runBenchmark({
+    apiKey,
+    candidates: selectedCandidates,
+    configuration,
+    corpus,
+    onProgress: writeAttempts,
+  });
   const summary = summarizeCorrectionBenchmark({
     attempts,
     configuration,
@@ -264,32 +317,17 @@ async function main(): Promise<void> {
   });
   const evaluatedSummary = {
     ...summary,
-    models: summary.models.map((metrics) => ({
-      ...metrics,
-      promotionEligible: modelMeetsPromotionThresholds(
-        metrics,
-        configuration.thresholds,
-      ),
-    })),
+    models: summary.models
+      .filter((metrics) => selectedModelIds.has(metrics.modelId))
+      .map((metrics) => ({
+        ...metrics,
+        promotionEligible: modelMeetsPromotionThresholds(
+          metrics,
+          configuration.thresholds,
+        ),
+      })),
   };
-  const runId = new Date().toISOString().replaceAll(/[:.]/g, '-');
-  await mkdir(resultDirectory, { recursive: true });
-  await writeFile(
-    path.join(resultDirectory, `${runId}.attempts.json`),
-    `${JSON.stringify(
-      {
-        benchmarkId: configuration.benchmarkId,
-        corpusId: configuration.corpusId,
-        language: configuration.language,
-        modelIds: configuration.candidates.map((candidate) => candidate.modelId),
-        promptVersion: configuration.promptVersion,
-        attempts,
-      },
-      null,
-      2,
-    )}\n`,
-    'utf8',
-  );
+  await writeAttempts(attempts);
   await writeFile(
     path.join(resultDirectory, `${runId}.summary.json`),
     `${JSON.stringify(evaluatedSummary, null, 2)}\n`,

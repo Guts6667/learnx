@@ -19,27 +19,27 @@
       "Si une confiance est inférieure au seuil du contrat, demande une seconde passe."
     ]
   },
-  "catalogObservedAt": "2026-08-11T00:00:00+02:00",
+  "catalogObservedAt": "2026-08-12T00:00:00+02:00",
   "repetitions": 3,
   "maxRetries": 1,
   "candidates": [
     {
       "label": "GPT-5.6 Terra",
-      "modelId": "openai/gpt-5.6-terra-20260709",
+      "modelId": "openai/gpt-5.6-terra",
       "provider": "OpenAI",
       "promptUsdPerToken": 0.000001,
       "completionUsdPerToken": 0.000006
     },
     {
       "label": "Claude Sonnet 4.6",
-      "modelId": "anthropic/claude-4.6-sonnet-20260217",
+      "modelId": "anthropic/claude-sonnet-4.6",
       "provider": "Anthropic",
       "promptUsdPerToken": 0.000003,
       "completionUsdPerToken": 0.000015
     },
     {
       "label": "Gemini 3.6 Flash",
-      "modelId": "google/gemini-3.6-flash-20260721",
+      "modelId": "google/gemini-3.6-flash",
       "provider": "Google",
       "promptUsdPerToken": 0.0000015,
       "completionUsdPerToken": 0.0000075

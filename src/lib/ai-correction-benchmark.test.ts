@@ -181,9 +181,15 @@ describe('correction benchmark corpus', () => {
     const configuration = loadConfiguration();
 
     expect(configuration.candidates).toHaveLength(3);
+    expect(configuration.candidates.map((candidate) => candidate.modelId)).toEqual([
+      'openai/gpt-5.6-terra',
+      'anthropic/claude-sonnet-4.6',
+      'google/gemini-3.6-flash',
+    ]);
     for (const candidate of configuration.candidates) {
-      expect(candidate.modelId).toMatch(/-\d{8}$/);
-      expect(candidate.modelId).not.toMatch(/latest|auto/);
+      expect(candidate.modelId).not.toMatch(
+        /(^|[./-])(auto|latest|free|nitro|floor)([./-]|$)/,
+      );
     }
   });
 

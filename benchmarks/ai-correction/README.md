@@ -39,9 +39,12 @@ pas encore une qualité étalonnée en anglais.
 ```bash
 pnpm ai:benchmark:validate
 OPENROUTER_API_KEY="…" pnpm ai:benchmark
+OPENROUTER_API_KEY="…" pnpm ai:benchmark -- --model=anthropic/claude-sonnet-4.6
 ```
 
 La clé ne doit jamais être commitée. Après une exécution, le rapport humain doit
 examiner les désaccords et reporter uniquement les métriques agrégées dans
+Git. Le mode ciblé accepte uniquement un modèle présent dans la configuration
+pré-enregistrée et sauvegarde les tentatives au fil de l'eau avant la synthèse.
 `docs/V4_AI_MODEL_BENCHMARK_REPORT.md`. Un modèle qui manque un seuil n’est pas
 promouvable, quelle que soit sa moyenne globale.
