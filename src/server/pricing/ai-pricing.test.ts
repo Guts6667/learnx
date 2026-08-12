@@ -3,6 +3,7 @@ import type { CorrectionContract } from '@/lib/ai-correction-contracts';
 import {
   AiPricingError,
   AiPricingQuoteService,
+  calculateCompositeSettlement,
   calculateFinalPrice,
   calculateQuotePrice,
   estimatePackCapacity,
@@ -26,7 +27,12 @@ const contract: CorrectionContract = {
       objective: 'Explain the answer clearly.',
       performanceLevels: [
         { description: 'Missing', key: 'missing', label: 'Missing', score: 0 },
-        { description: 'Mastered', key: 'mastered', label: 'Mastered', score: 100 },
+        {
+          description: 'Mastered',
+          key: 'mastered',
+          label: 'Mastered',
+          score: 100,
+        },
       ],
       weight: 100,
     },
@@ -50,6 +56,102 @@ const contract: CorrectionContract = {
   version: '1.0.0',
 };
 
+describe('composite settlement preview', () => {
+  it('bills only terminal useful role calls and absorbs retries', () => {
+    expect(
+      calculateCompositeSettlement({
+        calls: [
+          {
+            costCredits: 3n,
+            role: 'PRIMARY',
+            terminalValidated: false,
+            usefulToPublishedResult: false,
+            wasRetry: true,
+          },
+          {
+            costCredits: 5n,
+            role: 'PRIMARY',
+            terminalValidated: true,
+            usefulToPublishedResult: true,
+            wasRetry: false,
+          },
+          {
+            costCredits: 4n,
+            role: 'TARGETED_VERIFIER',
+            terminalValidated: true,
+            usefulToPublishedResult: true,
+            wasRetry: false,
+          },
+        ],
+        ceilingCredits: 20n,
+        feeCredits: 1n,
+        floorCredits: 1n,
+        targetMarginCredits: 1n,
+        usableResult: true,
+      }),
+    ).toEqual({
+      absorbedCeilingOverrunCredits: 0n,
+      absorbedProviderCostCredits: 3n,
+      billableProviderCostCredits: 9n,
+      providerCostCredits: 12n,
+      releasedCredits: 9n,
+      settledCredits: 11n,
+    });
+  });
+
+  it('releases the full ceiling and absorbs every call without a usable result', () => {
+    expect(
+      calculateCompositeSettlement({
+        calls: [
+          {
+            costCredits: 7n,
+            role: 'PRIMARY',
+            terminalValidated: false,
+            usefulToPublishedResult: false,
+            wasRetry: false,
+          },
+        ],
+        ceilingCredits: 20n,
+        feeCredits: 1n,
+        floorCredits: 1n,
+        targetMarginCredits: 1n,
+        usableResult: false,
+      }),
+    ).toMatchObject({
+      absorbedCeilingOverrunCredits: 0n,
+      absorbedProviderCostCredits: 7n,
+      releasedCredits: 20n,
+      settledCredits: 0n,
+    });
+  });
+
+  it('caps settlement and exposes provider overrun for audit', () => {
+    expect(
+      calculateCompositeSettlement({
+        calls: [
+          {
+            costCredits: 12n,
+            role: 'PRIMARY',
+            terminalValidated: true,
+            usefulToPublishedResult: true,
+            wasRetry: false,
+          },
+        ],
+        ceilingCredits: 10n,
+        feeCredits: 1n,
+        floorCredits: 1n,
+        targetMarginCredits: 1n,
+        usableResult: true,
+      }),
+    ).toMatchObject({
+      absorbedCeilingOverrunCredits: 4n,
+      absorbedProviderCostCredits: 0n,
+      releasedCredits: 0n,
+      settledCredits: 10n,
+    });
+  });
+});
+
 const entry: PricingEntrySnapshot = {
   action: 'STANDARD',
   catalogVersionId: 'catalog-id',
@@ -57,6 +159,7 @@ const entry: PricingEntrySnapshot = {
   floorCredits: 8n,
   id: 'entry-id',
   includesAutomaticSecondPass: true,
+  includesTargetedVerification: false,
   inputSizeClass: 'SHORT',
   providerMedianCostCredits: 4n,
   providerMedianCostUsd: '0.04000000',
@@ -83,20 +186,23 @@ function makeRepository(): AiPricingQuoteRepository & {
         ceilingCredits: input.price.ceilingCredits,
         contractKey: input.target.contract.contractKey,
         contractVersion: input.target.contract.version,
+        costDimensionsSnapshot: input.catalog.costDimensions,
         createdAt: new Date('2026-08-12T13:00:00.000Z'),
         estimatedCredits: input.price.estimatedCredits,
         expiresAt: input.expiresAt,
         floorCredits: input.price.floorCredits,
         id: `quote-${created.length}`,
-        includesAutomaticSecondPass:
-          input.entry.includesAutomaticSecondPass,
+        includesAutomaticSecondPass: input.entry.includesAutomaticSecondPass,
+        includesTargetedVerification: input.entry.includesTargetedVerification,
         inputSizeClass: input.entry.inputSizeClass,
         language: input.catalog.language,
         modelId: input.catalog.modelId,
+        pipelineIdentitySnapshot: input.catalog.pipelineIdentitySnapshot,
         promptVersion: input.catalog.promptVersion,
         requestFingerprint: input.requestFingerprint,
         target: input.target.target,
         userId: input.userId,
+        workflowKind: input.catalog.workflowKind,
       };
       quotes.push(quote);
       return quote;
@@ -106,10 +212,12 @@ function makeRepository(): AiPricingQuoteRepository & {
         catalog: {
           benchmarkId: 'benchmark-approved',
           corpusId: 'corpus-fr-v1',
+          costDimensions: null,
           currency: 'LEARNX_CREDIT',
           id: 'catalog-id',
           language: 'fr-FR',
           modelId: 'vendor/model-20260812',
+          pipelineIdentitySnapshot: null,
           promptVersion: '1.0.0',
           provider: 'openrouter',
           providerRateCardEffectiveAt: new Date('2026-08-12T00:00:00.000Z'),
@@ -117,6 +225,7 @@ function makeRepository(): AiPricingQuoteRepository & {
           quoteTtlSeconds: 900,
           usesPromotionalProviderRates: false,
           version: '1.0.0',
+          workflowKind: 'SINGLE_MODEL',
         },
         entry,
       };
@@ -162,7 +271,11 @@ describe('AI pricing calculations', () => {
         providerCallCostsCredits: [3n, 4n, 2n],
         targetMarginCredits: 3n,
       }),
-    ).toEqual({ marginCredits: 3n, priceCredits: 14n, providerCostCredits: 9n });
+    ).toEqual({
+      marginCredits: 3n,
+      priceCredits: 14n,
+      providerCostCredits: 9n,
+    });
   });
 
   it('fails closed when actual provider costs would create a negative margin', () => {
@@ -192,7 +305,10 @@ describe('AI pricing quote service', () => {
     const request = {
       action: 'STANDARD' as const,
       idempotencyKey: 'quote:request:123',
-      target: { id: '11111111-1111-4111-8111-111111111111', kind: 'EXERCISE_SUBMISSION' as const },
+      target: {
+        id: '11111111-1111-4111-8111-111111111111',
+        kind: 'EXERCISE_SUBMISSION' as const,
+      },
       userId: 'user-id',
     };
 
@@ -217,10 +333,46 @@ describe('AI pricing quote service', () => {
       service.quote({
         action: 'STANDARD',
         idempotencyKey: 'quote:request:missing',
-        target: { id: '11111111-1111-4111-8111-111111111111', kind: 'EXERCISE_SUBMISSION' },
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
         userId: 'user-id',
       }),
     ).rejects.toMatchObject({ code: 'CATALOG_UNAVAILABLE' });
+  });
+
+  it('rejects a composite catalog whose immutable pipeline snapshot is absent', async () => {
+    const repository = makeRepository();
+    const baseFindActiveEntry = repository.findActiveEntry.bind(repository);
+    repository.findActiveEntry = async (input) => {
+      const selected = await baseFindActiveEntry(input);
+      if (!selected) return null;
+      return {
+        catalog: {
+          ...selected.catalog,
+          pipelineIdentitySnapshot: null,
+          workflowKind: 'COMPOSITE',
+        },
+        entry: {
+          ...selected.entry,
+          includesTargetedVerification: true,
+        },
+      };
+    };
+    const service = new AiPricingQuoteService(repository);
+
+    await expect(
+      service.quote({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:request:composite',
+        target: {
+          id: '11111111-1111-4111-8111-111111111111',
+          kind: 'EXERCISE_SUBMISSION',
+        },
+        userId: 'user-id',
+      }),
+    ).rejects.toMatchObject({ code: 'INVALID_CATALOG_METRICS' });
   });
 
   it('rejects an expired idempotent quote instead of silently reusing it', async () => {
@@ -230,7 +382,10 @@ describe('AI pricing quote service', () => {
     const request = {
       action: 'STANDARD' as const,
       idempotencyKey: 'quote:request:expired',
-      target: { id: '11111111-1111-4111-8111-111111111111', kind: 'EXERCISE_SUBMISSION' as const },
+      target: {
+        id: '11111111-1111-4111-8111-111111111111',
+        kind: 'EXERCISE_SUBMISSION' as const,
+      },
       userId: 'user-id',
     };
     await service.quote(request);
@@ -252,7 +407,10 @@ describe('AI pricing quote service', () => {
     const request = {
       action: 'STANDARD' as const,
       idempotencyKey: 'quote:request:conflict',
-      target: { id: '11111111-1111-4111-8111-111111111111', kind: 'EXERCISE_SUBMISSION' as const },
+      target: {
+        id: '11111111-1111-4111-8111-111111111111',
+        kind: 'EXERCISE_SUBMISSION' as const,
+      },
       userId: 'user-id',
     };
     await service.quote(request);

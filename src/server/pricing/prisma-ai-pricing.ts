@@ -30,13 +30,19 @@ function coefficientBasisPoints(value: Prisma.Decimal): bigint {
   return BigInt(scaled.toFixed(0));
 }
 
+function asJson(value: unknown): Prisma.InputJsonValue {
+  return value as Prisma.InputJsonValue;
+}
+
 function catalogSnapshot(input: {
   benchmarkId: string;
   corpusId: string;
+  costDimensions: Prisma.JsonValue | null;
   currency: 'LEARNX_CREDIT';
   id: string;
   language: string;
   modelId: string;
+  pipelineIdentitySnapshot: Prisma.JsonValue | null;
   promptVersion: string;
   provider: string;
   providerRateCardEffectiveAt: Date | null;
@@ -44,6 +50,7 @@ function catalogSnapshot(input: {
   quoteTtlSeconds: number;
   usesPromotionalProviderRates: boolean;
   version: string;
+  workflowKind: PricingCatalogSnapshot['workflowKind'];
 }): PricingCatalogSnapshot {
   return input;
 }
@@ -55,6 +62,7 @@ function entrySnapshot(input: {
   floorCredits: bigint;
   id: string;
   includesAutomaticSecondPass: boolean;
+  includesTargetedVerification: boolean;
   inputSizeClass: PricingEntrySnapshot['inputSizeClass'];
   providerMedianCostCredits: bigint;
   providerMedianCostUsd: Prisma.Decimal;
@@ -79,6 +87,7 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     action: pricingAction(quote.action),
     catalogVersionId: quote.catalogVersionId,
     ceilingCredits: quote.ceilingCredits,
+    costDimensionsSnapshot: quote.costDimensionsSnapshot,
     contractKey: quote.contractKey,
     contractVersion: quote.contractVersion,
     createdAt: quote.createdAt,
@@ -87,13 +96,16 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     floorCredits: quote.floorCredits,
     id: quote.id,
     includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
+    includesTargetedVerification: quote.includesTargetedVerification,
     inputSizeClass: quote.inputSizeClass,
     language: quote.language,
     modelId: quote.modelId,
+    pipelineIdentitySnapshot: quote.pipelineIdentitySnapshot,
     promptVersion: quote.promptVersion,
     requestFingerprint: quote.requestFingerprint,
     target: { id: quote.targetId, kind: quote.targetKind },
     userId: quote.userId,
+    workflowKind: quote.workflowKind,
   };
 }
 
@@ -113,9 +125,7 @@ function targetSnapshot(input: {
   };
 }
 
-export class PrismaAiPricingQuoteRepository
-  implements AiPricingQuoteRepository
-{
+export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository {
   public constructor(private readonly prisma: PrismaClient) {}
 
   public async resolveTarget(
@@ -133,7 +143,11 @@ export class PrismaAiPricingQuoteRepository
               lesson: {
                 select: {
                   module: {
-                    select: { stage: { select: { program: { select: { locale: true } } } } },
+                    select: {
+                      stage: {
+                        select: { program: { select: { locale: true } } },
+                      },
+                    },
                   },
                 },
               },
@@ -173,13 +187,18 @@ export class PrismaAiPricingQuoteRepository
       : null;
   }
 
-  public async findActiveEntry(input: Parameters<AiPricingQuoteRepository['findActiveEntry']>[0]) {
+  public async findActiveEntry(
+    input: Parameters<AiPricingQuoteRepository['findActiveEntry']>[0],
+  ) {
     const entries = await this.prisma.aiPricingCatalogEntry.findMany({
       where: {
         action: input.action,
         status: AiPricingCatalogStatus.ACTIVE,
         minInputChars: { lte: input.inputChars },
-        OR: [{ maxInputChars: null }, { maxInputChars: { gte: input.inputChars } }],
+        OR: [
+          { maxInputChars: null },
+          { maxInputChars: { gte: input.inputChars } },
+        ],
         catalogVersion: {
           status: AiPricingCatalogStatus.ACTIVE,
           language: input.language,
@@ -189,7 +208,8 @@ export class PrismaAiPricingQuoteRepository
       include: { catalogVersion: true },
     });
     if (entries.length === 0) return null;
-    if (entries.length !== 1) throw new AiPricingError('INVALID_CATALOG_METRICS');
+    if (entries.length !== 1)
+      throw new AiPricingError('INVALID_CATALOG_METRICS');
     const [entry] = entries;
     if (!entry) throw new AiPricingError('INVALID_CATALOG_METRICS');
     return {
@@ -209,16 +229,25 @@ export class PrismaAiPricingQuoteRepository
         ceilingCredits: input.price.ceilingCredits,
         contractKey: input.target.contract.contractKey,
         contractVersion: input.target.contract.version,
+        costDimensionsSnapshot:
+          input.catalog.costDimensions === null
+            ? Prisma.JsonNull
+            : asJson(input.catalog.costDimensions),
         estimatedCredits: input.price.estimatedCredits,
         expiresAt: input.expiresAt,
         feeCreditsSnapshot: input.entry.feeCredits,
         floorCredits: input.price.floorCredits,
         idempotencyKey: input.idempotencyKey,
         includesAutomaticSecondPass: input.entry.includesAutomaticSecondPass,
+        includesTargetedVerification: input.entry.includesTargetedVerification,
         inputChars: input.inputChars,
         inputSizeClass: input.entry.inputSizeClass,
         language: input.catalog.language,
         modelId: input.catalog.modelId,
+        pipelineIdentitySnapshot:
+          input.catalog.pipelineIdentitySnapshot === null
+            ? Prisma.JsonNull
+            : asJson(input.catalog.pipelineIdentitySnapshot),
         promptVersion: input.catalog.promptVersion,
         provider: input.catalog.provider,
         providerMedianCostUsdSnapshot: input.entry.providerMedianCostUsd,
@@ -232,6 +261,7 @@ export class PrismaAiPricingQuoteRepository
         targetKind: input.target.target.kind,
         targetMarginCreditsSnapshot: input.entry.targetMarginCredits,
         userId: input.userId,
+        workflowKind: input.catalog.workflowKind,
       },
     });
     return storedQuote(quote);

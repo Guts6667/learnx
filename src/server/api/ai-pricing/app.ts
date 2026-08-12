@@ -17,7 +17,9 @@ const requestSchema = z
     action: z.enum(AI_PRICING_ACTIONS),
     idempotencyKey: z.string().min(8).max(200),
     target: z.discriminatedUnion('kind', [
-      z.object({ id: z.uuid(), kind: z.literal('EXERCISE_SUBMISSION') }).strict(),
+      z
+        .object({ id: z.uuid(), kind: z.literal('EXERCISE_SUBMISSION') })
+        .strict(),
       z
         .object({
           id: z.uuid(),
@@ -104,7 +106,11 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
         ? pricingApiError(error)
         : error instanceof ApiError
           ? error
-          : new ApiError('INTERNAL_ERROR', 'An unexpected error occurred.', 500);
+          : new ApiError(
+              'INTERNAL_ERROR',
+              'An unexpected error occurred.',
+              500,
+            );
     return context.json(toApiErrorBody(apiError), apiError.status);
   });
 
@@ -129,12 +135,11 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
           expiresAt: quote.expiresAt.toISOString(),
           id: quote.id,
           includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
+          includesTargetedVerification: quote.includesTargetedVerification,
           maximumReservedCredits: quote.ceilingCredits.toString(),
           releasePolicy: 'ACTUAL_USAGE_ONLY',
           scope:
-            quote.action === 'RECONSIDERATION'
-              ? 'RECONSIDERATION'
-              : 'PRIMARY',
+            quote.action === 'RECONSIDERATION' ? 'RECONSIDERATION' : 'PRIMARY',
         },
       },
       201,
