@@ -1,7 +1,8 @@
 # V4-008 — Registre de consultation
 
-**Statut du ticket :** consultations reçues et arbitrées ; implémentation
-autorisée avec des politiques versionnées laissées `DRAFT` ou `INACTIVE`.
+**Statut du ticket :** clôturé ; consultations reçues et arbitrées,
+implémentation validée avec des politiques versionnées laissées `DRAFT` ou
+`INACTIVE`.
 
 **Date :** 2026-08-12
 
@@ -77,6 +78,6 @@ supprimer lots, ventilations, audits ou écritures append-only.
 - [x] Références Atlas reçues.
 - [x] Contradictions V4-006 documentées et corrigées.
 - [x] Aucune politique active ou valeur fictive introduite.
-- [ ] Migration, service et surfaces validés par la suite complète.
+- [x] Migration, service et surfaces validés par la suite complète.
 
 V4-008A et V4-009 restent explicitement hors périmètre.
