@@ -727,6 +727,15 @@ function ProgramsView({ programs }: { programs: AdminProgramSummary[] }) {
         </NavigationAction>
       </Section>
       <Section class="space-y-3">
+        <h2 class="text-xl font-medium">{t('admin.credits.title')}</h2>
+        <p class="ui-text-muted leading-7">
+          {t('admin.credits.description')}
+        </p>
+        <NavigationAction href="/admin/credits" variant="secondary">
+          {t('admin.credits.open')}
+        </NavigationAction>
+      </Section>
+      <Section class="space-y-3">
         <h2 class="text-xl font-medium">{t('admin.contacts.title')}</h2>
         <p class="ui-text-muted leading-7">
           {t('admin.contacts.description')}

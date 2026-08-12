@@ -114,6 +114,13 @@ export function ProfilePage() {
             {t('profile.actions')}
           </h2>
           <div class="flex w-full min-w-0 flex-col gap-3">
+            <NavigationAction
+              class="w-full min-w-0 text-center"
+              href="/credits"
+              variant="secondary"
+            >
+              {t('profile.openCredits')}
+            </NavigationAction>
             {user.role === 'ADMIN' ? (
               <NavigationAction
                 class="w-full min-w-0 text-center"

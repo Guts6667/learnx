@@ -48,6 +48,7 @@ export interface ReserveCreditsInput {
   amount: bigint;
   expiresAt: Date;
   idempotencyKey: string;
+  priorityLotIds: readonly string[];
   reference: CreditReference;
   userId: string;
 }
@@ -66,7 +67,7 @@ export interface ReleaseCreditsInput {
 export interface AdjustCreditsInput {
   actorUserId: string;
   amount: bigint;
-  compensatesEntryId: string;
+  compensatesEntryId?: string;
   expiresAt?: Date;
   idempotencyKey: string;
   provenance: CreditProvenanceValue;
@@ -204,16 +205,7 @@ export class PrismaCreditLedger {
     transaction: Transaction,
     accountId: string,
   ): Promise<void> {
-    const account = await transaction.creditAccount.findUniqueOrThrow({
-      where: { id: accountId },
-    });
-    const rebuilt = await this.balanceFromLedger(transaction, accountId);
-    if (
-      rebuilt.free !== account.freeBalance ||
-      rebuilt.purchased !== account.purchasedBalance
-    ) {
-      throw new CreditLedgerError('LEDGER_INCONSISTENT');
-    }
+    await this.balanceFromLedger(transaction, accountId);
   }
 
   private async expireFreeLots(
@@ -227,31 +219,32 @@ export class PrismaCreditLedger {
         accountId,
         expiresAt: { lte: now },
         provenance: CreditProvenance.FREE_ALLOCATION,
-        remainingAmount: { gt: 0n },
       },
+      include: { ledgerEntries: { select: { amount: true } } },
       orderBy: [{ expiresAt: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
     });
     for (const lot of lots) {
+      const availableAmount = lot.ledgerEntries.reduce(
+        (total, entry) => total + entry.amount,
+        0n,
+      );
+      if (availableAmount <= 0n) continue;
       const operationKey = `expiration:${lot.id}`;
       const sequence =
         (await transaction.creditLedgerEntry.count({
           where: { accountId, operationKey },
         })) + 1;
       const fingerprint = creditRequestFingerprint({
-        amount: lot.remainingAmount,
+        amount: availableAmount,
         expiresAt: lot.expiresAt,
         lotId: lot.id,
         sequence,
         type: 'EXPIRATION',
       });
-      await transaction.creditLot.update({
-        where: { id: lot.id },
-        data: { remainingAmount: 0n },
-      });
       await transaction.creditLedgerEntry.create({
         data: {
           accountId,
-          amount: -lot.remainingAmount,
+          amount: -availableAmount,
           currency: CreditCurrency.LEARNX_CREDIT,
           lotId: lot.id,
           operationKey,
@@ -264,10 +257,6 @@ export class PrismaCreditLedger {
           userId,
         },
       });
-      await transaction.creditAccount.update({
-        where: { id: accountId },
-        data: { freeBalance: { decrement: lot.remainingAmount } },
-      });
     }
   }
 
@@ -276,19 +265,29 @@ export class PrismaCreditLedger {
     accountId: string,
   ): Promise<SpendableCreditLot[]> {
     const lots = await transaction.creditLot.findMany({
-      where: { accountId, remainingAmount: { gt: 0n } },
+      where: { accountId },
       select: {
         createdAt: true,
         expiresAt: true,
         id: true,
         provenance: true,
-        remainingAmount: true,
+        ledgerEntries: { select: { amount: true } },
       },
     });
-    return lots.map((lot) => ({
-      ...lot,
-      provenance: domainProvenance(lot.provenance),
-    }));
+    return lots.flatMap((lot) => {
+      const remainingAmount = lot.ledgerEntries.reduce(
+        (total, entry) => total + entry.amount,
+        0n,
+      );
+      if (remainingAmount <= 0n) return [];
+      return [{
+        createdAt: lot.createdAt,
+        expiresAt: lot.expiresAt,
+        id: lot.id,
+        provenance: domainProvenance(lot.provenance),
+        remainingAmount,
+      }];
+    });
   }
 
   public async getBalance(userId: string): Promise<CreditBalance> {
@@ -313,7 +312,8 @@ export class PrismaCreditLedger {
     const now = this.clock();
     if (
       (input.provenance === 'FREE_ALLOCATION' &&
-        (!input.expiresAt || input.expiresAt.getTime() <= now.getTime())) ||
+        input.expiresAt !== undefined &&
+        input.expiresAt.getTime() <= now.getTime()) ||
       (input.provenance === 'PURCHASED' && input.expiresAt !== undefined)
     ) {
       throw new CreditLedgerError('INVALID_EXPIRATION');
@@ -359,13 +359,6 @@ export class PrismaCreditLedger {
           userId: input.userId,
         },
       });
-      await transaction.creditAccount.update({
-        where: { id: account.id },
-        data:
-          provenance === CreditProvenance.FREE_ALLOCATION
-            ? { freeBalance: { increment: input.amount } }
-            : { purchasedBalance: { increment: input.amount } },
-      });
       await this.assertProjection(transaction, account.id);
       return this.result(transaction, account.id, { lotId: lot.id });
     });
@@ -408,6 +401,7 @@ export class PrismaCreditLedger {
         await this.spendableLots(transaction, account.id),
         input.amount,
         now,
+        input.priorityLotIds,
       );
       const reservation = await transaction.creditReservation.create({
         data: {
@@ -421,8 +415,6 @@ export class PrismaCreditLedger {
           userId: input.userId,
         },
       });
-      let freeHeld = 0n;
-      let purchasedHeld = 0n;
       for (const [index, allocation] of allocations.entries()) {
         const provenance = dbProvenance(allocation.provenance);
         await transaction.creditReservationAllocation.create({
@@ -433,10 +425,6 @@ export class PrismaCreditLedger {
             position: index + 1,
             reservationId: reservation.id,
           },
-        });
-        await transaction.creditLot.update({
-          where: { id: allocation.lotId },
-          data: { remainingAmount: { decrement: allocation.amount } },
         });
         await transaction.creditLedgerEntry.create({
           data: {
@@ -455,19 +443,7 @@ export class PrismaCreditLedger {
             userId: input.userId,
           },
         });
-        if (provenance === CreditProvenance.FREE_ALLOCATION) {
-          freeHeld += allocation.amount;
-        } else {
-          purchasedHeld += allocation.amount;
-        }
       }
-      await transaction.creditAccount.update({
-        where: { id: account.id },
-        data: {
-          freeBalance: { decrement: freeHeld },
-          purchasedBalance: { decrement: purchasedHeld },
-        },
-      });
       await this.assertProjection(transaction, account.id);
       return this.result(transaction, account.id, {
         reservation: {
@@ -491,8 +467,6 @@ export class PrismaCreditLedger {
       include: { lot: true },
       orderBy: { position: 'asc' },
     });
-    let freeDelta = 0n;
-    let purchasedDelta = 0n;
     let sequence = 1;
     const operationKey =
       amount === 0n ? `release:${reservation.id}` : `settle:${reservation.id}`;
@@ -552,24 +526,7 @@ export class PrismaCreditLedger {
         });
         sequence += 1;
       }
-      const restored = planned.restoredAmount;
-      await transaction.creditLot.update({
-        where: { id: allocation.lotId },
-        data: { remainingAmount: { increment: restored } },
-      });
-      if (allocation.lot.provenance === CreditProvenance.FREE_ALLOCATION) {
-        freeDelta += restored;
-      } else {
-        purchasedDelta += restored;
-      }
     }
-    await transaction.creditAccount.update({
-      where: { id: reservation.accountId },
-      data: {
-        freeBalance: { increment: freeDelta },
-        purchasedBalance: { increment: purchasedDelta },
-      },
-    });
     const isRelease = amount === 0n;
     const status = isRelease
       ? expired
@@ -701,11 +658,14 @@ export class PrismaCreditLedger {
     if (input.amount === 0n) throw new CreditLedgerError('INVALID_AMOUNT');
     assertIdempotencyKey(input.idempotencyKey);
     assertAdjustmentReason(input.reason);
+    if (input.provenance === 'PURCHASED') {
+      throw new CreditLedgerError('PURCHASED_CREDITS_PROTECTED');
+    }
     const now = this.clock();
     if (
-      (input.provenance === 'FREE_ALLOCATION' && input.amount > 0n &&
-        (!input.expiresAt || input.expiresAt.getTime() <= now.getTime())) ||
-      (input.provenance === 'PURCHASED' && input.expiresAt !== undefined)
+      input.amount > 0n &&
+      input.expiresAt !== undefined &&
+      input.expiresAt.getTime() <= now.getTime()
     ) {
       throw new CreditLedgerError('INVALID_EXPIRATION');
     }
@@ -727,10 +687,19 @@ export class PrismaCreditLedger {
         }
         return this.result(transaction, account.id);
       }
-      const compensated = await transaction.creditLedgerEntry.findFirst({
-        where: { accountId: account.id, id: input.compensatesEntryId },
-      });
-      if (!compensated) throw new CreditLedgerError('REFERENCE_NOT_FOUND');
+      const compensated = input.compensatesEntryId
+        ? await transaction.creditLedgerEntry.findFirst({
+            where: { accountId: account.id, id: input.compensatesEntryId },
+          })
+        : null;
+      if (
+        input.amount < 0n &&
+        (!compensated ||
+          compensated.amount <= 0n ||
+          compensated.provenance !== CreditProvenance.FREE_ALLOCATION)
+      ) {
+        throw new CreditLedgerError('REFERENCE_NOT_FOUND');
+      }
       await this.expireFreeLots(transaction, account.id, input.userId, now);
       const provenance = dbProvenance(input.provenance);
       const createdEntryIds: string[] = [];
@@ -742,8 +711,10 @@ export class PrismaCreditLedger {
             initialAmount: input.amount,
             provenance,
             remainingAmount: input.amount,
-            sourceReferenceId: input.compensatesEntryId,
-            sourceReferenceType: 'CREDIT_LEDGER_ENTRY',
+            sourceReferenceId: input.compensatesEntryId ?? input.idempotencyKey,
+            sourceReferenceType: input.compensatesEntryId
+              ? 'CREDIT_LEDGER_ENTRY'
+              : 'ADMIN_CREDIT_ADJUSTMENT',
           },
         });
         const entryId = randomUUID();
@@ -760,26 +731,26 @@ export class PrismaCreditLedger {
             operationSequence: 1,
             provenance,
             reason: input.reason.trim(),
-            referenceId: input.compensatesEntryId,
-            referenceType: 'CREDIT_LEDGER_ENTRY',
+            referenceId: input.compensatesEntryId ?? input.idempotencyKey,
+            referenceType: input.compensatesEntryId
+              ? 'CREDIT_LEDGER_ENTRY'
+              : 'ADMIN_CREDIT_ADJUSTMENT',
             requestFingerprint: fingerprint,
             type: CreditLedgerEntryType.ADMIN_ADJUSTMENT,
             userId: input.userId,
           },
         });
       } else {
+        if (!compensated) throw new CreditLedgerError('REFERENCE_NOT_FOUND');
         const allocations = allocateCreditLots(
           (await this.spendableLots(transaction, account.id)).filter(
             (lot) => lot.provenance === input.provenance,
           ),
           -input.amount,
           now,
+          [compensated.lotId],
         );
         for (const [index, allocation] of allocations.entries()) {
-          await transaction.creditLot.update({
-            where: { id: allocation.lotId },
-            data: { remainingAmount: { decrement: allocation.amount } },
-          });
           const entryId = randomUUID();
           createdEntryIds.push(entryId);
           await transaction.creditLedgerEntry.create({
@@ -794,7 +765,7 @@ export class PrismaCreditLedger {
               operationSequence: index + 1,
               provenance,
               reason: input.reason.trim(),
-              referenceId: input.compensatesEntryId,
+              referenceId: compensated.id,
               referenceType: 'CREDIT_LEDGER_ENTRY',
               requestFingerprint: fingerprint,
               type: CreditLedgerEntryType.ADMIN_ADJUSTMENT,
@@ -803,24 +774,6 @@ export class PrismaCreditLedger {
           });
         }
       }
-      const absoluteAmount = input.amount < 0n ? -input.amount : input.amount;
-      await transaction.creditAccount.update({
-        where: { id: account.id },
-        data:
-          provenance === CreditProvenance.FREE_ALLOCATION
-            ? {
-                freeBalance:
-                  input.amount > 0n
-                    ? { increment: absoluteAmount }
-                    : { decrement: absoluteAmount },
-              }
-            : {
-                purchasedBalance:
-                  input.amount > 0n
-                    ? { increment: absoluteAmount }
-                    : { decrement: absoluteAmount },
-              },
-      });
       await writeAuditEvent(transaction, {
         action: AuditAction.CREDIT_ADMIN_ADJUSTMENT,
         actorUserId: input.actorUserId,
@@ -851,12 +804,7 @@ export class PrismaCreditLedger {
   public async rebuildProjection(userId: string): Promise<CreditBalance> {
     return this.transaction(async (transaction) => {
       const account = await this.lockAccount(transaction, userId);
-      const rebuilt = await this.balanceFromLedger(transaction, account.id);
-      await transaction.creditAccount.update({
-        where: { id: account.id },
-        data: { freeBalance: rebuilt.free, purchasedBalance: rebuilt.purchased },
-      });
-      return rebuilt;
+      return this.balanceFromLedger(transaction, account.id);
     });
   }
 }
