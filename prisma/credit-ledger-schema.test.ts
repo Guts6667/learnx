@@ -54,6 +54,7 @@ describe('V4-006 credit ledger schema', () => {
   it('requires audited compensating admin entries', () => {
     expect(schema).toContain('CREDIT_ADMIN_ADJUSTMENT');
     expect(migration).toContain('credit_ledger_entries_admin_audit_check');
+    expect(service).toContain("targetType: 'credit_ledger_entry'");
     expect(migration).toContain(
       '"type" = \'admin_adjustment\' AND "actor_user_id" IS NOT NULL',
     );

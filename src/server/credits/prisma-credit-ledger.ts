@@ -841,7 +841,7 @@ export class PrismaCreditLedger {
           reason: input.reason.trim(),
         },
         targetId: createdEntryIds[0],
-        targetType: 'CREDIT_LEDGER_ENTRY',
+        targetType: 'credit_ledger_entry',
       });
       await this.assertProjection(transaction, account.id);
       return this.result(transaction, account.id);
