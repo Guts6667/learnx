@@ -289,6 +289,28 @@ export function LandingPage({ path }: { path?: string }) {
           </div>
           <p>{t('landing.roadmap.description')}</p>
         </section>
+        <section
+          aria-labelledby="landing-research"
+          class="landing-section landing-research"
+        >
+          <div>
+            <p class="page-eyebrow">{t('landing.research.eyebrow')}</p>
+            <h2 id="landing-research">{t('landing.research.title')}</h2>
+          </div>
+          <div>
+            <p>{t('landing.research.description')}</p>
+            <a
+              class="ui-action ui-action--secondary"
+              href={
+                locale === 'en'
+                  ? '/research/ai-correction/en.html'
+                  : '/research/ai-correction/'
+              }
+            >
+              {t('landing.research.action')}
+            </a>
+          </div>
+        </section>
         <section class="landing-forms">
           <article id="early-adopter">
             <p class="page-eyebrow">{t('landing.early.eyebrow')}</p>

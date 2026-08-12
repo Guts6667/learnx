@@ -251,6 +251,23 @@ body {
   align-items: start;
 }
 
+.landing-research {
+  align-items: start;
+  gap: 1rem;
+  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  border-top: 2px solid var(--color-action);
+}
+
+.landing-research h2 {
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.landing-research .ui-action {
+  min-height: 2.75rem;
+  margin-top: 1.25rem;
+}
+
 .landing-proof-list {
   list-style: none;
   margin: 0;
@@ -450,6 +467,10 @@ body {
   .landing-section,
   .landing-forms {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .landing-research {
+    gap: 2.5rem;
   }
 }
 
