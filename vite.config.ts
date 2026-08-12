@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 
+import { pwaNavigateFallbackDenylist } from './src/lib/pwa-navigation.ts';
+
 export default defineConfig({
   plugins: [
     preact(),
@@ -43,10 +45,7 @@ export default defineConfig({
         globPatterns: ['**/*.{css,html,js,png,svg,woff2}'],
         importScripts: ['/sw-cache-cleanup.js'],
         navigateFallback: 'index.html',
-        navigateFallbackDenylist: [
-          /^\/api\//,
-          /^\/(?:login|request-access|verify-email|activate|interest)(?:\/|$)/,
-        ],
+        navigateFallbackDenylist: pwaNavigateFallbackDenylist,
         runtimeCaching: [
           {
             handler: 'NetworkFirst',

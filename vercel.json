@@ -43,7 +43,7 @@
       "destination": "/api"
     },
     {
-      "source": "/((?!api/|@|src/|node_modules/).*)",
+      "source": "/((?!api/|@|src/|node_modules/|research/).*)",
       "destination": "/index.html"
     }
   ]
