@@ -300,7 +300,7 @@ export function LandingPage({ path }: { path?: string }) {
           <div>
             <p>{t('landing.research.description')}</p>
             <a
-              class="ui-action ui-action--secondary"
+              class="ui-action ui-action--secondary ui-action--md"
               href={
                 locale === 'en'
                   ? '/research/ai-correction/en.html'

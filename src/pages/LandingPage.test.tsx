@@ -72,9 +72,11 @@ describe('LandingPage', () => {
     expect(
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Lire le rapport de recherche' }),
-    ).toHaveAttribute('href', '/research/ai-correction/');
+    const researchLink = screen.getByRole('link', {
+      name: 'Lire le rapport de recherche',
+    });
+    expect(researchLink).toHaveAttribute('href', '/research/ai-correction/');
+    expect(researchLink).toHaveClass('ui-action--md');
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
