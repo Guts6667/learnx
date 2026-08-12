@@ -306,6 +306,8 @@ export function LandingPage({ path }: { path?: string }) {
                   ? '/research/ai-correction/en.html'
                   : '/research/ai-correction/'
               }
+              rel="noopener"
+              target="_blank"
             >
               {t('landing.research.action')}
             </a>
