@@ -42,6 +42,7 @@ function catalogSnapshot(input: {
   id: string;
   language: string;
   modelId: string;
+  pipelineVersionId: string | null;
   pipelineIdentitySnapshot: Prisma.JsonValue | null;
   promptVersion: string;
   provider: string;
@@ -93,6 +94,7 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     createdAt: quote.createdAt,
     estimatedCredits: quote.estimatedCredits,
     expiresAt: quote.expiresAt,
+    feeCredits: quote.feeCreditsSnapshot,
     floorCredits: quote.floorCredits,
     id: quote.id,
     includesAutomaticSecondPass: quote.includesAutomaticSecondPass,
@@ -100,9 +102,11 @@ function storedQuote(quote: AiPricingQuote): StoredPricingQuote {
     inputSizeClass: quote.inputSizeClass,
     language: quote.language,
     modelId: quote.modelId,
+    pipelineVersionId: quote.pipelineVersionId,
     pipelineIdentitySnapshot: quote.pipelineIdentitySnapshot,
     promptVersion: quote.promptVersion,
     requestFingerprint: quote.requestFingerprint,
+    targetMarginCredits: quote.targetMarginCreditsSnapshot,
     target: { id: quote.targetId, kind: quote.targetKind },
     userId: quote.userId,
     workflowKind: quote.workflowKind,
@@ -248,6 +252,7 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
           input.catalog.pipelineIdentitySnapshot === null
             ? Prisma.JsonNull
             : asJson(input.catalog.pipelineIdentitySnapshot),
+        pipelineVersionId: input.catalog.pipelineVersionId,
         promptVersion: input.catalog.promptVersion,
         provider: input.catalog.provider,
         providerMedianCostUsdSnapshot: input.entry.providerMedianCostUsd,
@@ -277,6 +282,16 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
     return quote ? storedQuote(quote) : null;
   }
 
+  public async findQuoteById(
+    userId: string,
+    quoteId: string,
+  ): Promise<StoredPricingQuote | null> {
+    const quote = await this.prisma.aiPricingQuote.findFirst({
+      where: { id: quoteId, userId },
+    });
+    return quote ? storedQuote(quote) : null;
+  }
+
   public async isQuoteCurrentlyCompatible(
     quote: StoredPricingQuote,
     now: Date,
@@ -287,13 +302,17 @@ export class PrismaAiPricingQuoteRepository implements AiPricingQuoteRepository 
           action: quote.action,
           catalogVersionId: quote.catalogVersionId,
           inputSizeClass: quote.inputSizeClass,
+          includesTargetedVerification:
+            quote.includesTargetedVerification,
           status: AiPricingCatalogStatus.ACTIVE,
           catalogVersion: {
             effectiveAt: { lte: now },
             language: quote.language,
             modelId: quote.modelId,
+            pipelineVersionId: quote.pipelineVersionId,
             promptVersion: quote.promptVersion,
             status: AiPricingCatalogStatus.ACTIVE,
+            workflowKind: quote.workflowKind,
           },
         },
       })) === 1

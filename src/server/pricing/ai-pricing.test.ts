@@ -190,6 +190,7 @@ function makeRepository(): AiPricingQuoteRepository & {
         createdAt: new Date('2026-08-12T13:00:00.000Z'),
         estimatedCredits: input.price.estimatedCredits,
         expiresAt: input.expiresAt,
+        feeCredits: input.entry.feeCredits,
         floorCredits: input.price.floorCredits,
         id: `quote-${created.length}`,
         includesAutomaticSecondPass: input.entry.includesAutomaticSecondPass,
@@ -198,8 +199,10 @@ function makeRepository(): AiPricingQuoteRepository & {
         language: input.catalog.language,
         modelId: input.catalog.modelId,
         pipelineIdentitySnapshot: input.catalog.pipelineIdentitySnapshot,
+        pipelineVersionId: input.catalog.pipelineVersionId,
         promptVersion: input.catalog.promptVersion,
         requestFingerprint: input.requestFingerprint,
+        targetMarginCredits: input.entry.targetMarginCredits,
         target: input.target.target,
         userId: input.userId,
         workflowKind: input.catalog.workflowKind,
@@ -218,6 +221,7 @@ function makeRepository(): AiPricingQuoteRepository & {
           language: 'fr-FR',
           modelId: 'vendor/model-20260812',
           pipelineIdentitySnapshot: null,
+          pipelineVersionId: null,
           promptVersion: '1.0.0',
           provider: 'openrouter',
           providerRateCardEffectiveAt: new Date('2026-08-12T00:00:00.000Z'),
@@ -241,6 +245,12 @@ function makeRepository(): AiPricingQuoteRepository & {
                 candidate.requestFingerprint === quote.requestFingerprint,
             ),
         ) ?? null
+      );
+    },
+    async findQuoteById(userId, quoteId) {
+      return (
+        quotes.find((quote) => quote.userId === userId && quote.id === quoteId) ??
+        null
       );
     },
     async isQuoteCurrentlyCompatible() {

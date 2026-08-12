@@ -18,6 +18,7 @@ import {
   assertIdempotencyKey,
   creditRequestFingerprint,
   planCreditSettlement,
+  reservationEffectiveExpiration,
   reconstructCreditBalance,
   type CreditBalance,
   type CreditProvenanceValue,
@@ -60,6 +61,12 @@ export interface SettleCreditsInput {
 }
 
 export interface ReleaseCreditsInput {
+  reservationId: string;
+  userId: string;
+}
+
+export interface ActivateReservationLeaseInput {
+  expiresAt: Date;
   reservationId: string;
   userId: string;
 }
@@ -580,13 +587,64 @@ export class PrismaCreditLedger {
       if (reservation.status !== CreditReservationStatus.RESERVED) {
         throw new CreditLedgerError('RESERVATION_STATE_CONFLICT');
       }
-      if (reservation.expiresAt.getTime() <= this.clock().getTime()) {
+      const effectiveExpiration = reservationEffectiveExpiration({
+        executionLeaseExpiresAt: reservation.executionLeaseExpiresAt,
+        holdExpiresAt: reservation.expiresAt,
+      });
+      if (effectiveExpiration.getTime() <= this.clock().getTime()) {
         throw new CreditLedgerError('RESERVATION_EXPIRED');
       }
       if (input.amount > reservation.ceilingAmount) {
         throw new CreditLedgerError('INVALID_AMOUNT');
       }
       return this.finalizeReservation(transaction, reservation, input.amount, false);
+    });
+  }
+
+  public async activateReservationLease(
+    input: ActivateReservationLeaseInput,
+  ): Promise<CreditOperationResult> {
+    const now = this.clock();
+    if (input.expiresAt.getTime() <= now.getTime()) {
+      throw new CreditLedgerError('INVALID_EXPIRATION');
+    }
+    return this.transaction(async (transaction) => {
+      const account = await this.lockAccount(transaction, input.userId);
+      const reservation = await transaction.creditReservation.findFirst({
+        where: {
+          accountId: account.id,
+          id: input.reservationId,
+          userId: input.userId,
+        },
+      });
+      if (!reservation) throw new CreditLedgerError('RESERVATION_NOT_FOUND');
+      if (reservation.status !== CreditReservationStatus.RESERVED) {
+        throw new CreditLedgerError('RESERVATION_STATE_CONFLICT');
+      }
+      if (
+        reservation.expiresAt.getTime() <= now.getTime() &&
+        (reservation.executionLeaseExpiresAt === null ||
+          reservation.executionLeaseExpiresAt.getTime() <= now.getTime())
+      ) {
+        throw new CreditLedgerError('RESERVATION_EXPIRED');
+      }
+      const executionLeaseExpiresAt =
+        reservation.executionLeaseExpiresAt !== null &&
+        reservation.executionLeaseExpiresAt.getTime() > input.expiresAt.getTime()
+          ? reservation.executionLeaseExpiresAt
+          : input.expiresAt;
+      const updated = await transaction.creditReservation.update({
+        where: { id: reservation.id },
+        data: { executionLeaseExpiresAt },
+      });
+      return this.result(transaction, account.id, {
+        reservation: {
+          ceilingAmount: updated.ceilingAmount,
+          id: updated.id,
+          settledAmount: updated.settledAmount,
+          status: updated.status,
+        },
+      });
     });
   }
 
@@ -620,7 +678,14 @@ export class PrismaCreditLedger {
   public async expireReservations(): Promise<number> {
     const now = this.clock();
     const reservations = await this.prisma.creditReservation.findMany({
-      where: { expiresAt: { lte: now }, status: CreditReservationStatus.RESERVED },
+      where: {
+        expiresAt: { lte: now },
+        status: CreditReservationStatus.RESERVED,
+        OR: [
+          { executionLeaseExpiresAt: null },
+          { executionLeaseExpiresAt: { lte: now } },
+        ],
+      },
       select: { id: true, userId: true },
       orderBy: { expiresAt: 'asc' },
     });
@@ -633,6 +698,10 @@ export class PrismaCreditLedger {
             accountId: account.id,
             expiresAt: { lte: this.clock() },
             id: candidate.id,
+            OR: [
+              { executionLeaseExpiresAt: null },
+              { executionLeaseExpiresAt: { lte: this.clock() } },
+            ],
             status: CreditReservationStatus.RESERVED,
           },
         });

@@ -26,6 +26,7 @@ export interface PricingCatalogSnapshot {
   id: string;
   language: string;
   modelId: string;
+  pipelineVersionId: string | null;
   pipelineIdentitySnapshot: unknown | null;
   promptVersion: string;
   provider: string;
@@ -71,6 +72,7 @@ export interface StoredPricingQuote {
   createdAt: Date;
   estimatedCredits: bigint;
   expiresAt: Date;
+  feeCredits: bigint;
   floorCredits: bigint;
   id: string;
   includesAutomaticSecondPass: boolean;
@@ -78,9 +80,11 @@ export interface StoredPricingQuote {
   inputSizeClass: AiPricingInputSizeClassValue;
   language: string;
   modelId: string;
+  pipelineVersionId: string | null;
   pipelineIdentitySnapshot: unknown | null;
   promptVersion: string;
   requestFingerprint: string;
+  targetMarginCredits: bigint;
   target: AiPricingTarget;
   userId: string;
   workflowKind: 'COMPOSITE' | 'SINGLE_MODEL';
@@ -115,6 +119,10 @@ export interface AiPricingQuoteRepository {
   findQuoteByIdempotency(
     userId: string,
     idempotencyKey: string,
+  ): Promise<StoredPricingQuote | null>;
+  findQuoteById(
+    userId: string,
+    quoteId: string,
   ): Promise<StoredPricingQuote | null>;
   isQuoteCurrentlyCompatible(
     quote: StoredPricingQuote,
@@ -443,6 +451,8 @@ export class AiPricingQuoteService {
     if (
       selection.catalog.workflowKind === 'COMPOSITE' &&
       (!selection.catalog.pipelineIdentitySnapshot ||
+        !selection.catalog.pipelineVersionId ||
+        !selection.catalog.costDimensions ||
         !selection.entry.includesTargetedVerification)
     ) {
       throw new AiPricingError('INVALID_CATALOG_METRICS');

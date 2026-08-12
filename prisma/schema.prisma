@@ -256,19 +256,41 @@ enum AiCorrectionMethod {
 }
 
 enum AiCorrectionStatus {
-  RESERVED           @map("reserved")
-  PROCESSING         @map("processing")
-  PROCESSING_PRIMARY @map("processing_primary")
-  VERIFYING          @map("verifying")
-  COMPLETED          @map("completed")
-  PROVISIONAL        @map("provisional")
-  UNCERTAIN          @map("uncertain")
-  AI_REVIEW_REQUIRED @map("ai_review_required")
-  RETRY_PENDING      @map("retry_pending")
-  UNUSABLE_RELEASED  @map("unusable_released")
-  FAILED_RELEASED    @map("failed_released")
+  RESERVED                @map("reserved")
+  PROCESSING              @map("processing")
+  PROCESSING_PRIMARY      @map("processing_primary")
+  VERIFYING               @map("verifying")
+  COMPLETED               @map("completed")
+  PROVISIONAL             @map("provisional")
+  UNCERTAIN               @map("uncertain")
+  AI_REVIEW_REQUIRED      @map("ai_review_required")
+  RETRY_PENDING           @map("retry_pending")
+  SETTLEMENT_PENDING      @map("settlement_pending")
+  RELEASE_PENDING         @map("release_pending")
+  RECONCILIATION_REQUIRED @map("reconciliation_required")
+  UNUSABLE_RELEASED       @map("unusable_released")
+  FAILED_RELEASED         @map("failed_released")
 
   @@map("ai_correction_status")
+}
+
+enum AiCorrectionFinancialStatus {
+  PENDING                 @map("pending")
+  RECONCILIATION_REQUIRED @map("reconciliation_required")
+  READY_TO_SETTLE         @map("ready_to_settle")
+  SETTLED                 @map("settled")
+  RELEASED                @map("released")
+
+  @@map("ai_correction_financial_status")
+}
+
+enum AiProviderDispatchStatus {
+  PENDING   @map("pending")
+  SENT      @map("sent")
+  CONFIRMED @map("confirmed")
+  ORPHANED  @map("orphaned")
+
+  @@map("ai_provider_dispatch_status")
 }
 
 enum AiCorrectionPipelineKind {
@@ -1165,43 +1187,52 @@ model ExerciseSubmission {
 }
 
 model AiCorrection {
-  id                          String                       @id @default(uuid()) @db.Uuid
-  userId                      String                       @map("user_id") @db.Uuid
-  exerciseSubmissionId        String?                      @map("exercise_submission_id") @db.Uuid
-  stageAssessmentSubmissionId String?                      @map("stage_assessment_submission_id") @db.Uuid
-  method                      AiCorrectionMethod           @default(AI)
-  status                      AiCorrectionStatus           @default(RESERVED)
+  id                          String                          @id @default(uuid()) @db.Uuid
+  userId                      String                          @map("user_id") @db.Uuid
+  exerciseSubmissionId        String?                         @map("exercise_submission_id") @db.Uuid
+  stageAssessmentSubmissionId String?                         @map("stage_assessment_submission_id") @db.Uuid
+  method                      AiCorrectionMethod              @default(AI)
+  status                      AiCorrectionStatus              @default(RESERVED)
   decision                    AiCorrectionDecision?
-  idempotencyKey              String                       @map("idempotency_key")
-  requestFingerprint          String                       @map("request_fingerprint") @db.Char(64)
-  submissionSnapshot          Json                         @map("submission_snapshot_json")
-  contractSnapshot            Json                         @map("contract_snapshot_json")
-  promptSnapshot              Json                         @map("prompt_snapshot_json")
-  promptVersion               String                       @map("prompt_version")
-  modelRole                   String                       @map("model_role")
+  idempotencyKey              String                          @map("idempotency_key")
+  requestFingerprint          String                          @map("request_fingerprint") @db.Char(64)
+  submissionSnapshot          Json                            @map("submission_snapshot_json")
+  contractSnapshot            Json                            @map("contract_snapshot_json")
+  promptSnapshot              Json                            @map("prompt_snapshot_json")
+  promptVersion               String                          @map("prompt_version")
+  modelRole                   String                          @map("model_role")
   provider                    String?
-  modelId                     String?                      @map("model_id")
-  structuredResult            Json?                        @map("structured_result_json")
+  modelId                     String?                         @map("model_id")
+  structuredResult            Json?                           @map("structured_result_json")
   score                       Float?
   confidence                  Float?
-  pipelineKind                AiCorrectionPipelineKind     @default(SINGLE_MODEL) @map("pipeline_kind")
-  pipelineVersionId           String?                      @map("pipeline_version_id") @db.Uuid
-  pipelineIdentitySnapshot    Json?                        @map("pipeline_identity_snapshot_json")
-  triggerDecision             Json?                        @map("trigger_decision_json")
-  consolidation               Json?                        @map("consolidation_json")
-  indicativeScore             Float?                       @map("indicative_score")
-  scoreRange                  Json?                        @map("score_range_json")
-  completedAt                 DateTime?                    @map("completed_at")
-  createdAt                   DateTime                     @default(now()) @map("created_at")
-  updatedAt                   DateTime                     @updatedAt @map("updated_at")
-  user                        User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  exerciseSubmission          ExerciseSubmission?          @relation(fields: [exerciseSubmissionId, userId], references: [id, userId], onDelete: Restrict)
-  stageAssessmentSubmission   StageAssessmentSubmission?   @relation(fields: [stageAssessmentSubmissionId, userId], references: [id, userId], onDelete: Restrict)
+  pipelineKind                AiCorrectionPipelineKind        @default(SINGLE_MODEL) @map("pipeline_kind")
+  pipelineVersionId           String?                         @map("pipeline_version_id") @db.Uuid
+  pipelineIdentitySnapshot    Json?                           @map("pipeline_identity_snapshot_json")
+  triggerDecision             Json?                           @map("trigger_decision_json")
+  consolidation               Json?                           @map("consolidation_json")
+  indicativeScore             Float?                          @map("indicative_score")
+  scoreRange                  Json?                           @map("score_range_json")
+  pricingQuoteId              String?                         @unique @map("pricing_quote_id") @db.Uuid
+  creditReservationId         String?                         @unique @map("credit_reservation_id") @db.Uuid
+  orchestrationFingerprint    String?                         @map("orchestration_fingerprint") @db.Char(64)
+  startedAt                   DateTime?                       @map("started_at")
+  completedAt                 DateTime?                       @map("completed_at")
+  createdAt                   DateTime                        @default(now()) @map("created_at")
+  updatedAt                   DateTime                        @updatedAt @map("updated_at")
+  user                        User                            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseSubmission          ExerciseSubmission?             @relation(fields: [exerciseSubmissionId, userId], references: [id, userId], onDelete: Restrict)
+  stageAssessmentSubmission   StageAssessmentSubmission?      @relation(fields: [stageAssessmentSubmissionId, userId], references: [id, userId], onDelete: Restrict)
   attempts                    AiCorrectionAttempt[]
-  pipelineVersion             AiCorrectionPipelineVersion? @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
+  pipelineVersion             AiCorrectionPipelineVersion?    @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
   roleExecutions              AiCorrectionRoleExecution[]
+  pricingQuote                AiPricingQuote?                 @relation(fields: [pricingQuoteId, userId], references: [id, userId], onDelete: Restrict)
+  creditReservation           CreditReservation?              @relation(fields: [creditReservationId, userId], references: [id, userId], onDelete: Restrict)
+  financialOperation          AiCorrectionFinancialOperation?
 
   @@unique([userId, idempotencyKey])
+  @@unique([pricingQuoteId, userId])
+  @@unique([creditReservationId, userId])
   @@index([exerciseSubmissionId, createdAt])
   @@index([stageAssessmentSubmissionId, createdAt])
   @@index([status, updatedAt])
@@ -1209,33 +1240,36 @@ model AiCorrection {
 }
 
 model AiCorrectionAttempt {
-  id                String                     @id @default(uuid()) @db.Uuid
-  correctionId      String                     @map("correction_id") @db.Uuid
-  sequence          Int
-  status            AiCorrectionAttemptStatus  @default(PROCESSING)
-  provider          String?
-  modelId           String?                    @map("model_id")
-  modelRole         String                     @map("model_role")
-  generationId      String?                    @map("generation_id")
-  structuredResult  Json?                      @map("structured_result_json")
-  errorCode         String?                    @map("error_code")
-  retryable         Boolean?
-  promptTokens      Int?                       @map("prompt_tokens")
-  completionTokens  Int?                       @map("completion_tokens")
-  totalTokens       Int?                       @map("total_tokens")
-  costUsd           Decimal?                   @map("cost_usd") @db.Decimal(18, 8)
-  latencyMs         Int?                       @map("latency_ms")
-  completedAt       DateTime?                  @map("completed_at")
-  createdAt         DateTime                   @default(now()) @map("created_at")
-  roleExecutionId   String?                    @map("role_execution_id") @db.Uuid
-  attemptNumber     Int?                       @map("attempt_number")
-  rawOutput         Json?                      @map("raw_output_json")
-  validationCode    String?                    @map("validation_code")
-  providerRequestId String?                    @map("provider_request_id")
-  modelSnapshot     String?                    @map("model_snapshot")
-  reasoningTokens   Int?                       @map("reasoning_tokens")
-  correction        AiCorrection               @relation(fields: [correctionId], references: [id], onDelete: Cascade)
-  roleExecution     AiCorrectionRoleExecution? @relation(fields: [roleExecutionId], references: [id], onDelete: Restrict)
+  id                     String                     @id @default(uuid()) @db.Uuid
+  correctionId           String                     @map("correction_id") @db.Uuid
+  sequence               Int
+  status                 AiCorrectionAttemptStatus  @default(PROCESSING)
+  provider               String?
+  modelId                String?                    @map("model_id")
+  modelRole              String                     @map("model_role")
+  generationId           String?                    @map("generation_id")
+  structuredResult       Json?                      @map("structured_result_json")
+  errorCode              String?                    @map("error_code")
+  retryable              Boolean?
+  promptTokens           Int?                       @map("prompt_tokens")
+  completionTokens       Int?                       @map("completion_tokens")
+  totalTokens            Int?                       @map("total_tokens")
+  costUsd                Decimal?                   @map("cost_usd") @db.Decimal(18, 8)
+  latencyMs              Int?                       @map("latency_ms")
+  completedAt            DateTime?                  @map("completed_at")
+  createdAt              DateTime                   @default(now()) @map("created_at")
+  roleExecutionId        String?                    @map("role_execution_id") @db.Uuid
+  attemptNumber          Int?                       @map("attempt_number")
+  rawOutput              Json?                      @map("raw_output_json")
+  validationCode         String?                    @map("validation_code")
+  providerRequestId      String?                    @map("provider_request_id")
+  modelSnapshot          String?                    @map("model_snapshot")
+  reasoningTokens        Int?                       @map("reasoning_tokens")
+  providerIdempotencyKey String?                    @unique @map("provider_idempotency_key")
+  dispatchStatus         AiProviderDispatchStatus?  @map("dispatch_status")
+  costConfirmedAt        DateTime?                  @map("cost_confirmed_at")
+  correction             AiCorrection               @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+  roleExecution          AiCorrectionRoleExecution? @relation(fields: [roleExecutionId], references: [id], onDelete: Restrict)
 
   @@unique([correctionId, sequence])
   @@unique([provider, generationId])
@@ -1260,6 +1294,7 @@ model AiCorrectionPipelineVersion {
   createdAt           DateTime                   @default(now()) @map("created_at")
   corrections         AiCorrection[]
   pricingCatalogs     AiPricingCatalogVersion[]
+  pricingQuotes       AiPricingQuote[]
 
   @@unique([pipelineKey, version])
   @@unique([id, identityFingerprint])
@@ -1278,7 +1313,10 @@ model AiCorrectionRoleExecution {
   profileSnapshot    Json                            @map("profile_snapshot_json")
   canonicalResult    Json?                           @map("canonical_result_json")
   rejectionCode      String?                         @map("rejection_code")
+  leaseToken         String?                         @unique @map("lease_token")
+  leaseOwner         String?                         @map("lease_owner")
   leaseExpiresAt     DateTime?                       @map("lease_expires_at")
+  startedAt          DateTime?                       @map("started_at")
   completedAt        DateTime?                       @map("completed_at")
   createdAt          DateTime                        @default(now()) @map("created_at")
   updatedAt          DateTime                        @updatedAt @map("updated_at")
@@ -1288,6 +1326,35 @@ model AiCorrectionRoleExecution {
   @@unique([correctionId, role, ordinal])
   @@index([status, leaseExpiresAt])
   @@map("ai_correction_role_executions")
+}
+
+model AiCorrectionFinancialOperation {
+  id                            String                      @id @default(uuid()) @db.Uuid
+  correctionId                  String                      @unique @map("correction_id") @db.Uuid
+  reservationId                 String                      @unique @map("reservation_id") @db.Uuid
+  userId                        String                      @map("user_id") @db.Uuid
+  status                        AiCorrectionFinancialStatus @default(PENDING)
+  acceptedCeilingCredits        BigInt                      @map("accepted_ceiling_credits")
+  settledCredits                BigInt?                     @map("settled_credits")
+  releasedCredits               BigInt?                     @map("released_credits")
+  providerCostUsd               Decimal?                    @map("provider_cost_usd") @db.Decimal(18, 8)
+  billableProviderCostUsd       Decimal?                    @map("billable_provider_cost_usd") @db.Decimal(18, 8)
+  absorbedProviderCostUsd       Decimal?                    @map("absorbed_provider_cost_usd") @db.Decimal(18, 8)
+  absorbedCeilingOverrunCredits BigInt?                     @map("absorbed_ceiling_overrun_credits")
+  allocationSnapshot            Json                        @map("allocation_snapshot_json")
+  settlementSnapshot            Json?                       @map("settlement_snapshot_json")
+  reconciliationCode            String?                     @map("reconciliation_code")
+  alertRequired                 Boolean                     @default(false) @map("alert_required")
+  completedAt                   DateTime?                   @map("completed_at")
+  createdAt                     DateTime                    @default(now()) @map("created_at")
+  updatedAt                     DateTime                    @updatedAt @map("updated_at")
+  correction                    AiCorrection                @relation(fields: [correctionId], references: [id], onDelete: Restrict)
+  reservation                   CreditReservation           @relation(fields: [reservationId, userId], references: [id, userId], onDelete: Restrict)
+
+  @@unique([reservationId, userId])
+  @@index([status, updatedAt])
+  @@index([userId, createdAt])
+  @@map("ai_correction_financial_operations")
 }
 
 model CreditAccount {
@@ -1333,27 +1400,31 @@ model CreditLot {
 }
 
 model CreditReservation {
-  id                 String                        @id @default(uuid()) @db.Uuid
-  accountId          String                        @map("account_id") @db.Uuid
-  userId             String                        @map("user_id") @db.Uuid
-  status             CreditReservationStatus       @default(RESERVED)
-  ceilingAmount      BigInt                        @map("ceiling_amount")
-  settledAmount      BigInt?                       @map("settled_amount")
-  idempotencyKey     String                        @map("idempotency_key")
-  requestFingerprint String                        @map("request_fingerprint") @db.Char(64)
-  referenceType      String                        @map("reference_type")
-  referenceId        String                        @map("reference_id")
-  expiresAt          DateTime                      @map("expires_at")
-  settledAt          DateTime?                     @map("settled_at")
-  releasedAt         DateTime?                     @map("released_at")
-  createdAt          DateTime                      @default(now()) @map("created_at")
-  updatedAt          DateTime                      @updatedAt @map("updated_at")
-  account            CreditAccount                 @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
-  allocations        CreditReservationAllocation[]
-  ledgerEntries      CreditLedgerEntry[]
+  id                      String                          @id @default(uuid()) @db.Uuid
+  accountId               String                          @map("account_id") @db.Uuid
+  userId                  String                          @map("user_id") @db.Uuid
+  status                  CreditReservationStatus         @default(RESERVED)
+  ceilingAmount           BigInt                          @map("ceiling_amount")
+  settledAmount           BigInt?                         @map("settled_amount")
+  idempotencyKey          String                          @map("idempotency_key")
+  requestFingerprint      String                          @map("request_fingerprint") @db.Char(64)
+  referenceType           String                          @map("reference_type")
+  referenceId             String                          @map("reference_id")
+  expiresAt               DateTime                        @map("expires_at")
+  executionLeaseExpiresAt DateTime?                       @map("execution_lease_expires_at")
+  settledAt               DateTime?                       @map("settled_at")
+  releasedAt              DateTime?                       @map("released_at")
+  createdAt               DateTime                        @default(now()) @map("created_at")
+  updatedAt               DateTime                        @updatedAt @map("updated_at")
+  account                 CreditAccount                   @relation(fields: [accountId, userId], references: [id, userId], onDelete: Restrict)
+  allocations             CreditReservationAllocation[]
+  ledgerEntries           CreditLedgerEntry[]
+  aiCorrection            AiCorrection?
+  financialOperation      AiCorrectionFinancialOperation?
 
   @@unique([accountId, idempotencyKey])
   @@unique([id, accountId])
+  @@unique([id, userId])
   @@index([status, expiresAt])
   @@map("credit_reservations")
 }
@@ -1557,44 +1628,48 @@ model AiPricingCatalogEntry {
 }
 
 model AiPricingQuote {
-  id                            String                  @id @default(uuid()) @db.Uuid
-  userId                        String                  @map("user_id") @db.Uuid
-  catalogVersionId              String                  @map("catalog_version_id") @db.Uuid
-  catalogEntryId                String                  @map("catalog_entry_id") @db.Uuid
+  id                            String                       @id @default(uuid()) @db.Uuid
+  userId                        String                       @map("user_id") @db.Uuid
+  catalogVersionId              String                       @map("catalog_version_id") @db.Uuid
+  catalogEntryId                String                       @map("catalog_entry_id") @db.Uuid
   action                        AiPricingAction
-  inputSizeClass                AiPricingInputSizeClass @map("input_size_class")
-  targetKind                    AiPricingTargetKind     @map("target_kind")
-  targetId                      String                  @map("target_id") @db.Uuid
-  contractKey                   String                  @map("contract_key")
-  contractVersion               String                  @map("contract_version")
-  language                      String                  @db.VarChar(10)
+  inputSizeClass                AiPricingInputSizeClass      @map("input_size_class")
+  targetKind                    AiPricingTargetKind          @map("target_kind")
+  targetId                      String                       @map("target_id") @db.Uuid
+  contractKey                   String                       @map("contract_key")
+  contractVersion               String                       @map("contract_version")
+  language                      String                       @db.VarChar(10)
   provider                      String
-  modelId                       String                  @map("model_id")
-  promptVersion                 String                  @map("prompt_version")
-  inputChars                    Int                     @map("input_chars")
-  estimatedCredits              BigInt                  @map("estimated_credits")
-  ceilingCredits                BigInt                  @map("ceiling_credits")
-  floorCredits                  BigInt                  @map("floor_credits")
-  providerMedianCostUsdSnapshot Decimal                 @map("provider_median_cost_usd_snapshot") @db.Decimal(18, 8)
-  providerP90CostUsdSnapshot    Decimal                 @map("provider_p90_cost_usd_snapshot") @db.Decimal(18, 8)
-  providerMedianCreditsSnapshot BigInt                  @map("provider_median_credits_snapshot")
-  providerP90CreditsSnapshot    BigInt                  @map("provider_p90_credits_snapshot")
-  feeCreditsSnapshot            BigInt                  @map("fee_credits_snapshot")
-  targetMarginCreditsSnapshot   BigInt                  @map("target_margin_credits_snapshot")
-  safetyCoefficientSnapshot     Decimal                 @map("safety_coefficient_snapshot") @db.Decimal(8, 4)
-  includesAutomaticSecondPass   Boolean                 @map("includes_automatic_second_pass")
-  includesTargetedVerification  Boolean                 @default(false) @map("includes_targeted_verification")
-  workflowKind                  AiPricingWorkflowKind   @default(SINGLE_MODEL) @map("workflow_kind")
-  pipelineIdentitySnapshot      Json?                   @map("pipeline_identity_snapshot_json")
-  costDimensionsSnapshot        Json?                   @map("cost_dimensions_snapshot_json")
-  idempotencyKey                String                  @map("idempotency_key")
-  requestFingerprint            String                  @map("request_fingerprint") @db.Char(64)
-  expiresAt                     DateTime                @map("expires_at")
-  createdAt                     DateTime                @default(now()) @map("created_at")
-  user                          User                    @relation(fields: [userId], references: [id], onDelete: Restrict)
-  catalogEntry                  AiPricingCatalogEntry   @relation(fields: [catalogEntryId, catalogVersionId], references: [id, catalogVersionId], onDelete: Restrict)
+  modelId                       String                       @map("model_id")
+  promptVersion                 String                       @map("prompt_version")
+  inputChars                    Int                          @map("input_chars")
+  estimatedCredits              BigInt                       @map("estimated_credits")
+  ceilingCredits                BigInt                       @map("ceiling_credits")
+  floorCredits                  BigInt                       @map("floor_credits")
+  providerMedianCostUsdSnapshot Decimal                      @map("provider_median_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerP90CostUsdSnapshot    Decimal                      @map("provider_p90_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerMedianCreditsSnapshot BigInt                       @map("provider_median_credits_snapshot")
+  providerP90CreditsSnapshot    BigInt                       @map("provider_p90_credits_snapshot")
+  feeCreditsSnapshot            BigInt                       @map("fee_credits_snapshot")
+  targetMarginCreditsSnapshot   BigInt                       @map("target_margin_credits_snapshot")
+  safetyCoefficientSnapshot     Decimal                      @map("safety_coefficient_snapshot") @db.Decimal(8, 4)
+  includesAutomaticSecondPass   Boolean                      @map("includes_automatic_second_pass")
+  includesTargetedVerification  Boolean                      @default(false) @map("includes_targeted_verification")
+  workflowKind                  AiPricingWorkflowKind        @default(SINGLE_MODEL) @map("workflow_kind")
+  pipelineIdentitySnapshot      Json?                        @map("pipeline_identity_snapshot_json")
+  pipelineVersionId             String?                      @map("pipeline_version_id") @db.Uuid
+  costDimensionsSnapshot        Json?                        @map("cost_dimensions_snapshot_json")
+  idempotencyKey                String                       @map("idempotency_key")
+  requestFingerprint            String                       @map("request_fingerprint") @db.Char(64)
+  expiresAt                     DateTime                     @map("expires_at")
+  createdAt                     DateTime                     @default(now()) @map("created_at")
+  user                          User                         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  catalogEntry                  AiPricingCatalogEntry        @relation(fields: [catalogEntryId, catalogVersionId], references: [id, catalogVersionId], onDelete: Restrict)
+  pipelineVersion               AiCorrectionPipelineVersion? @relation(fields: [pipelineVersionId], references: [id], onDelete: Restrict)
+  aiCorrection                  AiCorrection?
 
   @@unique([userId, idempotencyKey])
+  @@unique([id, userId])
   @@index([userId, createdAt])
   @@index([targetKind, targetId, createdAt])
   @@index([expiresAt])
