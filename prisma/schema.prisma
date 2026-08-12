@@ -314,6 +314,40 @@ enum CreditReservationStatus {
   @@map("credit_reservation_status")
 }
 
+enum AiPricingCatalogStatus {
+  DRAFT    @map("draft")
+  INACTIVE @map("inactive")
+  ACTIVE   @map("active")
+  RETIRED  @map("retired")
+
+  @@map("ai_pricing_catalog_status")
+}
+
+enum AiPricingAction {
+  STANDARD        @map("standard")
+  DETAILED        @map("detailed")
+  REINFORCED      @map("reinforced")
+  RECONSIDERATION @map("reconsideration")
+  FUTURE_RESERVED @map("future_reserved")
+
+  @@map("ai_pricing_action")
+}
+
+enum AiPricingInputSizeClass {
+  SHORT  @map("short")
+  MEDIUM @map("medium")
+  LONG   @map("long")
+
+  @@map("ai_pricing_input_size_class")
+}
+
+enum AiPricingTargetKind {
+  EXERCISE_SUBMISSION         @map("exercise_submission")
+  STAGE_ASSESSMENT_SUBMISSION @map("stage_assessment_submission")
+
+  @@map("ai_pricing_target_kind")
+}
+
 enum ReviewSourceType {
   CONCEPT_ASSESSMENT @map("concept_assessment")
 
@@ -353,6 +387,7 @@ model User {
   aiCorrections                   AiCorrection[]
   creditAccounts                  CreditAccount[]               @relation("CreditAccountOwner")
   creditAdjustmentEntries         CreditLedgerEntry[]           @relation("CreditLedgerAdjustmentActor")
+  aiPricingQuotes                 AiPricingQuote[]
   reviewItems                     ReviewItem[]
   notes                           Note[]
   moduleRuns                      ModuleRun[]
@@ -1232,6 +1267,97 @@ model CreditLedgerEntry {
   @@index([reservationId, createdAt])
   @@index([referenceType, referenceId])
   @@map("credit_ledger_entries")
+}
+
+model AiPricingCatalogVersion {
+  id              String                  @id @default(uuid()) @db.Uuid
+  version         String                  @unique
+  status          AiPricingCatalogStatus  @default(DRAFT)
+  currency        CreditCurrency          @default(LEARNX_CREDIT)
+  language        String                  @db.VarChar(10)
+  benchmarkId     String                  @map("benchmark_id")
+  corpusId        String                  @map("corpus_id")
+  promptVersion   String                  @map("prompt_version")
+  provider        String
+  modelId         String                  @map("model_id")
+  quoteTtlSeconds Int                     @map("quote_ttl_seconds")
+  effectiveAt     DateTime?               @map("effective_at")
+  retiredAt       DateTime?               @map("retired_at")
+  createdAt       DateTime                @default(now()) @map("created_at")
+  entries         AiPricingCatalogEntry[]
+
+  @@index([status, effectiveAt])
+  @@map("ai_pricing_catalog_versions")
+}
+
+model AiPricingCatalogEntry {
+  id                          String                  @id @default(uuid()) @db.Uuid
+  catalogVersionId            String                  @map("catalog_version_id") @db.Uuid
+  action                      AiPricingAction
+  inputSizeClass              AiPricingInputSizeClass @map("input_size_class")
+  minInputChars               Int                     @map("min_input_chars")
+  maxInputChars               Int?                    @map("max_input_chars")
+  providerMedianCostUsd       Decimal                 @map("provider_median_cost_usd") @db.Decimal(18, 8)
+  providerP90CostUsd          Decimal                 @map("provider_p90_cost_usd") @db.Decimal(18, 8)
+  providerMedianCostCredits   BigInt                  @map("provider_median_cost_credits")
+  providerP90CostCredits      BigInt                  @map("provider_p90_cost_credits")
+  feeCredits                  BigInt                  @map("fee_credits")
+  targetMarginCredits         BigInt                  @map("target_margin_credits")
+  floorCredits                BigInt                  @map("floor_credits")
+  safetyCoefficient           Decimal                 @map("safety_coefficient") @db.Decimal(8, 4)
+  includesAutomaticSecondPass Boolean                 @default(false) @map("includes_automatic_second_pass")
+  verificationEvidenceId      String?                 @map("verification_evidence_id")
+  status                      AiPricingCatalogStatus  @default(DRAFT)
+  measuredAt                  DateTime                @map("measured_at")
+  createdAt                   DateTime                @default(now()) @map("created_at")
+  catalogVersion              AiPricingCatalogVersion @relation(fields: [catalogVersionId], references: [id], onDelete: Restrict)
+  quotes                      AiPricingQuote[]
+
+  @@unique([catalogVersionId, action, inputSizeClass])
+  @@unique([id, catalogVersionId])
+  @@index([catalogVersionId, action, status])
+  @@map("ai_pricing_catalog_entries")
+}
+
+model AiPricingQuote {
+  id                            String                  @id @default(uuid()) @db.Uuid
+  userId                        String                  @map("user_id") @db.Uuid
+  catalogVersionId              String                  @map("catalog_version_id") @db.Uuid
+  catalogEntryId                String                  @map("catalog_entry_id") @db.Uuid
+  action                        AiPricingAction
+  inputSizeClass                AiPricingInputSizeClass @map("input_size_class")
+  targetKind                    AiPricingTargetKind     @map("target_kind")
+  targetId                      String                  @map("target_id") @db.Uuid
+  contractKey                   String                  @map("contract_key")
+  contractVersion               String                  @map("contract_version")
+  language                      String                  @db.VarChar(10)
+  provider                      String
+  modelId                       String                  @map("model_id")
+  promptVersion                 String                  @map("prompt_version")
+  inputChars                    Int                     @map("input_chars")
+  estimatedCredits              BigInt                  @map("estimated_credits")
+  ceilingCredits                BigInt                  @map("ceiling_credits")
+  floorCredits                  BigInt                  @map("floor_credits")
+  providerMedianCostUsdSnapshot Decimal                 @map("provider_median_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerP90CostUsdSnapshot    Decimal                 @map("provider_p90_cost_usd_snapshot") @db.Decimal(18, 8)
+  providerMedianCreditsSnapshot BigInt                  @map("provider_median_credits_snapshot")
+  providerP90CreditsSnapshot    BigInt                  @map("provider_p90_credits_snapshot")
+  feeCreditsSnapshot            BigInt                  @map("fee_credits_snapshot")
+  targetMarginCreditsSnapshot   BigInt                  @map("target_margin_credits_snapshot")
+  safetyCoefficientSnapshot     Decimal                 @map("safety_coefficient_snapshot") @db.Decimal(8, 4)
+  includesAutomaticSecondPass   Boolean                 @map("includes_automatic_second_pass")
+  idempotencyKey                String                  @map("idempotency_key")
+  requestFingerprint            String                  @map("request_fingerprint") @db.Char(64)
+  expiresAt                     DateTime                @map("expires_at")
+  createdAt                     DateTime                @default(now()) @map("created_at")
+  user                          User                    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  catalogEntry                  AiPricingCatalogEntry   @relation(fields: [catalogEntryId, catalogVersionId], references: [id, catalogVersionId], onDelete: Restrict)
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+  @@index([targetKind, targetId, createdAt])
+  @@index([expiresAt])
+  @@map("ai_pricing_quotes")
 }
 
 model Note {
