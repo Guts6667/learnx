@@ -8,6 +8,7 @@ import { createRequestObservability } from './_lib/observability.js';
 import { authApp } from './auth/app.js';
 import { catalogApp } from './catalog/app.js';
 import { conceptAssessmentsApp } from './concept-assessments/app.js';
+import { creditsApp } from './credits/app.js';
 import { conceptsApp } from './concepts/app.js';
 import { exercisesApp } from './exercises/app.js';
 import { moduleRunsApp } from './module-runs/app.js';
@@ -52,6 +53,7 @@ export function createApiApp() {
   app.route('/', publicLeadsApp);
   app.route('/', conceptsApp);
   app.route('/', conceptAssessmentsApp);
+  app.route('/', creditsApp);
   app.route('/', quizzesApp);
   app.route('/', exercisesApp);
   app.route('/', moduleRunsApp);

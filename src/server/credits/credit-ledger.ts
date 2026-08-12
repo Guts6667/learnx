@@ -43,6 +43,7 @@ export class CreditLedgerError extends Error {
       | 'INVALID_IDEMPOTENCY_KEY'
       | 'INVALID_REASON'
       | 'LEDGER_INCONSISTENT'
+      | 'PURCHASED_CREDITS_PROTECTED'
       | 'REFERENCE_NOT_FOUND'
       | 'RESERVATION_EXPIRED'
       | 'RESERVATION_NOT_FOUND'
@@ -109,36 +110,32 @@ export function reconstructCreditBalance(
   return { free, purchased, total: free + purchased };
 }
 
-function compareLots(left: SpendableCreditLot, right: SpendableCreditLot): number {
-  if (left.provenance !== right.provenance) {
-    return left.provenance === 'FREE_ALLOCATION' ? -1 : 1;
-  }
-  if (left.provenance === 'FREE_ALLOCATION') {
-    const expirationDifference =
-      (left.expiresAt?.getTime() ?? Number.MAX_SAFE_INTEGER) -
-      (right.expiresAt?.getTime() ?? Number.MAX_SAFE_INTEGER);
-    if (expirationDifference !== 0) return expirationDifference;
-  }
-  const creationDifference = left.createdAt.getTime() - right.createdAt.getTime();
-  return creationDifference || left.id.localeCompare(right.id);
-}
-
 export function allocateCreditLots(
   lots: readonly SpendableCreditLot[],
   amount: bigint,
   now: Date,
+  priorityLotIds: readonly string[],
 ): CreditLotAllocation[] {
   assertCreditAmount(amount);
   let remaining = amount;
   const allocations: CreditLotAllocation[] = [];
-  const eligible = lots
-    .filter(
-      (lot) =>
-        lot.remainingAmount > 0n &&
-        (lot.provenance === 'PURCHASED' ||
-          (lot.expiresAt !== null && lot.expiresAt.getTime() > now.getTime())),
-    )
-    .sort(compareLots);
+  const lotsById = new Map(lots.map((lot) => [lot.id, lot]));
+  const seen = new Set<string>();
+  const eligible = priorityLotIds.flatMap((lotId) => {
+    if (seen.has(lotId)) throw new CreditLedgerError('LEDGER_INCONSISTENT');
+    seen.add(lotId);
+    const lot = lotsById.get(lotId);
+    if (
+      !lot ||
+      lot.remainingAmount <= 0n ||
+      (lot.provenance === 'FREE_ALLOCATION' &&
+        lot.expiresAt !== null &&
+        lot.expiresAt.getTime() <= now.getTime())
+    ) {
+      return [];
+    }
+    return [lot];
+  });
 
   for (const lot of eligible) {
     if (remaining === 0n) break;

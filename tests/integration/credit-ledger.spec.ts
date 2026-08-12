@@ -41,7 +41,7 @@ test('ledger réel atomique, reconstructible et immuable', async ({
     reference: { id: 'cycle-2026-08', type: 'FREE_ALLOCATION_CYCLE' },
     userId: learner.id,
   });
-  await ledger.grant({
+  const purchasedGrant = await ledger.grant({
     amount: 100n,
     idempotencyKey: 'integration-paid-grant',
     provenance: 'PURCHASED',
@@ -53,6 +53,10 @@ test('ledger réel atomique, reconstructible et immuable', async ({
     purchased: 100n,
     total: 200n,
   });
+  if (!freeGrant.lotId || !purchasedGrant.lotId) {
+    throw new Error('Credit grants must create immutable lots.');
+  }
+  const priorityLotIds = [freeGrant.lotId, purchasedGrant.lotId];
 
   const expiry = new Date('2026-08-12T12:15:00.000Z');
   const concurrent = await Promise.allSettled([
@@ -60,6 +64,7 @@ test('ledger réel atomique, reconstructible et immuable', async ({
       amount: 120n,
       expiresAt: expiry,
       idempotencyKey: 'integration-reservation-a',
+      priorityLotIds,
       reference: { id: 'correction-a', type: 'AI_CORRECTION' },
       userId: learner.id,
     }),
@@ -67,6 +72,7 @@ test('ledger réel atomique, reconstructible et immuable', async ({
       amount: 120n,
       expiresAt: expiry,
       idempotencyKey: 'integration-reservation-b',
+      priorityLotIds,
       reference: { id: 'correction-b', type: 'AI_CORRECTION' },
       userId: learner.id,
     }),

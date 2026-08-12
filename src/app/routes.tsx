@@ -26,6 +26,8 @@ import { AdminPage } from '@/pages/AdminPage';
 import { AdminAccessRequestsPage } from '@/pages/AdminAccessRequestsPage';
 import { AdminAccountsPage } from '@/pages/AdminAccountsPage';
 import { AdminContactsPage } from '@/pages/AdminContactsPage';
+import { AdminCreditsPage } from '@/pages/AdminCreditsPage';
+import { CreditsPage } from '@/pages/CreditsPage';
 import { ActivateAccountPage } from '@/pages/ActivateAccountPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { PublicInterestPage } from '@/pages/PublicInterestPage';
@@ -100,6 +102,17 @@ function AdminContactsRoute({ path }: RouteParams) {
     <ProtectedRoute>
       <AdminRoute>
         <AdminContactsPage />
+      </AdminRoute>
+    </ProtectedRoute>
+  );
+}
+
+function AdminCreditsRoute({ path }: RouteParams) {
+  void path;
+  return (
+    <ProtectedRoute>
+      <AdminRoute>
+        <AdminCreditsPage />
       </AdminRoute>
     </ProtectedRoute>
   );
@@ -295,9 +308,13 @@ export function AppRoutes() {
         <ProtectedRoute path="/profile">
           <ProfilePage />
         </ProtectedRoute>
+        <ProtectedRoute path="/credits">
+          <CreditsPage />
+        </ProtectedRoute>
         <AdminAccessRequestsRoute path="/admin/access-requests" />
         <AdminAccountsRoute path="/admin/accounts" />
         <AdminContactsRoute path="/admin/contacts" />
+        <AdminCreditsRoute path="/admin/credits" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId/lesson/:lessonId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId/module/:moduleId" />
         <AdminManagementRoute path="/admin/program/:programId/stage/:stageId" />

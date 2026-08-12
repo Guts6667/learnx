@@ -82,7 +82,7 @@ describe('credit ledger domain', () => {
     ).toThrowError(new CreditLedgerError('LEDGER_INCONSISTENT'));
   });
 
-  it('consumes free credits first, earliest expiration first, then purchased FIFO', () => {
+  it('uses only the explicit immutable lot priority supplied by a policy', () => {
     const allocations = allocateCreditLots(
       [
         lot('purchased-new', 'PURCHASED', 100n, {
@@ -98,6 +98,7 @@ describe('credit ledger domain', () => {
       ],
       170n,
       now,
+      ['free-soon', 'free-late', 'purchased-old', 'purchased-new'],
     );
     expect(allocations).toEqual([
       { amount: 40n, lotId: 'free-soon', provenance: 'FREE_ALLOCATION' },
@@ -118,15 +119,42 @@ describe('credit ledger domain', () => {
         ],
         75n,
         now,
+        ['expired-free', 'purchased'],
       ),
     ).toEqual([
       { amount: 75n, lotId: 'purchased', provenance: 'PURCHASED' },
     ]);
   });
 
+  it('allows a non-expiring complimentary lot when an explicit policy prioritizes it', () => {
+    expect(
+      allocateCreditLots(
+        [
+          lot('free-without-expiry', 'FREE_ALLOCATION', 25n, {
+            expiresAt: null,
+          }),
+        ],
+        25n,
+        now,
+        ['free-without-expiry'],
+      ),
+    ).toEqual([
+      {
+        amount: 25n,
+        lotId: 'free-without-expiry',
+        provenance: 'FREE_ALLOCATION',
+      },
+    ]);
+  });
+
   it('rejects reservation ceilings above the available balance', () => {
     expect(() =>
-      allocateCreditLots([lot('free', 'FREE_ALLOCATION', 10n)], 11n, now),
+      allocateCreditLots(
+        [lot('free', 'FREE_ALLOCATION', 10n)],
+        11n,
+        now,
+        ['free'],
+      ),
     ).toThrowError(new CreditLedgerError('INSUFFICIENT_CREDITS'));
   });
 
@@ -201,6 +229,7 @@ describe('credit ledger domain', () => {
         ],
         requested,
         now,
+        [`free-${sample}`, `paid-${sample}`],
       );
       expect(allocations.reduce((sum, item) => sum + item.amount, 0n)).toBe(
         requested,
