@@ -21,6 +21,9 @@ describe('V4-007 versioned AI pricing schema', () => {
     expect(schema).toContain('promptVersion');
     expect(schema).toContain('providerMedianCostUsdSnapshot');
     expect(schema).toContain('providerP90CostUsdSnapshot');
+    expect(schema).toContain('providerRateCardVersion');
+    expect(schema).toContain('providerRateCardEffectiveAt');
+    expect(schema).toContain('creditsPerEuro');
     expect(migration).toContain('AI pricing quotes are immutable');
     expect(migration).toContain('An activated pricing catalog is immutable');
   });
@@ -30,6 +33,8 @@ describe('V4-007 versioned AI pricing schema', () => {
     expect(migration).toContain('DEFAULT \'draft\'');
     expect(migration).toContain('ai_pricing_future_action_disabled_check');
     expect(migration).toContain('ai_pricing_reinforced_evidence_check');
+    expect(migration).toContain('ai_pricing_catalog_active_rate_card_check');
+    expect(migration).toContain('"uses_promotional_provider_rates" = false');
     expect(migration).not.toMatch(/INSERT INTO "ai_pricing_catalog/);
   });
 

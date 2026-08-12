@@ -23,6 +23,10 @@ CREATE TABLE "ai_pricing_catalog_versions" (
   "prompt_version" TEXT NOT NULL,
   "provider" TEXT NOT NULL,
   "model_id" TEXT NOT NULL,
+  "provider_rate_card_version" TEXT,
+  "provider_rate_card_effective_at" TIMESTAMP(3),
+  "uses_promotional_provider_rates" BOOLEAN NOT NULL DEFAULT false,
+  "credits_per_euro" INTEGER,
   "quote_ttl_seconds" INTEGER NOT NULL,
   "effective_at" TIMESTAMP(3),
   "retired_at" TIMESTAMP(3),
@@ -36,6 +40,17 @@ CREATE TABLE "ai_pricing_catalog_versions" (
   ),
   CONSTRAINT "ai_pricing_catalog_ttl_check" CHECK (
     "quote_ttl_seconds" BETWEEN 60 AND 86400
+  ),
+  CONSTRAINT "ai_pricing_catalog_credit_parity_check" CHECK (
+    "credits_per_euro" IS NULL OR "credits_per_euro" > 0
+  ),
+  CONSTRAINT "ai_pricing_catalog_active_rate_card_check" CHECK (
+    "status" <> 'active' OR (
+      "provider_rate_card_version" IS NOT NULL AND
+      "provider_rate_card_effective_at" IS NOT NULL AND
+      "credits_per_euro" IS NOT NULL AND
+      "uses_promotional_provider_rates" = false
+    )
   ),
   CONSTRAINT "ai_pricing_catalog_lifecycle_check" CHECK (
     ("status" = 'draft' AND "effective_at" IS NULL AND "retired_at" IS NULL) OR

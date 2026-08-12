@@ -27,7 +27,10 @@ export interface PricingCatalogSnapshot {
   modelId: string;
   promptVersion: string;
   provider: string;
+  providerRateCardEffectiveAt: Date | null;
+  providerRateCardVersion: string | null;
   quoteTtlSeconds: number;
+  usesPromotionalProviderRates: boolean;
   version: string;
 }
 

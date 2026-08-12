@@ -44,6 +44,24 @@ const quote: StoredPricingQuote = {
 };
 
 describe('AI pricing quote API', () => {
+  it('keeps the quote endpoint unusable while no role owns the correction capability', async () => {
+    const service = { quote: vi.fn().mockResolvedValue(quote) };
+    const app = createAiPricingApp({ authentication: allow, service });
+
+    const response = await app.request('/api/ai-correction/quotes', {
+      body: JSON.stringify({
+        action: 'STANDARD',
+        idempotencyKey: 'quote:request:disabled',
+        target: { id: targetId, kind: 'EXERCISE_SUBMISSION' },
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    });
+
+    expect(response.status).toBe(403);
+    expect(service.quote).not.toHaveBeenCalled();
+  });
+
   it('returns only learner-safe quote fields calculated by the server', async () => {
     const service = { quote: vi.fn().mockResolvedValue(quote) };
     const app = createAiPricingApp({

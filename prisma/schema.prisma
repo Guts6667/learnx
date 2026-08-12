@@ -1270,21 +1270,25 @@ model CreditLedgerEntry {
 }
 
 model AiPricingCatalogVersion {
-  id              String                  @id @default(uuid()) @db.Uuid
-  version         String                  @unique
-  status          AiPricingCatalogStatus  @default(DRAFT)
-  currency        CreditCurrency          @default(LEARNX_CREDIT)
-  language        String                  @db.VarChar(10)
-  benchmarkId     String                  @map("benchmark_id")
-  corpusId        String                  @map("corpus_id")
-  promptVersion   String                  @map("prompt_version")
-  provider        String
-  modelId         String                  @map("model_id")
-  quoteTtlSeconds Int                     @map("quote_ttl_seconds")
-  effectiveAt     DateTime?               @map("effective_at")
-  retiredAt       DateTime?               @map("retired_at")
-  createdAt       DateTime                @default(now()) @map("created_at")
-  entries         AiPricingCatalogEntry[]
+  id                           String                  @id @default(uuid()) @db.Uuid
+  version                      String                  @unique
+  status                       AiPricingCatalogStatus  @default(DRAFT)
+  currency                     CreditCurrency          @default(LEARNX_CREDIT)
+  language                     String                  @db.VarChar(10)
+  benchmarkId                  String                  @map("benchmark_id")
+  corpusId                     String                  @map("corpus_id")
+  promptVersion                String                  @map("prompt_version")
+  provider                     String
+  modelId                      String                  @map("model_id")
+  providerRateCardVersion      String?                 @map("provider_rate_card_version")
+  providerRateCardEffectiveAt  DateTime?               @map("provider_rate_card_effective_at")
+  usesPromotionalProviderRates Boolean                 @default(false) @map("uses_promotional_provider_rates")
+  creditsPerEuro               Int?                    @map("credits_per_euro")
+  quoteTtlSeconds              Int                     @map("quote_ttl_seconds")
+  effectiveAt                  DateTime?               @map("effective_at")
+  retiredAt                    DateTime?               @map("retired_at")
+  createdAt                    DateTime                @default(now()) @map("created_at")
+  entries                      AiPricingCatalogEntry[]
 
   @@index([status, effectiveAt])
   @@map("ai_pricing_catalog_versions")

@@ -23,10 +23,21 @@ pack ou coefficient n'est créé par le seed ou la migration V4-007.
   le calcul sur l'ensemble des appels fournisseur et un comportement fermé par
   défaut. Les propositions de parité, coefficients, packs et arrondis sont des
   hypothèses non validées et ne doivent pas être activées.
+- **Clarification 1.0.3 reçue :** Terra, Sonnet et Gemini Flash sont des
+  candidats alternatifs ; une correction utilise un seul modèle promu. La
+  seconde passe automatique reprend ce même modèle. Une nouvelle analyse
+  volontaire est une nouvelle action facturable ; il n'existe aucune
+  « réparation gratuite ». Les plafonds reposent sur les tarifs fournisseur
+  hors promotion. Le coût futur réglé additionne tous les `usage.cost`; tout
+  dépassement du plafond accepté est absorbé et alerté par LearnX.
 - **Décisions retenues :** crédits entiers ; coût réel agrégé sur tous les appels,
   retries et contrôles ; plafond accepté non dépassable ; entrée tarifaire liée
   au benchmark, corpus, langue, prompt et modèle ; absence de catalogue actif =
   devis indisponible ; aucun prix fictif ou nul.
+- **Hypothèses explicitement inactives :** `100 crédits/€`, packs 10/25/50 € et
+  stress-test micro-BNC avec 10 % de marge de contribution disponible. Ces
+  hypothèses sont versionnables, mais ne constituent ni prix, ni SKU, ni
+  qualification fiscale, ni bénéfice net.
 - **Inconnues restantes :** parité crédit/euro, conversion USD/EUR, fiscalité et
   frais, coefficient de sécurité, règle d'arrondi, P90 retenu, marge cible,
   packs, capacité annoncée et date d'effet.
@@ -82,3 +93,24 @@ conditions suivantes ne sont pas toutes remplies :
 3. validation explicite de Rayan Chambet sur les valeurs et la date d'effet ;
 4. activation d'une version immuable, sans modifier les historiques antérieurs ;
 5. test de non-vente à perte sur tous les appels réellement facturés.
+
+## Vérification de cohérence avec l'implémentation
+
+- **Conforme :** chaque catalogue porte un seul `modelId`; aucune orchestration
+  multi-modèle n'existe. `includesAutomaticSecondPass` est une propriété du
+  devis primaire, pas une action séparée.
+- **Conforme :** `RECONSIDERATION` utilise un nouveau devis et une nouvelle clé
+  d'idempotence. Aucun chemin de réparation gratuite n'est défini dans V4-007.
+- **Conforme :** le prix final additionne la liste complète des coûts fournisseur
+  et refuse de dépasser le plafond accepté. La politique d'absorption et
+  d'alerte sera reliée au règlement dans V4-009.
+- **Conforme après correctif 1.0.3 :** la version et la date du tarif fournisseur,
+  le caractère hors promotion et la parité crédit/euro sont maintenant des
+  champs versionnés. Une version active exige ces preuves et interdit un tarif
+  promotionnel.
+- **Désactivé :** aucun rôle actuel ne possède `ai.assessment.correct`; l'endpoint
+  de devis retourne donc `403` avant même le calcul. Aucun catalogue ni montant
+  n'est seedé. `DETAILED` et `REINFORCED` restent seulement des clés de structure.
+- **À traiter hors V4-007 :** libération sur erreur et dépassement fournisseur
+  absorbé/alerté relèvent du workflow réservation-règlement V4-009. Aucun code
+  V5 n'a été commencé.
