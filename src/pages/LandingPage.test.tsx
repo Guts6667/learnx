@@ -72,6 +72,9 @@ describe('LandingPage', () => {
     expect(
       screen.getByText(/corrections assistées par IA sont prévues pour V4/i),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Lire le rapport de recherche' }),
+    ).toHaveAttribute('href', '/research/ai-correction/');
     expect(screen.queryByText(/lorem ipsum/i)).not.toBeInTheDocument();
   });
 
@@ -95,6 +98,9 @@ describe('LandingPage', () => {
     expect(
       screen.queryByText(/Piloter|Cadrer|Formuler|objectif unique/),
     ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Read the research report' }),
+    ).toHaveAttribute('href', '/research/ai-correction/en.html');
   });
 
   it('submits updates without creating an access request', async () => {

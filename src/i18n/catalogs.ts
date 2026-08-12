@@ -55,6 +55,12 @@ export const frenchMessages = {
   'landing.roadmap.title': 'Une assistance plus guidée, sans fausse promesse.',
   'landing.roadmap.description':
     'Les corrections assistées par IA sont prévues pour V4 et la création guidée de parcours pour V5. Elles ne sont pas encore disponibles.',
+  'landing.research.eyebrow': 'Recherche & transparence',
+  'landing.research.title':
+    'Comment LearnX évalue ses corrections assistées par IA',
+  'landing.research.description':
+    'Nous documentons nos essais, leurs limites et les critères nécessaires avant toute mise en production. Ce rapport intermédiaire repose sur des cas synthétiques ; aucun pipeline n’est encore retenu.',
+  'landing.research.action': 'Lire le rapport de recherche',
   'landing.early.eyebrow': 'Accès anticipé',
   'landing.early.title': 'Participer aux premiers retours terrain',
   'landing.early.description':
@@ -944,6 +950,12 @@ export const englishMessages = {
   'landing.roadmap.title': 'More guidance, without false promises.',
   'landing.roadmap.description':
     'AI-assisted corrections are planned for V4 and guided journey creation for V5. They are not available yet.',
+  'landing.research.eyebrow': 'Research & transparency',
+  'landing.research.title':
+    'How LearnX evaluates its AI-assisted assessments',
+  'landing.research.description':
+    'We document our trials, their limitations and the criteria required before production. This interim report is based on synthetic cases; no pipeline has been selected yet.',
+  'landing.research.action': 'Read the research report',
   'landing.early.eyebrow': 'Early access',
   'landing.early.title': 'Help shape the first real-world uses',
   'landing.early.description':
