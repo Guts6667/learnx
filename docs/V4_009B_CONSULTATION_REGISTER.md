@@ -59,19 +59,19 @@ Statut global : `BLOCKED_BEFORE_LIVE`
   reproductibilité, providers déterministes, reprise et idempotence.
 - Preuve : le run Integration #116 a créé puis supprimé la branche Neon
   `ci-31650478455-1` et appliqué les migrations sans toucher une base partagée.
-- Écart bloquant : la comparaison a rejeté
+- Écart constaté : la comparaison a rejeté
   `20260812170000_add_ai_pricing_catalog`, dont le fichier local a été modifié
   après son application. Le checksum appliqué correspond à la version initiale.
-- Arbitrage requis : restaurer la migration historique puis porter ses ajouts
-  dans une nouvelle migration additive et idempotente. La validation générale
-  du plan a été reçue, mais la garde de sécurité exige encore une autorisation
-  ciblée mentionnant explicitement la réécriture de cette migration appliquée.
+- Arbitrage propriétaire reçu : restauration exacte au checksum appliqué
+  `4156ce…`, puis migration additive et idempotente séparée. Le fichier
+  historique et la nouvelle migration sont couverts par un test de régression ;
+  la répétition Neon reste requise avant levée du gate live.
 
 ## Gate de clôture
 
 - [x] Consultations Produit et Finance reçues.
 - [x] Aucun appel modèle facturable lancé.
-- [ ] Migration historique réparée avec autorisation explicite.
+- [x] Migration historique réparée avec autorisation explicite.
 - [ ] Répétition Neon complète verte (migration, replay, règlement, libération).
 - [x] Identité composite finale arbitrée et gelée.
 - [x] Enveloppe Finance du mini-panel arbitrée.

@@ -23,6 +23,13 @@ après son application. Le correctif attendu est une restauration du fichier
 historique et une nouvelle migration additive ; aucun checksum ne sera toléré
 ou réécrit dans `_prisma_migrations`.
 
+Correctif autorisé et appliqué : la migration historique est restaurée au SHA
+`4156ce01c562aae5af301e6bf82d453f888e3dcb3a1b6ec7200556020ffe4247`.
+Les quatre colonnes et deux contraintes d'activation ont été déplacées dans
+`20260813110000_add_ai_pricing_activation_gates`, avec garde-fous idempotents
+pour supporter l'upgrade et le replay intégral. `_prisma_migrations` n'est
+jamais modifiée manuellement.
+
 ## Contradictions et bloqueurs
 
 1. Les règles exactes de déclenchement et de désaccord matériel ont été
