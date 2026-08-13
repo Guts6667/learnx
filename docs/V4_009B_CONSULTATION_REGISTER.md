@@ -1,7 +1,7 @@
 # V4-009B — Registre de consultation
 
 Date d'ouverture : 2026-08-13
-Statut global : `BLOCKED_BEFORE_LIVE`
+Statut global : `MINI_PANEL_NO_GO`
 
 ## Produit & pédagogie
 
@@ -86,5 +86,7 @@ Statut global : `BLOCKED_BEFORE_LIVE`
 - [x] Suite Integration globale verte (run #119).
 - [x] Identité composite finale arbitrée et gelée.
 - [x] Enveloppe Finance du mini-panel arbitrée.
-- [ ] Autorisation explicite de Rayan avant tout appel facturable.
-- [ ] Revue pédagogique aveugle du mini-panel reçue.
+- [x] Autorisation explicite de Rayan reçue avant tout appel facturable.
+- [x] Mini-panel exécuté dans l'enveloppe Finance (`0,2018835 / 0,75 USD`).
+- [x] Revue pédagogique aveugle en deux phases reçue.
+- [x] Verdict `NO-GO` figé ; aucun `24×3`, holdout ou appel supplémentaire.
