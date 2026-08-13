@@ -43,8 +43,22 @@ describe('V4-009 composite correction orchestration schema', () => {
     expect(schema).toContain('executionLeaseExpiresAt');
     expect(schema).toContain('providerIdempotencyKey');
     expect(schema).toContain('dispatchStatus');
+    expect(schema).toContain('CALL_INTENT @map("call_intent")');
     expect(migration).toContain('provider_idempotency_key');
     expect(migration).toContain('execution_lease_expires_at');
+  });
+
+  it('adds the pre-dispatch call intent state without rewriting historical attempts', () => {
+    const callIntentMigration = readFileSync(
+      resolve(
+        'prisma/migrations/20260813160000_add_provider_call_intent/migration.sql',
+      ),
+      'utf8',
+    );
+    expect(callIntentMigration).toContain(
+      'ALTER TYPE "ai_provider_dispatch_status" ADD VALUE \'call_intent\'',
+    );
+    expect(callIntentMigration).not.toMatch(/UPDATE\s+"ai_correction_attempts"/);
   });
 
   it('keeps historical fields nullable and performs no destructive backfill', () => {

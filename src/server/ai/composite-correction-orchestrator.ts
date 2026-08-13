@@ -14,9 +14,22 @@ export type CorrectionFinancialState =
   | 'RELEASED'
   | 'SETTLED';
 
+export type ProviderCallTransportState =
+  | 'CALL_INTENT'
+  | 'SENT'
+  | 'CONFIRMED'
+  | 'ORPHANED';
+
+export type ProviderCallOutcomeTransportState = Exclude<
+  ProviderCallTransportState,
+  'CALL_INTENT'
+>;
+
 export interface OrchestratedProviderCall {
   actualCostUsd: string | null;
   attemptNumber: number;
+  dispatchStatus: ProviderCallOutcomeTransportState;
+  providerIdempotencyKey: string;
   providerRequestId: string | null;
   role: CompositeRole;
   terminalValidated: boolean;
@@ -90,10 +103,22 @@ export interface CompositeCorrectionOperationRepository {
     resultState: Exclude<CompositePipelineState, 'UNUSABLE_RELEASED'>;
     settlement: CompositeSettlementPreview;
   }): Promise<void>;
-  markReconciliationRequired(input: {
+  markProviderCallSent(input: {
     correctionId: string;
-    code: 'PROVIDER_COST_MISSING';
+    providerIdempotencyKey: string;
+  }): Promise<void>;
+  reconcileUnresolvedProviderCosts(input: {
+    correctionId: string;
+  }): Promise<boolean>;
+  recordProviderCallIntent(input: {
+    attemptNumber: number;
+    correctionId: string;
+    providerIdempotencyKey: string;
+    role: CompositeRole;
+  }): Promise<void>;
+  recordProviderCallOutcomes(input: {
     calls: readonly OrchestratedProviderCall[];
+    correctionId: string;
   }): Promise<void>;
   prepareFinancialFinalization(input: {
     absorbedProviderCostUsd: string;
@@ -115,8 +140,12 @@ export interface CompositeCorrectionOperationRepository {
 
 export interface CompositeCorrectionExecutionPort {
   execute(input: {
-    beforeRole: (role: CompositeRole) => Promise<void>;
+    beforeCall: (input: {
+      attemptNumber: number;
+      role: CompositeRole;
+    }) => Promise<{ providerIdempotencyKey: string }>;
     correctionId: string;
+    markCallSent: (input: { providerIdempotencyKey: string }) => Promise<void>;
   }): Promise<CompositeExecutionOutcome>;
 }
 
@@ -170,6 +199,14 @@ export function createCompositeOrchestrationFingerprint(value: unknown): string 
   return createHash('sha256')
     .update(JSON.stringify(canonicalize(value)))
     .digest('hex');
+}
+
+export function createProviderCallIdempotencyKey(input: {
+  attemptNumber: number;
+  correctionId: string;
+  role: CompositeRole;
+}): string {
+  return `learnx-ai-${createCompositeOrchestrationFingerprint(input)}`;
 }
 
 function assertCompositeQuote(quote: StoredPricingQuote): void {
@@ -298,6 +335,16 @@ export async function orchestrateCompositeCorrection(
     return operation;
   }
   if (operation.financialState === 'RECONCILIATION_REQUIRED') return operation;
+  if (
+    await input.repository.reconcileUnresolvedProviderCosts({
+      correctionId: operation.correctionId,
+    })
+  ) {
+    return {
+      ...operation,
+      financialState: 'RECONCILIATION_REQUIRED',
+    };
+  }
   if (operation.financialState === 'READY_TO_SETTLE') {
     return finalizePreparedOperation({
       operation,
@@ -321,24 +368,57 @@ export async function orchestrateCompositeCorrection(
     reservationId: operation.reservationId,
     userId: input.userId,
   });
-  const outcome = await input.execution.execute({
-    beforeRole: async (role) =>
-      input.guards.assertProviderCallAllowed({
+  let outcome: CompositeExecutionOutcome;
+  try {
+    outcome = await input.execution.execute({
+      beforeCall: async ({ attemptNumber, role }) => {
+        await input.guards.assertProviderCallAllowed({
+          correctionId: operation.correctionId,
+          role,
+          userId: input.userId,
+        });
+        const providerIdempotencyKey = createProviderCallIdempotencyKey({
+          attemptNumber,
+          correctionId: operation.correctionId,
+          role,
+        });
+        await input.repository.recordProviderCallIntent({
+          attemptNumber,
+          correctionId: operation.correctionId,
+          providerIdempotencyKey,
+          role,
+        });
+        return { providerIdempotencyKey };
+      },
+      correctionId: operation.correctionId,
+      markCallSent: async ({ providerIdempotencyKey }) =>
+        input.repository.markProviderCallSent({
+          correctionId: operation.correctionId,
+          providerIdempotencyKey,
+        }),
+    });
+  } catch (error) {
+    if (
+      await input.repository.reconcileUnresolvedProviderCosts({
         correctionId: operation.correctionId,
-        role,
-        userId: input.userId,
-      }),
+      })
+    ) {
+      return {
+        ...operation,
+        financialState: 'RECONCILIATION_REQUIRED',
+      };
+    }
+    throw error;
+  }
+  await input.repository.recordProviderCallOutcomes({
+    calls: outcome.calls,
     correctionId: operation.correctionId,
   });
-  const missingCost = outcome.calls.some(
-    (call) => call.actualCostUsd === null && call.providerRequestId !== null,
-  );
-  if (missingCost) {
-    await input.repository.markReconciliationRequired({
-      calls: outcome.calls,
-      code: 'PROVIDER_COST_MISSING',
+  if (
+    await input.repository.reconcileUnresolvedProviderCosts({
       correctionId: operation.correctionId,
-    });
+    })
+  ) {
     return {
       ...operation,
       financialState: 'RECONCILIATION_REQUIRED',
