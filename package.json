@@ -35,7 +35,9 @@
     "ai:benchmark:validate": "tsx scripts/run-ai-correction-benchmark.ts --validate-only",
     "ai:benchmark": "tsx scripts/run-ai-correction-benchmark.ts",
     "ai:composite:panel": "node --import tsx scripts/run-v4-009b-composite-panel.ts",
-    "ai:composite:diagnostic:prepare": "node --import tsx scripts/prepare-v4-009b-diagnostic-extension.ts"
+    "ai:composite:diagnostic:prepare": "node --import tsx scripts/prepare-v4-009b-diagnostic-extension.ts",
+    "ai:gemini:panel:prepare": "node --import tsx scripts/prepare-v4-009c-gemini-panel.ts",
+    "ai:gemini:panel": "node --import tsx scripts/run-v4-009c-gemini-panel.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

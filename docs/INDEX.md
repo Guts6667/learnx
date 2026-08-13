@@ -11,10 +11,14 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Besoin | Documents à lire | Autorité |
 | --- | --- | --- |
 | Ticket V3 | `BACKLOG_V3.md` puis l'ADR ou la spec citée | Le ticket V3 actif |
+| Ticket V3.5 design et landing | `BACKLOG_V3_5.md` puis les fichiers cités par le ticket | Le ticket V3.5 actif après clôture V3 |
+| Ticket V4 IA et économie | `BACKLOG_V4.md` puis l'ADR ou la spec citée | Le ticket V4 actif après clôture V3.5 |
+| Orientation V6 support et conformité | `V6_CANDIDATES.md` | Candidats uniquement, aucune autorité d'implémentation |
 | Architecture générale | `TECHNICAL_ARCHITECTURE.md` | Code et schéma priment en cas d'écart |
 | Données et Prisma | `DATABASE_SCHEMA.md`, `PRISMA_NOTES.md`, `prisma/schema.prisma` | `prisma/schema.prisma` et migrations |
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
-| Correction IA, crédits et frontières de confiance V4 | `ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md` | ADR V4-001 ; les gates externes restent bloquants |
+| Correction IA, crédits et frontières de confiance V4 | `../ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md`, `V4_AI_CORRECTION_COMPOSITE_SPEC.md` | L'ADR fixe les frontières ; la spec composite remplace les formulations mono-modèle ou binaires incompatibles avec l'amendement formatif du 12 août 2026 |
+| Recherche et sélection des corrections IA V4 | `V4_AI_CORRECTION_EXPERIMENT_LOG.md`, `V4_AI_MODEL_BENCHMARK_REPORT.md`, `../public/research/ai-correction/index.html`, `../public/research/ai-correction/en.html` | Le journal append-only conserve les campagnes et décisions ; le rapport détaille le benchmark courant ; les HTML publics FR/EN synthétisent uniquement les preuves stabilisées |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |
