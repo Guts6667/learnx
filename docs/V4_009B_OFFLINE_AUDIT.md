@@ -30,6 +30,22 @@ Les quatre colonnes et deux contraintes d'activation ont été déplacées dans
 pour supporter l'upgrade et le replay intégral. `_prisma_migrations` n'est
 jamais modifiée manuellement.
 
+La répétition Integration #117 (`31710711187`) a créé la branche jetable
+`ci-31710711187-1` (`br-soft-pine-asgdknih`), puis a validé :
+
+- l'application des migrations sur le clone ;
+- la comparaison du clone après migration ;
+- le rejeu complet de l'historique dans un schéma isolé ;
+- les lectures bornées et le test réel du ledger V4-009 ;
+- la suppression de la branche Neon en fin de job.
+
+Le job global reste rouge pour une cause distincte : après authentification,
+`/api/programs` et `/api/today` répondent `403`. L'ordre de montage actuel de
+`aiPricingApp` applique son middleware de capacité à des routes hors pricing.
+Cette régression d'autorisation préexistante n'invalide pas les preuves Neon de
+la migration et du ledger, mais doit être corrigée dans un correctif séparé
+avant que la suite Integration complète soit verte.
+
 ## Contradictions et bloqueurs
 
 1. Les règles exactes de déclenchement et de désaccord matériel ont été
