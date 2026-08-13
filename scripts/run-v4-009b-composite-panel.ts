@@ -25,14 +25,15 @@ import {
 } from '../src/lib/ai-correction-provider-adapters.ts';
 import {
   assertCompositePanelSources,
+  createCompositeDiagnosticResumeState,
   runCompositeMiniPanel,
   type CompositePanelProviderPort,
   type CompositePanelState,
 } from '../src/server/ai/composite-panel-runner.ts';
 import type { CompositeRunEnvelope } from '../src/server/ai/composite-pipeline-validation.ts';
+import { compositeRunOwnerGoToken } from '../src/server/ai/composite-pipeline-validation.ts';
 
-const OWNER_GO = 'RAYAN_APPROVED_V4_009B_MINI_PANEL_0_75_USD';
-const envelopePath = resolve(
+const defaultEnvelopePath = resolve(
   'benchmarks/ai-correction/composite/v4-009b-run-envelope.json',
 );
 const corpusPath = resolve('benchmarks/ai-correction/corpus.v1.json');
@@ -128,6 +129,7 @@ async function writeJsonAtomic(path: string, value: unknown): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  const envelopePath = resolve(option('envelope') ?? defaultEnvelopePath);
   const [corpusBytes, configurationBytes, envelopeBytes] = await Promise.all([
     readFile(corpusPath),
     readFile(configurationPath),
@@ -178,11 +180,16 @@ async function main(): Promise<void> {
     );
     return;
   }
-  if (option('owner-go') !== OWNER_GO) {
-    throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${OWNER_GO}`);
+  const ownerGoToken = compositeRunOwnerGoToken(frozenEnvelope);
+  if (option('owner-go') !== ownerGoToken) {
+    throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${ownerGoToken}`);
   }
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
   if (!apiKey) throw new Error('OPENROUTER_API_KEY_REQUIRED');
+  const envelope: CompositeRunEnvelope = {
+    ...frozenEnvelope,
+    authorization: 'GRANTED',
+  };
 
   const runId = option('run-id') ?? new Date().toISOString().replaceAll(/[:.]/g, '-');
   const outputDirectory = resolve(
@@ -192,14 +199,39 @@ async function main(): Promise<void> {
   const statePath = resolve(outputDirectory, 'state.json');
   const ledgerPath = resolve(outputDirectory, 'budget-ledger.jsonl');
   const resumePath = option('resume');
-  const resume = resumePath
-    ? (JSON.parse(await readFile(resolve(resumePath), 'utf8')) as CompositePanelState)
-    : undefined;
+  const reuseMiniStatePath = option('reuse-mini-state');
+  const reuseMiniLedgerPath = option('reuse-mini-ledger');
+  let resume: CompositePanelState | undefined;
+  if (resumePath && reuseMiniStatePath) {
+    throw new Error('RESUME_AND_REUSE_MINI_STATE_ARE_MUTUALLY_EXCLUSIVE');
+  }
+  if (resumePath) {
+    resume = JSON.parse(
+      await readFile(resolve(resumePath), 'utf8'),
+    ) as CompositePanelState;
+  } else if (reuseMiniStatePath) {
+    const miniStateBytes = await readFile(resolve(reuseMiniStatePath));
+    resume = createCompositeDiagnosticResumeState({
+      diagnosticEnvelope: envelope,
+      miniPanelState: JSON.parse(
+        miniStateBytes.toString('utf8'),
+      ) as CompositePanelState,
+      miniPanelStateSha256: sha256(miniStateBytes),
+    });
+    if (!reuseMiniLedgerPath || !envelope.diagnosticReuse) {
+      throw new Error('DIAGNOSTIC_REUSE_LEDGER_REQUIRED');
+    }
+    const miniLedgerBytes = await readFile(resolve(reuseMiniLedgerPath));
+    if (
+      sha256(miniLedgerBytes) !==
+      envelope.diagnosticReuse.miniPanelLedgerSha256
+    ) {
+      throw new Error('DIAGNOSTIC_REUSE_LEDGER_SHA256_MISMATCH');
+    }
+    await mkdir(dirname(ledgerPath), { recursive: true });
+    await writeFile(ledgerPath, miniLedgerBytes, { flag: 'wx' });
+  }
   let persistedAttempts = resume?.attempts.length ?? 0;
-  const envelope: CompositeRunEnvelope = {
-    ...frozenEnvelope,
-    authorization: 'GRANTED',
-  };
   const provider: CompositePanelProviderPort = {
     async execute(input) {
       const adapter = getCorrectionProviderAdapter(

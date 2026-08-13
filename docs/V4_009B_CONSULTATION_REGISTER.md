@@ -1,7 +1,7 @@
 # V4-009B — Registre de consultation
 
 Date d'ouverture : 2026-08-13
-Statut global : `MINI_PANEL_NO_GO`
+Statut global : `DIAGNOSTIC_EXTENSION_OWNER_GO_REQUIRED`
 
 ## Produit & pédagogie
 
@@ -27,6 +27,9 @@ Statut global : `MINI_PANEL_NO_GO`
 - Inconnues restantes : aucune pour l'enveloppe hors ligne ; les taux futurs de
   contrôle restent volontairement non calibrés.
 - Arbitrage propriétaire requis : `YES` uniquement avant appel facturable.
+- Extension diagnostique : le `NO-GO` du mini-panel reste immuable. Produit a
+  autorisé uniquement la complétion de la matrice de développement `24 × 3`,
+  sans holdout ni portée promotionnelle, sous identité strictement inchangée.
 
 ## Finance & Pricing
 
@@ -50,6 +53,10 @@ Statut global : `MINI_PANEL_NO_GO`
 - Le préflight inclut coût réel, réserves en vol et pire coût du prochain appel.
 - Inconnues restantes : solde fournisseur disponible au moment du lancement.
 - Arbitrage propriétaire requis : `YES` avant appel facturable.
+- Extension diagnostique : plafond agrégé `2.00 USD`, 180 tentatives agrégées
+  et réutilisation obligatoire des 20 tentatives existantes. Le coût déjà
+  consommé est `0.2018835 USD`, soit un budget restant exact de
+  `1.7981165 USD` et 160 tentatives supplémentaires au maximum.
 
 ## Développement
 
@@ -76,6 +83,10 @@ Statut global : `MINI_PANEL_NO_GO`
   gelés. Il vérifie les SHA, bloque sans GO propriétaire, préautorise chaque
   coût, persiste un ledger append-only, reprend sans doublon et sépare paquet
   aveugle/mapping. Aucun appel réseau n'a été effectué pendant cette validation.
+- L'enveloppe diagnostique contient 72 cellules uniques (24 cas × 3), reprend
+  exactement les 12 workflows/20 tentatives du mini-panel par SHA et n'exécute
+  que les 60 cellules PRIMARY absentes. Un jeton propriétaire distinct empêche
+  de réutiliser l'autorisation du mini-panel.
 
 ## Gate de clôture
 
@@ -89,4 +100,8 @@ Statut global : `MINI_PANEL_NO_GO`
 - [x] Autorisation explicite de Rayan reçue avant tout appel facturable.
 - [x] Mini-panel exécuté dans l'enveloppe Finance (`0,2018835 / 0,75 USD`).
 - [x] Revue pédagogique aveugle en deux phases reçue.
-- [x] Verdict `NO-GO` figé ; aucun `24×3`, holdout ou appel supplémentaire.
+- [x] Verdict `NO-GO` du mini-panel figé et non requalifiable.
+- [x] Manifeste diagnostique `24×3` préparé, empreinté et testé hors ligne.
+- [x] Les 12 workflows existants sont référencés sans duplication.
+- [ ] Autorisation propriétaire finale reçue pour les 60 cellules restantes.
+- [ ] Extension diagnostique exécutée et revue ; holdout toujours fermé.

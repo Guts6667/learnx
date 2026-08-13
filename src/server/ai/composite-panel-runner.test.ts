@@ -12,6 +12,7 @@ import {
 import type { CompositeRunEnvelope } from './composite-pipeline-validation.js';
 import {
   assertCompositePanelSources,
+  createCompositeDiagnosticResumeState,
   estimateCompositePanelWorstCaseUsd,
   runCompositeMiniPanel,
   type CompositePanelProviderPort,
@@ -40,6 +41,21 @@ const envelope = {
   ...frozenEnvelope,
   authorization: 'GRANTED',
 } satisfies CompositeRunEnvelope;
+const diagnosticEnvelope = {
+  ...(JSON.parse(
+    readFileSync(
+      'benchmarks/ai-correction/composite/v4-009b-diagnostic-extension.json',
+      'utf8',
+    ),
+  ) as CompositeRunEnvelope),
+  authorization: 'GRANTED' as const,
+};
+const miniPanelStateBytes = readFileSync(
+  'benchmarks/ai-correction/results/composite/v4-009b-mini-panel-2026-08-13/state.json',
+);
+const miniPanelState = JSON.parse(
+  miniPanelStateBytes.toString('utf8'),
+) as import('./composite-panel-runner.js').CompositePanelState;
 
 function digest(bytes: Buffer): string {
   return createHash('sha256').update(bytes).digest('hex');
@@ -281,5 +297,52 @@ describe('V4-009B composite mini-panel runner', () => {
     });
     expect(primaryCost).toBeGreaterThan(0);
     expect(verifierCost).toBeGreaterThan(primaryCost);
+  });
+
+  it('freezes the 72-cell diagnostic extension and reuses the mini-panel without duplication', async () => {
+    expect(diagnosticEnvelope.cells).toHaveLength(72);
+    expect(
+      new Set(diagnosticEnvelope.cells.map((cell) => cell.caseId)).size,
+    ).toBe(24);
+    const resumed = createCompositeDiagnosticResumeState({
+      diagnosticEnvelope,
+      miniPanelState,
+      miniPanelStateSha256: createHash('sha256')
+        .update(miniPanelStateBytes)
+        .digest('hex'),
+    });
+    expect(resumed.cells).toHaveLength(12);
+    expect(resumed.attempts).toHaveLength(20);
+    expect(resumed.envelopeFingerprint).not.toBe(
+      miniPanelState.envelopeFingerprint,
+    );
+
+    const provider = validProvider(0.0001);
+    const result = await runCompositeMiniPanel({
+      ...common,
+      envelope: diagnosticEnvelope,
+      provider,
+      resume: resumed,
+    });
+    expect(result.state.cells).toHaveLength(72);
+    expect(provider.execute).toHaveBeenCalled();
+    expect(provider.execute).toHaveBeenCalledTimes(
+      result.state.attempts.length - miniPanelState.attempts.length,
+    );
+    expect(
+      result.state.attempts.slice(20).every((attempt) =>
+        attempt.idempotencyKey.startsWith(resumed.envelopeFingerprint),
+      ),
+    ).toBe(true);
+  });
+
+  it('rejects a diagnostic reuse artifact with a different SHA', () => {
+    expect(() =>
+      createCompositeDiagnosticResumeState({
+        diagnosticEnvelope,
+        miniPanelState,
+        miniPanelStateSha256: 'f'.repeat(64),
+      }),
+    ).toThrow('COMPOSITE_DIAGNOSTIC_REUSE_MISMATCH');
   });
 });

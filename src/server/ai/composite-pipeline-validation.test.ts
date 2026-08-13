@@ -16,6 +16,7 @@ import {
   createBlindReviewMapping,
   createCompositeRunEnvelopeFingerprint,
   classifyV4009BDisagreement,
+  compositeRunOwnerGoToken,
   deriveV4009BTriggerReasons,
   type CompositeRunEnvelope,
 } from './composite-pipeline-validation.js';
@@ -233,6 +234,18 @@ describe('V4-009B composite validation envelope', () => {
         identity: { ...(original.identity as object), triggerVersion: '1.0.1' },
       }),
     );
+  });
+
+  it('requires a distinct owner GO for a diagnostic extension', () => {
+    expect(compositeRunOwnerGoToken(envelope())).toBe(
+      'RAYAN_APPROVED_V4_009B_MINI_PANEL_0_75_USD',
+    );
+    expect(
+      compositeRunOwnerGoToken({
+        ...envelope(),
+        campaignKind: 'DIAGNOSTIC_FULL',
+      }),
+    ).toBe('RAYAN_APPROVED_V4_009B_DIAGNOSTIC_EXTENSION_2_00_USD');
   });
 
   it('stops before an extra call can exceed calls or provider cost', () => {

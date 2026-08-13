@@ -273,6 +273,45 @@ function validateState(
   }
 }
 
+export function createCompositeDiagnosticResumeState(input: {
+  diagnosticEnvelope: CompositeRunEnvelope;
+  miniPanelState: CompositePanelState;
+  miniPanelStateSha256: string;
+}): CompositePanelState {
+  assertFrozenCompositeRunEnvelope(input.diagnosticEnvelope);
+  const reuse = input.diagnosticEnvelope.diagnosticReuse;
+  if (
+    input.diagnosticEnvelope.campaignKind !== 'DIAGNOSTIC_FULL' ||
+    !reuse ||
+    input.miniPanelStateSha256 !== reuse.miniPanelStateSha256 ||
+    input.miniPanelState.envelopeFingerprint !==
+      reuse.miniPanelEnvelopeFingerprint ||
+    input.miniPanelState.cells.length !== reuse.completedCellCount ||
+    input.miniPanelState.attempts.length !== reuse.completedProviderAttempts ||
+    Math.abs(
+      totalActualCost(input.miniPanelState.attempts) - reuse.usageCostUsd,
+    ) > 1e-12 ||
+    input.miniPanelState.cells.some(
+      (cell) =>
+        !input.diagnosticEnvelope.cells.some(
+          (candidate) =>
+            compositePanelCellKey(candidate) === compositePanelCellKey(cell),
+        ),
+    )
+  ) {
+    throw new Error('COMPOSITE_DIAGNOSTIC_REUSE_MISMATCH');
+  }
+  return {
+    ...structuredClone(input.miniPanelState),
+    envelopeFingerprint: createCompositeRunEnvelopeFingerprint(
+      input.diagnosticEnvelope,
+    ),
+    panelVersion: input.diagnosticEnvelope.panelVersion,
+    stoppedReason: null,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function shouldRetry(attempt: CompositePanelAttempt): boolean {
   return (
     attempt.status === 'ERROR' &&

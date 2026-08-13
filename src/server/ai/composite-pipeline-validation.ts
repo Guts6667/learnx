@@ -19,28 +19,48 @@ export const V4_009B_PANEL_CASE_IDS = [
 export interface CompositePanelCell {
   caseDigest: string;
   caseId: string;
-  repetition: 1 | 2;
+  repetition: 1 | 2 | 3;
+}
+
+export interface CompositeDiagnosticReuse {
+  completedCellCount: 12;
+  completedProviderAttempts: 20;
+  miniPanelEnvelopeFingerprint: string;
+  miniPanelLedgerSha256: string;
+  miniPanelStateSha256: string;
+  usageCostUsd: number;
 }
 
 export interface CompositeRunBudget {
-  absoluteCampaignMaximumProviderCalls: 48;
+  absoluteCampaignMaximumProviderCalls: number;
+  currency?: 'USD_PROVIDER_USAGE_COST';
   expectedWithoutRetryUsd: number;
   maximumInitialVerifierCalls: number;
   maximumProviderCalls: number;
   maximumTechnicalRetriesPerRoleAndCell: 1;
   maximumUsageCostUsd: number;
+  preflightFormula?: string;
+  rateCardSnapshot?: {
+    observedAt: string;
+    primaryCompletionUsdPerToken: number;
+    primaryPromptUsdPerToken: number;
+    verifierCompletionUsdPerToken: number;
+    verifierPromptUsdPerToken: number;
+  };
   status: 'ARBITRATED';
 }
 
 export interface CompositeRunEnvelope {
   authorization: 'GRANTED' | 'OWNER_GO_REQUIRED';
   budget: CompositeRunBudget;
+  campaignKind?: 'DIAGNOSTIC_FULL' | 'MINI_PANEL';
   cells: readonly CompositePanelCell[];
   corpusId: string;
   corpusSha256: string;
+  diagnosticReuse?: CompositeDiagnosticReuse;
   identity: unknown;
   panelVersion: string;
-  repetitions: 2;
+  repetitions: 2 | 3;
   status: 'DRAFT' | 'FROZEN';
 }
 
@@ -59,6 +79,14 @@ export type V4009BTriggerReason =
 
 export type V4009BDisagreement =
   'EXACT_AGREEMENT' | 'MATERIAL_DISAGREEMENT' | 'NON_MATERIAL_DISAGREEMENT';
+
+export function compositeRunOwnerGoToken(
+  envelope: CompositeRunEnvelope,
+): string {
+  return envelope.campaignKind === 'DIAGNOSTIC_FULL'
+    ? 'RAYAN_APPROVED_V4_009B_DIAGNOSTIC_EXTENSION_2_00_USD'
+    : 'RAYAN_APPROVED_V4_009B_MINI_PANEL_0_75_USD';
+}
 
 function canonicalize(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(canonicalize);
@@ -107,14 +135,23 @@ export function assertFrozenCompositeRunEnvelope(
   if (envelope.status !== 'FROZEN') {
     throw new Error('COMPOSITE_RUN_ENVELOPE_NOT_FROZEN');
   }
+  const diagnostic = envelope.campaignKind === 'DIAGNOSTIC_FULL';
+  const expectedCellCount = diagnostic ? 72 : 12;
+  const expectedRepetitions = diagnostic ? 3 : 2;
   if (
-    envelope.cells.length !== 12 ||
-    new Set(envelope.cells.map(compositePanelCellKey)).size !== 12 ||
+    envelope.cells.length !== expectedCellCount ||
+    envelope.repetitions !== expectedRepetitions ||
+    new Set(envelope.cells.map(compositePanelCellKey)).size !==
+      expectedCellCount ||
     envelope.cells.some(
       (cell) =>
-        !V4_009B_PANEL_CASE_IDS.includes(
-          cell.caseId as (typeof V4_009B_PANEL_CASE_IDS)[number],
-        ) || !/^[a-f0-9]{64}$/.test(cell.caseDigest),
+        (!diagnostic &&
+          !V4_009B_PANEL_CASE_IDS.includes(
+            cell.caseId as (typeof V4_009B_PANEL_CASE_IDS)[number],
+          )) ||
+        cell.repetition < 1 ||
+        cell.repetition > expectedRepetitions ||
+        !/^[a-f0-9]{64}$/.test(cell.caseDigest),
     )
   ) {
     throw new Error('COMPOSITE_RUN_PANEL_INVALID');
@@ -122,11 +159,12 @@ export function assertFrozenCompositeRunEnvelope(
   if (
     !/^[a-f0-9]{64}$/.test(envelope.corpusSha256) ||
     envelope.budget.status !== 'ARBITRATED' ||
-    envelope.budget.maximumInitialVerifierCalls !== 10 ||
-    envelope.budget.absoluteCampaignMaximumProviderCalls !== 48 ||
-    envelope.budget.maximumProviderCalls !== 44 ||
+    envelope.budget.maximumInitialVerifierCalls !== (diagnostic ? 68 : 10) ||
+    envelope.budget.absoluteCampaignMaximumProviderCalls !==
+      (diagnostic ? 180 : 48) ||
+    envelope.budget.maximumProviderCalls !== (diagnostic ? 180 : 44) ||
     envelope.budget.maximumTechnicalRetriesPerRoleAndCell !== 1 ||
-    envelope.budget.maximumUsageCostUsd <= 0 ||
+    envelope.budget.maximumUsageCostUsd !== (diagnostic ? 2 : 0.75) ||
     envelope.budget.expectedWithoutRetryUsd < 0 ||
     envelope.budget.expectedWithoutRetryUsd >
       envelope.budget.maximumUsageCostUsd
@@ -135,6 +173,20 @@ export function assertFrozenCompositeRunEnvelope(
   }
   if (JSON.stringify(envelope.identity).includes('PENDING_')) {
     throw new Error('COMPOSITE_RUN_IDENTITY_NOT_ARBITRATED');
+  }
+  if (
+    diagnostic &&
+    (!envelope.diagnosticReuse ||
+      envelope.diagnosticReuse.completedCellCount !== 12 ||
+      envelope.diagnosticReuse.completedProviderAttempts !== 20 ||
+      envelope.diagnosticReuse.usageCostUsd !== 0.2018835 ||
+      !/^[a-f0-9]{64}$/.test(
+        envelope.diagnosticReuse.miniPanelEnvelopeFingerprint,
+      ) ||
+      !/^[a-f0-9]{64}$/.test(envelope.diagnosticReuse.miniPanelLedgerSha256) ||
+      !/^[a-f0-9]{64}$/.test(envelope.diagnosticReuse.miniPanelStateSha256))
+  ) {
+    throw new Error('COMPOSITE_RUN_DIAGNOSTIC_REUSE_INVALID');
   }
 }
 
