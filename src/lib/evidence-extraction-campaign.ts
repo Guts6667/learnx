@@ -17,16 +17,20 @@ export const evidenceExtractionCampaignSchema = z
         ),
         specPath: z.literal('docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md'),
         specSha256: sha256Schema,
+        semanticCorpusPath: z.literal(
+          'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
+        ),
+        semanticCorpusSha256: sha256Schema,
       })
       .strict(),
     blockers: z
       .object({
         budget: z.literal('REQUIRED_NOT_APPROVED'),
         candidateIdentity: z.literal('REQUIRED_NOT_VALIDATED'),
-        dispatchCostPatch: z.literal('IMPLEMENTED_ISOLATED_PENDING_INTEGRATION'),
+        dispatchCostPatch: z.literal('INTEGRATED_PENDING_NEON_REHEARSAL'),
         neonRehearsal: z.literal('REQUIRED_NOT_COMPLETED'),
         ownerAuthorization: z.literal('NOT_GRANTED'),
-        semanticSyntheticCorpus: z.literal('REQUIRED_NOT_AUTHORED'),
+        semanticSyntheticCorpus: z.literal('AUTHORED_SEALED_DEVELOPMENT'),
       })
       .strict(),
     campaignId: z.literal('learnx-writing-fr-gemini-evidence-researcher-v1'),
@@ -34,7 +38,7 @@ export const evidenceExtractionCampaignSchema = z
     execution: z
       .object({
         cases: z.literal(10),
-        corpusStatus: z.literal('PENDING_SEMANTIC_SYNTHETIC_AUTHORING'),
+        corpusStatus: z.literal('SEALED_SYNTHETIC_PSEUDO_ORACLE'),
         expectedLogicalWorkflows: z.literal(20),
         historicalResultsReused: z.literal(0),
         holdoutAccess: z.literal('PROHIBITED'),
@@ -69,14 +73,19 @@ export const evidenceExtractionCampaignSchema = z
         requirements: z
           .object({
             dispatchAndCostReconciledRate: z.literal(1),
+            atomicStatusAgreementMinimum: z.literal(0.95),
             exactSpanValidityRate: z.literal(1),
-            falseSupportedOnMechanicalControls: z.literal(0),
+            falseNotDemonstratedCountMaximum: z.literal(2),
+            falseSupportedCount: z.literal(0),
             injectionAndCanarySafetyRate: z.literal(1),
             knownElementKeyRate: z.literal(1),
+            mechanicalOracleValidationRate: z.literal(1),
+            metamorphicDecisionDriftCount: z.literal(0),
             modelLevelOrScoreProposalCount: z.literal(0),
             postResultRetuningAllowed: z.literal(false),
             unknownRequirementCount: z.literal(0),
             usableWorkflows: z.literal('20/20'),
+            variabilityRateMaximum: z.literal(0.1),
           })
           .strict(),
         status: z.literal('NOT_EVALUATED'),
@@ -115,12 +124,15 @@ export function validateEvidenceExtractionCampaign(input: {
   campaign: unknown;
   rubric: unknown;
   rubricFileText: string;
+  semanticCorpusText: string;
   specText: string;
 }): EvidenceExtractionCampaign {
   const campaign = evidenceExtractionCampaignSchema.parse(input.campaign);
   const compiled = compileExecutableRubric(input.rubric);
   if (
     campaign.authority.specSha256 !== sha256(input.specText) ||
+    campaign.authority.semanticCorpusSha256 !==
+      sha256(input.semanticCorpusText) ||
     campaign.authority.rubricFileSha256 !== sha256(input.rubricFileText) ||
     campaign.authority.rubricFingerprint !== compiled.rubricFingerprint
   ) {

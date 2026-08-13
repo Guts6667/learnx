@@ -53,7 +53,7 @@ function evidencePass(
         contradictions: [],
         elementKey: element.key,
         evidenceSpans:
-          status === 'SUPPORTED'
+          status === 'SUPPORTED' || status === 'CONTRADICTED'
             ? element.evidenceRule.minimumSpans >= 2
               ? [first, second]
               : [first]
@@ -241,5 +241,38 @@ describe('evidence certificate', () => {
         responseText,
       }),
     ).toThrow('EVIDENCE_ELEMENT_COVERAGE_MISMATCH');
+  });
+
+  it('requires exact evidence for a contradicted atomic element', () => {
+    const compiled = compileExecutableRubric(loadRubric());
+    const researcher = evidencePass(compiled, 'EVIDENCE_RESEARCHER', {
+      'identifiable-choice': 'CONTRADICTED',
+    });
+    required(researcher.elements.at(0)).evidenceSpans = [];
+
+    expect(() =>
+      consolidateIndependentEvidence({
+        compiled,
+        falsifier: evidencePass(compiled, 'EVIDENCE_FALSIFIER', {
+          'identifiable-choice': 'CONTRADICTED',
+        }),
+        researcher,
+        responseText,
+      }),
+    ).toThrow('EVIDENCE_SPAN_CARDINALITY_INVALID');
+  });
+
+  it('clamps a fully deterministic indicative score to zero', () => {
+    const compiled = compileExecutableRubric(loadRubric());
+    const overrides = Object.fromEntries(
+      compiled.rubric.elements.map(({ key, polarity }) => [
+        key,
+        polarity === 'NEGATIVE' ? 'SUPPORTED' : 'CONTRADICTED',
+      ]),
+    ) as Record<string, AtomicEvidenceStatus>;
+    const certificate = certificateFor(compiled, overrides);
+
+    expect(certificate.indicativeScore).toBe(0);
+    expect(certificate.correctionState).toBe('REVISION_REQUIRED');
   });
 });

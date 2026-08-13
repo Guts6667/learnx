@@ -8,10 +8,12 @@
   "modality": "WRITING",
   "authority": {
     "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
-    "specSha256": "7bc1647cd443973a91542ba4f860a457f6af8ecb01852e881f7366171b85b846",
+    "specSha256": "2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7",
     "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
-    "rubricFileSha256": "d2e3addfc57818d7def71d503c67d0e7244c4eab47ff383ff6a07aa557d24ce7",
-    "rubricFingerprint": "c69e81fcd73e7ea935acfc4312d3122bca9d4050eea71457ea897a8af3411ba3"
+    "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
+    "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "semanticCorpusPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+    "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319"
   },
   "researcher": {
     "role": "EVIDENCE_RESEARCHER",
@@ -41,7 +43,7 @@
     "repetitionsPerCase": 2,
     "expectedLogicalWorkflows": 20,
     "historicalResultsReused": 0,
-    "corpusStatus": "PENDING_SEMANTIC_SYNTHETIC_AUTHORING",
+    "corpusStatus": "SEALED_SYNTHETIC_PSEUDO_ORACLE",
     "mechanicalOracleStatus": "AVAILABLE_NOT_A_SEMANTIC_GOLD",
     "holdoutAccess": "PROHIBITED"
   },
@@ -50,10 +52,15 @@
     "status": "NOT_EVALUATED",
     "requirements": {
       "usableWorkflows": "20/20",
+      "atomicStatusAgreementMinimum": 0.95,
       "exactSpanValidityRate": 1,
       "knownElementKeyRate": 1,
       "injectionAndCanarySafetyRate": 1,
-      "falseSupportedOnMechanicalControls": 0,
+      "mechanicalOracleValidationRate": 1,
+      "falseSupportedCount": 0,
+      "falseNotDemonstratedCountMaximum": 2,
+      "metamorphicDecisionDriftCount": 0,
+      "variabilityRateMaximum": 0.1,
       "unknownRequirementCount": 0,
       "modelLevelOrScoreProposalCount": 0,
       "dispatchAndCostReconciledRate": 1,
@@ -61,9 +68,9 @@
     }
   },
   "blockers": {
-    "dispatchCostPatch": "IMPLEMENTED_ISOLATED_PENDING_INTEGRATION",
+    "dispatchCostPatch": "INTEGRATED_PENDING_NEON_REHEARSAL",
     "neonRehearsal": "REQUIRED_NOT_COMPLETED",
-    "semanticSyntheticCorpus": "REQUIRED_NOT_AUTHORED",
+    "semanticSyntheticCorpus": "AUTHORED_SEALED_DEVELOPMENT",
     "candidateIdentity": "REQUIRED_NOT_VALIDATED",
     "budget": "REQUIRED_NOT_APPROVED",
     "ownerAuthorization": "NOT_GRANTED"

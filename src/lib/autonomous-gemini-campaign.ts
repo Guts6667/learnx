@@ -241,10 +241,11 @@ export function validateAutonomousGeminiCampaign(input: {
   if (
     !phaseManifest.openBlockers.some(
       (blocker) =>
-        blocker.key === 'DISPATCH_COST_RECONCILIATION' && blocker.status === 'OPEN',
+        blocker.key === 'DISPATCH_COST_RECONCILIATION' &&
+        blocker.status === 'IMPLEMENTED_PENDING_NEON_REHEARSAL',
     )
   ) {
-    throw new Error('AUTONOMOUS_GEMINI_P0_PHASE_BLOCKER_NOT_OPEN');
+    throw new Error('AUTONOMOUS_GEMINI_P0_PHASE_STATUS_MISMATCH');
   }
 
   const expectedCells = new Map(

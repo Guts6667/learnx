@@ -308,7 +308,7 @@
       },
       "contradictionSignals": ["Le raisonnement décrit un avantage puis conclut que cet avantage justifie l'option opposée."],
       "pointsByCriterion": {
-        "reasoning-link": { "SUPPORTED": -100, "NOT_DEMONSTRATED": 0, "CONTRADICTED": 0 }
+        "reasoning-link": { "SUPPORTED": -50, "NOT_DEMONSTRATED": 0, "CONTRADICTED": 0 }
       },
       "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
       "templates": {

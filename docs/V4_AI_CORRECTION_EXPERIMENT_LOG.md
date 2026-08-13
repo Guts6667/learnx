@@ -113,7 +113,41 @@ snapshot catalogue daté) a été réconcilié sans nouvel appel par une écritu
 append-only. Son coût reste inclus. Le verdict, les empreintes et le détail sont
 conservés dans `docs/V4_009C_MINI_PANEL_RESULT.md`.
 
-## 5. Documentation à enrichir après chaque gate
+## 5. Changement d'autorité — moteur de rubrique exécutable (14 août 2026)
+
+Statut : `IMPLEMENTED_OFFLINE / NO_MODEL_CALL`.
+
+La recherche ne tente plus de promouvoir un LLM juge. La nouvelle autorité est
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` : les modèles proposent ou contestent
+des preuves atomiques, tandis que LearnX compile les règles, calcule les niveaux
+et produit le feedback authoré.
+
+Preuves hors ligne préparées :
+
+- archétype `WRITING/fr-FR` DRAFT, 3 critères et 9 éléments atomiques ;
+- compilateur bloquant les propriétaires illégaux, règles non monotones,
+  niveaux inatteignables, relations sans preuves suffisantes et score exact sous
+  ambiguïté matérielle ;
+- oracle mécanique exécutable séparé ;
+- pseudo-oracle sémantique synthétique de 10 cas, explicitement non présenté
+  comme validation humaine ou vérité universelle ;
+- campagne Gemini chercheur 10×2, sans falsificateur, sans modèle/route/budget
+  épinglés et avec appels réseau interdits ;
+- correctif P0 dispatch/coût intégré par `8959f46`, en attente d'une répétition
+  de migration sur branche Neon jetable.
+
+Le pseudo-oracle sémantique est lié à la campagne par SHA-256
+`651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319`.
+Ses métriques ne seront jamais fusionnées avec celles de l'oracle mécanique ou
+d'un futur shadow réel non annoté.
+
+Gates Gemini préenregistrés : 20/20 workflows utilisables, accord atomique
+≥ 95 %, spans, clés, injection/canari et coûts réconciliés à 100 %, zéro faux
+`SUPPORTED`, au plus deux faux `NOT_DEMONSTRATED`, zéro dérive décisionnelle sur
+les métamorphismes, variabilité ≤ 10 %, aucune exigence inconnue, aucun niveau,
+score ou verdict produit par le modèle et aucun retuning après résultat.
+
+## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
 

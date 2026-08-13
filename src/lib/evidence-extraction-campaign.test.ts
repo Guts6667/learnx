@@ -13,6 +13,10 @@ const rubricPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json',
 );
+const semanticCorpusPath = resolve(
+  process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
+);
 const specPath = resolve(
   process.cwd(),
   'docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md',
@@ -21,11 +25,13 @@ const specPath = resolve(
 function loadInputs() {
   const campaignText = readFileSync(campaignPath, 'utf8');
   const rubricFileText = readFileSync(rubricPath, 'utf8');
+  const semanticCorpusText = readFileSync(semanticCorpusPath, 'utf8');
   const specText = readFileSync(specPath, 'utf8');
   return {
     campaign: JSON.parse(campaignText) as unknown,
     rubric: JSON.parse(rubricFileText) as unknown,
     rubricFileText,
+    semanticCorpusText,
     specText,
   };
 }
@@ -43,6 +49,12 @@ describe('Gemini evidence researcher campaign', () => {
       scope: 'RESEARCH_ONLY',
     });
     expect(campaign.execution.historicalResultsReused).toBe(0);
+    expect(campaign.execution.corpusStatus).toBe(
+      'SEALED_SYNTHETIC_PSEUDO_ORACLE',
+    );
+    expect(campaign.blockers.dispatchCostPatch).toBe(
+      'INTEGRATED_PENDING_NEON_REHEARSAL',
+    );
   });
 
   it('forbids any model authority over levels, scores and feedback', () => {

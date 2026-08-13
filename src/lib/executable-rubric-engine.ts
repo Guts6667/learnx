@@ -482,7 +482,7 @@ function indexEvidencePass(
     );
     finding.evidenceSpans.forEach((span) => validateEvidenceSpan(responseText, span));
     if (
-      finding.status === 'SUPPORTED' &&
+      (finding.status === 'SUPPORTED' || finding.status === 'CONTRADICTED') &&
       (finding.evidenceSpans.length < element.evidenceRule.minimumSpans ||
         finding.evidenceSpans.length > element.evidenceRule.maximumSpans)
     ) {
@@ -671,15 +671,21 @@ export function buildEvidenceCertificate(input: {
     rubric.scorePolicy.indicativeScoreEnabled &&
     !hasMaterialAmbiguity &&
     exactCriterionPoints.every((points) => points !== null)
-      ? Math.round(
-          rubric.criteria.reduce((sum, criterion, index) => {
-            const points = requireNumber(
-              exactCriterionPoints.at(index),
-              'MISSING_EXACT_CRITERION_POINTS',
-            );
-            return sum + points * (criterion.weight / 100);
-          }, 0) * 100,
-        ) / 100
+      ? Math.max(
+          0,
+          Math.min(
+            100,
+            Math.round(
+              rubric.criteria.reduce((sum, criterion, index) => {
+                const points = requireNumber(
+                  exactCriterionPoints.at(index),
+                  'MISSING_EXACT_CRITERION_POINTS',
+                );
+                return sum + points * (criterion.weight / 100);
+              }, 0) * 100,
+            ) / 100,
+          ),
+        )
       : null;
 
   return {

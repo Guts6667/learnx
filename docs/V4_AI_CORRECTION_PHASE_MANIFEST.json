@@ -65,7 +65,7 @@
     {
       "priority": "P0",
       "key": "DISPATCH_COST_RECONCILIATION",
-      "status": "OPEN",
+      "status": "IMPLEMENTED_PENDING_NEON_REHEARSAL",
       "requirements": [
         "Persist CALL_INTENT and a local idempotency key before network dispatch.",
         "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
@@ -75,18 +75,27 @@
       "isolatedImplementation": {
         "branch": "codex/p0-dispatch-cost",
         "commit": "572775f",
-        "status": "IMPLEMENTED_AND_TESTED_PENDING_BASELINE_INTEGRATION_AND_NEON"
+        "integratedCommit": "8959f46",
+        "status": "INTEGRATED_AND_TESTED_PENDING_NEON_REHEARSAL"
       }
     },
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "OPEN",
+      "status": "IMPLEMENTED_OFFLINE_PENDING_RESEARCHER_EVIDENCE",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
         "Keep models unable to return levels, scores, PASS/FAIL, progression effects or freeform feedback."
-      ]
+      ],
+      "implementedEvidence": {
+        "engineCommit": "145d668",
+        "rubric": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+        "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-mechanical-oracle.v1.json",
+        "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+        "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+        "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json"
+      }
     },
     {
       "priority": "P1",
@@ -107,7 +116,11 @@
       "dispatchAndCostReconciledRate": 1,
       "exactSpanAndInjectionSafetyRate": 1,
       "usableResearcherWorkflows": "20/20",
-      "falseSupportedOnMechanicalControls": 0,
+      "atomicStatusAgreementMinimum": 0.95,
+      "falseSupportedCount": 0,
+      "falseNotDemonstratedCountMaximum": 2,
+      "metamorphicDecisionDriftCount": 0,
+      "variabilityRateMaximum": 0.1,
       "unknownRequirementCount": 0,
       "modelLevelOrScoreProposalCount": 0,
       "exactScoreUnderMaterialAmbiguityCount": 0,
@@ -116,9 +129,9 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Integrate commit 572775f and repeat the additive migration on a disposable Neon branch.",
-    "Compile and mutation-test the WRITING/fr-FR executable rubric.",
-    "Build separate mechanical-oracle and semantic-synthetic corpora.",
+    "Repeat the integrated additive P0 migration on a disposable Neon branch.",
+    "Validate the integrated compiler, mechanical oracle and semantic pseudo-oracle on the full local suite.",
+    "Validate exact Gemini identity, route, prompt, request profile, pricing snapshot and budget without authorising a model call.",
     "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
     "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
     "If still GO, expand the semantic development corpus and then open a one-shot holdout."
