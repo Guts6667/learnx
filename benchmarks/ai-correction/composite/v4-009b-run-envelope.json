@@ -103,6 +103,17 @@
       "verifierCompletionUsdPerToken": 0.000015
     }
   },
+  "conditionalFullCampaign": {
+    "status": "BLOCKED_PENDING_MINI_PANEL_REVIEW_AND_OWNER_GO",
+    "logicalWorkflowCount": 72,
+    "expectedUsageCostUsdRange": [1.1, 1.3],
+    "maximumUsageCostUsd": 2,
+    "maximumProviderCalls": 180,
+    "reuseMiniPanelCells": true,
+    "remainingPrimaryCellsAfterMiniPanel": 60,
+    "preflightRequiredBeforeEveryAttempt": true,
+    "holdoutStatus": "CLOSED"
+  },
   "cells": [
     {
       "caseId": "benchmark-writing-successful",

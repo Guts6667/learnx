@@ -44,6 +44,9 @@ Statut global : `BLOCKED_BEFORE_LIVE`
   - prix, crédits, parité et catalogue restent `DRAFT/INACTIVE`.
 - Arbitrage reçu : plafond dur `0.75 USD`, attente sans retry `<= 0.35 USD`,
   48 tentatives maximum et un retry transitoire allowlisté par rôle/cellule.
+- Arbitrage conditionnel du full : `1.10–1.30 USD` attendus, plafond dur
+  `2.00 USD` et 180 tentatives agrégées, seulement après GO écrit du mini-panel
+  puis autorisation propriétaire distincte ; les 12 cellules sont réutilisées.
 - Le préflight inclut coût réel, réserves en vol et pire coût du prochain appel.
 - Inconnues restantes : solde fournisseur disponible au moment du lancement.
 - Arbitrage propriétaire requis : `YES` avant appel facturable.

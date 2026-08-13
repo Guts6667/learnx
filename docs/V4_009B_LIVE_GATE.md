@@ -45,3 +45,27 @@ réservation ou prix utilisateur n'est utilisé.
 Après le panel : arrêt, génération du paquet aveugle phase 1, puis revue
 Produit/pédagogie. Aucun `24×3` sans nouveau GO écrit et aucun holdout avant la
 réussite ultérieure de ce `24×3`.
+
+## Suite conditionnelle — aucun appel autorisé à ce stade
+
+Le mini-panel est uniquement un gate d'arrêt économique et pédagogique. Il ne
+permet pas de conclure définitivement sur la qualité du pipeline face à une
+approche mono-modèle.
+
+Si Produit/pédagogie rend un GO écrit sur le mini-panel, puis si Rayan autorise
+explicitement le full sous une identité strictement inchangée :
+
+- matrice finale : 24 cas × 3 répétitions = 72 workflows ;
+- réutilisation obligatoire des 12 cellules du mini-panel ;
+- seulement 60 appels PRIMARY manquants, jamais 72 nouveaux appels PRIMARY ;
+- budget attendu agrégé : `1.10–1.30 USD`, mini-panel inclus ;
+- plafond dur agrégé : `2.00 USD`, mini-panel inclus ;
+- maximum agrégé : 180 tentatives, retries compris ;
+- même préflight atomique avant chaque tentative ;
+- arrêt, paquet aveugle et revue humaine avant toute promotion ;
+- holdout toujours fermé jusqu'au GO du full.
+
+Les sorties PRIMARY du composite fourniront la baseline Mistral seul sans appel
+supplémentaire. Sonnet historique n'est comparable que si corpus SHA, prompt,
+protocole, route, profil et scoring sont strictement identiques ; sinon il sera
+marqué `NON_COMPARABLE` ou seulement indicatif.

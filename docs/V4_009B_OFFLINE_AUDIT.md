@@ -61,6 +61,25 @@ ou réécrit dans `_prisma_migrations`.
 - Budget : `0.75 USD` maximum, 48 tentatives maximum, préflight avant chaque
   appel ; zéro débit utilisateur.
 
+## Portée des preuves et campagne conditionnelle
+
+Les tests déterministes hors ligne prouvent l'infrastructure et les règles. Le
+mini-panel 6×2 est seulement un gate d'arrêt : il ne suffit pas à comparer
+définitivement le pipeline à une correction mono-modèle.
+
+Après un GO pédagogique du mini-panel et un GO propriétaire distinct, le full
+24×3 réutilisera les 12 cellules déjà exécutées et complétera uniquement les 60
+cellules PRIMARY manquantes. Son enveloppe conditionnelle est de `1.10–1.30
+USD` attendus, `2.00 USD` maximum et 180 tentatives maximum, agrégés mini-panel
+inclus. Ces bornes ne sont ni des quotas ni une autorisation immédiate.
+
+La comparaison finale rapportera au minimum accord critériel, faux PASS/faux
+FAIL internes, écarts de deux niveaux ou plus, variabilité, preuves, sécurité,
+invalidités, unusable, `UNCERTAIN`, latences P50/P90, taux de vérification et
+coût par workflow utilisable. La baseline Mistral sera dérivée des sorties
+PRIMARY. L'historique Sonnet sera déclaré non comparable si son identité
+complète diffère. Le holdout reste fermé jusqu'au GO du full.
+
 Le corpus v1-3 et la configuration prompt/protocole sont encore des travaux
 parallèles non committés dans le dépôt principal. Le manifeste les lie par
 identité et SHA, mais aucun lancement reproductible ne sera autorisé tant que

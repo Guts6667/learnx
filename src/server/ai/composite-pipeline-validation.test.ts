@@ -145,6 +145,25 @@ describe('V4-009B composite validation envelope', () => {
       createCompositeRunEnvelopeFingerprint(manifest),
     );
     expect(manifest.authorization).toBe('OWNER_GO_REQUIRED');
+    expect(
+      (
+        manifest as CompositeRunEnvelope & {
+          conditionalFullCampaign: {
+            holdoutStatus: string;
+            maximumProviderCalls: number;
+            maximumUsageCostUsd: number;
+            remainingPrimaryCellsAfterMiniPanel: number;
+            status: string;
+          };
+        }
+      ).conditionalFullCampaign,
+    ).toMatchObject({
+      holdoutStatus: 'CLOSED',
+      maximumProviderCalls: 180,
+      maximumUsageCostUsd: 2,
+      remainingPrimaryCellsAfterMiniPanel: 60,
+      status: 'BLOCKED_PENDING_MINI_PANEL_REVIEW_AND_OWNER_GO',
+    });
     expect((manifest.identity as { pipelineId: string }).pipelineId).toBe(
       'learnx-fr-text-mistral-sonnet-targeted-v1',
     );
