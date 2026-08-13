@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "status": "FROZEN",
+  "authorization": "OWNER_GO_REQUIRED",
+  "panelVersion": "1.0.0",
+  "corpusId": "learnx-french-text-corpus-v1-3",
+  "corpusSha256": "a78393edbeb6b350fcd8f1d5bb8931c9ddebd8e69cf15e852bc038129c9eb73c",
+  "repetitions": 2,
+  "identity": {
+    "pipelineId": "learnx-fr-text-mistral-sonnet-targeted-v1",
+    "pipelineVersion": "1.0.0",
+    "benchmarkConfigurationSha256": "4da7c60e6fe82702b84d6de4c6879a2243cfb1f436015b5c42fd5cbaae4e464d",
+    "protocolVersion": "3.0.1",
+    "primary": {
+      "candidateId": "mistral-medium-3-5-openrouter",
+      "modelId": "mistralai/mistral-medium-3-5",
+      "provider": "Mistral",
+      "routeProviders": ["Mistral"],
+      "requestProfileVersion": "2.0.0",
+      "promptVersion": "2.0.0",
+      "adapter": "OPENROUTER_CHAT",
+      "allowFallbacks": false,
+      "temperature": 0,
+      "reasoning": "OFF",
+      "visibleOutputTokenTarget": 1500,
+      "totalOutputTokenLimit": 1500,
+      "timeoutMs": 60000
+    },
+    "verifier": {
+      "candidateId": "claude-sonnet-4-6-openrouter-anthropic",
+      "modelId": "anthropic/claude-sonnet-4.6",
+      "provider": "Anthropic",
+      "routeProviders": ["Anthropic"],
+      "requestProfileVersion": "2.0.0",
+      "promptVersion": "2.0.0",
+      "adapter": "OPENROUTER_CHAT",
+      "allowFallbacks": false,
+      "temperature": null,
+      "reasoning": "OFF",
+      "visibleOutputTokenTarget": 1500,
+      "totalOutputTokenLimit": 1500,
+      "timeoutMs": 60000
+    },
+    "trigger": {
+      "version": "1.0.0",
+      "signals": [
+        "DECISION_SENSITIVE",
+        "SECURITY_REVIEW",
+        "USABLE_VALIDATION_WARNING",
+        "CONTROL_SAMPLE"
+      ],
+      "confidenceAloneTriggers": false,
+      "sensitiveCriterionKeys": [],
+      "controlSampleCellKeys": [
+        "benchmark-writing-successful:1",
+        "benchmark-practice-erroneous:1"
+      ]
+    },
+    "consolidation": {
+      "version": "1.0.0",
+      "strategy": "PRIMARY_PRESERVED_WITH_TARGETED_VERIFICATION",
+      "voteOrAverage": false,
+      "verifierFailureWithUsablePrimary": "PROVISIONAL",
+      "primaryFailureAfterRetry": "UNUSABLE_RELEASED"
+    },
+    "materialDisagreement": {
+      "oppositeInternalBoundarySides": true,
+      "minimumOrdinalDistanceOnOneCriterion": 2,
+      "minimumDifferingCriteria": 2,
+      "resultState": "UNCERTAIN",
+      "exactScoreExposed": false,
+      "scoreRangeExposed": false
+    },
+    "retryPolicy": {
+      "maximumTechnicalRetriesPerRoleAndCell": 1,
+      "sameIdentityAndRouteRequired": true,
+      "transientAllowlist": [
+        "PROVIDER_HTTP_429",
+        "PROVIDER_HTTP_500",
+        "PROVIDER_HTTP_502",
+        "PROVIDER_HTTP_503",
+        "PROVIDER_HTTP_504"
+      ],
+      "timeoutsAreEliminatory": true,
+      "semanticRetriesAllowed": false
+    }
+  },
+  "budget": {
+    "status": "ARBITRATED",
+    "currency": "USD_PROVIDER_USAGE_COST",
+    "expectedWithoutRetryUsd": 0.35,
+    "maximumUsageCostUsd": 0.75,
+    "maximumProviderCalls": 44,
+    "absoluteCampaignMaximumProviderCalls": 48,
+    "maximumInitialVerifierCalls": 10,
+    "maximumTechnicalRetriesPerRoleAndCell": 1,
+    "preflightFormula": "actualCostUsd + reservedInFlightUsd + worstCaseNextUsd <= 0.75",
+    "rateCardSnapshot": {
+      "observedAt": "2026-08-12T00:00:00+02:00",
+      "primaryPromptUsdPerToken": 0.0000015,
+      "primaryCompletionUsdPerToken": 0.0000075,
+      "verifierPromptUsdPerToken": 0.000003,
+      "verifierCompletionUsdPerToken": 0.000015
+    }
+  },
+  "cells": [
+    {
+      "caseId": "benchmark-writing-successful",
+      "caseDigest": "af64f15100296a42a07065407557c7d15293f8947bae77ff18ba0e9b5f13fa00",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-writing-successful",
+      "caseDigest": "af64f15100296a42a07065407557c7d15293f8947bae77ff18ba0e9b5f13fa00",
+      "repetition": 2
+    },
+    {
+      "caseId": "benchmark-practice-erroneous",
+      "caseDigest": "2c375de68c4bc422f5909c96997525d8befbeb9838e18ad2f2aea4306de2d4f4",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-practice-erroneous",
+      "caseDigest": "2c375de68c4bc422f5909c96997525d8befbeb9838e18ad2f2aea4306de2d4f4",
+      "repetition": 2
+    },
+    {
+      "caseId": "benchmark-project-partial",
+      "caseDigest": "12dbfc157b729571e7f79dec5a19a23a119939f2b00c2f56e331a436cf1526d6",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-project-partial",
+      "caseDigest": "12dbfc157b729571e7f79dec5a19a23a119939f2b00c2f56e331a436cf1526d6",
+      "repetition": 2
+    },
+    {
+      "caseId": "benchmark-writing-ambiguous",
+      "caseDigest": "fcc71b5610bf10182f22a414c92bca9e2a0966b5db90281b6f5529b6eb82b99e",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-writing-ambiguous",
+      "caseDigest": "fcc71b5610bf10182f22a414c92bca9e2a0966b5db90281b6f5529b6eb82b99e",
+      "repetition": 2
+    },
+    {
+      "caseId": "benchmark-reflection-partial",
+      "caseDigest": "589c33b241d62b41fb373b7e137cd00eae0c312bebb934c7928c3e92ee926a2a",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-reflection-partial",
+      "caseDigest": "589c33b241d62b41fb373b7e137cd00eae0c312bebb934c7928c3e92ee926a2a",
+      "repetition": 2
+    },
+    {
+      "caseId": "benchmark-practice-prompt-injection",
+      "caseDigest": "8c437b25c3760b8a067af78ee3e294d7397ef9c0b95ad8830a81afe327a7920c",
+      "repetition": 1
+    },
+    {
+      "caseId": "benchmark-practice-prompt-injection",
+      "caseDigest": "8c437b25c3760b8a067af78ee3e294d7397ef9c0b95ad8830a81afe327a7920c",
+      "repetition": 2
+    }
+  ]
+}
