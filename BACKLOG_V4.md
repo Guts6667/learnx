@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.4.0
+- Version : 1.5.0
 - Statut : **scope produit validé et figé — implémentation après clôture V3.5**
-- Dernière consolidation : 13 août 2026 — expérimentation Gemini sous enveloppe déterministe
+- Dernière consolidation : 13 août 2026 — gate autonome et séparation feedback/maîtrise
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -63,7 +63,32 @@ et de seconde passe nécessairement exécutée par le même modèle.
   pipeline final devra recevoir une identité propre et être évalué comme un
   produit unique avant activation.
 - Aucun modèle ni pipeline n'est encore promu ; le holdout scellé reste fermé
-  tant que la configuration composite n'a pas franchi son gate de développement.
+  tant qu'un candidat n'a pas franchi le corpus complet de développement et le
+  gate `GO_AUTONOMOUS_FORMATIVE`.
+
+### Amendement validé — preuve autonome et validation de maîtrise séparée
+
+La correction V4 fonctionne sans évaluateur humain opérationnel ou de
+promotion. Les campagnes historiques et leurs revues restent des preuves
+immuables, mais aucune nouvelle campagne ne peut simuler une approbation humaine
+ou utiliser `humanReviewApproved` comme autorité. Le manifeste canonique de la
+phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json`.
+
+- Le gate de promotion devient `GO_AUTONOMOUS_FORMATIVE` : oracle autonome
+  scellé, cas déterministes, métamorphismes, sécurité et citations exactes,
+  variabilité bornée et abstention obligatoire.
+- Une analyse `CONFIRMED` fournit un feedback formatif ; `UNCERTAIN` masque le
+  score exact et restitue seulement les constats consensuels ; `UNUSABLE` ne
+  publie ni feedback complet ni débit.
+- Aucun résultat IA ne modifie `ConceptProgress`, `StageProgress` ou une preuve
+  de maîtrise. Une production libre peut être obligatoire comme remise, jamais
+  comme validation calculée par l'IA.
+- V4-011 reste fermé jusqu'à l'existence d'un contrôle cumulatif déterministe,
+  multi-notions et corrigé côté serveur. Complétion, feedback et maîtrise sont
+  trois états distincts.
+- La première cible éditoriale est le contrat DRAFT
+  `docs/V4_WRITING_RECOMMENDATION_FR_CONTRACT_DRAFT.md`. Il n'autorise aucun
+  appel ni aucune activité avant publication versionnée et gates satisfaits.
 
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
@@ -180,10 +205,10 @@ silencieusement l'historique.
 | V4-008 | Finance & Pricing : allocation offerte, renouvellement, report, limites et ordre de consommation. Produit & pédagogie : compréhension des deux soldes, alertes et demande d'augmentation sans promesse trompeuse. |
 | V4-008A | Produit & pédagogie : identité, déclenchement, consolidation et états du pipeline composite. Finance & Pricing : coût, plafond et retries absorbés du workflow. Direction artistique : conformité du contrat aux surfaces Atlas validées. Aucun appel facturable avant gel de l'identité. |
 | V4-009 | Finance & Pricing : réservation, règlement, libération, retries absorbés et réconciliation. Produit & pédagogie : consentement, absence de débit surprise et historique compréhensible. |
-| V4-009B | Produit & pédagogie : protocole préenregistré, panel représentatif et revue aveugle du pipeline intégré. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
-| V4-009C | Produit & pédagogie : panel Gemini modernisé, grille formative et revue aveugle. Finance & Pricing : plafond R&D et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste, runner et traçabilité append-only. Aucun appel facturable sans GO distinct. |
+| V4-009B | Produit & pédagogie : protocole préenregistré, oracle autonome scellé, métamorphismes et verdict `GO_AUTONOMOUS_FORMATIVE`. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
+| V4-009C | Produit & pédagogie : panel Gemini modernisé, grille formative, oracle autonome et abstention. Finance & Pricing : plafond R&D et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste, runner et traçabilité append-only. Aucun appel facturable sans GO distinct. |
 | V4-010 | Produit & pédagogie : flow complet de correction, critères, nouvelle tentative et nouvelle analyse. Direction artistique : états et hiérarchie des surfaces mobile/desktop avant validation visuelle. |
-| V4-011 | Produit & pédagogie : formats éligibles, même grille, autorité du second résultat et absence de revue humaine. Finance & Pricing : coût/devis de la nouvelle analyse. Direction artistique : comparaison des résultats et états incertains. |
+| V4-011 | Produit & pédagogie : séparation remise/feedback/maîtrise, formats éligibles, contrat cumulatif déterministe et absence de revue humaine. Finance & Pricing : coût/devis de la nouvelle analyse formative. Direction artistique : comparaison des résultats et états incertains. Ticket fermé tant que le gate déterministe n'est pas livré. |
 | V4-012 | Finance & Pricing : définitions des coûts, marge, réconciliation et alertes. Produit & pédagogie : métriques de qualité interprétables sans réduire la pédagogie à une moyenne. |
 | V4-013 | Finance & Pricing : flux marchand et hypothèses de trésorerie. Conseil externe : validation juridique, fiscale, comptable et conditions Revolut avant toute activation. |
 | V4-014 | Finance & Pricing : packs, capacités moyennes et absence de vente à perte. Direction artistique : checkout et confiance. Conseil externe : paiement, facturation, rétractation et moyens de paiement autorisés. |
@@ -575,7 +600,8 @@ Lot alignement composite correctif
 V4-003 + V4-004 + V4-005 + V4-007 + V4-008 → V4-008A
 
 Lot correction apprenant
-V4-008A → V4-009 → V4-009B (NO-GO documenté) → V4-009C → V4-010 → V4-011
+V4-008A → V4-009 → V4-009B (NO-GO documenté) → V4-009C → V4-010
+→ V4-011 (fermé jusqu'au gate déterministe de maîtrise)
 
 Lot administration et exploitation
 V4-009 → V4-012
@@ -616,8 +642,9 @@ V4-001…V4-017 + V4-016A + V4-016B + V4-016C + V4-016G
   ledger, administration et mesure des coûts. Les évaluations d'étape et les
   achats restent désactivés.
 - **V4B — évaluations, commerce et clôture** : V4-011, V4-013 à V4-015,
-  compléments V4-016A/B/G, V4-018 et V4-019. Elle ouvre les évaluations d'étape
-  textuelles, packs et paiement seulement après validation économique, fiscale,
+  compléments V4-016A/B/G, V4-018 et V4-019. Elle n'ouvre les évaluations
+  d'étape qu'après livraison du gate déterministe de maîtrise, et les packs et
+  paiements seulement après validation économique, fiscale,
   juridique, sécurité et exploitation.
 - V4A peut être testée et déployée à un groupe pilote sans attendre V4B. V4 ne
   reçoit toutefois son verdict final qu'après V4B et V4-019.
@@ -665,7 +692,8 @@ Tickets principaux : V4-011 et V4-012.
   aucun humain ne corrige ou n'arbitre la soumission.
 - L'administrateur suit qualité, coûts, incidents, soldes et marge projetée.
 - Les évaluations d'étape sont ouvertes après preuve de fiabilité sur les
-  exercices textuels. Cette progression réduit le risque de lancement mais ne
+  exercices textuels **et** livraison du gate cumulatif déterministe de maîtrise.
+  Cette progression réduit le risque de lancement mais ne
   les repousse pas hors de V4.
 
 ### Jalon D — Achat de crédits
@@ -769,8 +797,8 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ### Tests et risques
 
-- Fixtures valides/invalides, compatibilité avec les rubriques existantes et
-  revue pédagogique humaine.
+- Fixtures valides/invalides, compatibilité avec les rubriques existantes,
+  mutations unitaires des critères et oracle autonome scellé.
 - Risque : transformer une rubrique vague en fausse précision chiffrée.
 
 ---
@@ -781,9 +809,10 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ### Périmètre
 
-- Constituer un corpus anonymisé de réponses étalonnées pour le développement
-  avec validation pédagogique humaine : réussies,
-  partielles, erronées, ambiguës, hors sujet et potentiellement injectées.
+- Constituer un corpus synthétique et autonome de réponses étalonnées pour le
+  développement : réussies, partielles, erronées, ambiguës, hors sujet et
+  potentiellement injectées. Les attentes sont scellées avant les candidats et
+  ne sont jamais présentées comme une validation humaine indépendante.
 - Comparer au moins trois candidats sur français, accord par critère,
   hallucination, calibration, sécurité, latence et coût complet.
 - Mesurer médiane, P75, P90, taux de retry, taux de seconde correction IA,
@@ -794,10 +823,11 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   résultats `UNCERTAIN`/`PROVISIONAL`.
 - Définir les seuils de promotion, régression et rollback d'un modèle.
 - Produire un rapport sans envoyer de donnée réelle non anonymisée.
-- Conserver les campagnes mono-modèle comme baselines et évaluer séparément un
-  pipeline composite épinglé. La piste prioritaire est Mistral primaire puis
-  Sonnet vérificateur sur règle serveur ; ces rôles restent non promus tant que
-  le benchmark composite et sa revue aveugle ne sont pas terminés.
+- Conserver les campagnes mono-modèle et composites comme baselines historiques.
+  Sonnet reste `NO_GO`, Mistral + Sonnet reste `NO_GO_PEDAGOGICAL` et Gemini
+  reste `NO_GO_TECHNICAL_PANEL_INCOMPLETE`. Aucun de ces verdicts n'est
+  requalifié ; Gemini seul peut être retesté sous une nouvelle identité après
+  fermeture du P0 dispatch/coût.
 - Préenregistrer avant appel la règle de déclenchement du vérificateur, la règle
   de désaccord, le budget, les profils et un échantillon aléatoire de contrôle.
 - Mesurer séparément correction automatique composite, retry technique et
@@ -827,15 +857,21 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   distingués par une règle préenregistrée et calibrée. Aucun seuil d'état ou de
   score n'est inventé dans le ticket : il doit être mesuré, versionné et validé
   avant activation.
-- La campagne composite doit inclure la revue aveugle de tous les écarts
-  importants, un échantillon d'accords et une mesure hors déclenchement. Le
-  holdout reste scellé jusqu'au GO de ce gate de développement.
+- Le gate `GO_AUTONOMOUS_FORMATIVE` est non contournable : coûts dispatchés
+  réconciliés à 100 %, sécurité injection et preuves à 100 %, 20/20 workflows
+  utilisables, `falsePassCount === 0`, aucun écart ordinal `>= 2` publié sans
+  abstention, accord décisionnel `>= 19/20`, accord critériel `>= 85 %` et
+  variabilité `<= 10 %`. Le digest doit lier tentatives, résumé et décision.
+- Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
+  `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
 
 ### Tests et risques
 
-- Échantillon suffisant par type d'activité et analyse humaine du corpus et des
-  désaccords pendant le benchmark uniquement ; ce contrôle qualité interne
-  n'est pas une correction opérationnelle d'un exercice utilisateur.
+- Échantillon suffisant par type d'activité, oracle scellé et tests
+  métamorphiques : paraphrase, mutation d'un critère, retrait de preuve,
+  concision, fautes sans perte de sens, verbosité, contradiction, Unicode,
+  injection et canari. Les juges IA éventuels génèrent des attaques ou des
+  vetos diagnostiques ; ils ne fabriquent jamais la vérité par majorité.
 - Risque : suradapter le prompt à un corpus trop petit.
 
 ---
@@ -1222,11 +1258,11 @@ l'activation de V4-010.**
 - Mesurer qualité formative, faux positifs et faux négatifs, stabilité,
   citations, sorties invalides, sécurité, états incertains, latence, appels du
   vérificateur et coût complet du workflow par correction utilisable.
-- Soumettre toutes les sorties du mini-panel à une revue pédagogique réellement
-  aveugle, sans modèle, fournisseur, prix, catégorie ni gold exposés.
+- Évaluer toutes les sorties contre l'oracle autonome scellé et les contrôles
+  déterministes, sans modèle, fournisseur ni prix dans le paquet de décision.
 - Si et seulement si le mini-panel reçoit un GO explicite du Propriétaire,
-  exécuter le `24 cas × 3 répétitions` sous la même identité, puis sa revue
-  aveugle. Le holdout scellé reste une étape ultérieure et irréversible.
+  exécuter le `24 cas × 3 répétitions` sous la même identité. Le holdout scellé
+  reste une étape ultérieure, irréversible et distincte du réglage.
 - Documenter les campagnes historiques et expliquer pourquoi elles ne peuvent
   pas être recombinées comme preuve de promotion lorsque leurs prompts,
   protocoles ou identités diffèrent.
@@ -1252,8 +1288,9 @@ l'activation de V4-010.**
 - La vérification ciblée utilise la règle serveur figée. Elle n'est déclenchée ni
   par la seule confiance auto-déclarée d'un modèle, ni par une règle inventée
   après lecture des résultats.
-- La revue aveugle rend un verdict écrit et distingue désaccord pédagogique,
-  défaillance technique, sécurité et frontière raisonnablement discutable.
+- La décision autonome rend un verdict écrit et distingue non-conformité à
+  l'oracle, défaillance technique, sécurité et frontière explicitement marquée
+  comme abstention attendue.
 - Le rapport présente au minimum accord de décision, faux positifs, faux
   négatifs, écarts par critère, variabilité, sécurité, preuves, sorties
   invalides, état `UNCERTAIN`, latence et coûts P50/P90 observés lorsque
@@ -1268,8 +1305,8 @@ l'activation de V4-010.**
 ### Tests et risques
 
 - Tests unitaires des règles de déclenchement et consolidation ; intégration avec
-  providers simulés ; répétition Neon ; mini-panel facturable plafonné puis revue
-  humaine aveugle.
+  providers simulés ; répétition Neon ; mini-panel facturable plafonné puis gate
+  autonome reproductible.
 - Risques : dépenser sur un pipeline non viable, suradapter le prompt aux six cas,
   confondre une simulation rétrospective avec une preuve intégrée ou ouvrir le
   holdout trop tôt.
@@ -1334,15 +1371,15 @@ documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 - Aucun workflow finalement inutilisable ; au plus deux premières sorties
   `INVALID` sur vingt, uniquement si le retry autorisé produit une sortie valide.
 - Accord exact par critère `>= 85 %`, variabilité `<= 10 %`, aucun écart ordinal
-  de deux niveaux non adjudiqué et aucun résultat matériellement trop généreux
-  confirmé par revue humaine.
+  de deux niveaux publié sans abstention et aucun faux résultat favorable sur
+  les contrôles déterministes.
 - Mesurer en plus l'erreur absolue du score formatif serveur, l'accord adjacent,
   la qualité/actionnabilité du feedback, le ton, la latence et le coût complet.
   Le PASS/FAIL interne reste une sonde de benchmark et n'est ni affiché ni lié à
   la progression.
-- Une revue humaine en deux phases gèle d'abord son jugement sans modèle,
-  fournisseur, prix, catégorie ni gold, puis compare aux attentes et rend le
-  verdict.
+- L'oracle autonome, les métamorphismes, les golds et les seuils sont scellés
+  avant les candidats. Le paquet de décision masque modèle, fournisseur et prix
+  puis rend mécaniquement `GO_AUTONOMOUS_FORMATIVE` ou `NO_GO`.
 - Aucun seuil, gold, prompt, cas ou contrôle n'est modifié après lecture des
   résultats. Tout changement crée une nouvelle identité et un nouveau panel.
 
@@ -1439,15 +1476,21 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 
 ---
 
-## V4-011 — Évaluations d'étape textuelles et nouvelle analyse IA
+## V4-011 — Évaluations d'étape composites et nouvelle analyse IA
 
-**Priorité : P1. Dépendances : V4-010 et calibration exercice réussie.**
+**Statut : FERMÉ. Priorité : P1. Dépendances : V4-010, calibration exercice
+réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 
 ### Périmètre
 
-- Étendre la correction aux évaluations d'étape dont la réponse et la rubrique
-  sont entièrement textuelles : étude de cas, devoir écrit, simulation décrite
-  et examen cumulatif textuel.
+- Séparer explicitement trois états : production authentique remise, feedback IA
+  formatif et maîtrise validée.
+- Étendre le feedback aux productions d'étape entièrement textuelles : étude de
+  cas, devoir écrit ou simulation décrite. Leur remise peut être obligatoire,
+  mais leur correction IA ne constitue jamais une validation de maîtrise.
+- Définir et livrer un contrôle cumulatif déterministe, multi-notions, corrigé
+  côté serveur et indépendant de l'IA. Lui seul peut produire la preuve de
+  maîtrise requise par la validation finale d'étape.
 - Ne jamais proposer de correction IA pour un oral, une image, un fichier ou
   une preuve non textuelle tant que son format n'est pas implémenté et calibré.
 - Réutiliser le pipeline composite promu pour la correction automatique. Une
@@ -1460,12 +1503,16 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 - Si les analyses restent incompatibles ou insuffisamment fiables, ne pas
   inventer une note : proposer une nouvelle soumission à l'apprenant.
 - Interdire toute assimilation à une validation professionnelle/scientifique.
+- Si un objectif ne peut être évalué ni déterministiquement ni humainement,
+  LearnX ne prétend pas l'avoir validé.
 
 ### Hors périmètre
 
 - Évaluation sans texte exploitable, domaine non calibré, observation live,
   image, fichier, audio, vidéo, transcription ou correction humaine.
 - Chat de négociation avec le modèle ou contestation sans politique versionnée.
+- Activation du ticket avant publication du contrat de maîtrise déterministe et
+  de ses banques, seuils, remédiations et règles de nouvelle tentative.
 
 ### Critères d'acceptation
 
@@ -1474,8 +1521,15 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 - La première correction, l'argument de contestation et la seconde correction
   restent visibles, versionnés et non modifiables.
 - Le moteur de progression reste indépendant du score et des résultats IA ; une
-  analyse incertaine conduit à une nouvelle tentative sans bloquer artificiellement
-  le parcours.
+  analyse incertaine conduit à une nouvelle soumission formative sans bloquer
+  artificiellement le parcours. La validation d'étape dépend exclusivement du
+  gate déterministe de maîtrise et des autres prérequis serveur authorés.
+- La production remise, le feedback reçu et la maîtrise validée ont des états,
+  événements et historiques distincts ; aucun statut IA ne peut être traduit en
+  `VALIDATED`.
+- Un échec déterministe produit `NEEDS_REVIEW`, des ressources ordonnées liées
+  aux notions et l'action « Revoir puis retenter ». Consulter une ressource ne
+  valide jamais une notion et toutes les tentatives restent conservées.
 - La politique finale de contestation — contenu de l'argument, nombre de demandes
   et présentation comparative — est versionnée et validée par le Propriétaire
   avant activation ; le ticket n'en invente aucune valeur.
@@ -1486,7 +1540,8 @@ V4-009C ou d'une expérimentation ultérieure explicitement validée.**
 ### Tests et risques
 
 - Divergence entre primaire et vérificateur, contestation répétée, idempotence,
-  coûts, seuils, stabilité du score indicatif et indépendance de la progression.
+  coûts, seuils, stabilité du score indicatif, indépendance de la progression,
+  couverture multi-notions et remédiation déterministe.
 - Risque : forte conséquence pédagogique d'une correction erronée.
 
 ---

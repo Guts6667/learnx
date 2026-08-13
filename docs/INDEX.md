@@ -19,6 +19,7 @@ Les archives ne sont jamais des instructions d'implémentation.
 | Authentification et accès V3 | `ADR_001_MULTI_USER_ACCESS.md` | ADR acceptée et ticket actif |
 | Correction IA, crédits et frontières de confiance V4 | `../ADR_003_AI_CORRECTION_FINANCING_TRUST_BOUNDARIES.md`, `V4_AI_CORRECTION_COMPOSITE_SPEC.md` | L'ADR fixe les frontières ; la spec composite remplace les formulations mono-modèle ou binaires incompatibles avec l'amendement formatif du 12 août 2026 |
 | Recherche et sélection des corrections IA V4 | `V4_AI_CORRECTION_EXPERIMENT_LOG.md`, `V4_AI_MODEL_BENCHMARK_REPORT.md`, `../public/research/ai-correction/index.html`, `../public/research/ai-correction/en.html` | Le journal append-only conserve les campagnes et décisions ; le rapport détaille le benchmark courant ; les HTML publics FR/EN synthétisent uniquement les preuves stabilisées |
+| Phase autonome de correction IA V4 | `V4_AI_CORRECTION_PHASE_MANIFEST.json`, `V4_WRITING_RECOMMENDATION_FR_CONTRACT_DRAFT.md` | Le manifeste fixe baselines, verdicts immuables, blocages et gate `GO_AUTONOMOUS_FORMATIVE` ; le contrat WRITING reste un brouillon non publiable tant que ses gates ne sont pas franchis |
 | UX existante | `UX_SPEC.md` et code concerné | Critères du ticket actif |
 | Parcours pédagogique V3 | `LEARNING_FLOW_V3_SPEC.md` | Spec approuvée par V3-016 |
 | Progression et calendrier | `TIMELINE_SPEC.md` | Logique serveur et tests |

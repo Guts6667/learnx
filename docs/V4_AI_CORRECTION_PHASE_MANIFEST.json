@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
+  "status": "RESEARCH_NO_PIPELINE_PROMOTED",
+  "updatedAt": "2026-08-13T00:00:00Z",
+  "scope": {
+    "language": "fr-FR",
+    "modality": "TEXT",
+    "purpose": "AUTONOMOUS_FORMATIVE_FEEDBACK",
+    "progressionAuthority": "DETERMINISTIC_LEARNX_SERVER_ONLY"
+  },
+  "baselines": {
+    "runtime": {
+      "ref": "origin/dev",
+      "commit": "8d663db04657b64bfebec7c834211d6cd1c0af43",
+      "subject": "feat(ai): orchestrate composite correction settlement"
+    },
+    "research": {
+      "ref": "origin/codex/v4-009b",
+      "commit": "e7f2453a6c108e014903a3ceb0d3372ca98d3679",
+      "subject": "test(ai): record Gemini panel technical no-go"
+    }
+  },
+  "immutableVerdicts": [
+    {
+      "candidate": "anthropic/claude-sonnet-4.6",
+      "verdict": "NO_GO",
+      "reason": "Historically safe but too variable and too severe; not promoted."
+    },
+    {
+      "candidate": "learnx-fr-text-mistral-sonnet-targeted-v1@1.0.0",
+      "verdict": "NO_GO_PEDAGOGICAL",
+      "reason": "Two false negative decisions out of twelve were converted to UNCERTAIN; repeated double-penalty and concise-response underassessment."
+    },
+    {
+      "candidate": "learnx-fr-text-gemini-deterministic-safety-v1@1.0.0",
+      "verdict": "NO_GO_TECHNICAL_PANEL_INCOMPLETE",
+      "reason": "Panel stopped after nine usable workflows because an unresolved cost had neither actualCostUsd nor providerRequestId; injection cases were not reached. This is not a pedagogical verdict on Gemini."
+    }
+  ],
+  "holdout": {
+    "status": "NOT_EXECUTED",
+    "sealed": true,
+    "mayOpenAfter": "GO_AUTONOMOUS_FORMATIVE_ON_FULL_DEVELOPMENT_CORPUS"
+  },
+  "eligibility": {
+    "publishedV4Contracts": 0,
+    "activitiesEligibleForLiveCorrection": 0,
+    "pipelinePromoted": false
+  },
+  "openBlockers": [
+    {
+      "priority": "P0",
+      "key": "DISPATCH_COST_RECONCILIATION",
+      "status": "OPEN",
+      "requirements": [
+        "Persist CALL_INTENT and a local idempotency key before network dispatch.",
+        "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
+        "Forbid final settlement, release and result publication until reconciliation completes.",
+        "Cover null/null, timeout after dispatch, retry and recovery without a second provider call."
+      ]
+    },
+    {
+      "priority": "P1",
+      "key": "AUTONOMOUS_PROMOTION_GATE",
+      "status": "OPEN",
+      "requirements": [
+        "Replace promotion-time humanReviewApproved with GO_AUTONOMOUS_FORMATIVE.",
+        "Bind attempts, summary and decision with a verifiable digest.",
+        "Make falsePassCount === 0 and zero published ordinal gap >= 2 without abstention mechanically blocking."
+      ]
+    },
+    {
+      "priority": "P1",
+      "key": "V4_011_DETERMINISTIC_MASTERY_GATE",
+      "status": "OPEN",
+      "requirements": [
+        "Keep authentic free-text submission, formative feedback and mastery as three distinct states.",
+        "Validate stage mastery only through an independent cumulative deterministic server-side gate."
+      ]
+    }
+  ],
+  "promotionGate": {
+    "name": "GO_AUTONOMOUS_FORMATIVE",
+    "status": "NOT_MET",
+    "humanReviewRequired": false,
+    "requirements": {
+      "dispatchAndCostReconciledRate": 1,
+      "evidenceAndInjectionSafetyRate": 1,
+      "usableMiniPanelWorkflows": "20/20",
+      "falsePassCount": 0,
+      "publishedOrdinalGapAtLeastTwoWithoutAbstention": 0,
+      "decisionAgreementWithFrozenOracle": ">=19/20",
+      "criterionAgreementRate": ">=0.85",
+      "variabilityRate": "<=0.10",
+      "fullChargeForUncertainOrUnusable": false,
+      "postResultRetuning": false
+    }
+  },
+  "nextAuthorizedSequence": [
+    "Fix P0 dispatch and cost reconciliation without any model call.",
+    "Publish one low-risk WRITING/fr-FR contract after explicit approval.",
+    "Seal an autonomous metamorphic and adversarial development corpus plus holdout.",
+    "Run a fresh Gemini 10x2 mini-panel only after a separate owner budget approval.",
+    "If GO, compare Gemini alone with an independently versioned verifier experiment.",
+    "If still GO, run the full 24x3 development corpus and then the one-shot holdout."
+  ],
+  "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
+  "forbiddenClaims": [
+    "correction certifiée",
+    "validation par l’IA",
+    "preuve universelle de justesse pédagogique"
+  ]
+}
