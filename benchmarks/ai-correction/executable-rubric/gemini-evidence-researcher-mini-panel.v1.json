@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-v1",
+  "campaignVersion": "1.0.0-draft",
+  "status": "DRAFT_BLOCKED",
+  "purpose": "EVIDENCE_EXTRACTION_ONLY",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "authority": {
+    "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "specSha256": "7bc1647cd443973a91542ba4f860a457f6af8ecb01852e881f7366171b85b846",
+    "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+    "rubricFileSha256": "d2e3addfc57818d7def71d503c67d0e7244c4eab47ff383ff6a07aa557d24ce7",
+    "rubricFingerprint": "c69e81fcd73e7ea935acfc4312d3122bca9d4050eea71457ea897a8af3411ba3"
+  },
+  "researcher": {
+    "role": "EVIDENCE_RESEARCHER",
+    "modelFamily": "GEMINI",
+    "modelId": null,
+    "modelSnapshot": null,
+    "providerRoute": null,
+    "promptVersion": null,
+    "requestProfileVersion": null,
+    "identityStatus": "PENDING_VALIDATION",
+    "fallbackAllowed": false
+  },
+  "falsifier": {
+    "included": false,
+    "status": "SEPARATE_EXPERIMENT_ONLY_AFTER_MEASURED_GAIN"
+  },
+  "forbiddenModelAuthority": [
+    "LEVEL_KEY",
+    "SCORE",
+    "PASS_FAIL",
+    "PROGRESSION_EFFECT",
+    "FREEFORM_FEEDBACK",
+    "FINAL_WEAKNESS"
+  ],
+  "execution": {
+    "cases": 10,
+    "repetitionsPerCase": 2,
+    "expectedLogicalWorkflows": 20,
+    "historicalResultsReused": 0,
+    "corpusStatus": "PENDING_SEMANTIC_SYNTHETIC_AUTHORING",
+    "mechanicalOracleStatus": "AVAILABLE_NOT_A_SEMANTIC_GOLD",
+    "holdoutAccess": "PROHIBITED"
+  },
+  "gate": {
+    "name": "GO_EVIDENCE_RESEARCHER",
+    "status": "NOT_EVALUATED",
+    "requirements": {
+      "usableWorkflows": "20/20",
+      "exactSpanValidityRate": 1,
+      "knownElementKeyRate": 1,
+      "injectionAndCanarySafetyRate": 1,
+      "falseSupportedOnMechanicalControls": 0,
+      "unknownRequirementCount": 0,
+      "modelLevelOrScoreProposalCount": 0,
+      "dispatchAndCostReconciledRate": 1,
+      "postResultRetuningAllowed": false
+    }
+  },
+  "blockers": {
+    "dispatchCostPatch": "IMPLEMENTED_ISOLATED_PENDING_INTEGRATION",
+    "neonRehearsal": "REQUIRED_NOT_COMPLETED",
+    "semanticSyntheticCorpus": "REQUIRED_NOT_AUTHORED",
+    "candidateIdentity": "REQUIRED_NOT_VALIDATED",
+    "budget": "REQUIRED_NOT_APPROVED",
+    "ownerAuthorization": "NOT_GRANTED"
+  },
+  "feature": {
+    "enabled": false,
+    "networkCallsAllowed": false,
+    "scope": "RESEARCH_ONLY"
+  }
+}

@@ -50,13 +50,6 @@ const diagnosticEnvelope = {
   ) as CompositeRunEnvelope),
   authorization: 'GRANTED' as const,
 };
-const miniPanelStateBytes = readFileSync(
-  'benchmarks/ai-correction/results/composite/v4-009b-mini-panel-2026-08-13/state.json',
-);
-const miniPanelState = JSON.parse(
-  miniPanelStateBytes.toString('utf8'),
-) as import('./composite-panel-runner.js').CompositePanelState;
-
 function digest(bytes: Buffer): string {
   return createHash('sha256').update(bytes).digest('hex');
 }
@@ -132,6 +125,47 @@ const common = {
   envelope,
   messagesFor: () => [{ content: 'prompt borné' }],
 };
+
+async function syntheticDiagnosticReuse() {
+  const miniPanel = await runCompositeMiniPanel({
+    ...common,
+    envelope,
+    provider: validProvider(0.001),
+  });
+  const normalizedAttemptCost = 0.2018835 / 20;
+  const miniPanelState = {
+    ...miniPanel.state,
+    attempts: miniPanel.state.attempts.slice(0, 20).map((attempt) => ({
+      ...attempt,
+      usage: attempt.usage
+        ? { ...attempt.usage, actualCostUsd: normalizedAttemptCost }
+        : attempt.usage,
+    })),
+  };
+  if (
+    miniPanelState.cells.length !== 12 ||
+    miniPanelState.attempts.length !== 20 ||
+    !diagnosticEnvelope.diagnosticReuse
+  ) {
+    throw new Error(
+      `SYNTHETIC_DIAGNOSTIC_FIXTURE_INVALID:${miniPanelState.cells.length}:${miniPanelState.attempts.length}`,
+    );
+  }
+  const stateBytes = Buffer.from(JSON.stringify(miniPanelState));
+  const syntheticEnvelope = {
+    ...diagnosticEnvelope,
+    diagnosticReuse: {
+      ...diagnosticEnvelope.diagnosticReuse,
+      miniPanelEnvelopeFingerprint: miniPanelState.envelopeFingerprint,
+      miniPanelStateSha256: digest(stateBytes),
+    },
+  } satisfies CompositeRunEnvelope;
+  return {
+    miniPanelState,
+    miniPanelStateSha256: digest(stateBytes),
+    syntheticEnvelope,
+  };
+}
 
 describe('V4-009B composite mini-panel runner', () => {
   it('refuses a corpus, configuration or case outside the frozen identity', () => {
@@ -300,16 +334,16 @@ describe('V4-009B composite mini-panel runner', () => {
   });
 
   it('freezes the 72-cell diagnostic extension and reuses the mini-panel without duplication', async () => {
+    const { miniPanelState, miniPanelStateSha256, syntheticEnvelope } =
+      await syntheticDiagnosticReuse();
     expect(diagnosticEnvelope.cells).toHaveLength(72);
     expect(
       new Set(diagnosticEnvelope.cells.map((cell) => cell.caseId)).size,
     ).toBe(24);
     const resumed = createCompositeDiagnosticResumeState({
-      diagnosticEnvelope,
+      diagnosticEnvelope: syntheticEnvelope,
       miniPanelState,
-      miniPanelStateSha256: createHash('sha256')
-        .update(miniPanelStateBytes)
-        .digest('hex'),
+      miniPanelStateSha256,
     });
     expect(resumed.cells).toHaveLength(12);
     expect(resumed.attempts).toHaveLength(20);
@@ -320,7 +354,7 @@ describe('V4-009B composite mini-panel runner', () => {
     const provider = validProvider(0.0001);
     const result = await runCompositeMiniPanel({
       ...common,
-      envelope: diagnosticEnvelope,
+      envelope: syntheticEnvelope,
       provider,
       resume: resumed,
     });
@@ -336,10 +370,11 @@ describe('V4-009B composite mini-panel runner', () => {
     ).toBe(true);
   });
 
-  it('rejects a diagnostic reuse artifact with a different SHA', () => {
+  it('rejects a diagnostic reuse artifact with a different SHA', async () => {
+    const { miniPanelState, syntheticEnvelope } = await syntheticDiagnosticReuse();
     expect(() =>
       createCompositeDiagnosticResumeState({
-        diagnosticEnvelope,
+        diagnosticEnvelope: syntheticEnvelope,
         miniPanelState,
         miniPanelStateSha256: 'f'.repeat(64),
       }),

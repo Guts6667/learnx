@@ -1,5 +1,13 @@
 # Contrat pédagogique DRAFT — `v4-writing-recommendation-fr`
 
+> **Document d'authoring historique remplacé le 14 août 2026.** Il décrivait
+> encore un modèle attribuant les niveaux. L'autorité technique et pédagogique
+> est désormais `docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`; l'archétype
+> exécutable associé est
+> `benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json`.
+> Le présent fichier reste conservé pour expliquer l'origine des trois critères,
+> mais ne peut plus autoriser une campagne ou une publication.
+
 - **Statut** : `DRAFT_NOT_PUBLISHED`
 - **Version de travail** : `0.1.0-draft`
 - **Langue** : `fr-FR`

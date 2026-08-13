@@ -1,13 +1,26 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-13T00:00:00Z",
+  "updatedAt": "2026-08-14T00:00:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
     "purpose": "AUTONOMOUS_FORMATIVE_FEEDBACK",
     "progressionAuthority": "DETERMINISTIC_LEARNX_SERVER_ONLY"
+  },
+  "targetArchitecture": {
+    "name": "EXECUTABLE_RUBRIC_ENGINE",
+    "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "modelAuthority": "EVIDENCE_ONLY",
+    "levelAndScoreAuthority": "VERSIONED_LEARNX_RULES",
+    "feedbackAuthority": "AUTHORED_TEMPLATES",
+    "publicStates": [
+      "FEEDBACK_READY",
+      "REVISION_REQUIRED",
+      "CLARIFICATION_REQUIRED",
+      "TEMPORARILY_UNAVAILABLE"
+    ]
   },
   "baselines": {
     "runtime": {
@@ -58,16 +71,21 @@
         "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
         "Forbid final settlement, release and result publication until reconciliation completes.",
         "Cover null/null, timeout after dispatch, retry and recovery without a second provider call."
-      ]
+      ],
+      "isolatedImplementation": {
+        "branch": "codex/p0-dispatch-cost",
+        "commit": "572775f",
+        "status": "IMPLEMENTED_AND_TESTED_PENDING_BASELINE_INTEGRATION_AND_NEON"
+      }
     },
     {
       "priority": "P1",
-      "key": "AUTONOMOUS_PROMOTION_GATE",
+      "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
       "status": "OPEN",
       "requirements": [
-        "Replace promotion-time humanReviewApproved with GO_AUTONOMOUS_FORMATIVE.",
-        "Bind attempts, summary and decision with a verifiable digest.",
-        "Make falsePassCount === 0 and zero published ordinal gap >= 2 without abstention mechanically blocking."
+        "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
+        "Validate exact response spans and produce a reconstructible evidence certificate.",
+        "Keep models unable to return levels, scores, PASS/FAIL, progression effects or freeform feedback."
       ]
     },
     {
@@ -81,29 +99,29 @@
     }
   ],
   "promotionGate": {
-    "name": "GO_AUTONOMOUS_FORMATIVE",
+    "name": "GO_EXECUTABLE_RUBRIC_RESEARCHER",
     "status": "NOT_MET",
     "humanReviewRequired": false,
     "requirements": {
+      "compilerMutationDetectionRate": 1,
       "dispatchAndCostReconciledRate": 1,
-      "evidenceAndInjectionSafetyRate": 1,
-      "usableMiniPanelWorkflows": "20/20",
-      "falsePassCount": 0,
-      "publishedOrdinalGapAtLeastTwoWithoutAbstention": 0,
-      "decisionAgreementWithFrozenOracle": ">=19/20",
-      "criterionAgreementRate": ">=0.85",
-      "variabilityRate": "<=0.10",
+      "exactSpanAndInjectionSafetyRate": 1,
+      "usableResearcherWorkflows": "20/20",
+      "falseSupportedOnMechanicalControls": 0,
+      "unknownRequirementCount": 0,
+      "modelLevelOrScoreProposalCount": 0,
+      "exactScoreUnderMaterialAmbiguityCount": 0,
       "fullChargeForUncertainOrUnusable": false,
       "postResultRetuning": false
     }
   },
   "nextAuthorizedSequence": [
-    "Fix P0 dispatch and cost reconciliation without any model call.",
-    "Publish one low-risk WRITING/fr-FR contract after explicit approval.",
-    "Seal an autonomous metamorphic and adversarial development corpus plus holdout.",
-    "Run a fresh Gemini 10x2 mini-panel only after a separate owner budget approval.",
-    "If GO, compare Gemini alone with an independently versioned verifier experiment.",
-    "If still GO, run the full 24x3 development corpus and then the one-shot holdout."
+    "Integrate commit 572775f and repeat the additive migration on a disposable Neon branch.",
+    "Compile and mutation-test the WRITING/fr-FR executable rubric.",
+    "Build separate mechanical-oracle and semantic-synthetic corpora.",
+    "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
+    "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
+    "If still GO, expand the semantic development corpus and then open a one-shot holdout."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
   "forbiddenClaims": [

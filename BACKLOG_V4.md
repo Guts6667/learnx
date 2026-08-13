@@ -2,9 +2,9 @@
 
 ## Statut et autorité
 
-- Version : 1.5.0
+- Version : 1.6.0
 - Statut : **scope produit validé et figé — implémentation après clôture V3.5**
-- Dernière consolidation : 13 août 2026 — gate autonome et séparation feedback/maîtrise
+- Dernière consolidation : 14 août 2026 — moteur de rubrique exécutable
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -89,6 +89,34 @@ phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json`.
 - La première cible éditoriale est le contrat DRAFT
   `docs/V4_WRITING_RECOMMENDATION_FR_CONTRACT_DRAFT.md`. Il n'autorise aucun
   appel ni aucune activité avant publication versionnée et gates satisfaits.
+
+### Amendement validé — moteur de rubrique exécutable
+
+Le 14 août 2026, le Propriétaire a validé un changement d'autorité : LearnX ne
+cherche plus un modèle chargé de noter. La spécification canonique devient
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`.
+
+- Les modèles ont uniquement les rôles de chercheur de preuves et, dans une
+  expérience séparée, de falsificateur indépendant. Ils ne produisent ni
+  niveau final, ni score, ni `PASS/FAIL`, ni feedback libre.
+- Une rubrique atomique, compilée et versionnée détermine les niveaux. Les
+  éléments `SUPPORTED`, `CONTRADICTED`, `NOT_DEMONSTRATED` et `AMBIGUOUS` sont
+  rattachés à des spans exacts de la réponse.
+- LearnX contrôle les spans, la propriété des pénalités, les injections et les
+  règles, puis émet un certificat de preuve reconstructible. Le feedback MVP
+  provient uniquement de templates authorés.
+- Une ambiguïté est résolue sur toutes ses issues authorisées. Si elles donnent
+  des niveaux différents, aucun score exact n'est affiché et l'état devient
+  `CLARIFICATION_REQUIRED`.
+- Les états publics deviennent `FEEDBACK_READY`, `REVISION_REQUIRED`,
+  `CLARIFICATION_REQUIRED` et `TEMPORARILY_UNAVAILABLE`. Aucun n'agit sur la
+  progression.
+- Les anciennes campagnes de modèles juge et le pipeline composite Mistral +
+  Sonnet restent des baselines historiques `NO_GO`. Elles ne définissent plus
+  l'architecture cible et ne sont pas requalifiées.
+- La première nouvelle campagne Gemini évalue exclusivement l'extraction de
+  preuves. Un falsificateur d'une autre famille n'est ajouté que dans une
+  expérience indépendante démontrant un gain net.
 
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
@@ -809,18 +837,18 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ### Périmètre
 
-- Constituer un corpus synthétique et autonome de réponses étalonnées pour le
-  développement : réussies, partielles, erronées, ambiguës, hors sujet et
-  potentiellement injectées. Les attentes sont scellées avant les candidats et
-  ne sont jamais présentées comme une validation humaine indépendante.
+- Séparer trois ensembles dont les métriques ne sont jamais fusionnées : corpus
+  mécanique à oracle exécutable, corpus sémantique synthétique qualifié de
+  pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
+  couverture, abstention, coût et dérive.
 - Comparer au moins trois candidats sur français, accord par critère,
   hallucination, calibration, sécurité, latence et coût complet.
 - Mesurer médiane, P75, P90, taux de retry, taux de seconde correction IA,
   désaccord entre modèles et variabilité.
-- Mesurer la qualité formative du pipeline : erreur absolue de score, écarts
-  ordinaux par critère, écarts d'au moins deux niveaux, stabilité du score et de
-  l'appréciation, exactitude des preuves, qualité du feedback et taux de
-  résultats `UNCERTAIN`/`PROVISIONAL`.
+- Mesurer d'abord l'exactitude des statuts atomiques, les spans, les faux
+  `SUPPORTED`/`NOT_DEMONSTRATED`, la localité, la monotonie, la couverture et
+  l'abstention. Les niveaux sont ensuite recalculés par le moteur, jamais
+  attribués par un candidat.
 - Définir les seuils de promotion, régression et rollback d'un modèle.
 - Produire un rapport sans envoyer de donnée réelle non anonymisée.
 - Conserver les campagnes mono-modèle et composites comme baselines historiques.
@@ -828,8 +856,9 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   reste `NO_GO_TECHNICAL_PANEL_INCOMPLETE`. Aucun de ces verdicts n'est
   requalifié ; Gemini seul peut être retesté sous une nouvelle identité après
   fermeture du P0 dispatch/coût.
-- Préenregistrer avant appel la règle de déclenchement du vérificateur, la règle
-  de désaccord, le budget, les profils et un échantillon aléatoire de contrôle.
+- Préenregistrer avant appel la rubrique et son empreinte, le rôle exact du
+  candidat, le budget, le profil, le corpus et les gates. Le falsificateur est
+  une campagne séparée ; aucun second modèle n'est ajouté par défaut.
 - Mesurer séparément correction automatique composite, retry technique et
   nouvelle analyse volontaire. Aucun de ces workflows ne partage abusivement
   ses métriques ou son identité de promotion.
@@ -838,40 +867,37 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 - Choix intuitif fondé seulement sur une réputation ou un benchmark public.
 - Déploiement en production.
-- Vote à la majorité, moyenne naïve des scores, sélection automatique du modèle
-  le plus sévère ou vérification croisée systématique de toutes les réponses.
+- Vote à la majorité, moyenne naïve, sélection du modèle le plus sévère ou
+  délégation du niveau/score final à un modèle.
 - Benchmark de conception ou de génération de formations V5.
 
 ### Critères d'acceptation
 
-- Un pipeline final est choisi par preuve. Son primaire, son vérificateur, sa
-  règle de déclenchement, sa résolution des écarts et son coût sont versionnés
-  dans une identité unique ; aucune combinaison ad hoc n'est autorisée.
+- Une rubrique finale est choisie par preuve et compilée. Les identités du
+  chercheur, du falsificateur éventuel, des règles de consolidation et des
+  coûts sont versionnées ; aucune combinaison ad hoc n'est autorisée.
 - Les identifiants exacts sont épinglés ; aucun alias `latest` ou routeur auto.
 - Le jeu de régression est réutilisable lors de tout changement.
 - Les gates durs portent sur la sécurité, les preuves et l'utilisabilité finale.
   Pour la bêta, `eventualUnusableRunRate` doit rester ≤ 2 % et aucune sortie
   invalide ne peut être montrée ou débitée. `firstAttemptInvalidRate` devient un
   indicateur opérationnel avec cible ≤ 10 %, sans masquer les retries.
-- L'accord exact par critère vise ≥ 85 %. Les écarts adjacents et matériels sont
-  distingués par une règle préenregistrée et calibrée. Aucun seuil d'état ou de
-  score n'est inventé dans le ticket : il doit être mesuré, versionné et validé
-  avant activation.
-- Le gate `GO_AUTONOMOUS_FORMATIVE` est non contournable : coûts dispatchés
-  réconciliés à 100 %, sécurité injection et preuves à 100 %, 20/20 workflows
-  utilisables, `falsePassCount === 0`, aucun écart ordinal `>= 2` publié sans
-  abstention, accord décisionnel `>= 19/20`, accord critériel `>= 85 %` et
-  variabilité `<= 10 %`. Le digest doit lier tentatives, résumé et décision.
+- Le gate chercheur impose 20/20 workflows utilisables, spans exacts, clés
+  connues, sécurité injection/canari et réconciliation à 100 %, aucun faux
+  `SUPPORTED` sur contrôle mécanique, aucune exigence inconnue et aucune sortie
+  de niveau, score ou feedback libre par le modèle.
+- Le gate du moteur impose zéro double pénalisation, zéro combinaison non
+  couverte, zéro niveau inatteignable, monotonie et localité. Un score exact est
+  interdit dès qu'une ambiguïté peut modifier un niveau.
 - Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
   `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
 
 ### Tests et risques
 
-- Échantillon suffisant par type d'activité, oracle scellé et tests
-  métamorphiques : paraphrase, mutation d'un critère, retrait de preuve,
-  concision, fautes sans perte de sens, verbosité, contradiction, Unicode,
-  injection et canari. Les juges IA éventuels génèrent des attaques ou des
-  vetos diagnostiques ; ils ne fabriquent jamais la vérité par majorité.
+- Tests métamorphiques, paires minimales et mutation testing du compilateur :
+  mauvais propriétaire, exigence supprimée, règle non monotone, niveau
+  inatteignable et double pénalisation. Les juges IA éventuels génèrent des
+  attaques ou vetos diagnostiques ; ils ne fabriquent jamais la vérité.
 - Risque : suradapter le prompt à un corpus trop petit.
 
 ---
@@ -1313,7 +1339,7 @@ l'activation de V4-010.**
 
 ---
 
-## V4-009C — Réévaluation Gemini sous enveloppe de sécurité déterministe
+## V4-009C — Moteur de rubrique exécutable et recherche de preuves Gemini
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
@@ -1328,88 +1354,104 @@ documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
   son identité, ses empreintes, ses résultats et son verdict sans réécrire les
   campagnes antérieures.
 - Traiter les résultats Gemini historiques comme un signal, pas comme une preuve
-  actuelle : ils précèdent le prompt `2.0.0`, le protocole `3.0.1` et les
-  contrôles déterministes modernes.
+  actuelle : le modèle y attribuait encore des niveaux. La nouvelle identité ne
+  réutilise aucun workflow historique.
+- Appliquer `docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. Le contrat authoring
+  historique ne peut plus autoriser une campagne.
 
-### Périmètre hors ligne
+### Périmètre hors ligne — moteur
 
-- Implémenter une enveloppe de sécurité non générative avant et après le modèle :
-  normalisation Unicode bornée, séparation contexte/consigne/réponse, limites de
-  taille, détection de signaux d'instruction non fiable, canari, schéma strict,
-  résolution des citations exclusivement dans `responseText` et fragments
-  interdits normalisés.
-- Une détection en entrée ne supprime, ne réécrit et ne rejette jamais seule la
-  production : elle persiste un signal de risque générique. Un apprenant peut
-  légitimement étudier ou citer une injection.
-- Utiliser Gemini comme seul correcteur payant de cette première campagne. Une
-  sortie structurellement invalide suit au plus un retry technique transitoire
-  allowlisté avec la même identité ; aucun Sonnet n'est appelé dans ce panel.
-- Épingler avant appel l'identifiant exact Gemini, la route, le profil, les
-  versions du prompt/protocole, le snapshot tarifaire, les cas, répétitions,
-  gates, budget et règle d'arrêt. Aucun alias, fallback ou route automatique.
+- Implémenter les schémas des éléments, règles, niveaux, spans et certificats,
+  puis un compilateur bloquant les niveaux inatteignables, règles non monotones,
+  combinaisons sans décision, propriétaires multiples, effets non autorisés,
+  doubles pénalisations et critères holistiques déclarés pleinement compilables.
+- Authorer un archétype `WRITING/fr-FR` de trois critères et six à dix éléments,
+  avec propriété, exemples, contre-exemples, variantes, règles de preuve et
+  templates de remédiation.
+- Valider les spans par offsets et SHA-256 dans `responseText`, sans exiger une
+  occurrence textuelle unique. Aucun passage du contexte ne peut être présenté
+  comme extrait de l'apprenant.
+- Produire un certificat de preuve reconstructible et dériver niveaux, score
+  indicatif et feedback exclusivement côté LearnX.
+- Séparer correction, exécution et finance ; conserver les garanties `CALL_INTENT`,
+  idempotence locale et réconciliation du P0.
 
-### Mini-panel préenregistré
+### Périmètre expérimental — chercheur de preuves
 
-- Exécuter dix cas de développement × deux répétitions, soit vingt workflows :
-  réussite nette, insuffisance nette, frontière, critères mixtes, réponse
-  concise, hors sujet et les quatre injections authorées des familles writing,
-  reflection, practice et project.
+- Utiliser Gemini uniquement comme `EVIDENCE_RESEARCHER`. Il propose les statuts,
+  spans, contradictions et ambiguïtés des éléments ; le schéma lui interdit
+  niveau, score, `PASS/FAIL`, effet de progression et feedback libre.
+- Épingler avant appel l'identifiant exact, la route, le profil, le prompt
+  d'extraction, le snapshot tarifaire, le corpus, les gates et la règle d'arrêt.
+  Aucun alias, fallback ou route automatique.
+- Ne pas inclure de falsificateur dans le premier panel. Une autre famille de
+  modèle ne peut être ajoutée que dans une campagne distincte, aveugle aux
+  niveaux calculés, après preuve d'un gain net sur les statuts et preuves.
+- Conserver l'enveloppe de sécurité : séparation contexte/consigne/réponse,
+  canari, limites, schéma strict et citations limitées à `responseText`.
+
+### Jeux de preuve et mini-panel
+
+- Construire d'abord un corpus mécanique de vecteurs atomiques avec oracle
+  exécutable, paires minimales, localité, monotonie, contradictions et
+  ambiguïtés matérielles/non matérielles.
+- Construire séparément dix productions `WRITING` synthétiques × deux
+  répétitions pour évaluer Gemini. Ce jeu est un pseudo-oracle sémantique et ne
+  doit jamais être présenté comme un oracle formel ou une validation humaine.
+- Les transformations couvrent paraphrase, ordre des phrases, fautes sans perte
+  de sens, registre, concision complète, verbosité, typographie, retrait/ajout
+  d'une seule preuve, contradiction, injection et canari.
 - Ne jamais ouvrir ni utiliser le holdout scellé pour préparer, régler ou
   interpréter ce panel.
-- Budget proposé avant consultation Finance : coût attendu `0,25–0,30 USD`,
-  plafond fournisseur dur `0,50 USD` et quarante tentatives maximum retries
-  compris. Ces valeurs restent inactives jusqu'à arbitrage Finance et GO écrit
-  du Propriétaire.
+- Ne fixer aucun budget à partir des campagnes de notation historiques. Finance
+  mesure le nouveau profil d'extraction, puis le Propriétaire donne un GO écrit.
 - Produire un paquet réellement aveugle, un mapping scellé, un ledger append-only
   et des artefacts bruts empreintés. Aucun appel concurrent ou hors manifeste ne
   participe aux métriques.
 
 ### Gates préenregistrés
 
-- Sécurité injection et preuves : `100 %` ; aucune fuite de canari, obéissance à
-  une instruction hostile ou citation hors réponse.
-- Aucun workflow finalement inutilisable ; au plus deux premières sorties
-  `INVALID` sur vingt, uniquement si le retry autorisé produit une sortie valide.
-- Accord exact par critère `>= 85 %`, variabilité `<= 10 %`, aucun écart ordinal
-  de deux niveaux publié sans abstention et aucun faux résultat favorable sur
-  les contrôles déterministes.
-- Mesurer en plus l'erreur absolue du score formatif serveur, l'accord adjacent,
-  la qualité/actionnabilité du feedback, le ton, la latence et le coût complet.
-  Le PASS/FAIL interne reste une sonde de benchmark et n'est ni affiché ni lié à
-  la progression.
-- L'oracle autonome, les métamorphismes, les golds et les seuils sont scellés
-  avant les candidats. Le paquet de décision masque modèle, fournisseur et prix
-  puis rend mécaniquement `GO_AUTONOMOUS_FORMATIVE` ou `NO_GO`.
+- Compilateur : zéro propriétaire illégal, double pénalisation, niveau
+  inatteignable, règle non monotone, combinaison non couverte ou score exact
+  sous ambiguïté matérielle. Les mutations prévues doivent toutes être détectées.
+- Chercheur : 20/20 workflows utilisables, spans exacts, clés connues, sécurité
+  injection/canari et coûts réconciliés à 100 % ; zéro faux `SUPPORTED` sur les
+  contrôles mécaniques, exigence inconnue ou proposition de niveau/score.
+- Mesurer séparément exactitude des statuts, faux `SUPPORTED`, faux
+  `NOT_DEMONSTRATED`, couverture, abstention, variabilité, latence et coûts par
+  famille d'éléments et transformation. Ne pas fusionner corpus mécanique,
+  synthétique et shadow réel.
+- Les golds synthétiques, métamorphismes et seuils sont scellés avant le
+  candidat. Aucun `humanReviewApproved` n'est simulé.
 - Aucun seuil, gold, prompt, cas ou contrôle n'est modifié après lecture des
   résultats. Tout changement crée une nouvelle identité et un nouveau panel.
 
 ### Suite conditionnelle
 
-- Si Gemini échoue, arrêter avant le `24×3` et documenter la cause.
-- S'il passe, demander un nouveau GO avant un `24×3` Gemini seul sous la même
-  identité ; ne pas ajouter automatiquement un vérificateur.
-- Seulement si les erreurs restantes sont risquées mais détectables par une
-  règle préenregistrable, créer une expérimentation distincte Gemini primaire +
-  Sonnet ciblé réutilisant les sorties Gemini compatibles. Sonnet ne devient pas
-  un troisième étage systématique.
-- Un pipeline à trois appels modèle, un classificateur IA de sécurité et le
-  holdout restent hors périmètre.
+- Si Gemini échoue comme chercheur, arrêter et documenter la famille d'éléments
+  concernée. Ne pas revenir silencieusement à un modèle juge.
+- S'il passe, tester sur un corpus sémantique plus large sous la même identité,
+  puis demander un GO avant le holdout one-shot.
+- Un falsificateur est comparé à Gemini seul sur les mêmes sorties. Il n'est
+  retenu que s'il réduit les faux statuts sans augmenter indûment l'abstention,
+  la latence et le coût.
+- Aucun vote, moyenne, troisième arbitre ou pipeline à trois juges.
 
 ### Tests et risques
 
-- Tests adversariaux Unicode/canari/citations, faux positifs sur du texte parlant
-  légitimement d'injection, schéma invalide, retry, idempotence, budget et paquet
-  aveugle ; puis mini-panel facturable uniquement après autorisation.
-- Risques : croire qu'un détecteur lexical constitue une protection complète,
-  bloquer un contenu légitime, comparer directement des protocoles différents ou
-  ajouter un vérificateur sans bénéfice mesuré.
+- Tests du compilateur, oracle mécanique, métamorphismes, mutation testing,
+  Unicode/canari/citations, schéma invalide, retry, idempotence, réconciliation
+  et paquet aveugle ; mini-panel facturable uniquement après autorisation.
+- Risques : formaliser abusivement une propriété holistique, transformer
+  `NOT_DEMONSTRATED` en jugement de maîtrise, suradapter un pseudo-oracle ou
+  ajouter un falsificateur sans bénéfice mesuré.
 
 ---
 
 ## V4-010 — Correction des productions libres d'exercice
 
-**Priorité : P0 utilisateur. Dépendances : V4-009 et GO d'un pipeline issu de
-V4-009C ou d'une expérimentation ultérieure explicitement validée.**
+**Priorité : P0 utilisateur. Dépendances : V4-009 et GO d'un moteur exécutable
+et de son chercheur de preuves issus de V4-009C.**
 
 ### Périmètre
 

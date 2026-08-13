@@ -1,4 +1,13 @@
-# Campagne Gemini autonome WRITING/fr-FR — préparation hors ligne
+# Campagne Gemini autonome WRITING/fr-FR — historique remplacé
+
+**Statut : `SUPERSEDED_NOT_EXECUTABLE`.** Cette préparation demandait encore à
+Gemini d'attribuer des niveaux. La décision du 14 août 2026 la remplace par le
+moteur de rubrique exécutable décrit dans
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md` et par la campagne de recherche de
+preuves `benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json`.
+
+Les fichiers restent conservés comme trace de méthode. Ils ne doivent pas être
+complétés, autorisés ou utilisés comme identité de campagne.
 
 Cette identité expérimentale est nouvelle et ne reprend aucun workflow des
 campagnes Gemini historiques. Sa matrice contient les dix cas autonomes de

@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "writing-fr-mechanical-oracle-v1",
+  "corpusVersion": "1.0.0",
+  "corpusKind": "MECHANICAL_EXECUTABLE_ORACLE",
+  "oracleAuthority": "CONSTRUCTION_VECTORS",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "rubric": {
+    "key": "v4-writing-recommendation-fr",
+    "version": "1.0.0-draft",
+    "fingerprint": "c69e81fcd73e7ea935acfc4312d3122bca9d4050eea71457ea897a8af3411ba3"
+  },
+  "cases": [
+    {
+      "caseId": "baseline-all-elements-demonstrated",
+      "transformation": "BASELINE",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "SUPPORTED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "mastered",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "FEEDBACK_READY",
+        "exactIndicativeScore": 100
+      }
+    },
+    {
+      "caseId": "decision-one-element-demonstrated",
+      "transformation": "MINIMAL_PAIR",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "NOT_DEMONSTRATED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "partial",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "FEEDBACK_READY",
+        "exactIndicativeScore": 85
+      }
+    },
+    {
+      "caseId": "decision-required-element-removed",
+      "transformation": "LOCALITY",
+      "statusVector": {
+        "identifiable-choice": "NOT_DEMONSTRATED",
+        "explicit-recommendation": "NOT_DEMONSTRATED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "insufficient",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": 70
+      }
+    },
+    {
+      "caseId": "evidence-required-element-removed",
+      "transformation": "LOCALITY",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "SUPPORTED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "NOT_DEMONSTRATED",
+        "precise-scenario-fact": "NOT_DEMONSTRATED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "mastered",
+          "evidence-fidelity": "insufficient",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": 60
+      }
+    },
+    {
+      "caseId": "reasoning-required-element-removed",
+      "transformation": "LOCALITY",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "SUPPORTED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "NOT_DEMONSTRATED",
+        "explicit-justification": "NOT_DEMONSTRATED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "mastered",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "insufficient"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": 70
+      }
+    },
+    {
+      "caseId": "material-fact-contradiction-demonstrated",
+      "transformation": "CONTRADICTION",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "SUPPORTED",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "SUPPORTED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "mastered",
+          "evidence-fidelity": "insufficient",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": 60
+      }
+    },
+    {
+      "caseId": "explicit-recommendation-materially-ambiguous",
+      "transformation": "MATERIAL_AMBIGUITY",
+      "statusVector": {
+        "identifiable-choice": "SUPPORTED",
+        "explicit-recommendation": "AMBIGUOUS",
+        "unresolved-position-contradiction": "NOT_DEMONSTRATED",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": null,
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "CLARIFICATION_REQUIRED",
+        "exactIndicativeScore": null
+      }
+    },
+    {
+      "caseId": "contradiction-non-materially-ambiguous",
+      "transformation": "NON_MATERIAL_AMBIGUITY",
+      "statusVector": {
+        "identifiable-choice": "NOT_DEMONSTRATED",
+        "explicit-recommendation": "NOT_DEMONSTRATED",
+        "unresolved-position-contradiction": "AMBIGUOUS",
+        "relevant-scenario-fact": "SUPPORTED",
+        "precise-scenario-fact": "SUPPORTED",
+        "material-fact-contradiction": "NOT_DEMONSTRATED",
+        "decision-evidence-relation": "SUPPORTED",
+        "explicit-justification": "SUPPORTED",
+        "material-reasoning-contradiction": "NOT_DEMONSTRATED"
+      },
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "insufficient",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": null
+      }
+    }
+  ]
+}
