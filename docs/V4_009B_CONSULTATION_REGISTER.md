@@ -69,11 +69,9 @@ Statut global : `BLOCKED_BEFORE_LIVE`
   migrations, la comparaison avant/après et le rejeu complet de l'historique.
 - Preuve complémentaire : le test réel du ledger V4-009 est vert sur la branche
   jetable `ci-31710711187-1` (`br-soft-pine-asgdknih`), supprimée en fin de job.
-- Bloqueur transversal découvert après ces preuves : les tests backend/UI
-  reçoivent `403` sur `/api/programs` et `/api/today`. Le middleware global de
-  `aiPricingApp` intercepte des routes hors pricing. Ce défaut préexistant est
-  hors du périmètre V4-009B et empêche de déclarer le job Integration entier
-  vert malgré les preuves migration/ledger réussies.
+- Le correctif `be9131a` borne les middlewares d'authentification et
+  d'autorisation au seul endpoint pricing. La répétition Integration #119
+  (`31713310879`) est entièrement verte : les `403` hors pricing ont disparu.
 
 ## Gate de clôture
 
@@ -81,7 +79,7 @@ Statut global : `BLOCKED_BEFORE_LIVE`
 - [x] Aucun appel modèle facturable lancé.
 - [x] Migration historique réparée avec autorisation explicite.
 - [x] Répétition Neon V4-009 verte (migration, replay, règlement, libération).
-- [ ] Suite Integration globale verte (bloquée par les `403` hors V4-009B).
+- [x] Suite Integration globale verte (run #119).
 - [x] Identité composite finale arbitrée et gelée.
 - [x] Enveloppe Finance du mini-panel arbitrée.
 - [ ] Autorisation explicite de Rayan avant tout appel facturable.

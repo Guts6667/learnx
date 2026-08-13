@@ -39,12 +39,11 @@ La répétition Integration #117 (`31710711187`) a créé la branche jetable
 - les lectures bornées et le test réel du ledger V4-009 ;
 - la suppression de la branche Neon en fin de job.
 
-Le job global reste rouge pour une cause distincte : après authentification,
-`/api/programs` et `/api/today` répondent `403`. L'ordre de montage actuel de
-`aiPricingApp` applique son middleware de capacité à des routes hors pricing.
-Cette régression d'autorisation préexistante n'invalide pas les preuves Neon de
-la migration et du ledger, mais doit être corrigée dans un correctif séparé
-avant que la suite Integration complète soit verte.
+Le run #117 a également révélé que `aiPricingApp` appliquait son middleware de
+capacité à des routes hors pricing, provoquant des `403` sur `/api/programs` et
+`/api/today`. Le correctif `be9131a` borne ces contrôles au seul endpoint de
+devis. La répétition Integration #119 (`31713310879`) est entièrement verte :
+migrations, replay, ledger, Functions, navigateurs et seeds idempotents.
 
 ## Contradictions et bloqueurs
 
