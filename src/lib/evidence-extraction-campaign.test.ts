@@ -17,6 +17,10 @@ const semanticCorpusPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
 );
+const catalogAttestationPath = resolve(
+  process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
+);
 const specPath = resolve(
   process.cwd(),
   'docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md',
@@ -26,9 +30,11 @@ function loadInputs() {
   const campaignText = readFileSync(campaignPath, 'utf8');
   const rubricFileText = readFileSync(rubricPath, 'utf8');
   const semanticCorpusText = readFileSync(semanticCorpusPath, 'utf8');
+  const catalogAttestationText = readFileSync(catalogAttestationPath, 'utf8');
   const specText = readFileSync(specPath, 'utf8');
   return {
     campaign: JSON.parse(campaignText) as unknown,
+    catalogAttestationText,
     rubric: JSON.parse(rubricFileText) as unknown,
     rubricFileText,
     semanticCorpusText,
@@ -41,7 +47,12 @@ describe('Gemini evidence researcher campaign', () => {
     const campaign = validateEvidenceExtractionCampaign(loadInputs());
 
     expect(campaign.purpose).toBe('EVIDENCE_EXTRACTION_ONLY');
-    expect(campaign.researcher.modelId).toBeNull();
+    expect(campaign.researcher).toMatchObject({
+      modelId: 'google/gemini-3.6-flash',
+      modelSnapshot: 'google/gemini-3.6-flash-20260721',
+      providerRoute: 'google-vertex/global',
+      identityStatus: 'CATALOG_VALIDATED_SMOKE_PENDING',
+    });
     expect(campaign.falsifier.included).toBe(false);
     expect(campaign.feature).toEqual({
       enabled: false,
@@ -55,6 +66,10 @@ describe('Gemini evidence researcher campaign', () => {
     expect(campaign.blockers.dispatchCostPatch).toBe(
       'INTEGRATED_PENDING_NEON_REHEARSAL',
     );
+    expect(campaign.budgetProposal).toMatchObject({
+      hardCapUsd: 0.5,
+      status: 'PROPOSED_NOT_APPROVED',
+    });
   });
 
   it('forbids any model authority over levels, scores and feedback', () => {

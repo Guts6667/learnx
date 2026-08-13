@@ -13,17 +13,29 @@
     "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
     "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
     "semanticCorpusPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
-    "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319"
+    "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+    "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
+    "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4"
   },
   "researcher": {
     "role": "EVIDENCE_RESEARCHER",
     "modelFamily": "GEMINI",
-    "modelId": null,
-    "modelSnapshot": null,
-    "providerRoute": null,
-    "promptVersion": null,
-    "requestProfileVersion": null,
-    "identityStatus": "PENDING_VALIDATION",
+    "modelId": "google/gemini-3.6-flash",
+    "modelSnapshot": "google/gemini-3.6-flash-20260721",
+    "providerRoute": "google-vertex/global",
+    "promptVersion": "1.0.0",
+    "promptFingerprint": "f3a76ccefa872bbeddf0274eb802173569d04b7175b30cc1b54a0955618fa9ef",
+    "requestProfileVersion": "evidence-researcher-1.0.0",
+    "requestProfile": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": { "budgetTokens": null, "budgetMode": "OFF", "effort": "OFF" },
+      "totalOutputTokenLimit": 1800,
+      "visibleOutputTokenTarget": 1800,
+      "routeProviders": ["google-vertex/global"],
+      "temperature": null,
+      "timeoutMs": 60000
+    },
+    "identityStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
     "fallbackAllowed": false
   },
   "falsifier": {
@@ -71,9 +83,18 @@
     "dispatchCostPatch": "INTEGRATED_PENDING_NEON_REHEARSAL",
     "neonRehearsal": "REQUIRED_NOT_COMPLETED",
     "semanticSyntheticCorpus": "AUTHORED_SEALED_DEVELOPMENT",
-    "candidateIdentity": "REQUIRED_NOT_VALIDATED",
-    "budget": "REQUIRED_NOT_APPROVED",
+    "candidateIdentity": "CATALOG_VALIDATED_SMOKE_PENDING",
+    "budget": "PROPOSED_NOT_APPROVED",
     "ownerAuthorization": "NOT_GRANTED"
+  },
+  "budgetProposal": {
+    "currency": "USD",
+    "pricingSnapshot": "2026-08-14-google-vertex-global-standard",
+    "expectedCostUsd": 0.2,
+    "hardCapUsd": 0.5,
+    "maximumProviderAttempts": 30,
+    "status": "PROPOSED_NOT_APPROVED",
+    "basis": "Nouveau contrat d’extraction plus court que les anciens contrats de notation ; plafond volontairement conservateur et non dérivé comme prix produit."
   },
   "feature": {
     "enabled": false,

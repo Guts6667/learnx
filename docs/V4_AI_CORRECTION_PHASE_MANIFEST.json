@@ -94,7 +94,13 @@
         "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-mechanical-oracle.v1.json",
         "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
         "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
-        "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json"
+        "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json",
+        "researchCampaignSha256": "2b80b4d71618c07c94e71db7f52538da401a97f7b004e3ea8be5bbe56c7bf0f3",
+        "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
+        "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4",
+        "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+        "candidateStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
+        "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED"
       }
     },
     {
@@ -131,7 +137,7 @@
   "nextAuthorizedSequence": [
     "Repeat the integrated additive P0 migration on a disposable Neon branch.",
     "Validate the integrated compiler, mechanical oracle and semantic pseudo-oracle on the full local suite.",
-    "Validate exact Gemini identity, route, prompt, request profile, pricing snapshot and budget without authorising a model call.",
+    "Approve or reject the pinned Gemini/Vertex request profile and the 0.50 USD hard-cap proposal; no call is authorised by this manifest.",
     "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
     "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
     "If still GO, expand the semantic development corpus and then open a one-shot holdout."

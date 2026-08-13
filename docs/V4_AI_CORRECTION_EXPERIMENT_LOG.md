@@ -147,6 +147,29 @@ Gates Gemini préenregistrés : 20/20 workflows utilisables, accord atomique
 les métamorphismes, variabilité ≤ 10 %, aucune exigence inconnue, aucun niveau,
 score ou verdict produit par le modèle et aucun retuning après résultat.
 
+### Identité chercheur figée hors ligne — 14 août 2026
+
+Une lecture publique non facturable du catalogue OpenRouter a confirmé le
+snapshot `google/gemini-3.6-flash-20260721`. La route historique Google AI
+Studio était marquée dégradée ; la campagne propose donc
+`google-vertex/global`, disponible et compatible avec `response_format` et
+`structured_outputs`, sans fallback ni routage automatique.
+
+Le tarif standard observé est de `0,75 USD/M` tokens d'entrée et
+`3,75 USD/M` tokens de sortie/raisonnement, soit la moitié du snapshot du
+13 août. Cette variation confirme que les prix catalogue doivent être datés et
+ne peuvent pas devenir des constantes produit.
+
+Le prompt chercheur `1.0.0` et le profil `evidence-researcher-1.0.0` sont
+empreintés. Le schéma de sortie ne contient que statuts atomiques, spans,
+contradictions et confiance diagnostique : aucun niveau, score, verdict ou
+feedback libre. La campagne reste `DRAFT_BLOCKED`; un smoke réel, la répétition
+Neon et l'autorisation du budget sont encore absents.
+
+Proposition budgétaire non autorisée : `0,20 USD` attendus, plafond dur
+`0,50 USD`, 30 tentatives maximum. Ce plafond est une enveloppe R&D, pas une
+prévision de prix utilisateur.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

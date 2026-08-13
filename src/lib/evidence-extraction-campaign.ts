@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { z } from 'zod';
 
 import { compileExecutableRubric } from './executable-rubric-engine.ts';
+import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-protocol.ts';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 
@@ -10,6 +11,10 @@ export const evidenceExtractionCampaignSchema = z
   .object({
     authority: z
       .object({
+        catalogAttestationPath: z.literal(
+          'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
+        ),
+        catalogAttestationSha256: sha256Schema,
         rubricFileSha256: sha256Schema,
         rubricFingerprint: sha256Schema,
         rubricPath: z.literal(
@@ -25,12 +30,23 @@ export const evidenceExtractionCampaignSchema = z
       .strict(),
     blockers: z
       .object({
-        budget: z.literal('REQUIRED_NOT_APPROVED'),
-        candidateIdentity: z.literal('REQUIRED_NOT_VALIDATED'),
+        budget: z.literal('PROPOSED_NOT_APPROVED'),
+        candidateIdentity: z.literal('CATALOG_VALIDATED_SMOKE_PENDING'),
         dispatchCostPatch: z.literal('INTEGRATED_PENDING_NEON_REHEARSAL'),
         neonRehearsal: z.literal('REQUIRED_NOT_COMPLETED'),
         ownerAuthorization: z.literal('NOT_GRANTED'),
         semanticSyntheticCorpus: z.literal('AUTHORED_SEALED_DEVELOPMENT'),
+      })
+      .strict(),
+    budgetProposal: z
+      .object({
+        basis: z.string().trim().min(1),
+        currency: z.literal('USD'),
+        expectedCostUsd: z.literal(0.2),
+        hardCapUsd: z.literal(0.5),
+        maximumProviderAttempts: z.literal(30),
+        pricingSnapshot: z.literal('2026-08-14-google-vertex-global-standard'),
+        status: z.literal('PROPOSED_NOT_APPROVED'),
       })
       .strict(),
     campaignId: z.literal('learnx-writing-fr-gemini-evidence-researcher-v1'),
@@ -97,13 +113,31 @@ export const evidenceExtractionCampaignSchema = z
     researcher: z
       .object({
         fallbackAllowed: z.literal(false),
-        identityStatus: z.literal('PENDING_VALIDATION'),
+        identityStatus: z.literal('CATALOG_VALIDATED_SMOKE_PENDING'),
         modelFamily: z.literal('GEMINI'),
-        modelId: z.null(),
-        modelSnapshot: z.null(),
-        promptVersion: z.null(),
-        providerRoute: z.null(),
-        requestProfileVersion: z.null(),
+        modelId: z.literal('google/gemini-3.6-flash'),
+        modelSnapshot: z.literal('google/gemini-3.6-flash-20260721'),
+        promptFingerprint: sha256Schema,
+        promptVersion: z.literal('1.0.0'),
+        providerRoute: z.literal('google-vertex/global'),
+        requestProfile: z
+          .object({
+            adapter: z.literal('OPENROUTER_CHAT'),
+            reasoning: z
+              .object({
+                budgetMode: z.literal('OFF'),
+                budgetTokens: z.null(),
+                effort: z.literal('OFF'),
+              })
+              .strict(),
+            routeProviders: z.tuple([z.literal('google-vertex/global')]),
+            temperature: z.null(),
+            timeoutMs: z.literal(60_000),
+            totalOutputTokenLimit: z.literal(1_800),
+            visibleOutputTokenTarget: z.literal(1_800),
+          })
+          .strict(),
+        requestProfileVersion: z.literal('evidence-researcher-1.0.0'),
         role: z.literal('EVIDENCE_RESEARCHER'),
       })
       .strict(),
@@ -122,6 +156,7 @@ function sha256(value: string): string {
 
 export function validateEvidenceExtractionCampaign(input: {
   campaign: unknown;
+  catalogAttestationText: string;
   rubric: unknown;
   rubricFileText: string;
   semanticCorpusText: string;
@@ -131,10 +166,14 @@ export function validateEvidenceExtractionCampaign(input: {
   const compiled = compileExecutableRubric(input.rubric);
   if (
     campaign.authority.specSha256 !== sha256(input.specText) ||
+    campaign.authority.catalogAttestationSha256 !==
+      sha256(input.catalogAttestationText) ||
     campaign.authority.semanticCorpusSha256 !==
       sha256(input.semanticCorpusText) ||
     campaign.authority.rubricFileSha256 !== sha256(input.rubricFileText) ||
-    campaign.authority.rubricFingerprint !== compiled.rubricFingerprint
+    campaign.authority.rubricFingerprint !== compiled.rubricFingerprint ||
+    campaign.researcher.promptFingerprint !==
+      evidenceResearcherProtocolFingerprint()
   ) {
     throw new Error('EVIDENCE_CAMPAIGN_AUTHORITY_DIGEST_MISMATCH');
   }

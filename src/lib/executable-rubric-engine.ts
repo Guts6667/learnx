@@ -30,7 +30,7 @@ const statusPointsSchema = z
   })
   .strict();
 
-const evidenceSpanSchema = z
+export const evidenceSpanSchema = z
   .object({
     end: z.number().int().positive(),
     sha256: sha256Schema,
@@ -164,7 +164,7 @@ export type AtomicEvidenceStatus = z.infer<typeof atomicEvidenceStatusSchema>;
 type ResolvedAtomicEvidenceStatus = z.infer<
   typeof resolvedAtomicEvidenceStatusSchema
 >;
-type EvidenceSpan = z.infer<typeof evidenceSpanSchema>;
+export type EvidenceSpan = z.infer<typeof evidenceSpanSchema>;
 
 export type CompiledExecutableRubric = {
   rubric: ExecutableRubric;
@@ -493,6 +493,14 @@ function indexEvidencePass(
     elements: new Map(pass.elements.map((element) => [element.elementKey, element])),
     pass,
   };
+}
+
+export function validateEvidencePass(input: {
+  compiled: CompiledExecutableRubric;
+  pass: unknown;
+  responseText: string;
+}): EvidencePass {
+  return indexEvidencePass(input.compiled, input.responseText, input.pass).pass;
 }
 
 function uniqueSpans(spans: EvidenceSpan[]): EvidenceSpan[] {
