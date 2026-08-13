@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { describe, expect, it, vi } from 'vitest';
 
 import {
@@ -117,6 +118,46 @@ describe('V4-009C Gemini panel runner', () => {
       resume: { ledger: completed.ledger, state: completed.state },
     });
     expect(resumeProvider.execute).not.toHaveBeenCalled();
+  });
+
+  it('reconciles the canonical model slug without replaying the completed cell', async () => {
+    const completed = await runGeminiPanel({ ...common, provider: provider() });
+    const state = structuredClone(completed.state);
+    const first = state.attempts[0];
+    if (!first) throw new Error('TEST_ATTEMPT_MISSING');
+    first.status = 'ERROR';
+    first.errorCode = 'GEMINI_PANEL_PROVIDER_IDENTITY_MISMATCH';
+    first.modelSnapshot = manifest.identity.modelId;
+    first.output = outputFor(first.caseId);
+    const ledger = structuredClone(completed.ledger);
+    const historicalOutcome = ledger.find(
+      (event) =>
+        event.event === 'CALL_OUTCOME' &&
+        event.idempotencyKey === first.idempotencyKey,
+    );
+    if (!historicalOutcome) throw new Error('TEST_OUTCOME_MISSING');
+    historicalOutcome.status = 'ERROR';
+    ledger.forEach((event, index) => {
+      event.previousHash = index === 0 ? null : ledger[index - 1]?.recordHash ?? null;
+      const record = Object.fromEntries(
+        Object.entries(event).filter(([key]) => key !== 'recordHash'),
+      );
+      event.recordHash = createHash('sha256')
+        .update(JSON.stringify(record))
+        .digest('hex');
+    });
+    state.cells = state.cells.filter(
+      (cell) => `${cell.caseId}:${cell.repetition}` !== first.cellKey,
+    );
+    const resumeProvider = provider();
+    const resumed = await runGeminiPanel({
+      ...common,
+      provider: resumeProvider,
+      resume: { ledger, state },
+    });
+    expect(resumeProvider.execute).toHaveBeenCalledTimes(0);
+    expect(resumed.state.cells).toHaveLength(20);
+    expect(resumed.ledger.at(-1)?.event).toBe('CALL_RECONCILED');
   });
 
   it('rejects a tampered ledger before any provider call', async () => {

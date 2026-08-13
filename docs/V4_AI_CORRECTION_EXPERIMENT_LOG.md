@@ -96,6 +96,23 @@ prévision `0,25–0,30 USD`, un plafond dur `0,50 USD` et 40 tentatives maximum
 Aucun appel modèle n'a été lancé pendant cette préparation. L'extension
 diagnostique Mistral–Sonnet reste suspendue et son `NO-GO` inchangé.
 
+### Résultat V4-009C — 13 août 2026
+
+Statut : `NO-GO_TECHNICAL / PANEL_INCOMPLETE`.
+
+Le run s'est arrêté après 10 tentatives : 9 sorties Gemini valides puis une
+erreur sans identifiant fournisseur, usage ou coût. Le gate Finance a produit
+`COST_RECONCILIATION_REQUIRED` et interdit tout appel suivant. Coût réel
+réconcilié connu : `0,03392775 USD` ; exposition conservatrice avec la réserve
+orpheline : `0,05528175 USD`. Aucun retry n'a été lancé. La campagne n'a pas
+atteint les quatre cas injection et ne permet aucune conclusion pédagogique ou
+de sécurité globale.
+
+Un faux rejet initial lié à la représentation du modèle (slug canonique versus
+snapshot catalogue daté) a été réconcilié sans nouvel appel par une écriture
+append-only. Son coût reste inclus. Le verdict, les empreintes et le détail sont
+conservés dans `docs/V4_009C_MINI_PANEL_RESULT.md`.
+
 ## 5. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

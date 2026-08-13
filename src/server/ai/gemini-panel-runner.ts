@@ -30,6 +30,7 @@ export interface GeminiPanelAttempt extends CompositePanelProviderResult {
   idempotencyKey: string;
   repetition: number;
   riskSignals: readonly string[];
+  upstreamErrorCode?: string;
   worstCaseAuthorizedUsd: number;
 }
 
@@ -38,7 +39,7 @@ export interface GeminiPanelLedgerEvent {
   caseId: string;
   cellKey: string;
   costUsd?: number;
-  event: 'CALL_INTENT' | 'CALL_OUTCOME';
+  event: 'CALL_INTENT' | 'CALL_OUTCOME' | 'CALL_RECONCILED';
   idempotencyKey: string;
   previousHash: string | null;
   recordHash: string;
@@ -230,6 +231,71 @@ export async function runGeminiPanel(input: {
     const recordHash = sha256(JSON.stringify({ ...event, previousHash }));
     ledger.push({ ...event, previousHash, recordHash });
   };
+  for (const attempt of state.attempts) {
+    const historicalOutcome = ledger.find(
+      (event) =>
+        event.event === 'CALL_OUTCOME' &&
+        event.idempotencyKey === attempt.idempotencyKey,
+    );
+    if (
+      attempt.status !== 'ERROR' ||
+      attempt.errorCode !== 'GEMINI_PANEL_PROVIDER_IDENTITY_MISMATCH' ||
+      attempt.providerRoute !== input.manifest.identity.provider ||
+      attempt.modelSnapshot !== input.manifest.identity.modelId ||
+      !attempt.providerRequestId ||
+      attempt.usage?.costSource !== 'ACTUAL' ||
+      attempt.usage.actualCostUsd === undefined ||
+      historicalOutcome?.status !== 'ERROR' ||
+      historicalOutcome.costUsd !== attempt.usage.actualCostUsd ||
+      ledger.some(
+        (event) =>
+          event.event === 'CALL_RECONCILED' &&
+          event.idempotencyKey === attempt.idempotencyKey,
+      ) ||
+      !attempt.output ||
+      state.cells.some(
+        (cell) => `${cell.caseId}:${cell.repetition}` === attempt.cellKey,
+      )
+    ) {
+      continue;
+    }
+    const benchmarkCase = input.corpus.cases.find(
+      (entry) => entry.caseId === attempt.caseId,
+    );
+    if (!benchmarkCase) throw new Error('GEMINI_PANEL_CASE_NOT_FOUND');
+    const contract = findBenchmarkContract(
+      input.corpus,
+      benchmarkCase.contractKey,
+      benchmarkCase.contractVersion,
+    );
+    const validated = validateDeterministicSafetyOutput({
+      benchmarkCase,
+      canary: input.configuration.controlPrompt.canary,
+      contract,
+      output: attempt.output,
+    });
+    attempt.status = 'VALID';
+    attempt.errorCode = undefined;
+    attempt.output = validated.output;
+    appendLedger({
+      attempt: attempt.attempt,
+      caseId: attempt.caseId,
+      cellKey: attempt.cellKey,
+      costUsd: attempt.usage?.actualCostUsd,
+      event: 'CALL_RECONCILED',
+      idempotencyKey: attempt.idempotencyKey,
+      repetition: attempt.repetition,
+      status: 'VALID',
+      worstCaseAuthorizedUsd: attempt.worstCaseAuthorizedUsd,
+    });
+    state.cells.push({
+      caseId: attempt.caseId,
+      output: validated.output,
+      repetition: attempt.repetition,
+      riskSignals: attempt.riskSignals,
+    });
+    await persist();
+  }
   for (const cell of input.manifest.cells) {
     const cellKey = `${cell.caseId}:${cell.repetition}`;
     if (state.cells.some((entry) => `${entry.caseId}:${entry.repetition}` === cellKey)) {
@@ -273,15 +339,19 @@ export async function runGeminiPanel(input: {
         idempotencyKey,
         role: 'PRIMARY',
       });
-      let normalized = result;
+      let normalized: CompositePanelProviderResult & {
+        upstreamErrorCode?: string;
+      } = result;
       if (
         (result.status === 'VALID' &&
           (result.providerRoute !== input.manifest.identity.provider ||
-            result.modelSnapshot !== input.manifest.identity.modelSnapshot)) ||
+            (result.modelSnapshot !== input.manifest.identity.modelSnapshot &&
+              result.modelSnapshot !== input.manifest.identity.modelId))) ||
         (result.providerRoute !== undefined &&
           result.providerRoute !== input.manifest.identity.provider) ||
         (result.modelSnapshot !== undefined &&
-          result.modelSnapshot !== input.manifest.identity.modelSnapshot)
+          result.modelSnapshot !== input.manifest.identity.modelSnapshot &&
+          result.modelSnapshot !== input.manifest.identity.modelId)
       ) {
         normalized = {
           ...result,
@@ -312,7 +382,12 @@ export async function runGeminiPanel(input: {
         }
       }
       if (normalized.usage?.actualCostUsd === undefined) {
-        normalized = { ...normalized, errorCode: 'COST_RECONCILIATION_REQUIRED', status: 'ERROR' };
+        normalized = {
+          ...normalized,
+          errorCode: 'COST_RECONCILIATION_REQUIRED',
+          status: 'ERROR',
+          upstreamErrorCode: normalized.errorCode,
+        };
       }
       const before = input.manifest.budget.hardCapUsd - actualCost(state.attempts);
       const attempt: GeminiPanelAttempt = {

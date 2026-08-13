@@ -1,7 +1,7 @@
 # V4-009C — Registre de consultation
 
 Date : 2026-08-13
-Statut global : `READY_FOR_OWNER_GO_AFTER_OFFLINE_VALIDATION`
+Statut global : `MINI_PANEL_NO_GO_TECHNICAL`
 
 ## Produit & pédagogie
 
@@ -45,5 +45,6 @@ Statut global : `READY_FOR_OWNER_GO_AFTER_OFFLINE_VALIDATION`
 - [x] Catalogue Gemini lu sans appel modèle et route unique attestée.
 - [x] Manifeste 20 workflows, budget et gates préenregistrés.
 - [x] Runner bloqué sans token propriétaire distinct.
-- [ ] Autorisation explicite du propriétaire reçue.
-- [ ] Panel exécuté et revu ; aucun 24×3 ni holdout autorisé.
+- [x] Autorisation explicite du propriétaire reçue.
+- [x] Panel arrêté après 9/20 workflows valides sur coût non réconciliable.
+- [x] Verdict `NO-GO_TECHNICAL` figé ; aucun `24×3` ni holdout autorisé.
