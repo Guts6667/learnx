@@ -12,6 +12,8 @@ import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
 
+const AI_PRICING_QUOTE_PATH = '/api/ai-correction/quotes';
+
 const requestSchema = z
   .object({
     action: z.enum(AI_PRICING_ACTIONS),
@@ -95,9 +97,9 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
   let repository: AiPricingQuoteRepository | undefined = options.repository;
   let service = options.service;
 
-  app.use('*', options.authentication ?? requireUser);
+  app.use(AI_PRICING_QUOTE_PATH, options.authentication ?? requireUser);
   app.use(
-    '*',
+    AI_PRICING_QUOTE_PATH,
     options.authorization ?? requireCapability('ai.assessment.correct'),
   );
   app.onError((error, context) => {
@@ -114,7 +116,7 @@ export function createAiPricingApp(options: AiPricingAppOptions = {}) {
     return context.json(toApiErrorBody(apiError), apiError.status);
   });
 
-  app.post('/api/ai-correction/quotes', async (context) => {
+  app.post(AI_PRICING_QUOTE_PATH, async (context) => {
     const parsed = requestSchema.safeParse(await parseJson(context.req.raw));
     if (!parsed.success) throw invalidRequest();
     if (!service) {
