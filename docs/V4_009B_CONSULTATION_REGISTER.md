@@ -53,7 +53,7 @@ Statut global : `BLOCKED_BEFORE_LIVE`
 
 ## Développement
 
-- Statut : `RECEIVED`
+- Statut : `ARBITRATED_OFFLINE`
 - Date : 2026-08-13
 - Périmètre : répétition V4-009 sur Neon jetable, instrumentation,
   reproductibilité, providers déterministes, reprise et idempotence.
@@ -72,6 +72,10 @@ Statut global : `BLOCKED_BEFORE_LIVE`
 - Le correctif `be9131a` borne les middlewares d'authentification et
   d'autorisation au seul endpoint pricing. La répétition Integration #119
   (`31713310879`) est entièrement verte : les `403` hors pricing ont disparu.
+- Le runner composite est désormais relié au protocole `3.0.1` et aux profils
+  gelés. Il vérifie les SHA, bloque sans GO propriétaire, préautorise chaque
+  coût, persiste un ledger append-only, reprend sans doublon et sépare paquet
+  aveugle/mapping. Aucun appel réseau n'a été effectué pendant cette validation.
 
 ## Gate de clôture
 

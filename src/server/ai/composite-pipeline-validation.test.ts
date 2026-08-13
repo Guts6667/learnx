@@ -221,6 +221,12 @@ describe('V4-009B composite validation envelope', () => {
 
   it('changes the identity fingerprint on every frozen rule mutation', () => {
     const original = envelope();
+    expect(createCompositeRunEnvelopeFingerprint(original)).toBe(
+      createCompositeRunEnvelopeFingerprint({
+        ...original,
+        authorization: 'OWNER_GO_REQUIRED',
+      }),
+    );
     expect(createCompositeRunEnvelopeFingerprint(original)).not.toBe(
       createCompositeRunEnvelopeFingerprint({
         ...original,

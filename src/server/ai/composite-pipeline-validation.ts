@@ -74,7 +74,11 @@ export function createCompositeRunEnvelopeFingerprint(
   envelope: CompositeRunEnvelope,
 ): string {
   return createHash('sha256')
-    .update(JSON.stringify(canonicalize(envelope)))
+    .update(
+      JSON.stringify(
+        canonicalize({ ...envelope, authorization: 'OWNER_GO_REQUIRED' }),
+      ),
+    )
     .digest('hex');
 }
 

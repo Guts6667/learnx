@@ -33,7 +33,8 @@
     "icons:export": "tsx scripts/export-atlas-icons.ts",
     "editorial:bilingual:check": "tsx scripts/validate-bilingual-editorial.ts",
     "ai:benchmark:validate": "tsx scripts/run-ai-correction-benchmark.ts --validate-only",
-    "ai:benchmark": "tsx scripts/run-ai-correction-benchmark.ts"
+    "ai:benchmark": "tsx scripts/run-ai-correction-benchmark.ts",
+    "ai:composite:panel": "node --import tsx scripts/run-v4-009b-composite-panel.ts"
   },
   "packageManager": "pnpm@10.28.1",
   "dependencies": {

@@ -46,6 +46,33 @@ Après le panel : arrêt, génération du paquet aveugle phase 1, puis revue
 Produit/pédagogie. Aucun `24×3` sans nouveau GO écrit et aucun holdout avant la
 réussite ultérieure de ce `24×3`.
 
+## Exécuteur préparé hors ligne
+
+La commande `pnpm ai:composite:panel` valide uniquement l'identité, les SHA du
+corpus/configuration/cas, les profils et l'enveloppe. Elle n'effectue aucun
+appel réseau.
+
+Le mode live est volontairement impossible sans les trois conditions
+simultanées suivantes : clé fournisseur présente, option `--execute` et jeton
+propriétaire exact communiqué après ce rapport. Pendant l'exécution :
+
+- chaque tentative possède une clé d'idempotence stable ;
+- le pire coût du prochain appel est préautorisé avant envoi ;
+- l'état est écrit atomiquement et le budget dans un ledger JSONL append-only ;
+- un coût non retourné comme `ACTUAL` arrête la campagne en réconciliation ;
+- seuls les `429/500/502/503/504` avec coût réconcilié permettent un retry ;
+- une sortie invalide déterministe, un timeout ou une erreur de sécurité ne
+  déclenchent aucun retry sémantique ;
+- la reprise saute les cellules déjà terminées ;
+- les artefacts aveugle phase 1 et mapping scellé sont produits séparément.
+
+Preuves hors ligne du 13 août : validation protocole `24 cas / 12 candidats`,
+84 tests ciblés initiaux, puis suite complète `129 fichiers / 788 tests`, lint,
+typecheck et build de production verts. Sous Node 25, la suite complète requiert
+`NODE_OPTIONS=--no-experimental-webstorage` afin que jsdom fournisse son propre
+stockage navigateur ; sans cette option, l'API expérimentale Node masque le
+mock jsdom et provoque des échecs sans rapport avec le ticket.
+
 ## Suite conditionnelle — aucun appel autorisé à ce stade
 
 Le mini-panel est uniquement un gate d'arrêt économique et pédagogique. Il ne
