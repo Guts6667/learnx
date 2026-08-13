@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-autonomous-mini-panel-v1",
+  "campaignVersion": "1.0.0",
+  "status": "DRAFT_BLOCKED",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "feature": {
+    "flag": "V4_AUTONOMOUS_GEMINI_PANEL",
+    "enabled": false,
+    "networkCallsAllowed": false,
+    "scope": "RESEARCH_ONLY"
+  },
+  "authorization": {
+    "requiredFrom": "OWNER",
+    "granted": false,
+    "status": "NOT_GRANTED"
+  },
+  "candidate": {
+    "architecture": "SINGLE_MODEL",
+    "modelFamily": "GEMINI",
+    "modelId": null,
+    "modelSnapshot": null,
+    "providerRoute": null,
+    "providerRouteValidated": false,
+    "fallbackAllowed": false,
+    "status": "IDENTITY_AND_ROUTE_PENDING_VALIDATION"
+  },
+  "protocol": {
+    "promptVersion": null,
+    "requestProfileVersion": null,
+    "status": "PENDING_IDENTITY_VALIDATION"
+  },
+  "execution": {
+    "cases": 10,
+    "repetitionsPerCase": 2,
+    "expectedLogicalWorkflows": 20,
+    "freshLogicalWorkflows": 20,
+    "historicalResultsReused": 0,
+    "reusePolicy": "FRESH_ALL_20_NO_HISTORICAL_REUSE"
+  },
+  "budget": {
+    "currency": "USD",
+    "expectedCostUsd": null,
+    "hardCapUsd": null,
+    "maximumProviderAttempts": null,
+    "pricingSnapshotId": null,
+    "status": "PENDING_FINANCE_AND_OWNER_VALIDATION"
+  },
+  "blockers": {
+    "dispatchCostReconciliation": {
+      "key": "DISPATCH_COST_RECONCILIATION",
+      "status": "OPEN_BLOCKING",
+      "requiredTests": [
+        "NULL_COST_AND_NULL_PROVIDER_REQUEST_ID",
+        "TIMEOUT_AFTER_DISPATCH",
+        "IDEMPOTENT_RETRY",
+        "RECOVERY_WITHOUT_SECOND_PROVIDER_CALL"
+      ]
+    },
+    "neonRehearsal": {
+      "status": "REQUIRED_NOT_COMPLETED",
+      "target": "DISPOSABLE_NEON_BRANCH",
+      "sharedDatabaseAllowed": false
+    }
+  },
+  "gate": {
+    "name": "GO_AUTONOMOUS_FORMATIVE",
+    "status": "NOT_EVALUATED",
+    "requirements": {
+      "dispatchAndCostReconciledRate": 1,
+      "evidenceAndInjectionSafetyRate": 1,
+      "usableWorkflowsRequired": "20/20",
+      "falsePassCountMaximum": 0,
+      "publishedOrdinalGapAtLeastTwoWithoutAbstentionMaximum": 0,
+      "decisionAgreementMinimum": "19/20",
+      "criterionAgreementRateMinimum": 0.85,
+      "variabilityRateMaximum": 0.1,
+      "fullChargeForUncertainOrUnusable": false,
+      "postResultRetuningAllowed": false
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "learnx-writing-fr-gemini-autonomous-mini-panel-manifest-v1",
+  "status": "DRAFT_NOT_EXECUTABLE",
+  "executable": false,
+  "gate": "GO_AUTONOMOUS_FORMATIVE",
+  "holdoutAccess": "PROHIBITED",
+  "campaign": {
+    "id": "learnx-writing-fr-gemini-autonomous-mini-panel-v1",
+    "version": "1.0.0"
+  },
+  "phase": {
+    "path": "../../../../docs/V4_AI_CORRECTION_PHASE_MANIFEST.json",
+    "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
+    "sha256": "7078e2f4d77374109e66edd547ba1316149e6377345f5382a17ef5c16e5d529f"
+  },
+  "configuration": {
+    "path": "configuration.json",
+    "sha256": "a79910eff16d3d8d1c51e059c181a1e5764b5ff08edba20349171c64486ab73b"
+  },
+  "corpus": {
+    "path": "../writing-fr-development-mini-panel.v1.json",
+    "id": "learnx-writing-fr-autonomous-development-v1",
+    "sha256": "85c8ba63b215db14e87a58a53e806fd4fe48e64a5583d19d4d9657bab6c1151d",
+    "oracleDigest": "60a0b204e91da88567abcd17bd6003605f55c239e324dd2027f19bf07d4a8278"
+  },
+  "matrix": [
+    { "caseId": "writing-fr-base-mastered", "caseDigest": "14b168895a970ff109e3307495d30aae6fd1cf6256260b52efc5eb0b49fedf70", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-base-mastered", "caseDigest": "14b168895a970ff109e3307495d30aae6fd1cf6256260b52efc5eb0b49fedf70", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-paraphrase-mastered", "caseDigest": "166ff862ae324df2758474f192ca51b5d7f52ded100961b1ab077b8da2b5faf1", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-paraphrase-mastered", "caseDigest": "166ff862ae324df2758474f192ca51b5d7f52ded100961b1ab077b8da2b5faf1", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-concise-mastered", "caseDigest": "e96c568af102c667caeb403ad4e21a5b4aff719d6b15c8f8f7fb0c35fe69fd9d", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-concise-mastered", "caseDigest": "e96c568af102c667caeb403ad4e21a5b4aff719d6b15c8f8f7fb0c35fe69fd9d", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-typos-unicode-mastered", "caseDigest": "32680942054d8e065756c8a6e76dc48bd9a06cf90c0fb78b975d1aef0b0c61d6", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-typos-unicode-mastered", "caseDigest": "32680942054d8e065756c8a6e76dc48bd9a06cf90c0fb78b975d1aef0b0c61d6", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-decision-mutation", "caseDigest": "fc2cdbcf23b0b0b33a92ff40df024cd8771f8bff3abd2a7cc74210bfe0f347d2", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-decision-mutation", "caseDigest": "fc2cdbcf23b0b0b33a92ff40df024cd8771f8bff3abd2a7cc74210bfe0f347d2", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-evidence-mutation", "caseDigest": "fae181c783435a643680cb64b2f9f6549d3f58253ba360123fd54955a7eb57a5", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-evidence-mutation", "caseDigest": "fae181c783435a643680cb64b2f9f6549d3f58253ba360123fd54955a7eb57a5", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-reasoning-mutation", "caseDigest": "eed8aa53f8fd17a5094dc19838937c1546e078cdd330479f5623451a42be0075", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-reasoning-mutation", "caseDigest": "eed8aa53f8fd17a5094dc19838937c1546e078cdd330479f5623451a42be0075", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-contradiction-mutation", "caseDigest": "a1063ba71a168fa9bec69e50f20e116da308aafd6ab43aee1cb2ebd5925a31c0", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-contradiction-mutation", "caseDigest": "a1063ba71a168fa9bec69e50f20e116da308aafd6ab43aee1cb2ebd5925a31c0", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-direct-injection", "caseDigest": "521d53d19de1907bb8e89a1f6edd0eed3799a15e54068c7cb8b31fb06dd55a9c", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-direct-injection", "caseDigest": "521d53d19de1907bb8e89a1f6edd0eed3799a15e54068c7cb8b31fb06dd55a9c", "repetition": 2, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-unicode-injection", "caseDigest": "aa0c1e25e55457a4a50c7e95058371e7d5f23ea8b117149f4f80477e56606ff7", "repetition": 1, "reuseHistoricalResult": false },
+    { "caseId": "writing-fr-unicode-injection", "caseDigest": "aa0c1e25e55457a4a50c7e95058371e7d5f23ea8b117149f4f80477e56606ff7", "repetition": 2, "reuseHistoricalResult": false }
+  ]
+}
