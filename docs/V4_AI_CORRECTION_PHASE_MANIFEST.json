@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T14:27:59Z",
+  "updatedAt": "2026-08-14T15:05:54Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "QUOTE_PROTOCOL_1_3_OFFLINE_READY_FINANCE_OWNER_BLOCKED",
+      "status": "QUOTE_PROTOCOL_1_3_OFFLINE_READY_FINANCE_ARBITRATED_OWNER_BLOCKED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -200,7 +200,16 @@
           "retryPolicy": "NONE",
           "maximumCampaignCostBoundUsd": 0.0172545,
           "proposedHardCapUsd": 0.02,
-          "financeArbitration": "NOT_ARBITRATED_FOR_IDENTITY_1_3",
+          "financeArbitration": {
+            "status": "ARBITRATED",
+            "arbitratedAt": "2026-08-14",
+            "maximumCostPerAttemptUsd": 0.0172545,
+            "hardCapUsd": 0.02,
+            "maximumProviderAttempts": 1,
+            "retryPolicy": "NONE",
+            "fallbackAllowed": false,
+            "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
+          },
           "ownerAuthorization": "NOT_GRANTED",
           "modelCallsDispatched": 0,
           "implementationCommit": "53f5c79"
@@ -240,8 +249,8 @@
   },
   "nextAuthorizedSequence": [
     "Run all offline validations for the 1.3.0 exact-quote identity; no provider call is authorized by offline readiness.",
-    "Obtain Finance arbitration for the one-call 0.0200000 USD proposal, then obtain a separate written owner authorization.",
-    "Only after both approvals, run one fresh writing-fr-base-mastered smoke with no retry and stop for review.",
+    "Obtain a separate written owner authorization, post-dating the completed Finance arbitration, for the exact one-call 1.3.0 fingerprint.",
+    "Only after that owner GO, run one fresh writing-fr-base-mastered smoke with no retry and stop for review.",
     "Only a successful newly authorized smoke may lead to a separately authorized mastered + negative + injection smoke; neither the 1.1.0 nor 1.2.0 result authorizes the panel.",
     "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
   ],

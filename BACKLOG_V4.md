@@ -1346,13 +1346,14 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : PROTOCOLE 1.3.0 PRÊT HORS LIGNE, APPEL BLOQUÉ — le
+**État au 14 août 2026 : PROTOCOLE 1.3.0 PRÊT HORS LIGNE, FINANCE ARBITRÉE,
+GO PROPRIÉTAIRE REQUIS — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
 les offsets depuis une citation exacte unique et persiste le raw avant
-validation. Finance puis le Propriétaire doivent encore autoriser séparément
-l'unique smoke frais. Le panel reste fermé.**
+validation. Finance a arbitré l'enveloppe de l'unique smoke frais ; seul le GO
+écrit et postérieur du Propriétaire manque encore. Le panel reste fermé.**
 
 ### Point de reprise pour le développement
 
@@ -1388,8 +1389,9 @@ l'unique smoke frais. Le panel reste fermé.**
   `8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087`.
   Elle prévoit un seul appel sur `writing-fr-base-mastered`, aucun retry, une
   borne pessimiste de `0,0172545 USD` et un plafond proposé de `0,0200000 USD`.
-  Ces montants ne sont pas encore arbitrés et aucune autorisation d'appel n'est
-  active.
+  Finance a arbitré ces montants pour une seule tentative, sans retry ni
+  fallback. Cette consultation ne vaut pas autorisation d'appel : le GO écrit
+  et postérieur du Propriétaire reste absent.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

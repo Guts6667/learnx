@@ -364,6 +364,21 @@ avec une borne pessimiste de 0,0172545 USD et un plafond proposé de 0,0200000
 USD. Finance n'a pas arbitré cette nouvelle enveloppe et le propriétaire ne
 l'a pas autorisée. Aucun appel 1.3.0 n'a été effectué ; le panel reste fermé.
 
+### Addendum append-only — arbitrage Finance 1.3.0 du 14 août 2026
+
+Statut : `FINANCE_RECEIVED_TO_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Après fusion des PR #7 et #8 dans `dev`, Finance & Pricing a vérifié hors ligne
+l'identité 1.3.0 byte-identique. L'arbitrage approuve pour une seule tentative
+la borne pessimiste fournisseur de 0,0172545 USD et le plafond dur de 0,0200000
+USD. Aucun retry, fallback, deuxième cas, panel ou holdout n'est inclus.
+
+Le préflight doit encore confirmer le SHA campagne, l'empreinte prompt,
+l'attestation, la route, le profil, le cas, la borne et un dossier de sortie
+exclusif. Toute divergence, sortie invalide, coût manquant, échec de persistance
+raw ou erreur fournisseur arrête la campagne. Cet arbitrage ne vaut pas GO
+propriétaire. Aucun appel 1.3.0 n'a été effectué à cette étape.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
