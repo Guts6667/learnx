@@ -34,7 +34,7 @@ const paths = {
     'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
   ),
   campaign: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
+    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.json',
   ),
   corpus: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
@@ -66,6 +66,14 @@ async function writeJsonAtomic(path: string, value: unknown): Promise<void> {
   const temporary = `${path}.tmp`;
   await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
   await rename(temporary, path);
+}
+
+async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
+  await mkdir(dirname(path), { recursive: true });
+  await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, {
+    encoding: 'utf8',
+    flag: 'wx',
+  });
 }
 
 function normalizeError(error: unknown) {
@@ -246,6 +254,12 @@ const result = await runEvidenceResearcherSmoke({
       persistedLedgerEvents = ledger.length;
     }
     await writeJsonAtomic(statePath, state);
+  },
+  onRawReceived: async (receipt) => {
+    await writeJsonExclusive(
+      resolve(outputDirectory, 'raw-received', `${receipt.idempotencyKey}.json`),
+      receipt,
+    );
   },
   promptUsdPerToken: attestation.pricing.promptUsdPerToken,
   provider: {
