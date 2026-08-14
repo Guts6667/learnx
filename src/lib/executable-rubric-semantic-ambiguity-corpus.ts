@@ -64,6 +64,14 @@ export const executableRubricSemanticAmbiguityCorpusSchema = z
     modality: z.literal('WRITING'),
     oracleAuthority: z.literal('SPEC_DERIVED_SYNTHETIC_DUAL_PASS_VECTORS'),
     oracleLimit: z.string().min(1),
+    productReview: z
+      .object({
+        reviewedAt: z.string().datetime(),
+        reviewer: z.literal('Codex Product/Pedagogy reviewer'),
+        scope: z.literal('DEVELOPMENT_FIXTURES_ONLY'),
+        status: z.literal('APPROVED_INDEPENDENT_PRODUCT_AGENT'),
+      })
+      .strict(),
     review: z
       .object({
         reviewedAt: z.null(),

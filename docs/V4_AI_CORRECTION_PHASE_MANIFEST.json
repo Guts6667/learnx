@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T09:07:34Z",
+  "updatedAt": "2026-08-14T10:18:38Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -108,7 +108,7 @@
         "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
         "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
         "semanticAmbiguityPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-ambiguity-development.v1.json",
-        "semanticAmbiguityPseudoOracleSha256": "f28c8e9fd41fcd9da53befc782c1a72df091e064ead6a46f3cb78f286b7d84b2",
+        "semanticAmbiguityPseudoOracleSha256": "f5e8f7fb7c08192c3a7a58dec546c12979c335b9706fa68c3477287ec7f70635",
         "semanticAmbiguityStatus": "DRAFT_PEDAGOGICAL_REVIEW_REQUIRED",
         "replacementHoldoutManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
         "replacementHoldoutManifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2",

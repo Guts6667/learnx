@@ -34,6 +34,12 @@ describe('executable rubric semantic ambiguity development corpus', () => {
     const corpus = validateExecutableRubricSemanticAmbiguityCorpus(loadInputs());
 
     expect(corpus.humanValidationClaimed).toBe(false);
+    expect(corpus.productReview).toEqual({
+      reviewedAt: '2026-08-14T10:18:38Z',
+      reviewer: 'Codex Product/Pedagogy reviewer',
+      scope: 'DEVELOPMENT_FIXTURES_ONLY',
+      status: 'APPROVED_INDEPENDENT_PRODUCT_AGENT',
+    });
     expect(corpus.review.status).toBe('PENDING_INDEPENDENT_HUMAN_REVIEW');
     expect(corpus.cases.map(({ transformation }) => transformation)).toEqual([
       'MATERIAL_AMBIGUITY',

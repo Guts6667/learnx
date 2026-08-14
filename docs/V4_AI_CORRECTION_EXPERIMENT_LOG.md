@@ -213,6 +213,21 @@ un digest du contenu revu et un chiffrement AES-256-GCM. Seul le ciphertext peut
 ensuite entrer dans le dépôt. Aucune clé, aucun plaintext et aucune fausse
 approbation n'ont été créés pendant ce correctif.
 
+Première revue indépendante des deux cas d'ambiguïté : `CHANGES_REQUIRED`. La
+modalisation d'une recommandation avait été confondue avec son absence et
+l'absence de choix avec une contradiction. Les fixtures ont été réécrites sans
+modifier le moteur ni la campagne Gemini ; elles restent `PENDING` jusqu'à une
+seconde revue indépendante.
+
+La seconde revue Produit/pédagogie indépendante approuve les deux fixtures
+réécrites comme pseudo-oracles synthétiques de développement : préférence
+comparative contre absence de décision finale pour l'ambiguïté matérielle,
+puis tension modale contre contradiction pragmatique pour l'ambiguïté non
+matérielle. Cette approbation est attribuée à un agent Produit/pédagogie, pas à
+un évaluateur humain. `humanValidationClaimed` reste donc `false`, la revue
+humaine reste `PENDING` et ni un modèle, ni une campagne, ni le holdout V2 ne
+sont validés par cette revue.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

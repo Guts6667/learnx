@@ -15,6 +15,12 @@
     "reviewer": null,
     "reviewedAt": null
   },
+  "productReview": {
+    "status": "APPROVED_INDEPENDENT_PRODUCT_AGENT",
+    "reviewer": "Codex Product/Pedagogy reviewer",
+    "reviewedAt": "2026-08-14T10:18:38Z",
+    "scope": "DEVELOPMENT_FIXTURES_ONLY"
+  },
   "rubric": {
     "key": "v4-writing-recommendation-fr",
     "version": "1.0.0-draft",
@@ -26,29 +32,29 @@
   },
   "cases": [
     {
-      "caseId": "writing-fr-explicit-recommendation-semantic-ambiguity",
+      "caseId": "writing-fr-choice-semantic-ambiguity",
       "transformation": "MATERIAL_AMBIGUITY",
-      "responseText": "Les deux ordinateurs constituent probablement le meilleur usage du budget. Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Comme le manque de matériel explique ce résultat, ajouter deux postes répondrait au frein observé.",
+      "responseText": "Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Le matériel supplémentaire répondrait plus directement au problème observé ; l’ouverture d’un troisième créneau permettrait toutefois d’accueillir davantage de personnes.",
       "researcherElements": [
-        { "elementKey": "identifiable-choice", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
-        { "elementKey": "explicit-recommendation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
-        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
-        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
-        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget.", "Comme le manque de matériel explique ce résultat"] },
-        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["ajouter deux postes répondrait au frein observé"] },
-        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
-      ],
-      "falsifierElements": [
-        { "elementKey": "identifiable-choice", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
+        { "elementKey": "identifiable-choice", "status": "SUPPORTED", "evidenceQuotes": ["Le matériel supplémentaire répondrait plus directement au problème observé"] },
         { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
         { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
         { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget.", "Comme le manque de matériel explique ce résultat"] },
-        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["ajouter deux postes répondrait au frein observé"] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs", "Le matériel supplémentaire répondrait plus directement au problème observé"] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Le matériel supplémentaire répondrait plus directement au problème observé"] },
+        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+      ],
+      "falsifierElements": [
+        { "elementKey": "identifiable-choice", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
+        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
+        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs", "Le matériel supplémentaire répondrait plus directement au problème observé"] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Le matériel supplémentaire répondrait plus directement au problème observé"] },
         { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
       ],
       "expected": {
@@ -62,9 +68,9 @@
       }
     },
     {
-      "caseId": "writing-fr-position-contradiction-semantic-ambiguity",
+      "caseId": "writing-fr-reasoning-tension-semantic-ambiguity",
       "transformation": "NON_MATERIAL_AMBIGUITY",
-      "responseText": "Les deux dépenses pourraient être utiles. Ajouter les ordinateurs répondrait au manque de matériel, mais ouvrir un créneau mérite aussi d’être envisagé. Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Le matériel limité explique ce résultat.",
+      "responseText": "Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Les deux ordinateurs pourraient régler ce problème, mais ils ne changeraient probablement pas le résultat.",
       "researcherElements": [
         { "elementKey": "identifiable-choice", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
@@ -72,26 +78,26 @@
         { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
         { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
         { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel", "Le matériel limité explique ce résultat."] },
-        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel"] },
+        { "elementKey": "decision-evidence-relation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "explicit-justification", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
       ],
       "falsifierElements": [
         { "elementKey": "identifiable-choice", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "unresolved-position-contradiction", "status": "SUPPORTED", "evidenceQuotes": ["Les deux dépenses pourraient être utiles.", "mais ouvrir un créneau mérite aussi d’être envisagé."] },
+        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
         { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
         { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
         { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
-        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel", "Le matériel limité explique ce résultat."] },
-        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel"] },
-        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+        { "elementKey": "decision-evidence-relation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "explicit-justification", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "material-reasoning-contradiction", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs pourraient régler ce problème", "ils ne changeraient probablement pas le résultat."] }
       ],
       "expected": {
         "criterionLevels": {
           "decision-position": "insufficient",
           "evidence-fidelity": "mastered",
-          "reasoning-link": "mastered"
+          "reasoning-link": "insufficient"
         },
         "correctionState": "REVISION_REQUIRED",
         "exactIndicativeScore": null
