@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "writing-fr-semantic-ambiguity-development-v1",
+  "corpusVersion": "0.1.0-draft",
+  "lifecycle": "DRAFT_PEDAGOGICAL_REVIEW_REQUIRED",
+  "corpusKind": "SYNTHETIC_SEMANTIC_DUAL_PASS_PSEUDO_ORACLE",
+  "oracleAuthority": "SPEC_DERIVED_SYNTHETIC_DUAL_PASS_VECTORS",
+  "oracleLimit": "Ces deux cas prouvent le comportement déterministe du consolidateur face à deux lectures sémantiques indépendantes ; ils ne constituent ni une validation humaine ni une vérité pédagogique universelle.",
+  "sourceLineage": "Extension additive hors campagne du corpus WRITING ; elle ne modifie ni le corpus Gemini chercheur 10x2, ni son identité, ni ses golds.",
+  "humanValidationClaimed": false,
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "review": {
+    "status": "PENDING_INDEPENDENT_HUMAN_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null
+  },
+  "rubric": {
+    "key": "v4-writing-recommendation-fr",
+    "version": "1.0.0-draft",
+    "fingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b"
+  },
+  "task": {
+    "context": "Une médiathèque teste deux créneaux d’atelier numérique. Le créneau du mardi a accueilli 18 personnes sur 20 places et 15 ont terminé l’exercice. Le créneau du samedi a accueilli 20 personnes sur 20, mais seulement 9 ont terminé car six participants partageaient trois ordinateurs. L’équipe ne peut financer que deux ordinateurs supplémentaires ou ouvrir un troisième créneau sans matériel supplémentaire.",
+    "prompt": "Recommandez l’une des deux dépenses et justifiez votre choix avec les informations du dossier."
+  },
+  "cases": [
+    {
+      "caseId": "writing-fr-explicit-recommendation-semantic-ambiguity",
+      "transformation": "MATERIAL_AMBIGUITY",
+      "responseText": "Les deux ordinateurs constituent probablement le meilleur usage du budget. Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Comme le manque de matériel explique ce résultat, ajouter deux postes répondrait au frein observé.",
+      "researcherElements": [
+        { "elementKey": "identifiable-choice", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
+        { "elementKey": "explicit-recommendation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
+        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
+        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
+        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget.", "Comme le manque de matériel explique ce résultat"] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["ajouter deux postes répondrait au frein observé"] },
+        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+      ],
+      "falsifierElements": [
+        { "elementKey": "identifiable-choice", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget."] },
+        { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
+        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
+        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Les deux ordinateurs constituent probablement le meilleur usage du budget.", "Comme le manque de matériel explique ce résultat"] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["ajouter deux postes répondrait au frein observé"] },
+        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+      ],
+      "expected": {
+        "criterionLevels": {
+          "decision-position": null,
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "CLARIFICATION_REQUIRED",
+        "exactIndicativeScore": null
+      }
+    },
+    {
+      "caseId": "writing-fr-position-contradiction-semantic-ambiguity",
+      "transformation": "NON_MATERIAL_AMBIGUITY",
+      "responseText": "Les deux dépenses pourraient être utiles. Ajouter les ordinateurs répondrait au manque de matériel, mais ouvrir un créneau mérite aussi d’être envisagé. Le samedi, seules 9 personnes sur 20 ont terminé et six participants partageaient trois ordinateurs. Le matériel limité explique ce résultat.",
+      "researcherElements": [
+        { "elementKey": "identifiable-choice", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "unresolved-position-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
+        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
+        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel", "Le matériel limité explique ce résultat."] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel"] },
+        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+      ],
+      "falsifierElements": [
+        { "elementKey": "identifiable-choice", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "explicit-recommendation", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "unresolved-position-contradiction", "status": "SUPPORTED", "evidenceQuotes": ["Les deux dépenses pourraient être utiles.", "mais ouvrir un créneau mérite aussi d’être envisagé."] },
+        { "elementKey": "relevant-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["seules 9 personnes sur 20 ont terminé"] },
+        { "elementKey": "precise-scenario-fact", "status": "SUPPORTED", "evidenceQuotes": ["six participants partageaient trois ordinateurs"] },
+        { "elementKey": "material-fact-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] },
+        { "elementKey": "decision-evidence-relation", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel", "Le matériel limité explique ce résultat."] },
+        { "elementKey": "explicit-justification", "status": "SUPPORTED", "evidenceQuotes": ["Ajouter les ordinateurs répondrait au manque de matériel"] },
+        { "elementKey": "material-reasoning-contradiction", "status": "NOT_DEMONSTRATED", "evidenceQuotes": [] }
+      ],
+      "expected": {
+        "criterionLevels": {
+          "decision-position": "insufficient",
+          "evidence-fidelity": "mastered",
+          "reasoning-link": "mastered"
+        },
+        "correctionState": "REVISION_REQUIRED",
+        "exactIndicativeScore": null
+      }
+    }
+  ]
+}

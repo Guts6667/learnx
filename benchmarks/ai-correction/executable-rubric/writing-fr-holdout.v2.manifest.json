@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "holdoutId": "writing-fr-executable-rubric-holdout-v2",
+  "holdoutVersion": "2.0.0",
+  "status": "CONTENT_NOT_AUTHORED",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "rubric": {
+    "key": "v4-writing-recommendation-fr",
+    "version": "1.0.0-draft",
+    "fingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "path": "writing-recommendation-fr.v1.json"
+  },
+  "minimumCaseCount": 24,
+  "caseCount": 0,
+  "review": {
+    "status": "PENDING_INDEPENDENT_HUMAN_REVIEW",
+    "reviewer": null,
+    "reviewedAt": null,
+    "reviewedContentSha256": null
+  },
+  "encryptedArtifact": {
+    "algorithm": "AES-256-GCM",
+    "path": "writing-fr-holdout.v2.enc.json",
+    "sha256": null
+  },
+  "legacyPlaintext": {
+    "path": "../autonomous/writing-fr-holdout.v1.json",
+    "sha256": "bac15807866e1e0237c6535aec66b3221546b77c56ab1821c5af53dacf470589",
+    "status": "COMPROMISED_PLAINTEXT_REMOVED_FROM_ACTIVE_TREE"
+  },
+  "sealed": false,
+  "executable": false,
+  "openedAt": null,
+  "prohibitions": [
+    "NO_PLAINTEXT_IN_REPOSITORY",
+    "NO_OPEN_BEFORE_FULL_DEVELOPMENT_GO",
+    "NO_TUNING_FROM_HOLDOUT",
+    "NO_EXECUTION_WITHOUT_INDEPENDENT_REVIEW"
+  ]
+}
