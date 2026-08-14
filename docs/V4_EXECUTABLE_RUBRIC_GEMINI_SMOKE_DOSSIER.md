@@ -1,6 +1,6 @@
 # Dossier d’autorisation — smoke Gemini chercheur de preuves
 
-Statut au 14 août 2026 : `READY_FOR_OWNER_AUTHORIZATION / NO_MODEL_CALL`.
+Statut au 14 août 2026 : `COMPLETED / NO_GO_TECHNICAL_PROFILE`.
 
 Ce smoke ne promeut ni Gemini, ni la rubrique, ni une correction autonome. Il
 sert uniquement à vérifier, sur trois cas de développement, que le rôle
@@ -68,7 +68,50 @@ Chaque `CALL_INTENT` est écrit avant le dispatch, puis relié à un
 résultat interdit la reprise aveugle. Les sorties et coûts reçus lors d’un rejet
 restent persistés.
 
-## Autorisation séparée requise
+## Résultat du smoke autorisé
+
+L’autorisation propriétaire a été reçue pour trois appels maximum et un plafond
+dur de 0,05 USD. Le runner a exécuté une seule tentative, puis s’est arrêté
+conformément au manifeste au premier `INVALID` :
+
+- run : `2026-08-14-evidence-researcher-smoke-v1-1-0` ;
+- cas : `writing-fr-base-mastered` ;
+- statut : `INVALID`, code `MODEL_OUTPUT_TRUNCATED` ;
+- coût fournisseur réel : `0,008241 USD` ;
+- budget restant : `0,041759 USD` ;
+- latence : `1 790 ms` ;
+- usage : 2 068 tokens d’entrée, 1 725 tokens de raisonnement et 59 tokens de
+  sortie visible ;
+- identifiant fournisseur :
+  `gen-1786708936-OJp5N5RuDTc2SevfeJmR` ;
+- modèle retourné : `google/gemini-3.6-flash`, provider `Google`.
+
+Le profil interne demandait un raisonnement désactivé en omettant le paramètre,
+mais la route a tout de même consommé 1 725 des 1 800 tokens de sortie totale en
+raisonnement. Il ne restait que 59 tokens visibles et la réponse a été tronquée.
+Il s’agit d’un échec technique du profil/transport sous cette identité, pas d’un
+verdict pédagogique sur Gemini. La sortie brute n’a pas été fournie au runner
+après le `finish_reason=length` et n’est donc pas analysable pédagogiquement.
+
+Les deuxième et troisième appels n’ont pas été envoyés. Aucun retry, relèvement
+de plafond ou changement silencieux de profil n’est permis sous l’identité
+1.1.0. Une nouvelle expérimentation exige un profil versionné distinct, un
+nouveau préflight et une nouvelle autorisation.
+
+## Preuves scellées
+
+Les artefacts locaux restent exclus du dépôt conformément à la politique des
+résultats de benchmark. Le dossier de run contient un `CALL_INTENT` et un
+`CALL_OUTCOME`, sans intention orpheline :
+
+- état SHA-256 :
+  `b99e3f5a53a473fb08b4608efb08152c3473eb110d3f2d453b25dbfd6b58be84` ;
+- ledger SHA-256 :
+  `abd9aaae2ceb9e2d1b808234d19e11875a4d65df990283ccfd4c6fa98dd9da0e` ;
+- dernier hash de chaîne :
+  `19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73`.
+
+## Commandes
 
 La validation hors ligne est :
 
@@ -76,15 +119,14 @@ La validation hors ligne est :
 pnpm ai:evidence:smoke
 ```
 
-Après une autorisation propriétaire séparée et exacte seulement, la commande
-serait :
+La commande autorisée et exécutée une fois était :
 
 ```bash
-pnpm ai:evidence:smoke -- --execute --owner-go=GO_EVIDENCE_RESEARCHER_SMOKE_2910600BF456E2C0
+pnpm ai:evidence:smoke -- --execute --owner-go=GO_EVIDENCE_RESEARCHER_SMOKE_2910600BF456E2C0 --run-id=2026-08-14-evidence-researcher-smoke-v1-1-0
 ```
 
-Cette commande n’est pas exécutée par le présent dossier. Le panel 10×2, le
-holdout, l’activation produit et les prix restent interdits. Les deux fixtures
-d’ambiguïté ont reçu une revue indépendante Produit/pédagogie limitée au corpus
-synthétique de développement ; aucune validation humaine universelle, de modèle
-ou de campagne n’est revendiquée.
+Ne pas la rejouer : son `run-id` et son ledger sont désormais des preuves
+historiques. Le panel 10×2, le holdout, l’activation produit et les prix restent
+interdits. Les deux fixtures d’ambiguïté ont reçu une revue indépendante
+Produit/pédagogie limitée au corpus synthétique de développement ; aucune
+validation humaine universelle, de modèle ou de campagne n’est revendiquée.

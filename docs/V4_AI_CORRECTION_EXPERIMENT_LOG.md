@@ -255,6 +255,36 @@ orpheline, exige coût réel et identifiant fournisseur, puis scelle état et
 ledger. Le détail et la commande, toujours non exécutée, figurent dans
 `docs/V4_EXECUTABLE_RUBRIC_GEMINI_SMOKE_DOSSIER.md`.
 
+### Addendum append-only — résultat du smoke chercheur 1.1.0 du 14 août 2026
+
+Statut : `NO_GO_TECHNICAL_PROFILE / STOP_AFTER_1_OF_3`.
+
+Après fusion de la préparation dans `dev` au commit
+`89f7b11dd0b718ecf819774591e874697fed5670`, Rayan a autorisé le smoke avec
+trois appels maximum et un plafond fournisseur de 0,05 USD. Le runner a envoyé
+une seule tentative sur `writing-fr-base-mastered`, puis s'est arrêté au premier
+rejet `MODEL_OUTPUT_TRUNCATED`, sans retry et sans lancer les deux cas suivants.
+
+La tentative a coûté 0,008241 USD et duré 1 790 ms. L'usage réel persisté est de
+2 068 tokens d'entrée, 1 725 tokens de raisonnement et 59 tokens visibles. Bien
+que le profil 1.1.0 omette le paramètre de raisonnement pour exprimer `OFF`, la
+route Google a consommé presque toute la limite totale de 1 800 tokens en
+raisonnement. Le résultat est un échec technique du profil/transport sous cette
+identité, pas une évaluation pédagogique de Gemini. La réponse brute n'était pas
+disponible après la troncature et aucune conclusion qualitative n'est tirée.
+
+Le ledger contient exactement un `CALL_INTENT` et son `CALL_OUTCOME`. Son
+SHA-256 est
+`abd9aaae2ceb9e2d1b808234d19e11875a4d65df990283ccfd4c6fa98dd9da0e` et son
+dernier hash de chaîne est
+`19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73`.
+L'état porte le SHA-256
+`b99e3f5a53a473fb08b4608efb08152c3473eb110d3f2d453b25dbfd6b58be84`.
+Le budget restant est 0,041759 USD. Aucun nouvel appel, panel ou holdout n'est
+autorisé. Toute modification du profil, des limites ou du transport crée une
+nouvelle identité et requiert un nouveau préflight puis une nouvelle décision
+propriétaire.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
