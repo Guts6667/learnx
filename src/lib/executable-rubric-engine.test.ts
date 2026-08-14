@@ -12,6 +12,7 @@ import {
   type CompiledExecutableRubric,
   type EvidencePass,
   type ExecutableRubric,
+  validateEvidencePass,
 } from './executable-rubric-engine.ts';
 
 const rubricPath = resolve(
@@ -145,6 +146,33 @@ describe('executable rubric compiler', () => {
 });
 
 describe('evidence certificate', () => {
+  it('does not count the same evidence occurrence twice for a relation', () => {
+    const compiled = compileExecutableRubric(loadRubric());
+    const pass = evidencePass(compiled, 'EVIDENCE_RESEARCHER');
+    const relation = required(
+      pass.elements.find(
+        ({ elementKey }) => elementKey === 'decision-evidence-relation',
+      ),
+    );
+    const repeated = required(relation.evidenceSpans.at(0));
+    relation.evidenceSpans = [repeated, repeated];
+
+    expect(() =>
+      validateEvidencePass({ compiled, pass, responseText }),
+    ).toThrow('EVIDENCE_SPAN_DUPLICATE');
+  });
+
+  it('enforces the level from which a required element is mandatory', () => {
+    const compiled = compileExecutableRubric(loadRubric());
+    const certificate = certificateFor(compiled, {
+      'explicit-recommendation': 'SUPPORTED',
+      'identifiable-choice': 'NOT_DEMONSTRATED',
+    });
+
+    expect(required(certificate.criteria.at(0)).levelKey).toBe('insufficient');
+    expect(certificate.correctionState).toBe('REVISION_REQUIRED');
+  });
+
   it('derives mastered levels, an indicative score and no progression effect', () => {
     const compiled = compileExecutableRubric(loadRubric());
     const certificate = certificateFor(compiled);

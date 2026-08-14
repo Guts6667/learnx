@@ -93,6 +93,15 @@ export function validateMechanicalOracle(input: {
 
   const elementKeys = rubric.elements.map(({ key }) => key).sort();
   const criterionKeys = rubric.criteria.map(({ key }) => key).sort();
+  const transformations = new Set(
+    corpus.cases.map(({ transformation }) => transformation),
+  );
+  if (
+    !transformations.has('MATERIAL_AMBIGUITY') ||
+    !transformations.has('NON_MATERIAL_AMBIGUITY')
+  ) {
+    throw new Error('MECHANICAL_ORACLE_AMBIGUITY_COVERAGE_MISSING');
+  }
   const caseIds = new Set<string>();
   corpus.cases.forEach((oracleCase) => {
     if (caseIds.has(oracleCase.caseId)) {

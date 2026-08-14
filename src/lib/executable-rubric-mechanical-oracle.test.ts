@@ -64,4 +64,21 @@ describe('mechanical executable oracle', () => {
       'MECHANICAL_ORACLE_RUBRIC_IDENTITY_MISMATCH',
     );
   });
+
+  it('requires both material and non-material ambiguity golds', () => {
+    const compiled = compileExecutableRubric(readJson(rubricPath));
+    const corpus = structuredClone(readJson(corpusPath)) as {
+      cases: Array<{ transformation: string }>;
+    };
+    const material = required(
+      corpus.cases.find(
+        ({ transformation }) => transformation === 'MATERIAL_AMBIGUITY',
+      ),
+    );
+    material.transformation = 'BASELINE';
+
+    expect(() => validateMechanicalOracle({ compiled, corpus })).toThrow(
+      'MECHANICAL_ORACLE_AMBIGUITY_COVERAGE_MISSING',
+    );
+  });
 });

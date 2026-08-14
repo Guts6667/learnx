@@ -279,18 +279,64 @@ function levelForPoints(
   return level.key;
 }
 
-function allPointTotals(pointOptions: number[][]): number[] {
-  let totals = [0];
-  pointOptions.forEach((options) => {
-    totals = totals.flatMap((total) => options.map((option) => total + option));
-    if (totals.length > 100_000) {
+function allCombinations<T>(optionsByPosition: T[][]): T[][] {
+  let combinations: T[][] = [[]];
+  optionsByPosition.forEach((options) => {
+    combinations = combinations.flatMap((combination) =>
+      options.map((option) => [...combination, option]),
+    );
+    if (combinations.length > 100_000) {
       throw new RubricCompilationError(
         'COMPILATION_STATE_SPACE_TOO_LARGE',
         'The rubric produces too many atomic status combinations.',
       );
     }
   });
-  return [...new Set(totals)].sort((left, right) => left - right);
+  return combinations;
+}
+
+function requiredElementIsSatisfied(
+  element: ExecutableRubric['elements'][number],
+  status: ResolvedAtomicEvidenceStatus,
+): boolean {
+  if (element.obligation !== 'REQUIRED') return true;
+  return element.polarity === 'POSITIVE'
+    ? status === 'SUPPORTED'
+    : status !== 'SUPPORTED';
+}
+
+function levelForResolvedStatuses(input: {
+  criterion: ExecutableRubric['criteria'][number];
+  elements: Array<{
+    element: ExecutableRubric['elements'][number];
+    status: ResolvedAtomicEvidenceStatus;
+  }>;
+  points: number;
+}): z.infer<typeof levelKeySchema> {
+  const orderedLevels = [...input.criterion.levels].sort(
+    (left, right) => left.minimumPoints - right.minimumPoints,
+  );
+  const pointLevel = levelForPoints(input.criterion, input.points);
+  let allowedLevelIndex = orderedLevels.findIndex(({ key }) => key === pointLevel);
+
+  input.elements.forEach(({ element, status }) => {
+    if (requiredElementIsSatisfied(element, status)) return;
+    const requiredLevelIndex = orderedLevels.findIndex(
+      ({ key }) => key === element.requiredFromLevelKey,
+    );
+    if (requiredLevelIndex <= 0) {
+      throw new RubricCompilationError(
+        'REQUIRED_ELEMENT_WITHOUT_LOWER_LEVEL',
+        `${element.key} is required from the lowest level and cannot be resolved safely.`,
+      );
+    }
+    allowedLevelIndex = Math.min(allowedLevelIndex, requiredLevelIndex - 1);
+  });
+
+  return requireValue(
+    orderedLevels.at(allowedLevelIndex),
+    'MISSING_GATED_CRITERION_LEVEL',
+  ).key;
 }
 
 function validateElementPolarity(
@@ -369,6 +415,20 @@ export function compileExecutableRubric(input: unknown): CompiledExecutableRubri
         `${element.key} references an unknown owner criterion.`,
       );
     }
+    const ownerCriterion = requireValue(
+      criteriaByKey.get(element.ownerCriterionKey),
+      'UNKNOWN_ELEMENT_OWNER',
+    );
+    if (
+      !ownerCriterion.levels.some(
+        ({ key }) => key === element.requiredFromLevelKey,
+      )
+    ) {
+      throw new RubricCompilationError(
+        'UNKNOWN_REQUIRED_LEVEL',
+        `${element.key} references a level absent from its owner criterion.`,
+      );
+    }
     if (rubric.eligibility === 'FULLY_COMPILABLE' && element.type === 'HOLISTIC') {
       throw new RubricCompilationError(
         'HOLISTIC_ELEMENT_NOT_FULLY_COMPILABLE',
@@ -422,16 +482,26 @@ export function compileExecutableRubric(input: unknown): CompiledExecutableRubri
         `${criterion.key} has no executable element.`,
       );
     }
-    const totals = allPointTotals(
-      affectingElements.map((element) => {
-        const points = requireValue(
-          element.pointsByCriterion[criterion.key],
-          'MISSING_CRITERION_POINT_MAPPING',
-        );
-        return [points.SUPPORTED, points.CONTRADICTED, points.NOT_DEMONSTRATED];
+    const assignments = allCombinations(
+      affectingElements.map((element) =>
+        resolvedAtomicEvidenceStatusSchema.options.map((status) => ({
+          element,
+          status,
+        })),
+      ),
+    );
+    const reachableLevels = new Set(
+      assignments.map((elements) => {
+        const points = elements.reduce((sum, { element, status }) => {
+          const statusPoints = requireValue(
+            element.pointsByCriterion[criterion.key],
+            'MISSING_CRITERION_POINT_MAPPING',
+          );
+          return sum + statusPoints[status];
+        }, 0);
+        return levelForResolvedStatuses({ criterion, elements, points });
       }),
     );
-    const reachableLevels = new Set(totals.map((points) => levelForPoints(criterion, points)));
     criterion.levels.forEach(({ key }) => {
       if (!reachableLevels.has(key)) {
         throw new RubricCompilationError(
@@ -481,6 +551,14 @@ function indexEvidencePass(
       'UNKNOWN_EVIDENCE_ELEMENT',
     );
     finding.evidenceSpans.forEach((span) => validateEvidenceSpan(responseText, span));
+    const distinctSpans = new Set(
+      finding.evidenceSpans.map(
+        ({ end, sha256: spanSha256, start }) => `${start}:${end}:${spanSha256}`,
+      ),
+    );
+    if (distinctSpans.size !== finding.evidenceSpans.length) {
+      throw new Error('EVIDENCE_SPAN_DUPLICATE');
+    }
     if (
       (finding.status === 'SUPPORTED' || finding.status === 'CONTRADICTED') &&
       (finding.evidenceSpans.length < element.evidenceRule.minimumSpans ||
@@ -581,23 +659,48 @@ function criterionPossibilities(input: {
   elements: ConsolidatedElementEvidence[];
   rubric: ExecutableRubric;
 }): { levels: Array<z.infer<typeof levelKeySchema>>; points: number[] } {
-  const pointOptions = input.rubric.elements
-    .filter((element) => Object.hasOwn(element.pointsByCriterion, input.criterion.key))
-    .map((element) => {
+  const affectingElements = input.rubric.elements.filter((element) =>
+    Object.hasOwn(element.pointsByCriterion, input.criterion.key),
+  );
+  const assignments = allCombinations(
+    affectingElements.map((element) => {
       const evidence = requireValue(
         input.elements.find(({ elementKey }) => elementKey === element.key),
         'MISSING_CONSOLIDATED_ELEMENT',
       );
+      return possibleStatuses(element, evidence.status).map((status) => ({
+        element,
+        status,
+      }));
+    }),
+  );
+  const outcomes = assignments.map((elements) => {
+    const points = elements.reduce((sum, { element, status }) => {
       const statusPoints = requireValue(
         element.pointsByCriterion[input.criterion.key],
         'MISSING_CRITERION_POINT_MAPPING',
       );
-      return possibleStatuses(element, evidence.status).map((status) => statusPoints[status]);
-    });
-  const points = allPointTotals(pointOptions);
+      return sum + statusPoints[status];
+    }, 0);
+    return {
+      level: levelForResolvedStatuses({
+        criterion: input.criterion,
+        elements,
+        points,
+      }),
+      points,
+    };
+  });
+  const points = [...new Set(outcomes.map(({ points }) => points))].sort(
+    (left, right) => left - right,
+  );
   const levels = [
-    ...new Set(points.map((value) => levelForPoints(input.criterion, value))),
-  ];
+    ...new Set(outcomes.map(({ level }) => level)),
+  ].sort(
+    (left, right) =>
+      input.criterion.levels.findIndex(({ key }) => key === left) -
+      input.criterion.levels.findIndex(({ key }) => key === right),
+  );
   return { levels, points };
 }
 
@@ -660,13 +763,12 @@ export function buildEvidenceCertificate(input: {
       ),
       'MISSING_CONSOLIDATED_ELEMENT',
     );
+    if (evidence.status === 'AMBIGUOUS') return false;
     if (element.polarity === 'NEGATIVE') {
       return evidence.status === 'SUPPORTED';
     }
     if (element.obligation !== 'REQUIRED') return false;
-    return (
-      evidence.status === 'NOT_DEMONSTRATED' || evidence.status === 'CONTRADICTED'
-    );
+    return !requiredElementIsSatisfied(element, evidence.status);
   });
   const correctionState = hasMaterialAmbiguity
     ? 'CLARIFICATION_REQUIRED'
