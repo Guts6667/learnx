@@ -260,6 +260,12 @@ export async function runEvidenceResearcherSmoke(input: {
   state: EvidenceResearcherSmokeState;
 }> {
   const campaignFingerprint = sha256(input.campaignFileText);
+  if (
+    input.campaign.campaignVersion === '1.3.0-draft' &&
+    !input.onRawReceived
+  ) {
+    throw new Error('RAW_MODEL_OUTPUT_PERSISTENCE_REQUIRED');
+  }
   const now = new Date().toISOString();
   const state = structuredClone(
     input.resume?.state ?? {

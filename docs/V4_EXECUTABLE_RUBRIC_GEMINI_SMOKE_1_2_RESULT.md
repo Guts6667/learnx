@@ -57,3 +57,12 @@ nouvelle identité et requiert une nouvelle autorisation avant appel.
 
 Le résumé machine suivi est
 `benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.result.json`.
+
+## Arbitrage suivant, sans réécriture du résultat
+
+Produit/pédagogie a ensuite arbitré une identité 1.3.0 distincte : le modèle ne
+proposera plus les offsets, mais des citations exactes uniques que LearnX
+résoudra côté serveur. Le raw sera persisté avant validation sémantique. Cette
+décision ne requalifie pas le présent arrêt et n'autorise aucun nouvel appel.
+Elle est documentée dans
+`docs/V4_EXECUTABLE_RUBRIC_GEMINI_QUOTE_PROTOCOL_1_3.md`.

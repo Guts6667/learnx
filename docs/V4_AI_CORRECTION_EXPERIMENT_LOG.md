@@ -339,6 +339,31 @@ prochain gate est donc hors ligne : persistance bornée de toute sortie reçue
 avant validation sémantique et arbitrage du contrat d'offset. Aucun panel 10×2
 n'est autorisé.
 
+### Addendum append-only — protocole de citations 1.3.0 du 14 août 2026
+
+Statut : `OFFLINE_PROTOCOL_1_3_PREPARED / NO_MODEL_CALL`.
+
+Produit/pédagogie a arbitré une nouvelle identité : Gemini retourne des
+citations exactes sans offsets ; LearnX exige pour chacune une occurrence
+exacte unique dans `responseText`, puis dérive les offsets JavaScript et le
+SHA-256 de la tranche. Une citation absente ou répétée est invalide. Aucune
+normalisation Unicode, approximation ou correction typographique n'est
+autorisée.
+
+Le runner 1.3.0 refuse le dispatch sans port de persistance raw. Il conserve un
+reçu borné à 20 000 caractères avec digest, identité, usage, coût, route et
+request id avant toute validation sémantique. Le schéma modèle n'accepte plus
+`start/end`.
+
+La campagne préenregistrée porte le SHA-256
+`8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087`
+et l'empreinte prompt
+`494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc`.
+Elle ne prévoit qu'un futur appel sur `writing-fr-base-mastered`, sans retry,
+avec une borne pessimiste de 0,0172545 USD et un plafond proposé de 0,0200000
+USD. Finance n'a pas arbitré cette nouvelle enveloppe et le propriétaire ne
+l'a pas autorisée. Aucun appel 1.3.0 n'a été effectué ; le panel reste fermé.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

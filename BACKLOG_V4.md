@@ -1346,11 +1346,13 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : BLOQUÉ SUR PREUVE TECHNIQUE — périmètre hors ligne
-livré et migration P0 répétée sur Neon jetable. Le smoke chercheur 1.1.0 s'est
-arrêté sur `MODEL_OUTPUT_TRUNCATED`. Le smoke 1.2.0 corrigé a exécuté une seule
-tentative puis s'est arrêté sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun de
-ces résultats n'est un verdict pédagogique. Le panel reste fermé.**
+**État au 14 août 2026 : PROTOCOLE 1.3.0 PRÊT HORS LIGNE, APPEL BLOQUÉ — le
+smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
+1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
+pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
+les offsets depuis une citation exacte unique et persiste le raw avant
+validation. Finance puis le Propriétaire doivent encore autoriser séparément
+l'unique smoke frais. Le panel reste fermé.**
 
 ### Point de reprise pour le développement
 
@@ -1376,10 +1378,18 @@ ces résultats n'est un verdict pédagogique. Le panel reste fermé.**
 - Le smoke 1.2.0 a consommé `0,00489225 USD` sur une tentative, avec zéro token
   de raisonnement et 891 tokens visibles, puis le validateur a rejeté au moins
   un triplet `start/end/text`. Aucun autre appel n'a été envoyé.
-- La sortie structurée rejetée n'a pas été persistée ; la cause exacte de
-  l'offset est donc indémontrable. Avant toute nouvelle identité, corriger cette
-  lacune d'observabilité et arbitrer si les offsets sont proposés par le modèle
-  ou dérivés côté serveur depuis une citation unique.
+- La sortie structurée rejetée 1.2.0 n'a pas été persistée ; la cause exacte de
+  l'offset reste indémontrable. L'identité 1.3.0 corrige cette lacune sans
+  réécrire l'historique : le modèle fournit une citation exacte, LearnX exige
+  une occurrence unique, dérive `start/end/hash`, et persiste un raw borné
+  avant validation sémantique. Zéro ou plusieurs occurrences rendent la sortie
+  invalide ; aucune normalisation ni approximation n'est autorisée.
+- La campagne 1.3.0 préenregistrée porte le SHA-256
+  `8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087`.
+  Elle prévoit un seul appel sur `writing-fr-base-mastered`, aucun retry, une
+  borne pessimiste de `0,0172545 USD` et un plafond proposé de `0,0200000 USD`.
+  Ces montants ne sont pas encore arbitrés et aucune autorisation d'appel n'est
+  active.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas
@@ -1414,9 +1424,11 @@ ces résultats n'est un verdict pédagogique. Le panel reste fermé.**
 - Authorer un archétype `WRITING/fr-FR` de trois critères et six à dix éléments,
   avec propriété, exemples, contre-exemples, variantes, règles de preuve et
   templates de remédiation.
-- Valider les spans par offsets et SHA-256 dans `responseText`, sans exiger une
-  occurrence textuelle unique. Aucun passage du contexte ne peut être présenté
-  comme extrait de l'apprenant.
+- Pour les identités historiques, valider les spans proposés par offsets et
+  SHA-256 dans `responseText`. Pour l'identité 1.3.0, exiger une citation exacte
+  dont l'occurrence est unique, puis dériver côté serveur les offsets et le
+  SHA-256. Aucun passage du contexte ne peut être présenté comme extrait de
+  l'apprenant.
 - Produire un certificat de preuve reconstructible et dériver niveaux, score
   indicatif et feedback exclusivement côté LearnX.
 - Séparer correction, exécution et finance ; conserver les garanties `CALL_INTENT`,
@@ -1424,9 +1436,10 @@ ces résultats n'est un verdict pédagogique. Le panel reste fermé.**
 
 ### Périmètre expérimental — chercheur de preuves
 
-- Utiliser Gemini uniquement comme `EVIDENCE_RESEARCHER`. Il propose les statuts,
-  spans, contradictions et ambiguïtés des éléments ; le schéma lui interdit
-  niveau, score, `PASS/FAIL`, effet de progression et feedback libre.
+- Utiliser Gemini uniquement comme `EVIDENCE_RESEARCHER`. Dans le protocole
+  1.3.0, il propose les statuts, citations exactes, contradictions et ambiguïtés
+  des éléments ; LearnX seul dérive les spans. Le schéma lui interdit niveau,
+  score, `PASS/FAIL`, effet de progression et feedback libre.
 - Épingler avant appel l'identifiant exact, la route, le profil, le prompt
   d'extraction, le snapshot tarifaire, le corpus, les gates et la règle d'arrêt.
   Aucun alias, fallback ou route automatique.

@@ -149,7 +149,7 @@ console.log(
         costBound: smokeCostBound,
         schemaUtf8Bytes,
       },
-      panelStatus: 'BLOCKED_PENDING_SUCCESSFUL_1_2_SMOKE',
+      panelStatus: 'BLOCKED_PENDING_SUCCESSFUL_1_3_SMOKE',
       semanticCases: validatedSemanticCorpus.cases.length,
     },
     null,

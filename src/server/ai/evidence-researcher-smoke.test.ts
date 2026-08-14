@@ -49,7 +49,13 @@ function fixture() {
     semanticCorpusText: corpusText,
     specText,
   });
-  return { campaign, campaignFileText, compiled, corpus };
+  return {
+    campaign,
+    campaignFileText,
+    compiled,
+    corpus,
+    onRawReceived: async () => undefined,
+  };
 }
 
 function rawOutput(
@@ -88,6 +94,23 @@ function providerResult(
 }
 
 describe('evidence researcher smoke', () => {
+  it('refuses protocol 1.3 before dispatch when raw persistence is absent', async () => {
+    const input = fixture();
+    const execute = vi.fn();
+
+    await expect(
+      runEvidenceResearcherSmoke({
+        ...input,
+        completionUsdPerToken: 0.000_003_75,
+        onRawReceived: undefined,
+        promptUsdPerToken: 0.000_000_75,
+        provider: { execute },
+        providerName: 'Google',
+      }),
+    ).rejects.toThrow('RAW_MODEL_OUTPUT_PERSISTENCE_REQUIRED');
+    expect(execute).not.toHaveBeenCalled();
+  });
+
   it('executes the frozen fresh-smoke case once with an intent before the call', async () => {
     const input = fixture();
     const progress: Array<{
