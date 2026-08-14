@@ -1346,10 +1346,11 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : EN COURS — périmètre hors ligne livré et migration P0
-répétée sur Neon jetable. Le smoke chercheur 1.1.0 a exécuté une tentative puis
-s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` ; verdict technique, aucun verdict
-pédagogique. Le profil corrigé 1.2.0 reste DRAFT et non autorisé.**
+**État au 14 août 2026 : BLOQUÉ SUR PREUVE TECHNIQUE — périmètre hors ligne
+livré et migration P0 répétée sur Neon jetable. Le smoke chercheur 1.1.0 s'est
+arrêté sur `MODEL_OUTPUT_TRUNCATED`. Le smoke 1.2.0 corrigé a exécuté une seule
+tentative puis s'est arrêté sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun de
+ces résultats n'est un verdict pédagogique. Le panel reste fermé.**
 
 ### Point de reprise pour le développement
 
@@ -1371,7 +1372,14 @@ pédagogique. Le profil corrigé 1.2.0 reste DRAFT et non autorisé.**
   visible inchangée à 1 800 et une limite totale de 2 500. Finance a arbitré le
   14 août 2026 son plafond expérimental à `0,055 USD`, pour trois tentatives
   maximum, sans retry. Seule l'autorisation explicite du Propriétaire,
-  postérieure à cet arbitrage, manque encore avant le smoke.
+  postérieure à cet arbitrage, a permis le smoke.
+- Le smoke 1.2.0 a consommé `0,00489225 USD` sur une tentative, avec zéro token
+  de raisonnement et 891 tokens visibles, puis le validateur a rejeté au moins
+  un triplet `start/end/text`. Aucun autre appel n'a été envoyé.
+- La sortie structurée rejetée n'a pas été persistée ; la cause exacte de
+  l'offset est donc indémontrable. Avant toute nouvelle identité, corriger cette
+  lacune d'observabilité et arbitrer si les offsets sont proposés par le modèle
+  ou dérivés côté serveur depuis une citation unique.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

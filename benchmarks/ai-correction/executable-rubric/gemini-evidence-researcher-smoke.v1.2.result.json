@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-v1",
+  "campaignVersion": "1.2.0-draft",
+  "campaignSha256": "50fa8ea185d09f0d5361362f8479fc3514034d8e426a7c69024436734ce5e34f",
+  "status": "NO_GO_TECHNICAL_SPAN_VALIDATION",
+  "executedAt": "2026-08-14T14:04:19.533Z",
+  "stoppedReason": "EVIDENCE_RESEARCHER_SPAN_MISMATCH",
+  "authorizedMaximumProviderAttempts": 3,
+  "providerAttemptsExecuted": 1,
+  "retryCount": 0,
+  "additionalCallsDispatched": false,
+  "hardCapUsd": 0.055,
+  "actualReconciledCostUsd": 0.00489225,
+  "budgetRemainingUsd": 0.05010775,
+  "attempt": {
+    "caseId": "writing-fr-base-mastered",
+    "status": "INVALID",
+    "errorCode": "EVIDENCE_RESEARCHER_SPAN_MISMATCH",
+    "providerRequestId": "gen-1786716259-YBj9jxfN4pap4TgepaNT",
+    "providerRoute": "Google",
+    "modelSnapshot": "google/gemini-3.6-flash",
+    "latencyMs": 1309,
+    "inputTokens": 2068,
+    "reasoningTokens": 0,
+    "visibleOutputTokens": 891,
+    "actualCostUsd": 0.00489225,
+    "costSource": "ACTUAL",
+    "worstCaseAuthorizedUsd": 0.0172545
+  },
+  "observability": {
+    "rawModelOutputPersisted": false,
+    "exactRejectedSpanDiagnosable": false,
+    "interpretation": "The deterministic validator proved that at least one proposed start/end/text tuple did not match responseText exactly. The rejected structured output was not persisted, so no more precise root-cause claim is supported."
+  },
+  "artifactProof": {
+    "stateSha256": "7c3f409a7da009c16e887fed82d8553ebb01ffd4b08019428a3f475a4f420f1b",
+    "ledgerSha256": "09134e73b3c36ea67d4e369eda456913a139298025f4ad0c424ec604cedcfa1e",
+    "ledgerFinalRecordHash": "c3f4a87993b356893e52dbed916bce62bbce149930b1de7352d463548f931727"
+  },
+  "nextGate": "OFFLINE_RAW_REJECTED_OUTPUT_PERSISTENCE_AND_SPAN_PROTOCOL_REVIEW",
+  "modelCallsAuthorizedAfterThisResult": false
+}
