@@ -8,7 +8,6 @@ import {
   autonomousCaseDigest,
   autonomousOracleDigest,
   parseAutonomousFormativeCorpus,
-  parseAutonomousHoldout,
 } from './autonomous-formative-corpus.ts';
 
 const directory = resolve('benchmarks/ai-correction/autonomous');
@@ -37,36 +36,16 @@ describe('autonomous formative corpus', () => {
     expect(corpus.oracleDigest).toBe(autonomousOracleDigest(corpus.cases));
   });
 
-  it('keeps the autonomous holdout distinct, sealed and internally exact', async () => {
-    const raw = await readJson('writing-fr-holdout.v1.json');
-    const holdout = parseAutonomousHoldout(raw);
-
-    expect('humanReview' in (raw as Record<string, unknown>)).toBe(false);
-    expect(holdout.sealed).toBe(true);
-    expect(holdout.openedAt).toBeNull();
-
-    for (const benchmarkCase of holdout.cases) {
-      const { caseDigest, ...caseWithoutDigest } = benchmarkCase;
-      expect(caseDigest).toBe(autonomousCaseDigest(caseWithoutDigest));
-      for (const quote of benchmarkCase.expectedEvidenceQuotes) {
-        expect(benchmarkCase.responseText).toContain(quote);
-      }
-      if (benchmarkCase.injectionBoundary) {
-        expect(benchmarkCase.responseText).toBe(
-          `${benchmarkCase.injectionBoundary.legitimateResponseText} ${benchmarkCase.injectionBoundary.attackText}`,
-        );
-        for (const quote of benchmarkCase.expectedEvidenceQuotes) {
-          expect(benchmarkCase.injectionBoundary.legitimateResponseText).toContain(quote);
-        }
-      }
-    }
-    expect(holdout.oracleDigest).toBe(autonomousOracleDigest(holdout.cases));
-  });
-
-  it('binds the sealed artifacts to the autonomous manifest', async () => {
+  it('binds development and the non-executable replacement holdout manifest', async () => {
     const manifest = (await readJson('manifest.v1.json')) as {
       development: { path: string; sha256: string };
-      holdout: { path: string; sha256: string };
+      holdout: {
+        executable: boolean;
+        legacyPlaintext: { sha256: string; status: string };
+        replacementManifest: { path: string; sha256: string };
+        sealed: boolean;
+        status: string;
+      };
       humanValidationClaimed: boolean;
       oracleType: string;
     };
@@ -78,8 +57,22 @@ describe('autonomous formative corpus', () => {
     await expect(
       readFile(resolve(directory, manifest.development.path), 'utf8').then(sha256),
     ).resolves.toBe(manifest.development.sha256);
+    expect(manifest.holdout.status).toBe(
+      'REPLACEMENT_PENDING_INDEPENDENT_REVIEW',
+    );
+    expect(manifest.holdout.sealed).toBe(false);
+    expect(manifest.holdout.executable).toBe(false);
+    expect(manifest.holdout.legacyPlaintext.status).toBe(
+      'COMPROMISED_PLAINTEXT_REMOVED_FROM_ACTIVE_TREE',
+    );
+    expect(manifest.holdout.legacyPlaintext.sha256).toBe(
+      'bac15807866e1e0237c6535aec66b3221546b77c56ab1821c5af53dacf470589',
+    );
     await expect(
-      readFile(resolve(directory, manifest.holdout.path), 'utf8').then(sha256),
-    ).resolves.toBe(manifest.holdout.sha256);
+      readFile(
+        resolve(directory, manifest.holdout.replacementManifest.path),
+        'utf8',
+      ).then(sha256),
+    ).resolves.toBe(manifest.holdout.replacementManifest.sha256);
   });
 });

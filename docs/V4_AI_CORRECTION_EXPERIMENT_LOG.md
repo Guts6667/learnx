@@ -188,6 +188,46 @@ Cette preuve lève uniquement le bloqueur Neon du chercheur de preuves. La
 campagne reste `DRAFT_BLOCKED` : budget non approuvé, autorisation propriétaire
 absente, smoke réel non exécuté, réseau désactivé et holdout interdit.
 
+### Addendum append-only — ambiguïté et holdout honnête du 14 août 2026
+
+Statut : `IMPLEMENTED_OFFLINE / REVIEW_REQUIRED / NO_MODEL_CALL`.
+
+Le corpus Gemini chercheur 10×2 reste byte-identique : un rôle chercheur doit
+produire un statut atomique résolu et ne peut pas fabriquer seul un état
+`AMBIGUOUS`. Deux cas synthétiques séparés testent désormais la consolidation
+de deux passes indépendantes : une divergence qui change le niveau et interdit
+le score exact, puis une divergence qui conserve le niveau mais interdit encore
+les points et le score exacts. Leur cycle de vie reste
+`DRAFT_PEDAGOGICAL_REVIEW_REQUIRED`; aucune revue humaine n'est revendiquée.
+
+L'ancien `writing-fr-holdout.v1.json` n'était pas réellement scellé : réponses
+et golds étaient lisibles dans le dépôt. Il est supprimé de l'état actif et son
+empreinte historique reste consignée pour audit, mais cette exposition le
+disqualifie définitivement comme holdout. Le remplacement V2 ne contient
+actuellement aucun cas : son manifeste est `CONTENT_NOT_AUTHORED`, non scellé
+et non exécutable.
+
+Le nouvel outillage exige un plaintext authoré hors dépôt, au moins 24 cas
+compatibles avec les éléments atomiques, une approbation humaine indépendante,
+un digest du contenu revu et un chiffrement AES-256-GCM. Seul le ciphertext peut
+ensuite entrer dans le dépôt. Aucune clé, aucun plaintext et aucune fausse
+approbation n'ont été créés pendant ce correctif.
+
+Première revue indépendante des deux cas d'ambiguïté : `CHANGES_REQUIRED`. La
+modalisation d'une recommandation avait été confondue avec son absence et
+l'absence de choix avec une contradiction. Les fixtures ont été réécrites sans
+modifier le moteur ni la campagne Gemini ; elles restent `PENDING` jusqu'à une
+seconde revue indépendante.
+
+La seconde revue Produit/pédagogie indépendante approuve les deux fixtures
+réécrites comme pseudo-oracles synthétiques de développement : préférence
+comparative contre absence de décision finale pour l'ambiguïté matérielle,
+puis tension modale contre contradiction pragmatique pour l'ambiguïté non
+matérielle. Cette approbation est attribuée à un agent Produit/pédagogie, pas à
+un évaluateur humain. `humanValidationClaimed` reste donc `false`, la revue
+humaine reste `PENDING` et ni un modèle, ni une campagne, ni le holdout V2 ne
+sont validés par cette revue.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

@@ -54,7 +54,9 @@ La campagne `learnx-writing-fr-gemini-evidence-researcher-v1` reste
 - validation du budget expérimental par Finance et le Propriétaire ;
 - autorisation explicite du Propriétaire ;
 - smoke borné de l'identité et de la route épinglées ;
-- résolution des incompatibilités du corpus/holdout autonome historique ;
+- revue humaine indépendante puis scellement du holdout V2 compatible avec la
+  rubrique atomique ; le holdout V1 exposé en clair est retiré et définitivement
+  disqualifié ;
 - publication d'au moins un contrat et d'une activité éligible avant toute
   surface utilisateur ;
 - clôture séparée du gate déterministe V4-011 avant toute revendication de

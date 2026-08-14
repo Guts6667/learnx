@@ -163,32 +163,10 @@ export const autonomousFormativeCorpusSchema = z
     });
   });
 
-export const autonomousHoldoutSchema = z
-  .object({
-    cases: z.array(autonomousCaseSchema.omit({ metamorphicParentCaseId: true })).min(4),
-    contractKey: z.literal('v4-writing-recommendation-fr'),
-    corpusId: stableKeySchema,
-    corpusKind: z.literal('SEALED_HOLDOUT'),
-    gate: z.literal('GO_AUTONOMOUS_FORMATIVE'),
-    language: z.literal('fr-FR'),
-    openedAt: z.null(),
-    oracleDigest: sha256Schema,
-    oracleType: z.literal('SEALED_AUTONOMOUS'),
-    schemaVersion: z.literal(1),
-    sealed: z.literal(true),
-    syntheticOnly: z.literal(true),
-  })
-  .strict();
-
 export type AutonomousFormativeCorpus = z.infer<typeof autonomousFormativeCorpusSchema>;
-export type AutonomousHoldout = z.infer<typeof autonomousHoldoutSchema>;
 
 export function parseAutonomousFormativeCorpus(input: unknown): AutonomousFormativeCorpus {
   return autonomousFormativeCorpusSchema.parse(input);
-}
-
-export function parseAutonomousHoldout(input: unknown): AutonomousHoldout {
-  return autonomousHoldoutSchema.parse(input);
 }
 
 export function sha256Canonical(input: unknown): string {
