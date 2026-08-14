@@ -16,10 +16,10 @@ import {
 
 const paths = {
   attestation: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
+    'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
   ),
   campaign: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json',
+    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
   ),
   corpus: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',

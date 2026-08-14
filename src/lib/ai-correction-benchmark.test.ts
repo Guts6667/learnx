@@ -2256,6 +2256,7 @@ describe('correction provider adapters', () => {
       modelSnapshot: 'anthropic/claude-opus-4.8',
       providerRequestId: 'truncated-request',
       providerRoute: 'Anthropic',
+      rawModelOutput: '{}',
       usage: { visibleOutputTokens: 1500 },
     });
   });

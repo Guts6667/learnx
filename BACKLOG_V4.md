@@ -1346,9 +1346,10 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : EN COURS — périmètre hors ligne livré, campagne
-préenregistrée et migration P0 répétée sur Neon jetable ; aucun appel modèle
-effectué.**
+**État au 14 août 2026 : EN COURS — périmètre hors ligne livré et migration P0
+répétée sur Neon jetable. Le smoke chercheur 1.1.0 a exécuté une tentative puis
+s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` ; verdict technique, aucun verdict
+pédagogique. Le profil corrigé 1.2.0 reste DRAFT et non autorisé.**
 
 ### Point de reprise pour le développement
 
@@ -1359,11 +1360,22 @@ effectué.**
 - La migration P0 dispatch/coût a été répétée sur une branche Neon jetable par
   le run Integration #125 (`31785569786`) ; son rapport est conservé dans
   `docs/V4_EXECUTABLE_RUBRIC_NEON_REHEARSAL_REPORT.md`.
-- Avant tout appel : obtenir le GO écrit du Propriétaire pour le budget R&D et
-  l'exécution, puis confirmer la route par un smoke borné.
-- Campagne proposée, non autorisée : coût attendu `0,20 USD`, plafond dur
-  `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne sont ni un prix
-  produit ni une calibration économique.
+- Le smoke 1.1.0 autorisé a dépensé `0,008241 USD` sur une tentative. Le modèle
+  a utilisé 1 725 tokens de raisonnement sur une limite totale de 1 800, puis
+  seulement 59 tokens visibles. Les deux autres appels n'ont pas été envoyés.
+- Le diagnostic hors ligne est consigné dans
+  `docs/V4_EXECUTABLE_RUBRIC_GEMINI_PROFILE_DIAGNOSIS.md` : le catalogue rend
+  le raisonnement obligatoire et activé par défaut, donc l'omission du champ ne
+  pouvait pas signifier `OFF`.
+- Une identité 1.2.0 distincte propose `reasoning.effort=minimal`, une cible
+  visible inchangée à 1 800 et une limite totale de 2 500. Finance a arbitré le
+  14 août 2026 son plafond expérimental à `0,055 USD`, pour trois tentatives
+  maximum, sans retry. Seule l'autorisation explicite du Propriétaire,
+  postérieure à cet arbitrage, manque encore avant le smoke.
+- La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
+  plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
+  sont ni un prix produit ni une calibration économique et ne sont pas
+  transférés automatiquement au smoke 1.2.0.
 - Après GO : exécuter 10 cas ×2 sans réutiliser les résultats historiques,
   produire ledger, sorties brutes, résumé et verdict append-only, puis arrêter
   immédiatement en cas d'échec du gate.

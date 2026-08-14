@@ -25,7 +25,30 @@ const catalogAttestationSchema = z
         reasoningUsdPerToken: z.literal(0.000_003_75),
       })
       .strict(),
+    reasoning: z
+      .object({
+        defaultEffort: z.enum(['medium']),
+        defaultEnabled: z.literal(true),
+        mandatory: z.literal(true),
+        supportedEfforts: z.tuple([
+          z.literal('high'),
+          z.literal('medium'),
+          z.literal('low'),
+          z.literal('minimal'),
+        ]),
+        supportsExactTokenBudget: z.literal(false),
+      })
+      .strict()
+      .optional(),
+    modelCatalogSource: z
+      .literal('https://openrouter.ai/api/v1/models')
+      .optional(),
     providerName: z.literal('Google'),
+    reasoningDocumentationSource: z
+      .literal(
+        'https://openrouter.ai/docs/guides/best-practices/reasoning-tokens',
+      )
+      .optional(),
     routeTag: z.literal('google-vertex/global'),
     selectionRationale: z.string().trim().min(1),
     source: z.literal(
@@ -42,9 +65,10 @@ export const evidenceExtractionCampaignSchema = z
   .object({
     authority: z
       .object({
-        catalogAttestationPath: z.literal(
+        catalogAttestationPath: z.enum([
           'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
-        ),
+          'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
+        ]),
         catalogAttestationSha256: sha256Schema,
         rubricFileSha256: sha256Schema,
         rubricFingerprint: sha256Schema,
@@ -62,7 +86,10 @@ export const evidenceExtractionCampaignSchema = z
     blockers: z
       .object({
         budget: z.literal('PROPOSED_NOT_APPROVED'),
-        candidateIdentity: z.literal('CATALOG_VALIDATED_SMOKE_PENDING'),
+        candidateIdentity: z.enum([
+          'CATALOG_VALIDATED_SMOKE_PENDING',
+          'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
+        ]),
         dispatchCostPatch: z.literal('INTEGRATED_AND_NEON_REHEARSED'),
         neonRehearsal: z.literal('COMPLETED_ON_DISPOSABLE_BRANCH'),
         ownerAuthorization: z.literal('NOT_GRANTED'),
@@ -81,7 +108,7 @@ export const evidenceExtractionCampaignSchema = z
       })
       .strict(),
     campaignId: z.literal('learnx-writing-fr-gemini-evidence-researcher-v1'),
-    campaignVersion: z.literal('1.1.0-draft'),
+    campaignVersion: z.enum(['1.1.0-draft', '1.2.0-draft']),
     execution: z
       .object({
         cases: z.literal(10),
@@ -158,7 +185,10 @@ export const evidenceExtractionCampaignSchema = z
     researcher: z
       .object({
         fallbackAllowed: z.literal(false),
-        identityStatus: z.literal('CATALOG_VALIDATED_SMOKE_PENDING'),
+        identityStatus: z.enum([
+          'CATALOG_VALIDATED_SMOKE_PENDING',
+          'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
+        ]),
         modelFamily: z.literal('GEMINI'),
         modelId: z.literal('google/gemini-3.6-flash'),
         modelSnapshot: z.literal('google/gemini-3.6-flash-20260721'),
@@ -170,20 +200,23 @@ export const evidenceExtractionCampaignSchema = z
             adapter: z.literal('OPENROUTER_CHAT'),
             reasoning: z
               .object({
-                budgetMode: z.literal('OFF'),
+                budgetMode: z.enum(['OFF', 'EFFORT_ONLY']),
                 budgetTokens: z.null(),
-                effort: z.literal('OFF'),
+                effort: z.enum(['OFF', 'MINIMAL']),
               })
               .strict(),
             routeProviders: z.tuple([z.literal('google-vertex/global')]),
             temperature: z.null(),
             timeoutMs: z.literal(60_000),
-            totalOutputTokenLimit: z.literal(1_800),
-            version: z.literal('1.0.0'),
+            totalOutputTokenLimit: z.union([z.literal(1_800), z.literal(2_500)]),
+            version: z.enum(['1.0.0', '1.1.0']),
             visibleOutputTokenTarget: z.literal(1_800),
           })
           .strict(),
-        requestProfileVersion: z.literal('evidence-researcher-1.0.0'),
+        requestProfileVersion: z.enum([
+          'evidence-researcher-1.0.0',
+          'evidence-researcher-1.1.0',
+        ]),
         role: z.literal('EVIDENCE_RESEARCHER'),
       })
       .strict(),
@@ -196,7 +229,7 @@ export const evidenceExtractionCampaignSchema = z
           z.literal('writing-fr-direct-injection'),
         ]),
         expectedLogicalWorkflows: z.literal(3),
-        hardCapUsd: z.literal(0.05),
+        hardCapUsd: z.union([z.literal(0.05), z.literal(0.055)]),
         inputTokenUpperBound: z
           .object({
             method: z.literal(
@@ -209,7 +242,10 @@ export const evidenceExtractionCampaignSchema = z
         repetitionsPerCase: z.literal(1),
         retryPolicy: z.literal('NONE'),
         securityCanary: z.literal('LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D'),
-        status: z.literal('READY_FOR_OWNER_AUTHORIZATION'),
+        status: z.enum([
+          'READY_FOR_OWNER_AUTHORIZATION',
+          'DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION',
+        ]),
         stopOnFirstFailure: z.literal(true),
       })
       .strict(),
@@ -293,6 +329,45 @@ export function validateEvidenceExtractionCampaign(input: {
     attestation.supportedParameters.includes('temperature')
   ) {
     throw new Error('EVIDENCE_CAMPAIGN_CATALOG_ATTESTATION_MISMATCH');
+  }
+  const legacyProfile = campaign.campaignVersion === '1.1.0-draft';
+  const legacyProfileIsExact =
+    campaign.authority.catalogAttestationPath.endsWith(
+      'gemini-google-vertex-attestation-2026-08-14.json',
+    ) &&
+    campaign.researcher.identityStatus ===
+      'CATALOG_VALIDATED_SMOKE_PENDING' &&
+    campaign.researcher.requestProfileVersion ===
+      'evidence-researcher-1.0.0' &&
+    campaign.researcher.requestProfile.version === '1.0.0' &&
+    campaign.researcher.requestProfile.reasoning.budgetMode === 'OFF' &&
+    campaign.researcher.requestProfile.reasoning.effort === 'OFF' &&
+    campaign.researcher.requestProfile.totalOutputTokenLimit === 1_800 &&
+    campaign.smokeProposal.hardCapUsd === 0.05 &&
+    campaign.smokeProposal.status === 'READY_FOR_OWNER_AUTHORIZATION';
+  const diagnosedProfileIsExact =
+    campaign.authority.catalogAttestationPath.endsWith(
+      'gemini-google-vertex-attestation-2026-08-14-reasoning.json',
+    ) &&
+    campaign.researcher.identityStatus ===
+      'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING' &&
+    campaign.researcher.requestProfileVersion ===
+      'evidence-researcher-1.1.0' &&
+    campaign.researcher.requestProfile.version === '1.1.0' &&
+    campaign.researcher.requestProfile.reasoning.budgetMode === 'EFFORT_ONLY' &&
+    campaign.researcher.requestProfile.reasoning.effort === 'MINIMAL' &&
+    campaign.researcher.requestProfile.totalOutputTokenLimit === 2_500 &&
+    campaign.smokeProposal.hardCapUsd === 0.055 &&
+    campaign.smokeProposal.status ===
+      'DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION' &&
+    attestation.reasoning?.mandatory === true &&
+    attestation.reasoning.defaultEnabled === true &&
+    attestation.reasoning.supportedEfforts.includes('minimal');
+  if (
+    (legacyProfile && !legacyProfileIsExact) ||
+    (!legacyProfile && !diagnosedProfileIsExact)
+  ) {
+    throw new Error('EVIDENCE_CAMPAIGN_REQUEST_PROFILE_IDENTITY_MISMATCH');
   }
   return campaign;
 }

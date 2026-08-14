@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-08-14T13:04:38Z",
+  "source": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints",
+  "modelCatalogSource": "https://openrouter.ai/api/v1/models",
+  "reasoningDocumentationSource": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+  "modelId": "google/gemini-3.6-flash",
+  "modelSnapshot": "google/gemini-3.6-flash-20260721",
+  "providerName": "Google",
+  "routeTag": "google-vertex/global",
+  "status": 0,
+  "uptimeLast1d": 99.75159612872869,
+  "contextLength": 1048576,
+  "maxCompletionTokens": 65536,
+  "pricing": {
+    "promptUsdPerToken": 7.5e-7,
+    "completionUsdPerToken": 0.00000375,
+    "reasoningUsdPerToken": 0.00000375,
+    "inputCacheReadUsdPerToken": 7.5e-8,
+    "inputCacheWriteUsdPerToken": 4.16666666666667e-8
+  },
+  "reasoning": {
+    "mandatory": true,
+    "defaultEnabled": true,
+    "defaultEffort": "medium",
+    "supportedEfforts": ["high", "medium", "low", "minimal"],
+    "supportsExactTokenBudget": false
+  },
+  "supportedParameters": [
+    "reasoning",
+    "include_reasoning",
+    "max_tokens",
+    "seed",
+    "response_format",
+    "stop",
+    "structured_outputs",
+    "tools",
+    "tool_choice",
+    "reasoning_effort"
+  ],
+  "fallbackAllowed": false,
+  "automaticRoutingAllowed": false,
+  "selectionRationale": "Même route Google Vertex globale que le smoke 1.1.0. Le catalogue modèle prouve désormais que le raisonnement est obligatoire et activé par défaut ; le prochain profil doit donc envoyer explicitement effort=minimal au lieu de prétendre le désactiver.",
+  "warning": "Attestation de catalogue non facturable. Gemini détermine lui-même la consommation réelle pour un effort minimal ; la marge de raisonnement du profil est une hypothèse de smoke, pas une garantie de sortie visible."
+}

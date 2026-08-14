@@ -130,3 +130,7 @@ historiques. Le panel 10×2, le holdout, l’activation produit et les prix rest
 interdits. Les deux fixtures d’ambiguïté ont reçu une revue indépendante
 Produit/pédagogie limitée au corpus synthétique de développement ; aucune
 validation humaine universelle, de modèle ou de campagne n’est revendiquée.
+
+Le diagnostic hors ligne et la proposition d'identité suivante sont consignés
+séparément dans `docs/V4_EXECUTABLE_RUBRIC_GEMINI_PROFILE_DIAGNOSIS.md`. Ils ne
+modifient pas le verdict ni les artefacts de ce smoke.

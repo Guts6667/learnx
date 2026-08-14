@@ -124,10 +124,11 @@ if (process.argv.includes('--execute')) {
 console.log(
   JSON.stringify(
     {
-      blockers: campaign.blockers,
+      currentSmokeValidationCommand: 'pnpm ai:evidence:smoke',
+      historicalCampaignBlockers: campaign.blockers,
       budgetProposal: campaign.budgetProposal,
       campaignId: campaign.campaignId,
-      campaignStatus: campaign.status,
+      campaignStatus: 'HISTORICAL_1_1_DRAFT_SUPERSEDED_BY_SMOKE_1_2',
       executionMode: 'VALIDATE_ONLY',
       feature: campaign.feature,
       logicalWorkflows: prompts.length,
@@ -143,11 +144,12 @@ console.log(
       },
       promptFingerprint: evidenceResearcherProtocolFingerprint(),
       providerRoute: campaign.researcher.providerRoute,
-      smokeProposal: {
+      historicalSmokeProposal: {
         ...campaign.smokeProposal,
         costBound: smokeCostBound,
         schemaUtf8Bytes,
       },
+      panelStatus: 'BLOCKED_PENDING_SUCCESSFUL_1_2_SMOKE',
       semanticCases: validatedSemanticCorpus.cases.length,
     },
     null,
