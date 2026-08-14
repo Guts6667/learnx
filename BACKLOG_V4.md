@@ -2,7 +2,7 @@
 
 ## Statut et autorité
 
-- Version : 1.6.0
+- Version : 1.6.1
 - Statut : **scope produit validé et figé — implémentation après clôture V3.5**
 - Dernière consolidation : 14 août 2026 — moteur de rubrique exécutable
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
@@ -29,12 +29,14 @@ de périmètre exige désormais un amendement explicite, versionné et approuvé
 les paramètres de calibration et gates externes listés en fin de document ne
 rouvrent pas le scope.
 
-### Amendement validé — notation formative et pipeline composite expérimental
+### Amendement historique — notation formative et pipeline composite expérimental
 
-Le 12 août 2026, le Propriétaire a validé l'exploration prioritaire d'une
+Le 12 août 2026, le Propriétaire a validé l'exploration d'une
 correction formative à deux modèles. Cet amendement remplace les anciennes
 contraintes incompatibles de modèle unique, de verdict binaire faisant autorité
-et de seconde passe nécessairement exécutée par le même modèle.
+et de seconde passe nécessairement exécutée par le même modèle. La direction
+exécutable validée le 14 août ci-dessous remplace ses choix d'architecture pour
+les nouvelles implémentations ; cette section conserve la décision historique.
 
 - L'expérience apprenant n'affiche plus un verdict académique binaire
   « validé/rejeté » pour les productions libres. Elle présente des niveaux par
@@ -66,6 +68,10 @@ et de seconde passe nécessairement exécutée par le même modèle.
   tant qu'un candidat n'a pas franchi le corpus complet de développement et le
   gate `GO_AUTONOMOUS_FORMATIVE`.
 
+Les états `CONFIRMED`, `UNCERTAIN`, `PROVISIONAL` et la contestation par seconde
+analyse décrits dans les amendements historiques ne sont plus les états cibles
+du MVP. Ils sont remplacés par les états et règles du moteur exécutable.
+
 ### Amendement validé — preuve autonome et validation de maîtrise séparée
 
 La correction V4 fonctionne sans évaluateur humain opérationnel ou de
@@ -77,9 +83,9 @@ phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json`.
 - Le gate de promotion devient `GO_AUTONOMOUS_FORMATIVE` : oracle autonome
   scellé, cas déterministes, métamorphismes, sécurité et citations exactes,
   variabilité bornée et abstention obligatoire.
-- Une analyse `CONFIRMED` fournit un feedback formatif ; `UNCERTAIN` masque le
-  score exact et restitue seulement les constats consensuels ; `UNUSABLE` ne
-  publie ni feedback complet ni débit.
+- Une preuve autonome publiable fournit un feedback formatif ; une ambiguïté
+  matérielle masque le score exact et exige une clarification ; une exécution
+  indisponible ne publie ni feedback ni débit.
 - Aucun résultat IA ne modifie `ConceptProgress`, `StageProgress` ou une preuve
   de maîtrise. Une production libre peut être obligatoire comme remise, jamais
   comme validation calculée par l'IA.
@@ -235,8 +241,8 @@ silencieusement l'historique.
 | V4-009 | Finance & Pricing : réservation, règlement, libération, retries absorbés et réconciliation. Produit & pédagogie : consentement, absence de débit surprise et historique compréhensible. |
 | V4-009B | Produit & pédagogie : protocole préenregistré, oracle autonome scellé, métamorphismes et verdict `GO_AUTONOMOUS_FORMATIVE`. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
 | V4-009C | Produit & pédagogie : panel Gemini modernisé, grille formative, oracle autonome et abstention. Finance & Pricing : plafond R&D et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste, runner et traçabilité append-only. Aucun appel facturable sans GO distinct. |
-| V4-010 | Produit & pédagogie : flow complet de correction, critères, nouvelle tentative et nouvelle analyse. Direction artistique : états et hiérarchie des surfaces mobile/desktop avant validation visuelle. |
-| V4-011 | Produit & pédagogie : séparation remise/feedback/maîtrise, formats éligibles, contrat cumulatif déterministe et absence de revue humaine. Finance & Pricing : coût/devis de la nouvelle analyse formative. Direction artistique : comparaison des résultats et états incertains. Ticket fermé tant que le gate déterministe n'est pas livré. |
+| V4-010 | Produit & pédagogie : flow complet de preuve, feedback, révision et clarification ciblée. Direction artistique : quatre états du moteur exécutable et hiérarchie mobile/desktop avant validation visuelle. |
+| V4-011 | Produit & pédagogie : séparation remise/feedback/maîtrise, formats éligibles, contrat cumulatif déterministe et absence de revue humaine. Finance & Pricing : coût/devis des nouvelles versions de soumission. Direction artistique : comparaison des versions, révision et clarification. Ticket fermé tant que le gate déterministe n'est pas livré. |
 | V4-012 | Finance & Pricing : définitions des coûts, marge, réconciliation et alertes. Produit & pédagogie : métriques de qualité interprétables sans réduire la pédagogie à une moyenne. |
 | V4-013 | Finance & Pricing : flux marchand et hypothèses de trésorerie. Conseil externe : validation juridique, fiscale, comptable et conditions Revolut avant toute activation. |
 | V4-014 | Finance & Pricing : packs, capacités moyennes et absence de vente à perte. Direction artistique : checkout et confiance. Conseil externe : paiement, facturation, rétractation et moyens de paiement autorisés. |
@@ -346,17 +352,19 @@ la grammaire visuelle.
    allocation, un prix estimé, un plafond et un historique compréhensible.
 3. Une correction n'est possible que si l'activité possède un contrat de
    correction publié, versionné et compatible.
-4. Le modèle ne choisit ni les critères, ni leurs poids, ni le seuil de réussite.
-   Il applique un contrat pédagogique authoré et le serveur recalcule le score.
-5. La sortie IA cite les éléments de la réponse justifiant chaque appréciation ;
-   elle ne doit pas inventer de preuve absente.
+4. Le modèle ne choisit ni les critères, ni les niveaux, ni leurs poids, ni le
+   seuil de réussite. Il cherche ou conteste des preuves ; LearnX exécute la
+   rubrique authorée et calcule seul le niveau et l'éventuel score indicatif.
+5. La sortie IA propose uniquement des statuts atomiques et des spans de la
+   réponse. LearnX rejette toute preuve absente, hors réponse ou rattachée à un
+   élément inconnu.
 6. Le modèle, le prompt, le contrat, le catalogue de prix et le résultat sont
    versionnés afin de rendre toute correction reproductible et auditable.
-7. Aucun routeur automatique ne choisit silencieusement un modèle pour une
-   correction évaluée. V4 peut promouvoir un modèle unique ou un pipeline
-   composite dont chaque rôle, modèle, fournisseur, profil, prompt et règle de
-   déclenchement est épinglé et évalué par V4-003. Un changement de composant ou
-   de règle crée une nouvelle identité et exige une nouvelle promotion.
+7. Aucun routeur automatique ne choisit silencieusement un modèle. V4 promeut
+   d'abord un chercheur de preuves unique ; un falsificateur indépendant n'est
+   ajouté que par une campagne distincte démontrant un gain. Chaque rôle,
+   modèle, fournisseur, profil, prompt et règle est épinglé. Un changement crée
+   une nouvelle identité et exige une nouvelle promotion.
 8. Une correction IA est étiquetée comme telle et ne vaut jamais validation
    scientifique, professionnelle ou humaine.
 9. Toute évaluation dont la correction est déterministe conserve le moteur
@@ -396,24 +404,22 @@ la grammaire visuelle.
 20. Toute correction opérationnelle est soit déterministe, soit réalisée par
     IA. Aucun étudiant, administrateur, créateur ou autre utilisateur ne peut
     attribuer, confirmer ou remplacer un score.
-21. Une contestation déclenche une nouvelle analyse IA versionnée et
-    argumentée ; elle ne transforme pas la correction en conversation libre.
-22. Après un résultat composite toujours insuffisamment fiable, LearnX ne
-    fabrique ni note précise ni verdict : l'apprenant peut soumettre une
-    nouvelle tentative.
-23. La seconde correction utilise exactement le même snapshot immuable de la
-    grille, des critères, des poids et du seuil que la première.
-24. Toute seconde correction demandée par l'apprenant fait l'objet d'un devis
-    proportionnel à son coût estimé, d'une réservation et d'un règlement comme
-    une autre action IA. Une erreur technique reste à la charge de LearnX.
-25. Une nouvelle analyse volontaire valide produit une nouvelle version du
-    score indicatif et du feedback ; elle ne réécrit pas la première et n'a
-    aucun pouvoir bloquant sur la progression. Le nombre, la forme et les
-    conditions de contestation restent une politique versionnée à arbitrer.
-26. Lorsque LearnX déclenche automatiquement un vérificateur ou une passe de
-    contrôle, son coût prudent est inclus dans le plafond du devis initial.
-    Aucun débit ou consentement surprise n'intervient ; la part non consommée
-    est libérée.
+21. Une ambiguïté matérielle déclenche au maximum une clarification ciblée
+    issue du contrat ; elle ne transforme pas la correction en conversation.
+22. Si la preuve ne permet pas un niveau stable, LearnX ne fabrique ni score
+    précis ni verdict : l'apprenant révise ou clarifie sa réponse complète.
+23. Toute révision ou clarification crée une nouvelle version immuable de la
+    soumission et conserve le même snapshot de rubrique. Une réponse strictement
+    identique restitue le certificat existant sans nouvel appel ni débit.
+24. Toute nouvelle version complète faisant l'objet d'une correction reçoit un
+    devis, une réservation et un règlement propres. Une erreur technique reste
+    à la charge de LearnX.
+25. Une nouvelle correction n'écrase jamais la précédente et n'a aucun pouvoir
+    sur la progression. Les versions de soumission et certificats restent
+    auditables.
+26. Si un falsificateur est ultérieurement promu et déclenché, son coût prudent
+    est inclus dans le plafond du devis initial. Aucun débit ou consentement
+    surprise n'intervient ; la part non consommée est libérée.
 26A. Le débit final ne dépasse jamais le plafond accepté. Un dépassement de coût
     fournisseur est absorbé par LearnX, audité et déclenche le seuil d'alerte ou
     la coupure configurée ; il ne crée jamais un débit complémentaire silencieux.
@@ -446,30 +452,24 @@ la grammaire visuelle.
   autres preuves multimodales sont reportés, sans empêcher un contrat extensible.
 - Les quiz et mini-évaluations dont la réponse peut être corrigée par le moteur
   déterministe existant n'appellent jamais l'IA.
-- Il n'existe aucune file de correction humaine. L'apprenant peut contester un
-  retour en donnant un argument ; LearnX lance alors une seconde correction IA
-  indépendante et conserve les deux résultats sans écrasement.
-- Les deux passes appliquent la même version de rubrique. L'argument de
-  contestation sert à signaler une interprétation contestée ; toute information
-  nouvelle destinée à améliorer la réponse exige une nouvelle tentative dans
-  laquelle l'apprenant resoumet l'intégralité du devoir, et non un complément
-  isolé rattaché à l'ancienne réponse.
+- Il n'existe aucune file de correction humaine. L'apprenant peut réviser son
+  retour ou répondre à une clarification ciblée ; LearnX enregistre alors une
+  nouvelle version complète sans écraser le certificat précédent.
+- Chaque version applique le même snapshot de rubrique. Aucune contestation
+  libre, aucun complément isolé et aucune réponse identique ne déclenchent une
+  nouvelle analyse facturable.
 - Les campagnes Terra, Sonnet, Gemini Flash, Mistral, Opus et autres candidats
   documentés sont des preuves de sélection, jamais des choix implicites de
   production. V4-003 évalue désormais aussi une architecture composite
   explicite, avec correcteur primaire et vérificateur ciblé épinglés.
-- La piste composite prioritaire est exploratoire : le primaire produit les
-  niveaux et le feedback ; le serveur calcule le score indicatif ; le
-  vérificateur intervient selon une règle déterministe sur les résultats
-  sensibles et un échantillon de contrôle. Aucun désaccord ne devient
-  automatiquement une validation ou une moyenne.
-- Une nouvelle analyse volontaire est facturée en crédits selon son devis propre
-  et son coût final. Elle produit une nouvelle version formative sans effacer la
-  première correction ni devenir une autorité de progression.
-- Si une vérification est imposée par le pipeline, elle est couverte par la
-  réservation du devis initial. Si l'apprenant conteste un résultat utilisable,
-  la nouvelle analyse constitue une nouvelle action avec devis et confirmation
-  propres.
+- La piste composite Mistral + Sonnet est une baseline historique `NO_GO`. La
+  cible utilise d'abord Gemini comme chercheur de preuves ; LearnX calcule les
+  niveaux et le feedback. Un falsificateur d'une autre famille n'est ajouté que
+  si une expérience séparée démontre son gain, sans vote ni moyenne.
+- Une nouvelle version complète est facturée selon son devis propre et son coût
+  final. Elle ne devient jamais une autorité de progression.
+- Si un falsificateur promu est imposé par le pipeline, il est couvert par la
+  réservation du devis initial.
 - LearnX n'expose pas deux statuts globaux et exclusifs `Étudiant`/`Créateur`.
   Tout compte actif est un membre capable d'apprendre ; les droits sur un
   programme proviennent de relations et capacités contextuelles. `ADMIN` reste
@@ -567,25 +567,20 @@ benchmark ou les mesures live. Le prix seul ne sélectionne pas le modèle.
 NOT_REQUESTED
     ↓ devis accepté + crédits réservés
 RESERVED
-    ↓ correcteur primaire
-PROCESSING_PRIMARY
-    ├── vérification ciblée ──► VERIFYING
-    ├── résultat utilisable ──► COMPLETED
-    ├── résultat provisoire ──► PROVISIONAL
+    ↓ recherche de preuves
+EXTRACTING_EVIDENCE
+    ├── certificat stable ──► FEEDBACK_READY
+    ├── élément requis non démontré ──► REVISION_REQUIRED
+    ├── ambiguïté matérielle ──► CLARIFICATION_REQUIRED
     ├── erreur récupérable ──► RETRY_PENDING
-    └── échec final ──► UNUSABLE_RELEASED | FAILED_RELEASED
-
-VERIFYING
-    ├── écart non matériel ──► COMPLETED
-    ├── écart matériel ──► UNCERTAIN
-    └── aucun résultat exploitable ──► UNUSABLE_RELEASED
+    └── échec final ──► TEMPORARILY_UNAVAILABLE + RELEASED
 ```
 
-`COMPLETE` ou la réussite pédagogique ne provient jamais directement du texte
-libre du modèle. Le serveur valide la structure, applique la rubrique et décide
-la transition autorisée. Une nouvelle analyse volontaire produit une nouvelle
-version et ne modifie jamais silencieusement la première. Aucun résultat IA,
-initial ou ultérieur, ne devient une autorité de progression.
+`COMPLETE` ou la réussite pédagogique ne provient jamais du modèle ni du
+certificat. Le serveur valide la structure, exécute la rubrique et décide la
+transition autorisée. Une révision ou clarification produit une nouvelle version
+complète et ne modifie jamais silencieusement la précédente. Aucun résultat IA
+ne devient une autorité de progression.
 
 ### Réservation de crédits
 
@@ -716,8 +711,9 @@ réutiliser le chemin mono-modèle ou binaire des anciennes fondations.
 
 Tickets principaux : V4-011 et V4-012.
 
-- Les cas incertains peuvent recevoir une seconde correction IA indépendante ;
-  aucun humain ne corrige ou n'arbitre la soumission.
+- Les ambiguïtés matérielles reçoivent une clarification ciblée ; aucun humain
+  ne corrige ou n'arbitre la soumission et aucune réponse identique n'est
+  recorrigée.
 - L'administrateur suit qualité, coûts, incidents, soldes et marge projetée.
 - Les évaluations d'étape sont ouvertes après preuve de fiabilité sur les
   exercices textuels **et** livraison du gate cumulatif déterministe de maîtrise.
@@ -795,12 +791,11 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   devoir écrit, oral documenté, simulation documentée ou examen cumulatif.
 - Inclure objectifs, critères, poids, niveaux de performance, éléments attendus,
   variantes acceptables, erreurs fréquentes, sources autorisées, exemples
-  étalonnés, seuil et règles de seconde correction IA.
-- Définir la sortie structurée minimale du modèle : niveau et confiance par
-  critère, statut de preuve, citations issues de la réponse et feedback. Le
-  serveur calcule le score indicatif, l'appréciation générale, les états de
-  vérification et toute décision de routage ; le modèle ne produit pas de
-  verdict académique.
+  étalonnés, seuil, règles de preuve, propriété des pénalités et clarification.
+- Définir la sortie structurée minimale du chercheur : statut atomique, spans
+  exacts, contradictions, ambiguïtés et confiance diagnostique par élément. Le
+  serveur compile la rubrique, calcule niveaux et score indicatif, produit le
+  feedback depuis les templates et décide toute transition.
 - Étendre le guide d'authoring sans imposer un nombre arbitraire de critères.
 - Préparer un inventaire des activités existantes éligibles, incomplètes ou
   explicitement non compatibles.
@@ -843,8 +838,8 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   couverture, abstention, coût et dérive.
 - Comparer au moins trois candidats sur français, accord par critère,
   hallucination, calibration, sécurité, latence et coût complet.
-- Mesurer médiane, P75, P90, taux de retry, taux de seconde correction IA,
-  désaccord entre modèles et variabilité.
+- Mesurer médiane, P75, P90, retry, clarification, faux statuts, couverture,
+  abstention et variabilité.
 - Mesurer d'abord l'exactitude des statuts atomiques, les spans, les faux
   `SUPPORTED`/`NOT_DEMONSTRATED`, la localité, la monotonie, la couverture et
   l'abstention. Les niveaux sont ensuite recalculés par le moteur, jamais
@@ -859,9 +854,9 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Préenregistrer avant appel la rubrique et son empreinte, le rôle exact du
   candidat, le budget, le profil, le corpus et les gates. Le falsificateur est
   une campagne séparée ; aucun second modèle n'est ajouté par défaut.
-- Mesurer séparément correction automatique composite, retry technique et
-  nouvelle analyse volontaire. Aucun de ces workflows ne partage abusivement
-  ses métriques ou son identité de promotion.
+- Mesurer séparément chercheur seul, futur chercheur + falsificateur, retry
+  technique et nouvelle version de soumission. Aucun de ces workflows ne
+  partage abusivement ses métriques ou son identité de promotion.
 
 ### Hors périmètre
 
@@ -943,11 +938,12 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 ### Périmètre
 
 - Persister requête, état, soumission, snapshot du contrat, identité du pipeline,
-  prompts, modèles et rôles, résultats structurés, score indicatif recalculé,
-  état de vérification et historique.
+  prompts, modèles et rôles, statuts atomiques, certificat de preuve, score
+  indicatif calculé, état pédagogique et historique.
 - Rendre la création et les transitions idempotentes et concurrent-safe.
-- Recalculer côté serveur le score pondéré et l'appréciation formative ; aucun
-  modèle ne peut décider d'une validation ou modifier la progression.
+- Exécuter côté serveur les règles de niveau, le score pondéré et les templates
+  formatifs ; aucun modèle ne peut décider d'une validation, d'un niveau final
+  ou modifier la progression.
 - Préserver les soumissions, historiques antérieurs et redémarrages existants ;
   aucune nouvelle correction manuelle ne peut être créée dans le flow V4.
 - Distinguer correction déterministe, correction IA et validation scientifique.
@@ -962,9 +958,10 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Le texte, le score et l'appréciation IA ne peuvent pas modifier directement
   la progression ou terminer l'activité.
 - Les corrections historiques restent lisibles après évolution du contrat.
-- Les cas nécessitant vérification ou présentant un désaccord passent par des
-  états serveur explicites (`VERIFYING`, `UNCERTAIN`, `PROVISIONAL` ou
-  `UNUSABLE`) et ne deviennent jamais une tâche attribuée à un humain.
+- Les cas publiables, à réviser, à clarifier ou indisponibles passent par des
+  états serveur explicites (`FEEDBACK_READY`, `REVISION_REQUIRED`,
+  `CLARIFICATION_REQUIRED`, `TEMPORARILY_UNAVAILABLE`) et ne deviennent jamais
+  une tâche attribuée à un humain.
 
 ### Tests et risques
 
@@ -1143,6 +1140,11 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 **Priorité : P0 corrective. Dépendances : V4-003 à V4-008 ; commence après
 V4-008 et bloque V4-009.**
 
+**Statut historique : LIVRÉ comme fondation et baseline composite. Depuis
+V4-009C, ses choix `primaire juge + vérificateur` et ses états pédagogiques ne
+sont plus la cible produit. Les garanties financières, d'idempotence, de retry,
+de route épinglée et de réconciliation restent réutilisées.**
+
 ### Gate de consultation avant code
 
 - **Produit & pédagogie — pilote** : fournir la version approuvée de
@@ -1158,7 +1160,7 @@ V4-008 et bloque V4-009.**
   avant tout nouveau benchmark facturable. La construction et les tests hors
   ligne peuvent précéder ce GO.
 
-### Périmètre
+### Périmètre historique livré
 
 - Réauditer les livraisons V4-003, V4-004, V4-005 et V4-007 contre la spec
   composite et documenter les écarts sans réécrire l'historique.
@@ -1344,6 +1346,27 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
+**État au 14 août 2026 : EN COURS — périmètre hors ligne livré et campagne
+préenregistrée ; aucun appel modèle effectué.**
+
+### Point de reprise pour le développement
+
+- Livré hors ligne : spécification autoritaire, compilateur, archétype
+  `WRITING/fr-FR`, oracle mécanique, pseudo-oracle sémantique 10×2, protocole
+  `EVIDENCE_RESEARCHER`, calcul des gates, attestation catalogue et préflight
+  bloqué par défaut.
+- Avant tout appel : répéter la migration P0 dispatch/coût sur une branche Neon
+  jetable et conserver le rapport ; obtenir le GO écrit du Propriétaire pour le
+  budget R&D et l'exécution ; confirmer la route par un smoke borné.
+- Campagne proposée, non autorisée : coût attendu `0,20 USD`, plafond dur
+  `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne sont ni un prix
+  produit ni une calibration économique.
+- Après GO : exécuter 10 cas ×2 sans réutiliser les résultats historiques,
+  produire ledger, sorties brutes, résumé et verdict append-only, puis arrêter
+  immédiatement en cas d'échec du gate.
+- Le holdout, le falsificateur et l'intégration utilisateur restent interdits à
+  ce stade. Un GO du chercheur n'autorise que l'étape de preuve suivante.
+
 ### Décision et continuité de preuve
 
 - Conserver définitivement le verdict `NO-GO` de
@@ -1457,54 +1480,63 @@ et de son chercheur de preuves issus de V4-009C.**
 
 - Intégrer la correction aux exercices à production libre éligibles sans casser
   le parcours authoré, la navigation ni l'historique existant.
+- Limiter le premier pilote aux exercices `WRITING/fr-FR` rattachés à une
+  rubrique publiée et `FULLY_COMPILABLE`. Un exercice sans contrat éligible ne
+  propose aucun appel IA.
 - Afficher prix estimé/plafond, soldes utilisés et confirmation avant lancement.
 - Afficher attente, reprise, erreur, crédits libérés et résultat structuré.
-- Présenter appréciation par critère, preuves, forces, améliorations et proposition
-  de révision sans masquer la réponse de l'apprenant.
+- Présenter niveaux calculés par LearnX, preuves, forces, éléments non démontrés
+  et proposition de révision issue des templates authorés, sans masquer la
+  réponse de l'apprenant.
 - Nommer les preuves internes « Extrait de votre réponse » et séparer toute
   source externe dans une zone « Références mobilisées ».
 - Présenter un score indicatif serveur et une appréciation formative, sans
-  libellé académique « validé/rejeté » et sans effet bloquant sur la progression.
-- Expliquer sobrement les états `confirmée`, `à confirmer`, `provisoire` et
-  `indisponible`. Pour `UNCERTAIN`, ne montrer aucun score exact ; une plage
-  n'est autorisée que si elle est effectivement calculée par LearnX.
+  libellé académique « validé/rejeté » et sans effet sur la progression. Aucun
+  score exact n'est publié si une ambiguïté peut modifier un niveau.
+- Expliquer sobrement les états `FEEDBACK_READY`, `REVISION_REQUIRED`,
+  `CLARIFICATION_REQUIRED` et `TEMPORARILY_UNAVAILABLE` avec des libellés
+  humains. Ils ne sont jamais présentés comme une validation académique.
 - Conserver et comparer les tentatives/corrections d'un même module run.
 - Étiqueter clairement « Correction assistée par IA ».
-- Permettre à l'apprenant de contester une correction avec un argument libre et
-  de demander une seconde correction IA. Cette passe repart de la soumission,
-  de la rubrique, de la première correction et de l'argument sans devenir un chat.
-- Appliquer strictement le même snapshot de rubrique, critères, poids et seuil.
-  L'argument ne peut pas ajouter des éléments évaluables absents de la soumission.
+- En cas d'ambiguïté matérielle, poser au maximum une clarification ciblée,
+  dérivée du contrat. La réponse à cette clarification crée une nouvelle version
+  immuable de la soumission ; elle ne devient pas un chat de négociation.
 - Permettre à l'apprenant de dupliquer ou reprendre son travail pour le compléter,
   mais enregistrer le résultat comme une nouvelle soumission complète, avec son
   propre devis, sa propre correction et son propre historique.
-- Conserver les deux corrections et rendre leurs différences compréhensibles ;
-  la seconde ne réécrit jamais l'historique de la première.
+- Une réponse strictement identique restitue son résultat existant sans nouvel
+  appel ni nouveau débit. Seule une nouvelle version complète peut être corrigée
+  à nouveau ; aucun résultat antérieur n'est réécrit.
+- Le feedback public est rendu depuis le certificat de preuve et les templates
+  authorés. Une reformulation libre par modèle reste hors MVP.
 
 ### Hors périmètre
 
 - Chat libre, nouvelle consigne générée et évaluations corrigibles de manière
   déterministe.
+- Critère `HOLISTIC`, domaine santé/réglementé/professionnel et modalité autre
+  que texte tant qu'un contrat spécifique n'a pas franchi ses propres gates.
 
 ### Critères d'acceptation
 
 - L'utilisateur connaît le maximum avant confirmation et le débit final après.
-- Un état de vérification ou de désaccord est expliqué sans produire une fausse
+- Un état de révision, clarification ou indisponibilité est expliqué sans produire une fausse
   conclusion, exposer les modèles ni suggérer qu'un humain répondra.
-- Avant une seconde correction demandée par l'apprenant, son devis proportionnel
-  et la limite d'une contestation sont annoncés ; un retry imposé par une erreur
-  technique reste à la charge de LearnX.
-- Une vérification ciblée déclenchée par la règle composite n'affiche aucune
-  nouvelle confirmation : son plafond était inclus dans le devis initial et la
-  part inutilisée est rendue après règlement.
-- Le serveur applique la règle composite versionnée aux résultats structurés :
-  le primaire reste la proposition et le vérificateur teste sa stabilité ; un
-  écart matériel produit `UNCERTAIN`, jamais un vote ou une moyenne. En cas d'échec
-  technique ou de résultat toujours inexploitable, aucune note précise n'est
-  publiée et l'apprenant peut soumettre une nouvelle tentative.
+- Le serveur contrôle spans, clés, propriétés, contradictions, injections et
+  couverture, puis exécute la rubrique versionnée. Aucun modèle ne fournit le
+  niveau, le score, le verdict ou le feedback final.
+- Un futur falsificateur n'est appelé que s'il a été promu séparément et inclus
+  dans le devis initial. Il ne vote pas, ne moyenne pas et ne remplace jamais la
+  décision déterministe de LearnX.
+- Un retry imposé par une erreur technique reste invisible et à la charge de
+  LearnX. Une sortie inutilisable ne produit ni résultat pédagogique ni débit.
 - Une nouvelle tentative ne concatène jamais automatiquement l'ancien devoir et
   un complément : le payload soumis doit représenter la réponse complète que
   l'apprenant souhaite faire évaluer.
+- Le certificat restitue pour chaque critère la version de règle, les statuts
+  atomiques, les spans `start/end/hash`, les contradictions et le niveau calculé.
+- Aucun état, score, certificat ou événement de correction ne modifie
+  `ConceptProgress`, `StageProgress` ou `StageAssessmentSubmission.VALIDATED`.
 - Clavier, lecteur d'écran, 320/390 px, zoom 200 % et erreurs réseau sont couverts.
 - Les états et actions respectent les références Atlas validées aux largeurs
   320/390, 1440/1920 px, au zoom 200 %, avec focus visible, contrastes WCAG et
@@ -1518,7 +1550,7 @@ et de son chercheur de preuves issus de V4-009C.**
 
 ---
 
-## V4-011 — Évaluations d'étape composites et nouvelle analyse IA
+## V4-011 — Évaluations d'étape et maîtrise déterministe
 
 **Statut : FERMÉ. Priorité : P1. Dépendances : V4-010, calibration exercice
 réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
@@ -1535,15 +1567,15 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
   maîtrise requise par la validation finale d'étape.
 - Ne jamais proposer de correction IA pour un oral, une image, un fichier ou
   une preuve non textuelle tant que son format n'est pas implémenté et calibré.
-- Réutiliser le pipeline composite promu pour la correction automatique. Une
-  nouvelle analyse peut être demandée après un résultat utilisable ; elle reste
-  liée au snapshot immuable de la rubrique et à la soumission d'origine.
-- Interdire au modèle de traiter l'argument comme une extension de la réponse ;
-  la même grille et le même seuil s'appliquent aux deux passes.
-- Auditer version du pipeline et des prompts, motif de la nouvelle analyse, scores
-  serveur, feedbacks, coût et effet pédagogique.
-- Si les analyses restent incompatibles ou insuffisamment fiables, ne pas
-  inventer une note : proposer une nouvelle soumission à l'apprenant.
+- Réutiliser uniquement un moteur de rubrique exécutable et un chercheur de
+  preuves ayant franchi leurs gates propres pour la famille d'évaluation visée.
+- Une réponse identique restitue le certificat existant. Une révision ou une
+  clarification crée une nouvelle version complète et immuable ; aucun argument
+  séparé n'étend silencieusement la production évaluée.
+- Auditer versions de rubrique, règles, prompts, certificat, score serveur,
+  feedback, coût et absence d'effet sur la progression.
+- Si la preuve reste ambiguë ou insuffisante, ne pas inventer une note : proposer
+  remédiation, clarification ciblée ou nouvelle soumission selon le contrat.
 - Interdire toute assimilation à une validation professionnelle/scientifique.
 - Si un objectif ne peut être évalué ni déterministiquement ni humainement,
   LearnX ne prétend pas l'avoir validé.
@@ -1552,7 +1584,8 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 
 - Évaluation sans texte exploitable, domaine non calibré, observation live,
   image, fichier, audio, vidéo, transcription ou correction humaine.
-- Chat de négociation avec le modèle ou contestation sans politique versionnée.
+- Chat de négociation avec le modèle, nouvelle analyse d'une réponse identique ou
+  contestation libre transformée en preuve.
 - Activation du ticket avant publication du contrat de maîtrise déterministe et
   de ses banques, seuils, remédiations et règles de nouvelle tentative.
 
@@ -1560,8 +1593,8 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 
 - Aucun écran, endpoint ou statut n'assigne une correction à un humain ou ne
   permet à un utilisateur de modifier le score.
-- La première correction, l'argument de contestation et la seconde correction
-  restent visibles, versionnés et non modifiables.
+- Toutes les versions de soumission et leurs certificats restent visibles,
+  versionnés et non modifiables.
 - Le moteur de progression reste indépendant du score et des résultats IA ; une
   analyse incertaine conduit à une nouvelle soumission formative sans bloquer
   artificiellement le parcours. La validation d'étape dépend exclusivement du
@@ -1572,18 +1605,18 @@ réussie et gate cumulatif déterministe de maîtrise spécifié puis livré.**
 - Un échec déterministe produit `NEEDS_REVIEW`, des ressources ordonnées liées
   aux notions et l'action « Revoir puis retenter ». Consulter une ressource ne
   valide jamais une notion et toutes les tentatives restent conservées.
-- La politique finale de contestation — contenu de l'argument, nombre de demandes
-  et présentation comparative — est versionnée et validée par le Propriétaire
-  avant activation ; le ticket n'en invente aucune valeur.
-- Une vérification ciblée utilise la réservation initiale ; une nouvelle analyse
-  volontaire d'un résultat valide utilise une nouvelle réservation.
+- La politique de clarification et de révision est versionnée et validée par le
+  Propriétaire avant activation ; le ticket n'invente aucune valeur au-delà de
+  la clarification unique autorisée par le MVP V4-010.
+- Un futur falsificateur promu utilise la réservation initiale ; une nouvelle
+  version de soumission utilise une nouvelle réservation et un nouveau devis.
 - Le passage à l'échelle est bloqué si les métriques de calibration régressent.
 
 ### Tests et risques
 
-- Divergence entre primaire et vérificateur, contestation répétée, idempotence,
-  coûts, seuils, stabilité du score indicatif, indépendance de la progression,
-  couverture multi-notions et remédiation déterministe.
+- Statuts atomiques erronés, ambiguïté matérielle, clarification répétée,
+  idempotence, coûts, stabilité du score indicatif, indépendance de la
+  progression, couverture multi-notions et remédiation déterministe.
 - Risque : forte conséquence pédagogique d'une correction erronée.
 
 ---
@@ -2045,8 +2078,8 @@ V4-010, V4-011 et V4-014 disponibles.**
   bleu pour action/progression/positif, laiton seulement éditorial, Manrope pour
   l'interface et Source Serif 4 pour les titres ou synthèses définis.
 - Distinguer explicitement : résultat déterministe, retour assisté par IA,
-  critères/rubrique authorés, sources ou preuves utilisées, niveau de confiance,
-  seconde correction IA éventuelle, contestation et possibilité de réessai.
+  critères/rubrique authorés, preuves utilisées, état de révision ou
+  clarification, versions de soumission et possibilité de réessai.
 - Présenter la correction par critère avec preuve tirée de la réponse, synthèse,
   historique et action suivante ; ne jamais donner au texte généré l'apparence
   d'une vérité scientifique ou d'une décision serveur.
@@ -2063,9 +2096,9 @@ V4-010, V4-011 et V4-014 disponibles.**
 - Conserver allocation offerte et crédits achetés comme lignes principales ; le
   total disponible n'est qu'un résumé secondaire. Après correction, garder le
   règlement synthétique visible et rendre son détail dépliable.
-- Présenter `PROVISIONAL`, `UNCERTAIN` et `UNUSABLE` avec des libellés humains.
-  `UNCERTAIN` masque le score exact ; une plage n'existe que si le serveur l'a
-  calculée selon un contrat versionné.
+- Présenter `FEEDBACK_READY`, `REVISION_REQUIRED`, `CLARIFICATION_REQUIRED` et
+  `TEMPORARILY_UNAVAILABLE` avec des libellés humains. Une ambiguïté matérielle
+  masque tout score exact.
 - Présenter l'ajustement admin dans un panneau latéral desktop et une surface
   plein écran mobile, puis afficher un récapitulatif avant validation.
 - Expliquer sobrement échec, remboursement de réservation, paiement, litige et
@@ -2100,11 +2133,11 @@ V4-010, V4-011 et V4-014 disponibles.**
   motion sont validés sur mobile et desktop.
 - Aucun état positif ou financier ne repose uniquement sur le bleu et aucun
   vert n'est réintroduit pour simuler une convention de succès.
-- Les revues de design utilisent corrections complètes/incertaines/échouées,
-  secondes corrections IA, contestations, solde faible,
+- Les revues de design utilisent feedback prêt, révision, clarification,
+  indisponibilité, versions successives, solde faible,
   réservation, libération, paiement refusé et historique réaliste.
 - Default, loading, error, empty, solde insuffisant, réservation en cours,
-  correction partielle, correction indisponible et paiement refusé conservent
+  clarification, correction indisponible et paiement refusé conservent
   unité, autorité et prochaine action explicites.
 - Les valeurs utilisent exclusivement les contrats serveur et catalogues
   publiés ; le ticket n'invente aucun montant, pack, expiration ou capacité.
@@ -2177,12 +2210,12 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 ### Périmètre
 
-- Exécuter le benchmark V4 complet des corrections, erreurs, secondes passes
-  automatiques et nouvelles analyses volontaires. La génération de blueprints
-  ou de leçons appartient à un benchmark V5 séparé et ne conditionne pas le GO
-  de la correction V4.
-- Mesurer coût médian/P75/P90, qualité, latence, retry, seconde correction et marge de
-  contribution avant coûts fixes.
+- Exécuter le benchmark V4 complet de l'extraction de preuves, de l'exécution de
+  rubrique, des erreurs, retries, révisions et clarifications. Un éventuel
+  falsificateur possède ses propres mesures. La génération de blueprints ou de
+  leçons appartient à un benchmark V5 séparé.
+- Mesurer coût médian/P75/P90, exactitude atomique, couverture, abstention,
+  latence, retry, clarification et marge de contribution avant coûts fixes.
 - Fixer prix et plafonds initiaux, capacités moyennes des packs et alertes.
 - Déployer successivement admin, utilisateurs invités gratuits, puis achats réels
   limités avec plafonds conservateurs.
