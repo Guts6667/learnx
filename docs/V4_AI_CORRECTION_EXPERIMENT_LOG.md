@@ -314,6 +314,13 @@ partielle lors d'une troncature afin qu'un futur diagnostic ne perde plus cette
 preuve. Le détail est dans
 `docs/V4_EXECUTABLE_RUBRIC_GEMINI_PROFILE_DIAGNOSIS.md`.
 
+Finance & Pricing a ensuite arbitré le plafond expérimental à 0,055 USD : trois
+tentatives séquentielles maximum, aucun retry, réserve unitaire pessimiste de
+0,0172545 USD, arrêt au premier défaut et arrêt immédiat si un coût réel manque
+ou ne peut pas être réconcilié. Cet arbitrage ne vaut ni promotion ni
+autorisation d'appel. L'autorisation explicite du Propriétaire, postérieure à
+l'arbitrage, reste absente à cette étape du journal.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

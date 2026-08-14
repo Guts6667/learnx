@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T13:04:38Z",
+  "updatedAt": "2026-08-14T14:00:09Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -138,7 +138,7 @@
           "ledgerFinalRecordHash": "19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73"
         },
         "nextCandidateProposal": {
-          "status": "DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION",
+          "status": "READY_FOR_OWNER_AUTHORIZATION",
           "diagnosis": "Gemini reasoning is mandatory and defaults to medium; omitting the reasoning field did not disable it.",
           "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json",
           "campaignSha256": "50fa8ea185d09f0d5361362f8479fc3514034d8e426a7c69024436734ce5e34f",
@@ -152,6 +152,15 @@
           "retryPolicy": "NONE",
           "maximumCampaignCostBoundUsd": 0.0517635,
           "proposedHardCapUsd": 0.055,
+          "financeArbitration": {
+            "status": "ARBITRATED",
+            "arbitratedAt": "2026-08-14",
+            "maximumCostPerAttemptUsd": 0.0172545,
+            "hardCapUsd": 0.055,
+            "maximumProviderAttempts": 3,
+            "retryPolicy": "NONE",
+            "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
+          },
           "ownerAuthorization": "NOT_GRANTED"
         }
       }
@@ -188,8 +197,7 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Obtain Finance arbitration for the distinct 1.2.0 smoke bound at 0.0517635 USD with a proposed 0.055 USD hard cap and three attempts maximum.",
-    "After offline checks and Finance arbitration, present the exact 1.2.0 fingerprint and command to the owner; this manifest does not authorize a call.",
+    "Obtain explicit owner authorization, post-dating the completed Finance arbitration, for the exact 1.2.0 fingerprint and command; this manifest does not authorize a call.",
     "Only a successful newly authorized 1.2.0 smoke may reopen arbitration of the distinct 10x2 campaign; neither the 1.1.0 result nor this draft authorizes the panel.",
     "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
   ],

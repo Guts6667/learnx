@@ -1368,9 +1368,10 @@ pédagogique. Le profil corrigé 1.2.0 reste DRAFT et non autorisé.**
   le raisonnement obligatoire et activé par défaut, donc l'omission du champ ne
   pouvait pas signifier `OFF`.
 - Une identité 1.2.0 distincte propose `reasoning.effort=minimal`, une cible
-  visible inchangée à 1 800 et une limite totale de 2 500. Son smoke reste
-  bloqué : plafond proposé `0,055 USD`, trois tentatives maximum, aucun retry.
-  Finance puis le Propriétaire doivent l'autoriser séparément.
+  visible inchangée à 1 800 et une limite totale de 2 500. Finance a arbitré le
+  14 août 2026 son plafond expérimental à `0,055 USD`, pour trois tentatives
+  maximum, sans retry. Seule l'autorisation explicite du Propriétaire,
+  postérieure à cet arbitrage, manque encore avant le smoke.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

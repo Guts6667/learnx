@@ -56,8 +56,10 @@ Le calcul pessimiste, fondé sur les octets d'entrée et le tarif attesté, born
 - trois tentatives à 0,0517635 USD ;
 - le plafond proposé à 0,055 USD.
 
-Ces montants sont une enveloppe R&D proposée, pas un prix. Finance et le
-Propriétaire doivent les approuver séparément avant tout appel.
+Ces montants sont une enveloppe R&D, pas un prix. Finance a arbitré le plafond
+de 0,055 USD le 14 août 2026, uniquement pour ce smoke. L'autorisation de
+dépense du Propriétaire reste une étape distincte et postérieure avant tout
+appel.
 
 ## Durcissement d'observabilité
 
@@ -84,8 +86,7 @@ de l'effort minimal.
   `1ad69716c959493f6f7923b442cd044221c5fe78b6dd9beed4a23131f82f0114`.
 
 La commande suivante est seulement l'identifiant exact du futur gate. Elle ne
-doit pas être exécutée sans arbitrage Finance puis nouvelle autorisation
-propriétaire :
+doit pas être exécutée sans nouvelle autorisation propriétaire explicite :
 
 ```bash
 pnpm ai:evidence:smoke -- --execute --owner-go=GO_EVIDENCE_RESEARCHER_SMOKE_50FA8EA185D09F0D
