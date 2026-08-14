@@ -1,7 +1,12 @@
 import {
   assertPublishedCorrectionContractIsImmutable,
+  buildProtocol3CorrectionOutputSchema,
+  buildProtocol3TransportJsonSchema,
+  canonicalizeProtocol3CorrectionOutput,
   correctionContractSchema,
   correctionOutputSchema,
+  deriveCorrectionSecondPassDecision,
+  evaluateCorrectionSecondPassGate,
   getCorrectionContractRuntimeEligibility,
   legacyCorrectionRubricSchema,
   validateCorrectionOutputForContract,
@@ -115,6 +120,121 @@ const validOutput = {
 } as const;
 
 describe('versioned AI correction contracts', () => {
+  it('builds a portable protocol 3 transport schema with exact rubric enums', () => {
+    const transport = buildProtocol3TransportJsonSchema(validContract);
+    const serialized = JSON.stringify(transport);
+    const criteria = (
+      (transport.properties as Record<string, unknown>).criteria as {
+        properties: Record<string, { properties: Record<string, unknown> }>;
+      }
+    ).properties;
+
+    expect(serialized).not.toContain('oneOf');
+    expect(serialized).not.toContain('anyOf');
+    expect(serialized).not.toContain('minItems');
+    expect(serialized).not.toContain('maxItems');
+    expect(serialized).not.toContain('minLength');
+    expect(criteria.direction?.properties.levelKey).toEqual({
+      enum: validContract.criteria[0]?.performanceLevels.map(
+        (level) => level.key,
+      ),
+      type: 'string',
+    });
+    expect(criteria.ownership?.properties.evidenceStatus).toEqual({
+      enum: ['FOUND', 'NO_RELEVANT_EVIDENCE'],
+      type: 'string',
+    });
+  });
+
+  it('uses exact dynamic rubric keys and keeps score, decision and second pass server-side', () => {
+    const modelOutput = {
+      criteria: {
+        direction: {
+          confidence: 0.9,
+          evidenceQuotes: ['Une direction explicite.'],
+          evidenceStatus: 'FOUND',
+          feedback: 'La direction est claire.',
+          levelKey: 'mastered',
+        },
+        ownership: {
+          confidence: 0.6,
+          evidenceQuotes: [],
+          evidenceStatus: 'NO_RELEVANT_EVIDENCE',
+          feedback: 'Aucune responsabilité n’est identifiable.',
+          levelKey: 'insufficient',
+        },
+      },
+      overallFeedback: 'La direction est acquise, les responsabilités restent à préciser.',
+    };
+    expect(buildProtocol3CorrectionOutputSchema(validContract).parse(modelOutput))
+      .toEqual(modelOutput);
+    const canonical = canonicalizeProtocol3CorrectionOutput({
+      contract: validContract,
+      output: modelOutput,
+    });
+    expect(canonical).toMatchObject({
+      contractKey: validContract.contractKey,
+      contractVersion: validContract.version,
+      overallConfidence: 0.78,
+      secondPass: { reasons: ['LOW_CONFIDENCE'], required: true },
+    });
+    expect(canonical.criteria.map((criterion) => criterion.criterionKey)).toEqual([
+      'direction',
+      'ownership',
+    ]);
+    expect(modelOutput).not.toHaveProperty('contractKey');
+    expect(modelOutput).not.toHaveProperty('secondPass');
+    expect(modelOutput).not.toHaveProperty('overallConfidence');
+  });
+
+  it('rejects missing, extra, duplicated-by-shape and incoherent evidence fields', () => {
+    const schema = buildProtocol3CorrectionOutputSchema(validContract);
+    const criterion = {
+      confidence: 0.9,
+      evidenceQuotes: ['Preuve'],
+      evidenceStatus: 'FOUND',
+      feedback: 'Retour.',
+      levelKey: 'mastered',
+    };
+    expect(
+      schema.safeParse({
+        criteria: { direction: criterion },
+        overallFeedback: 'Retour.',
+      }).success,
+    ).toBe(false);
+    expect(
+      schema.safeParse({
+        criteria: { direction: criterion, ownership: criterion, extra: criterion },
+        overallFeedback: 'Retour.',
+      }).success,
+    ).toBe(false);
+    expect(
+      schema.safeParse({
+        criteria: {
+          direction: { ...criterion, evidenceQuotes: [] },
+          ownership: criterion,
+        },
+        overallFeedback: 'Retour.',
+      }).success,
+    ).toBe(false);
+    expect(() =>
+      canonicalizeProtocol3CorrectionOutput({
+        contract: validContract,
+        output: {
+          criteria: {
+            direction: criterion,
+            ownership: {
+              ...criterion,
+              evidenceQuotes: [],
+              evidenceStatus: 'NO_RELEVANT_EVIDENCE',
+            },
+          },
+          overallFeedback: 'Retour.',
+        },
+      }),
+    ).toThrow('PROTOCOL_3_NO_EVIDENCE_LEVEL_INCONSISTENT');
+  });
+
   it('accepts a published text contract whose authored weights total 100', () => {
     expect(correctionContractSchema.parse(validContract)).toEqual(
       validContract,
@@ -273,16 +393,74 @@ describe('versioned AI correction contracts', () => {
     ).toThrow('Correction output must assess every criterion exactly once.');
   });
 
-  it('requires a second pass below the authored confidence threshold', () => {
-    expect(() =>
-      validateCorrectionOutputForContract({
-        contract: validContract,
-        output: {
-          ...validOutput,
-          overallConfidence: 0.5,
+  it('derives second-pass decisions from deterministic server signals', () => {
+    const contract = correctionContractSchema.parse({
+      ...validContract,
+      secondPass: {
+        ...validContract.secondPass,
+        triggers: [
+          'LOW_CONFIDENCE',
+          'CRITERION_DISAGREEMENT',
+          'OUTPUT_VALIDATION_WARNING',
+        ],
+      },
+    });
+    const parsedOutput = correctionOutputSchema.parse(validOutput);
+    const lowConfidence = deriveCorrectionSecondPassDecision({
+      contract,
+      evaluations: [{ ...parsedOutput, overallConfidence: 0.5 }],
+    });
+    const disagreement = deriveCorrectionSecondPassDecision({
+      contract,
+      evaluations: [
+        parsedOutput,
+        {
+          ...parsedOutput,
+          criteria: parsedOutput.criteria.map((criterion, index) =>
+            index === 0 ? { ...criterion, levelKey: 'partial' } : criterion,
+          ),
         },
-      }),
-    ).toThrow('Low-confidence output must require a second pass.');
+      ],
+    });
+    const warning = deriveCorrectionSecondPassDecision({
+      contract,
+      evaluations: [parsedOutput],
+      outputValidationWarning: true,
+    });
+    const noSignal = deriveCorrectionSecondPassDecision({
+      contract,
+      evaluations: [
+        {
+          ...parsedOutput,
+          secondPass: {
+            reasons: ['Le modèle exprime une hésitation.'],
+            required: true,
+          },
+        },
+      ],
+    });
+
+    expect(lowConfidence).toEqual({
+      reasons: ['LOW_CONFIDENCE'],
+      required: true,
+    });
+    expect(disagreement).toEqual({
+      reasons: ['CRITERION_DISAGREEMENT'],
+      required: true,
+    });
+    expect(warning).toEqual({
+      reasons: ['OUTPUT_VALIDATION_WARNING'],
+      required: true,
+    });
+    expect(noSignal).toEqual({ reasons: [], required: false });
+    expect(
+      evaluateCorrectionSecondPassGate([
+        { actual: lowConfidence, expectedRequired: true },
+        { actual: disagreement, expectedRequired: true },
+        { actual: warning, expectedRequired: true },
+        { actual: noSignal, expectedRequired: false },
+      ]),
+    ).toEqual({ falseNegativeRate: 0, falsePositiveRate: 0 });
   });
 
   it('requires a reason when the structured output requests a second pass', () => {

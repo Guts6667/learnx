@@ -1,0 +1,29 @@
+{
+  "observedAt": "2026-08-13T19:18:00+02:00",
+  "source": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints",
+  "modelId": "google/gemini-3.6-flash",
+  "modelSnapshot": "google/gemini-3.6-flash-20260721",
+  "providerName": "Google AI Studio",
+  "routeTag": "google-ai-studio",
+  "status": 0,
+  "pricing": {
+    "promptUsdPerToken": 0.0000015,
+    "completionUsdPerToken": 0.0000075,
+    "reasoningUsdPerToken": 0.0000075
+  },
+  "supportedParameters": [
+    "reasoning",
+    "include_reasoning",
+    "max_tokens",
+    "temperature",
+    "top_p",
+    "seed",
+    "response_format",
+    "structured_outputs",
+    "tool_choice",
+    "tools",
+    "reasoning_effort"
+  ],
+  "fallbackAllowed": false,
+  "automaticRoutingAllowed": false
+}

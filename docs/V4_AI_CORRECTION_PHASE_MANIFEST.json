@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "2.0.0",
+  "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
+  "status": "RESEARCH_NO_PIPELINE_PROMOTED",
+  "updatedAt": "2026-08-14T09:07:34Z",
+  "scope": {
+    "language": "fr-FR",
+    "modality": "TEXT",
+    "purpose": "AUTONOMOUS_FORMATIVE_FEEDBACK",
+    "progressionAuthority": "DETERMINISTIC_LEARNX_SERVER_ONLY"
+  },
+  "targetArchitecture": {
+    "name": "EXECUTABLE_RUBRIC_ENGINE",
+    "authority": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "modelAuthority": "EVIDENCE_ONLY",
+    "levelAndScoreAuthority": "VERSIONED_LEARNX_RULES",
+    "feedbackAuthority": "AUTHORED_TEMPLATES",
+    "publicStates": [
+      "FEEDBACK_READY",
+      "REVISION_REQUIRED",
+      "CLARIFICATION_REQUIRED",
+      "TEMPORARILY_UNAVAILABLE"
+    ]
+  },
+  "baselines": {
+    "runtime": {
+      "ref": "origin/dev",
+      "commit": "8d663db04657b64bfebec7c834211d6cd1c0af43",
+      "subject": "feat(ai): orchestrate composite correction settlement"
+    },
+    "research": {
+      "ref": "origin/codex/v4-009b",
+      "commit": "e7f2453a6c108e014903a3ceb0d3372ca98d3679",
+      "subject": "test(ai): record Gemini panel technical no-go"
+    }
+  },
+  "immutableVerdicts": [
+    {
+      "candidate": "anthropic/claude-sonnet-4.6",
+      "verdict": "NO_GO",
+      "reason": "Historically safe but too variable and too severe; not promoted."
+    },
+    {
+      "candidate": "learnx-fr-text-mistral-sonnet-targeted-v1@1.0.0",
+      "verdict": "NO_GO_PEDAGOGICAL",
+      "reason": "Two false negative decisions out of twelve were converted to UNCERTAIN; repeated double-penalty and concise-response underassessment."
+    },
+    {
+      "candidate": "learnx-fr-text-gemini-deterministic-safety-v1@1.0.0",
+      "verdict": "NO_GO_TECHNICAL_PANEL_INCOMPLETE",
+      "reason": "Panel stopped after nine usable workflows because an unresolved cost had neither actualCostUsd nor providerRequestId; injection cases were not reached. This is not a pedagogical verdict on Gemini."
+    }
+  ],
+  "holdout": {
+    "status": "NOT_EXECUTED",
+    "sealed": true,
+    "mayOpenAfter": "GO_AUTONOMOUS_FORMATIVE_ON_FULL_DEVELOPMENT_CORPUS"
+  },
+  "eligibility": {
+    "publishedV4Contracts": 0,
+    "activitiesEligibleForLiveCorrection": 0,
+    "pipelinePromoted": false
+  },
+  "openBlockers": [
+    {
+      "priority": "P0",
+      "key": "DISPATCH_COST_RECONCILIATION",
+      "status": "IMPLEMENTED_AND_NEON_REHEARSED",
+      "requirements": [
+        "Persist CALL_INTENT and a local idempotency key before network dispatch.",
+        "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
+        "Forbid final settlement, release and result publication until reconciliation completes.",
+        "Cover null/null, timeout after dispatch, retry and recovery without a second provider call."
+      ],
+      "isolatedImplementation": {
+        "branch": "codex/p0-dispatch-cost",
+        "commit": "572775f",
+        "integratedCommit": "8959f46",
+        "status": "INTEGRATED_AND_NEON_REHEARSED",
+        "neonEvidence": {
+          "workflow": "Integration",
+          "runId": 31785569786,
+          "runNumber": 125,
+          "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+          "artifact": "migration-rehearsal-31785569786",
+          "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+          "branchDeleted": true
+        }
+      }
+    },
+    {
+      "priority": "P1",
+      "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
+      "status": "IMPLEMENTED_OFFLINE_PENDING_RESEARCHER_EVIDENCE",
+      "requirements": [
+        "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
+        "Validate exact response spans and produce a reconstructible evidence certificate.",
+        "Keep models unable to return levels, scores, PASS/FAIL, progression effects or freeform feedback."
+      ],
+      "implementedEvidence": {
+        "engineCommit": "145d668",
+        "rubric": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+        "mechanicalOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-mechanical-oracle.v1.json",
+        "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+        "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+        "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json",
+        "researchCampaignSha256": "39462350c9704c635477ed0f4d52af53b01432afab8ffcf757e573974946882f",
+        "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
+        "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4",
+        "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+        "candidateStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
+        "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED"
+      }
+    },
+    {
+      "priority": "P1",
+      "key": "V4_011_DETERMINISTIC_MASTERY_GATE",
+      "status": "OPEN",
+      "requirements": [
+        "Keep authentic free-text submission, formative feedback and mastery as three distinct states.",
+        "Validate stage mastery only through an independent cumulative deterministic server-side gate."
+      ]
+    }
+  ],
+  "promotionGate": {
+    "name": "GO_EXECUTABLE_RUBRIC_RESEARCHER",
+    "status": "NOT_MET",
+    "humanReviewRequired": false,
+    "requirements": {
+      "compilerMutationDetectionRate": 1,
+      "dispatchAndCostReconciledRate": 1,
+      "exactSpanAndInjectionSafetyRate": 1,
+      "usableResearcherWorkflows": "20/20",
+      "atomicStatusAgreementMinimum": 0.95,
+      "falseSupportedCount": 0,
+      "falseNotDemonstratedCountMaximum": 2,
+      "metamorphicDecisionDriftCount": 0,
+      "variabilityRateMaximum": 0.1,
+      "unknownRequirementCount": 0,
+      "modelLevelOrScoreProposalCount": 0,
+      "exactScoreUnderMaterialAmbiguityCount": 0,
+      "fullChargeForUncertainOrUnusable": false,
+      "postResultRetuning": false
+    }
+  },
+  "nextAuthorizedSequence": [
+    "Approve or reject the pinned Gemini/Vertex request profile and the 0.50 USD hard-cap proposal; no call is authorised by this manifest.",
+    "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
+    "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
+    "If still GO, expand the semantic development corpus and then open a one-shot holdout."
+  ],
+  "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
+  "forbiddenClaims": [
+    "correction certifiée",
+    "validation par l’IA",
+    "preuve universelle de justesse pédagogique"
+  ]
+}

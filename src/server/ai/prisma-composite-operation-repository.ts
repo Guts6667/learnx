@@ -1,12 +1,14 @@
 import { randomUUID } from 'node:crypto';
 
 import {
+  AiCorrectionAttemptStatus,
   AiCorrectionFinancialStatus,
   AiCorrectionMethod,
   AiCorrectionPipelineKind,
   AiCorrectionRole,
   AiCorrectionRoleExecutionStatus,
   AiCorrectionStatus,
+  AiProviderDispatchStatus,
   Prisma,
   type PrismaClient,
 } from '../../../generated/prisma/client.js';
@@ -16,7 +18,10 @@ import type {
   CompositeCorrectionOperationRepository,
   OrchestratedProviderCall,
 } from './composite-correction-orchestrator.js';
-import type { CompositePipelineState } from './composite-correction.js';
+import type {
+  CompositePipelineState,
+  CompositeRole,
+} from './composite-correction.js';
 
 const MAX_TRANSACTION_ATTEMPTS = 3;
 
@@ -33,6 +38,27 @@ function jsonSafe(value: unknown): Prisma.InputJsonValue {
 }
 
 const asJson = jsonSafe;
+
+const unresolvedDispatchedAttemptWhere = {
+  costUsd: null,
+  dispatchStatus: {
+    in: [
+      AiProviderDispatchStatus.SENT,
+      AiProviderDispatchStatus.CONFIRMED,
+      AiProviderDispatchStatus.ORPHANED,
+    ],
+  },
+} satisfies Prisma.AiCorrectionAttemptWhereInput;
+
+async function assertNoUnresolvedProviderCost(
+  transaction: Prisma.TransactionClient,
+  correctionId: string,
+): Promise<void> {
+  const unresolved = await transaction.aiCorrectionAttempt.count({
+    where: { correctionId, ...unresolvedDispatchedAttemptWhere },
+  });
+  if (unresolved > 0) throw new Error('PROVIDER_COST_RECONCILIATION_REQUIRED');
+}
 
 function parseSettlementSnapshot(value: Prisma.JsonValue | null):
   | AcceptedCorrectionOperation['pendingFinalization'] {
@@ -300,12 +326,20 @@ export class PrismaCompositeOperationRepository
           submissionSnapshot: snapshots.submission,
           userId: input.userId,
           roleExecutions: {
-            create: {
-              assignmentSnapshot: asJson(pipeline.primaryConfig),
-              profileSnapshot: asJson(pipeline.primaryConfig),
-              promptSnapshot: asJson(pipeline.primaryConfig),
-              role: AiCorrectionRole.PRIMARY,
-            },
+            create: [
+              {
+                assignmentSnapshot: asJson(pipeline.primaryConfig),
+                profileSnapshot: asJson(pipeline.primaryConfig),
+                promptSnapshot: asJson(pipeline.primaryConfig),
+                role: AiCorrectionRole.PRIMARY,
+              },
+              {
+                assignmentSnapshot: asJson(pipeline.verifierConfig),
+                profileSnapshot: asJson(pipeline.verifierConfig),
+                promptSnapshot: asJson(pipeline.verifierConfig),
+                role: AiCorrectionRole.TARGETED_VERIFIER,
+              },
+            ],
           },
         },
       });
@@ -381,18 +415,145 @@ export class PrismaCompositeOperationRepository
     });
   }
 
-  public async markReconciliationRequired(input: {
+  public async recordProviderCallIntent(input: {
+    attemptNumber: number;
+    correctionId: string;
+    providerIdempotencyKey: string;
+    role: CompositeRole;
+  }): Promise<void> {
+    await this.transaction(async (transaction) => {
+      const existing = await transaction.aiCorrectionAttempt.findUnique({
+        where: { providerIdempotencyKey: input.providerIdempotencyKey },
+        include: { roleExecution: { select: { role: true } } },
+      });
+      if (existing) {
+        if (
+          existing.correctionId !== input.correctionId ||
+          existing.attemptNumber !== input.attemptNumber ||
+          existing.roleExecution?.role !== input.role
+        ) {
+          throw new Error('PROVIDER_CALL_IDEMPOTENCY_CONFLICT');
+        }
+        return;
+      }
+      const roleExecution = await transaction.aiCorrectionRoleExecution.findUnique({
+        where: {
+          correctionId_role_ordinal: {
+            correctionId: input.correctionId,
+            ordinal: 1,
+            role: input.role,
+          },
+        },
+      });
+      if (!roleExecution) throw new Error('PROVIDER_CALL_ROLE_EXECUTION_MISSING');
+      const latest = await transaction.aiCorrectionAttempt.aggregate({
+        where: { correctionId: input.correctionId },
+        _max: { sequence: true },
+      });
+      await transaction.aiCorrectionAttempt.create({
+        data: {
+          attemptNumber: input.attemptNumber,
+          correctionId: input.correctionId,
+          dispatchStatus: AiProviderDispatchStatus.CALL_INTENT,
+          modelRole: input.role,
+          providerIdempotencyKey: input.providerIdempotencyKey,
+          roleExecutionId: roleExecution.id,
+          sequence: (latest._max.sequence ?? 0) + 1,
+          status: AiCorrectionAttemptStatus.PROCESSING,
+        },
+      });
+    });
+  }
+
+  public async markProviderCallSent(input: {
+    correctionId: string;
+    providerIdempotencyKey: string;
+  }): Promise<void> {
+    await this.transaction(async (transaction) => {
+      const updated = await transaction.aiCorrectionAttempt.updateMany({
+        where: {
+          correctionId: input.correctionId,
+          dispatchStatus: {
+            in: [AiProviderDispatchStatus.CALL_INTENT, AiProviderDispatchStatus.SENT],
+          },
+          providerIdempotencyKey: input.providerIdempotencyKey,
+        },
+        data: { dispatchStatus: AiProviderDispatchStatus.SENT },
+      });
+      if (updated.count !== 1) throw new Error('PROVIDER_CALL_INTENT_MISSING');
+    });
+  }
+
+  public async recordProviderCallOutcomes(input: {
     calls: readonly OrchestratedProviderCall[];
-    code: 'PROVIDER_COST_MISSING';
     correctionId: string;
   }): Promise<void> {
     await this.transaction(async (transaction) => {
+      const now = this.clock();
+      for (const call of input.calls) {
+        const dispatchStatus = AiProviderDispatchStatus[call.dispatchStatus];
+        const updated = await transaction.aiCorrectionAttempt.updateMany({
+          where: {
+            attemptNumber: call.attemptNumber,
+            correctionId: input.correctionId,
+            providerIdempotencyKey: call.providerIdempotencyKey,
+            roleExecution: { role: call.role },
+          },
+          data: {
+            completedAt: now,
+            costConfirmedAt: call.actualCostUsd === null ? null : now,
+            costUsd:
+              call.actualCostUsd === null
+                ? null
+                : new Prisma.Decimal(call.actualCostUsd),
+            dispatchStatus,
+            providerRequestId: call.providerRequestId,
+            status: call.terminalValidated
+              ? AiCorrectionAttemptStatus.SUCCEEDED
+              : AiCorrectionAttemptStatus.FAILED,
+          },
+        });
+        if (updated.count !== 1) throw new Error('PROVIDER_CALL_INTENT_MISSING');
+      }
+    });
+  }
+
+  public async reconcileUnresolvedProviderCosts(input: {
+    correctionId: string;
+  }): Promise<boolean> {
+    return this.transaction(async (transaction) => {
+      const unresolved = await transaction.aiCorrectionAttempt.findMany({
+        where: {
+          correctionId: input.correctionId,
+          ...unresolvedDispatchedAttemptWhere,
+        },
+        orderBy: { sequence: 'asc' },
+        select: {
+          attemptNumber: true,
+          dispatchStatus: true,
+          id: true,
+          providerIdempotencyKey: true,
+          providerRequestId: true,
+        },
+      });
+      if (unresolved.length === 0) return false;
+      const financial = await transaction.aiCorrectionFinancialOperation.findUnique({
+        where: { correctionId: input.correctionId },
+        select: { status: true },
+      });
+      if (!financial) throw new Error('COMPOSITE_FINANCIAL_OPERATION_MISSING');
+      if (financial.status === AiCorrectionFinancialStatus.RECONCILIATION_REQUIRED) {
+        return true;
+      }
+      if (financial.status !== AiCorrectionFinancialStatus.PENDING) {
+        throw new Error('PROVIDER_COST_RECONCILIATION_TOO_LATE');
+      }
       await transaction.aiCorrectionFinancialOperation.update({
         where: { correctionId: input.correctionId },
         data: {
           alertRequired: true,
-          reconciliationCode: input.code,
-          settlementSnapshot: asJson({ calls: input.calls }),
+          reconciliationCode: 'PROVIDER_COST_MISSING',
+          settlementSnapshot: asJson({ unresolved }),
           status: AiCorrectionFinancialStatus.RECONCILIATION_REQUIRED,
         },
       });
@@ -400,6 +561,7 @@ export class PrismaCompositeOperationRepository
         where: { id: input.correctionId },
         data: { status: AiCorrectionStatus.RECONCILIATION_REQUIRED },
       });
+      return true;
     });
   }
 
@@ -412,6 +574,7 @@ export class PrismaCompositeOperationRepository
     settlement: CompositeSettlementPreview;
   }): Promise<void> {
     await this.transaction(async (transaction) => {
+      await assertNoUnresolvedProviderCost(transaction, input.correctionId);
       const status =
         input.resultState === 'UNUSABLE_RELEASED'
           ? AiCorrectionStatus.RELEASE_PENDING
@@ -447,6 +610,7 @@ export class PrismaCompositeOperationRepository
     settlement: CompositeSettlementPreview;
   }): Promise<void> {
     await this.transaction(async (transaction) => {
+      await assertNoUnresolvedProviderCost(transaction, input.correctionId);
       const now = this.clock();
       await transaction.aiCorrectionFinancialOperation.update({
         where: { correctionId: input.correctionId },

@@ -285,10 +285,11 @@ enum AiCorrectionFinancialStatus {
 }
 
 enum AiProviderDispatchStatus {
-  PENDING   @map("pending")
-  SENT      @map("sent")
-  CONFIRMED @map("confirmed")
-  ORPHANED  @map("orphaned")
+  PENDING     @map("pending")
+  CALL_INTENT @map("call_intent")
+  SENT        @map("sent")
+  CONFIRMED   @map("confirmed")
+  ORPHANED    @map("orphaned")
 
   @@map("ai_provider_dispatch_status")
 }
