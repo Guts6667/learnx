@@ -1,11 +1,12 @@
 {
-  "observedAt": "2026-08-14T01:34:00+02:00",
+  "observedAt": "2026-08-14T11:12:49Z",
   "source": "https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints",
   "modelId": "google/gemini-3.6-flash",
   "modelSnapshot": "google/gemini-3.6-flash-20260721",
   "providerName": "Google",
   "routeTag": "google-vertex/global",
   "status": 0,
+  "uptimeLast1d": 99.77098370919917,
   "contextLength": 1048576,
   "maxCompletionTokens": 65536,
   "pricing": {
@@ -29,6 +30,6 @@
   ],
   "fallbackAllowed": false,
   "automaticRoutingAllowed": false,
-  "selectionRationale": "Route standard disponible et structurée. Google AI Studio était marqué dégradé dans le même snapshot de catalogue.",
+  "selectionRationale": "Route Google Vertex global standard disponible, structurée et épinglée. Elle conserve les tarifs attestés, n’annonce pas temperature et interdit tout fallback ou routage automatique.",
   "warning": "Attestation de catalogue non facturable ; la disponibilité réelle doit encore être confirmée par un smoke autorisé."
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "campaignId": "learnx-writing-fr-gemini-evidence-researcher-v1",
-  "campaignVersion": "1.0.0-draft",
+  "campaignVersion": "1.1.0-draft",
   "status": "DRAFT_BLOCKED",
   "purpose": "EVIDENCE_EXTRACTION_ONLY",
   "language": "fr-FR",
@@ -25,7 +25,7 @@
     "semanticCorpusPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
     "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
     "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
-    "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4"
+    "catalogAttestationSha256": "201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f"
   },
   "researcher": {
     "role": "EVIDENCE_RESEARCHER",
@@ -33,17 +33,22 @@
     "modelId": "google/gemini-3.6-flash",
     "modelSnapshot": "google/gemini-3.6-flash-20260721",
     "providerRoute": "google-vertex/global",
-    "promptVersion": "1.0.0",
-    "promptFingerprint": "f3a76ccefa872bbeddf0274eb802173569d04b7175b30cc1b54a0955618fa9ef",
+    "promptVersion": "1.1.0",
+    "promptFingerprint": "a60f526d1bba60005b06167f923aafc4cca4b8ceda429533fb35c215ff9ddeef",
     "requestProfileVersion": "evidence-researcher-1.0.0",
     "requestProfile": {
       "adapter": "OPENROUTER_CHAT",
-      "reasoning": { "budgetTokens": null, "budgetMode": "OFF", "effort": "OFF" },
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "OFF",
+        "effort": "OFF"
+      },
       "totalOutputTokenLimit": 1800,
       "visibleOutputTokenTarget": 1800,
       "routeProviders": ["google-vertex/global"],
       "temperature": null,
-      "timeoutMs": 60000
+      "timeoutMs": 60000,
+      "version": "1.0.0"
     },
     "identityStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
     "fallbackAllowed": false
@@ -105,6 +110,25 @@
     "maximumProviderAttempts": 30,
     "status": "PROPOSED_NOT_APPROVED",
     "basis": "Nouveau contrat d’extraction plus court que les anciens contrats de notation ; plafond volontairement conservateur et non dérivé comme prix produit."
+  },
+  "smokeProposal": {
+    "status": "READY_FOR_OWNER_AUTHORIZATION",
+    "caseIds": [
+      "writing-fr-base-mastered",
+      "writing-fr-decision-mutation",
+      "writing-fr-direct-injection"
+    ],
+    "repetitionsPerCase": 1,
+    "expectedLogicalWorkflows": 3,
+    "maximumProviderAttempts": 3,
+    "retryPolicy": "NONE",
+    "securityCanary": "LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D",
+    "stopOnFirstFailure": true,
+    "hardCapUsd": 0.05,
+    "inputTokenUpperBound": {
+      "method": "UTF8_PROMPT_BYTES_PLUS_SCHEMA_BYTES_PLUS_FIXED_TRANSPORT_ALLOWANCE",
+      "transportAllowanceTokens": 2048
+    }
   },
   "feature": {
     "enabled": false,

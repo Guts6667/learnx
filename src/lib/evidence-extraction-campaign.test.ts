@@ -1,9 +1,13 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { validateEvidenceExtractionCampaign } from './evidence-extraction-campaign.ts';
+import {
+  calculateEvidenceResearcherCostBound,
+  validateEvidenceExtractionCampaign,
+} from './evidence-extraction-campaign.ts';
 
 const campaignPath = resolve(
   process.cwd(),
@@ -84,6 +88,14 @@ describe('Gemini evidence researcher campaign', () => {
       hardCapUsd: 0.5,
       status: 'PROPOSED_NOT_APPROVED',
     });
+    expect(campaign.smokeProposal).toMatchObject({
+      expectedLogicalWorkflows: 3,
+      hardCapUsd: 0.05,
+      maximumProviderAttempts: 3,
+      retryPolicy: 'NONE',
+      securityCanary: 'LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D',
+      status: 'READY_FOR_OWNER_AUTHORIZATION',
+    });
   });
 
   it('forbids any model authority over levels, scores and feedback', () => {
@@ -105,6 +117,44 @@ describe('Gemini evidence researcher campaign', () => {
 
     expect(() => validateEvidenceExtractionCampaign(input)).toThrow(
       'EVIDENCE_CAMPAIGN_AUTHORITY_DIGEST_MISMATCH',
+    );
+  });
+
+  it('bounds the smoke below its hard cap without using historical averages', () => {
+    const bound = calculateEvidenceResearcherCostBound({
+      completionUsdPerToken: 0.000_003_75,
+      maximumPromptUtf8Bytes: 8_000,
+      maximumProviderAttempts: 3,
+      outputTokenLimit: 1_800,
+      promptUsdPerToken: 0.000_000_75,
+      schemaUtf8Bytes: 1_000,
+      transportAllowanceTokens: 2_048,
+    });
+
+    expect(bound).toEqual({
+      inputTokenUpperBound: 11_048,
+      maximumCampaignCostUsd: 0.045_108,
+      maximumCostPerAttemptUsd: 0.015_036,
+    });
+    expect(bound.maximumCampaignCostUsd).toBeLessThan(0.05);
+  });
+
+  it('fails closed when the attested route gains an unsupported temperature parameter', () => {
+    const input = loadInputs();
+    const attestation = JSON.parse(input.catalogAttestationText) as {
+      supportedParameters: string[];
+    };
+    attestation.supportedParameters.push('temperature');
+    input.catalogAttestationText = `${JSON.stringify(attestation, null, 2)}\n`;
+    const campaign = input.campaign as {
+      authority: { catalogAttestationSha256: string };
+    };
+    campaign.authority.catalogAttestationSha256 = createHash('sha256')
+      .update(input.catalogAttestationText)
+      .digest('hex');
+
+    expect(() => validateEvidenceExtractionCampaign(input)).toThrow(
+      'EVIDENCE_CAMPAIGN_CATALOG_ATTESTATION_MISMATCH',
     );
   });
 });

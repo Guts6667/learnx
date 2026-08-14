@@ -228,6 +228,33 @@ un évaluateur humain. `humanValidationClaimed` reste donc `false`, la revue
 humaine reste `PENDING` et ni un modèle, ni une campagne, ni le holdout V2 ne
 sont validés par cette revue.
 
+### Addendum append-only — dossier smoke chercheur 1.1.0 du 14 août 2026
+
+Statut : `READY_FOR_OWNER_AUTHORIZATION / NO_MODEL_CALL`.
+
+Le prompt chercheur passe de `1.0.0` à `1.1.0` parce que le canari de sécurité
+est désormais réellement inclus dans l'entrée fiable et explicitement interdit
+de reproduction. Cette mutation est versionnée ; aucune preuve 1.0.0 ne sera
+mélangée avec cette identité.
+
+Le catalogue OpenRouter public a été relu sans appel modèle. L'identité figée
+est `google/gemini-3.6-flash`, snapshot
+`google/gemini-3.6-flash-20260721`, route unique
+`google-vertex/global`, sans température, fallback ou routage automatique. Le
+snapshot tarifaire est 0,75 USD/M en entrée et 3,75 USD/M en sortie. Son
+attestation porte le SHA-256
+`201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f`.
+
+Un smoke séparé est préenregistré sur trois cas, une tentative chacun, aucun
+retry et arrêt au premier défaut. Sa borne volontairement pessimiste est
+0,0438885 USD sous un plafond dur de 0,05 USD. Le manifeste 1.1.0-draft porte
+le SHA-256
+`2910600bf456e2c0fdf22d656a17168376fe07d87f2007a976bfb6dc14ee144f`.
+Le runner écrit `CALL_INTENT` avant dispatch, refuse la reprise d'une intention
+orpheline, exige coût réel et identifiant fournisseur, puis scelle état et
+ledger. Le détail et la commande, toujours non exécutée, figurent dans
+`docs/V4_EXECUTABLE_RUBRIC_GEMINI_SMOKE_DOSSIER.md`.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

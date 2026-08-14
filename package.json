@@ -39,6 +39,7 @@
     "ai:gemini:panel:prepare": "node --import tsx scripts/prepare-v4-009c-gemini-panel.ts",
     "ai:gemini:panel": "node --import tsx scripts/run-v4-009c-gemini-panel.ts",
     "ai:evidence:panel:validate": "node --import tsx scripts/run-executable-rubric-gemini-panel.ts",
+    "ai:evidence:smoke": "node --import tsx scripts/run-executable-rubric-gemini-smoke.ts",
     "ai:holdout:seal": "node --import tsx scripts/seal-executable-rubric-holdout.ts"
   },
   "packageManager": "pnpm@10.28.1",

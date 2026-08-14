@@ -1,13 +1,17 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import { validateEvidenceExtractionCampaign } from '../src/lib/evidence-extraction-campaign.ts';
+import {
+  calculateEvidenceResearcherCostBound,
+  validateEvidenceExtractionCampaign,
+} from '../src/lib/evidence-extraction-campaign.ts';
 import { compileExecutableRubric } from '../src/lib/executable-rubric-engine.ts';
 import { validateMechanicalOracle } from '../src/lib/executable-rubric-mechanical-oracle.ts';
 import { validateExecutableRubricSemanticCorpus } from '../src/lib/executable-rubric-semantic-corpus.ts';
 import {
   buildEvidenceResearcherPrompt,
   evidenceResearcherProtocolFingerprint,
+  researcherJsonSchema,
 } from '../src/lib/evidence-researcher-protocol.ts';
 
 const paths = {
@@ -68,6 +72,7 @@ const prompts = validatedSemanticCorpus.cases.flatMap((caseItem) =>
   ([1, 2] as const).map((repetition) => ({
     caseId: caseItem.caseId,
     prompt: buildEvidenceResearcherPrompt({
+      canary: campaign.smokeProposal.securityCanary,
       compiled,
       responseText: caseItem.responseText,
       taskContext: validatedSemanticCorpus.task.context,
@@ -76,6 +81,39 @@ const prompts = validatedSemanticCorpus.cases.flatMap((caseItem) =>
     repetition,
   })),
 );
+const attestation = JSON.parse(attestationText) as {
+  pricing: {
+    completionUsdPerToken: number;
+    promptUsdPerToken: number;
+  };
+};
+const promptUtf8Bytes = prompts.map(({ prompt }) => Buffer.byteLength(prompt));
+const schemaUtf8Bytes = Buffer.byteLength(
+  JSON.stringify(researcherJsonSchema()),
+);
+const smokeCaseIds = new Set<string>(campaign.smokeProposal.caseIds);
+const smokePrompts = prompts.filter(
+  ({ caseId, repetition }) => repetition === 1 && smokeCaseIds.has(caseId),
+);
+if (smokePrompts.length !== campaign.smokeProposal.expectedLogicalWorkflows) {
+  throw new Error('EVIDENCE_RESEARCHER_SMOKE_CASE_COVERAGE_MISMATCH');
+}
+const smokePromptUtf8Bytes = smokePrompts.map(({ prompt }) =>
+  Buffer.byteLength(prompt),
+);
+const smokeCostBound = calculateEvidenceResearcherCostBound({
+  completionUsdPerToken: attestation.pricing.completionUsdPerToken,
+  maximumPromptUtf8Bytes: Math.max(...smokePromptUtf8Bytes),
+  maximumProviderAttempts: campaign.smokeProposal.maximumProviderAttempts,
+  outputTokenLimit: campaign.researcher.requestProfile.totalOutputTokenLimit,
+  promptUsdPerToken: attestation.pricing.promptUsdPerToken,
+  schemaUtf8Bytes,
+  transportAllowanceTokens:
+    campaign.smokeProposal.inputTokenUpperBound.transportAllowanceTokens,
+});
+if (smokeCostBound.maximumCampaignCostUsd > campaign.smokeProposal.hardCapUsd) {
+  throw new Error('EVIDENCE_RESEARCHER_SMOKE_BUDGET_BOUND_EXCEEDED');
+}
 
 if (process.argv.includes('--execute')) {
   throw new Error(
@@ -99,8 +137,17 @@ console.log(
         maximum: Math.max(...prompts.map(({ prompt }) => prompt.length)),
         minimum: Math.min(...prompts.map(({ prompt }) => prompt.length)),
       },
+      promptUtf8ByteRange: {
+        maximum: Math.max(...promptUtf8Bytes),
+        minimum: Math.min(...promptUtf8Bytes),
+      },
       promptFingerprint: evidenceResearcherProtocolFingerprint(),
       providerRoute: campaign.researcher.providerRoute,
+      smokeProposal: {
+        ...campaign.smokeProposal,
+        costBound: smokeCostBound,
+        schemaUtf8Bytes,
+      },
       semanticCases: validatedSemanticCorpus.cases.length,
     },
     null,

@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T10:18:38Z",
+  "updatedAt": "2026-08-14T11:27:30Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -25,8 +25,8 @@
   "baselines": {
     "runtime": {
       "ref": "origin/dev",
-      "commit": "8d663db04657b64bfebec7c834211d6cd1c0af43",
-      "subject": "feat(ai): orchestrate composite correction settlement"
+      "commit": "8761c122a511af44ef47b865b9142eda7defc605",
+      "subject": "test(ai): harden semantic ambiguity and sealed holdout"
     },
     "research": {
       "ref": "origin/codex/v4-009b",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "IMPLEMENTED_OFFLINE_PENDING_RESEARCHER_EVIDENCE",
+      "status": "IMPLEMENTED_OFFLINE_SMOKE_READY_FOR_OWNER_AUTHORIZATION",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -109,17 +109,18 @@
         "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
         "semanticAmbiguityPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-ambiguity-development.v1.json",
         "semanticAmbiguityPseudoOracleSha256": "f5e8f7fb7c08192c3a7a58dec546c12979c335b9706fa68c3477287ec7f70635",
-        "semanticAmbiguityStatus": "DRAFT_PEDAGOGICAL_REVIEW_REQUIRED",
+        "semanticAmbiguityStatus": "INDEPENDENT_PRODUCT_REVIEW_APPROVED_DEVELOPMENT_ONLY_HUMAN_REVIEW_NOT_CLAIMED",
         "replacementHoldoutManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
         "replacementHoldoutManifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2",
         "replacementHoldoutStatus": "CONTENT_NOT_AUTHORED",
         "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json",
-        "researchCampaignSha256": "39462350c9704c635477ed0f4d52af53b01432afab8ffcf757e573974946882f",
+        "researchCampaignSha256": "2910600bf456e2c0fdf22d656a17168376fe07d87f2007a976bfb6dc14ee144f",
         "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
-        "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4",
+        "catalogAttestationSha256": "201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f",
         "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
-        "candidateStatus": "CATALOG_VALIDATED_SMOKE_PENDING",
-        "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED"
+        "candidateStatus": "CATALOG_VALIDATED_SMOKE_READY_FOR_OWNER_AUTHORIZATION",
+        "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED",
+        "smokeProposal": "3 cases / 3 attempts maximum / no retry / 0.0438885 USD conservative bound / 0.05 USD hard cap — NOT AUTHORIZED"
       }
     },
     {
@@ -154,8 +155,8 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Approve or reject the pinned Gemini/Vertex request profile and the 0.50 USD hard-cap proposal; no call is authorised by this manifest.",
-    "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
+    "Approve or reject the separately fingerprinted three-case Gemini/Vertex smoke capped at 0.05 USD; no call is authorised by this manifest.",
+    "If and only if the smoke passes, arbitrate the distinct 10x2 campaign budget and request a new owner authorization; the smoke does not authorize the panel.",
     "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
     "If still GO, expand and independently review the semantic development corpus.",
     "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
