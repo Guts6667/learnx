@@ -321,6 +321,24 @@ ou ne peut pas être réconcilié. Cet arbitrage ne vaut ni promotion ni
 autorisation d'appel. L'autorisation explicite du Propriétaire, postérieure à
 l'arbitrage, reste absente à cette étape du journal.
 
+### Addendum append-only — smoke Gemini 1.2.0 du 14 août 2026
+
+Statut : `NO_GO_TECHNICAL_SPAN_VALIDATION / ONE_CALL / NO_RETRY`.
+
+Après arbitrage Finance et autorisation explicite du Propriétaire, le smoke a
+envoyé une tentative sur `writing-fr-base-mastered`. Le profil minimal a produit
+zéro token de raisonnement, 891 tokens visibles et un coût réel réconcilié de
+0,00489225 USD. La sortie a ensuite été rejetée par
+`EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Le runner a arrêté la campagne et n'a
+envoyé ni le deuxième ni le troisième appel.
+
+La sortie structurée rejetée n'a pas été persistée. Le code prouve seulement
+qu'au moins un triplet `start/end/text` ne correspond pas exactement à
+`responseText`; il ne permet pas d'attribuer une cause précise à l'offset. Le
+prochain gate est donc hors ligne : persistance bornée de toute sortie reçue
+avant validation sémantique et arbitrage du contrat d'offset. Aucun panel 10×2
+n'est autorisé.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

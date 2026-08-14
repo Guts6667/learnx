@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T14:00:09Z",
+  "updatedAt": "2026-08-14T14:08:14Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "SMOKE_NO_GO_TECHNICAL_PROFILE_NEW_IDENTITY_DRAFT",
+      "status": "SMOKE_1_2_NO_GO_TECHNICAL_SPAN_VALIDATION",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -138,7 +138,7 @@
           "ledgerFinalRecordHash": "19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73"
         },
         "nextCandidateProposal": {
-          "status": "READY_FOR_OWNER_AUTHORIZATION",
+          "status": "EXECUTED_NO_GO_TECHNICAL_SPAN_VALIDATION",
           "diagnosis": "Gemini reasoning is mandatory and defaults to medium; omitting the reasoning field did not disable it.",
           "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json",
           "campaignSha256": "50fa8ea185d09f0d5361362f8479fc3514034d8e426a7c69024436734ce5e34f",
@@ -161,7 +161,20 @@
             "retryPolicy": "NONE",
             "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
           },
-          "ownerAuthorization": "NOT_GRANTED"
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "smokeResult": {
+            "executedAt": "2026-08-14T14:04:19.533Z",
+            "providerAttempts": 1,
+            "additionalCallsDispatched": false,
+            "status": "INVALID",
+            "errorCode": "EVIDENCE_RESEARCHER_SPAN_MISMATCH",
+            "actualCostUsd": 0.00489225,
+            "reasoningTokens": 0,
+            "visibleOutputTokens": 891,
+            "rawModelOutputPersisted": false,
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.result.json",
+            "resultSha256": "8d09d2b08f703281035e7c7c178e9d3a966e0ad91eb9e1279db6fbde3b6e8ea3"
+          }
         }
       }
     },
@@ -197,8 +210,9 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Obtain explicit owner authorization, post-dating the completed Finance arbitration, for the exact 1.2.0 fingerprint and command; this manifest does not authorize a call.",
-    "Only a successful newly authorized 1.2.0 smoke may reopen arbitration of the distinct 10x2 campaign; neither the 1.1.0 result nor this draft authorizes the panel.",
+    "Persist bounded raw structured output before semantic span validation so a rejected provider response remains diagnosable.",
+    "Arbitrate whether evidence offsets remain model-proposed or are derived server-side from a unique exact quote; any contract change creates a new identity.",
+    "Only a successful newly authorized smoke under a new immutable identity may reopen arbitration of the distinct 10x2 campaign; neither the 1.1.0 nor 1.2.0 result authorizes the panel.",
     "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
