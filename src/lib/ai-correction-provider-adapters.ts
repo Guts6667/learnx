@@ -432,7 +432,13 @@ const openRouterAdapter: CorrectionProviderAdapter = {
       usage,
     };
     if (parsed.choices[0]?.finish_reason === 'length') {
-      throw new CorrectionModelOutputError('MODEL_OUTPUT_TRUNCATED', metadata);
+      const truncatedContent = parsed.choices[0]?.message.content;
+      throw new CorrectionModelOutputError('MODEL_OUTPUT_TRUNCATED', {
+        ...metadata,
+        ...(truncatedContent
+          ? { rawModelOutput: boundedRaw(truncatedContent) }
+          : {}),
+      });
     }
     const content = parsed.choices[0]?.message.content;
     if (!content) {

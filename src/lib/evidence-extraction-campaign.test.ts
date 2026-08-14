@@ -4,12 +4,17 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { buildOpenRouterRequestBody } from './ai-correction-provider-adapters.ts';
 import {
   calculateEvidenceResearcherCostBound,
   validateEvidenceExtractionCampaign,
 } from './evidence-extraction-campaign.ts';
 
 const campaignPath = resolve(
+  process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
+);
+const legacyCampaignPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json',
 );
@@ -23,6 +28,10 @@ const semanticCorpusPath = resolve(
 );
 const catalogAttestationPath = resolve(
   process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
+);
+const legacyCatalogAttestationPath = resolve(
+  process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
 );
 const specPath = resolve(
@@ -30,11 +39,17 @@ const specPath = resolve(
   'docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md',
 );
 
-function loadInputs() {
-  const campaignText = readFileSync(campaignPath, 'utf8');
+function loadInputs(options: { legacy?: boolean } = {}) {
+  const campaignText = readFileSync(
+    options.legacy ? legacyCampaignPath : campaignPath,
+    'utf8',
+  );
   const rubricFileText = readFileSync(rubricPath, 'utf8');
   const semanticCorpusText = readFileSync(semanticCorpusPath, 'utf8');
-  const catalogAttestationText = readFileSync(catalogAttestationPath, 'utf8');
+  const catalogAttestationText = readFileSync(
+    options.legacy ? legacyCatalogAttestationPath : catalogAttestationPath,
+    'utf8',
+  );
   const specText = readFileSync(specPath, 'utf8');
   return {
     campaign: JSON.parse(campaignText) as unknown,
@@ -55,7 +70,7 @@ describe('Gemini evidence researcher campaign', () => {
       modelId: 'google/gemini-3.6-flash',
       modelSnapshot: 'google/gemini-3.6-flash-20260721',
       providerRoute: 'google-vertex/global',
-      identityStatus: 'CATALOG_VALIDATED_SMOKE_PENDING',
+      identityStatus: 'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
     });
     expect(campaign.falsifier.included).toBe(false);
     expect(campaign.feature).toEqual({
@@ -90,12 +105,42 @@ describe('Gemini evidence researcher campaign', () => {
     });
     expect(campaign.smokeProposal).toMatchObject({
       expectedLogicalWorkflows: 3,
-      hardCapUsd: 0.05,
+      hardCapUsd: 0.055,
       maximumProviderAttempts: 3,
       retryPolicy: 'NONE',
       securityCanary: 'LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D',
-      status: 'READY_FOR_OWNER_AUTHORIZATION',
+      status: 'DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION',
     });
+  });
+
+  it('keeps the executed 1.1.0 identity readable without reclassifying it', () => {
+    const campaign = validateEvidenceExtractionCampaign(
+      loadInputs({ legacy: true }),
+    );
+
+    expect(campaign.campaignVersion).toBe('1.1.0-draft');
+    expect(campaign.researcher.requestProfile.reasoning).toEqual({
+      budgetMode: 'OFF',
+      budgetTokens: null,
+      effort: 'OFF',
+    });
+  });
+
+  it('sends the mandatory Gemini reasoning level explicitly', () => {
+    const campaign = validateEvidenceExtractionCampaign(loadInputs());
+
+    const body = buildOpenRouterRequestBody({
+      jsonSchema: { type: 'object' },
+      messages: [{ content: 'test', role: 'system' }],
+      modelId: campaign.researcher.modelId,
+      profile: campaign.researcher.requestProfile,
+    });
+
+    expect(body).toMatchObject({
+      max_tokens: 2_500,
+      reasoning: { effort: 'minimal' },
+    });
+    expect(body).not.toHaveProperty('temperature');
   });
 
   it('forbids any model authority over levels, scores and feedback', () => {
@@ -125,7 +170,7 @@ describe('Gemini evidence researcher campaign', () => {
       completionUsdPerToken: 0.000_003_75,
       maximumPromptUtf8Bytes: 8_000,
       maximumProviderAttempts: 3,
-      outputTokenLimit: 1_800,
+      outputTokenLimit: 2_500,
       promptUsdPerToken: 0.000_000_75,
       schemaUtf8Bytes: 1_000,
       transportAllowanceTokens: 2_048,
@@ -133,10 +178,34 @@ describe('Gemini evidence researcher campaign', () => {
 
     expect(bound).toEqual({
       inputTokenUpperBound: 11_048,
-      maximumCampaignCostUsd: 0.045_108,
-      maximumCostPerAttemptUsd: 0.015_036,
+      maximumCampaignCostUsd: 0.052_983,
+      maximumCostPerAttemptUsd: 0.017_661,
     });
-    expect(bound.maximumCampaignCostUsd).toBeLessThan(0.05);
+    expect(bound.maximumCampaignCostUsd).toBeLessThan(0.055);
+  });
+
+  it('rejects an omitted reasoning policy for the mandatory-reasoning identity', () => {
+    const input = loadInputs();
+    const campaign = input.campaign as {
+      researcher: {
+        requestProfile: {
+          reasoning: {
+            budgetMode: string;
+            budgetTokens: null;
+            effort: string;
+          };
+        };
+      };
+    };
+    campaign.researcher.requestProfile.reasoning = {
+      budgetMode: 'OFF',
+      budgetTokens: null,
+      effort: 'OFF',
+    };
+
+    expect(() => validateEvidenceExtractionCampaign(input)).toThrow(
+      'EVIDENCE_CAMPAIGN_REQUEST_PROFILE_IDENTITY_MISMATCH',
+    );
   });
 
   it('fails closed when the attested route gains an unsupported temperature parameter', () => {

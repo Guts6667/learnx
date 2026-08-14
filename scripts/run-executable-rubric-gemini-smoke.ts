@@ -8,7 +8,10 @@ import {
 } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
-import { validateEvidenceExtractionCampaign } from '../src/lib/evidence-extraction-campaign.ts';
+import {
+  calculateEvidenceResearcherCostBound,
+  validateEvidenceExtractionCampaign,
+} from '../src/lib/evidence-extraction-campaign.ts';
 import {
   CorrectionModelOutputError,
   CorrectionProviderError,
@@ -16,7 +19,10 @@ import {
 } from '../src/lib/ai-correction-provider-adapters.ts';
 import { compileExecutableRubric } from '../src/lib/executable-rubric-engine.ts';
 import { validateExecutableRubricSemanticCorpus } from '../src/lib/executable-rubric-semantic-corpus.ts';
-import { researcherJsonSchema } from '../src/lib/evidence-researcher-protocol.ts';
+import {
+  buildEvidenceResearcherPrompt,
+  researcherJsonSchema,
+} from '../src/lib/evidence-researcher-protocol.ts';
 import {
   runEvidenceResearcherSmoke,
   type EvidenceResearcherSmokeLedgerEvent,
@@ -25,10 +31,10 @@ import {
 
 const paths = {
   attestation: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json',
+    'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
   ),
   campaign: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json',
+    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
   ),
   corpus: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
@@ -122,6 +128,31 @@ const attestation = JSON.parse(attestationText) as {
 };
 const exactOwnerGoToken = ownerGoToken(campaignText);
 const exactCommand = `pnpm ai:evidence:smoke -- --execute --owner-go=${exactOwnerGoToken}`;
+const maximumPromptUtf8Bytes = Math.max(
+  ...campaign.smokeProposal.caseIds.map((caseId) => {
+    const caseItem = corpus.cases.find((entry) => entry.caseId === caseId);
+    if (!caseItem) throw new Error('EVIDENCE_RESEARCHER_SMOKE_CASE_NOT_FOUND');
+    return Buffer.byteLength(
+      buildEvidenceResearcherPrompt({
+        canary: campaign.smokeProposal.securityCanary,
+        compiled,
+        responseText: caseItem.responseText,
+        taskContext: corpus.task.context,
+        taskPrompt: corpus.task.prompt,
+      }),
+    );
+  }),
+);
+const costBound = calculateEvidenceResearcherCostBound({
+  completionUsdPerToken: attestation.pricing.completionUsdPerToken,
+  maximumPromptUtf8Bytes,
+  maximumProviderAttempts: campaign.smokeProposal.maximumProviderAttempts,
+  outputTokenLimit: campaign.researcher.requestProfile.totalOutputTokenLimit,
+  promptUsdPerToken: attestation.pricing.promptUsdPerToken,
+  schemaUtf8Bytes: Buffer.byteLength(JSON.stringify(researcherJsonSchema())),
+  transportAllowanceTokens:
+    campaign.smokeProposal.inputTokenUpperBound.transportAllowanceTokens,
+});
 
 if (!process.argv.includes('--execute')) {
   console.log(
@@ -132,12 +163,14 @@ if (!process.argv.includes('--execute')) {
           exactToken: exactOwnerGoToken,
           status: 'NOT_GRANTED',
         },
+        costBound,
         hardCapUsd: campaign.smokeProposal.hardCapUsd,
         maximumProviderAttempts: campaign.smokeProposal.maximumProviderAttempts,
         mode: 'VALIDATE_ONLY',
         modelId: campaign.researcher.modelId,
         modelSnapshot: campaign.researcher.modelSnapshot,
         providerRoute: campaign.researcher.providerRoute,
+        requestProfile: campaign.researcher.requestProfile,
         retryPolicy: campaign.smokeProposal.retryPolicy,
         smokeCaseIds: campaign.smokeProposal.caseIds,
         stopOnFirstFailure: campaign.smokeProposal.stopOnFirstFailure,

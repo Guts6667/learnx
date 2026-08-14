@@ -285,6 +285,35 @@ autorisé. Toute modification du profil, des limites ou du transport crée une
 nouvelle identité et requiert un nouveau préflight puis une nouvelle décision
 propriétaire.
 
+### Addendum append-only — diagnostic profil Gemini du 14 août 2026
+
+Statut : `DIAGNOSED_OFFLINE / 1.2.0_DRAFT / NO_MODEL_CALL`.
+
+Le catalogue public OpenRouter indique désormais explicitement que le
+raisonnement de `google/gemini-3.6-flash` est obligatoire, activé par défaut au
+niveau `medium` et ne peut être réglé que sur `high`, `medium`, `low` ou
+`minimal`. L'adapter 1.1.0 omettait le champ lorsque le profil disait `OFF` ; il
+laissait donc le fournisseur appliquer son défaut au lieu de désactiver le
+raisonnement. Cela explique les 1 725 tokens de raisonnement observés sans
+inférer un défaut pédagogique du modèle.
+
+Une identité distincte `1.2.0-draft` est préenregistrée avec le même modèle,
+route, prompt, corpus et cas, mais un profil
+`evidence-researcher-1.1.0` qui envoie explicitement
+`reasoning.effort=minimal`. La cible visible reste 1 800 tokens et la limite
+totale devient 2 500 ; la différence de 700 tokens est une hypothèse de smoke,
+pas une garantie Google. Le coût pessimiste calculé est de 0,0172545 USD par
+tentative et 0,0517635 USD pour trois tentatives, sous un plafond proposé de
+0,055 USD.
+
+La campagne porte le SHA-256
+`50fa8ea185d09f0d5361362f8479fc3514034d8e426a7c69024436734ce5e34f`.
+Le nouvel état reste `DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION`. Aucun
+appel 1.2.0 n'a été effectué. L'adapter conserve désormais la sortie visible
+partielle lors d'une troncature afin qu'un futur diagnostic ne perde plus cette
+preuve. Le détail est dans
+`docs/V4_EXECUTABLE_RUBRIC_GEMINI_PROFILE_DIAGNOSIS.md`.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
