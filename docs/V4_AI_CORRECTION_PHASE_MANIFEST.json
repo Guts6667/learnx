@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T11:27:30Z",
+  "updatedAt": "2026-08-14T12:04:51Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -25,8 +25,8 @@
   "baselines": {
     "runtime": {
       "ref": "origin/dev",
-      "commit": "8761c122a511af44ef47b865b9142eda7defc605",
-      "subject": "test(ai): harden semantic ambiguity and sealed holdout"
+      "commit": "89f7b11dd0b718ecf819774591e874697fed5670",
+      "subject": "feat(ai): prepare gated Gemini evidence smoke (#4)"
     },
     "research": {
       "ref": "origin/codex/v4-009b",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "IMPLEMENTED_OFFLINE_SMOKE_READY_FOR_OWNER_AUTHORIZATION",
+      "status": "SMOKE_NO_GO_TECHNICAL_PROFILE",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -118,9 +118,25 @@
         "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
         "catalogAttestationSha256": "201bf7fa0767a2f0f04292a1afc454ad2730190ff9080c489b1a80728986694f",
         "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
-        "candidateStatus": "CATALOG_VALIDATED_SMOKE_READY_FOR_OWNER_AUTHORIZATION",
+        "candidateStatus": "SMOKE_NO_GO_TECHNICAL_PROFILE_MODEL_OUTPUT_TRUNCATED",
         "budgetProposal": "0.20 USD expected / 0.50 USD hard cap / 30 attempts — NOT APPROVED",
-        "smokeProposal": "3 cases / 3 attempts maximum / no retry / 0.0438885 USD conservative bound / 0.05 USD hard cap — NOT AUTHORIZED"
+        "smokeProposal": "AUTHORIZED AND EXECUTED — stopped after 1/3 attempts, no retry, 0.008241 USD actual under 0.05 USD hard cap",
+        "smokeResult": {
+          "runId": "2026-08-14-evidence-researcher-smoke-v1-1-0",
+          "verdict": "NO_GO_TECHNICAL_PROFILE",
+          "stoppedReason": "MODEL_OUTPUT_TRUNCATED",
+          "completedCases": 0,
+          "attempts": 1,
+          "actualCostUsd": 0.008241,
+          "usage": {
+            "inputTokens": 2068,
+            "reasoningTokens": 1725,
+            "visibleOutputTokens": 59
+          },
+          "stateSha256": "b99e3f5a53a473fb08b4608efb08152c3473eb110d3f2d453b25dbfd6b58be84",
+          "ledgerSha256": "abd9aaae2ceb9e2d1b808234d19e11875a4d65df990283ccfd4c6fa98dd9da0e",
+          "ledgerFinalRecordHash": "19053f8b2d0569c669a2f82227ac1dcf8b7b95d10f069a11b3529f1122f7aa73"
+        }
       }
     },
     {
@@ -155,10 +171,9 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Approve or reject the separately fingerprinted three-case Gemini/Vertex smoke capped at 0.05 USD; no call is authorised by this manifest.",
-    "If and only if the smoke passes, arbitrate the distinct 10x2 campaign budget and request a new owner authorization; the smoke does not authorize the panel.",
-    "If GO, compare Gemini alone with an independently versioned falsifier experiment.",
-    "If still GO, expand and independently review the semantic development corpus.",
+    "Diagnose offline why the pinned Gemini/Vertex route consumed reasoning tokens despite the profile omitting reasoning; do not raise the executed identity's cap or retry it.",
+    "If a bounded transport/profile correction is proposed, version it as a new identity and rerun all offline gates before requesting a separate owner authorization.",
+    "Only a successful newly authorized smoke may reopen arbitration of the distinct 10x2 campaign; the 1.1.0 smoke does not authorize the panel.",
     "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
