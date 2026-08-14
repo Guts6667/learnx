@@ -1,7 +1,7 @@
 # Protocole Gemini chercheur de preuves 1.3.0
 
 Statut au 14 août 2026 :
-`OFFLINE_READY / FINANCE_AND_OWNER_AUTHORIZATION_REQUIRED`.
+`OFFLINE_READY / FINANCE_ARBITRATED / OWNER_AUTHORIZATION_REQUIRED`.
 
 Ce protocole est une nouvelle identité expérimentale. Il ne réutilise pas le
 résultat 1.2.0 comme mesure de qualité et n'autorise ni appel fournisseur, ni
@@ -57,9 +57,11 @@ rejetée reste ainsi diagnostiquable sans être réparée ni publiée.
 - coût pessimiste par tentative : `0,0172545 USD` ;
 - plafond proposé : `0,0200000 USD`.
 
-Le plafond est une proposition R&D, pas un arbitrage Finance ni un prix. Le
-runner reste en validation seule : Finance doit d'abord arbitrer l'enveloppe,
-puis le propriétaire doit autoriser séparément l'unique appel.
+Finance & Pricing a arbitré cette enveloppe le 14 août 2026 pour cette seule
+tentative : borne pessimiste `0,0172545 USD`, plafond dur `0,0200000 USD`, aucun
+retry ni fallback. Ce plafond reste une dépense R&D, pas un prix. Le runner
+reste en validation seule jusqu'à une autorisation propriétaire écrite,
+distincte et postérieure à cet arbitrage.
 
 ## Preuves hors ligne
 
