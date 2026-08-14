@@ -78,7 +78,7 @@ describe('autonomous Gemini mini-panel preparation', () => {
     });
   });
 
-  it('keeps P0 and disposable Neon rehearsal mechanically blocking', async () => {
+  it('records P0 and disposable Neon rehearsal without enabling the campaign', async () => {
     const artifacts = await campaignArtifacts();
     const result = validateAutonomousGeminiCampaign({
       configuration: artifacts.configuration.parsed,
@@ -91,13 +91,14 @@ describe('autonomous Gemini mini-panel preparation', () => {
     });
 
     expect(result.configuration.blockers.dispatchCostReconciliation.status).toBe(
-      'OPEN_BLOCKING',
+      'IMPLEMENTED_AND_NEON_REHEARSED',
     );
     expect(result.configuration.blockers.neonRehearsal).toEqual({
       sharedDatabaseAllowed: false,
-      status: 'REQUIRED_NOT_COMPLETED',
+      status: 'COMPLETED_ON_DISPOSABLE_BRANCH',
       target: 'DISPOSABLE_NEON_BRANCH',
     });
+    expect(result.manifest.executable).toBe(false);
   });
 
   it('rejects any digest drift before execution can be considered', async () => {

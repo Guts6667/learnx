@@ -64,8 +64,22 @@ describe('Gemini evidence researcher campaign', () => {
       'SEALED_SYNTHETIC_PSEUDO_ORACLE',
     );
     expect(campaign.blockers.dispatchCostPatch).toBe(
-      'INTEGRATED_PENDING_NEON_REHEARSAL',
+      'INTEGRATED_AND_NEON_REHEARSED',
     );
+    expect(campaign.blockers.neonRehearsal).toBe(
+      'COMPLETED_ON_DISPOSABLE_BRANCH',
+    );
+    expect(campaign.neonRehearsalEvidence).toEqual({
+      artifactDigest:
+        'sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec',
+      artifactName: 'migration-rehearsal-31785569786',
+      branchDeleted: true,
+      headSha: '20fb325fa9755770cd82ea170982b54df17a724d',
+      migration: '20260813160000_add_provider_call_intent',
+      runId: 31_785_569_786,
+      runNumber: 125,
+      workflow: 'Integration',
+    });
     expect(campaign.budgetProposal).toMatchObject({
       hardCapUsd: 0.5,
       status: 'PROPOSED_NOT_APPROVED',

@@ -6,6 +6,16 @@
   "purpose": "EVIDENCE_EXTRACTION_ONLY",
   "language": "fr-FR",
   "modality": "WRITING",
+  "neonRehearsalEvidence": {
+    "workflow": "Integration",
+    "runId": 31785569786,
+    "runNumber": 125,
+    "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+    "migration": "20260813160000_add_provider_call_intent",
+    "artifactName": "migration-rehearsal-31785569786",
+    "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+    "branchDeleted": true
+  },
   "authority": {
     "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
     "specSha256": "2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7",
@@ -80,8 +90,8 @@
     }
   },
   "blockers": {
-    "dispatchCostPatch": "INTEGRATED_PENDING_NEON_REHEARSAL",
-    "neonRehearsal": "REQUIRED_NOT_COMPLETED",
+    "dispatchCostPatch": "INTEGRATED_AND_NEON_REHEARSED",
+    "neonRehearsal": "COMPLETED_ON_DISPOSABLE_BRANCH",
     "semanticSyntheticCorpus": "AUTHORED_SEALED_DEVELOPMENT",
     "candidateIdentity": "CATALOG_VALIDATED_SMOKE_PENDING",
     "budget": "PROPOSED_NOT_APPROVED",

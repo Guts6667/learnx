@@ -12,11 +12,11 @@
   "phase": {
     "path": "../../../../docs/V4_AI_CORRECTION_PHASE_MANIFEST.json",
     "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
-    "sha256": "a67a13c99ee1330fe7242de6fbcd293bffc3100b0e92dc1453587cca2bdd1b95"
+    "sha256": "db1360440c97b52c3d4b8c6ef6c3918751cf9247f922b7f53dd72a4488306ab7"
   },
   "configuration": {
     "path": "configuration.json",
-    "sha256": "a79910eff16d3d8d1c51e059c181a1e5764b5ff08edba20349171c64486ab73b"
+    "sha256": "8461f882b432335848498b9b752213bc61ee64657a00f24673f3e5222b5ed545"
   },
   "corpus": {
     "path": "../writing-fr-development-mini-panel.v1.json",

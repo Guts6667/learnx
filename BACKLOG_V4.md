@@ -1346,8 +1346,9 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : EN COURS — périmètre hors ligne livré et campagne
-préenregistrée ; aucun appel modèle effectué.**
+**État au 14 août 2026 : EN COURS — périmètre hors ligne livré, campagne
+préenregistrée et migration P0 répétée sur Neon jetable ; aucun appel modèle
+effectué.**
 
 ### Point de reprise pour le développement
 
@@ -1355,9 +1356,11 @@ préenregistrée ; aucun appel modèle effectué.**
   `WRITING/fr-FR`, oracle mécanique, pseudo-oracle sémantique 10×2, protocole
   `EVIDENCE_RESEARCHER`, calcul des gates, attestation catalogue et préflight
   bloqué par défaut.
-- Avant tout appel : répéter la migration P0 dispatch/coût sur une branche Neon
-  jetable et conserver le rapport ; obtenir le GO écrit du Propriétaire pour le
-  budget R&D et l'exécution ; confirmer la route par un smoke borné.
+- La migration P0 dispatch/coût a été répétée sur une branche Neon jetable par
+  le run Integration #125 (`31785569786`) ; son rapport est conservé dans
+  `docs/V4_EXECUTABLE_RUBRIC_NEON_REHEARSAL_REPORT.md`.
+- Avant tout appel : obtenir le GO écrit du Propriétaire pour le budget R&D et
+  l'exécution, puis confirmer la route par un smoke borné.
 - Campagne proposée, non autorisée : coût attendu `0,20 USD`, plafond dur
   `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne sont ni un prix
   produit ni une calibration économique.

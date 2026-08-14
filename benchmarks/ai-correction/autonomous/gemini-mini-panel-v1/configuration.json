@@ -50,7 +50,7 @@
   "blockers": {
     "dispatchCostReconciliation": {
       "key": "DISPATCH_COST_RECONCILIATION",
-      "status": "OPEN_BLOCKING",
+      "status": "IMPLEMENTED_AND_NEON_REHEARSED",
       "requiredTests": [
         "NULL_COST_AND_NULL_PROVIDER_REQUEST_ID",
         "TIMEOUT_AFTER_DISPATCH",
@@ -59,7 +59,7 @@
       ]
     },
     "neonRehearsal": {
-      "status": "REQUIRED_NOT_COMPLETED",
+      "status": "COMPLETED_ON_DISPOSABLE_BRANCH",
       "target": "DISPOSABLE_NEON_BRANCH",
       "sharedDatabaseAllowed": false
     }

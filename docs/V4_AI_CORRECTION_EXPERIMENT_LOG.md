@@ -170,6 +170,24 @@ Proposition budgétaire non autorisée : `0,20 USD` attendus, plafond dur
 `0,50 USD`, 30 tentatives maximum. Ce plafond est une enveloppe R&D, pas une
 prévision de prix utilisateur.
 
+### Addendum append-only — répétition Neon du 14 août 2026
+
+Le run GitHub Integration [#125](https://github.com/Guts6667/learnx/actions/runs/31785569786)
+a validé sur le SHA `20fb325fa9755770cd82ea170982b54df17a724d` :
+
+- la création d'une branche Neon jetable issue du clone Production ;
+- l'application de la migration additive
+  `20260813160000_add_provider_call_intent` ;
+- la comparaison avant/après et le replay intégral des migrations ;
+- les tests réels Functions/navigateurs et les seeds idempotents ;
+- la suppression de la branche Neon en fin de workflow.
+
+L'artefact `migration-rehearsal-31785569786` porte l'empreinte
+`sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec`.
+Cette preuve lève uniquement le bloqueur Neon du chercheur de preuves. La
+campagne reste `DRAFT_BLOCKED` : budget non approuvé, autorisation propriétaire
+absente, smoke réel non exécuté, réseau désactivé et holdout interdit.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

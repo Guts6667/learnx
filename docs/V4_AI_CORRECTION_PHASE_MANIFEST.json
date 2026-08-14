@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T00:00:00Z",
+  "updatedAt": "2026-08-14T09:07:34Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -65,7 +65,7 @@
     {
       "priority": "P0",
       "key": "DISPATCH_COST_RECONCILIATION",
-      "status": "IMPLEMENTED_PENDING_NEON_REHEARSAL",
+      "status": "IMPLEMENTED_AND_NEON_REHEARSED",
       "requirements": [
         "Persist CALL_INTENT and a local idempotency key before network dispatch.",
         "Treat every SENT, CONFIRMED or ORPHANED attempt without cost as RECONCILIATION_REQUIRED, with or without a provider request identifier.",
@@ -76,7 +76,16 @@
         "branch": "codex/p0-dispatch-cost",
         "commit": "572775f",
         "integratedCommit": "8959f46",
-        "status": "INTEGRATED_AND_TESTED_PENDING_NEON_REHEARSAL"
+        "status": "INTEGRATED_AND_NEON_REHEARSED",
+        "neonEvidence": {
+          "workflow": "Integration",
+          "runId": 31785569786,
+          "runNumber": 125,
+          "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+          "artifact": "migration-rehearsal-31785569786",
+          "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+          "branchDeleted": true
+        }
       }
     },
     {
@@ -95,7 +104,7 @@
         "semanticPseudoOracle": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
         "semanticPseudoOracleSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
         "researchCampaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-mini-panel.v1.json",
-        "researchCampaignSha256": "2b80b4d71618c07c94e71db7f52538da401a97f7b004e3ea8be5bbe56c7bf0f3",
+        "researchCampaignSha256": "39462350c9704c635477ed0f4d52af53b01432afab8ffcf757e573974946882f",
         "catalogAttestation": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14.json",
         "catalogAttestationSha256": "202a4dd43745c62ad8739d7b61b99ca3449cc3a4639f42447ab3f58b55524ca4",
         "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
@@ -135,8 +144,6 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Repeat the integrated additive P0 migration on a disposable Neon branch.",
-    "Validate the integrated compiler, mechanical oracle and semantic pseudo-oracle on the full local suite.",
     "Approve or reject the pinned Gemini/Vertex request profile and the 0.50 USD hard-cap proposal; no call is authorised by this manifest.",
     "Run a fresh Gemini evidence-researcher 10x2 panel only after a separate owner budget approval.",
     "If GO, compare Gemini alone with an independently versioned falsifier experiment.",

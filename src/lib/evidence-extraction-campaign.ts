@@ -32,8 +32,8 @@ export const evidenceExtractionCampaignSchema = z
       .object({
         budget: z.literal('PROPOSED_NOT_APPROVED'),
         candidateIdentity: z.literal('CATALOG_VALIDATED_SMOKE_PENDING'),
-        dispatchCostPatch: z.literal('INTEGRATED_PENDING_NEON_REHEARSAL'),
-        neonRehearsal: z.literal('REQUIRED_NOT_COMPLETED'),
+        dispatchCostPatch: z.literal('INTEGRATED_AND_NEON_REHEARSED'),
+        neonRehearsal: z.literal('COMPLETED_ON_DISPOSABLE_BRANCH'),
         ownerAuthorization: z.literal('NOT_GRANTED'),
         semanticSyntheticCorpus: z.literal('AUTHORED_SEALED_DEVELOPMENT'),
       })
@@ -109,6 +109,22 @@ export const evidenceExtractionCampaignSchema = z
       .strict(),
     language: z.literal('fr-FR'),
     modality: z.literal('WRITING'),
+    neonRehearsalEvidence: z
+      .object({
+        artifactDigest: z.literal(
+          'sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec',
+        ),
+        artifactName: z.literal('migration-rehearsal-31785569786'),
+        branchDeleted: z.literal(true),
+        headSha: z.literal(
+          '20fb325fa9755770cd82ea170982b54df17a724d',
+        ),
+        migration: z.literal('20260813160000_add_provider_call_intent'),
+        runId: z.literal(31_785_569_786),
+        runNumber: z.literal(125),
+        workflow: z.literal('Integration'),
+      })
+      .strict(),
     purpose: z.literal('EVIDENCE_EXTRACTION_ONLY'),
     researcher: z
       .object({

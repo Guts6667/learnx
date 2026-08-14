@@ -42,13 +42,13 @@ export const autonomousGeminiCampaignConfigSchema = z
               z.literal('IDEMPOTENT_RETRY'),
               z.literal('RECOVERY_WITHOUT_SECOND_PROVIDER_CALL'),
             ]),
-            status: z.literal('OPEN_BLOCKING'),
+            status: z.literal('IMPLEMENTED_AND_NEON_REHEARSED'),
           })
           .strict(),
         neonRehearsal: z
           .object({
             sharedDatabaseAllowed: z.literal(false),
-            status: z.literal('REQUIRED_NOT_COMPLETED'),
+            status: z.literal('COMPLETED_ON_DISPOSABLE_BRANCH'),
             target: z.literal('DISPOSABLE_NEON_BRANCH'),
           })
           .strict(),
@@ -242,7 +242,7 @@ export function validateAutonomousGeminiCampaign(input: {
     !phaseManifest.openBlockers.some(
       (blocker) =>
         blocker.key === 'DISPATCH_COST_RECONCILIATION' &&
-        blocker.status === 'IMPLEMENTED_PENDING_NEON_REHEARSAL',
+        blocker.status === 'IMPLEMENTED_AND_NEON_REHEARSED',
     )
   ) {
     throw new Error('AUTONOMOUS_GEMINI_P0_PHASE_STATUS_MISMATCH');
