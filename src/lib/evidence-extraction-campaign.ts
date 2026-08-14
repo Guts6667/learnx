@@ -7,6 +7,37 @@ import { evidenceResearcherProtocolFingerprint } from './evidence-researcher-pro
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 
+const catalogAttestationSchema = z
+  .object({
+    automaticRoutingAllowed: z.literal(false),
+    contextLength: z.literal(1_048_576),
+    fallbackAllowed: z.literal(false),
+    maxCompletionTokens: z.literal(65_536),
+    modelId: z.literal('google/gemini-3.6-flash'),
+    modelSnapshot: z.literal('google/gemini-3.6-flash-20260721'),
+    observedAt: z.string().datetime({ offset: true }),
+    pricing: z
+      .object({
+        completionUsdPerToken: z.literal(0.000_003_75),
+        inputCacheReadUsdPerToken: z.literal(0.000_000_075),
+        inputCacheWriteUsdPerToken: z.literal(0.000_000_041_666_666_666_666_7),
+        promptUsdPerToken: z.literal(0.000_000_75),
+        reasoningUsdPerToken: z.literal(0.000_003_75),
+      })
+      .strict(),
+    providerName: z.literal('Google'),
+    routeTag: z.literal('google-vertex/global'),
+    selectionRationale: z.string().trim().min(1),
+    source: z.literal(
+      'https://openrouter.ai/api/v1/models/google/gemini-3.6-flash/endpoints',
+    ),
+    status: z.literal(0),
+    supportedParameters: z.array(z.string().trim().min(1)),
+    uptimeLast1d: z.number().min(0).max(100),
+    warning: z.string().trim().min(1),
+  })
+  .strict();
+
 export const evidenceExtractionCampaignSchema = z
   .object({
     authority: z
@@ -50,7 +81,7 @@ export const evidenceExtractionCampaignSchema = z
       })
       .strict(),
     campaignId: z.literal('learnx-writing-fr-gemini-evidence-researcher-v1'),
-    campaignVersion: z.literal('1.0.0-draft'),
+    campaignVersion: z.literal('1.1.0-draft'),
     execution: z
       .object({
         cases: z.literal(10),
@@ -116,9 +147,7 @@ export const evidenceExtractionCampaignSchema = z
         ),
         artifactName: z.literal('migration-rehearsal-31785569786'),
         branchDeleted: z.literal(true),
-        headSha: z.literal(
-          '20fb325fa9755770cd82ea170982b54df17a724d',
-        ),
+        headSha: z.literal('20fb325fa9755770cd82ea170982b54df17a724d'),
         migration: z.literal('20260813160000_add_provider_call_intent'),
         runId: z.literal(31_785_569_786),
         runNumber: z.literal(125),
@@ -134,7 +163,7 @@ export const evidenceExtractionCampaignSchema = z
         modelId: z.literal('google/gemini-3.6-flash'),
         modelSnapshot: z.literal('google/gemini-3.6-flash-20260721'),
         promptFingerprint: sha256Schema,
-        promptVersion: z.literal('1.0.0'),
+        promptVersion: z.literal('1.1.0'),
         providerRoute: z.literal('google-vertex/global'),
         requestProfile: z
           .object({
@@ -150,6 +179,7 @@ export const evidenceExtractionCampaignSchema = z
             temperature: z.null(),
             timeoutMs: z.literal(60_000),
             totalOutputTokenLimit: z.literal(1_800),
+            version: z.literal('1.0.0'),
             visibleOutputTokenTarget: z.literal(1_800),
           })
           .strict(),
@@ -158,6 +188,31 @@ export const evidenceExtractionCampaignSchema = z
       })
       .strict(),
     schemaVersion: z.literal(1),
+    smokeProposal: z
+      .object({
+        caseIds: z.tuple([
+          z.literal('writing-fr-base-mastered'),
+          z.literal('writing-fr-decision-mutation'),
+          z.literal('writing-fr-direct-injection'),
+        ]),
+        expectedLogicalWorkflows: z.literal(3),
+        hardCapUsd: z.literal(0.05),
+        inputTokenUpperBound: z
+          .object({
+            method: z.literal(
+              'UTF8_PROMPT_BYTES_PLUS_SCHEMA_BYTES_PLUS_FIXED_TRANSPORT_ALLOWANCE',
+            ),
+            transportAllowanceTokens: z.literal(2_048),
+          })
+          .strict(),
+        maximumProviderAttempts: z.literal(3),
+        repetitionsPerCase: z.literal(1),
+        retryPolicy: z.literal('NONE'),
+        securityCanary: z.literal('LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D'),
+        status: z.literal('READY_FOR_OWNER_AUTHORIZATION'),
+        stopOnFirstFailure: z.literal(true),
+      })
+      .strict(),
     status: z.literal('DRAFT_BLOCKED'),
   })
   .strict();
@@ -166,8 +221,38 @@ export type EvidenceExtractionCampaign = z.infer<
   typeof evidenceExtractionCampaignSchema
 >;
 
+export type EvidenceResearcherCostBound = {
+  inputTokenUpperBound: number;
+  maximumCampaignCostUsd: number;
+  maximumCostPerAttemptUsd: number;
+};
+
 function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
+}
+
+export function calculateEvidenceResearcherCostBound(input: {
+  completionUsdPerToken: number;
+  maximumPromptUtf8Bytes: number;
+  maximumProviderAttempts: number;
+  outputTokenLimit: number;
+  promptUsdPerToken: number;
+  schemaUtf8Bytes: number;
+  transportAllowanceTokens: number;
+}): EvidenceResearcherCostBound {
+  const inputTokenUpperBound =
+    input.maximumPromptUtf8Bytes +
+    input.schemaUtf8Bytes +
+    input.transportAllowanceTokens;
+  const maximumCostPerAttemptUsd =
+    inputTokenUpperBound * input.promptUsdPerToken +
+    input.outputTokenLimit * input.completionUsdPerToken;
+  return {
+    inputTokenUpperBound,
+    maximumCampaignCostUsd:
+      maximumCostPerAttemptUsd * input.maximumProviderAttempts,
+    maximumCostPerAttemptUsd,
+  };
 }
 
 export function validateEvidenceExtractionCampaign(input: {
@@ -179,6 +264,9 @@ export function validateEvidenceExtractionCampaign(input: {
   specText: string;
 }): EvidenceExtractionCampaign {
   const campaign = evidenceExtractionCampaignSchema.parse(input.campaign);
+  const attestation = catalogAttestationSchema.parse(
+    JSON.parse(input.catalogAttestationText) as unknown,
+  );
   const compiled = compileExecutableRubric(input.rubric);
   if (
     campaign.authority.specSha256 !== sha256(input.specText) ||
@@ -192,6 +280,19 @@ export function validateEvidenceExtractionCampaign(input: {
       evidenceResearcherProtocolFingerprint()
   ) {
     throw new Error('EVIDENCE_CAMPAIGN_AUTHORITY_DIGEST_MISMATCH');
+  }
+  if (
+    attestation.modelId !== campaign.researcher.modelId ||
+    attestation.modelSnapshot !== campaign.researcher.modelSnapshot ||
+    attestation.routeTag !== campaign.researcher.providerRoute ||
+    attestation.maxCompletionTokens <
+      campaign.researcher.requestProfile.totalOutputTokenLimit ||
+    !attestation.supportedParameters.includes('response_format') ||
+    !attestation.supportedParameters.includes('structured_outputs') ||
+    !attestation.supportedParameters.includes('max_tokens') ||
+    attestation.supportedParameters.includes('temperature')
+  ) {
+    throw new Error('EVIDENCE_CAMPAIGN_CATALOG_ATTESTATION_MISMATCH');
   }
   return campaign;
 }
