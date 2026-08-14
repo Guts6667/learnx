@@ -37,21 +37,10 @@ function validOutput() {
         confidence: 0.9,
         contradictions: [],
         elementKey: element.key,
-        evidenceSpans: supported
+        evidenceQuotes: supported
           ? element.evidenceRule.minimumSpans >= 2
-            ? [
-                {
-                  end: quote.length,
-                  start: 0,
-                  text: quote,
-                },
-                {
-                  end: responseText.indexOf(secondQuote) + secondQuote.length,
-                  start: responseText.indexOf(secondQuote),
-                  text: secondQuote,
-                },
-              ]
-            : [{ end: quote.length, start: 0, text: quote }]
+            ? [quote, secondQuote]
+            : [quote]
           : [],
         status: supported
           ? ('SUPPORTED' as const)
@@ -68,10 +57,12 @@ describe('evidence researcher protocol', () => {
 
     expect(parsed.elements).toHaveLength(9);
     expect(serializedSchema).not.toMatch(/level|score|pass|fail|feedback/iu);
+    expect(serializedSchema).not.toMatch(/"start"|"end"/u);
+    expect(serializedSchema).toContain('evidenceQuotes');
     expect(evidenceResearcherProtocolFingerprint()).toMatch(/^[a-f0-9]{64}$/u);
   });
 
-  it('wraps exact model spans into a server-owned evidence pass and hash', () => {
+  it('resolves an exact unique ASCII quote into a server-owned span and hash', () => {
     const pass = validateEvidenceResearcherOutput({
       compiled,
       output: validOutput(),
@@ -86,10 +77,10 @@ describe('evidence researcher protocol', () => {
     );
   });
 
-  it('rejects a model span that does not match the learner response', () => {
+  it('rejects a quote that is absent from the learner response', () => {
     const output = validOutput();
     const firstElement = required(output.elements[0]);
-    required(firstElement.evidenceSpans[0]).text = 'citation inventée';
+    firstElement.evidenceQuotes[0] = 'citation inventée';
 
     expect(() =>
       validateEvidenceResearcherOutput({
@@ -98,7 +89,80 @@ describe('evidence researcher protocol', () => {
         pipelineFingerprintSeed: 'prompt-1.0.0:google-vertex-global',
         responseText,
       }),
-    ).toThrow('EVIDENCE_RESEARCHER_SPAN_MISMATCH');
+    ).toThrow('INVALID_QUOTE_NOT_FOUND');
+  });
+
+  it('rejects a quote with more than one exact occurrence', () => {
+    const repeatedResponse = 'preuve unique. preuve unique.';
+    const output = validOutput();
+    output.elements.forEach((element) => {
+      if (element.status === 'SUPPORTED') element.evidenceQuotes = ['preuve unique'];
+    });
+
+    expect(() =>
+      validateEvidenceResearcherOutput({
+        compiled,
+        output,
+        pipelineFingerprintSeed: 'prompt-1.3.0:google-vertex-global',
+        responseText: repeatedResponse,
+      }),
+    ).toThrow('INVALID_QUOTE_NON_UNIQUE');
+  });
+
+  it.each([
+    ['apostrophe ASCII', "l'incident", "l'incident"],
+    ['apostrophe typographique', 'l’incident', 'l’incident'],
+    ['accent NFC', 'évaluation', 'évaluation'],
+    ['accent NFD', 'e\u0301valuation', 'e\u0301valuation'],
+    ['emoji', 'preuve 🧭 exacte', 'preuve 🧭 exacte'],
+    ['CRLF', 'ligne 1\r\nligne 2', 'ligne 1\r\nligne 2'],
+    ['NBSP', 'preuve\u00a0exacte', 'preuve\u00a0exacte'],
+    ['saut de ligne', 'preuve\nexacte', 'preuve\nexacte'],
+  ])('derives reconstructible JS offsets for %s', (_label, quote, exact) => {
+    const localResponse = `Avant |${exact}| après`;
+    const output = validOutput();
+    output.elements.forEach((element) => {
+      if (element.status === 'SUPPORTED') {
+        const rule = required(
+          compiled.rubric.elements.find(({ key }) => key === element.elementKey),
+        ).evidenceRule;
+        element.evidenceQuotes =
+          rule.minimumSpans >= 2 ? [quote, 'Avant'] : [quote];
+      }
+    });
+
+    const pass = validateEvidenceResearcherOutput({
+      compiled,
+      output,
+      pipelineFingerprintSeed: 'prompt-1.3.0:google-vertex-global',
+      responseText: localResponse,
+    });
+    const span = required(required(pass.elements[0]).evidenceSpans[0]);
+
+    expect(localResponse.slice(span.start, span.end)).toBe(quote);
+    expect(span.text).toBe(quote);
+    expect(span.sha256).toMatch(/^[a-f0-9]{64}$/u);
+  });
+
+  it.each([
+    ['apostrophe', "l'incident", 'l’incident'],
+    ['NFC/NFD', 'évaluation', 'e\u0301valuation'],
+    ['CRLF/LF', 'ligne 1\nligne 2', 'ligne 1\r\nligne 2'],
+    ['NBSP/espace', 'preuve exacte', 'preuve\u00a0exacte'],
+  ])('does not normalize %s', (_label, quote, response) => {
+    const output = validOutput();
+    output.elements.forEach((element) => {
+      if (element.status === 'SUPPORTED') element.evidenceQuotes = [quote];
+    });
+
+    expect(() =>
+      validateEvidenceResearcherOutput({
+        compiled,
+        output,
+        pipelineFingerprintSeed: 'prompt-1.3.0:google-vertex-global',
+        responseText: response,
+      }),
+    ).toThrow('INVALID_QUOTE_NOT_FOUND');
   });
 
   it('rejects incomplete element coverage', () => {
@@ -121,7 +185,7 @@ describe('evidence researcher protocol', () => {
       ({ elementKey }) => elementKey === 'decision-evidence-relation',
     );
     if (!relation) throw new Error('TEST_FIXTURE_MISSING');
-    relation.evidenceSpans = relation.evidenceSpans.slice(0, 1);
+    relation.evidenceQuotes = relation.evidenceQuotes.slice(0, 1);
 
     expect(() =>
       validateEvidenceResearcherOutput({
@@ -131,6 +195,27 @@ describe('evidence researcher protocol', () => {
         responseText,
       }),
     ).toThrow('EVIDENCE_SPAN_CARDINALITY_INVALID');
+  });
+
+  it('does not count the same resolved quote twice toward minimumSpans', () => {
+    const output = validOutput();
+    const relation = output.elements.find(
+      ({ elementKey }) => elementKey === 'decision-evidence-relation',
+    );
+    if (!relation) throw new Error('TEST_FIXTURE_MISSING');
+    relation.evidenceQuotes = [
+      'Je recommande les ordinateurs.',
+      'Je recommande les ordinateurs.',
+    ];
+
+    expect(() =>
+      validateEvidenceResearcherOutput({
+        compiled,
+        output,
+        pipelineFingerprintSeed: 'prompt-1.3.0:google-vertex-global',
+        responseText,
+      }),
+    ).toThrow('EVIDENCE_SPAN_DUPLICATE');
   });
 
   it('marks the learner response as untrusted data in the prompt', () => {

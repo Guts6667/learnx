@@ -12,6 +12,10 @@ import {
 
 const campaignPath = resolve(
   process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.json',
+);
+const diagnosedCampaignPath = resolve(
+  process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
 );
 const legacyCampaignPath = resolve(
@@ -39,15 +43,20 @@ const specPath = resolve(
   'docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md',
 );
 
-function loadInputs(options: { legacy?: boolean } = {}) {
+function loadInputs(options: { version?: '1.1' | '1.2' | '1.3' } = {}) {
+  const version = options.version ?? '1.3';
   const campaignText = readFileSync(
-    options.legacy ? legacyCampaignPath : campaignPath,
+    version === '1.1'
+      ? legacyCampaignPath
+      : version === '1.2'
+        ? diagnosedCampaignPath
+        : campaignPath,
     'utf8',
   );
   const rubricFileText = readFileSync(rubricPath, 'utf8');
   const semanticCorpusText = readFileSync(semanticCorpusPath, 'utf8');
   const catalogAttestationText = readFileSync(
-    options.legacy ? legacyCatalogAttestationPath : catalogAttestationPath,
+    version === '1.1' ? legacyCatalogAttestationPath : catalogAttestationPath,
     'utf8',
   );
   const specText = readFileSync(specPath, 'utf8');
@@ -70,7 +79,7 @@ describe('Gemini evidence researcher campaign', () => {
       modelId: 'google/gemini-3.6-flash',
       modelSnapshot: 'google/gemini-3.6-flash-20260721',
       providerRoute: 'google-vertex/global',
-      identityStatus: 'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
+      identityStatus: 'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING',
     });
     expect(campaign.falsifier.included).toBe(false);
     expect(campaign.feature).toEqual({
@@ -104,18 +113,24 @@ describe('Gemini evidence researcher campaign', () => {
       status: 'PROPOSED_NOT_APPROVED',
     });
     expect(campaign.smokeProposal).toMatchObject({
-      expectedLogicalWorkflows: 3,
-      hardCapUsd: 0.055,
-      maximumProviderAttempts: 3,
+      expectedLogicalWorkflows: 1,
+      hardCapUsd: 0.02,
+      maximumProviderAttempts: 1,
       retryPolicy: 'NONE',
       securityCanary: 'LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D',
       status: 'DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION',
+    });
+    expect(campaign.smokeProposal.protocolContract).toEqual({
+      evidenceProtocolVersion: '1.3.0',
+      quoteResolution: 'EXACT_UNIQUE_SERVER_DERIVED_OFFSETS',
+      rawModelOutputCharacterLimit: 20_000,
+      rawPersistenceBeforeSemanticValidation: true,
     });
   });
 
   it('keeps the executed 1.1.0 identity readable without reclassifying it', () => {
     const campaign = validateEvidenceExtractionCampaign(
-      loadInputs({ legacy: true }),
+      loadInputs({ version: '1.1' }),
     );
 
     expect(campaign.campaignVersion).toBe('1.1.0-draft');
@@ -124,6 +139,16 @@ describe('Gemini evidence researcher campaign', () => {
       budgetTokens: null,
       effort: 'OFF',
     });
+  });
+
+  it('keeps the executed 1.2.0 identity readable without mixing its schema', () => {
+    const campaign = validateEvidenceExtractionCampaign(
+      loadInputs({ version: '1.2' }),
+    );
+
+    expect(campaign.campaignVersion).toBe('1.2.0-draft');
+    expect(campaign.researcher.promptVersion).toBe('1.1.0');
+    expect(campaign.smokeProposal.caseIds).toHaveLength(3);
   });
 
   it('sends the mandatory Gemini reasoning level explicitly', () => {
@@ -169,7 +194,7 @@ describe('Gemini evidence researcher campaign', () => {
     const bound = calculateEvidenceResearcherCostBound({
       completionUsdPerToken: 0.000_003_75,
       maximumPromptUtf8Bytes: 8_000,
-      maximumProviderAttempts: 3,
+      maximumProviderAttempts: 1,
       outputTokenLimit: 2_500,
       promptUsdPerToken: 0.000_000_75,
       schemaUtf8Bytes: 1_000,
@@ -178,10 +203,10 @@ describe('Gemini evidence researcher campaign', () => {
 
     expect(bound).toEqual({
       inputTokenUpperBound: 11_048,
-      maximumCampaignCostUsd: 0.052_983,
+      maximumCampaignCostUsd: 0.017_661,
       maximumCostPerAttemptUsd: 0.017_661,
     });
-    expect(bound.maximumCampaignCostUsd).toBeLessThan(0.055);
+    expect(bound.maximumCampaignCostUsd).toBeLessThan(0.02);
   });
 
   it('rejects an omitted reasoning policy for the mandatory-reasoning identity', () => {

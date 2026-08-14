@@ -29,9 +29,26 @@ export type EvidenceResearcherSmokeAttempt = {
   providerRequestId?: string;
   providerRoute?: string;
   rawModelOutput?: string;
+  rawModelOutputSha256?: string;
+  rawModelOutputTruncated?: boolean;
   status: EvidenceResearcherSmokeStatus;
   usage?: CorrectionProviderResult['usage'];
   worstCaseAuthorizedUsd: number;
+};
+
+export type EvidenceResearcherRawReceipt = {
+  campaignFingerprint: string;
+  caseId: string;
+  idempotencyKey: string;
+  modelSnapshot?: string;
+  providerRequestId?: string;
+  providerRoute?: string;
+  rawModelOutput: string;
+  rawModelOutputSha256: string;
+  rawModelOutputTruncated: boolean;
+  receivedAt: string;
+  schemaVersion: 1;
+  usage?: CorrectionProviderResult['usage'];
 };
 
 export type EvidenceResearcherSmokeLedgerEvent = {
@@ -78,6 +95,34 @@ export type EvidenceResearcherSmokeProvider = {
 
 const sha256 = (value: string) =>
   createHash('sha256').update(value).digest('hex');
+
+const RAW_MODEL_OUTPUT_CHARACTER_LIMIT = 20_000;
+
+function receivedRawModelOutput(input: {
+  canary: string;
+  result: Awaited<ReturnType<EvidenceResearcherSmokeProvider['execute']>>;
+}):
+  | Pick<
+      EvidenceResearcherRawReceipt,
+      'rawModelOutput' | 'rawModelOutputSha256' | 'rawModelOutputTruncated'
+    >
+  | undefined {
+  const source =
+    input.result.status === 'VALID'
+      ? JSON.stringify(input.result.output)
+      : input.result.rawModelOutput;
+  if (!source) return undefined;
+  const sanitized = source.replaceAll(input.canary, '[REDACTED_CANARY]');
+  const characters = Array.from(sanitized);
+  return {
+    rawModelOutput: characters
+      .slice(0, RAW_MODEL_OUTPUT_CHARACTER_LIMIT)
+      .join(''),
+    rawModelOutputSha256: sha256(source),
+    rawModelOutputTruncated:
+      characters.length > RAW_MODEL_OUTPUT_CHARACTER_LIMIT,
+  };
+}
 
 function appendLedger(
   ledger: EvidenceResearcherSmokeLedgerEvent[],
@@ -202,6 +247,7 @@ export async function runEvidenceResearcherSmoke(input: {
     ledger: EvidenceResearcherSmokeLedgerEvent[];
     state: EvidenceResearcherSmokeState;
   }) => Promise<void>;
+  onRawReceived?: (receipt: EvidenceResearcherRawReceipt) => Promise<void>;
   promptUsdPerToken: number;
   provider: EvidenceResearcherSmokeProvider;
   providerName: string;
@@ -214,6 +260,12 @@ export async function runEvidenceResearcherSmoke(input: {
   state: EvidenceResearcherSmokeState;
 }> {
   const campaignFingerprint = sha256(input.campaignFileText);
+  if (
+    input.campaign.campaignVersion === '1.3.0-draft' &&
+    !input.onRawReceived
+  ) {
+    throw new Error('RAW_MODEL_OUTPUT_PERSISTENCE_REQUIRED');
+  }
   const now = new Date().toISOString();
   const state = structuredClone(
     input.resume?.state ?? {
@@ -328,13 +380,39 @@ export async function runEvidenceResearcherSmoke(input: {
       await persist();
       break;
     }
+    const rawReceipt = receivedRawModelOutput({
+      canary: input.campaign.smokeProposal.securityCanary,
+      result,
+    });
+    let rawPersistenceFailed = false;
+    if (rawReceipt) {
+      try {
+        await input.onRawReceived?.({
+          campaignFingerprint,
+          caseId,
+          idempotencyKey,
+          modelSnapshot: result.modelSnapshot,
+          providerRequestId: result.providerRequestId,
+          providerRoute: result.providerRoute,
+          ...rawReceipt,
+          receivedAt: new Date().toISOString(),
+          schemaVersion: 1,
+          usage: result.usage,
+        });
+      } catch {
+        rawPersistenceFailed = true;
+      }
+    }
     const before = input.campaign.smokeProposal.hardCapUsd - actualCost();
     const actualCostUsd = result.usage?.actualCostUsd;
     let status: EvidenceResearcherSmokeStatus = result.status;
     let errorCode: string | undefined =
       result.status === 'VALID' ? undefined : result.errorCode;
     let output: EvidencePass | undefined;
-    if (
+    if (rawPersistenceFailed) {
+      status = 'ERROR';
+      errorCode = 'RAW_MODEL_OUTPUT_PERSISTENCE_FAILED';
+    } else if (
       actualCostUsd === undefined ||
       result.usage?.costSource !== 'ACTUAL' ||
       !result.providerRequestId
@@ -388,9 +466,7 @@ export async function runEvidenceResearcherSmoke(input: {
       ...(output ? { output } : {}),
       providerRequestId: result.providerRequestId,
       providerRoute: result.providerRoute,
-      ...('rawModelOutput' in result && result.rawModelOutput
-        ? { rawModelOutput: result.rawModelOutput }
-        : {}),
+      ...(rawReceipt ?? {}),
       status,
       usage: result.usage,
       worstCaseAuthorizedUsd: costBound.maximumCostPerAttemptUsd,

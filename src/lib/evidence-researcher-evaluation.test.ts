@@ -75,11 +75,7 @@ function perfectResults() {
           confidence: element.confidence,
           contradictions: element.contradictions,
           elementKey: element.elementKey,
-          evidenceSpans: element.evidenceSpans.map(({ end, start, text }) => ({
-            end,
-            start,
-            text,
-          })),
+          evidenceQuotes: element.evidenceSpans.map(({ text }) => text),
           status: element.status,
         })),
       }),
