@@ -125,7 +125,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3 mais révèle une identité `reasoning OFF` non fidèle au comportement facturé. Aucune promotion. | Préparer hors ligne une identité Sonnet 5 `PROVIDER_DEFAULT/UNSPECIFIED`, puis repasser Finance et propriétaire avant tout panel. |
+| V4-009C | `ACTIF` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3. Panel Sonnet 10×2 préparé sous identité `PROVIDER_DEFAULT/UNSPECIFIED`, aucune promotion. | Arbitrer Produit/Finance puis demander un GO propriétaire exact avant tout appel. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

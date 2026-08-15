@@ -131,7 +131,8 @@ function optionalReasoning(
     | { effort: 'minimal' | 'low' }
     | { max_tokens: number };
 } {
-  return profile.reasoning.effort === 'OFF'
+  return profile.reasoning.effort === 'OFF' ||
+    profile.reasoning.effort === 'PROVIDER_DEFAULT'
     ? {}
     : {
         reasoning:

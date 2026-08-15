@@ -12,7 +12,7 @@
   "phase": {
     "path": "../../../../docs/V4_AI_CORRECTION_PHASE_MANIFEST.json",
     "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
-    "sha256": "920595def21392f7f97c443c06b4a1998fdee22635c3605d7c631f9bf0b930db"
+    "sha256": "a82b60e9f0eba7e9e07ea238ca649b12cf66fcff13357aff74b47d49ef83c6b6"
   },
   "configuration": {
     "path": "configuration.json",

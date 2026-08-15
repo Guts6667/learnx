@@ -15,6 +15,7 @@ import {
 } from '../src/lib/ai-correction-provider-adapters.ts';
 import { calculateEvidenceResearcherCostBound } from '../src/lib/evidence-extraction-campaign.ts';
 import { validateEvidenceResearcherPanelCampaign } from '../src/lib/evidence-researcher-panel-campaign.ts';
+import { validateEvidenceResearcherSonnetPanelCampaign } from '../src/lib/evidence-researcher-sonnet-panel-campaign.ts';
 import { compileExecutableRubric } from '../src/lib/executable-rubric-engine.ts';
 import { validateMechanicalOracle } from '../src/lib/executable-rubric-mechanical-oracle.ts';
 import { validateExecutableRubricSemanticSelection } from '../src/lib/executable-rubric-semantic-selection.ts';
@@ -87,12 +88,23 @@ function normalizeError(error: unknown) {
   throw error;
 }
 
+const geminiCampaignFile =
+  'gemini-evidence-researcher-panel.v1.3-v2.json';
+const sonnetCampaignFile = 'sonnet-5-evidence-researcher-panel.v1.json';
+const campaignFile = option('campaign') ?? geminiCampaignFile;
+if (campaignFile !== geminiCampaignFile && campaignFile !== sonnetCampaignFile) {
+  throw new Error('EVIDENCE_RESEARCHER_PANEL_CAMPAIGN_NOT_ALLOWLISTED');
+}
+const sonnetCampaignSelected = campaignFile === sonnetCampaignFile;
 const paths = {
   attestation: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
+    sonnetCampaignSelected
+      ? 'benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json'
+      : 'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
   ),
   campaign: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-panel.v1.3-v2.json',
+    'benchmarks/ai-correction/executable-rubric',
+    campaignFile,
   ),
   historicalCorpus: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
@@ -134,14 +146,17 @@ const [
 
 const rubric = JSON.parse(rubricText) as unknown;
 const compiled = compileExecutableRubric(rubric);
-const campaign = validateEvidenceResearcherPanelCampaign({
+const validationInput = {
   campaign: JSON.parse(campaignText) as unknown,
   catalogAttestationText: attestationText,
   rubric,
   rubricFileText: rubricText,
   semanticSelectionText,
   specText,
-});
+};
+const campaign = sonnetCampaignSelected
+  ? validateEvidenceResearcherSonnetPanelCampaign(validationInput)
+  : validateEvidenceResearcherPanelCampaign(validationInput);
 const semanticCorpus = validateExecutableRubricSemanticSelection({
   compiled,
   selection: JSON.parse(semanticSelectionText) as unknown,
@@ -227,10 +242,14 @@ if (
 }
 
 const campaignFingerprint = sha256(campaignText);
-const exactOwnerGoToken = `GO_EVIDENCE_RESEARCHER_PANEL_${campaignFingerprint
+const tokenPrefix = sonnetCampaignSelected
+  ? 'GO_EVIDENCE_RESEARCHER_SONNET5_PANEL'
+  : 'GO_EVIDENCE_RESEARCHER_PANEL';
+const exactOwnerGoToken = `${tokenPrefix}_${campaignFingerprint
   .slice(0, 16)
   .toUpperCase()}`;
-const exactCommand = `pnpm ai:evidence:panel:validate -- --execute --owner-go=${exactOwnerGoToken}`;
+const campaignArgument = `--campaign=${campaignFile}`;
+const exactCommand = `pnpm ai:evidence:panel:validate -- ${campaignArgument} --execute --owner-go=${exactOwnerGoToken}`;
 const validation = {
   authorization: {
     commandAfterSeparateOwnerApproval: exactCommand,
@@ -270,7 +289,7 @@ const validation = {
     version: campaign.researcher.routeObservability.version,
   },
   semanticCases: semanticCorpus.cases.length,
-  validationCommand: 'pnpm ai:evidence:panel:validate',
+  validationCommand: `pnpm ai:evidence:panel:validate -- ${campaignArgument}`,
 };
 
 if (!process.argv.includes('--execute')) {

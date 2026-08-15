@@ -575,3 +575,20 @@ tokens de raisonnement et `2 135` tokens de sortie visible. Le payload omettait
 run ne peut donc pas être présenté comme preuve d'un profil `reasoning OFF`.
 Une suite éventuelle exige une nouvelle identité explicite, un nouveau budget
 et un nouveau GO. Le reliquat de cette enveloppe est annulé.
+
+### 2026-08-15 — Panel Sonnet 5 10×2 préparé hors ligne
+
+Statut : `DRAFT_BLOCKED / PRODUCT_AND_FINANCE_NOT_ARBITRATED / NO_MODEL_CALL`.
+
+La nouvelle campagne
+`learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1` décrit explicitement
+le raisonnement comme `PROVIDER_DEFAULT/UNSPECIFIED`. Le transport omet toujours
+le paramètre, mais l'identité ne prétend plus le désactiver. Prompt, protocole,
+rubrique et sélection sémantique restent inchangés.
+
+Le manifeste porte le SHA-256
+`6c1000523194bdacaa01ccb13f5445fa12fad782bf84f5d57fa6c5239c9966a9`.
+Il préenregistre 10 cas ×2, dont mutations de preuve, raisonnement,
+contradiction et deux injections, sans retry ni fallback. Le coût attendu est
+`0,50 USD`; le préflight borne 20 appels à `0,9212 USD` sous un hard cap proposé
+de `0,95 USD`. Aucun appel n'a été effectué.

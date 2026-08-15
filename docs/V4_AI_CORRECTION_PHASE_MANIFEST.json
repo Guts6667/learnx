@@ -392,6 +392,33 @@
             "ledgerFinalRecordHash": "e8e93aed934346e63e468d73a30cd473f3dcc55f1e2b1dc45ec9799c23672b29",
             "reasoningIdentityFinding": "REQUEST_OMITTED_REASONING_BUT_PROVIDER_REPORTED_AND_BILLED_REASONING_TOKENS"
           }
+        },
+        "sonnet5Panel10x2": {
+          "status": "OFFLINE_READY_PRODUCT_FINANCE_OWNER_BLOCKED",
+          "campaign": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-researcher-panel.v1.json",
+          "campaignSha256": "6c1000523194bdacaa01ccb13f5445fa12fad782bf84f5d57fa6c5239c9966a9",
+          "catalogAttestation": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
+          "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+          "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+          "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+          "candidate": "anthropic/claude-sonnet-5-20260630",
+          "requestedRoute": "Anthropic",
+          "expectedObservedProvider": "Anthropic",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-sonnet-5-2.0.0",
+          "reasoningMode": "PROVIDER_DEFAULT_UNSPECIFIED",
+          "expectedLogicalWorkflows": 20,
+          "maximumProviderAttempts": 20,
+          "maximumRetriesPerWorkflow": 0,
+          "expectedCostUsd": 0.5,
+          "hardCapUsd": 0.95,
+          "maximumCostPerAttemptUsd": 0.04606,
+          "maximumCampaignCostBoundUsd": 0.9212,
+          "productArbitration": "NOT_GRANTED",
+          "financeArbitration": "NOT_GRANTED",
+          "ownerAuthorization": "NOT_GRANTED",
+          "networkCallsAllowed": false,
+          "holdoutAccess": "PROHIBITED"
         }
       }
     },

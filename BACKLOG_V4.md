@@ -1409,8 +1409,9 @@ Mise à jour du 15 août 2026 : le panel Gemini v2 est figé en NO-GO après une
 citation non exacte. Le screening Sonnet 5 termine 3/3 `VALID` sous le même
 protocole 1.3, mais l'identité `reasoning OFF` est non reproductible : le
 fournisseur a produit et facturé des tokens de raisonnement malgré l'omission
-du paramètre. Toute suite requiert une nouvelle identité ; aucun holdout ou
-V4-002 n'est ouvert par ce screening.
+du paramètre. Une nouvelle identité `PROVIDER_DEFAULT/UNSPECIFIED` et son panel
+10×2 sont préparés hors ligne ; Produit, Finance et propriétaire restent
+bloquants. Aucun holdout ou V4-002 n'est ouvert par cette préparation.
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
