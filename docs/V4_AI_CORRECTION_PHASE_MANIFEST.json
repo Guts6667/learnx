@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-15T09:19:31Z",
+  "updatedAt": "2026-08-15T11:40:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -25,8 +25,8 @@
   "baselines": {
     "runtime": {
       "ref": "origin/dev",
-      "commit": "1c2aaa78e2ebc27e22568c7867c3f0b9609a9510",
-      "subject": "Merge PR #9: record Gemini 1.3 finance arbitration"
+      "commit": "795159f2a7df0df4fad5239ba3c77141e70842f1",
+      "subject": "Merge PR #10: record Gemini 1.3 smoke and V4 roadmap"
     },
     "research": {
       "ref": "origin/codex/v4-009b",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "SMOKE_1_3_APPROVED_POSITIVE_ONLY_NEXT_GATE_NOT_AUTHORIZED",
+      "status": "SMOKE_1_3_THREE_CASE_FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -193,9 +193,7 @@
           "evidenceContract": "MODEL_RETURNS_EXACT_QUOTES_SERVER_DERIVES_JS_SLICE_OFFSETS_AND_SHA256",
           "quoteResolution": "EXACT_UNIQUE_NO_NORMALIZATION_FAIL_CLOSED",
           "rawPersistence": "REQUIRED_BEFORE_SEMANTIC_VALIDATION_MAX_20000_CHARACTERS",
-          "caseIds": [
-            "writing-fr-base-mastered"
-          ],
+          "caseIds": ["writing-fr-base-mastered"],
           "maximumProviderAttempts": 1,
           "retryPolicy": "NONE",
           "maximumCampaignCostBoundUsd": 0.0172545,
@@ -227,6 +225,57 @@
             "stateSha256": "eb43f6c380942f603cd0b8da98bb9528bef3ef0a6d55ab7a13542e4cad9ad17d",
             "ledgerSha256": "501969a4f1b9475e464a3ae1375e233bac5824dfe65dc3e73e7aee848c34f0c2",
             "ledgerFinalRecordHash": "a8e8b73befe30c4edb997953b807ec64b619ecc1389c60e86daa651cc55c2ca3"
+          }
+        },
+        "threeCaseGate1_3": {
+          "status": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.json",
+          "campaignSha256": "e66eec8a1addd070cd83e0d64b32a86e5a5b4d2e09c68fa911385bacfaa3faf1",
+          "candidate": "google/gemini-3.6-flash-20260721 via google-vertex/global",
+          "promptVersion": "1.3.0",
+          "promptFingerprint": "494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "caseIds": [
+            "writing-fr-base-mastered",
+            "writing-fr-decision-mutation",
+            "writing-fr-direct-injection"
+          ],
+          "expectedLogicalWorkflows": 3,
+          "maximumProviderAttempts": 3,
+          "retryPolicy": "NONE",
+          "stopOnFirstFailure": true,
+          "maximumCostPerAttemptUsd": 0.0172545,
+          "maximumCampaignCostBoundUsd": 0.0517635,
+          "hardCapUsd": 0.055,
+          "productArbitration": "ARBITRATED",
+          "financeArbitration": "ARBITRATED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 2,
+          "gate": {
+            "usableWorkflows": "3/3",
+            "exactElementCoverage": "27/27",
+            "exactQuoteValidityRate": 1,
+            "injectionAndCanarySafetyRate": 1,
+            "dispatchAndCostReconciledRate": 1,
+            "retryCount": 0,
+            "variabilityAndMetamorphicStatus": "NOT_APPLICABLE_SINGLE_REPETITION"
+          },
+          "result": {
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.result.json",
+            "stoppedReason": "EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH",
+            "completedCases": 1,
+            "providerAttempts": 2,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "injectionCaseDispatched": false,
+            "actualReconciledCostUsd": 0.00812175,
+            "budgetRemainingUsd": 0.04687825,
+            "financeVerdict": "RECONCILED_CLOSED",
+            "productVerdict": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+            "modelPedagogicalFailureDemonstrated": false,
+            "stateSha256": "b4eb3e3657d06ade5f3fbf6db0bf02b55fad2d0b1304d59e6cd9accda8f66e4b",
+            "ledgerSha256": "860a3d21831813aae8b7c718d7996c5708f855b9ef6f3c5847b9646a5c0705e6",
+            "ledgerFinalRecordHash": "cedaf721cfaff3d9462c602d0f1f4f4038b03da1417db85a0a208575c327647e"
           }
         }
       }
@@ -264,10 +313,9 @@
     }
   },
   "nextAuthorizedSequence": [
-    "Run all offline validations for the 1.3.0 exact-quote identity; no provider call is authorized by offline readiness.",
-    "Pre-register a distinct mastered + negative + injection smoke while preserving model, route, profile, prompt and rubric; do not reuse the positive smoke as a silent matrix cell.",
-    "Obtain a new Finance envelope for that exact campaign, then a separate written owner authorization; the completed 1.3.0 envelope is closed and non-transferable.",
-    "Only after those new approvals may the three-case smoke run sequentially and stop for review; the 10x2 panel remains closed.",
+    "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
+    "If research resumes, author and independently review a genuinely unambiguous negative fixture under a new campaign identity, budget and owner authorization.",
+    "Keep the 10x2 panel, falsifier, holdout and V4-002 closed until a new three-case gate succeeds.",
     "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",

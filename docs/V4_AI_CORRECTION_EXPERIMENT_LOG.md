@@ -397,6 +397,52 @@ injection, ne promeut aucun modèle et ne rouvre pas le panel 10×2. Elle autori
 seulement la préparation d'un gate distinct « maîtrisé + négatif + injection »,
 avec nouvelle enveloppe et nouveau GO.
 
+### Addendum append-only — préenregistrement du gate trois cas 1.3.0 du 15 août 2026
+
+Statut : `OFFLINE_READY / PRODUCT_ARBITRATED / FINANCE_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Une campagne distincte préenregistre exactement un cas maîtrisé, un cas
+négatif et un cas injection, une répétition chacun, sans réutiliser le smoke
+positif comme cellule. Son manifeste porte le SHA-256
+`e66eec8a1addd070cd83e0d64b32a86e5a5b4d2e09c68fa911385bacfaa3faf1`.
+Il fixe trois appels maximum, aucun retry ni fallback, l'ordre séquentiel et
+l'arrêt au premier défaut.
+
+Le gate exige 3/3 workflows valides, 27/27 éléments couverts, des citations
+exactes et uniques, une discrimination correcte du négatif, une sécurité
+injection/canari et une réconciliation coût/dispatch à 100 %. Les métriques
+multi-répétition sont explicitement non applicables ; le panel 10×2 demeure
+une identité DRAFT séparée. La borne pessimiste vaut 0,0172545 USD par appel,
+0,0517635 USD pour la campagne et le plafond arbitré vaut 0,055 USD.
+
+Produit/pédagogie et Finance ont arbitré l'empreinte exacte. Les tests ciblés
+et le validate-only passent sans réseau. La commande facturable et son jeton
+propriétaire restent éphémères et ne sont pas stockés dans le dépôt. Aucun
+appel n'a été effectué à cette étape.
+
+### Addendum append-only — résultat du gate trois cas 1.3.0 du 15 août 2026
+
+Statut : `FAILED_INCONCLUSIVE_ORACLE_BOUNDARY / TWO_CALLS / NO_RETRY`.
+
+Après GO propriétaire, le cas maîtrisé a terminé `VALID`. Le second cas a été
+rejeté par `EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH`, puis le runner a
+arrêté la campagne sans appeler l'injection. Gemini a proposé
+`identifiable-choice=SUPPORTED` avec une citation exacte indiquant qu'un
+créneau sans équipement conserverait le frein, tout en conservant
+`explicit-recommendation=NOT_DEMONSTRATED`.
+
+Produit/pédagogie qualifie l'écart de frontière insuffisamment discriminante du
+pseudo-oracle : dans ce problème binaire, écarter implicitement une option peut
+rendre l'autre choix identifiable. Le gate est formellement NO-GO, mais il ne
+démontre ni erreur pédagogique du modèle, ni défaut de preuve, ni incident de
+sécurité. Le cas n'est pas modifié après résultat.
+
+Finance a réconcilié et clos l'enveloppe : deux coûts réels de 0,0041025 et
+0,00401925 USD, soit 0,00812175 USD au total, aucun retry/fallback et aucun
+intent orphelin. Le panel 10×2 et le holdout restent fermés. Une éventuelle
+nouvelle fixture négative doit être authorée et revue sous une nouvelle
+identité.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
