@@ -434,7 +434,7 @@ export async function runEvidenceResearcherPanel(input: {
         canary: input.campaign.protocol.securityCanary,
         result,
       });
-      let rawPersistenceFailed = !received;
+      let rawPersistenceFailed = false;
       if (received) {
         try {
           await input.onRawReceived({

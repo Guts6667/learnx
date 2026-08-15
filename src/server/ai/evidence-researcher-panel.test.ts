@@ -199,4 +199,45 @@ describe('evidence researcher panel runner', () => {
     expect(result.state.attempts).toHaveLength(1);
     expect(result.state.stoppedReason).toBe('COST_RECONCILIATION_REQUIRED');
   });
+
+  it('preserves a provider output error when no raw output exists', async () => {
+    const input = await fixture();
+    const onRawReceived = vi.fn();
+    const result = await runEvidenceResearcherPanel({
+      ...input,
+      completionUsdPerToken: 0.00000375,
+      onRawReceived,
+      promptUsdPerToken: 0.00000075,
+      provider: {
+        execute: vi.fn(() =>
+          Promise.resolve({
+            errorCode: 'MODEL_OUTPUT_TRUNCATED',
+            latencyMs: 1_392,
+            modelSnapshot: 'google/gemini-3.6-flash',
+            observedProvider: 'Google',
+            providerRequestId: 'request-truncated',
+            providerRoute: 'Google',
+            requestedRoute: 'google-vertex/global',
+            status: 'INVALID' as const,
+            usage: {
+              actualCostUsd: 0.032642,
+              costSource: 'ACTUAL' as const,
+              inputTokens: 3_821,
+              reasoningTokens: 2_500,
+              visibleOutputTokens: 0,
+            },
+          }),
+        ),
+      },
+    });
+
+    expect(onRawReceived).not.toHaveBeenCalled();
+    expect(result.state.attempts).toHaveLength(1);
+    expect(result.state.attempts[0]).toMatchObject({
+      errorCode: 'MODEL_OUTPUT_TRUNCATED',
+      providerRequestId: 'request-truncated',
+      status: 'INVALID',
+    });
+    expect(result.state.stoppedReason).toBe('MODEL_OUTPUT_TRUNCATED');
+  });
 });
