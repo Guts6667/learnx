@@ -14,6 +14,7 @@ import {
   getCorrectionProviderAdapter,
 } from '../src/lib/ai-correction-provider-adapters.ts';
 import { calculateEvidenceResearcherCostBound } from '../src/lib/evidence-extraction-campaign.ts';
+import { calculateEvidencePanelAgreementMetrics } from '../src/lib/evidence-researcher-panel-metrics.ts';
 import { validateEvidenceResearcherPanelCampaign } from '../src/lib/evidence-researcher-panel-campaign.ts';
 import { validateEvidenceResearcherSonnetPanelCampaign } from '../src/lib/evidence-researcher-sonnet-panel-campaign.ts';
 import { compileExecutableRubric } from '../src/lib/executable-rubric-engine.ts';
@@ -413,16 +414,10 @@ const elementComparisons = validFinalAttempts.flatMap((attempt) => {
     actual: attempt.output?.elements.find(
       ({ elementKey }) => elementKey === expected.elementKey,
     )?.status,
+    caseId: attempt.caseId,
     expected: expected.status,
   }));
 });
-const falseSupportedCount = elementComparisons.filter(
-  ({ actual, expected }) => actual === 'SUPPORTED' && expected !== 'SUPPORTED',
-).length;
-const falseNotDemonstratedCount = elementComparisons.filter(
-  ({ actual, expected }) =>
-    actual === 'NOT_DEMONSTRATED' && expected !== 'NOT_DEMONSTRATED',
-).length;
 const variabilityCases = campaign.execution.caseIds.filter((caseId) => {
   const vectors = validFinalAttempts
     .filter((attempt) => attempt.caseId === caseId)
@@ -436,41 +431,55 @@ const variabilityCases = campaign.execution.caseIds.filter((caseId) => {
     );
   return new Set(vectors).size > 1;
 });
+const criticalRequirements =
+  'criticalCaseIds' in campaign.gate.requirements
+    ? {
+        criticalCaseAtomicAgreementRate:
+          campaign.gate.requirements.criticalCaseAtomicAgreementRate,
+        criticalCaseIds: campaign.gate.requirements.criticalCaseIds,
+      }
+    : {};
+const agreementMetrics = calculateEvidencePanelAgreementMetrics({
+  comparisons: elementComparisons,
+  requirements: {
+    atomicStatusAgreementMinimum:
+      campaign.gate.requirements.atomicStatusAgreementMinimum,
+    falseNotDemonstratedCountMaximum:
+      campaign.gate.requirements.falseNotDemonstratedCountMaximum,
+    falseSupportedCount: campaign.gate.requirements.falseSupportedCount,
+    variabilityRateMaximum:
+      campaign.gate.requirements.variabilityRateMaximum,
+    ...criticalRequirements,
+  },
+  totalCases: campaign.execution.caseIds.length,
+  variabilityCaseCount: variabilityCases.length,
+});
 const totalActualCostUsd = result.state.attempts.reduce(
   (total, attempt) => total + (attempt.actualCostUsd ?? 0),
   0,
 );
 const summary = {
-  atomicStatusAgreementRate:
-    elementComparisons.length === 0
-      ? 0
-      : elementComparisons.filter(({ actual, expected }) => actual === expected)
-          .length / elementComparisons.length,
+  atomicStatusAgreementRate: agreementMetrics.atomicStatusAgreementRate,
   campaignId: campaign.campaignId,
   campaignSha256: campaignFingerprint,
   completedLogicalWorkflows: result.state.completedCellKeys.length,
-  falseNotDemonstratedCount,
-  falseSupportedCount,
+  criticalCaseAtomicAgreementRate:
+    agreementMetrics.criticalCaseAtomicAgreementRate,
+  criticalElementComparisons: agreementMetrics.criticalElementComparisons,
+  falseNotDemonstratedCount: agreementMetrics.falseNotDemonstratedCount,
+  falseSupportedCount: agreementMetrics.falseSupportedCount,
   gatePassed:
     result.state.stoppedReason === null &&
     result.state.completedCellKeys.length ===
       campaign.execution.expectedLogicalWorkflows &&
     elementComparisons.length === 180 &&
-    elementComparisons.filter(({ actual, expected }) => actual === expected)
-      .length /
-      elementComparisons.length >=
-      campaign.gate.requirements.atomicStatusAgreementMinimum &&
-    falseSupportedCount === campaign.gate.requirements.falseSupportedCount &&
-    falseNotDemonstratedCount <=
-      campaign.gate.requirements.falseNotDemonstratedCountMaximum &&
-    variabilityCases.length / campaign.execution.caseIds.length <=
-      campaign.gate.requirements.variabilityRateMaximum,
+    agreementMetrics.requirementsPassed,
   providerAttempts: result.state.attempts.length,
   retries: result.state.attempts.length - finalAttempts.length,
   stoppedReason: result.state.stoppedReason,
   totalActualCostUsd,
   variabilityCases,
-  variabilityRate: variabilityCases.length / campaign.execution.caseIds.length,
+  variabilityRate: agreementMetrics.variabilityRate,
 };
 
 const reviewEntries = validFinalAttempts.map((attempt) => {

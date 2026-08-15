@@ -587,8 +587,10 @@ le paramètre, mais l'identité ne prétend plus le désactiver. Prompt, protoco
 rubrique et sélection sémantique restent inchangés.
 
 Le manifeste porte le SHA-256
-`6c1000523194bdacaa01ccb13f5445fa12fad782bf84f5d57fa6c5239c9966a9`.
+`c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7`.
 Il préenregistre 10 cas ×2, dont mutations de preuve, raisonnement,
 contradiction et deux injections, sans retry ni fallback. Le coût attendu est
 `0,50 USD`; le préflight borne 20 appels à `0,9212 USD` sous un hard cap proposé
-de `0,95 USD`. Aucun appel n'a été effectué.
+de `0,95 USD`. Les six cas critiques exigent désormais `100 %` d'accord
+atomique afin qu'une confusion de polarité ne puisse pas être compensée par le
+score global. Aucun appel n'a été effectué.

@@ -396,7 +396,7 @@
         "sonnet5Panel10x2": {
           "status": "OFFLINE_READY_PRODUCT_FINANCE_OWNER_BLOCKED",
           "campaign": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-researcher-panel.v1.json",
-          "campaignSha256": "6c1000523194bdacaa01ccb13f5445fa12fad782bf84f5d57fa6c5239c9966a9",
+          "campaignSha256": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
           "catalogAttestation": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
           "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
           "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
@@ -414,6 +414,7 @@
           "hardCapUsd": 0.95,
           "maximumCostPerAttemptUsd": 0.04606,
           "maximumCampaignCostBoundUsd": 0.9212,
+          "criticalCaseAtomicAgreementRate": 1,
           "productArbitration": "NOT_GRANTED",
           "financeArbitration": "NOT_GRANTED",
           "ownerAuthorization": "NOT_GRANTED",

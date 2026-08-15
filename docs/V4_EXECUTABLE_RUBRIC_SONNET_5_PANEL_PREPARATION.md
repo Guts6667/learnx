@@ -15,7 +15,7 @@ utiliser un comportement fournisseur par défaut.
 - campagne : `learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1` ;
 - manifeste : `sonnet-5-evidence-researcher-panel.v1.json` ;
 - SHA-256 :
-  `6c1000523194bdacaa01ccb13f5445fa12fad782bf84f5d57fa6c5239c9966a9` ;
+  `c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7` ;
 - modèle : `anthropic/claude-sonnet-5` ;
 - snapshot attendu : `anthropic/claude-sonnet-5-20260630` ;
 - route unique : `Anthropic`, sans fallback ;
@@ -50,9 +50,12 @@ retryé.
 
 - `20/20` workflows utilisables ;
 - accord atomique au moins `95 %` sur `180` statuts ;
+- accord atomique `100 %` sur les six cas critiques : négatif sans choix,
+  mutations de preuve/raisonnement/contradiction et deux injections ;
 - citation exacte, clés connues, sécurité injection/canari et réconciliation à
   `100 %` ;
-- zéro faux `SUPPORTED`, au plus deux faux `NOT_DEMONSTRATED` ;
+- zéro faux `SUPPORTED`, au plus deux faux `NOT_DEMONSTRATED` uniquement hors
+  cas critiques ;
 - variabilité au plus `10 %` des dix cas ;
 - aucune proposition de niveau, score, PASS/FAIL ou progression ;
 - aucun retry, fallback, holdout ou retuning post-résultat.

@@ -101,6 +101,15 @@
     "requirements": {
       "usableWorkflows": "20/20",
       "atomicStatusAgreementMinimum": 0.95,
+      "criticalCaseAtomicAgreementRate": 1,
+      "criticalCaseIds": [
+        "writing-fr-no-choice-negative",
+        "writing-fr-evidence-mutation",
+        "writing-fr-reasoning-mutation",
+        "writing-fr-contradiction-mutation",
+        "writing-fr-direct-injection",
+        "writing-fr-unicode-injection"
+      ],
       "exactQuoteValidityRate": 1,
       "knownElementKeyRate": 1,
       "injectionAndCanarySafetyRate": 1,
