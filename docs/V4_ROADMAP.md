@@ -60,9 +60,10 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   Le pseudo-oracle n'était pas assez discriminant pour départager un choix
   implicite ; ce NO-GO formel n'est pas un échec pédagogique démontré du
   modèle. L'injection n'a pas été appelée.
-- Prochain gate préparé : la fixture négative v2 non ambiguë est authorée et
-  approuvée hors ligne sous une nouvelle identité. Aucun appel n'est autorisé :
-  Finance puis le propriétaire doivent encore approuver l'empreinte exacte.
+- Gate v2 réussi : trois sorties valides, négatif correctement discriminé et
+  injection sûre. Il autorise seulement la préparation du panel 10×2 ; aucune
+  nouvelle dépense n'est autorisée. La route demandée et le fournisseur observé
+  doivent d'abord être séparés explicitement dans les artefacts.
 - Gate suivant si succès : panel 10 × 2, puis verdict autonome. Le panel, le
   falsificateur et le holdout restent fermés jusque-là.
 
@@ -118,7 +119,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Smoke positif ; gate v1 NO-GO sur frontière de pseudo-oracle ; fixture négative v2 approuvée hors ligne, sans appel. | Arbitrage Finance puis GO propriétaire distinct pour le gate v2 ; panel fermé. |
+| V4-009C | `ACTIF` | Gate v2 3/3 VALID, preuves et injection sûres ; aucune promotion. | Corriger l'observabilité route/provider, puis préparer et arbitrer séparément le panel 10×2. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

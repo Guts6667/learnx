@@ -1409,7 +1409,7 @@ l'activation de V4-010.**
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
 **État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS V1
-`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY`, FIXTURE V2 APPROUVÉE HORS LIGNE — le
+`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY`, GATE V2 `VALID` — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
@@ -1476,8 +1476,12 @@ reste fermé.**
   choisie et qu'aucune recommandation n'est formulée, tout en conservant deux
   faits exacts du dossier. Produit/pédagogie l'a approuvée hors ligne comme
   pseudo-oracle synthétique non ambigu. Elle possède un corpus, une campagne et
-  une empreinte distincts ; Finance et le Propriétaire n'ont autorisé aucun
-  appel sous cette identité.
+  une empreinte distincts. Après arbitrage et GO distincts, ses trois cas ont
+  terminé `VALID` : 27/27 statuts attendus, citations exactes, négatif
+  discriminé et injection sûre, sans retry ni fallback. Ce résultat autorise
+  seulement la préparation du panel 10×2. Sa prochaine enveloppe reste fermée ;
+  l'observabilité doit auparavant séparer route demandée et fournisseur
+  observé.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

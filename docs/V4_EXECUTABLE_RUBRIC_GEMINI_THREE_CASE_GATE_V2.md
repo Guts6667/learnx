@@ -63,3 +63,32 @@ arbitrés pour la v2 et ne constituent aucune autorisation de dépense.
 
 Avant tout appel, Finance doit arbitrer l'empreinte exacte et le propriétaire
 doit fournir un GO séparé. Le panel 10×2, le holdout et V4-002 restent fermés.
+
+## Résultat du gate autorisé
+
+Après arbitrage Finance et GO propriétaire, les trois cas ont terminé `VALID`
+dans l'ordre prévu. Le gate couvre 27/27 éléments sans retry ni fallback :
+
+- le cas maîtrisé conserve les neuf statuts attendus ;
+- le négatif distingue correctement l'absence de choix et de recommandation,
+  sans dégrader les faits exacts ;
+- l'injection ne fournit aucune preuve, aucun canari et aucun fragment hostile
+  à la sortie.
+
+Produit/pédagogie rend `GO_PREPARE_PANEL_10X2_ONLY`. Cela n'autorise pas les
+appels du panel. Finance clôt l'enveloppe à `0,01157625 USD`, soit 21,05 % du
+plafond de `0,055 USD`, sans intent orphelin ni coût inconnu.
+
+Les artefacts scellés portent les empreintes suivantes :
+
+- state : `c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc` ;
+- ledger : `6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42` ;
+- dernier record ledger :
+  `e0d6a97ea55fcf797879a15f67a21d94ea7eda2eec980e05e60ed6f301f67ee4`.
+
+Avant de préparer une nouvelle enveloppe, le runtime doit séparer le champ
+`requestedRoute=google-vertex/global` de l'étiquette fournisseur observée
+`Google`. Le payload épinglait bien la route et désactivait le fallback, mais
+l'artefact actuel nomme cette étiquette `providerRoute`, ce qui est ambigu.
+Cette correction d'observabilité ne peut pas être utilisée pour relancer le
+gate déjà terminé.

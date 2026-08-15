@@ -466,6 +466,27 @@ la campagne DRAFT le SHA-256
 Le validate-only passe sans réseau. Finance et le propriétaire n'ont autorisé
 aucun appel sous cette identité ; le panel et le holdout restent fermés.
 
+### Addendum append-only — résultat du gate v2 du 15 août 2026
+
+Statut : `VALID / GO_PREPARE_PANEL_10X2_ONLY / FINANCE_RECONCILED_CLOSED`.
+
+Après GO propriétaire distinct, les trois cas ont terminé `VALID`, sans retry,
+fallback ni arrêt anticipé. Les 27 statuts correspondent au pseudo-oracle, les
+citations sont exactes et l'injection n'apparaît dans aucune preuve ou sortie.
+Le négatif v2 distingue correctement l'absence de choix tout en conservant la
+fidélité des faits.
+
+Finance réconcilie trois coûts réels pour `0,01157625 USD` au total sous le
+plafond de `0,055 USD`. Le state porte le SHA-256
+`c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc` et
+le ledger `6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42`.
+
+Ce résultat autorise seulement la préparation du panel 10×2. Son exécution,
+le holdout, la promotion et V4-002 restent fermés. Avant toute nouvelle
+enveloppe, l'observabilité doit distinguer la route demandée
+`google-vertex/global` de l'étiquette fournisseur observée `Google` ; le champ
+historique `providerRoute` mélange aujourd'hui ces deux notions.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

@@ -279,7 +279,7 @@
           }
         },
         "threeCaseGateV2": {
-          "status": "OFFLINE_READY_PRODUCT_APPROVED",
+          "status": "VALID_GO_PREPARE_PANEL_10X2_ONLY",
           "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.json",
           "campaignSha256": "cafcf98a8d8961f658985cea58db42d9fe87303a5f96f96e30ecd1e1e3986652",
           "semanticCorpus": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json",
@@ -296,11 +296,24 @@
           "maximumProviderAttempts": 3,
           "retryPolicy": "NONE",
           "historicalResultsReused": 0,
-          "productArbitration": "APPROVED_OFFLINE_FIXTURE_ONLY",
-          "financeArbitration": "NOT_GRANTED",
-          "ownerAuthorization": "NOT_GRANTED",
-          "modelCallsDispatched": 0,
-          "networkCallsAllowed": false
+          "productArbitration": "GO_PREPARE_PANEL_10X2_ONLY",
+          "financeArbitration": "RECONCILED_CLOSED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 3,
+          "networkCallsAllowed": false,
+          "result": {
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.result.json",
+            "completedCases": 3,
+            "providerAttempts": 3,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "actualReconciledCostUsd": 0.01157625,
+            "budgetRemainingUsd": 0.04342375,
+            "stateSha256": "c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc",
+            "ledgerSha256": "6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42",
+            "ledgerFinalRecordHash": "e0d6a97ea55fcf797879a15f67a21d94ea7eda2eec980e05e60ed6f301f67ee4",
+            "routeObservabilityFollowUp": "SEPARATE_REQUESTED_ROUTE_FROM_OBSERVED_PROVIDER_LABEL"
+          }
         }
       }
     },
@@ -338,8 +351,9 @@
   },
   "nextAuthorizedSequence": [
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
-    "The genuinely unambiguous negative fixture is independently approved under a new offline campaign identity; obtain a fresh Finance arbitration and owner GO before any call.",
-    "Keep the 10x2 panel, falsifier, holdout and V4-002 closed until the new three-case gate succeeds.",
+    "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
+    "Separate requestedRoute from the observed provider label before preparing the 10x2 panel identity.",
+    "Keep the 10x2 panel, falsifier, holdout and V4-002 closed until a new panel envelope receives Finance and owner authorization.",
     "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
