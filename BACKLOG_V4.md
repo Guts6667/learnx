@@ -2,27 +2,29 @@
 
 ## Statut et autorité
 
-- Version : 1.6.1
-- Statut : **scope produit validé et figé — implémentation après clôture V3.5**
-- Dernière consolidation : 14 août 2026 — moteur de rubrique exécutable
+- Version : 1.7.0
+- Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
+- Dernière consolidation : 15 août 2026 — roadmap exécutable et smoke Gemini 1.3 positif
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
   Atlas sans vert validée le 10 août 2026
 
-Le contrat fonctionnel autoritaire pour la correction formative composite est
-`docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md`. Les deux références Atlas validées
-pour les crédits et la correction sont :
+La vue de pilotage courante est `docs/V4_ROADMAP.md`. Elle résume l'état réel,
+le chemin critique et les gates sans remplacer les critères détaillés du présent
+backlog. La spécification autoritaire de la nouvelle correction est
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La spécification composite
+`docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md` reste une baseline historique utile
+pour les garanties de coût, d'idempotence et de réconciliation ; elle ne définit
+plus l'autorité pédagogique cible. Les deux références Atlas validées pour les
+crédits et la correction sont :
 
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html`.
 
-Ce document fixe le périmètre et l'ordre de livraison de V4. Un ticket ne
-devient une instruction d'implémentation qu'après :
-
-1. clôture officielle de V3.5 ;
-2. réaudit du code et du schéma réellement livrés ;
-3. reformulation détaillée du ticket actif avant tout code.
+Ce document fixe le périmètre détaillé de V4. V3.5 est clôturée et V4 a démarré.
+Un ticket ne devient une instruction d'implémentation qu'après réaudit du code
+et du schéma réellement livrés, puis reformulation détaillée du ticket actif.
 
 La validation produit du scope a été donnée le 11 août 2026. Toute modification
 de périmètre exige désormais un amendement explicite, versionné et approuvé ;
@@ -126,6 +128,55 @@ cherche plus un modèle chargé de noter. La spécification canonique devient
 
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
+
+## Vue de pilotage au 15 août 2026
+
+Cette section est la synthèse courte. Les statuts détaillés, dépendances et
+preuves sont maintenus dans `docs/V4_ROADMAP.md`.
+
+### Maintenant — fermer la preuve autonome
+
+1. Intégrer la preuve du smoke Gemini 1.3 positif sans la présenter comme une
+   promotion : un cas positif, 1 appel, 0 retry, coût réconcilié.
+2. Préenregistrer puis faire arbitrer séparément le gate « maîtrisé + négatif +
+   injection ». Aucun nouvel appel n'est autorisé par le smoke positif.
+3. Si ce gate passe, exécuter le panel 10 cas × 2 sous la même identité, puis
+   appliquer `GO_AUTONOMOUS_FORMATIVE` sur des oracles mécaniques, tests
+   métamorphiques et pseudo-oracles scellés. Aucun évaluateur humain n'est
+   simulé.
+4. Publier un premier contrat `WRITING/fr-FR` seulement s'il est
+   `FULLY_COMPILABLE`, versionné et couvert par ses templates et remédiations.
+
+### Ensuite — livrer le premier flow apprenant
+
+5. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
+   de preuves, exécution déterministe de la rubrique, feedback authoré,
+   révision/clarification et libération en cas d'échec technique.
+6. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
+   aucun effet sur `ConceptProgress`, `StageProgress` ou `VALIDATED`.
+7. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
+   compréhension UX avant d'activer prix ou paiement.
+
+### Plus tard — économie, paiement et extension
+
+8. Calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
+   observés ; les catalogues actuels restent `DRAFT/INACTIVE`.
+9. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
+   finance et conseil externe.
+10. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
+    multi-notions et corrigé serveur ne peut pas prouver la maîtrise.
+
+### Vérités à ne plus perdre
+
+- 0 contrat V4 est `PUBLISHED` ; 0 activité est éligible au runtime IA.
+- Le moteur de rubrique exécutable existe en recherche/hors ligne ; V4-010
+  n'est pas branché à l'application.
+- Le smoke Gemini 1.3 positif prouve le contrat de citation sur un cas évident,
+  pas la sécurité complète, la discrimination négative ou la production.
+- Le registre `SourceVersion → Passage → Claim → KnowledgePack →
+  RubricElement` est une fondation future. Il sépare grounding externe et preuve
+  apprenant ; son absence ne bloque pas le premier pilote court et faible risque.
+- Remise, feedback et maîtrise sont trois états indépendants.
 
 ## Responsabilités et validation
 
@@ -799,6 +850,13 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Étendre le guide d'authoring sans imposer un nombre arbitraire de critères.
 - Préparer un inventaire des activités existantes éligibles, incomplètes ou
   explicitement non compatibles.
+- Séparer strictement les preuves tirées de la réponse de l'apprenant du
+  grounding externe. Une source, un passage ou un claim externe ne peut jamais
+  être présenté comme « Extrait de votre réponse ».
+- Préparer, sans bloquer le premier pilote court, la provenance canonique
+  `SourceVersion → Passage → Claim → KnowledgePack → RubricElement`. La
+  vectorisation éventuelle reste un index dérivé et reconstructible, jamais une
+  autorité éditoriale ou pédagogique.
 - Limiter l'exécution V4 au texte. Le contrat peut réserver des types de preuve
   futurs — fichier, image, audio, transcription ou données structurées — sans
   les rendre acceptables tant qu'un ticket ultérieur ne les autorise pas.
@@ -817,6 +875,9 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Une activité sans contrat valide ne peut pas proposer une correction IA.
 - Les informations éditoriales de preuve restent compatibles avec les règles
   de sourcing existantes.
+- Le premier contrat faible risque peut être publié sans registre de knowledge
+  packs si ses éléments sont entièrement authorés et traçables. Toute référence
+  externe affichée reste séparée du certificat de preuve apprenant.
 
 ### Tests et risques
 
@@ -848,9 +909,10 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Produire un rapport sans envoyer de donnée réelle non anonymisée.
 - Conserver les campagnes mono-modèle et composites comme baselines historiques.
   Sonnet reste `NO_GO`, Mistral + Sonnet reste `NO_GO_PEDAGOGICAL` et Gemini
-  reste `NO_GO_TECHNICAL_PANEL_INCOMPLETE`. Aucun de ces verdicts n'est
-  requalifié ; Gemini seul peut être retesté sous une nouvelle identité après
-  fermeture du P0 dispatch/coût.
+  juge reste `NO_GO_TECHNICAL_PANEL_INCOMPLETE`. Aucun de ces verdicts n'est
+  requalifié. Sous le nouveau rôle de chercheur de preuves, Gemini 1.3 possède
+  seulement un smoke positif sur cas évident ; il n'est ni promu ni comparable
+  rétroactivement aux campagnes de notation.
 - Préenregistrer avant appel la rubrique et son empreinte, le rôle exact du
   candidat, le budget, le profil, le corpus et les gates. Le falsificateur est
   une campagne séparée ; aucun second modèle n'est ajouté par défaut.
@@ -1346,14 +1408,16 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : PROTOCOLE 1.3.0 PRÊT HORS LIGNE, FINANCE ARBITRÉE,
-GO PROPRIÉTAIRE REQUIS — le
+**État au 14 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, PROCHAIN GATE NON
+AUTORISÉ — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
 les offsets depuis une citation exacte unique et persiste le raw avant
-validation. Finance a arbitré l'enveloppe de l'unique smoke frais ; seul le GO
-écrit et postérieur du Propriétaire manque encore. Le panel reste fermé.**
+validation. L'unique smoke frais a terminé `VALID`, Finance l'a réconcilié et
+Produit/pédagogie l'a approuvé comme cas positif seulement. Il autorise la
+préparation, pas l'exécution, du gate maîtrisé + négatif + injection. Le panel
+reste fermé.**
 
 ### Point de reprise pour le développement
 
@@ -1390,8 +1454,13 @@ validation. Finance a arbitré l'enveloppe de l'unique smoke frais ; seul le GO
   Elle prévoit un seul appel sur `writing-fr-base-mastered`, aucun retry, une
   borne pessimiste de `0,0172545 USD` et un plafond proposé de `0,0200000 USD`.
   Finance a arbitré ces montants pour une seule tentative, sans retry ni
-  fallback. Cette consultation ne vaut pas autorisation d'appel : le GO écrit
-  et postérieur du Propriétaire reste absent.
+  fallback. Après GO écrit, la tentative a terminé `VALID` pour un coût réel de
+  `0,0041025 USD`, sans retry. Finance a clos l'enveloppe ; son reliquat n'est
+  pas transférable.
+- Produit/pédagogie approuve ce cas positif uniquement. Le prochain gate doit
+  préenregistrer exactement un cas maîtrisé, un négatif/contradictoire et une
+  injection sous la même identité technique, puis recevoir une nouvelle
+  enveloppe Finance et un nouveau GO propriétaire.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

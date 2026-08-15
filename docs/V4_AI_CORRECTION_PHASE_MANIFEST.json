@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-14T15:05:54Z",
+  "updatedAt": "2026-08-15T09:19:31Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -25,8 +25,8 @@
   "baselines": {
     "runtime": {
       "ref": "origin/dev",
-      "commit": "89f7b11dd0b718ecf819774591e874697fed5670",
-      "subject": "feat(ai): prepare gated Gemini evidence smoke (#4)"
+      "commit": "1c2aaa78e2ebc27e22568c7867c3f0b9609a9510",
+      "subject": "Merge PR #9: record Gemini 1.3 finance arbitration"
     },
     "research": {
       "ref": "origin/codex/v4-009b",
@@ -58,7 +58,7 @@
     "legacyPlaintextStatus": "COMPROMISED_AND_REMOVED_FROM_ACTIVE_TREE",
     "replacementManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
     "replacementManifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2",
-    "mayOpenAfter": "INDEPENDENT_HUMAN_REVIEW_AND_GO_AUTONOMOUS_FORMATIVE_ON_FULL_DEVELOPMENT_CORPUS"
+    "mayOpenAfter": "AUTONOMOUS_MECHANICAL_METAMORPHIC_AND_SEALED_SYNTHETIC_GATES_PLUS_GO_AUTONOMOUS_FORMATIVE"
   },
   "eligibility": {
     "publishedV4Contracts": 0,
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "QUOTE_PROTOCOL_1_3_OFFLINE_READY_FINANCE_ARBITRATED_OWNER_BLOCKED",
+      "status": "SMOKE_1_3_APPROVED_POSITIVE_ONLY_NEXT_GATE_NOT_AUTHORIZED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -210,9 +210,24 @@
             "fallbackAllowed": false,
             "costMissingPolicy": "STOP_AND_RECONCILE_APPEND_ONLY"
           },
-          "ownerAuthorization": "NOT_GRANTED",
-          "modelCallsDispatched": 0,
-          "implementationCommit": "53f5c79"
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
+          "modelCallsDispatched": 1,
+          "implementationCommit": "53f5c79",
+          "smokeResult": {
+            "status": "VALID",
+            "productVerdict": "APPROVED_POSITIVE_SMOKE_ONLY",
+            "financeVerdict": "RECONCILED_CLOSED",
+            "providerAttempts": 1,
+            "retryCount": 0,
+            "actualCostUsd": 0.0041025,
+            "reasoningTokens": 0,
+            "visibleOutputTokens": 690,
+            "rawModelOutputPersisted": true,
+            "resultPath": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.result.json",
+            "stateSha256": "eb43f6c380942f603cd0b8da98bb9528bef3ef0a6d55ab7a13542e4cad9ad17d",
+            "ledgerSha256": "501969a4f1b9475e464a3ae1375e233bac5824dfe65dc3e73e7aee848c34f0c2",
+            "ledgerFinalRecordHash": "a8e8b73befe30c4edb997953b807ec64b619ecc1389c60e86daa651cc55c2ca3"
+          }
         }
       }
     },
@@ -230,6 +245,7 @@
     "name": "GO_EXECUTABLE_RUBRIC_RESEARCHER",
     "status": "NOT_MET",
     "humanReviewRequired": false,
+    "authorityMode": "AUTONOMOUS_NO_HUMAN_REVIEW",
     "requirements": {
       "compilerMutationDetectionRate": 1,
       "dispatchAndCostReconciledRate": 1,
@@ -249,10 +265,10 @@
   },
   "nextAuthorizedSequence": [
     "Run all offline validations for the 1.3.0 exact-quote identity; no provider call is authorized by offline readiness.",
-    "Obtain a separate written owner authorization, post-dating the completed Finance arbitration, for the exact one-call 1.3.0 fingerprint.",
-    "Only after that owner GO, run one fresh writing-fr-base-mastered smoke with no retry and stop for review.",
-    "Only a successful newly authorized smoke may lead to a separately authorized mastered + negative + injection smoke; neither the 1.1.0 nor 1.2.0 result authorizes the panel.",
-    "Author the holdout outside the repository, obtain an independent human review, seal only its ciphertext, then request a separate one-shot opening GO."
+    "Pre-register a distinct mastered + negative + injection smoke while preserving model, route, profile, prompt and rubric; do not reuse the positive smoke as a silent matrix cell.",
+    "Obtain a new Finance envelope for that exact campaign, then a separate written owner authorization; the completed 1.3.0 envelope is closed and non-transferable.",
+    "Only after those new approvals may the three-case smoke run sequentially and stop for review; the 10x2 panel remains closed.",
+    "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
   "forbiddenClaims": [
