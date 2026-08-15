@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-v1",
+  "campaignVersion": "1.3.0-draft",
+  "campaignSha256": "8694b09458a572687c9846292424bfa694b790a94076271739036553fc370087",
+  "status": "APPROVED_POSITIVE_SMOKE_ONLY",
+  "executedAt": "2026-08-14T15:42:19.371Z",
+  "stoppedReason": null,
+  "authorizedMaximumProviderAttempts": 1,
+  "providerAttemptsExecuted": 1,
+  "retryCount": 0,
+  "additionalCallsDispatched": false,
+  "hardCapUsd": 0.02,
+  "actualReconciledCostUsd": 0.0041025,
+  "budgetRemainingUsd": 0.0158975,
+  "attempt": {
+    "caseId": "writing-fr-base-mastered",
+    "status": "VALID",
+    "providerRequestId": "gen-1786722135-4Fi0clYiFXhpBF6Dr1q8",
+    "providerRoute": "Google",
+    "modelSnapshot": "google/gemini-3.6-flash",
+    "latencyMs": 1239,
+    "inputTokens": 2020,
+    "reasoningTokens": 0,
+    "visibleOutputTokens": 690,
+    "actualCostUsd": 0.0041025,
+    "costSource": "ACTUAL",
+    "worstCaseAuthorizedUsd": 0.0172545,
+    "elementStatusCounts": {
+      "SUPPORTED": 6,
+      "NOT_DEMONSTRATED": 3,
+      "AMBIGUOUS": 0,
+      "CONTRADICTED": 0
+    },
+    "evidenceCertificateCount": 7,
+    "allEvidenceSlicesReconstructible": true,
+    "rawModelOutputPersistedBeforeSemanticValidation": true,
+    "rawModelOutputTruncated": false,
+    "rawModelOutputSha256": "2ccfa8505d0fb653a12ec5bebf6e4d531e936be0efbc5673cb753e7dccc5f565"
+  },
+  "artifactProof": {
+    "stateSha256": "eb43f6c380942f603cd0b8da98bb9528bef3ef0a6d55ab7a13542e4cad9ad17d",
+    "ledgerSha256": "501969a4f1b9475e464a3ae1375e233bac5824dfe65dc3e73e7aee848c34f0c2",
+    "ledgerFinalRecordHash": "a8e8b73befe30c4edb997953b807ec64b619ecc1389c60e86daa651cc55c2ca3",
+    "rawReceiptFileSha256": "842f30b6f25db76d2723e6b7399155afd7c26e5e0b4d7fb786f7ffbc69b2359e"
+  },
+  "financeVerdict": "RECONCILED_CLOSED",
+  "productVerdict": "APPROVED_POSITIVE_SMOKE_ONLY",
+  "nextGate": "PREPARE_SEPARATE_MASTERED_NEGATIVE_INJECTION_SMOKE",
+  "modelCallsAuthorizedAfterThisResult": false,
+  "panel10x2Authorized": false,
+  "holdoutAuthorized": false
+}

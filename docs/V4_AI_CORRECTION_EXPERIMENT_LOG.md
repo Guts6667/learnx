@@ -379,6 +379,24 @@ exclusif. Toute divergence, sortie invalide, coût manquant, échec de persistan
 raw ou erreur fournisseur arrête la campagne. Cet arbitrage ne vaut pas GO
 propriétaire. Aucun appel 1.3.0 n'a été effectué à cette étape.
 
+### Addendum append-only — résultat du smoke 1.3.0 du 14 août 2026
+
+Statut : `APPROVED_POSITIVE_SMOKE_ONLY / ONE_CALL / NO_RETRY`.
+
+Après arbitrage Finance et GO propriétaire distinct, le runner a envoyé une
+seule tentative sur `writing-fr-base-mastered`. La sortie est `VALID` : neuf
+éléments présents exactement une fois, sept certificats issus de citations
+exactes uniques, raw persisté avant validation et aucun token de raisonnement.
+Le coût réel réconcilié est de 0,0041025 USD pour 2 020 tokens d'entrée et 690
+tokens visibles ; la latence est de 1 239 ms. Aucun autre appel n'a été envoyé.
+
+Produit/pédagogie approuve ce smoke positif : statuts et preuves sont fidèles à
+la rubrique, sans double pénalisation ni citation du contexte. Finance clôture
+l'enveloppe `RECONCILED / CLOSED`. Cette preuve ne teste ni cas négatif ni
+injection, ne promeut aucun modèle et ne rouvre pas le panel 10×2. Elle autorise
+seulement la préparation d'un gate distinct « maîtrisé + négatif + injection »,
+avec nouvelle enveloppe et nouveau GO.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

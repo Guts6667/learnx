@@ -73,3 +73,12 @@ certificat et persistance du raw avant rejet. Le schéma interdit désormais
 
 Si l'unique smoke futur est valide, une nouvelle décision sera nécessaire pour
 le smoke maîtrisé + négatif + injection. Le panel 10×2 reste fermé jusque-là.
+
+## Résultat du premier smoke
+
+L'appel autorisé a ensuite terminé `VALID` avec 9 éléments conformes, 7
+certificats de preuve reconstructibles, zéro token de raisonnement et un coût
+réel de 0,0041025 USD. Finance a clos l'enveloppe et Produit/pédagogie approuve
+ce cas positif uniquement. Le résultat complet est dans
+`docs/V4_EXECUTABLE_RUBRIC_GEMINI_SMOKE_1_3_RESULT.md`. Aucun nouvel appel n'est
+autorisé par ce résultat.
