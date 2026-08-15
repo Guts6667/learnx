@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
+  "caseId": "writing-fr-paraphrase-mastered",
+  "cellKey": "writing-fr-paraphrase-mastered:2",
+  "idempotencyKey": "91908804275b9a7c265db4dd9d07b48089e0e0a26c39a46949cad4fa2e21aa95",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1786823518-mcKxnYGaQM4clAMMU848",
+  "providerRoute": "Anthropic",
+  "repetition": 2,
+  "requestedRoute": "Anthropic",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"l’acquisition de deux postes\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"le samedi ait affiché complet\",\"alors que six personnes devaient se répartir trois machines\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"9 participants seulement ont achevé l’activité\",\"alors que six personnes devaient se répartir trois machines\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines\",\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "aa1cfac1eb7b350cdd33730fef5f4cafa74c4c26d6425f933004769115d4333d",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:52:15.487Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.02983,
+    "costSource": "ACTUAL",
+    "inputTokens": 3855,
+    "reasoningTokens": 1406,
+    "visibleOutputTokens": 806
+  }
+}

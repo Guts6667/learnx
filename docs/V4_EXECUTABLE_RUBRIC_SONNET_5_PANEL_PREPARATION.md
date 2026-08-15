@@ -1,6 +1,6 @@
 # Préparation du panel Sonnet 5 — evidence researcher 1.3
 
-Statut : `OFFLINE_READY / PRODUCT_NOT_ARBITRATED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED`.
+Statut : `PANEL_NO_GO_TECHNICAL / FINANCE_RECONCILED_CLOSED / NO_REPLAY`.
 
 ## But
 
@@ -82,3 +82,17 @@ La commande valide les SHA, le corpus sélectionné, le payload OpenRouter sans
 `reasoning` ni `temperature`, la route, les gates et la borne budgétaire. Elle
 ne lance aucun appel sans `--execute` et le token propriétaire exact dérivé du
 SHA de campagne.
+
+## Résultat figé
+
+Le run `2026-08-15T19-51-17-229Z` s'est arrêté conformément au protocole après
+`11` appels : `10` workflows `VALID` et concordants, puis un appel sans sortie
+visible (`2 500` tokens de raisonnement, `0` visible). Les neuf cellules
+restantes n'ont pas été envoyées. Le coût réel total réconcilié est
+`0,287208 USD` ; aucun retry ou fallback n'a eu lieu.
+
+Le code historique `RAW_MODEL_OUTPUT_PERSISTENCE_FAILED` est trompeur : le
+runner assimilait toute absence de raw à un échec d'écriture. Il ne prouve pas
+une panne disque. Le finish reason n'étant pas persisté, l'artefact est décrit
+factuellement comme « aucune sortie modèle visible », sans diagnostic amont
+inventé. La campagne et son reliquat sont clos ; aucune reprise n'est permise.

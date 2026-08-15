@@ -1,0 +1,17 @@
+{
+  "atomicStatusAgreementRate": 1,
+  "campaignId": "learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1",
+  "campaignSha256": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
+  "completedLogicalWorkflows": 10,
+  "criticalCaseAtomicAgreementRate": 1,
+  "criticalElementComparisons": 18,
+  "falseNotDemonstratedCount": 0,
+  "falseSupportedCount": 0,
+  "gatePassed": false,
+  "providerAttempts": 11,
+  "retries": 0,
+  "stoppedReason": "RAW_MODEL_OUTPUT_PERSISTENCE_FAILED",
+  "totalActualCostUsd": 0.28720799999999996,
+  "variabilityCases": [],
+  "variabilityRate": 0
+}

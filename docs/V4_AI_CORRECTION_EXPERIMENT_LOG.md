@@ -594,3 +594,28 @@ contradiction et deux injections, sans retry ni fallback. Le coût attendu est
 de `0,95 USD`. Les six cas critiques exigent désormais `100 %` d'accord
 atomique afin qu'une confusion de polarité ne puisse pas être compensée par le
 score global. Aucun appel n'a été effectué.
+
+### 2026-08-15 — Panel Sonnet 5 arrêté sur absence de sortie visible
+
+Statut : `PANEL_NO_GO_TECHNICAL / FINANCE_RECONCILED_CLOSED / NO_REPLAY`.
+
+Le run `2026-08-15T19-51-17-229Z` a exécuté onze appels avant l'arrêt
+préenregistré. Les dix premiers workflows, couvrant cinq cas en double, sont
+`VALID`, concordent à `100 %` avec le pseudo-oracle et présentent une
+variabilité nulle. Le onzième appel, sur `writing-fr-evidence-mutation`, a
+consommé `2 500` tokens de raisonnement et produit `0` token visible. Il ne
+permet donc aucune évaluation pédagogique du cas, et les neuf cellules
+suivantes n'ont pas été appelées.
+
+Le runner a persisté le code trompeur
+`RAW_MODEL_OUTPUT_PERSISTENCE_FAILED` parce qu'il confondait l'absence de raw
+avec un échec d'écriture. L'espace disque était disponible et le coût ainsi que
+le request id sont réconciliés. La cause certaine à publier reste « aucune
+sortie modèle visible » ; le finish reason amont n'ayant pas été conservé, le
+run historique ne doit pas être requalifié rétroactivement en troncature.
+
+Finance clôture `11` intents et `11` outcomes sans orphelin pour un coût R&D de
+`0,287208 USD`, dont `0,032642 USD` pour l'appel inutilisable, sous le plafond
+de `0,95 USD`. Aucun retry, fallback, resume, panel complémentaire ou holdout
+n'est autorisé. Ce résultat invalide le requestProfile courant pour ce panel,
+mais ne constitue pas un verdict pédagogique négatif sur Sonnet 5.

@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
+  "caseId": "writing-fr-concise-mastered",
+  "cellKey": "writing-fr-concise-mastered:1",
+  "idempotencyKey": "2c9820d7849b414c4f0ce293210588b6c9d0c2d350d21ead434977099f5b409b",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1786823535-pi3k9zetpcu3NGyQpJKz",
+  "providerRoute": "Anthropic",
+  "repetition": 1,
+  "requestedRoute": "Anthropic",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois postes\",\"seules 9 sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seules 9 sur 20 ont terminé\",\"six personnes partageaient trois postes\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"six personnes partageaient trois postes et seules 9 sur 20 ont terminé\",\"Le matériel répond directement au blocage constaté\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.8,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "f452435eb84a25ea6cf1109872b6f63a14fc38cfd383598d286955b5039680e3",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:52:25.719Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.021462,
+    "costSource": "ACTUAL",
+    "inputTokens": 3806,
+    "reasoningTokens": 659,
+    "visibleOutputTokens": 726
+  }
+}
