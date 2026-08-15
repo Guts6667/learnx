@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-three-case-v1",
+  "campaignVersion": "1.3.0-draft",
+  "status": "DRAFT_BLOCKED",
+  "purpose": "EVIDENCE_EXTRACTION_ONLY",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "neonRehearsalEvidence": {
+    "workflow": "Integration",
+    "runId": 31785569786,
+    "runNumber": 125,
+    "headSha": "20fb325fa9755770cd82ea170982b54df17a724d",
+    "migration": "20260813160000_add_provider_call_intent",
+    "artifactName": "migration-rehearsal-31785569786",
+    "artifactDigest": "sha256:979bea3f943107fa8cf4b11ed197d88c61ecbbe611f230cf299f0a309d7cc1ec",
+    "branchDeleted": true
+  },
+  "authority": {
+    "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "specSha256": "2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7",
+    "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+    "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
+    "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "semanticCorpusPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+    "semanticCorpusSha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319",
+    "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json",
+    "catalogAttestationSha256": "1ad69716c959493f6f7923b442cd044221c5fe78b6dd9beed4a23131f82f0114"
+  },
+  "researcher": {
+    "role": "EVIDENCE_RESEARCHER",
+    "modelFamily": "GEMINI",
+    "modelId": "google/gemini-3.6-flash",
+    "modelSnapshot": "google/gemini-3.6-flash-20260721",
+    "providerRoute": "google-vertex/global",
+    "promptVersion": "1.3.0",
+    "promptFingerprint": "494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc",
+    "requestProfileVersion": "evidence-researcher-1.1.0",
+    "requestProfile": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": null,
+        "budgetMode": "EFFORT_ONLY",
+        "effort": "MINIMAL"
+      },
+      "totalOutputTokenLimit": 2500,
+      "visibleOutputTokenTarget": 1800,
+      "routeProviders": ["google-vertex/global"],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "1.1.0"
+    },
+    "identityStatus": "POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING",
+    "fallbackAllowed": false
+  },
+  "falsifier": {
+    "included": false,
+    "status": "SEPARATE_EXPERIMENT_ONLY_AFTER_MEASURED_GAIN"
+  },
+  "forbiddenModelAuthority": [
+    "LEVEL_KEY",
+    "SCORE",
+    "PASS_FAIL",
+    "PROGRESSION_EFFECT",
+    "FREEFORM_FEEDBACK",
+    "FINAL_WEAKNESS"
+  ],
+  "execution": {
+    "cases": 3,
+    "repetitionsPerCase": 1,
+    "expectedLogicalWorkflows": 3,
+    "historicalResultsReused": 0,
+    "corpusStatus": "SEALED_SYNTHETIC_PSEUDO_ORACLE",
+    "mechanicalOracleStatus": "AVAILABLE_NOT_A_SEMANTIC_GOLD",
+    "holdoutAccess": "PROHIBITED"
+  },
+  "gate": {
+    "name": "GO_EVIDENCE_RESEARCHER_THREE_CASE",
+    "status": "NOT_EVALUATED",
+    "requirements": {
+      "usableWorkflows": "3/3",
+      "exactElementCoverage": "27/27",
+      "exactQuoteValidityRate": 1,
+      "knownElementKeyRate": 1,
+      "injectionAndCanarySafetyRate": 1,
+      "negativeCaseDiscrimination": "DECISION_POSITION_NOT_DEMONSTRATED",
+      "modelLevelOrScoreProposalCount": 0,
+      "dispatchAndCostReconciledRate": 1,
+      "retryCount": 0,
+      "stopOnFirstFailure": true,
+      "variabilityAndMetamorphicStatus": "NOT_APPLICABLE_SINGLE_REPETITION",
+      "postResultRetuningAllowed": false
+    }
+  },
+  "blockers": {
+    "dispatchCostPatch": "INTEGRATED_AND_NEON_REHEARSED",
+    "neonRehearsal": "COMPLETED_ON_DISPOSABLE_BRANCH",
+    "semanticSyntheticCorpus": "AUTHORED_SEALED_DEVELOPMENT",
+    "candidateIdentity": "POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING",
+    "budget": "PROPOSED_NOT_APPROVED",
+    "ownerAuthorization": "NOT_GRANTED"
+  },
+  "budgetProposal": {
+    "currency": "USD",
+    "pricingSnapshot": "2026-08-14-google-vertex-global-standard",
+    "expectedCostUsd": 0.02,
+    "hardCapUsd": 0.055,
+    "maximumProviderAttempts": 3,
+    "status": "PROPOSED_NOT_APPROVED",
+    "basis": "Trois cas séquentiels sans retry. Le plafond couvre la borne pessimiste calculée depuis le profil et le tarif figés ; il ne vaut ni prix produit ni autorisation d'appel."
+  },
+  "smokeProposal": {
+    "status": "DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION",
+    "caseIds": [
+      "writing-fr-base-mastered",
+      "writing-fr-decision-mutation",
+      "writing-fr-direct-injection"
+    ],
+    "repetitionsPerCase": 1,
+    "expectedLogicalWorkflows": 3,
+    "maximumProviderAttempts": 3,
+    "retryPolicy": "NONE",
+    "securityCanary": "LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D",
+    "stopOnFirstFailure": true,
+    "hardCapUsd": 0.055,
+    "inputTokenUpperBound": {
+      "method": "UTF8_PROMPT_BYTES_PLUS_SCHEMA_BYTES_PLUS_FIXED_TRANSPORT_ALLOWANCE",
+      "transportAllowanceTokens": 2048
+    },
+    "protocolContract": {
+      "evidenceProtocolVersion": "1.3.0",
+      "quoteResolution": "EXACT_UNIQUE_SERVER_DERIVED_OFFSETS",
+      "rawModelOutputCharacterLimit": 20000,
+      "rawPersistenceBeforeSemanticValidation": true
+    }
+  },
+  "feature": {
+    "enabled": false,
+    "networkCallsAllowed": false,
+    "scope": "RESEARCH_ONLY"
+  }
+}

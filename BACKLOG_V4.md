@@ -1408,8 +1408,8 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 14 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, PROCHAIN GATE NON
-AUTORISÉ — le
+**État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS PRÊT
+HORS LIGNE MAIS NON AUTORISÉ — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
@@ -1461,6 +1461,13 @@ reste fermé.**
   préenregistrer exactement un cas maîtrisé, un négatif/contradictoire et une
   injection sous la même identité technique, puis recevoir une nouvelle
   enveloppe Finance et un nouveau GO propriétaire.
+- Ce gate trois cas dispose désormais d'un manifeste distinct, source unique
+  pour 3 workflows, 3 appels maximum, aucun retry et arrêt au premier défaut.
+  Il exige 3/3 sorties valides, 27/27 éléments couverts, citations exactes,
+  discrimination du négatif, sécurité injection/canari et coût réconcilié à
+  100 %. Les métriques de variabilité/métamorphisme sont non applicables à une
+  répétition et restent réservées au futur panel 10×2. Produit/pédagogie et
+  Finance ont arbitré son empreinte ; le GO propriétaire reste absent.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

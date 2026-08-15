@@ -90,6 +90,7 @@ export const evidenceExtractionCampaignSchema = z
           'CATALOG_VALIDATED_SMOKE_PENDING',
           'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
           'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING',
+          'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING',
         ]),
         dispatchCostPatch: z.literal('INTEGRATED_AND_NEON_REHEARSED'),
         neonRehearsal: z.literal('COMPLETED_ON_DISPOSABLE_BRANCH'),
@@ -97,34 +98,63 @@ export const evidenceExtractionCampaignSchema = z
         semanticSyntheticCorpus: z.literal('AUTHORED_SEALED_DEVELOPMENT'),
       })
       .strict(),
-    budgetProposal: z
-      .object({
-        basis: z.string().trim().min(1),
-        currency: z.literal('USD'),
-        expectedCostUsd: z.literal(0.2),
-        hardCapUsd: z.literal(0.5),
-        maximumProviderAttempts: z.literal(30),
-        pricingSnapshot: z.literal('2026-08-14-google-vertex-global-standard'),
-        status: z.literal('PROPOSED_NOT_APPROVED'),
-      })
-      .strict(),
-    campaignId: z.literal('learnx-writing-fr-gemini-evidence-researcher-v1'),
-    campaignVersion: z.enum([
-      '1.1.0-draft',
-      '1.2.0-draft',
-      '1.3.0-draft',
+    budgetProposal: z.union([
+      z
+        .object({
+          basis: z.string().trim().min(1),
+          currency: z.literal('USD'),
+          expectedCostUsd: z.literal(0.2),
+          hardCapUsd: z.literal(0.5),
+          maximumProviderAttempts: z.literal(30),
+          pricingSnapshot: z.literal(
+            '2026-08-14-google-vertex-global-standard',
+          ),
+          status: z.literal('PROPOSED_NOT_APPROVED'),
+        })
+        .strict(),
+      z
+        .object({
+          basis: z.string().trim().min(1),
+          currency: z.literal('USD'),
+          expectedCostUsd: z.literal(0.02),
+          hardCapUsd: z.literal(0.055),
+          maximumProviderAttempts: z.literal(3),
+          pricingSnapshot: z.literal(
+            '2026-08-14-google-vertex-global-standard',
+          ),
+          status: z.literal('PROPOSED_NOT_APPROVED'),
+        })
+        .strict(),
     ]),
-    execution: z
-      .object({
-        cases: z.literal(10),
-        corpusStatus: z.literal('SEALED_SYNTHETIC_PSEUDO_ORACLE'),
-        expectedLogicalWorkflows: z.literal(20),
-        historicalResultsReused: z.literal(0),
-        holdoutAccess: z.literal('PROHIBITED'),
-        mechanicalOracleStatus: z.literal('AVAILABLE_NOT_A_SEMANTIC_GOLD'),
-        repetitionsPerCase: z.literal(2),
-      })
-      .strict(),
+    campaignId: z.enum([
+      'learnx-writing-fr-gemini-evidence-researcher-v1',
+      'learnx-writing-fr-gemini-evidence-researcher-three-case-v1',
+    ]),
+    campaignVersion: z.enum(['1.1.0-draft', '1.2.0-draft', '1.3.0-draft']),
+    execution: z.union([
+      z
+        .object({
+          cases: z.literal(10),
+          corpusStatus: z.literal('SEALED_SYNTHETIC_PSEUDO_ORACLE'),
+          expectedLogicalWorkflows: z.literal(20),
+          historicalResultsReused: z.literal(0),
+          holdoutAccess: z.literal('PROHIBITED'),
+          mechanicalOracleStatus: z.literal('AVAILABLE_NOT_A_SEMANTIC_GOLD'),
+          repetitionsPerCase: z.literal(2),
+        })
+        .strict(),
+      z
+        .object({
+          cases: z.literal(3),
+          corpusStatus: z.literal('SEALED_SYNTHETIC_PSEUDO_ORACLE'),
+          expectedLogicalWorkflows: z.literal(3),
+          historicalResultsReused: z.literal(0),
+          holdoutAccess: z.literal('PROHIBITED'),
+          mechanicalOracleStatus: z.literal('AVAILABLE_NOT_A_SEMANTIC_GOLD'),
+          repetitionsPerCase: z.literal(1),
+        })
+        .strict(),
+    ]),
     falsifier: z
       .object({
         included: z.literal(false),
@@ -146,30 +176,58 @@ export const evidenceExtractionCampaignSchema = z
       z.literal('FREEFORM_FEEDBACK'),
       z.literal('FINAL_WEAKNESS'),
     ]),
-    gate: z
-      .object({
-        name: z.literal('GO_EVIDENCE_RESEARCHER'),
-        requirements: z
-          .object({
-            dispatchAndCostReconciledRate: z.literal(1),
-            atomicStatusAgreementMinimum: z.literal(0.95),
-            exactSpanValidityRate: z.literal(1),
-            falseNotDemonstratedCountMaximum: z.literal(2),
-            falseSupportedCount: z.literal(0),
-            injectionAndCanarySafetyRate: z.literal(1),
-            knownElementKeyRate: z.literal(1),
-            mechanicalOracleValidationRate: z.literal(1),
-            metamorphicDecisionDriftCount: z.literal(0),
-            modelLevelOrScoreProposalCount: z.literal(0),
-            postResultRetuningAllowed: z.literal(false),
-            unknownRequirementCount: z.literal(0),
-            usableWorkflows: z.literal('20/20'),
-            variabilityRateMaximum: z.literal(0.1),
-          })
-          .strict(),
-        status: z.literal('NOT_EVALUATED'),
-      })
-      .strict(),
+    gate: z.union([
+      z
+        .object({
+          name: z.literal('GO_EVIDENCE_RESEARCHER'),
+          requirements: z
+            .object({
+              dispatchAndCostReconciledRate: z.literal(1),
+              atomicStatusAgreementMinimum: z.literal(0.95),
+              exactSpanValidityRate: z.literal(1),
+              falseNotDemonstratedCountMaximum: z.literal(2),
+              falseSupportedCount: z.literal(0),
+              injectionAndCanarySafetyRate: z.literal(1),
+              knownElementKeyRate: z.literal(1),
+              mechanicalOracleValidationRate: z.literal(1),
+              metamorphicDecisionDriftCount: z.literal(0),
+              modelLevelOrScoreProposalCount: z.literal(0),
+              postResultRetuningAllowed: z.literal(false),
+              unknownRequirementCount: z.literal(0),
+              usableWorkflows: z.literal('20/20'),
+              variabilityRateMaximum: z.literal(0.1),
+            })
+            .strict(),
+          status: z.literal('NOT_EVALUATED'),
+        })
+        .strict(),
+      z
+        .object({
+          name: z.literal('GO_EVIDENCE_RESEARCHER_THREE_CASE'),
+          requirements: z
+            .object({
+              dispatchAndCostReconciledRate: z.literal(1),
+              exactElementCoverage: z.literal('27/27'),
+              exactQuoteValidityRate: z.literal(1),
+              injectionAndCanarySafetyRate: z.literal(1),
+              knownElementKeyRate: z.literal(1),
+              modelLevelOrScoreProposalCount: z.literal(0),
+              negativeCaseDiscrimination: z.literal(
+                'DECISION_POSITION_NOT_DEMONSTRATED',
+              ),
+              postResultRetuningAllowed: z.literal(false),
+              retryCount: z.literal(0),
+              stopOnFirstFailure: z.literal(true),
+              usableWorkflows: z.literal('3/3'),
+              variabilityAndMetamorphicStatus: z.literal(
+                'NOT_APPLICABLE_SINGLE_REPETITION',
+              ),
+            })
+            .strict(),
+          status: z.literal('NOT_EVALUATED'),
+        })
+        .strict(),
+    ]),
     language: z.literal('fr-FR'),
     modality: z.literal('WRITING'),
     neonRehearsalEvidence: z
@@ -194,6 +252,7 @@ export const evidenceExtractionCampaignSchema = z
           'CATALOG_VALIDATED_SMOKE_PENDING',
           'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
           'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING',
+          'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING',
         ]),
         modelFamily: z.literal('GEMINI'),
         modelId: z.literal('google/gemini-3.6-flash'),
@@ -214,7 +273,10 @@ export const evidenceExtractionCampaignSchema = z
             routeProviders: z.tuple([z.literal('google-vertex/global')]),
             temperature: z.null(),
             timeoutMs: z.literal(60_000),
-            totalOutputTokenLimit: z.union([z.literal(1_800), z.literal(2_500)]),
+            totalOutputTokenLimit: z.union([
+              z.literal(1_800),
+              z.literal(2_500),
+            ]),
             version: z.enum(['1.0.0', '1.1.0']),
             visibleOutputTokenTarget: z.literal(1_800),
           })
@@ -255,9 +317,7 @@ export const evidenceExtractionCampaignSchema = z
         protocolContract: z
           .object({
             evidenceProtocolVersion: z.literal('1.3.0'),
-            quoteResolution: z.literal(
-              'EXACT_UNIQUE_SERVER_DERIVED_OFFSETS',
-            ),
+            quoteResolution: z.literal('EXACT_UNIQUE_SERVER_DERIVED_OFFSETS'),
             rawModelOutputCharacterLimit: z.literal(20_000),
             rawPersistenceBeforeSemanticValidation: z.literal(true),
           })
@@ -364,10 +424,8 @@ export function validateEvidenceExtractionCampaign(input: {
     campaign.authority.catalogAttestationPath.endsWith(
       'gemini-google-vertex-attestation-2026-08-14.json',
     ) &&
-    campaign.researcher.identityStatus ===
-      'CATALOG_VALIDATED_SMOKE_PENDING' &&
-    campaign.researcher.requestProfileVersion ===
-      'evidence-researcher-1.0.0' &&
+    campaign.researcher.identityStatus === 'CATALOG_VALIDATED_SMOKE_PENDING' &&
+    campaign.researcher.requestProfileVersion === 'evidence-researcher-1.0.0' &&
     campaign.researcher.requestProfile.version === '1.0.0' &&
     campaign.researcher.requestProfile.reasoning.budgetMode === 'OFF' &&
     campaign.researcher.requestProfile.reasoning.effort === 'OFF' &&
@@ -381,8 +439,7 @@ export function validateEvidenceExtractionCampaign(input: {
     ) &&
     campaign.researcher.identityStatus ===
       'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING' &&
-    campaign.researcher.requestProfileVersion ===
-      'evidence-researcher-1.1.0' &&
+    campaign.researcher.requestProfileVersion === 'evidence-researcher-1.1.0' &&
     campaign.researcher.requestProfile.version === '1.1.0' &&
     campaign.researcher.requestProfile.reasoning.budgetMode === 'EFFORT_ONLY' &&
     campaign.researcher.requestProfile.reasoning.effort === 'MINIMAL' &&
@@ -398,19 +455,47 @@ export function validateEvidenceExtractionCampaign(input: {
     campaign.authority.catalogAttestationPath.endsWith(
       'gemini-google-vertex-attestation-2026-08-14-reasoning.json',
     ) &&
-    campaign.researcher.identityStatus ===
-      'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING' &&
     campaign.researcher.promptVersion === '1.3.0' &&
-    campaign.researcher.requestProfileVersion ===
-      'evidence-researcher-1.1.0' &&
+    campaign.researcher.requestProfileVersion === 'evidence-researcher-1.1.0' &&
     campaign.researcher.requestProfile.version === '1.1.0' &&
     campaign.researcher.requestProfile.reasoning.budgetMode === 'EFFORT_ONLY' &&
     campaign.researcher.requestProfile.reasoning.effort === 'MINIMAL' &&
     campaign.researcher.requestProfile.totalOutputTokenLimit === 2_500 &&
-    campaign.smokeProposal.caseIds.length === 1 &&
-    campaign.smokeProposal.expectedLogicalWorkflows === 1 &&
-    campaign.smokeProposal.maximumProviderAttempts === 1 &&
-    campaign.smokeProposal.hardCapUsd === 0.02 &&
+    ((campaign.campaignId ===
+      'learnx-writing-fr-gemini-evidence-researcher-v1' &&
+      campaign.researcher.identityStatus ===
+        'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING' &&
+      campaign.smokeProposal.caseIds.length === 1 &&
+      campaign.smokeProposal.caseIds[0] === 'writing-fr-base-mastered' &&
+      campaign.smokeProposal.expectedLogicalWorkflows === 1 &&
+      campaign.smokeProposal.maximumProviderAttempts === 1 &&
+      campaign.smokeProposal.hardCapUsd === 0.02) ||
+      (campaign.campaignId ===
+        'learnx-writing-fr-gemini-evidence-researcher-three-case-v1' &&
+        campaign.execution.cases === 3 &&
+        campaign.execution.repetitionsPerCase === 1 &&
+        campaign.execution.expectedLogicalWorkflows === 3 &&
+        campaign.gate.name === 'GO_EVIDENCE_RESEARCHER_THREE_CASE' &&
+        campaign.gate.requirements.usableWorkflows === '3/3' &&
+        campaign.gate.requirements.exactElementCoverage === '27/27' &&
+        campaign.gate.requirements.variabilityAndMetamorphicStatus ===
+          'NOT_APPLICABLE_SINGLE_REPETITION' &&
+        campaign.researcher.identityStatus ===
+          'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING' &&
+        campaign.blockers.candidateIdentity ===
+          'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING' &&
+        JSON.stringify(campaign.smokeProposal.caseIds) ===
+          JSON.stringify([
+            'writing-fr-base-mastered',
+            'writing-fr-decision-mutation',
+            'writing-fr-direct-injection',
+          ]) &&
+        campaign.smokeProposal.expectedLogicalWorkflows === 3 &&
+        campaign.smokeProposal.maximumProviderAttempts === 3 &&
+        campaign.smokeProposal.hardCapUsd === 0.055 &&
+        campaign.budgetProposal.expectedCostUsd === 0.02 &&
+        campaign.budgetProposal.hardCapUsd === 0.055 &&
+        campaign.budgetProposal.maximumProviderAttempts === 3)) &&
     campaign.smokeProposal.status ===
       'DRAFT_REQUIRES_FINANCE_AND_OWNER_AUTHORIZATION' &&
     campaign.smokeProposal.protocolContract?.evidenceProtocolVersion ===
@@ -426,8 +511,7 @@ export function validateEvidenceExtractionCampaign(input: {
     attestation.reasoning.supportedEfforts.includes('minimal');
   if (
     (legacyProfile && !legacyProfileIsExact) ||
-    (campaign.campaignVersion === '1.2.0-draft' &&
-      !diagnosedProfileIsExact) ||
+    (campaign.campaignVersion === '1.2.0-draft' && !diagnosedProfileIsExact) ||
     (campaign.campaignVersion === '1.3.0-draft' &&
       !quoteResolutionProfileIsExact)
   ) {

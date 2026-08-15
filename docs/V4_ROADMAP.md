@@ -56,8 +56,10 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   calculés par LearnX ; smoke positif `VALID` sur un cas évident.
 - Limite : le smoke positif ne teste ni réponse négative, ni contradiction, ni
   injection et ne promeut pas Gemini.
-- Prochain gate : campagne distincte « maîtrisé + négatif + injection », avec
-  nouvelle enveloppe Finance et nouveau GO propriétaire.
+- Prochain gate : campagne distincte « maîtrisé + négatif + injection »,
+  préenregistrée sous une identité 3×1 sans réutiliser le smoke positif. Son
+  enveloppe est arbitrée ; le commit reproductible et le GO propriétaire
+  restent bloquants.
 - Gate suivant si succès : panel 10 × 2, puis verdict autonome. Le panel, le
   falsificateur et le holdout restent fermés jusque-là.
 
@@ -113,7 +115,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Smoke Gemini 1.3 positif seulement ; pas de promotion. | Gate 3 cas, panel 10×2, verdict autonome. |
+| V4-009C | `ACTIF` | Smoke Gemini 1.3 positif ; gate 3 cas prêt hors ligne, aucun appel autorisé. | Commit reproductible, GO propriétaire, puis panel 10×2 conditionnel. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

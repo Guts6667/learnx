@@ -6,7 +6,7 @@ import {
   rename,
   writeFile,
 } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { basename, dirname, resolve } from 'node:path';
 
 import {
   calculateEvidenceResearcherCostBound,
@@ -29,12 +29,33 @@ import {
   type EvidenceResearcherSmokeState,
 } from '../src/server/ai/evidence-researcher-smoke.ts';
 
+const option = (name: string): string | undefined => {
+  const prefix = `--${name}=`;
+  return process.argv
+    .find((value) => value.startsWith(prefix))
+    ?.slice(prefix.length);
+};
+
+const campaignFileName =
+  option('campaign') ?? 'gemini-evidence-researcher-smoke.v1.3.json';
+const allowedCampaignFileNames = new Set([
+  'gemini-evidence-researcher-smoke.v1.3-three-case.json',
+  'gemini-evidence-researcher-smoke.v1.3.json',
+]);
+if (
+  basename(campaignFileName) !== campaignFileName ||
+  !allowedCampaignFileNames.has(campaignFileName)
+) {
+  throw new Error('EVIDENCE_RESEARCHER_SMOKE_CAMPAIGN_NOT_ALLOWED');
+}
+
 const paths = {
   attestation: resolve(
     'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
   ),
   campaign: resolve(
-    'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3.json',
+    'benchmarks/ai-correction/executable-rubric',
+    campaignFileName,
   ),
   corpus: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
@@ -43,13 +64,6 @@ const paths = {
     'benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json',
   ),
   spec: resolve('docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md'),
-};
-
-const option = (name: string): string | undefined => {
-  const prefix = `--${name}=`;
-  return process.argv
-    .find((value) => value.startsWith(prefix))
-    ?.slice(prefix.length);
 };
 
 const sha256 = (value: string | Buffer): string =>
@@ -135,7 +149,11 @@ const attestation = JSON.parse(attestationText) as {
   providerName: string;
 };
 const exactOwnerGoToken = ownerGoToken(campaignText);
-const exactCommand = `pnpm ai:evidence:smoke -- --execute --owner-go=${exactOwnerGoToken}`;
+const campaignArgument =
+  campaignFileName === 'gemini-evidence-researcher-smoke.v1.3.json'
+    ? ''
+    : ` --campaign=${campaignFileName}`;
+const exactCommand = `pnpm ai:evidence:smoke --${campaignArgument} --execute --owner-go=${exactOwnerGoToken}`;
 const maximumPromptUtf8Bytes = Math.max(
   ...campaign.smokeProposal.caseIds.map((caseId) => {
     const caseItem = corpus.cases.find((entry) => entry.caseId === caseId);
@@ -257,7 +275,11 @@ const result = await runEvidenceResearcherSmoke({
   },
   onRawReceived: async (receipt) => {
     await writeJsonExclusive(
-      resolve(outputDirectory, 'raw-received', `${receipt.idempotencyKey}.json`),
+      resolve(
+        outputDirectory,
+        'raw-received',
+        `${receipt.idempotencyKey}.json`,
+      ),
       receipt,
     );
   },
