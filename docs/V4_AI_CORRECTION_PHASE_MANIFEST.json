@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-15T11:40:00Z",
+  "updatedAt": "2026-08-15T20:10:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -95,7 +95,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "SMOKE_1_3_THREE_CASE_FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+      "status": "PANEL_10X2_OFFLINE_READY_FINANCE_AND_OWNER_BLOCKED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -312,8 +312,33 @@
             "stateSha256": "c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc",
             "ledgerSha256": "6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42",
             "ledgerFinalRecordHash": "e0d6a97ea55fcf797879a15f67a21d94ea7eda2eec980e05e60ed6f301f67ee4",
-            "routeObservabilityFollowUp": "SEPARATE_REQUESTED_ROUTE_FROM_OBSERVED_PROVIDER_LABEL"
+            "routeObservabilityFollowUp": "COMPLETED_FOR_FUTURE_ARTIFACTS_WITHOUT_REWRITING_HISTORY"
           }
+        },
+        "panel10x2V2": {
+          "status": "OFFLINE_READY_FINANCE_AND_OWNER_BLOCKED",
+          "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-panel.v1.3-v2.json",
+          "campaignSha256": "ef270fff14334badbd776e05d3a28f0c0af8e201fc7036fdaec2f77c8b019d15",
+          "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+          "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+          "candidate": "google/gemini-3.6-flash-20260721",
+          "requestedRoute": "google-vertex/global",
+          "expectedObservedProvider": "Google",
+          "routeObservabilityVersion": "2.0.0",
+          "promptVersion": "1.3.0",
+          "requestProfileVersion": "evidence-researcher-1.1.0",
+          "expectedLogicalWorkflows": 20,
+          "historicalResultsReused": 0,
+          "maximumProviderAttempts": 30,
+          "expectedCostUsd": 0.2,
+          "hardCapUsd": 0.5,
+          "initialCallsMaximumCostBoundUsd": 0.34545,
+          "maximumAttemptsCostBoundUsd": 0.518175,
+          "maximumAttemptsAdmissibleUnderHardCap": 28,
+          "financeArbitration": "NOT_GRANTED_RETRY_CAPACITY_MISMATCH_REQUIRES_DECISION",
+          "ownerAuthorization": "NOT_GRANTED",
+          "networkCallsAllowed": false,
+          "holdoutAccess": "PROHIBITED"
         }
       }
     },
@@ -352,8 +377,9 @@
   "nextAuthorizedSequence": [
     "Preserve the failed three-case campaign and its pseudo-oracle byte-identically; do not reinterpret the boundary mismatch as a proven model failure.",
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
-    "Separate requestedRoute from the observed provider label before preparing the 10x2 panel identity.",
-    "Keep the 10x2 panel, falsifier, holdout and V4-002 closed until a new panel envelope receives Finance and owner authorization.",
+    "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",
+    "Submit the 10x2 panel fingerprint and its 30-attempt versus 0.50 USD worst-case mismatch to Finance, then require a distinct owner GO before any dispatch.",
+    "Keep the falsifier, holdout and V4-002 closed until the panel is executed and its autonomous gate is decided.",
     "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",

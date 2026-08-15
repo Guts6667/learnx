@@ -62,10 +62,15 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   modèle. L'injection n'a pas été appelée.
 - Gate v2 réussi : trois sorties valides, négatif correctement discriminé et
   injection sûre. Il autorise seulement la préparation du panel 10×2 ; aucune
-  nouvelle dépense n'est autorisée. La route demandée et le fournisseur observé
-  doivent d'abord être séparés explicitement dans les artefacts.
-- Gate suivant si succès : panel 10 × 2, puis verdict autonome. Le panel, le
-  falsificateur et le holdout restent fermés jusque-là.
+  nouvelle dépense n'est autorisée.
+- Préparation 10×2 terminée hors ligne : route demandée et fournisseur observé
+  sont séparés, la sélection v2 remplace le seul pseudo-oracle inconclusif sans
+  réécrire les corpus historiques, et le runner reste validate-only. Le
+  préflight garantit 20 appels initiaux sous 0,50 USD mais pas les 30 tentatives
+  pessimistes ; Finance doit arbitrer cet écart avant tout GO.
+- Gate suivant : arbitrage Finance puis autorisation propriétaire distincte du
+  panel 10 × 2, exécution et verdict autonome. Le falsificateur, le holdout et
+  V4-002 restent fermés jusque-là.
 
 ### Gate B — premier contrat publiable
 
@@ -119,7 +124,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Gate v2 3/3 VALID, preuves et injection sûres ; aucune promotion. | Corriger l'observabilité route/provider, puis préparer et arbitrer séparément le panel 10×2. |
+| V4-009C | `ACTIF` | Gate v2 3/3 VALID ; panel 10×2 v2 préenregistré hors ligne, observabilité route/provider corrigée, aucune promotion. | Arbitrer le plafond/capacité de retry, puis demander un GO propriétaire distinct avant tout appel. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

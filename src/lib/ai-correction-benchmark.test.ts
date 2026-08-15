@@ -2143,9 +2143,11 @@ describe('correction provider adapters', () => {
       ),
     ).resolves.toMatchObject({
       modelSnapshot: 'anthropic/claude-opus-4.8-20260801',
+      observedProvider: 'Anthropic',
       output: { answer: 'ok' },
       providerRequestId: 'or-request',
       providerRoute: 'Anthropic',
+      requestedRoute: 'Anthropic',
       usage: {
         actualCostUsd: 0.012,
         costSource: 'ACTUAL',
@@ -2213,6 +2215,8 @@ describe('correction provider adapters', () => {
     await expect(promise).rejects.toMatchObject({
       message: 'PROVIDER_HTTP_ERROR',
       providerRequestId: 'http-request',
+      providerRoute: 'OpenRouter',
+      requestedRoute: 'Anthropic',
       status: 429,
     });
   });
@@ -2228,7 +2232,11 @@ describe('correction provider adapters', () => {
       getCorrectionProviderAdapter('OPENROUTER_CHAT').execute(
         providerRequest('OPENROUTER_CHAT'),
       ),
-    ).rejects.toMatchObject({ message: 'PROVIDER_TIMEOUT' });
+    ).rejects.toMatchObject({
+      message: 'PROVIDER_TIMEOUT',
+      providerRoute: 'OpenRouter',
+      requestedRoute: 'Anthropic',
+    });
   });
 
   it('preserves usage and identity on post-response truncation', async () => {
@@ -2254,8 +2262,10 @@ describe('correction provider adapters', () => {
     ).rejects.toMatchObject({
       message: 'MODEL_OUTPUT_TRUNCATED',
       modelSnapshot: 'anthropic/claude-opus-4.8',
+      observedProvider: 'Anthropic',
       providerRequestId: 'truncated-request',
       providerRoute: 'Anthropic',
+      requestedRoute: 'Anthropic',
       rawModelOutput: '{}',
       usage: { visibleOutputTokens: 1500 },
     });
@@ -2305,8 +2315,10 @@ describe('correction provider adapters', () => {
       ),
     ).resolves.toMatchObject({
       output: { answer: 'openai' },
+      observedProvider: 'OpenAI',
       providerRequestId: 'openai-request',
       providerRoute: 'OpenAI',
+      requestedRoute: 'OpenAI',
       usage: { costSource: 'ESTIMATED', reasoningTokens: 2, visibleOutputTokens: 10 },
     });
     await expect(
@@ -2315,8 +2327,10 @@ describe('correction provider adapters', () => {
       ),
     ).resolves.toMatchObject({
       output: { answer: 'anthropic' },
+      observedProvider: 'Anthropic',
       providerRequestId: 'anthropic-request',
       providerRoute: 'Anthropic',
+      requestedRoute: 'Anthropic',
       usage: { costSource: 'ESTIMATED', reasoningTokens: 0, visibleOutputTokens: 14 },
     });
     const firstBody = JSON.parse(

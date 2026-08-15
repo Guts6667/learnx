@@ -92,3 +92,12 @@ Avant de préparer une nouvelle enveloppe, le runtime doit séparer le champ
 l'artefact actuel nomme cette étiquette `providerRoute`, ce qui est ambigu.
 Cette correction d'observabilité ne peut pas être utilisée pour relancer le
 gate déjà terminé.
+
+## Suivi hors ligne
+
+La correction est désormais appliquée aux futurs résultats :
+`requestedRoute` et `observedProvider` sont persistés séparément, tandis que
+`providerRoute` reste un champ de compatibilité historique. Le panel 10×2 v2
+est préenregistré dans un manifeste distinct ; il reste bloqué par Finance et
+une nouvelle autorisation propriétaire. Aucun appel supplémentaire n'a été
+effectué pendant cette préparation.

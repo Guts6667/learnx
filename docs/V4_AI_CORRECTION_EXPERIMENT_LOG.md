@@ -487,6 +487,32 @@ enveloppe, l'observabilité doit distinguer la route demandée
 `google-vertex/global` de l'étiquette fournisseur observée `Google` ; le champ
 historique `providerRoute` mélange aujourd'hui ces deux notions.
 
+### Addendum append-only — préparation du panel 10×2 v2 du 15 août 2026
+
+Statut : `OFFLINE_READY / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Les futurs artefacts séparent désormais `requestedRoute` et
+`observedProvider`. Le champ `providerRoute` est conservé uniquement pour la
+lecture des campagnes historiques ; aucun ancien résultat n'est réécrit.
+
+Le panel v2 sélectionne dix cas synthétiques immuables : neuf cas stables du
+corpus v1 et le négatif atomique v2. Le pseudo-oracle inconclusif
+`writing-fr-decision-mutation` est explicitement exclu. Le manifeste de
+sélection porte le SHA-256
+`d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd`.
+
+La campagne `learnx-writing-fr-gemini-evidence-researcher-panel-v2` porte le
+SHA-256 `ef270fff14334badbd776e05d3a28f0c0af8e201fc7036fdaec2f77c8b019d15`.
+Elle fixe 10 cas ×2, zéro résultat historique réutilisé, Gemini 3.6 Flash
+snapshoté, route unique `google-vertex/global`, prompt/protocole 1.3.0, profil
+minimal, fallback interdit, holdout interdit et feature réseau désactivée.
+
+Le budget reste une proposition non autorisée : attendu `0,20 USD`, plafond
+`0,50 USD`, 30 tentatives maximum. Le préflight réel calcule `0,34545 USD`
+pour les 20 appels initiaux mais `0,518175 USD` pour 30 tentatives. Seulement 28
+tentatives pessimistes tiennent sous le plafond. Finance doit arbitrer ce point
+avant un éventuel GO propriétaire. Aucun appel n'a été effectué.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

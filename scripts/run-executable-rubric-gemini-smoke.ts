@@ -101,8 +101,10 @@ function normalizeError(error: unknown) {
       errorCode: error.message,
       latencyMs: error.latencyMs ?? 0,
       modelSnapshot: error.modelSnapshot,
+      observedProvider: error.observedProvider,
       providerRequestId: error.providerRequestId,
       providerRoute: error.providerRoute,
+      requestedRoute: error.requestedRoute,
       rawModelOutput: error.rawModelOutput,
       status: 'INVALID' as const,
       usage: error.usage,
@@ -116,8 +118,10 @@ function normalizeError(error: unknown) {
           : error.message,
       latencyMs: error.latencyMs ?? 0,
       modelSnapshot: error.modelSnapshot,
+      observedProvider: error.observedProvider,
       providerRequestId: error.providerRequestId,
       providerRoute: error.providerRoute,
+      requestedRoute: error.requestedRoute,
       status: 'ERROR' as const,
     };
   }
