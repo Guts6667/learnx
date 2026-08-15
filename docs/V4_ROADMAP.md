@@ -66,7 +66,8 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 - Préparation 10×2 terminée hors ligne : route demandée et fournisseur observé
   sont séparés, la sélection v2 remplace le seul pseudo-oracle inconclusif sans
   réécrire les corpus historiques, et le runner reste validate-only. Le
-  préflight garantit 20 appels initiaux et les 28 tentatives maximales sous 0,50 USD
+  panel v2 clos après 10 workflows valides puis une citation non exacte ; aucun
+  appel supplémentaire ni V4-002 avant nouvel arbitrage
   pessimistes ; Finance doit arbitrer cet écart avant tout GO.
 - Gate suivant : arbitrage Finance puis autorisation propriétaire distincte du
   panel 10 × 2, exécution et verdict autonome. Le falsificateur, le holdout et

@@ -84,5 +84,32 @@ produit. Le runner `pnpm ai:evidence:panel:validate` est validate-only par
 défaut ; son chemin `--execute` exige l'empreinte arbitrée, le token propriétaire
 exact, la clé fournisseur et tous les préflights de budget/identité.
 
-La préparation s'arrête ici. Aucun appel panel, holdout, falsificateur,
-promotion, V4-002 ou intégration utilisateur n'est autorisé par ce document.
+## Résultat de l'exécution arbitrée
+
+L'enveloppe `dc4afaa7…8022` a été exécutée le 15 août 2026 puis close par
+Finance. Le runner a produit 10 workflows `VALID`, puis s'est arrêté sur le
+premier appel de `writing-fr-evidence-mutation` avec
+`INVALID_QUOTE_NOT_FOUND`. La sortie brute contenait notamment la citation
+fabriquée `Je recommande d’acheter les two ordinateurs.` alors que la réponse
+contient `les deux ordinateurs`. Ce rejet est un vrai défaut de preuve exact,
+pas un faux positif du résolveur.
+
+La revue Produit/pédagogie confirme aussi trois défauts non compensatoires dans
+ce même raw : un choix pris pour un fait du dossier, la polarité de l'élément
+négatif `material-fact-contradiction` inversée et l'existence du lien de
+raisonnement niée malgré une relation explicitement formulée. Les dix résultats
+simples précédents restent informatifs, mais ne compensent pas ces erreurs.
+
+- appels fournisseur : 11 ;
+- retries/fallbacks : 0/0 ;
+- coût réel réconcilié : `0,04345875 USD` ;
+- workflows non appelés après l'arrêt : 9 ;
+- state SHA-256 :
+  `c1f8170dc2643f867483ce9be24e477e2ff131315faea6ce8f3b05bde39e8b1a` ;
+- ledger SHA-256 :
+  `a209b1aba39a360172ed47513b12cef914874c80269d398f82ef42de814a4370` ;
+- hash final du ledger :
+  `5b7133d63b88acd0eeb8c690593adde8e09fdd2b4b95aff1216bc73c521a5706`.
+
+Le gate est `NO-GO` et l'enveloppe est fermée sans reprise. Aucun holdout,
+falsificateur, V4-002 ou appel supplémentaire n'est autorisé par ce résultat.

@@ -1,0 +1,1442 @@
+{
+  "attempts": [
+    {
+      "actualCostUsd": 0.0041025,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.4958975,
+      "budgetRemainingBeforeUsd": 0.5,
+      "caseId": "writing-fr-base-mastered",
+      "cellKey": "writing-fr-base-mastered:1",
+      "idempotencyKey": "502bcc7ac28c0d70a0c50f920674180e4e30ef67df45d0c5c1353f81573acab4",
+      "latencyMs": 1098,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              },
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820738-ELhNXpOWgM8M12xSpOxr",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\",\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "2ccfa8505d0fb653a12ec5bebf6e4d531e936be0efbc5673cb753e7dccc5f565",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.0041025,
+        "costSource": "ACTUAL",
+        "inputTokens": 2020,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 690
+      },
+      "worstCaseAuthorizedUsd": 0.0172545
+    },
+    {
+      "actualCostUsd": 0.0041025,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.491795,
+      "budgetRemainingBeforeUsd": 0.4958975,
+      "caseId": "writing-fr-base-mastered",
+      "cellKey": "writing-fr-base-mastered:2",
+      "idempotencyKey": "4a21424cfd1f3217130dc93407d2f64c64d2bb51a28c32147bac492d72ac35a5",
+      "latencyMs": 750,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              },
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820741-CRpjX6YbpgsXzZY5ScI4",
+      "providerRoute": "Google",
+      "repetition": 2,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\",\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "2ccfa8505d0fb653a12ec5bebf6e4d531e936be0efbc5673cb753e7dccc5f565",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.0041025,
+        "costSource": "ACTUAL",
+        "inputTokens": 2020,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 690
+      },
+      "worstCaseAuthorizedUsd": 0.0172545
+    },
+    {
+      "actualCostUsd": 0.00405075,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.48774425,
+      "budgetRemainingBeforeUsd": 0.491795,
+      "caseId": "writing-fr-paraphrase-mastered",
+      "cellKey": "writing-fr-paraphrase-mastered:1",
+      "idempotencyKey": "f6ca5408ceccb4480197b12b4116b2fe44cfe5b3d0c580dc3f9308c6012a81c7",
+      "latencyMs": 853,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 213,
+                "sha256": "9deb84babaf814d855d39ab8a27f6e0ba3d7eba6ca52b9a4ac0d46b3cb170c94",
+                "start": 153,
+                "text": "alors que six personnes devaient se répartir trois machines."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 213,
+                "sha256": "ef4ee293ae6e6bf937324fa7b18c968d4eaab0665941a818f99f8f7e4cf30881",
+                "start": 105,
+                "text": "9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              },
+              {
+                "end": 341,
+                "sha256": "01ccbb8acc603a6f2b841e770c14b2e6dfd07c427684f07645e51ef23cc0c1fe",
+                "start": 214,
+                "text": "Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 341,
+                "sha256": "01ccbb8acc603a6f2b841e770c14b2e6dfd07c427684f07645e51ef23cc0c1fe",
+                "start": 214,
+                "text": "Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820745-Ejbg3Mzua1qbBdhkV18G",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"alors que six personnes devaient se répartir trois machines.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\",\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "d8db12aaf53d12ac8d2019276af4a510df0a25b5828f50c75485e87445cf9579",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.00405075,
+        "costSource": "ACTUAL",
+        "inputTokens": 2026,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 675
+      },
+      "worstCaseAuthorizedUsd": 0.01726575
+    },
+    {
+      "actualCostUsd": 0.00408825,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.483656,
+      "budgetRemainingBeforeUsd": 0.48774425,
+      "caseId": "writing-fr-paraphrase-mastered",
+      "cellKey": "writing-fr-paraphrase-mastered:2",
+      "idempotencyKey": "8e5698dbae4b0f5b48b9509fb65f4625da975860897f8398e270f51071696b72",
+      "latencyMs": 1107,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 213,
+                "sha256": "ef4ee293ae6e6bf937324fa7b18c968d4eaab0665941a818f99f8f7e4cf30881",
+                "start": 105,
+                "text": "9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 213,
+                "sha256": "ef4ee293ae6e6bf937324fa7b18c968d4eaab0665941a818f99f8f7e4cf30881",
+                "start": 105,
+                "text": "9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 64,
+                "sha256": "1add229729061fdf7a4d63d9a6e03d5a061ede6aa3398102d552122ba09ef21b",
+                "start": 0,
+                "text": "Le meilleur usage du budget serait l’acquisition de deux postes."
+              },
+              {
+                "end": 341,
+                "sha256": "01ccbb8acc603a6f2b841e770c14b2e6dfd07c427684f07645e51ef23cc0c1fe",
+                "start": 214,
+                "text": "Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 341,
+                "sha256": "01ccbb8acc603a6f2b841e770c14b2e6dfd07c427684f07645e51ef23cc0c1fe",
+                "start": 214,
+                "text": "Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820748-1UYBKyjxuzjdeCY0X44u",
+      "providerRoute": "Google",
+      "repetition": 2,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"9 participants seulement ont achevé l’activité, alors que six personnes devaient se répartir trois machines.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Le meilleur usage du budget serait l’acquisition de deux postes.\",\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Puisque l’obstacle constaté est l’accès au matériel, augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "ed4aba1709645f206fe0d69ebcd24def0dd141e315b455f5f785f5963067cbb3",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.00408825,
+        "costSource": "ACTUAL",
+        "inputTokens": 2026,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 685
+      },
+      "worstCaseAuthorizedUsd": 0.01726575
+    },
+    {
+      "actualCostUsd": 0.00392175,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.47973425,
+      "budgetRemainingBeforeUsd": 0.483656,
+      "caseId": "writing-fr-concise-mastered",
+      "cellKey": "writing-fr-concise-mastered:1",
+      "idempotencyKey": "56b3d719d705a661812924791df8ddf3e406f70c8a64745a44886dc9ab3f8021",
+      "latencyMs": 937,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 111,
+                "sha256": "7d86dfcc3c81e8916754ddc52a71df6f18fb7e2797883efc9ec80193760481cc",
+                "start": 32,
+                "text": "samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 111,
+                "sha256": "7d86dfcc3c81e8916754ddc52a71df6f18fb7e2797883efc9ec80193760481cc",
+                "start": 32,
+                "text": "samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              },
+              {
+                "end": 207,
+                "sha256": "46382250987db772f51faf03726a694c54c8f18512b6289acf7353666093e1bc",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 207,
+                "sha256": "46382250987db772f51faf03726a694c54c8f18512b6289acf7353666093e1bc",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820752-vsjnOySWM1X9EtAAyXrS",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\",\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "93380020e80550474a0a08c38c41c17042af689cbb333c2506a9828e2ca35c33",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.00392175,
+        "costSource": "ACTUAL",
+        "inputTokens": 1999,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 646
+      },
+      "worstCaseAuthorizedUsd": 0.0171555
+    },
+    {
+      "actualCostUsd": 0.0039105,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.47582375000000005,
+      "budgetRemainingBeforeUsd": 0.47973425000000003,
+      "caseId": "writing-fr-concise-mastered",
+      "cellKey": "writing-fr-concise-mastered:2",
+      "idempotencyKey": "370c5d3a524ff2f48c9c7bf4bd59ef7837c9b30d7e10acd3cd26945b906832a9",
+      "latencyMs": 849,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 111,
+                "sha256": "7d86dfcc3c81e8916754ddc52a71df6f18fb7e2797883efc9ec80193760481cc",
+                "start": 32,
+                "text": "samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 111,
+                "sha256": "f19832ee9fba548c04e0129da3313f8d2f0075a9beb2a23e67d8081993655f20",
+                "start": 40,
+                "text": "six personnes partageaient trois postes et seules 9 sur 20 ont terminé."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              },
+              {
+                "end": 207,
+                "sha256": "46382250987db772f51faf03726a694c54c8f18512b6289acf7353666093e1bc",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 207,
+                "sha256": "46382250987db772f51faf03726a694c54c8f18512b6289acf7353666093e1bc",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820757-FFiSsWxctxkfSiB5eaHl",
+      "providerRoute": "Google",
+      "repetition": 2,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"samedi, six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois postes et seules 9 sur 20 ont terminé.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\",\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Le matériel répond directement au blocage constaté ; un créneau sans matériel ne le ferait pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "ff69045fd9695526d50049b3ca6c48ef0bf4bcf826a664e3eaa1f37524eb1702",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.0039105,
+        "costSource": "ACTUAL",
+        "inputTokens": 1999,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 643
+      },
+      "worstCaseAuthorizedUsd": 0.0171555
+    },
+    {
+      "actualCostUsd": 0.004029,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.47179475,
+      "budgetRemainingBeforeUsd": 0.47582375,
+      "caseId": "writing-fr-typos-unicode-mastered",
+      "cellKey": "writing-fr-typos-unicode-mastered:1",
+      "idempotencyKey": "b8bc93b446f546970db1991ee0a5de406c8a30ca4f4a109bbfbf6d1ec6c72df1",
+      "latencyMs": 858,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 150,
+                "sha256": "ae159e7c768fb059fb17bfdd8169c6908cd0d33f6668cba0cd5ca6fd407fccb5",
+                "start": 70,
+                "text": "seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 150,
+                "sha256": "ae159e7c768fb059fb17bfdd8169c6908cd0d33f6668cba0cd5ca6fd407fccb5",
+                "start": 70,
+                "text": "seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              },
+              {
+                "end": 261,
+                "sha256": "19ef5d366a9479315d31df8d4b2e0cdf3b116b6fd58ce78173407cba8901cff9",
+                "start": 151,
+                "text": "Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 261,
+                "sha256": "19ef5d366a9479315d31df8d4b2e0cdf3b116b6fd58ce78173407cba8901cff9",
+                "start": 151,
+                "text": "Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820760-shraO9Wc2pWnAq1rpF4U",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\",\"Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "a6c2493cd8ad52b583394246a55abc34324aee018596eb86068246ed46a36bf9",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.004029,
+        "costSource": "ACTUAL",
+        "inputTokens": 2017,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 671
+      },
+      "worstCaseAuthorizedUsd": 0.017197499999999998
+    },
+    {
+      "actualCostUsd": 0.0040515,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.46774325,
+      "budgetRemainingBeforeUsd": 0.47179475,
+      "caseId": "writing-fr-typos-unicode-mastered",
+      "cellKey": "writing-fr-typos-unicode-mastered:2",
+      "idempotencyKey": "a7b546ed980f7922e8a2ab36e8f935c8510dca1d3bb7c499adbd23acae3c38cf",
+      "latencyMs": 732,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 150,
+                "sha256": "d9162af8bf06e97745c9b2e2ad84d5f21dac75a97e5f29d4bf07c0db53bcacc7",
+                "start": 43,
+                "text": "Samedi etait complet, mais seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 150,
+                "sha256": "ae159e7c768fb059fb17bfdd8169c6908cd0d33f6668cba0cd5ca6fd407fccb5",
+                "start": 70,
+                "text": "seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 42,
+                "sha256": "589c1cf751e71eedbfbee897d46276042360720a7f51ac4004a633c16939f957",
+                "start": 0,
+                "text": "Je recommande d’acheter les 2 ordinateurs."
+              },
+              {
+                "end": 261,
+                "sha256": "19ef5d366a9479315d31df8d4b2e0cdf3b116b6fd58ce78173407cba8901cff9",
+                "start": 151,
+                "text": "Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 261,
+                "sha256": "19ef5d366a9479315d31df8d4b2e0cdf3b116b6fd58ce78173407cba8901cff9",
+                "start": 151,
+                "text": "Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820764-YjUQCQzhDWVeBHs0lYHb",
+      "providerRoute": "Google",
+      "repetition": 2,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Samedi etait complet, mais seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\",\"Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Donc, regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "78d674e336f8c3147e6fa5d293e22dd8da64fdb91647422b5ac016be2194c123",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.0040515,
+        "costSource": "ACTUAL",
+        "inputTokens": 2017,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 677
+      },
+      "worstCaseAuthorizedUsd": 0.017197499999999998
+    },
+    {
+      "actualCostUsd": 0.0035715,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.46417175,
+      "budgetRemainingBeforeUsd": 0.46774325,
+      "caseId": "writing-fr-no-choice-negative",
+      "cellKey": "writing-fr-no-choice-negative:1",
+      "idempotencyKey": "d1f78b9cdbe6a89dd8c76e5090f62cc7d9a7c0a6feaf21db0d07f3e5f9bfa926",
+      "latencyMs": 1383,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 55,
+                "sha256": "09106855e9be927599048f54d6d69cdd2edd5182b4d766d8d2e405c365278a7a",
+                "start": 11,
+                "text": "six personnes partageaient trois ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 96,
+                "sha256": "1b246104569275a85990970c7565e4b27e17afd47a837865dafd9b5dc9bdace2",
+                "start": 59,
+                "text": "seules 9 personnes sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820767-85X1qoidXLCIScWGWt1y",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "857613cfc2aa48f0cda0ef11fc6cd923d9dfe0a9eeb26b691e9d336c166b378b",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.0035715,
+        "costSource": "ACTUAL",
+        "inputTokens": 2007,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 551
+      },
+      "worstCaseAuthorizedUsd": 0.01719
+    },
+    {
+      "actualCostUsd": 0.003639,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.46053275,
+      "budgetRemainingBeforeUsd": 0.46417175,
+      "caseId": "writing-fr-no-choice-negative",
+      "cellKey": "writing-fr-no-choice-negative:2",
+      "idempotencyKey": "0f8b2f8bf5e53118466defa31ae978792a5beec38cb8410711fafd7cd5561adc",
+      "latencyMs": 1343,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 96,
+                "sha256": "94215478cba5b29be204d5f827d7434349787f57f94cb2ba1bf620e432f7b119",
+                "start": 11,
+                "text": "six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 96,
+                "sha256": "94215478cba5b29be204d5f827d7434349787f57f94cb2ba1bf620e432f7b119",
+                "start": 11,
+                "text": "six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.99,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "cde9f541291f4ce38e8b7accc0e6f6ec7f2d630fd0f52557aa37373825e944f4",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786820770-QbLjkvWlZ4Grk9VApI7t",
+      "providerRoute": "Google",
+      "repetition": 2,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.99,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "2941008e5dfd3adecfb27e5c8a95aad3723ccd305eb63f079569cf75579fe94c",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.003639,
+        "costSource": "ACTUAL",
+        "inputTokens": 2007,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 569
+      },
+      "worstCaseAuthorizedUsd": 0.01719
+    },
+    {
+      "actualCostUsd": 0.0039915,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.45654125,
+      "budgetRemainingBeforeUsd": 0.46053275,
+      "caseId": "writing-fr-evidence-mutation",
+      "cellKey": "writing-fr-evidence-mutation:1",
+      "errorCode": "INVALID_QUOTE_NOT_FOUND",
+      "idempotencyKey": "1ad83c8e5139de07ff1a31fec36b035770e7ded924d150a371c18e5d10ae2b69",
+      "latencyMs": 1059,
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "observedProvider": "Google",
+      "providerRequestId": "gen-1786820774-Eb5IX7AjY0IoWqg3JqLn",
+      "providerRoute": "Google",
+      "repetition": 1,
+      "requestedRoute": "google-vertex/global",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter les deux ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter les deux ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.98,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"acheter les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"acheter les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[\"Cela supprimera la file d’attente de 40 minutes mentionnée dans le dossier.\"],\"status\":\"CONTRADICTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter les two ordinateurs.\",\"Puisque cette attente empêche les participants de terminer, ajouter du matériel est plus pertinent qu’ajouter un créneau.\"],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Puisque cette attente empêche les participants de terminer, ajouter du matériel est plus pertinent qu’ajouter un créneau.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.98,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "d182dec4c8f55226c69afa1e399b49f7792974bd77da4082605292fe22557c74",
+      "rawModelOutputTruncated": false,
+      "status": "INVALID",
+      "usage": {
+        "actualCostUsd": 0.0039915,
+        "costSource": "ACTUAL",
+        "inputTokens": 2007,
+        "reasoningTokens": 0,
+        "visibleOutputTokens": 663
+      },
+      "worstCaseAuthorizedUsd": 0.0171855
+    }
+  ],
+  "campaignFingerprint": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+  "completedCellKeys": [
+    "writing-fr-base-mastered:1",
+    "writing-fr-base-mastered:2",
+    "writing-fr-paraphrase-mastered:1",
+    "writing-fr-paraphrase-mastered:2",
+    "writing-fr-concise-mastered:1",
+    "writing-fr-concise-mastered:2",
+    "writing-fr-typos-unicode-mastered:1",
+    "writing-fr-typos-unicode-mastered:2",
+    "writing-fr-no-choice-negative:1",
+    "writing-fr-no-choice-negative:2"
+  ],
+  "createdAt": "2026-08-15T19:05:38.300Z",
+  "schemaVersion": 1,
+  "stoppedReason": "INVALID_QUOTE_NOT_FOUND",
+  "updatedAt": "2026-08-15T19:06:17.598Z"
+}

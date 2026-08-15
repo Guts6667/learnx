@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
+  "caseId": "writing-fr-evidence-mutation",
+  "cellKey": "writing-fr-evidence-mutation:1",
+  "idempotencyKey": "1ad83c8e5139de07ff1a31fec36b035770e7ded924d150a371c18e5d10ae2b69",
+  "modelSnapshot": "google/gemini-3.6-flash",
+  "observedProvider": "Google",
+  "providerRequestId": "gen-1786820774-Eb5IX7AjY0IoWqg3JqLn",
+  "providerRoute": "Google",
+  "repetition": 1,
+  "requestedRoute": "google-vertex/global",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter les deux ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter les deux ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.98,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"acheter les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"acheter les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[\"Cela supprimera la file d’attente de 40 minutes mentionnée dans le dossier.\"],\"status\":\"CONTRADICTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"Je recommande d’acheter les two ordinateurs.\",\"Puisque cette attente empêche les participants de terminer, ajouter du matériel est plus pertinent qu’ajouter un créneau.\"],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Puisque cette attente empêche les participants de terminer, ajouter du matériel est plus pertinent qu’ajouter un créneau.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.98,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "d182dec4c8f55226c69afa1e399b49f7792974bd77da4082605292fe22557c74",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:06:17.595Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.0039915,
+    "costSource": "ACTUAL",
+    "inputTokens": 2007,
+    "reasoningTokens": 0,
+    "visibleOutputTokens": 663
+  }
+}

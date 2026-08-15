@@ -316,7 +316,7 @@
           }
         },
         "panel10x2V2": {
-          "status": "OFFLINE_READY_FINANCE_AND_OWNER_BLOCKED",
+          "status": "NO_GO_EXACT_QUOTE_FAILURE_FINANCE_RECONCILED_CLOSED",
           "campaign": "benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-panel.v1.3-v2.json",
           "campaignSha256": "dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022",
           "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
@@ -335,10 +335,22 @@
           "initialCallsMaximumCostBoundUsd": 0.34545,
           "maximumAttemptsCostBoundUsd": 0.48363,
           "maximumAttemptsAdmissibleUnderHardCap": 28,
-          "financeArbitration": "CHANGES_APPLIED_PENDING_FINAL_SHA_ARBITRATION",
-          "ownerAuthorization": "NOT_GRANTED",
+          "financeArbitration": "RECONCILED_CLOSED_NO_RESUME",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
           "networkCallsAllowed": false,
-          "holdoutAccess": "PROHIBITED"
+          "holdoutAccess": "PROHIBITED",
+          "result": {
+            "resultDirectory": "benchmarks/ai-correction/results/evidence-researcher-panel/2026-08-15T19-05-38-300Z",
+            "completedLogicalWorkflows": 10,
+            "providerAttempts": 11,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "stoppedReason": "INVALID_QUOTE_NOT_FOUND",
+            "actualReconciledCostUsd": 0.04345875,
+            "stateSha256": "c1f8170dc2643f867483ce9be24e477e2ff131315faea6ce8f3b05bde39e8b1a",
+            "ledgerSha256": "a209b1aba39a360172ed47513b12cef914874c80269d398f82ef42de814a4370",
+            "ledgerFinalRecordHash": "5b7133d63b88acd0eeb8c690593adde8e09fdd2b4b95aff1216bc73c521a5706"
+          }
         }
       }
     },

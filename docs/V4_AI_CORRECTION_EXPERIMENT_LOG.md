@@ -526,3 +526,18 @@ Après chaque campagne, mettre à jour sans supprimer l'historique :
 
 Le holdout scellé ne doit jamais servir au choix du prompt, du modèle ou des
 seuils. Il ne s'ouvre qu'après un GO complet sur le corpus de développement.
+
+### 2026-08-15 — Panel evidence researcher v2 arrêté sur preuve non exacte
+
+Statut : `NO_GO / FINANCE_RECONCILED_CLOSED / NO_RETRY`.
+
+Le panel v2 `dc4afaa7…8022` a exécuté 11 appels séquentiels. Dix workflows ont
+été validés, puis `writing-fr-evidence-mutation:1` a été rejeté avec
+`INVALID_QUOTE_NOT_FOUND`. Le raw borné montre une substitution réelle dans la
+citation (`two` au lieu de `deux`) ainsi que plusieurs statuts en désaccord avec
+le pseudo-oracle. Le résolveur exact a donc fonctionné comme prévu et la
+campagne s'est arrêtée sans retry ni fallback avant les 9 workflows restants.
+
+Coût réel total : `0,04345875 USD`. Finance a réconcilié 11 intents avec 11
+outcomes, sans coût orphelin, et a fermé l'enveloppe. Ce résultat ne peut pas
+être complété ni requalifié par le reliquat budgétaire.
