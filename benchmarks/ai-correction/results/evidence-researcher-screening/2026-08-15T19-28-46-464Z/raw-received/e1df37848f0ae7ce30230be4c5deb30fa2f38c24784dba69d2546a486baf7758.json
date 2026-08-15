@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+  "caseId": "writing-fr-base-mastered",
+  "cellKey": "writing-fr-base-mastered:1",
+  "idempotencyKey": "e1df37848f0ae7ce30230be4c5deb30fa2f38c24784dba69d2546a486baf7758",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1786822126-pQgzO6zxfVEIPlX3YYnd",
+  "providerRoute": "Anthropic",
+  "repetition": 1,
+  "requestedRoute": "Anthropic",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs\",\"Ajouter du matériel traite donc le frein observé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "85bd964d9e7ae3c4699e141a76f15a804930256e62d544d399a8c9e363407816",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:29:00.911Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.024514,
+    "costSource": "ACTUAL",
+    "inputTokens": 3852,
+    "reasoningTokens": 888,
+    "visibleOutputTokens": 793
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "campaignId": "learnx-writing-fr-sonnet-5-evidence-researcher-three-case-v1",
+  "campaignSha256": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+  "completedLogicalWorkflows": 3,
+  "gatePassed": true,
+  "providerAttempts": 3,
+  "stoppedReason": null,
+  "totalActualCostUsd": 0.072626
+}

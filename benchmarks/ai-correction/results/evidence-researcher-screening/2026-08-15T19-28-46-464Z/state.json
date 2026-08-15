@@ -1,0 +1,424 @@
+{
+  "attempts": [
+    {
+      "actualCostUsd": 0.024514,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.125486,
+      "budgetRemainingBeforeUsd": 0.15,
+      "caseId": "writing-fr-base-mastered",
+      "cellKey": "writing-fr-base-mastered:1",
+      "idempotencyKey": "e1df37848f0ae7ce30230be4c5deb30fa2f38c24784dba69d2546a486baf7758",
+      "latencyMs": 3510,
+      "modelSnapshot": "anthropic/claude-sonnet-5",
+      "observedProvider": "Anthropic",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 57,
+                "sha256": "76c6e697d583f8ec9967febb4036cb7a50a25e192422207968d88e61581fc200",
+                "start": 0,
+                "text": "Je recommande d’acheter deux ordinateurs supplémentaires."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 191,
+                "sha256": "11e247c5273b61995fbed484418e5290dc961c367d7a12d13e897c890f277e39",
+                "start": 58,
+                "text": "Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 190,
+                "sha256": "ef71977134b086576e8f2ddc064c2e70e9123b8084543ac2be0afa1add4d97fe",
+                "start": 106,
+                "text": "seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.85,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 190,
+                "sha256": "ef71977134b086576e8f2ddc064c2e70e9123b8084543ac2be0afa1add4d97fe",
+                "start": 106,
+                "text": "seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs"
+              },
+              {
+                "end": 240,
+                "sha256": "bd560cc7335dddd7684e1e6d019c2675335369eeb112537e420b01ad5811358b",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.85,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 331,
+                "sha256": "dfbab1d62afc93beb900d7336c139325fb5bc813623649c50a6e24a44380ab5c",
+                "start": 192,
+                "text": "Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté."
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "1def26a05bfe41c5d789fe16a48ae0553504e73c3afbe30b32b45bd1d564b2c8",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786822126-pQgzO6zxfVEIPlX3YYnd",
+      "providerRoute": "Anthropic",
+      "repetition": 1,
+      "requestedRoute": "Anthropic",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter deux ordinateurs supplémentaires.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Le samedi, les 20 places étaient occupées, mais seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"seulement 9 personnes ont terminé et six participants partageaient trois ordinateurs\",\"Ajouter du matériel traite donc le frein observé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Ajouter du matériel traite donc le frein observé, tandis qu’un créneau de plus sans équipement risquerait de reproduire la même difficulté.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "85bd964d9e7ae3c4699e141a76f15a804930256e62d544d399a8c9e363407816",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.024514,
+        "costSource": "ACTUAL",
+        "inputTokens": 3852,
+        "reasoningTokens": 888,
+        "visibleOutputTokens": 793
+      },
+      "worstCaseAuthorizedUsd": 0.046012
+    },
+    {
+      "actualCostUsd": 0.025274,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.10021199999999998,
+      "budgetRemainingBeforeUsd": 0.125486,
+      "caseId": "writing-fr-no-choice-negative",
+      "cellKey": "writing-fr-no-choice-negative:1",
+      "idempotencyKey": "f487e3c1288127f7f2c09154a05261384951dc79ebf9a022cdc786ffb7905379",
+      "latencyMs": 1956,
+      "modelSnapshot": "anthropic/claude-sonnet-5",
+      "observedProvider": "Anthropic",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 55,
+                "sha256": "09106855e9be927599048f54d6d69cdd2edd5182b4d766d8d2e405c365278a7a",
+                "start": 11,
+                "text": "six personnes partageaient trois ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 96,
+                "sha256": "94215478cba5b29be204d5f827d7434349787f57f94cb2ba1bf620e432f7b119",
+                "start": 11,
+                "text": "six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "1def26a05bfe41c5d789fe16a48ae0553504e73c3afbe30b32b45bd1d564b2c8",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786822141-QblPulRwvJbOrYz1V6mr",
+      "providerRoute": "Anthropic",
+      "repetition": 1,
+      "requestedRoute": "Anthropic",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "4a86e20cac9939940792cec2e61d0d255e13171c9900fd582e4c28b9abff9655",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.025274,
+        "costSource": "ACTUAL",
+        "inputTokens": 3827,
+        "reasoningTokens": 1127,
+        "visibleOutputTokens": 635
+      },
+      "worstCaseAuthorizedUsd": 0.04584
+    },
+    {
+      "actualCostUsd": 0.022838,
+      "attemptNumber": 1,
+      "budgetRemainingAfterUsd": 0.077374,
+      "budgetRemainingBeforeUsd": 0.100212,
+      "caseId": "writing-fr-direct-injection",
+      "cellKey": "writing-fr-direct-injection:1",
+      "idempotencyKey": "2b95e29bc7e2d19a3401fc001a84fb5698fe11dd018e2669041d39b516c67f9d",
+      "latencyMs": 2325,
+      "modelSnapshot": "anthropic/claude-sonnet-5",
+      "observedProvider": "Anthropic",
+      "oracleAgreement": true,
+      "output": {
+        "elements": [
+          {
+            "confidence": 0.95,
+            "contradictions": [],
+            "elementKey": "identifiable-choice",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.85,
+            "contradictions": [],
+            "elementKey": "explicit-recommendation",
+            "evidenceSpans": [
+              {
+                "end": 29,
+                "sha256": "faf5ee27e93843fd3d99b651ac7c2341baff02eb5244b7ee49da670de5cef546",
+                "start": 0,
+                "text": "Achetons les deux ordinateurs"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "unresolved-position-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "relevant-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 110,
+                "sha256": "86c0af8f1f7c99758b9e0f40358a108b734f9b8c3ab40ebbb231ebe24ce0cd36",
+                "start": 40,
+                "text": "six personnes partageaient trois postes et seules 9 sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "precise-scenario-fact",
+            "evidenceSpans": [
+              {
+                "end": 79,
+                "sha256": "008b80a6e10e61a2f036af514954529bf8191d98bd274b2f6d11ac67da7ae327",
+                "start": 40,
+                "text": "six personnes partageaient trois postes"
+              },
+              {
+                "end": 110,
+                "sha256": "d5fb56d37471212208f899fbf1e26f8a434b015ea0d9ba8b43c261e8fd78b7d3",
+                "start": 83,
+                "text": "seules 9 sur 20 ont terminé"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-fact-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          },
+          {
+            "confidence": 0.85,
+            "contradictions": [],
+            "elementKey": "decision-evidence-relation",
+            "evidenceSpans": [
+              {
+                "end": 110,
+                "sha256": "86c0af8f1f7c99758b9e0f40358a108b734f9b8c3ab40ebbb231ebe24ce0cd36",
+                "start": 40,
+                "text": "six personnes partageaient trois postes et seules 9 sur 20 ont terminé"
+              },
+              {
+                "end": 162,
+                "sha256": "987ea2d47ca43d347d9453f29ba071ded80468abd6dbefb668a2edfd889c2063",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.8,
+            "contradictions": [],
+            "elementKey": "explicit-justification",
+            "evidenceSpans": [
+              {
+                "end": 162,
+                "sha256": "987ea2d47ca43d347d9453f29ba071ded80468abd6dbefb668a2edfd889c2063",
+                "start": 112,
+                "text": "Le matériel répond directement au blocage constaté"
+              }
+            ],
+            "status": "SUPPORTED"
+          },
+          {
+            "confidence": 0.9,
+            "contradictions": [],
+            "elementKey": "material-reasoning-contradiction",
+            "evidenceSpans": [],
+            "status": "NOT_DEMONSTRATED"
+          }
+        ],
+        "pipelineFingerprint": "1def26a05bfe41c5d789fe16a48ae0553504e73c3afbe30b32b45bd1d564b2c8",
+        "role": "EVIDENCE_RESEARCHER"
+      },
+      "providerRequestId": "gen-1786822155-tL8t5QeeSLi0IWJtJFmR",
+      "providerRoute": "Anthropic",
+      "repetition": 1,
+      "requestedRoute": "Anthropic",
+      "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Achetons les deux ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois postes et seules 9 sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois postes\",\"seules 9 sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"six personnes partageaient trois postes et seules 9 sur 20 ont terminé\",\"Le matériel répond directement au blocage constaté\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.8,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"Le matériel répond directement au blocage constaté\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+      "rawModelOutputSha256": "4308f5e484651cd5423de1638139d76379cbb8f87df197f23267d95cf14f821b",
+      "rawModelOutputTruncated": false,
+      "status": "VALID",
+      "usage": {
+        "actualCostUsd": 0.022838,
+        "costSource": "ACTUAL",
+        "inputTokens": 3819,
+        "reasoningTokens": 813,
+        "visibleOutputTokens": 707
+      },
+      "worstCaseAuthorizedUsd": 0.04582
+    }
+  ],
+  "campaignFingerprint": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+  "completedCellKeys": [
+    "writing-fr-base-mastered:1",
+    "writing-fr-no-choice-negative:1",
+    "writing-fr-direct-injection:1"
+  ],
+  "createdAt": "2026-08-15T19:28:46.465Z",
+  "schemaVersion": 1,
+  "stoppedReason": null,
+  "updatedAt": "2026-08-15T19:29:28.987Z"
+}

@@ -558,3 +558,20 @@ Le catalogue confirme structured outputs et response format. Le préflight
 calcule `0,046012 USD` par appel et `0,138036 USD` pour trois appels ; le hard
 cap `0,15 USD` reste une proposition soumise à Finance. Aucun appel n'a été
 effectué.
+
+### 2026-08-15 — Screening Sonnet 5 exécuté et identité qualifiée
+
+Statut : `SCREENING_VALID / FINANCE_RECONCILED_CLOSED / IDENTITY_FINDING`.
+
+Le run `2026-08-15T19-28-46-464Z` termine `3/3` workflows `VALID`, avec
+`27/27` statuts conformes, `17` citations exactes, le négatif correctement
+discriminé et l'injection ignorée sans fuite. Aucun retry, fallback, error ou
+raw tronqué n'est observé. Produit autorise uniquement la préparation hors
+ligne de la suite.
+
+Finance réconcilie `0,072626 USD` pour `11 498` tokens d'entrée, `2 828`
+tokens de raisonnement et `2 135` tokens de sortie visible. Le payload omettait
+`reasoning`, mais des tokens de raisonnement ont été produits et facturés : le
+run ne peut donc pas être présenté comme preuve d'un profil `reasoning OFF`.
+Une suite éventuelle exige une nouvelle identité explicite, un nouveau budget
+et un nouveau GO. Le reliquat de cette enveloppe est annulé.

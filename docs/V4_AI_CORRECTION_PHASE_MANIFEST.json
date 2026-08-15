@@ -353,7 +353,7 @@
           }
         },
         "sonnet5ThreeCaseScreening": {
-          "status": "OFFLINE_READY_FINANCE_AND_OWNER_BLOCKED",
+          "status": "SCREENING_VALID_FINANCE_CLOSED_IDENTITY_FINDING",
           "campaign": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-researcher-screening.v1.json",
           "campaignSha256": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
           "catalogAttestation": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-attestation-2026-08-15.json",
@@ -371,10 +371,27 @@
           "hardCapUsd": 0.15,
           "maximumCostPerAttemptUsd": 0.046012,
           "maximumCampaignCostBoundUsd": 0.138036,
-          "financeArbitration": "NOT_GRANTED",
-          "ownerAuthorization": "NOT_GRANTED",
+          "financeArbitration": "RECONCILED_CLOSED",
+          "ownerAuthorization": "GRANTED_AND_CONSUMED",
           "networkCallsAllowed": false,
-          "holdoutAccess": "PROHIBITED"
+          "holdoutAccess": "PROHIBITED",
+          "result": {
+            "runId": "2026-08-15T19-28-46-464Z",
+            "verdict": "VALID_WITH_REASONING_IDENTITY_FINDING",
+            "completedLogicalWorkflows": 3,
+            "providerAttempts": 3,
+            "retryCount": 0,
+            "fallbackCount": 0,
+            "stoppedReason": null,
+            "actualReconciledCostUsd": 0.072626,
+            "inputTokens": 11498,
+            "reasoningTokens": 2828,
+            "visibleOutputTokens": 2135,
+            "stateSha256": "36294a8fec3a5c30f8b79efda2bef7f57e11ef4c6ab5cf82d014d5e59755484a",
+            "ledgerSha256": "ff7e2d6b5420b6e7fe6b5435e10fd8a7780b8c780bc08d1d821ad0a109f01cea",
+            "ledgerFinalRecordHash": "e8e93aed934346e63e468d73a30cd473f3dcc55f1e2b1dc45ec9799c23672b29",
+            "reasoningIdentityFinding": "REQUEST_OMITTED_REASONING_BUT_PROVIDER_REPORTED_AND_BILLED_REASONING_TOKENS"
+          }
         }
       }
     },
