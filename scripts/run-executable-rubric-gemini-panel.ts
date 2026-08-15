@@ -1,6 +1,18 @@
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import {
+  appendFile,
+  mkdir,
+  readFile,
+  rename,
+  writeFile,
+} from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
 
+import {
+  CorrectionModelOutputError,
+  CorrectionProviderError,
+  getCorrectionProviderAdapter,
+} from '../src/lib/ai-correction-provider-adapters.ts';
 import { calculateEvidenceResearcherCostBound } from '../src/lib/evidence-extraction-campaign.ts';
 import { validateEvidenceResearcherPanelCampaign } from '../src/lib/evidence-researcher-panel-campaign.ts';
 import { compileExecutableRubric } from '../src/lib/executable-rubric-engine.ts';
@@ -11,6 +23,69 @@ import {
   evidenceResearcherProtocolFingerprint,
   researcherJsonSchema,
 } from '../src/lib/evidence-researcher-protocol.ts';
+import {
+  runEvidenceResearcherPanel,
+  type EvidenceResearcherPanelLedgerEvent,
+  type EvidenceResearcherPanelState,
+} from '../src/server/ai/evidence-researcher-panel.ts';
+
+const option = (name: string): string | undefined => {
+  const prefix = `--${name}=`;
+  return process.argv
+    .find((value) => value.startsWith(prefix))
+    ?.slice(prefix.length);
+};
+
+const sha256 = (value: string | Buffer): string =>
+  createHash('sha256').update(value).digest('hex');
+
+async function writeJsonAtomic(path: string, value: unknown): Promise<void> {
+  await mkdir(dirname(path), { recursive: true });
+  const temporary = `${path}.tmp`;
+  await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  await rename(temporary, path);
+}
+
+async function writeJsonExclusive(path: string, value: unknown): Promise<void> {
+  await mkdir(dirname(path), { recursive: true });
+  await writeFile(path, `${JSON.stringify(value, null, 2)}\n`, {
+    encoding: 'utf8',
+    flag: 'wx',
+  });
+}
+
+function normalizeError(error: unknown) {
+  if (error instanceof CorrectionModelOutputError) {
+    return {
+      errorCode: error.message,
+      latencyMs: error.latencyMs ?? 0,
+      modelSnapshot: error.modelSnapshot,
+      observedProvider: error.observedProvider,
+      providerRequestId: error.providerRequestId,
+      providerRoute: error.providerRoute,
+      requestedRoute: error.requestedRoute,
+      rawModelOutput: error.rawModelOutput,
+      status: 'INVALID' as const,
+      usage: error.usage,
+    };
+  }
+  if (error instanceof CorrectionProviderError) {
+    return {
+      errorCode:
+        error.message === 'PROVIDER_HTTP_ERROR' && error.status !== undefined
+          ? `PROVIDER_HTTP_${error.status}`
+          : error.message,
+      latencyMs: error.latencyMs ?? 0,
+      modelSnapshot: error.modelSnapshot,
+      observedProvider: error.observedProvider,
+      providerRequestId: error.providerRequestId,
+      providerRoute: error.providerRoute,
+      requestedRoute: error.requestedRoute,
+      status: 'ERROR' as const,
+    };
+  }
+  throw error;
+}
 
 const paths = {
   attestation: resolve(
@@ -112,6 +187,7 @@ const attestation = JSON.parse(attestationText) as {
     completionUsdPerToken: number;
     promptUsdPerToken: number;
   };
+  providerName: string;
 };
 const initialCallsCostBound = calculateEvidenceResearcherCostBound({
   completionUsdPerToken: attestation.pricing.completionUsdPerToken,
@@ -141,55 +217,294 @@ const maximumAttemptsAdmissibleUnderHardCap = Math.floor(
   campaign.budgetProposal.hardCapUsd /
     maximumAttemptsCostBound.maximumCostPerAttemptUsd,
 );
-
-if (process.argv.includes('--execute')) {
-  throw new Error(
-    'EVIDENCE_RESEARCHER_PANEL_EXECUTION_BLOCKED_FINANCE_AND_OWNER_AUTHORIZATION_REQUIRED',
-  );
+if (
+  maximumAttemptsCostBound.maximumCampaignCostUsd >
+    campaign.budgetProposal.hardCapUsd ||
+  maximumAttemptsAdmissibleUnderHardCap <
+    campaign.retryPolicy.maximumProviderAttempts
+) {
+  throw new Error('EVIDENCE_RESEARCHER_PANEL_ATTEMPT_CAP_EXCEEDS_BUDGET');
 }
 
-console.log(
-  JSON.stringify(
-    {
-      blockers: campaign.blockers,
-      budgetProposal: campaign.budgetProposal,
-      campaignId: campaign.campaignId,
-      campaignStatus: campaign.status,
-      executionMode: 'VALIDATE_ONLY',
-      feature: campaign.feature,
-      logicalWorkflows: prompts.length,
-      mechanicalOracleCases: mechanicalOracle.cases.length,
-      modelSnapshot: campaign.researcher.modelSnapshot,
-      panelProposal: {
-        budgetPreflight: {
-          initialCallsCostBound,
-          maximumAttemptsAdmissibleUnderHardCap,
-          maximumAttemptsCostBound,
-          status:
-            maximumAttemptsCostBound.maximumCampaignCostUsd <=
-            campaign.budgetProposal.hardCapUsd
-              ? 'CONSISTENT'
-              : 'FINANCE_ARBITRATION_REQUIRED_RETRY_CAPACITY_NOT_GUARANTEED',
-        },
-        execution: campaign.execution,
-        retryPolicy: campaign.retryPolicy,
-        schemaUtf8Bytes,
-      },
-      panelStatus: 'BLOCKED_PENDING_FINANCE_AND_OWNER_AUTHORIZATION',
-      promptCharacterRange: {
-        maximum: Math.max(...prompts.map(({ prompt }) => prompt.length)),
-        minimum: Math.min(...prompts.map(({ prompt }) => prompt.length)),
-      },
-      promptFingerprint: evidenceResearcherProtocolFingerprint(),
-      routeIdentity: {
-        expectedObservedProvider: campaign.researcher.expectedObservedProvider,
-        requestedRoute: campaign.researcher.requestedRoute,
-        version: campaign.researcher.routeObservability.version,
-      },
-      semanticCases: semanticCorpus.cases.length,
-      validationCommand: 'pnpm ai:evidence:panel:validate',
+const campaignFingerprint = sha256(campaignText);
+const exactOwnerGoToken = `GO_EVIDENCE_RESEARCHER_PANEL_${campaignFingerprint
+  .slice(0, 16)
+  .toUpperCase()}`;
+const exactCommand = `pnpm ai:evidence:panel:validate -- --execute --owner-go=${exactOwnerGoToken}`;
+const validation = {
+  authorization: {
+    commandAfterSeparateOwnerApproval: exactCommand,
+    exactToken: exactOwnerGoToken,
+    status: 'NOT_GRANTED',
+  },
+  blockers: campaign.blockers,
+  budgetProposal: campaign.budgetProposal,
+  campaignId: campaign.campaignId,
+  campaignSha256: campaignFingerprint,
+  campaignStatus: campaign.status,
+  executionMode: 'VALIDATE_ONLY',
+  feature: campaign.feature,
+  logicalWorkflows: prompts.length,
+  mechanicalOracleCases: mechanicalOracle.cases.length,
+  modelSnapshot: campaign.researcher.modelSnapshot,
+  panelProposal: {
+    budgetPreflight: {
+      initialCallsCostBound,
+      maximumAttemptsAdmissibleUnderHardCap,
+      maximumAttemptsCostBound,
+      status: 'CONSISTENT',
     },
-    null,
-    2,
-  ),
+    execution: campaign.execution,
+    retryPolicy: campaign.retryPolicy,
+    schemaUtf8Bytes,
+  },
+  panelStatus: 'BLOCKED_PENDING_FINANCE_AND_OWNER_AUTHORIZATION',
+  promptCharacterRange: {
+    maximum: Math.max(...prompts.map(({ prompt }) => prompt.length)),
+    minimum: Math.min(...prompts.map(({ prompt }) => prompt.length)),
+  },
+  promptFingerprint: evidenceResearcherProtocolFingerprint(),
+  routeIdentity: {
+    expectedObservedProvider: campaign.researcher.expectedObservedProvider,
+    requestedRoute: campaign.researcher.requestedRoute,
+    version: campaign.researcher.routeObservability.version,
+  },
+  semanticCases: semanticCorpus.cases.length,
+  validationCommand: 'pnpm ai:evidence:panel:validate',
+};
+
+if (!process.argv.includes('--execute')) {
+  console.log(JSON.stringify(validation, null, 2));
+  process.exit(0);
+}
+
+if (option('owner-go') !== exactOwnerGoToken) {
+  throw new Error(`OWNER_GO_REQUIRED_USE_EXACT_TOKEN_${exactOwnerGoToken}`);
+}
+const apiKey = process.env.OPENROUTER_API_KEY?.trim();
+if (!apiKey) throw new Error('OPENROUTER_API_KEY_REQUIRED');
+
+const runId =
+  option('run-id') ?? new Date().toISOString().replaceAll(/[:.]/gu, '-');
+const outputDirectory = resolve(
+  option('output-dir') ??
+    `benchmarks/ai-correction/results/evidence-researcher-panel/${runId}`,
 );
+const statePath = resolve(outputDirectory, 'state.json');
+const ledgerPath = resolve(outputDirectory, 'budget-ledger.jsonl');
+let resume:
+  | {
+      ledger: EvidenceResearcherPanelLedgerEvent[];
+      state: EvidenceResearcherPanelState;
+    }
+  | undefined;
+if (option('resume-state') || option('resume-ledger')) {
+  if (!option('resume-state') || !option('resume-ledger')) {
+    throw new Error('EVIDENCE_RESEARCHER_PANEL_RESUME_FILES_REQUIRED');
+  }
+  const [stateText, ledgerText] = await Promise.all([
+    readFile(resolve(option('resume-state') as string), 'utf8'),
+    readFile(resolve(option('resume-ledger') as string), 'utf8'),
+  ]);
+  resume = {
+    ledger: ledgerText
+      .trim()
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as EvidenceResearcherPanelLedgerEvent),
+    state: JSON.parse(stateText) as EvidenceResearcherPanelState,
+  };
+  if (resolve(option('resume-ledger') as string) !== ledgerPath) {
+    await mkdir(dirname(ledgerPath), { recursive: true });
+    await writeFile(ledgerPath, ledgerText, { flag: 'wx' });
+  }
+}
+
+const adapter = getCorrectionProviderAdapter(
+  campaign.researcher.requestProfile.adapter,
+);
+let persistedLedgerEvents = resume?.ledger.length ?? 0;
+const result = await runEvidenceResearcherPanel({
+  campaign,
+  campaignFileText: campaignText,
+  compiled,
+  completionUsdPerToken: attestation.pricing.completionUsdPerToken,
+  corpus: semanticCorpus,
+  onProgress: async ({ ledger, state }) => {
+    const additions = ledger.slice(persistedLedgerEvents);
+    if (additions.length > 0) {
+      await mkdir(dirname(ledgerPath), { recursive: true });
+      await appendFile(
+        ledgerPath,
+        additions.map((event) => `${JSON.stringify(event)}\n`).join(''),
+        'utf8',
+      );
+      persistedLedgerEvents = ledger.length;
+    }
+    await writeJsonAtomic(statePath, state);
+  },
+  onRawReceived: async (receipt) => {
+    await writeJsonExclusive(
+      resolve(
+        outputDirectory,
+        'raw-received',
+        `${receipt.idempotencyKey}.json`,
+      ),
+      receipt,
+    );
+  },
+  promptUsdPerToken: attestation.pricing.promptUsdPerToken,
+  provider: {
+    async execute({ idempotencyKey, prompt }) {
+      try {
+        const providerResult = await adapter.execute({
+          apiKey,
+          idempotencyKey,
+          jsonSchema: researcherJsonSchema(),
+          messages: [{ content: prompt, role: 'system' }],
+          modelId: campaign.researcher.modelId,
+          profile: campaign.researcher.requestProfile,
+        });
+        return { ...providerResult, status: 'VALID' as const };
+      } catch (error) {
+        return normalizeError(error);
+      }
+    },
+  },
+  resume,
+});
+
+const finalAttempts = campaign.execution.caseIds.flatMap((caseId) =>
+  Array.from({ length: campaign.execution.repetitionsPerCase }, (_, index) => {
+    const cellKey = `${caseId}:${index + 1}`;
+    return result.state.attempts
+      .filter((attempt) => attempt.cellKey === cellKey)
+      .at(-1);
+  }).filter((attempt) => attempt !== undefined),
+);
+const validFinalAttempts = finalAttempts.filter(
+  (attempt) => attempt.status === 'VALID' && attempt.output,
+);
+const elementComparisons = validFinalAttempts.flatMap((attempt) => {
+  const caseItem = semanticCorpus.cases.find(
+    ({ caseId }) => caseId === attempt.caseId,
+  );
+  if (!caseItem || !attempt.output) return [];
+  return caseItem.expectedElements.map((expected) => ({
+    actual: attempt.output?.elements.find(
+      ({ elementKey }) => elementKey === expected.elementKey,
+    )?.status,
+    expected: expected.status,
+  }));
+});
+const falseSupportedCount = elementComparisons.filter(
+  ({ actual, expected }) => actual === 'SUPPORTED' && expected !== 'SUPPORTED',
+).length;
+const falseNotDemonstratedCount = elementComparisons.filter(
+  ({ actual, expected }) =>
+    actual === 'NOT_DEMONSTRATED' && expected !== 'NOT_DEMONSTRATED',
+).length;
+const variabilityCases = campaign.execution.caseIds.filter((caseId) => {
+  const vectors = validFinalAttempts
+    .filter((attempt) => attempt.caseId === caseId)
+    .map((attempt) =>
+      JSON.stringify(
+        attempt.output?.elements.map(({ elementKey, status }) => ({
+          elementKey,
+          status,
+        })),
+      ),
+    );
+  return new Set(vectors).size > 1;
+});
+const totalActualCostUsd = result.state.attempts.reduce(
+  (total, attempt) => total + (attempt.actualCostUsd ?? 0),
+  0,
+);
+const summary = {
+  atomicStatusAgreementRate:
+    elementComparisons.length === 0
+      ? 0
+      : elementComparisons.filter(({ actual, expected }) => actual === expected)
+          .length / elementComparisons.length,
+  campaignId: campaign.campaignId,
+  campaignSha256: campaignFingerprint,
+  completedLogicalWorkflows: result.state.completedCellKeys.length,
+  falseNotDemonstratedCount,
+  falseSupportedCount,
+  gatePassed:
+    result.state.stoppedReason === null &&
+    result.state.completedCellKeys.length ===
+      campaign.execution.expectedLogicalWorkflows &&
+    elementComparisons.length === 180 &&
+    elementComparisons.filter(({ actual, expected }) => actual === expected)
+      .length /
+      elementComparisons.length >=
+      campaign.gate.requirements.atomicStatusAgreementMinimum &&
+    falseSupportedCount === campaign.gate.requirements.falseSupportedCount &&
+    falseNotDemonstratedCount <=
+      campaign.gate.requirements.falseNotDemonstratedCountMaximum &&
+    variabilityCases.length / campaign.execution.caseIds.length <=
+      campaign.gate.requirements.variabilityRateMaximum,
+  providerAttempts: result.state.attempts.length,
+  retries: result.state.attempts.length - finalAttempts.length,
+  stoppedReason: result.state.stoppedReason,
+  totalActualCostUsd,
+  variabilityCases,
+  variabilityRate: variabilityCases.length / campaign.execution.caseIds.length,
+};
+
+const reviewEntries = validFinalAttempts.map((attempt) => {
+  const caseItem = semanticCorpus.cases.find(
+    ({ caseId }) => caseId === attempt.caseId,
+  );
+  if (!caseItem || !attempt.output) {
+    throw new Error('EVIDENCE_RESEARCHER_PANEL_REVIEW_OUTPUT_MISSING');
+  }
+  return {
+    output: attempt.output,
+    responseText: caseItem.responseText,
+    reviewId: sha256(`${campaignFingerprint}:${attempt.cellKey}`).slice(0, 16),
+    rubric: compiled.rubric,
+    taskContext: semanticCorpus.task.context,
+    taskPrompt: semanticCorpus.task.prompt,
+  };
+});
+const reviewMapping = validFinalAttempts.map((attempt) => {
+  const caseItem = semanticCorpus.cases.find(
+    ({ caseId }) => caseId === attempt.caseId,
+  );
+  return {
+    actualCostUsd: attempt.actualCostUsd,
+    caseId: attempt.caseId,
+    expectedElements: caseItem?.expectedElements,
+    repetition: attempt.repetition,
+    reviewId: sha256(`${campaignFingerprint}:${attempt.cellKey}`).slice(0, 16),
+  };
+});
+const stateJson = `${JSON.stringify(result.state, null, 2)}\n`;
+const ledgerText = result.ledger
+  .map((event) => `${JSON.stringify(event)}\n`)
+  .join('');
+const phase1Text = `${JSON.stringify({ entries: reviewEntries }, null, 2)}\n`;
+const mappingText = `${JSON.stringify({ entries: reviewMapping }, null, 2)}\n`;
+await Promise.all([
+  writeJsonAtomic(statePath, result.state),
+  writeJsonAtomic(resolve(outputDirectory, 'summary.json'), summary),
+  writeJsonAtomic(resolve(outputDirectory, 'blind-review.phase1.json'), {
+    entries: reviewEntries,
+  }),
+  writeJsonAtomic(resolve(outputDirectory, 'blind-review.mapping.json'), {
+    entries: reviewMapping,
+  }),
+  writeJsonAtomic(resolve(outputDirectory, 'artifact-hashes.json'), {
+    campaignSha256: campaignFingerprint,
+    catalogAttestationSha256: sha256(attestationText),
+    ledgerFinalRecordHash: result.ledger.at(-1)?.recordHash ?? null,
+    ledgerSha256: sha256(ledgerText),
+    mappingSha256: sha256(mappingText),
+    phase1Sha256: sha256(phase1Text),
+    stateSha256: sha256(stateJson),
+  }),
+]);
+console.log(JSON.stringify({ outputDirectory, summary }, null, 2));

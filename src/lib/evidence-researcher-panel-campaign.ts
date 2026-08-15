@@ -54,7 +54,7 @@ export const evidenceResearcherPanelCampaignSchema = z
         currency: z.literal('USD'),
         expectedCostUsd: z.literal(0.2),
         hardCapUsd: z.literal(0.5),
-        maximumProviderAttempts: z.literal(30),
+        maximumProviderAttempts: z.literal(28),
         pricingSnapshot: z.literal(
           '2026-08-14-google-vertex-global-standard',
         ),
@@ -189,7 +189,7 @@ export const evidenceResearcherPanelCampaignSchema = z
           z.literal('IDENTITY_MISMATCH'),
           z.literal('COST_RECONCILIATION_REQUIRED'),
         ]),
-        maximumProviderAttempts: z.literal(30),
+        maximumProviderAttempts: z.literal(28),
         maximumRetriesPerWorkflow: z.literal(1),
         version: z.literal('1.0.0'),
       })

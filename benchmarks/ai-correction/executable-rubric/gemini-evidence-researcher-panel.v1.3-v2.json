@@ -78,7 +78,7 @@
   "retryPolicy": {
     "version": "1.0.0",
     "maximumRetriesPerWorkflow": 1,
-    "maximumProviderAttempts": 30,
+    "maximumProviderAttempts": 28,
     "allowlistedCodes": [
       "PROVIDER_NETWORK_ERROR",
       "PROVIDER_TIMEOUT",
@@ -121,7 +121,7 @@
     "pricingSnapshot": "2026-08-14-google-vertex-global-standard",
     "expectedCostUsd": 0.2,
     "hardCapUsd": 0.5,
-    "maximumProviderAttempts": 30,
+    "maximumProviderAttempts": 28,
     "status": "PROPOSED_NOT_APPROVED",
     "basis": "V4-009C preregistered R&D envelope; not a product price or an authorization to spend."
   },

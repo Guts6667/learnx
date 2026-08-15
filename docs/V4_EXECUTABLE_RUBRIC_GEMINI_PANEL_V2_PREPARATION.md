@@ -46,7 +46,7 @@ explicitement exclu. Aucun ancien corpus, gold ou résultat n'est modifié.
 - campagne : `learnx-writing-fr-gemini-evidence-researcher-panel-v2` ;
 - manifeste : `gemini-evidence-researcher-panel.v1.3-v2.json` ;
 - SHA-256 :
-  `ef270fff14334badbd776e05d3a28f0c0af8e201fc7036fdaec2f77c8b019d15` ;
+  `dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022` ;
 - modèle : `google/gemini-3.6-flash-20260721` ;
 - route demandée : `google-vertex/global` ;
 - fournisseur observé attendu : `Google` ;
@@ -59,12 +59,12 @@ explicitement exclu. Aucun ancien corpus, gold ou résultat n'est modifié.
 ## Budget proposé et écart à arbitrer
 
 Le ticket conserve la proposition historique : coût attendu `0,20 USD`, hard
-cap `0,50 USD`, 30 tentatives maximum. Le préflight basé sur le plus grand
+cap `0,50 USD`, 28 tentatives maximum. Le préflight basé sur le plus grand
 prompt réel calcule :
 
 - borne pessimiste par tentative : `0,0172725 USD` ;
 - 20 appels initiaux : `0,34545 USD`, sous le hard cap ;
-- 30 tentatives : `0,518175 USD`, au-dessus du hard cap ;
+- 28 tentatives : `0,48363 USD`, sous le hard cap ;
 - maximum admissible sous `0,50 USD` au pire cas : 28 tentatives.
 
 Ce n'est pas une erreur masquée : les 20 cellules initiales sont finançables
@@ -79,9 +79,10 @@ Le manifeste exige notamment 20/20 workflows utilisables, 95 % d'accord atomique
 `SUPPORTED`, variabilité maximale de 10 %, zéro proposition de niveau/score et
 réconciliation coût/dispatch/route à 100 %.
 
-`feature.enabled=false`, `networkCallsAllowed=false`, Finance et autorisation
-propriétaire restent `NOT_GRANTED`. Le runner `pnpm ai:evidence:panel:validate`
-est validate-only et rejette explicitement `--execute`.
+`feature.enabled=false` et `networkCallsAllowed=false` restent les barrières
+produit. Le runner `pnpm ai:evidence:panel:validate` est validate-only par
+défaut ; son chemin `--execute` exige l'empreinte arbitrée, le token propriétaire
+exact, la clé fournisseur et tous les préflights de budget/identité.
 
 La préparation s'arrête ici. Aucun appel panel, holdout, falsificateur,
 promotion, V4-002 ou intégration utilisateur n'est autorisé par ce document.

@@ -502,14 +502,14 @@ sélection porte le SHA-256
 `d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd`.
 
 La campagne `learnx-writing-fr-gemini-evidence-researcher-panel-v2` porte le
-SHA-256 `ef270fff14334badbd776e05d3a28f0c0af8e201fc7036fdaec2f77c8b019d15`.
+SHA-256 `dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022`.
 Elle fixe 10 cas ×2, zéro résultat historique réutilisé, Gemini 3.6 Flash
 snapshoté, route unique `google-vertex/global`, prompt/protocole 1.3.0, profil
 minimal, fallback interdit, holdout interdit et feature réseau désactivée.
 
 Le budget reste une proposition non autorisée : attendu `0,20 USD`, plafond
-`0,50 USD`, 30 tentatives maximum. Le préflight réel calcule `0,34545 USD`
-pour les 20 appels initiaux mais `0,518175 USD` pour 30 tentatives. Seulement 28
+`0,50 USD`, 28 tentatives maximum après arbitrage Finance. Le préflight réel calcule `0,34545 USD`
+pour les 20 appels initiaux et `0,48363 USD` pour 28 tentatives. Les 28
 tentatives pessimistes tiennent sous le plafond. Finance doit arbitrer ce point
 avant un éventuel GO propriétaire. Aucun appel n'a été effectué.
 

@@ -1488,7 +1488,7 @@ reste fermé.**
   exclu ; les deux sources et la sélection sont liées par SHA-256. Le runner
   reste validate-only, `feature.enabled=false` et `networkCallsAllowed=false`.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
-  plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
+  plafond dur `0,50 USD`, 28 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas
   transférés automatiquement au smoke 1.2.0. Le préflight calcule une borne de
   `0,34545 USD` pour les 20 appels initiaux et `0,518175 USD` pour 30
