@@ -443,6 +443,29 @@ intent orphelin. Le panel 10×2 et le holdout restent fermés. Une éventuelle
 nouvelle fixture négative doit être authorée et revue sous une nouvelle
 identité.
 
+### Addendum append-only — fixture négative v2 du 15 août 2026
+
+Statut : `OFFLINE_READY / PRODUCT_APPROVED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Sans modifier le corpus ni le résultat du gate v1, une nouvelle fixture
+`writing-fr-no-choice-negative` a été authorée dans un corpus trois cas v2. Le
+texte déclare explicitement qu'aucune des deux dépenses n'est choisie et
+qu'aucune recommandation n'est formulée. Il conserve deux faits exacts du
+dossier, sans les relier à une préférence.
+
+Produit/pédagogie a approuvé indépendamment les statuts
+`identifiable-choice=NOT_DEMONSTRATED` et
+`explicit-recommendation=NOT_DEMONSTRATED`, ainsi que les niveaux serveur
+`insufficient/mastered/insufficient` et le score indicatif `40`. Cette revue
+valide uniquement le pseudo-oracle synthétique.
+
+Le nouveau corpus porte le SHA-256
+`6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03` et
+la campagne DRAFT le SHA-256
+`cafcf98a8d8961f658985cea58db42d9fe87303a5f96f96e30ecd1e1e3986652`.
+Le validate-only passe sans réseau. Finance et le propriétaire n'ont autorisé
+aucun appel sous cette identité ; le panel et le holdout restent fermés.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

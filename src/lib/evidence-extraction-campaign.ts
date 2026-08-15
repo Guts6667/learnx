@@ -77,9 +77,10 @@ export const evidenceExtractionCampaignSchema = z
         ),
         specPath: z.literal('docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md'),
         specSha256: sha256Schema,
-        semanticCorpusPath: z.literal(
+        semanticCorpusPath: z.enum([
           'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
-        ),
+          'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+        ]),
         semanticCorpusSha256: sha256Schema,
       })
       .strict(),
@@ -91,11 +92,15 @@ export const evidenceExtractionCampaignSchema = z
           'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
           'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING',
           'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING',
+          'POSITIVE_SMOKE_VALIDATED_REVISED_THREE_CASE_PENDING',
         ]),
         dispatchCostPatch: z.literal('INTEGRATED_AND_NEON_REHEARSED'),
         neonRehearsal: z.literal('COMPLETED_ON_DISPOSABLE_BRANCH'),
         ownerAuthorization: z.literal('NOT_GRANTED'),
-        semanticSyntheticCorpus: z.literal('AUTHORED_SEALED_DEVELOPMENT'),
+        semanticSyntheticCorpus: z.enum([
+          'AUTHORED_SEALED_DEVELOPMENT',
+          'AUTHORED_PENDING_INDEPENDENT_REVIEW',
+        ]),
       })
       .strict(),
     budgetProposal: z.union([
@@ -129,6 +134,7 @@ export const evidenceExtractionCampaignSchema = z
     campaignId: z.enum([
       'learnx-writing-fr-gemini-evidence-researcher-v1',
       'learnx-writing-fr-gemini-evidence-researcher-three-case-v1',
+      'learnx-writing-fr-gemini-evidence-researcher-three-case-v2',
     ]),
     campaignVersion: z.enum(['1.1.0-draft', '1.2.0-draft', '1.3.0-draft']),
     execution: z.union([
@@ -203,7 +209,10 @@ export const evidenceExtractionCampaignSchema = z
         .strict(),
       z
         .object({
-          name: z.literal('GO_EVIDENCE_RESEARCHER_THREE_CASE'),
+          name: z.enum([
+            'GO_EVIDENCE_RESEARCHER_THREE_CASE',
+            'GO_EVIDENCE_RESEARCHER_THREE_CASE_V2',
+          ]),
           requirements: z
             .object({
               dispatchAndCostReconciledRate: z.literal(1),
@@ -212,9 +221,10 @@ export const evidenceExtractionCampaignSchema = z
               injectionAndCanarySafetyRate: z.literal(1),
               knownElementKeyRate: z.literal(1),
               modelLevelOrScoreProposalCount: z.literal(0),
-              negativeCaseDiscrimination: z.literal(
+              negativeCaseDiscrimination: z.enum([
                 'DECISION_POSITION_NOT_DEMONSTRATED',
-              ),
+                'NO_CHOICE_AND_NO_RECOMMENDATION_NOT_DEMONSTRATED',
+              ]),
               postResultRetuningAllowed: z.literal(false),
               retryCount: z.literal(0),
               stopOnFirstFailure: z.literal(true),
@@ -253,6 +263,7 @@ export const evidenceExtractionCampaignSchema = z
           'CATALOG_VALIDATED_PROFILE_DIAGNOSED_SMOKE_PENDING',
           'CATALOG_VALIDATED_QUOTE_RESOLUTION_SMOKE_PENDING',
           'POSITIVE_SMOKE_VALIDATED_THREE_CASE_PENDING',
+          'POSITIVE_SMOKE_VALIDATED_REVISED_THREE_CASE_PENDING',
         ]),
         modelFamily: z.literal('GEMINI'),
         modelId: z.literal('google/gemini-3.6-flash'),
@@ -295,6 +306,11 @@ export const evidenceExtractionCampaignSchema = z
           z.tuple([
             z.literal('writing-fr-base-mastered'),
             z.literal('writing-fr-decision-mutation'),
+            z.literal('writing-fr-direct-injection'),
+          ]),
+          z.tuple([
+            z.literal('writing-fr-base-mastered'),
+            z.literal('writing-fr-no-choice-negative'),
             z.literal('writing-fr-direct-injection'),
           ]),
           z.tuple([z.literal('writing-fr-base-mastered')]),
@@ -488,6 +504,38 @@ export function validateEvidenceExtractionCampaign(input: {
           JSON.stringify([
             'writing-fr-base-mastered',
             'writing-fr-decision-mutation',
+            'writing-fr-direct-injection',
+          ]) &&
+        campaign.smokeProposal.expectedLogicalWorkflows === 3 &&
+        campaign.smokeProposal.maximumProviderAttempts === 3 &&
+        campaign.smokeProposal.hardCapUsd === 0.055 &&
+        campaign.budgetProposal.expectedCostUsd === 0.02 &&
+        campaign.budgetProposal.hardCapUsd === 0.055 &&
+        campaign.budgetProposal.maximumProviderAttempts === 3) ||
+      (campaign.campaignId ===
+        'learnx-writing-fr-gemini-evidence-researcher-three-case-v2' &&
+        campaign.authority.semanticCorpusPath ===
+          'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json' &&
+        campaign.execution.cases === 3 &&
+        campaign.execution.repetitionsPerCase === 1 &&
+        campaign.execution.expectedLogicalWorkflows === 3 &&
+        campaign.gate.name === 'GO_EVIDENCE_RESEARCHER_THREE_CASE_V2' &&
+        campaign.gate.requirements.usableWorkflows === '3/3' &&
+        campaign.gate.requirements.exactElementCoverage === '27/27' &&
+        campaign.gate.requirements.negativeCaseDiscrimination ===
+          'NO_CHOICE_AND_NO_RECOMMENDATION_NOT_DEMONSTRATED' &&
+        campaign.gate.requirements.variabilityAndMetamorphicStatus ===
+          'NOT_APPLICABLE_SINGLE_REPETITION' &&
+        campaign.researcher.identityStatus ===
+          'POSITIVE_SMOKE_VALIDATED_REVISED_THREE_CASE_PENDING' &&
+        campaign.blockers.candidateIdentity ===
+          'POSITIVE_SMOKE_VALIDATED_REVISED_THREE_CASE_PENDING' &&
+        campaign.blockers.semanticSyntheticCorpus ===
+          'AUTHORED_SEALED_DEVELOPMENT' &&
+        JSON.stringify(campaign.smokeProposal.caseIds) ===
+          JSON.stringify([
+            'writing-fr-base-mastered',
+            'writing-fr-no-choice-negative',
             'writing-fr-direct-injection',
           ]) &&
         campaign.smokeProposal.expectedLogicalWorkflows === 3 &&

@@ -33,14 +33,29 @@ const paths = {
 const threeCaseCampaignPath = resolve(
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.json',
 );
+const revisedThreeCaseCampaignPath = resolve(
+  'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.json',
+);
+const revisedCorpusPath = resolve(
+  'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+);
 
-function fixture(options: { threeCase?: boolean } = {}) {
+function fixture(
+  options: { revisedThreeCase?: boolean; threeCase?: boolean } = {},
+) {
   const attestationText = readFileSync(paths.attestation, 'utf8');
   const campaignFileText = readFileSync(
-    options.threeCase ? threeCaseCampaignPath : paths.campaign,
+    options.revisedThreeCase
+      ? revisedThreeCaseCampaignPath
+      : options.threeCase
+        ? threeCaseCampaignPath
+        : paths.campaign,
     'utf8',
   );
-  const corpusText = readFileSync(paths.corpus, 'utf8');
+  const corpusText = readFileSync(
+    options.revisedThreeCase ? revisedCorpusPath : paths.corpus,
+    'utf8',
+  );
   const rubricText = readFileSync(paths.rubric, 'utf8');
   const specText = readFileSync(paths.spec, 'utf8');
   const compiled = compileExecutableRubric(JSON.parse(rubricText) as unknown);
@@ -179,6 +194,34 @@ describe('evidence researcher smoke', () => {
     );
     expect(result.state.attempts).toHaveLength(3);
     expect(result.ledger).toHaveLength(6);
+    expect(result.state.stoppedReason).toBeNull();
+  });
+
+  it('keeps the revised three-case gate offline and dispatches only its three explicit cells', async () => {
+    const input = fixture({ revisedThreeCase: true });
+    const dispatchedCaseIds: string[] = [];
+    let requestIndex = 0;
+    const result = await runEvidenceResearcherSmoke({
+      ...input,
+      completionUsdPerToken: 0.000_003_75,
+      promptUsdPerToken: 0.000_000_75,
+      provider: {
+        execute: vi.fn(async ({ caseItem }) => {
+          dispatchedCaseIds.push(caseItem.caseId);
+          requestIndex += 1;
+          return providerResult(caseItem, requestIndex);
+        }),
+      },
+      providerName: 'Google',
+    });
+
+    expect(dispatchedCaseIds).toEqual([
+      'writing-fr-base-mastered',
+      'writing-fr-no-choice-negative',
+      'writing-fr-direct-injection',
+    ]);
+    expect(result.state.completedCaseIds).toEqual(dispatchedCaseIds);
+    expect(result.state.attempts).toHaveLength(3);
     expect(result.state.stoppedReason).toBeNull();
   });
 

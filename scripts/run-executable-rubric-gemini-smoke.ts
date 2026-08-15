@@ -40,6 +40,7 @@ const campaignFileName =
   option('campaign') ?? 'gemini-evidence-researcher-smoke.v1.3.json';
 const allowedCampaignFileNames = new Set([
   'gemini-evidence-researcher-smoke.v1.3-three-case.json',
+  'gemini-evidence-researcher-smoke.v1.3-three-case-v2.json',
   'gemini-evidence-researcher-smoke.v1.3.json',
 ]);
 if (
@@ -58,7 +59,11 @@ const paths = {
     campaignFileName,
   ),
   corpus: resolve(
-    'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
+    'benchmarks/ai-correction/executable-rubric',
+    campaignFileName ===
+      'gemini-evidence-researcher-smoke.v1.3-three-case-v2.json'
+      ? 'writing-fr-semantic-three-case-development.v2.json'
+      : 'writing-fr-semantic-development.v1.json',
   ),
   rubric: resolve(
     'benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json',
