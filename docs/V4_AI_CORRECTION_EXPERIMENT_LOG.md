@@ -541,3 +541,20 @@ campagne s'est arrêtée sans retry ni fallback avant les 9 workflows restants.
 Coût réel total : `0,04345875 USD`. Finance a réconcilié 11 intents avec 11
 outcomes, sans coût orphelin, et a fermé l'enveloppe. Ce résultat ne peut pas
 être complété ni requalifié par le reliquat budgétaire.
+
+### 2026-08-15 — Screening Sonnet 5 préparé hors ligne
+
+Statut : `DRAFT_BLOCKED / FINANCE_NOT_ARBITRATED / NO_MODEL_CALL`.
+
+Après le NO-GO Gemini, un second candidat est préenregistré sans modifier la
+rubrique, le corpus trois cas ni le protocole exact 1.3. L'identité
+`learnx-writing-fr-sonnet-5-evidence-researcher-three-case-v1` épingle
+`anthropic/claude-sonnet-5-20260630` sur la route fournisseur directe
+`Anthropic` (tag catalogue `anthropic`), sans
+reasoning, température, fallback ou retry. Le manifeste porte le SHA-256
+`27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a`.
+
+Le catalogue confirme structured outputs et response format. Le préflight
+calcule `0,046012 USD` par appel et `0,138036 USD` pour trois appels ; le hard
+cap `0,15 USD` reste une proposition soumise à Finance. Aucun appel n'a été
+effectué.

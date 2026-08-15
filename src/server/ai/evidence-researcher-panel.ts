@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import type { CorrectionProviderResult } from '../../lib/ai-correction-provider-adapters.js';
-import type { EvidenceResearcherPanelCampaign } from '../../lib/evidence-researcher-panel-campaign.js';
+import type { CorrectionBenchmarkConfiguration } from '../../lib/ai-correction-benchmark.js';
 import { calculateEvidenceResearcherCostBound } from '../../lib/evidence-extraction-campaign.js';
 import type {
   CompiledExecutableRubric,
@@ -119,6 +119,27 @@ type EvidenceResearcherPanelCorpus = Pick<
   'cases' | 'task'
 >;
 
+export type EvidenceResearcherExecutionCampaign = {
+  budgetProposal: { hardCapUsd: number };
+  execution: {
+    caseIds: readonly string[];
+    repetitionsPerCase: number;
+  };
+  protocol: { securityCanary: string };
+  researcher: {
+    expectedObservedProvider: string;
+    modelId: string;
+    modelSnapshot: string;
+    requestProfile: CorrectionBenchmarkConfiguration['candidates'][number]['requestProfile'];
+    requestedRoute: string;
+  };
+  retryPolicy: {
+    allowlistedCodes: readonly string[];
+    maximumProviderAttempts: number;
+    maximumRetriesPerWorkflow: number;
+  };
+};
+
 const sha256 = (value: string): string =>
   createHash('sha256').update(value).digest('hex');
 
@@ -190,7 +211,7 @@ function oracleAgreement(input: {
   );
 }
 
-function expectedCells(campaign: EvidenceResearcherPanelCampaign): string[] {
+function expectedCells(campaign: EvidenceResearcherExecutionCampaign): string[] {
   return campaign.execution.caseIds.flatMap((caseId) =>
     Array.from(
       { length: campaign.execution.repetitionsPerCase },
@@ -262,7 +283,7 @@ function assertResumeIntegrity(input: {
 }
 
 export async function runEvidenceResearcherPanel(input: {
-  campaign: EvidenceResearcherPanelCampaign;
+  campaign: EvidenceResearcherExecutionCampaign;
   campaignFileText: string;
   compiled: CompiledExecutableRubric;
   completionUsdPerToken: number;
