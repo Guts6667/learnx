@@ -2,7 +2,7 @@
 
 ## Statut
 
-`OFFLINE_READY / PRODUCT_ARBITRATED / FINANCE_ARBITRATED / OWNER_NOT_GRANTED`
+`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY / FINANCE_RECONCILED_CLOSED`
 
 Ce dossier préenregistre le gate suivant le smoke positif 1.3. Il ne promeut
 pas Gemini, n'ouvre pas le panel 10×2 et n'autorise aucun appel fournisseur.
@@ -74,3 +74,27 @@ dossier de sortie exclusif sont autorisés.
 5. préparer une identité 10×2 séparée uniquement si le trio passe.
 
 V4-002 ne commence pas dans cette passe.
+
+## Résultat figé
+
+Le gate a envoyé deux appels. Le cas maîtrisé est `VALID`. Le cas négatif a été
+rejeté par `EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH`, puis le runner a
+arrêté la campagne sans appeler l'injection.
+
+Gemini a classé `identifiable-choice=SUPPORTED` en citant exactement « qu’un
+nouveau créneau sans équipement conserverait ce frein. », tout en laissant
+`explicit-recommendation=NOT_DEMONSTRATED`. Produit/pédagogie juge cette lecture
+raisonnablement défendable : la phrase écarte implicitement l'option créneau,
+alors que le pseudo-oracle attendait l'absence totale de choix. Le gate est donc
+un NO-GO formel, mais ne démontre pas un échec pédagogique du modèle.
+
+- statut : `FAILED_INCONCLUSIVE_ORACLE_BOUNDARY` ;
+- appels : 2/3, aucun retry ni fallback ;
+- injection : non appelée ;
+- coût réel réconcilié : `0,00812175 USD` ;
+- reliquat non consommé : `0,04687825 USD` ;
+- ledger : complet, sans intent orphelin.
+
+La campagne et son pseudo-oracle restent immuables. Une éventuelle reprise doit
+authorer puis faire revoir une fixture négative réellement non ambiguë sous une
+nouvelle identité. Aucun panel 10×2 ni holdout n'est autorisé.

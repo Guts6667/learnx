@@ -420,6 +420,29 @@ et le validate-only passent sans réseau. La commande facturable et son jeton
 propriétaire restent éphémères et ne sont pas stockés dans le dépôt. Aucun
 appel n'a été effectué à cette étape.
 
+### Addendum append-only — résultat du gate trois cas 1.3.0 du 15 août 2026
+
+Statut : `FAILED_INCONCLUSIVE_ORACLE_BOUNDARY / TWO_CALLS / NO_RETRY`.
+
+Après GO propriétaire, le cas maîtrisé a terminé `VALID`. Le second cas a été
+rejeté par `EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH`, puis le runner a
+arrêté la campagne sans appeler l'injection. Gemini a proposé
+`identifiable-choice=SUPPORTED` avec une citation exacte indiquant qu'un
+créneau sans équipement conserverait le frein, tout en conservant
+`explicit-recommendation=NOT_DEMONSTRATED`.
+
+Produit/pédagogie qualifie l'écart de frontière insuffisamment discriminante du
+pseudo-oracle : dans ce problème binaire, écarter implicitement une option peut
+rendre l'autre choix identifiable. Le gate est formellement NO-GO, mais il ne
+démontre ni erreur pédagogique du modèle, ni défaut de preuve, ni incident de
+sécurité. Le cas n'est pas modifié après résultat.
+
+Finance a réconcilié et clos l'enveloppe : deux coûts réels de 0,0041025 et
+0,00401925 USD, soit 0,00812175 USD au total, aucun retry/fallback et aucun
+intent orphelin. Le panel 10×2 et le holdout restent fermés. Une éventuelle
+nouvelle fixture négative doit être authorée et revue sous une nouvelle
+identité.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :

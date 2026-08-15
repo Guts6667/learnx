@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-gemini-evidence-researcher-three-case-v1",
+  "campaignVersion": "1.3.0-draft",
+  "campaignSha256": "e66eec8a1addd070cd83e0d64b32a86e5a5b4d2e09c68fa911385bacfaa3faf1",
+  "status": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+  "executedAt": "2026-08-15T11:31:00.921Z",
+  "stoppedReason": "EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH",
+  "authorizedMaximumProviderAttempts": 3,
+  "providerAttemptsExecuted": 2,
+  "retryCount": 0,
+  "fallbackCount": 0,
+  "thirdCaseDispatched": false,
+  "hardCapUsd": 0.055,
+  "actualReconciledCostUsd": 0.00812175,
+  "budgetRemainingUsd": 0.04687825,
+  "attempts": [
+    {
+      "caseId": "writing-fr-base-mastered",
+      "status": "VALID",
+      "providerRequestId": "gen-1786793461-P8P3vr4AkGl7d4EuxMon",
+      "providerRoute": "Google",
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "latencyMs": 1181,
+      "inputTokens": 2020,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 690,
+      "actualCostUsd": 0.0041025,
+      "costSource": "ACTUAL",
+      "worstCaseAuthorizedUsd": 0.0172545,
+      "rawModelOutputPersistedBeforeSemanticValidation": true,
+      "rawModelOutputTruncated": false,
+      "rawModelOutputSha256": "6612060d39e21532edb73804186ef3cd1b77c90076930ac1c495a2449c7bf5fa"
+    },
+    {
+      "caseId": "writing-fr-decision-mutation",
+      "status": "INVALID",
+      "errorCode": "EVIDENCE_RESEARCHER_EXPECTED_STATUS_MISMATCH",
+      "providerRequestId": "gen-1786793464-r9aQlPEiUIOYVeh3TGZA",
+      "providerRoute": "Google",
+      "modelSnapshot": "google/gemini-3.6-flash",
+      "latencyMs": 850,
+      "inputTokens": 2009,
+      "reasoningTokens": 0,
+      "visibleOutputTokens": 670,
+      "actualCostUsd": 0.00401925,
+      "costSource": "ACTUAL",
+      "worstCaseAuthorizedUsd": 0.0171945,
+      "rawModelOutputPersistedBeforeSemanticValidation": true,
+      "rawModelOutputTruncated": false,
+      "rawModelOutputSha256": "81eae60dc9fea5991fd709e6314650cf766e5106386b00490920956d28823c3a",
+      "mismatch": {
+        "elementKey": "identifiable-choice",
+        "expectedStatus": "NOT_DEMONSTRATED",
+        "observedStatus": "SUPPORTED",
+        "observedExactQuote": "qu’un nouveau créneau sans équipement conserverait ce frein."
+      }
+    }
+  ],
+  "artifactProof": {
+    "stateSha256": "b4eb3e3657d06ade5f3fbf6db0bf02b55fad2d0b1304d59e6cd9accda8f66e4b",
+    "ledgerSha256": "860a3d21831813aae8b7c718d7996c5708f855b9ef6f3c5847b9646a5c0705e6",
+    "ledgerFinalRecordHash": "cedaf721cfaff3d9462c602d0f1f4f4038b03da1417db85a0a208575c327647e",
+    "rawReceiptFileSha256": [
+      "0b253039cb0c94c4091be960fc565e9eeeedb4fde2fa21dcb3e41a17742aad50",
+      "df60f72bac25e3d4d6673b9169256125ca2da09b040262a08de14501fa70b920"
+    ]
+  },
+  "financeVerdict": "RECONCILED_CLOSED",
+  "productVerdict": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY",
+  "modelPedagogicalFailureDemonstrated": false,
+  "nextGate": "AUTHOR_AND_REVIEW_A_DISTINCT_UNAMBIGUOUS_NEGATIVE_FIXTURE_UNDER_A_NEW_CAMPAIGN_IDENTITY",
+  "modelCallsAuthorizedAfterThisResult": false,
+  "panel10x2Authorized": false,
+  "holdoutAuthorized": false
+}

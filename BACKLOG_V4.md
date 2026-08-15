@@ -1408,8 +1408,8 @@ l'activation de V4-010.**
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS PRÊT
-HORS LIGNE MAIS NON AUTORISÉ — le
+**État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS
+`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY` — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
@@ -1467,7 +1467,11 @@ reste fermé.**
   discrimination du négatif, sécurité injection/canari et coût réconcilié à
   100 %. Les métriques de variabilité/métamorphisme sont non applicables à une
   répétition et restent réservées au futur panel 10×2. Produit/pédagogie et
-  Finance ont arbitré son empreinte ; le GO propriétaire reste absent.
+  Finance ont arbitré son empreinte. Après GO propriétaire, le cas maîtrisé a
+  terminé valide, puis le cas négatif a exposé une frontière insuffisamment
+  discriminante du pseudo-oracle ; l'injection n'a pas été appelée. Ce NO-GO
+  formel ne constitue pas un échec pédagogique démontré de Gemini. Le panel
+  reste fermé.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
   plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas

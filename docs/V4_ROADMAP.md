@@ -56,10 +56,12 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   calculés par LearnX ; smoke positif `VALID` sur un cas évident.
 - Limite : le smoke positif ne teste ni réponse négative, ni contradiction, ni
   injection et ne promeut pas Gemini.
-- Prochain gate : campagne distincte « maîtrisé + négatif + injection »,
-  préenregistrée sous une identité 3×1 sans réutiliser le smoke positif. Son
-  enveloppe est arbitrée ; le commit reproductible et le GO propriétaire
-  restent bloquants.
+- Dernier gate : la campagne distincte 3×1 s'est arrêtée sur le cas négatif.
+  Le pseudo-oracle n'était pas assez discriminant pour départager un choix
+  implicite ; ce NO-GO formel n'est pas un échec pédagogique démontré du
+  modèle. L'injection n'a pas été appelée.
+- Prochain gate possible : authorer et revoir une fixture négative non ambiguë
+  sous une nouvelle identité. Aucun appel ni panel n'est actuellement autorisé.
 - Gate suivant si succès : panel 10 × 2, puis verdict autonome. Le panel, le
   falsificateur et le holdout restent fermés jusque-là.
 
@@ -115,7 +117,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Smoke Gemini 1.3 positif ; gate 3 cas prêt hors ligne, aucun appel autorisé. | Commit reproductible, GO propriétaire, puis panel 10×2 conditionnel. |
+| V4-009C | `ACTIF` | Smoke positif ; gate 3 cas NO-GO sur frontière de pseudo-oracle, sans faute modèle démontrée. | Nouvelle fixture négative et nouvelle identité si la recherche reprend ; panel fermé. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |
