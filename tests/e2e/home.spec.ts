@@ -781,7 +781,9 @@ test('utilise des parents UX stables sans boucle entre programme, module et leç
     page.getByRole('button', { name: `1. ${stageSummary.title}` }),
   ).toHaveAttribute('aria-expanded', 'true');
 
-  await page.getByRole('link', { name: 'Options du module' }).click();
+  await page
+    .getByRole('link', { name: 'Options et reprise du module' })
+    .click();
   await expect(
     page.getByRole('heading', { level: 1, name: moduleSummary.title }),
   ).toBeVisible();
