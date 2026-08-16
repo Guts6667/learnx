@@ -213,7 +213,7 @@
         <div class="status-line">
           <span><strong>Statut</strong> Exploration — aucun pipeline promu</span>
           <span><strong>Données</strong> 24 cas synthétiques français × 3 répétitions</span>
-          <span><strong>Mise à jour</strong> 14 août 2026</span>
+          <span><strong>Mise à jour</strong> 16 août 2026</span>
           <a class="language-link" href="en.html" lang="en" hreflang="en">English version</a>
         </div>
       </div>
@@ -245,8 +245,8 @@
           <div class="decision">
             <blockquote>L’IA cherche les preuves. LearnX exécute la grille et s’abstient lorsque le résultat ne peut pas être déterminé honnêtement.</blockquote>
             <aside>
-              <strong>Direction implémentée hors ligne</strong>
-              Un premier archétype WRITING français contient 3 critères et 9 éléments atomiques. Son compilateur, son oracle mécanique et sa campagne Gemini de recherche de preuves sont prêts, mais aucun appel réel n’est autorisé.
+              <strong>Recherche intermédiaire</strong>
+              Le moteur WRITING français est exécutable hors ligne, mais aucun pipeline n’est promu, aucun contrat n’est publié et aucun runtime de correction IA n’est actif. Les essais facturables restent soumis à une identité, un budget et un GO séparés.
             </aside>
           </div>
         </div>
@@ -257,15 +257,18 @@
           <div class="section-head">
             <span class="section-number">02 · Travail réalisé</span>
             <div>
-              <h2>Trois versions de protocole pour isoler le jugement pédagogique.</h2>
-              <p>Le protocole a été simplifié progressivement afin que le modèle évalue uniquement les critères. Le serveur garde les responsabilités déterministes : calcul, progression, sécurité, facturation et routage.</p>
+              <h2>Du modèle juge au modèle chercheur de preuves.</h2>
+              <p>Chaque campagne est conservée comme une étape de recherche. Le protocole a retiré progressivement au modèle la note, la décision et le feedback libre pour transférer ces responsabilités à LearnX.</p>
             </div>
           </div>
           <div class="timeline" aria-label="Évolution du protocole">
             <time datetime="2026-08-12">V1</time><article><h3>Corpus et premières comparaisons</h3><p>24 cas synthétiques français couvrant écriture, réflexion, pratique et projet, avec cas réussis, partiels, erronés, ambigus, hors sujet et injectés.</p></article>
             <time datetime="2026-08-12">V2</time><article><h3>Gates de sécurité et revue aveugle</h3><p>Séparation des erreurs fournisseur, sorties invalides, citations inventées, injection, variabilité et décision pédagogique. Création d’un holdout scellé jamais ouvert.</p></article>
-            <time datetime="2026-08-12">V3</time><article><h3>Sortie minimale et autorité serveur</h3><p>Le modèle ne produit plus de score ni de verdict. Il rend niveaux, confiance, preuves et feedback ; LearnX calcule le reste.</p></article>
-            <time datetime="2026-08-14">Maintenant</time><article><h3>Moteur de rubrique exécutable</h3><p>Les modèles ne notent plus : ils recherchent et falsifient des preuves atomiques. LearnX compile la grille, calcule les niveaux et produit un feedback authoré.</p></article>
+            <time datetime="2026-08-12">V3</time><article><h3>Sortie minimale et autorité serveur</h3><p>Le modèle ne produit plus de score ni de verdict. Cette campagne a confirmé l’intérêt d’une autorité serveur, tout en laissant encore trop de jugement et de feedback au modèle.</p></article>
+            <time datetime="2026-08-14">Moteur</time><article><h3>Rubrique atomique exécutable</h3><p>LearnX compile 3 critères et 9 éléments atomiques, vérifie leurs propriétaires, exécute les règles de niveau et sélectionne des remédiations authorées.</p></article>
+            <time datetime="2026-08-15">Gemini</time><article><h3>Citations exactes côté serveur</h3><p>Le gate v2 réussit 3/3 cas sémantiques uniques. Le panel 10×2 s’arrête après 10/20 workflows valides — 5/10 cas uniques couverts deux fois — puis une citation non exacte au 11e appel. Cette configuration est NO-GO.</p></article>
+            <time datetime="2026-08-15">Sonnet 5</time><article><h3>Screening concluant, profil technique insuffisant</h3><p>Le screening réussit 3/3 cas uniques, 27/27 statuts et 17 citations exactes. Le panel s’arrête après 10/20 workflows valides — 5/10 cas uniques couverts deux fois — lorsque le 11e appel consomme 2 500 tokens de raisonnement et n’émet aucun token visible.</p></article>
+            <time datetime="2026-08-16">Maintenant</time><article><h3>Un seul pipeline cible</h3><p>Sonnet 5 cherche uniquement les preuves ; LearnX les résout et les certifie, exécute la rubrique, calcule niveaux et score indicatif, puis choisit un feedback authoré. Le falsificateur et V4-010 restent suspendus.</p></article>
           </div>
         </div>
       </section>
@@ -275,7 +278,7 @@
           <div class="section-head">
             <span class="section-number">03 · Comprendre la méthode</span>
             <div>
-              <h2>Smoke, mini-panel, full et 24×3 : de quoi parle-t-on ?</h2>
+              <h2>Smoke, gate, panel 10×2, full et 24×3 : de quoi parle-t-on ?</h2>
               <p>Chaque niveau répond à une question différente. Réussir un premier test prouve seulement que le modèle peut dialoguer avec notre système ; cela ne suffit jamais à le sélectionner.</p>
             </div>
           </div>
@@ -285,15 +288,17 @@
               <thead><tr><th>Terme</th><th>Définition simple</th><th>Ce que cela permet de conclure</th></tr></thead>
               <tbody>
                 <tr><td>Smoke test</td><td>Un test très court sur un seul cas représentatif. Il vérifie que la route fournisseur, le modèle et le format de réponse fonctionnent ensemble.</td><td>Le modèle peut tenter le test suivant. Cela ne prouve pas encore sa qualité pédagogique.</td></tr>
+                <tr><td>Gate</td><td>Une courte série préenregistrée de cas différents, avec arrêt au premier défaut. Le gate récent couvre 3 cas sémantiques uniques et 3/3 workflows, sans répétition.</td><td>Le profil peut passer à un panel plus discriminant. Il ne constitue ni une promotion ni une mesure de généralisation.</td></tr>
                 <tr><td>Série de smokes</td><td>Trois cas successifs : une réponse clairement réussie, une réponse ambiguë et une tentative d’injection. L’essai s’arrête au premier défaut important.</td><td>Le modèle semble techniquement compatible et assez sûr pour un petit panel.</td></tr>
                 <tr><td>Mini-panel</td><td>Un petit ensemble prédéfini, généralement six réponses variées, soumis à une revue pédagogique aveugle séparée de l’exécution.</td><td>Il détecte rapidement les erreurs de jugement, de ton ou de grille avant une campagne coûteuse.</td></tr>
+                <tr><td>Panel 10×2</td><td>10 cas sémantiques uniques, chacun répété deux fois : 20 workflows au maximum. Les 10 répétitions servent à mesurer la stabilité, pas à prétendre disposer de 20 situations différentes.</td><td>Il confronte le chercheur à des mutations de preuve, des réponses négatives et des injections avant tout élargissement.</td></tr>
                 <tr><td>Full panel</td><td>La campagne complète sur tout le corpus de développement. Dans notre cas, elle couvre les 24 réponses étalonnées.</td><td>Elle mesure la qualité sur toutes les familles prévues, mais pas encore la généralisation à des cas inconnus.</td></tr>
                 <tr><td>24×3</td><td>Les mêmes 24 réponses sont évaluées trois fois, soit 72 runs logiques. Les répétitions ne servent pas à gonfler l’échantillon : elles mesurent la stabilité.</td><td>On observe à la fois les erreurs moyennes et les changements de jugement sur une réponse identique.</td></tr>
                 <tr><td>Holdout scellé</td><td>Un second corpus jamais utilisé pour régler le prompt ou choisir les seuils. Son contenu reste fermé jusqu’à ce que la configuration soit figée.</td><td>Il vérifie si la solution se généralise sans avoir appris les réponses du corpus de développement.</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="note"><strong>Exemple.</strong> Deux smokes réussis ne valent pas un full. Et 24×3 ne représente que 24 situations sémantiques : les répétitions mesurent la stabilité. La nouvelle méthode ajoute un oracle mécanique, un pseudo-oracle synthétique séparé et un shadow réel non annoté.</p>
+          <p class="note"><strong>Règle de lecture.</strong> Un résultat est toujours présenté sous la forme n/N. Un panel 10×2 terminé représente 10 cas sémantiques uniques et 20 workflows ; un full 24×3 représente 24 cas uniques et 72 workflows. Les répétitions mesurent la stabilité, elles n’augmentent pas la diversité sémantique.</p>
         </div>
       </section>
 
@@ -350,6 +355,20 @@
             </table>
           </div>
           <p class="note"><strong>Limite de comparaison.</strong> La cascade est une simulation rétrospective obtenue avec des campagnes qui n’utilisaient pas exactement le même prompt ni le même protocole. Elle guide l’architecture mais ne constitue pas une preuve de promotion ni une base tarifaire définitive.</p>
+
+          <div class="table-scroll" style="margin-top:52px">
+            <table class="matrix">
+              <caption class="sr-only">Résultats récents du rôle de chercheur de preuves</caption>
+              <thead><tr><th>Campagne</th><th>Couverture</th><th>Résultat exact</th><th>Décision</th></tr></thead>
+              <tbody>
+                <tr><td>Gemini · gate v2</td><td>3/3 cas uniques · 3/3 workflows</td><td>27/27 éléments couverts ; négatif et injection conformes</td><td>Gate valide uniquement ; autorisation de préparer le panel, aucune promotion</td></tr>
+                <tr><td>Gemini · panel v2 10×2</td><td>5/10 cas uniques · 10/20 workflows valides, puis arrêt au 11e appel</td><td>Citation non exacte rejetée par LearnX ; 9/20 workflows non appelés ; coût 0,04345875 USD</td><td>NO-GO réel de cette configuration ; campagne close sans reprise</td></tr>
+                <tr><td>Sonnet 5 · screening</td><td>3/3 cas uniques · 3/3 workflows</td><td>27/27 statuts, 17 citations exactes, injection sûre</td><td>Screening réussi ; pas une promotion</td></tr>
+                <tr><td>Sonnet 5 · panel 10×2</td><td>5/10 cas uniques · 10/20 workflows valides et concordants, puis arrêt au 11e appel</td><td>2 500 tokens de raisonnement, 0 token visible ; 9/20 workflows non appelés ; coût 0,287208 USD</td><td>NO-GO technique du profil de requête, sans verdict pédagogique négatif sur Sonnet 5</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note"><strong>État au 16 août 2026.</strong> Ces résultats restent de la recherche intermédiaire : <strong>0 pipeline promu, 0 contrat publié, 0 runtime actif</strong>. Les coûts sont des dépenses de recherche réconciliées, jamais un prix utilisateur.</p>
         </div>
       </section>
 
@@ -369,7 +388,8 @@
               <tbody>
                 <tr><td>Mistral Medium 3.5</td><td>Plusieurs panels et full 24×3</td><td>72/72 sorties utilisables ; 3 faux positifs et 5 faux négatifs sur la campagne 1.6</td><td>Baseline économique conservée ; NO-GO comme juge et pipeline Mistral–Sonnet non requalifié.</td></tr>
                 <tr><td>Claude Sonnet 4.6</td><td>Panels et full 24×3 sous protocole 3.0.1</td><td>0 faux positif, 6 faux négatifs, 1 run finalement inutilisable</td><td>Baseline conservatrice conservée ; NO-GO comme juge et aucun rôle de falsificateur accordé sans nouvelle preuve.</td></tr>
-                <tr><td>Gemini 3.6 Flash</td><td>Full historique puis panel interrompu</td><td>90,4 % d’accord critériel historique ; nouveau panel arrêté sur une réconciliation de coût avant les injections</td><td>Pas de verdict pédagogique final. Prochain candidat uniquement comme chercheur de preuves sous une nouvelle identité.</td></tr>
+                <tr><td>Gemini 3.6 Flash</td><td>Full historique ; gate chercheur 3/3 ; panel 10×2 interrompu</td><td>Gate v2 3/3 valide, puis 10/20 workflows valides avant une citation non exacte au 11e appel ; coût 0,04345875 USD</td><td>NO-GO réel de la configuration panel v2. Les dix résultats simples restent historiques mais ne compensent pas le défaut de preuve.</td></tr>
+                <tr><td>Claude Sonnet 5</td><td>Screening 3/3 puis panel 10×2 interrompu</td><td>Screening : 27/27 statuts, 17 citations exactes et injection sûre. Panel : 10/20 workflows concordants avant 2 500 tokens de raisonnement et 0 visible au 11e appel ; coût 0,287208 USD</td><td>NO-GO technique du profil de requête. Aucun verdict pédagogique négatif sur le modèle ; une nouvelle identité doit réserver séparément raisonnement et sortie visible.</td></tr>
                 <tr><td>GPT-5.6 Terra</td><td>Smokes techniques</td><td>Route OpenRouter structurée indisponible pour le contrat épinglé</td><td>Aucun verdict pédagogique ; pourrait nécessiter une campagne distincte via API directe.</td></tr>
                 <tr><td>GPT-5.6 Sol</td><td>Smokes séquentiels</td><td>Cas réussi valide ; cas ambigu expiré ou tronqué selon la campagne</td><td>Capable mais profil actuel trop lent/verbeux pour le contrat borné.</td></tr>
                 <tr><td>Claude Opus 4.8</td><td>Full historique non comparable + 2 smokes protocole 3</td><td>Deux smokes récents valides ; données historiques plus coûteuses et corpus antérieur</td><td>Référence qualitative possible, mais preuve actuelle insuffisante pour une promotion.</td></tr>
@@ -390,17 +410,17 @@
             <span class="section-number">06 · Architecture retenue</span>
             <div>
               <h2>Transformer la grille en programme exécutable.</h2>
-              <p>La correction n’est plus un vote entre modèles. Un chercheur propose des preuves, un falsificateur éventuel les conteste sans voir de note, puis LearnX applique les règles atomiques et produit un certificat reconstructible.</p>
+              <p>La correction n’est plus un vote entre modèles. Un seul modèle cherche des extraits présents dans la réponse apprenant ; LearnX reste l’unique autorité pour les certifier, appliquer la rubrique et produire la restitution.</p>
             </div>
           </div>
           <div class="flow">
             <article><small>Étape 1</small><h3>Rubrique</h3><p>Les éléments, propriétaires, règles et remédiations sont compilés.</p></article>
-            <article><small>Étape 2</small><h3>Recherche</h3><p>Gemini propose statuts et spans exacts, sans niveau ni score.</p></article>
-            <article><small>Étape 3</small><h3>Falsification</h3><p>Un second rôle indépendant cherche contradiction, oubli ou ambiguïté.</p></article>
-            <article><small>Étape 4</small><h3>Calcul</h3><p>LearnX vérifie les preuves et exécute les règles de niveau.</p></article>
-            <article><small>Étape 5</small><h3>Certificat</h3><p>Feedback authoré, révision ou clarification ; aucun effet sur la progression.</p></article>
+            <article><small>Étape 2</small><h3>Recherche</h3><p>Sonnet 5 propose uniquement des citations textuelles et des statuts de preuve.</p></article>
+            <article><small>Étape 3</small><h3>Certification</h3><p>LearnX résout la sous-chaîne exacte, ses offsets et son empreinte ; toute citation absente ou non unique est rejetée.</p></article>
+            <article><small>Étape 4</small><h3>Calcul</h3><p>LearnX exécute la rubrique atomique et calcule niveaux et score indicatif.</p></article>
+            <article><small>Étape 5</small><h3>Restitution</h3><p>LearnX choisit un feedback authoré ; aucun texte libre du modèle ni effet sur la progression.</p></article>
           </div>
-          <p class="note">Une ambiguïté est testée sous toutes ses résolutions authorisées. Si le niveau reste identique, le feedback peut être rendu. Si le niveau change, LearnX masque la note exacte et demande une clarification ciblée.</p>
+          <p class="note"><strong>Frontière stricte.</strong> Le modèle ne produit jamais niveau final, score, PASS/FAIL, progression ou feedback libre. Le falsificateur est suspendu tant que le chercheur Sonnet 5 seul n’est pas validé sous un profil qui sépare réellement raisonnement et sortie visible.</p>
         </div>
       </section>
 
@@ -421,8 +441,9 @@
                 <li>Aucun élément inconnu ou mauvais propriétaire.</li>
                 <li>Aucune double pénalisation ni règle non monotone.</li>
                 <li>Aucun score exact sous ambiguïté matérielle.</li>
-                <li>Niveaux et feedback calculés côté LearnX.</li>
-                <li>Aucun effet bloquant sur la progression.</li>
+                <li>Niveaux, score indicatif et feedback authoré calculés côté LearnX.</li>
+                <li>Aucun niveau, score, PASS/FAIL ou feedback libre produit par le modèle.</li>
+                <li>Aucun effet, bloquant ou non, sur la progression.</li>
               </ul>
             </div>
             <div class="watch">
@@ -446,20 +467,20 @@
             <span class="section-number">08 · Prochaines preuves</span>
             <div>
               <h2>Ce qu’il reste à démontrer avant la bêta.</h2>
-              <p>Le moteur hors ligne existe. Il faut maintenant démontrer que Gemini retrouve les éléments fiables, puis mesurer si un falsificateur améliore réellement le certificat.</p>
+              <p>Le moteur hors ligne existe. La prochaine preuve doit porter sur une nouvelle identité Sonnet 5 dont le budget visible reste disponible même lorsque le fournisseur raisonne.</p>
             </div>
           </div>
-          <details open><summary>1. Répéter le P0 sur une branche Neon jetable</summary><p>Valider CALL_INTENT, reprise idempotente et réconciliation d’un coût absent sans toucher à la production.</p></details>
-          <details><summary>2. Authorer le corpus sémantique WRITING</summary><p>Séparer l’oracle mécanique déjà exécutable du pseudo-oracle synthétique destiné à mesurer l’extraction.</p></details>
-          <details><summary>3. Exécuter Gemini chercheur 10×2</summary><p>Épingler route, profil et budget ; exiger 20/20 workflows, spans et sécurité à 100 %, sans niveau ou score produit par le modèle.</p></details>
-          <details><summary>4. Mesurer le gain d’un falsificateur</summary><p>Comparer sur les mêmes sorties, sans vote ni note visible au second modèle. Ne le conserver que s’il réduit les faux statuts.</p></details>
-          <details><summary>5. Garder le holdout fermé</summary><p>Le holdout reste one-shot et ne s’ouvre qu’après les gates moteur, chercheur et développement élargi.</p></details>
+          <details open><summary>1. Préenregistrer un profil Sonnet 5 corrigé</summary><p>Réserver séparément le budget de raisonnement et la capacité de sortie visible. Si la route épinglée ne peut pas attester cette séparation hors ligne, le test est bloqué avant réseau.</p></details>
+          <details><summary>2. Exécuter un gate décisif de 4 cas</summary><p>Après arbitrages Produit, Finance et GO propriétaire : 4/4 workflows utilisables sur un positif, un négatif, une mutation critique et une injection. Aucun résultat historique n’est réutilisé.</p></details>
+          <details><summary>3. Refaire le panel 10×2 complet</summary><p>Seulement si le gate réussit, sous une identité inchangée : 10 cas sémantiques uniques, 20/20 workflows, accord atomique ≥95 %, cas critiques à 100 %, faux SUPPORTED=0 et coût intégralement réconcilié.</p></details>
+          <details><summary>4. Élargir avant d’ouvrir le holdout</summary><p>Ajouter des cas sémantiques et métamorphiques, puis ouvrir le holdout scellé une seule fois si tous les gates précédents passent. Aucun falsificateur ni autre modèle pendant cette séquence.</p></details>
+          <details><summary>5. Garder V4-010 bloqué</summary><p>Aucun contrat WRITING n’est publié et aucun runtime n’est activé avant validation du pipeline. Le squelette produit peut avancer derrière un feature flag avec des certificats simulés uniquement.</p></details>
         </div>
       </section>
     </main>
 
     <footer>
-      <div class="wrap">LearnX · Rapport de recherche intermédiaire V4-003 · Moteur de rubrique exécutable en préparation · Aucun modèle promu au 14 août 2026.</div>
+      <div class="wrap">LearnX · Rapport de recherche intermédiaire V4 · 0 pipeline promu · 0 contrat publié · 0 runtime actif au 16 août 2026.</div>
     </footer>
   </div>
 </body>
