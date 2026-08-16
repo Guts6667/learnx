@@ -33,14 +33,29 @@ const paths = {
 const threeCaseCampaignPath = resolve(
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.json',
 );
+const revisedThreeCaseCampaignPath = resolve(
+  'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.json',
+);
+const revisedCorpusPath = resolve(
+  'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+);
 
-function fixture(options: { threeCase?: boolean } = {}) {
+function fixture(
+  options: { revisedThreeCase?: boolean; threeCase?: boolean } = {},
+) {
   const attestationText = readFileSync(paths.attestation, 'utf8');
   const campaignFileText = readFileSync(
-    options.threeCase ? threeCaseCampaignPath : paths.campaign,
+    options.revisedThreeCase
+      ? revisedThreeCaseCampaignPath
+      : options.threeCase
+        ? threeCaseCampaignPath
+        : paths.campaign,
     'utf8',
   );
-  const corpusText = readFileSync(paths.corpus, 'utf8');
+  const corpusText = readFileSync(
+    options.revisedThreeCase ? revisedCorpusPath : paths.corpus,
+    'utf8',
+  );
   const rubricText = readFileSync(paths.rubric, 'utf8');
   const specText = readFileSync(paths.spec, 'utf8');
   const compiled = compileExecutableRubric(JSON.parse(rubricText) as unknown);
@@ -86,9 +101,11 @@ function providerResult(
   return {
     latencyMs: 100,
     modelSnapshot: 'google/gemini-3.6-flash-20260721',
+    observedProvider: 'Google',
     output: rawOutput(caseItem),
     providerRequestId: `request-${index}`,
     providerRoute: 'Google',
+    requestedRoute: 'google-vertex/global',
     status: 'VALID' as const,
     usage: {
       actualCostUsd: 0.004,
@@ -149,6 +166,11 @@ describe('evidence researcher smoke', () => {
     );
     expect(result.state.stoppedReason).toBeNull();
     expect(result.state.attempts).toHaveLength(1);
+    expect(result.state.attempts[0]).toMatchObject({
+      observedProvider: 'Google',
+      providerRoute: 'Google',
+      requestedRoute: 'google-vertex/global',
+    });
     expect(result.ledger.map(({ event }) => event)).toEqual([
       'CALL_INTENT',
       'CALL_OUTCOME',
@@ -179,6 +201,34 @@ describe('evidence researcher smoke', () => {
     );
     expect(result.state.attempts).toHaveLength(3);
     expect(result.ledger).toHaveLength(6);
+    expect(result.state.stoppedReason).toBeNull();
+  });
+
+  it('keeps the revised three-case gate offline and dispatches only its three explicit cells', async () => {
+    const input = fixture({ revisedThreeCase: true });
+    const dispatchedCaseIds: string[] = [];
+    let requestIndex = 0;
+    const result = await runEvidenceResearcherSmoke({
+      ...input,
+      completionUsdPerToken: 0.000_003_75,
+      promptUsdPerToken: 0.000_000_75,
+      provider: {
+        execute: vi.fn(async ({ caseItem }) => {
+          dispatchedCaseIds.push(caseItem.caseId);
+          requestIndex += 1;
+          return providerResult(caseItem, requestIndex);
+        }),
+      },
+      providerName: 'Google',
+    });
+
+    expect(dispatchedCaseIds).toEqual([
+      'writing-fr-base-mastered',
+      'writing-fr-no-choice-negative',
+      'writing-fr-direct-injection',
+    ]);
+    expect(result.state.completedCaseIds).toEqual(dispatchedCaseIds);
+    expect(result.state.attempts).toHaveLength(3);
     expect(result.state.stoppedReason).toBeNull();
   });
 
@@ -231,6 +281,40 @@ describe('evidence researcher smoke', () => {
     expect(result.state.completedCaseIds).toEqual([]);
   });
 
+  it.each([
+    {
+      field: 'requestedRoute',
+      value: 'google-ai-studio',
+    },
+    {
+      field: 'observedProvider',
+      value: 'Unexpected Provider',
+    },
+  ] as const)(
+    'fails closed when $field diverges from the frozen identity',
+    async ({ field, value }) => {
+      const input = fixture();
+      const result = await runEvidenceResearcherSmoke({
+        ...input,
+        completionUsdPerToken: 0.000_003_75,
+        promptUsdPerToken: 0.000_000_75,
+        provider: {
+          execute: vi.fn(async ({ caseItem }) => ({
+            ...providerResult(caseItem, 1),
+            [field]: value,
+          })),
+        },
+        providerName: 'Google',
+      });
+
+      expect(result.state.attempts[0]).toMatchObject({
+        errorCode: 'EVIDENCE_RESEARCHER_PROVIDER_IDENTITY_MISMATCH',
+        status: 'ERROR',
+      });
+      expect(result.state.completedCaseIds).toEqual([]);
+    },
+  );
+
   it('persists actual provider cost when a structured response is invalid', async () => {
     const input = fixture();
     const result = await runEvidenceResearcherSmoke({
@@ -242,8 +326,10 @@ describe('evidence researcher smoke', () => {
           errorCode: 'MODEL_OUTPUT_JSON_INVALID',
           latencyMs: 120,
           modelSnapshot: 'google/gemini-3.6-flash-20260721',
+          observedProvider: 'Google',
           providerRequestId: 'request-invalid',
           providerRoute: 'Google',
+          requestedRoute: 'google-vertex/global',
           rawModelOutput: '{',
           status: 'INVALID' as const,
           usage: {
@@ -274,9 +360,12 @@ describe('evidence researcher smoke', () => {
   it('persists bounded raw structured output before semantic quote validation', async () => {
     const input = fixture();
     const receipts: Array<{
+      observedProvider?: string;
+      providerRoute?: string;
       rawModelOutput: string;
       rawModelOutputSha256: string;
       rawModelOutputTruncated: boolean;
+      requestedRoute?: string;
     }> = [];
     const result = await runEvidenceResearcherSmoke({
       ...input,
@@ -302,6 +391,9 @@ describe('evidence researcher smoke', () => {
 
     expect(receipts).toHaveLength(1);
     expect(receipts[0]).toMatchObject({
+      observedProvider: 'Google',
+      providerRoute: 'Google',
+      requestedRoute: 'google-vertex/global',
       rawModelOutputSha256: expect.stringMatching(/^[a-f0-9]{64}$/u),
       rawModelOutputTruncated: false,
     });
@@ -357,8 +449,10 @@ describe('evidence researcher smoke', () => {
           errorCode: 'MODEL_OUTPUT_JSON_INVALID',
           latencyMs: 100,
           modelSnapshot: 'google/gemini-3.6-flash-20260721',
+          observedProvider: 'Google',
           providerRequestId: 'request-large-raw',
           providerRoute: 'Google',
+          requestedRoute: 'google-vertex/global',
           rawModelOutput,
           status: 'INVALID' as const,
           usage: {

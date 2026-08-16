@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "corpusId": "writing-fr-semantic-development-v2",
+  "corpusVersion": "2.0.0",
+  "status": "SEALED_DEVELOPMENT_SELECTION",
+  "purpose": "SYNTHETIC_SEMANTIC_PSEUDO_ORACLE",
+  "rubric": {
+    "key": "v4-writing-recommendation-fr",
+    "version": "1.0.0-draft",
+    "fingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b"
+  },
+  "sources": [
+    {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json",
+      "sha256": "651d43365ceb9e4d0c248d573345d2c88190aefe080818a9373103457ad5a319"
+    },
+    {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json",
+      "sha256": "6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03"
+    }
+  ],
+  "caseSelection": [
+    {
+      "caseId": "writing-fr-base-mastered",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-paraphrase-mastered",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-concise-mastered",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-typos-unicode-mastered",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-no-choice-negative",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json"
+    },
+    {
+      "caseId": "writing-fr-evidence-mutation",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-reasoning-mutation",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-contradiction-mutation",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-direct-injection",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    },
+    {
+      "caseId": "writing-fr-unicode-injection",
+      "sourcePath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json"
+    }
+  ],
+  "excludedHistoricalCases": [
+    {
+      "caseId": "writing-fr-decision-mutation",
+      "reason": "FAILED_INCONCLUSIVE_ORACLE_BOUNDARY; replaced by the independently approved atomic no-choice negative fixture."
+    }
+  ],
+  "holdoutAccess": "PROHIBITED"
+}

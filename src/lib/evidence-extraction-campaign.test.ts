@@ -18,6 +18,10 @@ const threeCaseCampaignPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case.json',
 );
+const revisedThreeCaseCampaignPath = resolve(
+  process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.3-three-case-v2.json',
+);
 const diagnosedCampaignPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-evidence-researcher-smoke.v1.2.json',
@@ -34,6 +38,10 @@ const semanticCorpusPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
 );
+const revisedSemanticCorpusPath = resolve(
+  process.cwd(),
+  'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+);
 const catalogAttestationPath = resolve(
   process.cwd(),
   'benchmarks/ai-correction/executable-rubric/gemini-google-vertex-attestation-2026-08-14-reasoning.json',
@@ -48,7 +56,9 @@ const specPath = resolve(
 );
 
 function loadInputs(
-  options: { version?: '1.1' | '1.2' | '1.3' | '1.3-three-case' } = {},
+  options: {
+    version?: '1.1' | '1.2' | '1.3' | '1.3-three-case' | '1.3-three-case-v2';
+  } = {},
 ) {
   const version = options.version ?? '1.3';
   const campaignText = readFileSync(
@@ -58,11 +68,18 @@ function loadInputs(
         ? diagnosedCampaignPath
         : version === '1.3-three-case'
           ? threeCaseCampaignPath
+          : version === '1.3-three-case-v2'
+            ? revisedThreeCaseCampaignPath
           : campaignPath,
     'utf8',
   );
   const rubricFileText = readFileSync(rubricPath, 'utf8');
-  const semanticCorpusText = readFileSync(semanticCorpusPath, 'utf8');
+  const semanticCorpusText = readFileSync(
+    version === '1.3-three-case-v2'
+      ? revisedSemanticCorpusPath
+      : semanticCorpusPath,
+    'utf8',
+  );
   const catalogAttestationText = readFileSync(
     version === '1.1' ? legacyCatalogAttestationPath : catalogAttestationPath,
     'utf8',
@@ -227,6 +244,37 @@ describe('Gemini evidence researcher campaign', () => {
     ).not.toBe(
       createHash('sha256')
         .update(JSON.stringify(singleCaseInputs.campaign))
+        .digest('hex'),
+    );
+  });
+
+  it('pre-registers a new identity for the unambiguous negative fixture', () => {
+    const historicalInputs = loadInputs({ version: '1.3-three-case' });
+    const revisedInputs = loadInputs({ version: '1.3-three-case-v2' });
+    const campaign = validateEvidenceExtractionCampaign(revisedInputs);
+
+    expect(campaign.campaignId).toBe(
+      'learnx-writing-fr-gemini-evidence-researcher-three-case-v2',
+    );
+    expect(campaign.authority.semanticCorpusPath).toBe(
+      'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+    );
+    expect(campaign.smokeProposal.caseIds).toEqual([
+      'writing-fr-base-mastered',
+      'writing-fr-no-choice-negative',
+      'writing-fr-direct-injection',
+    ]);
+    expect(campaign.blockers).toMatchObject({
+      ownerAuthorization: 'NOT_GRANTED',
+      semanticSyntheticCorpus: 'AUTHORED_SEALED_DEVELOPMENT',
+    });
+    expect(
+      createHash('sha256')
+        .update(JSON.stringify(revisedInputs.campaign))
+        .digest('hex'),
+    ).not.toBe(
+      createHash('sha256')
+        .update(JSON.stringify(historicalInputs.campaign))
         .digest('hex'),
     );
   });

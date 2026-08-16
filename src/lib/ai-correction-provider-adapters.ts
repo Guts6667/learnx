@@ -18,9 +18,12 @@ export type CorrectionProviderUsage = {
 export type CorrectionProviderResult = {
   latencyMs: number;
   modelSnapshot: string;
+  observedProvider: string;
   output: unknown;
   providerRequestId?: string;
+  /** @deprecated Historical provider label. Use observedProvider instead. */
   providerRoute: string;
+  requestedRoute: string;
   usage: CorrectionProviderUsage;
 };
 
@@ -56,8 +59,10 @@ type ModelOutputCode =
 type ProviderFailureMetadata = {
   latencyMs?: number;
   modelSnapshot?: string;
+  observedProvider?: string;
   providerRequestId?: string;
   providerRoute?: string;
+  requestedRoute?: string;
   rawModelOutput?: string;
   status?: number;
   usage?: CorrectionProviderUsage;
@@ -66,8 +71,10 @@ type ProviderFailureMetadata = {
 export class CorrectionProviderError extends Error {
   readonly latencyMs?: number;
   readonly modelSnapshot?: string;
+  readonly observedProvider?: string;
   readonly providerRequestId?: string;
   readonly providerRoute?: string;
+  readonly requestedRoute?: string;
   readonly status?: number;
 
   constructor(code: ProviderTransportCode, metadata: ProviderFailureMetadata = {}) {
@@ -75,8 +82,10 @@ export class CorrectionProviderError extends Error {
     this.name = 'CorrectionProviderError';
     this.latencyMs = metadata.latencyMs;
     this.modelSnapshot = metadata.modelSnapshot;
+    this.observedProvider = metadata.observedProvider;
     this.providerRequestId = metadata.providerRequestId;
     this.providerRoute = metadata.providerRoute;
+    this.requestedRoute = metadata.requestedRoute;
     this.status = metadata.status;
   }
 }
@@ -84,8 +93,10 @@ export class CorrectionProviderError extends Error {
 export class CorrectionModelOutputError extends Error {
   readonly latencyMs?: number;
   readonly modelSnapshot?: string;
+  readonly observedProvider?: string;
   readonly providerRequestId?: string;
   readonly providerRoute?: string;
+  readonly requestedRoute?: string;
   readonly rawModelOutput?: string;
   readonly usage?: CorrectionProviderUsage;
 
@@ -94,8 +105,10 @@ export class CorrectionModelOutputError extends Error {
     this.name = 'CorrectionModelOutputError';
     this.latencyMs = metadata.latencyMs;
     this.modelSnapshot = metadata.modelSnapshot;
+    this.observedProvider = metadata.observedProvider;
     this.providerRequestId = metadata.providerRequestId;
     this.providerRoute = metadata.providerRoute;
+    this.requestedRoute = metadata.requestedRoute;
     this.rawModelOutput = metadata.rawModelOutput;
     this.usage = metadata.usage;
   }
@@ -118,7 +131,8 @@ function optionalReasoning(
     | { effort: 'minimal' | 'low' }
     | { max_tokens: number };
 } {
-  return profile.reasoning.effort === 'OFF'
+  return profile.reasoning.effort === 'OFF' ||
+    profile.reasoning.effort === 'PROVIDER_DEFAULT'
     ? {}
     : {
         reasoning:
@@ -294,6 +308,10 @@ async function executeJsonRequest(input: {
   apiKey: string;
   bearerAuthorization?: boolean;
   body: Record<string, unknown>;
+  failureMetadata?: Pick<
+    ProviderFailureMetadata,
+    'observedProvider' | 'providerRoute' | 'requestedRoute'
+  >;
   headers?: Record<string, string>;
   profile: CorrectionProviderRequest['profile'];
   url: string;
@@ -326,7 +344,7 @@ async function executeJsonRequest(input: {
       errorName === 'TimeoutError' || errorName === 'AbortError'
         ? 'PROVIDER_TIMEOUT'
         : 'PROVIDER_NETWORK_ERROR',
-      { latencyMs },
+      { ...input.failureMetadata, latencyMs },
     );
   }
   const latencyMs = Math.round(performance.now() - startedAt);
@@ -337,6 +355,7 @@ async function executeJsonRequest(input: {
   } catch {
     if (!response.ok) {
       throw new CorrectionProviderError('PROVIDER_HTTP_ERROR', {
+        ...input.failureMetadata,
         latencyMs,
         providerRequestId:
           response.headers.get('request-id') ??
@@ -346,6 +365,7 @@ async function executeJsonRequest(input: {
       });
     }
     throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
+      ...input.failureMetadata,
       latencyMs,
       providerRequestId:
         response.headers.get('request-id') ??
@@ -356,6 +376,7 @@ async function executeJsonRequest(input: {
   }
   if (!response.ok) {
     throw new CorrectionProviderError('PROVIDER_HTTP_ERROR', {
+      ...input.failureMetadata,
       latencyMs,
       providerRequestId:
         response.headers.get('request-id') ??
@@ -397,9 +418,14 @@ function openRouterUsage(
 const openRouterAdapter: CorrectionProviderAdapter = {
   kind: 'OPENROUTER_CHAT',
   async execute(request) {
+    const requestedRoute = request.profile.routeProviders?.[0] ?? 'OpenRouter';
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
       body: buildOpenRouterRequestBody(request),
+      failureMetadata: {
+        providerRoute: 'OpenRouter',
+        requestedRoute,
+      },
       profile: request.profile,
       url: 'https://openrouter.ai/api/v1/chat/completions',
       headers: {
@@ -417,18 +443,22 @@ const openRouterAdapter: CorrectionProviderAdapter = {
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
         latencyMs: result.latencyMs,
+        providerRoute: 'OpenRouter',
         rawModelOutput: boundedRaw(result.rawPayload),
+        requestedRoute,
       });
     }
     const parsed = envelope.data;
     const usage = openRouterUsage(parsed.usage);
+    const observedProvider = parsed.provider ?? 'OpenRouter';
     const metadata = {
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model ?? request.modelId,
+      observedProvider,
       providerRequestId:
         parsed.id ?? result.response.headers.get('x-request-id') ?? undefined,
-      providerRoute:
-        parsed.provider ?? request.profile.routeProviders?.[0] ?? 'OpenRouter',
+      providerRoute: observedProvider,
+      requestedRoute,
       usage,
     };
     if (parsed.choices[0]?.finish_reason === 'length') {
@@ -457,6 +487,11 @@ const openAiAdapter: CorrectionProviderAdapter = {
     const result = await executeJsonRequest({
       apiKey: request.apiKey,
       body: buildOpenAiResponsesRequestBody(request),
+      failureMetadata: {
+        observedProvider: 'OpenAI',
+        providerRoute: 'OpenAI',
+        requestedRoute: 'OpenAI',
+      },
       profile: request.profile,
       url: 'https://api.openai.com/v1/responses',
     });
@@ -464,7 +499,10 @@ const openAiAdapter: CorrectionProviderAdapter = {
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
         latencyMs: result.latencyMs,
+        observedProvider: 'OpenAI',
+        providerRoute: 'OpenAI',
         rawModelOutput: boundedRaw(result.rawPayload),
+        requestedRoute: 'OpenAI',
       });
     }
     const parsed = envelope.data;
@@ -479,8 +517,10 @@ const openAiAdapter: CorrectionProviderAdapter = {
     const metadata = {
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model,
+      observedProvider: 'OpenAI',
       providerRequestId: parsed.id,
       providerRoute: 'OpenAI',
+      requestedRoute: 'OpenAI',
       usage,
     };
     if (parsed.status !== 'completed') {
@@ -508,6 +548,11 @@ const anthropicAdapter: CorrectionProviderAdapter = {
       apiKey: request.apiKey,
       bearerAuthorization: false,
       body: buildAnthropicMessagesRequestBody(request),
+      failureMetadata: {
+        observedProvider: 'Anthropic',
+        providerRoute: 'Anthropic',
+        requestedRoute: 'Anthropic',
+      },
       headers: {
         'anthropic-version': '2023-06-01',
         'x-api-key': request.apiKey,
@@ -519,7 +564,10 @@ const anthropicAdapter: CorrectionProviderAdapter = {
     if (!envelope.success) {
       throw new CorrectionModelOutputError('MODEL_OUTPUT_ENVELOPE_INVALID', {
         latencyMs: result.latencyMs,
+        observedProvider: 'Anthropic',
+        providerRoute: 'Anthropic',
         rawModelOutput: boundedRaw(result.rawPayload),
+        requestedRoute: 'Anthropic',
       });
     }
     const parsed = envelope.data;
@@ -532,8 +580,10 @@ const anthropicAdapter: CorrectionProviderAdapter = {
     const metadata = {
       latencyMs: result.latencyMs,
       modelSnapshot: parsed.model,
+      observedProvider: 'Anthropic',
       providerRequestId: parsed.id,
       providerRoute: 'Anthropic',
+      requestedRoute: 'Anthropic',
       usage,
     };
     if (parsed.stop_reason === 'max_tokens') {

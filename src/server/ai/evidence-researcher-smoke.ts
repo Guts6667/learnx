@@ -25,9 +25,11 @@ export type EvidenceResearcherSmokeAttempt = {
   idempotencyKey: string;
   latencyMs: number;
   modelSnapshot?: string;
+  observedProvider?: string;
   output?: EvidencePass;
   providerRequestId?: string;
   providerRoute?: string;
+  requestedRoute?: string;
   rawModelOutput?: string;
   rawModelOutputSha256?: string;
   rawModelOutputTruncated?: boolean;
@@ -41,8 +43,10 @@ export type EvidenceResearcherRawReceipt = {
   caseId: string;
   idempotencyKey: string;
   modelSnapshot?: string;
+  observedProvider?: string;
   providerRequestId?: string;
   providerRoute?: string;
+  requestedRoute?: string;
   rawModelOutput: string;
   rawModelOutputSha256: string;
   rawModelOutputTruncated: boolean;
@@ -84,8 +88,10 @@ export type EvidenceResearcherSmokeProvider = {
         errorCode: string;
         latencyMs: number;
         modelSnapshot?: string;
+        observedProvider?: string;
         providerRequestId?: string;
         providerRoute?: string;
+        requestedRoute?: string;
         rawModelOutput?: string;
         status: 'ERROR' | 'INVALID';
         usage?: CorrectionProviderResult['usage'];
@@ -392,8 +398,10 @@ export async function runEvidenceResearcherSmoke(input: {
           caseId,
           idempotencyKey,
           modelSnapshot: result.modelSnapshot,
+          observedProvider: result.observedProvider,
           providerRequestId: result.providerRequestId,
           providerRoute: result.providerRoute,
+          requestedRoute: result.requestedRoute,
           ...rawReceipt,
           receivedAt: new Date().toISOString(),
           schemaVersion: 1,
@@ -420,7 +428,8 @@ export async function runEvidenceResearcherSmoke(input: {
       status = 'ERROR';
       errorCode = 'COST_RECONCILIATION_REQUIRED';
     } else if (
-      result.providerRoute !== input.providerName ||
+      result.requestedRoute !== input.campaign.researcher.providerRoute ||
+      result.observedProvider !== input.providerName ||
       (result.modelSnapshot !== input.campaign.researcher.modelSnapshot &&
         result.modelSnapshot !== input.campaign.researcher.modelId)
     ) {
@@ -463,9 +472,11 @@ export async function runEvidenceResearcherSmoke(input: {
       idempotencyKey,
       latencyMs: result.latencyMs,
       modelSnapshot: result.modelSnapshot,
+      observedProvider: result.observedProvider,
       ...(output ? { output } : {}),
       providerRequestId: result.providerRequestId,
       providerRoute: result.providerRoute,
+      requestedRoute: result.requestedRoute,
       ...(rawReceipt ?? {}),
       status,
       usage: result.usage,

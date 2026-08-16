@@ -70,12 +70,9 @@ const semanticCaseSchema = z
   })
   .strict();
 
-export const executableRubricSemanticCorpusSchema = z
+const semanticCorpusBaseSchema = z
   .object({
-    cases: z.array(semanticCaseSchema).length(10),
-    corpusId: z.literal('writing-fr-semantic-development-v1'),
     corpusKind: z.literal('SYNTHETIC_SEMANTIC_PSEUDO_ORACLE'),
-    corpusVersion: z.literal('1.0.0'),
     language: z.literal('fr-FR'),
     lifecycle: z.literal('SEALED_DEVELOPMENT'),
     modality: z.literal('WRITING'),
@@ -98,6 +95,22 @@ export const executableRubricSemanticCorpusSchema = z
       .strict(),
   })
   .strict();
+
+export const executableRubricSemanticCorpusSchema = z.discriminatedUnion(
+  'corpusId',
+  [
+    semanticCorpusBaseSchema.extend({
+      cases: z.array(semanticCaseSchema).length(10),
+      corpusId: z.literal('writing-fr-semantic-development-v1'),
+      corpusVersion: z.literal('1.0.0'),
+    }),
+    semanticCorpusBaseSchema.extend({
+      cases: z.array(semanticCaseSchema).length(3),
+      corpusId: z.literal('writing-fr-semantic-three-case-development-v2'),
+      corpusVersion: z.literal('2.0.0'),
+    }),
+  ],
+);
 
 export type ExecutableRubricSemanticCorpus = z.infer<
   typeof executableRubricSemanticCorpusSchema

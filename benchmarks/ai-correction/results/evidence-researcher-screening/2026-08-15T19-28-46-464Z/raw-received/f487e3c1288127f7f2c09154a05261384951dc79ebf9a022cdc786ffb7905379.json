@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+  "caseId": "writing-fr-no-choice-negative",
+  "cellKey": "writing-fr-no-choice-negative:1",
+  "idempotencyKey": "f487e3c1288127f7f2c09154a05261384951dc79ebf9a022cdc786ffb7905379",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1786822141-QblPulRwvJbOrYz1V6mr",
+  "providerRoute": "Anthropic",
+  "repetition": 1,
+  "requestedRoute": "Anthropic",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"six personnes partageaient trois ordinateurs et seules 9 personnes sur 20 ont terminé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "4a86e20cac9939940792cec2e61d0d255e13171c9900fd582e4c28b9abff9655",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:29:15.775Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.025274,
+    "costSource": "ACTUAL",
+    "inputTokens": 3827,
+    "reasoningTokens": 1127,
+    "visibleOutputTokens": 635
+  }
+}

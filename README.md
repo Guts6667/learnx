@@ -1,90 +1,95 @@
 # LearnX
 
-LearnX est une PWA mobile-first et modulaire permettant de suivre des parcours
-d’apprentissage autonomes. La V3 fait évoluer le produit vers un accès
-multi-utilisateur approuvé et des programmes publiés partageables.
+LearnX is a modular, mobile-first PWA for self-directed learning paths. V3
+evolves the product toward approved multi-user access and shareable published
+programs.
 
-L’application n’est pas limitée à la psychologie. Chaque sujet est organisé sous forme de programme, lui-même découpé en étapes, modules et leçons.
+The application is not limited to psychology. Each subject is organized as a
+program, which is divided into stages, modules, and lessons.
 
-La V2 est clôturée. Le travail courant est ordonné dans `BACKLOG_V3.md` et les
-documents à consulter par type de tâche sont répertoriés dans `docs/INDEX.md`.
-Les backlogs et rapports V1/V2 sont conservés sous `docs/archive/` à titre de
-preuve historique uniquement.
+V2 is closed. Current work is organized in `BACKLOG_V3.md`, and the documents
+to consult for each type of task are listed in `docs/INDEX.md`. V1 and V2
+backlogs and reports are preserved under `docs/archive/` as historical evidence
+only.
 
-## Stack imposée
+## Required stack
 
 - Preact
 - Vite
-- TypeScript strict
+- Strict TypeScript
 - PostgreSQL
 - Prisma ORM
 - Tailwind CSS
 - Vercel
 - Vercel Functions
-- PWA avec `vite-plugin-pwa`
+- PWA with `vite-plugin-pwa`
 - Vitest
 - Preact Testing Library
 - Playwright
 
-## Architecture pédagogique
+## Learning architecture
 
 ```text
-Programme
-└── Étape
+Program
+└── Stage
     └── Module
-        └── Leçon
-            ├── Blocs de contenu
-            ├── Ressources
-            ├── Tâches
-            ├── Quiz
-            ├── Exercices
-            └── Révisions
+        └── Lesson
+            ├── Content blocks
+            ├── Resources
+            ├── Tasks
+            ├── Quizzes
+            ├── Exercises
+            └── Reviews
 ```
 
-La structure reste indépendante des années et semestres, mais chaque programme et chaque étape peut avoir une durée indicative. Lorsqu’un utilisateur démarre un programme ou une étape, LearnX calcule une date de fin cible et compare la progression réelle à la progression attendue.
+The structure remains independent of academic years and semesters, but each
+program and stage may have an indicative duration. When a user starts a program
+or stage, LearnX calculates a target end date and compares actual progress with
+expected progress.
 
-Le parcours d’apprentissage utilise la leçon comme contexte permanent. La page
-compose les blocs, ressources, tâches, mini-évaluations, exercices et quiz dans
-une séquence déterministe et expose une seule action principale « Continuer ».
-Les routes profondes conservent le fil d’Ariane et le sommaire de la leçon ; la
-route canonique d’un exercice est
+The learning path uses the lesson as its permanent context. The page composes
+content blocks, resources, tasks, mini-assessments, exercises, and quizzes into
+a deterministic sequence and exposes a single primary “Continue” action. Deep
+routes preserve the breadcrumb and lesson outline; the canonical route for an
+exercise is
 `/program/:programSlug/lesson/:lessonSlug/exercise/:exerciseId`.
 
-## Travail avec Codex
+## Working with Codex
 
-1. Lire `AGENTS.md` et `docs/INDEX.md`.
-2. Identifier le ticket actif dans `BACKLOG_V3.md`.
-3. Charger uniquement l'ADR, la spécification et les fichiers concernés.
-4. Traiter un seul ticket et un seul périmètre par commit.
-5. Ne jamais utiliser les archives V1/V2 comme instructions actives.
+1. Read `AGENTS.md` and `docs/INDEX.md`.
+2. Identify the active ticket in `BACKLOG_V3.md`.
+3. Load only the relevant ADR, specification, and files.
+4. Handle a single ticket and a single scope per commit.
+5. Never use the V1/V2 archives as active instructions.
 
-## Base de données
+## Database
 
-Créer un fichier `.env` à partir de `.env.example`, puis renseigner une URL
-PostgreSQL Neon dans `DATABASE_URL`. `DIRECT_URL` est recommandée pour les
-migrations lorsque Neon fournit une URL de connexion directe distincte.
+Create a `.env` file from `.env.example`, then provide a Neon PostgreSQL URL in
+`DATABASE_URL`. `DIRECT_URL` is recommended for migrations when Neon provides a
+separate direct connection URL.
 
 ```bash
 pnpm prisma:generate
-pnpm prisma:migrate -- --name <nom-de-migration>
+pnpm prisma:migrate -- --name <migration-name>
 pnpm prisma:seed
 pnpm prisma:check
 ```
 
-`prisma:check` exécute une requête de santé et requiert une `DATABASE_URL`
-valide. `pnpm prisma:seed` importe le bundle versionné
-`seed/sample-program.json`. Ne pas exécuter le seed sur une base partagée sans
-avoir vérifié la cible et le plan d'import.
+`prisma:check` runs a health query and requires a valid `DATABASE_URL`.
+`pnpm prisma:seed` imports the versioned `seed/sample-program.json` bundle. Do
+not run the seed against a shared database without first verifying the target
+and import plan.
 
-## Déploiement Vercel
+## Vercel deployment
 
-Le projet est configuré pour le preset Vite, une sortie statique dans `dist`
-et une Function Node.js Hono unique sous `/api`. Toutes les routes existantes
-sont regroupées derrière cette Function afin de rester sous la limite du plan
-Hobby. Elle s’exécute dans la région `fra1`, proche de la base Neon européenne.
-Le client Prisma généré est explicitement inclus dans son bundle, y compris ses
-modules internes chargés dynamiquement.
-Le build Vercel exécute dans l’ordre :
+The project is configured with the Vite preset, static output in `dist`, and a
+single Hono Node.js Function under `/api`. All existing routes are grouped
+behind this Function to remain within the Hobby plan limit. It runs in the
+`fra1` region, close to the European Neon database. The generated Prisma client
+is explicitly included in its bundle, including its dynamically loaded internal
+modules.
+
+The Vercel build runs, in order:
 
 ```bash
 pnpm prisma:generate
@@ -92,140 +97,132 @@ pnpm prisma:deploy
 pnpm build
 ```
 
-`prisma:deploy` applique les migrations déjà versionnées avec
-`prisma migrate deploy`. Il ne crée pas de migration et ne réinitialise jamais
-la base.
+`prisma:deploy` applies already versioned migrations with
+`prisma migrate deploy`. It does not create migrations and never resets the
+database.
 
-Configurer les variables suivantes dans les environnements Preview et
-Production du projet Vercel :
+Configure the following variables in the Preview and Production environments
+of the Vercel project:
 
-- `DATABASE_URL` : connexion Neon poolée utilisée à l’exécution ;
-- `DIRECT_URL` : connexion Neon directe utilisée pendant les migrations ;
-- `ADMIN_EMAIL` : adresse du compte propriétaire utilisée uniquement par le
-  seed manuel.
-- `APP_URL` : origine HTTPS stable utilisée dans les liens de vérification ;
-- `LEARNX_EMAIL_VERIFICATION_ENABLED` : active explicitement l'envoi des liens ;
-- `LEARNX_EMAIL_VERIFICATION_TTL_MS` : durée de validité, entre 5 minutes et
-  7 jours ;
-- `LEARNX_ACCESS_INVITATION_TTL_MS` : durée de validité des invitations
-  d’activation, entre 5 minutes et 7 jours ;
-- `LEARNX_EMAIL_FROM` : expéditeur appartenant à un domaine Resend vérifié ;
-- `RESEND_API_KEY` : secret serveur Resend, jamais exposé au client.
+- `DATABASE_URL`: pooled Neon connection used at runtime;
+- `DIRECT_URL`: direct Neon connection used during migrations;
+- `ADMIN_EMAIL`: owner account address used only by the manual seed;
+- `APP_URL`: stable HTTPS origin used in verification links;
+- `LEARNX_EMAIL_VERIFICATION_ENABLED`: explicitly enables sending links;
+- `LEARNX_EMAIL_VERIFICATION_TTL_MS`: validity period, from 5 minutes to
+  7 days;
+- `LEARNX_ACCESS_INVITATION_TTL_MS`: activation invitation validity period,
+  from 5 minutes to 7 days;
+- `LEARNX_EMAIL_FROM`: sender belonging to a verified Resend domain;
+- `RESEND_API_KEY`: Resend server secret, never exposed to the client.
 
-L'envoi des vérifications et invitations est désactivé tant que
-`LEARNX_EMAIL_VERIFICATION_ENABLED` n'est pas `true`. Une désactivation
-n'efface ni les demandes, ni les vérifications, ni les invitations déjà émises.
-En Production, `LEARNX_ACCESS_REQUESTS_ENABLED` doit également valoir `true`.
-Sans cette activation explicite, l'endpoint répond `503`. Si la fonctionnalité
-est activée alors que `APP_URL`, `LEARNX_EMAIL_FROM`, `RESEND_API_KEY` ou la
-vérification e-mail manque, l'endpoint échoue de la même manière avant toute
-écriture : aucune demande `PENDING_EMAIL` impossible à vérifier n'est créée.
-L'adaptateur fournisseur est isolé dans le serveur : un autre fournisseur peut
-remplacer Resend sans modifier le cycle de demande. Les liens placent leur
-token dans le fragment URL afin qu'il ne soit pas transmis dans les logs HTTP ;
-seul son hash SHA-256 est conservé en base.
+Verification and invitation delivery remains disabled until
+`LEARNX_EMAIL_VERIFICATION_ENABLED` is `true`. Disabling it does not delete
+requests, verifications, or invitations that have already been issued. In
+Production, `LEARNX_ACCESS_REQUESTS_ENABLED` must also be `true`. Without this
+explicit activation, the endpoint returns `503`. If the feature is enabled
+while `APP_URL`, `LEARNX_EMAIL_FROM`, `RESEND_API_KEY`, or email verification is
+missing, the endpoint fails in the same way before any write: no unverifiable
+`PENDING_EMAIL` request is created. The provider adapter is isolated on the
+server, so another provider can replace Resend without changing the request
+lifecycle. Links place their token in the URL fragment so it is not transmitted
+in HTTP logs; only its SHA-256 hash is stored in the database.
 
-Les valeurs réelles restent dans Vercel et dans les fichiers `.env` locaux
-ignorés par Git. Après leur modification, un nouveau déploiement est nécessaire.
-Le seed n’est volontairement pas lancé pendant le build : une migration de
-production doit être automatique et idempotente, tandis qu’une modification de
-contenu reste une opération explicite.
+Real values remain in Vercel and in local `.env` files ignored by Git. A new
+deployment is required after changing them. The seed is deliberately not run
+during the build: a production migration must be automatic and idempotent,
+whereas a content change remains an explicit operation.
 
-Pour reproduire le build Vercel localement puis contrôler un déploiement :
+To reproduce the Vercel build locally and then check a deployment:
 
 ```bash
 npx vercel@latest pull --environment=preview
 npx vercel@latest build
-pnpm deployment:check -- https://URL-DU-DEPLOIEMENT
+pnpm deployment:check -- https://DEPLOYMENT-URL
 ```
 
-Le contrôle vérifie l’application, le manifest installable, le service worker
-et une Vercel Function. Sur iPhone, ouvrir ensuite l’URL HTTPS dans Safari,
-utiliser **Partager → Sur l’écran d’accueil**, lancer LearnX depuis l’icône et
-vérifier la navigation ainsi que la bannière hors ligne sur une page déjà
-consultée.
+The check verifies the application, installable manifest, service worker, and a
+Vercel Function. On iPhone, then open the HTTPS URL in Safari, use
+**Share → Add to Home Screen**, launch LearnX from the icon, and verify
+navigation and the offline banner on a page that has already been visited.
 
-La CI peut aussi fournir `DEPLOYMENT_CHECK_EMAIL` et
-`DEPLOYMENT_CHECK_PASSWORD` à un compte de contrôle dédié. La commande vérifie
-alors une connexion, la session, une lecture du curriculum puis la déconnexion,
-sans créer ni modifier de contenu métier.
+CI can also provide `DEPLOYMENT_CHECK_EMAIL` and `DEPLOYMENT_CHECK_PASSWORD` for
+a dedicated test account. The command then verifies login, the session, a
+curriculum read, and logout without creating or modifying business content.
 
-## Maintenance des données techniques expirées
+## Expired technical data maintenance
 
-La commande suivante inventorie uniquement les enregistrements techniques
-éligibles à la purge et ne modifie aucune donnée par défaut :
+The following command only inventories technical records eligible for cleanup
+and does not modify any data by default:
 
 ```bash
 pnpm maintenance:cleanup
 ```
 
-Elle couvre les sessions expirées depuis plus de 7 jours, les buckets de rate
-limit vieux de plus de 24 heures et les vérifications e-mail ou invitations
-terminées depuis plus de 30 jours. Les utilisateurs, demandes d’accès, événements
-d’audit, notes, progressions, tentatives et contenus ne sont jamais ciblés.
+It covers sessions expired for more than 7 days, rate-limit buckets older than
+24 hours, and completed email verifications or invitations older than 30 days.
+Users, access requests, audit events, notes, progress records, attempts, and
+content are never targeted.
 
-Une suppression nécessite l’option explicite `--apply` :
+Deletion requires the explicit `--apply` option:
 
 ```bash
 pnpm maintenance:cleanup --apply
 ```
 
-Chaque exécution est bornée par lots et peut être rejouée sans erreur. Les
-valeurs `LEARNX_RETENTION_*` de `.env.example` permettent d’ajuster la politique.
-Toujours commencer par la simulation, vérifier la cible `DATABASE_URL` et sa
-sauvegarde, puis seulement lancer `--apply`. Aucun nettoyage automatique n’est
-déclenché par le build ou le déploiement.
+Each run is bounded in batches and can be replayed safely. The
+`LEARNX_RETENTION_*` values in `.env.example` allow the policy to be adjusted.
+Always start with the dry run, verify the target `DATABASE_URL` and its backup,
+and only then run `--apply`. No automatic cleanup is triggered by a build or
+deployment.
 
-## Tests d’intégration réels
+## Real integration tests
 
-`pnpm test:integration` construit l’application puis exécute Chromium desktop,
-Chromium mobile et WebKit mobile contre `api/index.ts`, Prisma et PostgreSQL,
-sans interception de `/api`. La commande refuse toute écriture tant que les
-variables suivantes ne désignent pas explicitement une branche Neon jetable :
+`pnpm test:integration` builds the application and then runs desktop Chromium,
+mobile Chromium, and mobile WebKit against `api/index.ts`, Prisma, and
+PostgreSQL without intercepting `/api`. The command refuses all writes unless
+the following variables explicitly identify a disposable Neon branch:
 
-- `DATABASE_URL` et `DIRECT_URL` de la branche isolée ;
-- `NEON_BRANCH_ID` fourni lors de sa création ;
-- `LEARNX_INTEGRATION_DATABASE=ephemeral` ;
-- `LEARNX_INTEGRATION_RUN_ID`, unique pour l’exécution.
+- `DATABASE_URL` and `DIRECT_URL` for the isolated branch;
+- `NEON_BRANCH_ID` provided when it was created;
+- `LEARNX_INTEGRATION_DATABASE=ephemeral`;
+- `LEARNX_INTEGRATION_RUN_ID`, unique to the run.
 
-Le workflow `integration.yml` crée une branche Neon par exécution, applique les
-migrations, injecte des fixtures dédiées via le parcours de test, puis supprime
-la branche avec une étape `always()`. GitHub doit contenir le secret
-`NEON_API_KEY` et la variable `NEON_PROJECT_ID`. Aucun identifiant ni URL de
-base n’est versionné. Le workflow `deployment-check.yml`, déclenché manuellement,
-utilise les secrets `LEARNX_DEPLOYMENT_EMAIL` et
-`LEARNX_DEPLOYMENT_PASSWORD`, ainsi que la variable
-`LEARNX_DEPLOYMENT_URL`.
+The `integration.yml` workflow creates one Neon branch per run, applies
+migrations, injects dedicated fixtures through the test flow, and then deletes
+the branch in an `always()` step. GitHub must contain the `NEON_API_KEY` secret
+and the `NEON_PROJECT_ID` variable. No database credentials or URLs are
+versioned. The manually triggered `deployment-check.yml` workflow uses the
+`LEARNX_DEPLOYMENT_EMAIL` and `LEARNX_DEPLOYMENT_PASSWORD` secrets together
+with the `LEARNX_DEPLOYMENT_URL` variable.
 
-## Authentification serveur
+## Server authentication
 
-Les endpoints d’authentification sont des Vercel Functions sous `/api/auth` :
+Authentication endpoints are Vercel Functions under `/api/auth`:
 
-- `POST /api/auth/register` — développement et intégration uniquement ; refusé
-  par défaut en production en attendant le workflow d’accès V3
+- `POST /api/auth/register` — development and integration only; rejected by
+  default in production pending the V3 access workflow
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `GET /api/auth/session`
 
-Les mots de passe sont hachés avec argon2id. Les sessions sont opaques, leur
-hash est stocké dans PostgreSQL et le navigateur reçoit uniquement un cookie
-`HttpOnly`, `SameSite=Lax` et `Secure` en production. Aucun token de session
-n’est stocké dans `localStorage`.
+Passwords are hashed with argon2id. Sessions are opaque, their hash is stored in
+PostgreSQL, and the browser receives only an `HttpOnly`, `SameSite=Lax`, and
+production-only `Secure` cookie. No session token is stored in `localStorage`.
 
-Un compte suspendu ne peut ni ouvrir une nouvelle session ni réutiliser une
-session existante. L’administration `/admin/accounts` révoque toutes les
-sessions dans la transaction de suspension. Une réactivation conserve les
-notes, progressions, tentatives et soumissions, mais impose une nouvelle
-connexion.
+A suspended account can neither open a new session nor reuse an existing one.
+The `/admin/accounts` administration interface revokes all sessions in the
+suspension transaction. Reactivation preserves notes, progress records,
+attempts, and submissions, but requires a new login.
 
-Les échecs de connexion sont limités à cinq par fenêtre de quinze minutes. Le
-compteur est partagé dans PostgreSQL entre les Functions serverless ; sa clé
-IP/e-mail est hachée avant stockage.
+Login failures are limited to five per fifteen-minute window. The counter is
+shared in PostgreSQL across serverless Functions; its IP/email key is hashed
+before storage.
 
-## API de parcours
+## Curriculum API
 
-Les endpoints de lecture nécessitent une session LearnX active et ne renvoient
-que les programmes actifs et les contenus publiés :
+Read endpoints require an active LearnX session and return only active programs
+and published content:
 
 - `GET /api/programs`
 - `GET /api/programs/:programSlug`
@@ -233,11 +230,10 @@ que les programmes actifs et les contenus publiés :
 - `GET /api/modules/:moduleSlug`
 - `GET /api/lessons/:lessonSlug`
 
-## API de progression
+## Progress API
 
-Les mutations de progression nécessitent également une session active. Elles
-vérifient l’appartenance de la leçon, tâche ou ressource au programme de
-l’utilisateur avant toute écriture :
+Progress mutations also require an active session. Before writing, they verify
+that the lesson, task, or resource belongs to the user's program:
 
 - `GET /api/lessons/:lessonId/progress`
 - `POST /api/lessons/:lessonId/start`
@@ -245,54 +241,52 @@ l’utilisateur avant toute écriture :
 - `PATCH /api/tasks/:taskId`
 - `PATCH /api/resources/:resourceId/progress`
 
-La progression de leçon est calculée côté serveur à partir des tâches
-obligatoires (40 %), quiz obligatoires réussis (30 %), exercices obligatoires
-soumis (20 %) et ressources obligatoires terminées (10 %). Les catégories
-absentes voient leur poids redistribué. Les mini-évaluations ne sont pas
-comptées une seconde fois : toute notion obligatoire doit néanmoins être
-maîtrisée pour terminer la leçon. La consultation d’une ressource ne valide
-jamais une notion.
+Lesson progress is calculated server-side from required tasks (40%), passed
+required quizzes (30%), submitted required exercises (20%), and completed
+required resources (10%). Missing categories have their weight redistributed.
+Mini-assessments are not counted a second time, but every required concept must
+still be mastered to complete the lesson. Viewing a resource never validates a
+concept.
 
-Les mutations et leurs agrégats leçon, étape et programme sont persistés dans
-une transaction sérialisable. Pour contrôler puis réparer les progressions
-existantes sans mutation implicite :
+Mutations and their lesson, stage, and program aggregates are persisted in a
+serializable transaction. To inspect and then repair existing progress without
+implicit mutation:
 
 ```bash
 pnpm progress:recalculate -- --user-id <uuid>
 pnpm progress:recalculate -- --user-id <uuid> --apply
 ```
 
-Sans `--apply`, la commande reste en simulation. Un `--program-id` peut réduire
-le périmètre ; `--all` doit être fourni explicitement pour couvrir tous les
-programmes.
+Without `--apply`, the command remains a dry run. A `--program-id` can narrow
+the scope; `--all` must be provided explicitly to cover all programs.
 
-## Publication administrateur
+## Administrator publishing
 
-La zone `/admin` charge la hiérarchie progressivement et conserve le niveau
-actif dans l’URL. Les lectures propriétaires sont séparées par niveau :
+The `/admin` area loads the hierarchy progressively and keeps the active level
+in the URL. Owner reads are separated by level:
 
-- `GET /api/admin/programs` liste uniquement les programmes du compte admin ;
-- `GET /api/admin/programs/:programId` charge ses étapes immédiates ;
-- `GET /api/admin/stages/:stageId` charge ses modules immédiats ;
-- `GET /api/admin/modules/:moduleId` charge ses leçons immédiates ;
-- `GET /api/admin/lessons/:lessonId` charge la leçon et son fil d’Ariane.
+- `GET /api/admin/programs` lists only programs belonging to the admin account;
+- `GET /api/admin/programs/:programId` loads its immediate stages;
+- `GET /api/admin/stages/:stageId` loads its immediate modules;
+- `GET /api/admin/modules/:moduleId` loads its immediate lessons;
+- `GET /api/admin/lessons/:lessonId` loads the lesson and its breadcrumb.
 
-Chaque lecture vérifie le rôle administrateur et la propriété côté serveur. Les
-détails et actions du niveau actif s’ouvrent dans un tiroir accessible sans
-charger le reste de l’arbre.
+Each read verifies the administrator role and ownership server-side. Details
+and actions for the active level open in an accessible drawer without loading
+the rest of the tree.
 
-Les cascades programme, étape et module utilisent toujours deux requêtes :
+Program, stage, and module cascades always use two requests:
 
-- `POST /api/admin/publication/preview` calcule les changements, avertissements,
-  préconditions manquantes et un `planId` sans modifier la base ;
-- `POST /api/admin/publication/apply` confirme exactement ce plan dans une
-  transaction sérialisable.
+- `POST /api/admin/publication/preview` calculates changes, warnings, missing
+  prerequisites, and a `planId` without modifying the database;
+- `POST /api/admin/publication/apply` confirms that exact plan in a serializable
+  transaction.
 
-Une confirmation obsolète est refusée. Répéter un plan déjà appliqué reste sans
-effet. La dépublication peut masquer uniquement le parent ou désactiver toute
-la branche ; dans les deux cas, progressions, tentatives, notes et soumissions
-sont conservées. Les contrôles portent seulement sur la complétude pédagogique
-et jamais sur une éventuelle validation scientifique.
+A stale confirmation is rejected. Repeating an already applied plan has no
+effect. Unpublishing can hide only the parent or disable the entire branch; in
+both cases, progress records, attempts, notes, and submissions are preserved.
+Checks cover pedagogical completeness only and never any potential scientific
+validation.
 
 ## Documents
 
@@ -318,5 +312,5 @@ et jamais sur une éventuelle validation scientifique.
 - `seed/sample-program.json`
 - `.env.example`
 
-Les documents V1/V2 se trouvent dans `docs/archive/` et ne sont pas chargés par
-défaut.
+V1 and V2 documents are located in `docs/archive/` and are not loaded by
+default.

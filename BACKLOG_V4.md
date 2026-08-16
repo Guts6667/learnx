@@ -1405,11 +1405,20 @@ l'activation de V4-010.**
 
 ## V4-009C — Moteur de rubrique exécutable et recherche de preuves Gemini
 
+Mise à jour du 15 août 2026 : le panel Gemini v2 est figé en NO-GO après une
+citation non exacte. Le screening Sonnet 5 termine 3/3 `VALID` sous le même
+protocole 1.3, mais l'identité `reasoning OFF` est non reproductible : le
+fournisseur a produit et facturé des tokens de raisonnement malgré l'omission
+du paramètre. Une nouvelle identité `PROVIDER_DEFAULT/UNSPECIFIED` et son panel
+10×2 sont préparés hors ligne ; Produit, Finance et propriétaire restent
+bloquants. Aucun holdout ou V4-002 n'est ouvert par cette préparation.
+
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
 
-**État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS
-`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY` — le
+**État au 15 août 2026 : SMOKE POSITIF 1.3.0 APPROUVÉ, GATE TROIS CAS V1
+`FAILED_INCONCLUSIVE_ORACLE_BOUNDARY`, GATE V2 `VALID`, PANEL 10×2
+`OFFLINE_READY_BLOCKED` — le
 smoke chercheur 1.1.0 s'est arrêté sur `MODEL_OUTPUT_TRUNCATED` et le smoke
 1.2.0 sur `EVIDENCE_RESEARCHER_SPAN_MISMATCH`. Aucun n'est un verdict
 pédagogique. Produit/pédagogie a arbitré une nouvelle identité où LearnX dérive
@@ -1472,10 +1481,27 @@ reste fermé.**
   discriminante du pseudo-oracle ; l'injection n'a pas été appelée. Ce NO-GO
   formel ne constitue pas un échec pédagogique démontré de Gemini. Le panel
   reste fermé.
+- Une nouvelle fixture négative v2 indique explicitement qu'aucune option n'est
+  choisie et qu'aucune recommandation n'est formulée, tout en conservant deux
+  faits exacts du dossier. Produit/pédagogie l'a approuvée hors ligne comme
+  pseudo-oracle synthétique non ambigu. Elle possède un corpus, une campagne et
+  une empreinte distincts. Après arbitrage et GO distincts, ses trois cas ont
+  terminé `VALID` : 27/27 statuts attendus, citations exactes, négatif
+  discriminé et injection sûre, sans retry ni fallback. Ce résultat autorise
+  seulement la préparation du panel 10×2. La nouvelle identité sépare désormais
+  `requestedRoute=google-vertex/global` de
+  `observedProvider=Google`, sans réécrire le champ historique ambigu.
+- Le panel 10×2 v2 est préenregistré hors ligne avec neuf cas stables du corpus
+  historique et le négatif atomique v2. Le cas frontière v1 est explicitement
+  exclu ; les deux sources et la sélection sont liées par SHA-256. Le runner
+  reste validate-only, `feature.enabled=false` et `networkCallsAllowed=false`.
 - La campagne 10×2 reste proposée, non autorisée : coût attendu `0,20 USD`,
-  plafond dur `0,50 USD`, 30 tentatives fournisseur maximum. Ces nombres ne
+  plafond dur `0,50 USD`, 28 tentatives fournisseur maximum. Ces nombres ne
   sont ni un prix produit ni une calibration économique et ne sont pas
-  transférés automatiquement au smoke 1.2.0.
+  transférés automatiquement au smoke 1.2.0. Le préflight calcule une borne de
+  `0,34545 USD` pour les 20 appels initiaux et `0,518175 USD` pour 30
+  tentatives ; sous le hard cap proposé, 28 tentatives seulement sont garanties
+  au pire cas. Finance doit arbitrer cette capacité de retry avant tout GO.
 - Après GO : exécuter 10 cas ×2 sans réutiliser les résultats historiques,
   produire ledger, sorties brutes, résumé et verdict append-only, puis arrêter
   immédiatement en cas d'échec du gate.

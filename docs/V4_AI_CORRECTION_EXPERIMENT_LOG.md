@@ -443,6 +443,76 @@ intent orphelin. Le panel 10×2 et le holdout restent fermés. Une éventuelle
 nouvelle fixture négative doit être authorée et revue sous une nouvelle
 identité.
 
+### Addendum append-only — fixture négative v2 du 15 août 2026
+
+Statut : `OFFLINE_READY / PRODUCT_APPROVED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Sans modifier le corpus ni le résultat du gate v1, une nouvelle fixture
+`writing-fr-no-choice-negative` a été authorée dans un corpus trois cas v2. Le
+texte déclare explicitement qu'aucune des deux dépenses n'est choisie et
+qu'aucune recommandation n'est formulée. Il conserve deux faits exacts du
+dossier, sans les relier à une préférence.
+
+Produit/pédagogie a approuvé indépendamment les statuts
+`identifiable-choice=NOT_DEMONSTRATED` et
+`explicit-recommendation=NOT_DEMONSTRATED`, ainsi que les niveaux serveur
+`insufficient/mastered/insufficient` et le score indicatif `40`. Cette revue
+valide uniquement le pseudo-oracle synthétique.
+
+Le nouveau corpus porte le SHA-256
+`6287785daa0396af14ce4358d1ce2cdfb57742b7912cdba2c4b18e8345366f03` et
+la campagne DRAFT le SHA-256
+`cafcf98a8d8961f658985cea58db42d9fe87303a5f96f96e30ecd1e1e3986652`.
+Le validate-only passe sans réseau. Finance et le propriétaire n'ont autorisé
+aucun appel sous cette identité ; le panel et le holdout restent fermés.
+
+### Addendum append-only — résultat du gate v2 du 15 août 2026
+
+Statut : `VALID / GO_PREPARE_PANEL_10X2_ONLY / FINANCE_RECONCILED_CLOSED`.
+
+Après GO propriétaire distinct, les trois cas ont terminé `VALID`, sans retry,
+fallback ni arrêt anticipé. Les 27 statuts correspondent au pseudo-oracle, les
+citations sont exactes et l'injection n'apparaît dans aucune preuve ou sortie.
+Le négatif v2 distingue correctement l'absence de choix tout en conservant la
+fidélité des faits.
+
+Finance réconcilie trois coûts réels pour `0,01157625 USD` au total sous le
+plafond de `0,055 USD`. Le state porte le SHA-256
+`c946e98d5450f4a3797682647212218cc06c10f90a50a7ddfad2439f2ee679cc` et
+le ledger `6b6beb5fc303dbd14452acc5b325e3eb59b7cf9d70941435b60fcba7d0c57e42`.
+
+Ce résultat autorise seulement la préparation du panel 10×2. Son exécution,
+le holdout, la promotion et V4-002 restent fermés. Avant toute nouvelle
+enveloppe, l'observabilité doit distinguer la route demandée
+`google-vertex/global` de l'étiquette fournisseur observée `Google` ; le champ
+historique `providerRoute` mélange aujourd'hui ces deux notions.
+
+### Addendum append-only — préparation du panel 10×2 v2 du 15 août 2026
+
+Statut : `OFFLINE_READY / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Les futurs artefacts séparent désormais `requestedRoute` et
+`observedProvider`. Le champ `providerRoute` est conservé uniquement pour la
+lecture des campagnes historiques ; aucun ancien résultat n'est réécrit.
+
+Le panel v2 sélectionne dix cas synthétiques immuables : neuf cas stables du
+corpus v1 et le négatif atomique v2. Le pseudo-oracle inconclusif
+`writing-fr-decision-mutation` est explicitement exclu. Le manifeste de
+sélection porte le SHA-256
+`d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd`.
+
+La campagne `learnx-writing-fr-gemini-evidence-researcher-panel-v2` porte le
+SHA-256 `dc4afaa7fc3db733970c7a1b88c59eb7a1672583e8cc6e43d2c5527787848022`.
+Elle fixe 10 cas ×2, zéro résultat historique réutilisé, Gemini 3.6 Flash
+snapshoté, route unique `google-vertex/global`, prompt/protocole 1.3.0, profil
+minimal, fallback interdit, holdout interdit et feature réseau désactivée.
+
+Le budget reste une proposition non autorisée : attendu `0,20 USD`, plafond
+`0,50 USD`, 28 tentatives maximum après arbitrage Finance. Le préflight réel calcule `0,34545 USD`
+pour les 20 appels initiaux et `0,48363 USD` pour 28 tentatives. Les 28
+tentatives pessimistes tiennent sous le plafond. Finance doit arbitrer ce point
+avant un éventuel GO propriétaire. Aucun appel n'a été effectué.
+
 ## 6. Documentation à enrichir après chaque gate
 
 Après chaque campagne, mettre à jour sans supprimer l'historique :
@@ -456,3 +526,96 @@ Après chaque campagne, mettre à jour sans supprimer l'historique :
 
 Le holdout scellé ne doit jamais servir au choix du prompt, du modèle ou des
 seuils. Il ne s'ouvre qu'après un GO complet sur le corpus de développement.
+
+### 2026-08-15 — Panel evidence researcher v2 arrêté sur preuve non exacte
+
+Statut : `NO_GO / FINANCE_RECONCILED_CLOSED / NO_RETRY`.
+
+Le panel v2 `dc4afaa7…8022` a exécuté 11 appels séquentiels. Dix workflows ont
+été validés, puis `writing-fr-evidence-mutation:1` a été rejeté avec
+`INVALID_QUOTE_NOT_FOUND`. Le raw borné montre une substitution réelle dans la
+citation (`two` au lieu de `deux`) ainsi que plusieurs statuts en désaccord avec
+le pseudo-oracle. Le résolveur exact a donc fonctionné comme prévu et la
+campagne s'est arrêtée sans retry ni fallback avant les 9 workflows restants.
+
+Coût réel total : `0,04345875 USD`. Finance a réconcilié 11 intents avec 11
+outcomes, sans coût orphelin, et a fermé l'enveloppe. Ce résultat ne peut pas
+être complété ni requalifié par le reliquat budgétaire.
+
+### 2026-08-15 — Screening Sonnet 5 préparé hors ligne
+
+Statut : `DRAFT_BLOCKED / FINANCE_NOT_ARBITRATED / NO_MODEL_CALL`.
+
+Après le NO-GO Gemini, un second candidat est préenregistré sans modifier la
+rubrique, le corpus trois cas ni le protocole exact 1.3. L'identité
+`learnx-writing-fr-sonnet-5-evidence-researcher-three-case-v1` épingle
+`anthropic/claude-sonnet-5-20260630` sur la route fournisseur directe
+`Anthropic` (tag catalogue `anthropic`), sans
+reasoning, température, fallback ou retry. Le manifeste porte le SHA-256
+`27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a`.
+
+Le catalogue confirme structured outputs et response format. Le préflight
+calcule `0,046012 USD` par appel et `0,138036 USD` pour trois appels ; le hard
+cap `0,15 USD` reste une proposition soumise à Finance. Aucun appel n'a été
+effectué.
+
+### 2026-08-15 — Screening Sonnet 5 exécuté et identité qualifiée
+
+Statut : `SCREENING_VALID / FINANCE_RECONCILED_CLOSED / IDENTITY_FINDING`.
+
+Le run `2026-08-15T19-28-46-464Z` termine `3/3` workflows `VALID`, avec
+`27/27` statuts conformes, `17` citations exactes, le négatif correctement
+discriminé et l'injection ignorée sans fuite. Aucun retry, fallback, error ou
+raw tronqué n'est observé. Produit autorise uniquement la préparation hors
+ligne de la suite.
+
+Finance réconcilie `0,072626 USD` pour `11 498` tokens d'entrée, `2 828`
+tokens de raisonnement et `2 135` tokens de sortie visible. Le payload omettait
+`reasoning`, mais des tokens de raisonnement ont été produits et facturés : le
+run ne peut donc pas être présenté comme preuve d'un profil `reasoning OFF`.
+Une suite éventuelle exige une nouvelle identité explicite, un nouveau budget
+et un nouveau GO. Le reliquat de cette enveloppe est annulé.
+
+### 2026-08-15 — Panel Sonnet 5 10×2 préparé hors ligne
+
+Statut : `DRAFT_BLOCKED / PRODUCT_AND_FINANCE_NOT_ARBITRATED / NO_MODEL_CALL`.
+
+La nouvelle campagne
+`learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1` décrit explicitement
+le raisonnement comme `PROVIDER_DEFAULT/UNSPECIFIED`. Le transport omet toujours
+le paramètre, mais l'identité ne prétend plus le désactiver. Prompt, protocole,
+rubrique et sélection sémantique restent inchangés.
+
+Le manifeste porte le SHA-256
+`c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7`.
+Il préenregistre 10 cas ×2, dont mutations de preuve, raisonnement,
+contradiction et deux injections, sans retry ni fallback. Le coût attendu est
+`0,50 USD`; le préflight borne 20 appels à `0,9212 USD` sous un hard cap proposé
+de `0,95 USD`. Les six cas critiques exigent désormais `100 %` d'accord
+atomique afin qu'une confusion de polarité ne puisse pas être compensée par le
+score global. Aucun appel n'a été effectué.
+
+### 2026-08-15 — Panel Sonnet 5 arrêté sur absence de sortie visible
+
+Statut : `PANEL_NO_GO_TECHNICAL / FINANCE_RECONCILED_CLOSED / NO_REPLAY`.
+
+Le run `2026-08-15T19-51-17-229Z` a exécuté onze appels avant l'arrêt
+préenregistré. Les dix premiers workflows, couvrant cinq cas en double, sont
+`VALID`, concordent à `100 %` avec le pseudo-oracle et présentent une
+variabilité nulle. Le onzième appel, sur `writing-fr-evidence-mutation`, a
+consommé `2 500` tokens de raisonnement et produit `0` token visible. Il ne
+permet donc aucune évaluation pédagogique du cas, et les neuf cellules
+suivantes n'ont pas été appelées.
+
+Le runner a persisté le code trompeur
+`RAW_MODEL_OUTPUT_PERSISTENCE_FAILED` parce qu'il confondait l'absence de raw
+avec un échec d'écriture. L'espace disque était disponible et le coût ainsi que
+le request id sont réconciliés. La cause certaine à publier reste « aucune
+sortie modèle visible » ; le finish reason amont n'ayant pas été conservé, le
+run historique ne doit pas être requalifié rétroactivement en troncature.
+
+Finance clôture `11` intents et `11` outcomes sans orphelin pour un coût R&D de
+`0,287208 USD`, dont `0,032642 USD` pour l'appel inutilisable, sous le plafond
+de `0,95 USD`. Aucun retry, fallback, resume, panel complémentaire ou holdout
+n'est autorisé. Ce résultat invalide le requestProfile courant pour ce panel,
+mais ne constitue pas un verdict pédagogique négatif sur Sonnet 5.

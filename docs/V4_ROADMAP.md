@@ -60,10 +60,21 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   Le pseudo-oracle n'était pas assez discriminant pour départager un choix
   implicite ; ce NO-GO formel n'est pas un échec pédagogique démontré du
   modèle. L'injection n'a pas été appelée.
-- Prochain gate possible : authorer et revoir une fixture négative non ambiguë
-  sous une nouvelle identité. Aucun appel ni panel n'est actuellement autorisé.
-- Gate suivant si succès : panel 10 × 2, puis verdict autonome. Le panel, le
-  falsificateur et le holdout restent fermés jusque-là.
+- Gate v2 réussi : trois sorties valides, négatif correctement discriminé et
+  injection sûre. Il autorise seulement la préparation du panel 10×2 ; aucune
+  nouvelle dépense n'est autorisée.
+- Préparation 10×2 terminée hors ligne : route demandée et fournisseur observé
+  sont séparés, la sélection v2 remplace le seul pseudo-oracle inconclusif sans
+  réécrire les corpus historiques, et le runner reste validate-only. Le
+  panel v2 clos après 10 workflows valides puis une citation non exacte ; aucun
+  appel supplémentaire ni V4-002 avant nouvel arbitrage
+  pessimistes ; Finance doit arbitrer cet écart avant tout GO.
+- Panel Sonnet 5 : arrêté au 11e appel après 10 workflows valides et stables ;
+  le profil par défaut a produit 2 500 tokens de raisonnement et aucune sortie
+  visible sur le premier cas de mutation. Campagne close, sans reprise.
+- Gate suivant : corriger hors ligne la taxonomie d'erreur, puis définir sous
+  une nouvelle identité un profil séparant réellement le budget de raisonnement
+  de la sortie visible. Le holdout et V4-002 restent fermés jusque-là.
 
 ### Gate B — premier contrat publiable
 
@@ -117,7 +128,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Smoke positif ; gate 3 cas NO-GO sur frontière de pseudo-oracle, sans faute modèle démontrée. | Nouvelle fixture négative et nouvelle identité si la recherche reprend ; panel fermé. |
+| V4-009C | `ACTIF` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3 puis son panel s'arrête techniquement au 11e appel, sans verdict pédagogique négatif. Aucune promotion. | Corriger l'observabilité et préparer un profil Sonnet borné sous une nouvelle identité avant tout nouvel appel. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

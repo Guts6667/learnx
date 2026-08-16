@@ -246,8 +246,13 @@ const benchmarkCandidateSchema = z
         reasoning: z
           .object({
             budgetTokens: z.number().int().positive().nullable(),
-            budgetMode: z.enum(['OFF', 'EXPLICIT_MAX', 'EFFORT_ONLY']),
-            effort: z.enum(['OFF', 'MINIMAL', 'LOW']),
+            budgetMode: z.enum([
+              'OFF',
+              'EXPLICIT_MAX',
+              'EFFORT_ONLY',
+              'PROVIDER_DEFAULT',
+            ]),
+            effort: z.enum(['OFF', 'MINIMAL', 'LOW', 'PROVIDER_DEFAULT']),
           })
           .strict(),
         totalOutputTokenLimit: z.number().int().positive(),
@@ -345,7 +350,8 @@ export const correctionBenchmarkConfigurationSchema = z
         });
       }
       if (
-        candidate.requestProfile.reasoning.effort === 'OFF' &&
+        (candidate.requestProfile.reasoning.effort === 'OFF' ||
+          candidate.requestProfile.reasoning.effort === 'PROVIDER_DEFAULT') &&
         candidate.requestProfile.reasoning.budgetTokens !== null
       ) {
         context.addIssue({
@@ -368,8 +374,23 @@ export const correctionBenchmarkConfigurationSchema = z
         });
       }
       if (
+        candidate.requestProfile.reasoning.budgetMode === 'PROVIDER_DEFAULT' &&
+        (candidate.requestProfile.reasoning.effort !== 'PROVIDER_DEFAULT' ||
+          candidate.requestProfile.reasoning.budgetTokens !== null ||
+          candidate.requestProfile.totalOutputTokenLimit <
+            candidate.requestProfile.visibleOutputTokenTarget)
+      ) {
+        context.addIssue({
+          code: 'custom',
+          message:
+            'Provider-default reasoning must omit an explicit budget and preserve bounded total capacity.',
+          path: ['candidates', index, 'requestProfile', 'reasoning'],
+        });
+      }
+      if (
         candidate.requestProfile.reasoning.budgetMode === 'EXPLICIT_MAX' &&
         (candidate.requestProfile.reasoning.effort === 'OFF' ||
+          candidate.requestProfile.reasoning.effort === 'PROVIDER_DEFAULT' ||
           candidate.requestProfile.reasoning.budgetTokens === null ||
           candidate.requestProfile.totalOutputTokenLimit !==
             candidate.requestProfile.visibleOutputTokenTarget +
@@ -385,6 +406,7 @@ export const correctionBenchmarkConfigurationSchema = z
       if (
         candidate.requestProfile.reasoning.budgetMode === 'EFFORT_ONLY' &&
         (candidate.requestProfile.reasoning.effort === 'OFF' ||
+          candidate.requestProfile.reasoning.effort === 'PROVIDER_DEFAULT' ||
           candidate.requestProfile.reasoning.budgetTokens !== null ||
           candidate.requestProfile.totalOutputTokenLimit <
             candidate.requestProfile.visibleOutputTokenTarget)
@@ -826,7 +848,7 @@ export function buildBenchmarkOptionalRequestParameters(
     ...(candidate.requestProfile.temperature === null
       ? {}
       : { temperature: candidate.requestProfile.temperature }),
-    ...(reasoningEffort === 'OFF'
+    ...(reasoningEffort === 'OFF' || reasoningEffort === 'PROVIDER_DEFAULT'
       ? {}
       : {
           reasoning: {

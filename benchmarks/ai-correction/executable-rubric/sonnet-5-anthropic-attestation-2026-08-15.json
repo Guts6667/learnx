@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "source": "https://openrouter.ai/api/v1/models/anthropic/claude-sonnet-5/endpoints",
+  "observedAt": "2026-08-15T19:15:00+02:00",
+  "modelId": "anthropic/claude-sonnet-5",
+  "modelSnapshot": "anthropic/claude-sonnet-5-20260630",
+  "providerName": "Anthropic",
+  "routeTag": "anthropic",
+  "routeProviderName": "Anthropic",
+  "status": 0,
+  "contextLength": 1000000,
+  "maxCompletionTokens": 128000,
+  "pricing": {
+    "promptUsdPerToken": 0.000002,
+    "completionUsdPerToken": 0.00001,
+    "inputCacheReadUsdPerToken": 0.0000002,
+    "inputCacheWriteUsdPerToken": 0.0000025
+  },
+  "supportedParameters": [
+    "max_tokens",
+    "stop",
+    "reasoning",
+    "include_reasoning",
+    "tools",
+    "tool_choice",
+    "structured_outputs",
+    "response_format",
+    "verbosity",
+    "reasoning_effort"
+  ],
+  "automaticRoutingAllowed": false,
+  "fallbackAllowed": false,
+  "selectionRationale": "Direct Anthropic route supports strict structured outputs and omits temperature; the candidate is screened under the unchanged evidence researcher 1.3 protocol.",
+  "warning": "Read-only catalog snapshot for a bounded R&D gate; it is not a production activation or price guarantee."
+}

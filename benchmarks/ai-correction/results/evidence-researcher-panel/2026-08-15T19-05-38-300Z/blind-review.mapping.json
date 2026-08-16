@@ -1,0 +1,646 @@
+{
+  "entries": [
+    {
+      "actualCostUsd": 0.0041025,
+      "caseId": "writing-fr-base-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seulement 9 personnes ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six participants partageaient trois ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires.",
+            "Ajouter du matériel traite donc le frein observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "Ajouter du matériel traite donc le frein observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 1,
+      "reviewId": "fc252864470d4047"
+    },
+    {
+      "actualCostUsd": 0.0041025,
+      "caseId": "writing-fr-base-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seulement 9 personnes ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six participants partageaient trois ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter deux ordinateurs supplémentaires.",
+            "Ajouter du matériel traite donc le frein observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "Ajouter du matériel traite donc le frein observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 2,
+      "reviewId": "72143b3ad6e07084"
+    },
+    {
+      "actualCostUsd": 0.00405075,
+      "caseId": "writing-fr-paraphrase-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "9 participants seulement ont achevé l’activité"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes devaient se répartir trois machines"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes.",
+            "Puisque l’obstacle constaté est l’accès au matériel"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 1,
+      "reviewId": "90dc1769de2d8d2f"
+    },
+    {
+      "actualCostUsd": 0.00408825,
+      "caseId": "writing-fr-paraphrase-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "9 participants seulement ont achevé l’activité"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes devaient se répartir trois machines"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Le meilleur usage du budget serait l’acquisition de deux postes.",
+            "Puisque l’obstacle constaté est l’accès au matériel"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "augmenter les créneaux sans augmenter l’équipement ne le supprimerait pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 2,
+      "reviewId": "1d9a7c9145c7b213"
+    },
+    {
+      "actualCostUsd": 0.00392175,
+      "caseId": "writing-fr-concise-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seules 9 sur 20 ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes partageaient trois postes"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs",
+            "Le matériel répond directement au blocage constaté"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "un créneau sans matériel ne le ferait pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 1,
+      "reviewId": "b4c10d63febe7ff8"
+    },
+    {
+      "actualCostUsd": 0.0039105,
+      "caseId": "writing-fr-concise-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seules 9 sur 20 ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes partageaient trois postes"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Achetons les deux ordinateurs",
+            "Le matériel répond directement au blocage constaté"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "un créneau sans matériel ne le ferait pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 2,
+      "reviewId": "2f1bee9aae5ec40b"
+    },
+    {
+      "actualCostUsd": 0.004029,
+      "caseId": "writing-fr-typos-unicode-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seulment 9 personnes sur 20 ont fini"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "6 participant·es partageaient 3 postes"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs.",
+            "regler le manque de materiel répond au problème observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "ouvrir un créneau sans postes ne le règle pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 1,
+      "reviewId": "c9ce4fd2a5aeb82c"
+    },
+    {
+      "actualCostUsd": 0.0040515,
+      "caseId": "writing-fr-typos-unicode-mastered",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs."
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seulment 9 personnes sur 20 ont fini"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "6 participant·es partageaient 3 postes"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [
+            "Je recommande d’acheter les 2 ordinateurs.",
+            "regler le manque de materiel répond au problème observé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [
+            "ouvrir un créneau sans postes ne le règle pas"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 2,
+      "reviewId": "8b240e1f94b0eb9a"
+    },
+    {
+      "actualCostUsd": 0.0035715,
+      "caseId": "writing-fr-no-choice-negative",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seules 9 personnes sur 20 ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes partageaient trois ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 1,
+      "reviewId": "9eb74314ab31fbdc"
+    },
+    {
+      "actualCostUsd": 0.003639,
+      "caseId": "writing-fr-no-choice-negative",
+      "expectedElements": [
+        {
+          "elementKey": "identifiable-choice",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "explicit-recommendation",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "unresolved-position-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "relevant-scenario-fact",
+          "evidenceQuotes": [
+            "seules 9 personnes sur 20 ont terminé"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "precise-scenario-fact",
+          "evidenceQuotes": [
+            "six personnes partageaient trois ordinateurs"
+          ],
+          "status": "SUPPORTED"
+        },
+        {
+          "elementKey": "material-fact-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "decision-evidence-relation",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "explicit-justification",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        },
+        {
+          "elementKey": "material-reasoning-contradiction",
+          "evidenceQuotes": [],
+          "status": "NOT_DEMONSTRATED"
+        }
+      ],
+      "repetition": 2,
+      "reviewId": "fc111a89c2eece9e"
+    }
+  ]
+}

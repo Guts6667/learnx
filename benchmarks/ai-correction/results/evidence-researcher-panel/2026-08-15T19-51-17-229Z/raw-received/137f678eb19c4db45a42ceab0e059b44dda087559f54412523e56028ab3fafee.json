@@ -1,0 +1,25 @@
+{
+  "attemptNumber": 1,
+  "campaignFingerprint": "c751223f393c357316aef972f07cf9104d19437e7144e53d4cf3eea28e85b4b7",
+  "caseId": "writing-fr-typos-unicode-mastered",
+  "cellKey": "writing-fr-typos-unicode-mastered:2",
+  "idempotencyKey": "137f678eb19c4db45a42ceab0e059b44dda087559f54412523e56028ab3fafee",
+  "modelSnapshot": "anthropic/claude-sonnet-5",
+  "observedProvider": "Anthropic",
+  "providerRequestId": "gen-1786823574-ZoJyrQey49phZh5G5IyT",
+  "providerRoute": "Anthropic",
+  "repetition": 2,
+  "requestedRoute": "Anthropic",
+  "rawModelOutput": "{\"elements\":[{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"identifiable-choice\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.95,\"contradictions\":[],\"elementKey\":\"explicit-recommendation\",\"evidenceQuotes\":[\"Je recommande d’acheter les 2 ordinateurs.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"unresolved-position-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"relevant-scenario-fact\",\"evidenceQuotes\":[\"Samedi etait complet, mais seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"precise-scenario-fact\",\"evidenceQuotes\":[\"seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-fact-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"decision-evidence-relation\",\"evidenceQuotes\":[\"mais seulment 9 personnes sur 20 ont fini car 6 participant·es partageaient 3 postes\",\"Donc, regler le manque de materiel répond au problème observé\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.85,\"contradictions\":[],\"elementKey\":\"explicit-justification\",\"evidenceQuotes\":[\"regler le manque de materiel répond au problème observé ; ouvrir un créneau sans postes ne le règle pas.\"],\"status\":\"SUPPORTED\"},{\"confidence\":0.9,\"contradictions\":[],\"elementKey\":\"material-reasoning-contradiction\",\"evidenceQuotes\":[],\"status\":\"NOT_DEMONSTRATED\"}]}",
+  "rawModelOutputSha256": "9576bd17e912d9dade0cd34bac5bf0baef9f4b293df21d6935737dddc3676e5d",
+  "rawModelOutputTruncated": false,
+  "receivedAt": "2026-08-15T19:53:09.679Z",
+  "schemaVersion": 1,
+  "usage": {
+    "actualCostUsd": 0.028658,
+    "costSource": "ACTUAL",
+    "inputTokens": 3834,
+    "reasoningTokens": 1318,
+    "visibleOutputTokens": 781
+  }
+}

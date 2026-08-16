@@ -1,0 +1,7 @@
+{
+  "campaignSha256": "27789a6643f39a6fbfbede5244baec6214fe62fc268db4051cb8a930c72aa27a",
+  "catalogAttestationSha256": "c30f95888e9774842262743593fca498a97c6cd335ad287e918da7b9eee350a3",
+  "ledgerFinalRecordHash": "e8e93aed934346e63e468d73a30cd473f3dcc55f1e2b1dc45ec9799c23672b29",
+  "ledgerSha256": "ff7e2d6b5420b6e7fe6b5435e10fd8a7780b8c780bc08d1d821ad0a109f01cea",
+  "stateSha256": "36294a8fec3a5c30f8b79efda2bef7f57e11ef4c6ab5cf82d014d5e59755484a"
+}
