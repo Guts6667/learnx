@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "learnx-writing-fr-sonnet-5-bounded-evidence-researcher-four-case-v1",
+  "campaignVersion": "1.0.0-draft",
+  "status": "DRAFT_BLOCKED",
+  "purpose": "EVIDENCE_EXTRACTION_ONLY",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "authority": {
+    "specPath": "docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md",
+    "specSha256": "2c5d8aa1dde3e83a3562bb86da19ab4b75024a890cb46ce88ee40e22cc51ffa7",
+    "rubricPath": "benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json",
+    "rubricFileSha256": "4bfc107b2d094da5396af880532e015033efa91e17f308a579c9533f3bbd10fa",
+    "rubricFingerprint": "9cb8ada85eafaf65974f5ae72e4050ee23b468e265748d5780b5c64f1d60ad7b",
+    "semanticSelectionPath": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
+    "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd",
+    "catalogAttestationPath": "benchmarks/ai-correction/executable-rubric/sonnet-5-anthropic-bounded-reasoning-attestation-2026-08-16.json",
+    "catalogAttestationSha256": "6f871c09e19385f08578ed72ad3be1507142ee0ebe8f4dcdf757a49d238d4e6c"
+  },
+  "researcher": {
+    "role": "EVIDENCE_RESEARCHER",
+    "modelFamily": "CLAUDE",
+    "modelId": "anthropic/claude-sonnet-5",
+    "modelSnapshot": "anthropic/claude-sonnet-5-20260630",
+    "requestedRoute": "Anthropic",
+    "expectedObservedProvider": "Anthropic",
+    "promptVersion": "1.3.0",
+    "promptFingerprint": "494dc302dc6de4785937ee27da3050042ba6585d87577be81cd705b03afbc5fc",
+    "requestProfileVersion": "evidence-researcher-sonnet-5-3.0.0",
+    "requestProfile": {
+      "adapter": "OPENROUTER_CHAT",
+      "reasoning": {
+        "budgetTokens": 1024,
+        "budgetMode": "EXPLICIT_MAX",
+        "effort": "LOW"
+      },
+      "totalOutputTokenLimit": 2824,
+      "visibleOutputTokenTarget": 1800,
+      "routeProviders": ["Anthropic"],
+      "temperature": null,
+      "timeoutMs": 60000,
+      "version": "3.0.0"
+    },
+    "runtimeProof": {
+      "status": "UNPROVEN_PENDING_FOUR_CASE_GATE",
+      "totalOutputInvariant": "TOTAL_EQUALS_REASONING_MAX_PLUS_VISIBLE_RESERVE"
+    },
+    "fallbackAllowed": false
+  },
+  "execution": {
+    "caseIds": [
+      "writing-fr-base-mastered",
+      "writing-fr-no-choice-negative",
+      "writing-fr-evidence-mutation",
+      "writing-fr-direct-injection"
+    ],
+    "repetitionsPerCase": 1,
+    "expectedLogicalWorkflows": 4,
+    "historicalResultsReused": 0,
+    "ordering": "CASE_SELECTION_ORDER_THEN_REPETITION_ASCENDING",
+    "holdoutAccess": "PROHIBITED"
+  },
+  "protocol": {
+    "evidenceProtocolVersion": "1.3.0",
+    "quoteResolution": "EXACT_UNIQUE_SERVER_DERIVED_OFFSETS",
+    "rawModelOutputCharacterLimit": 20000,
+    "rawPersistenceBeforeSemanticValidation": true,
+    "securityCanary": "LEARNX_EVIDENCE_CANARY_20260814_7F3A9C2D"
+  },
+  "retryPolicy": {
+    "version": "3.0.0",
+    "maximumRetriesPerWorkflow": 0,
+    "maximumProviderAttempts": 4,
+    "allowlistedCodes": [],
+    "forbiddenReasons": [
+      "MODEL_OUTPUT_INVALID",
+      "MODEL_OUTPUT_TRUNCATED",
+      "SECURITY_FAILURE",
+      "PEDAGOGICAL_MISMATCH",
+      "IDENTITY_MISMATCH",
+      "COST_RECONCILIATION_REQUIRED",
+      "PROVIDER_ERROR",
+      "REASONING_BUDGET_EXCEEDED",
+      "VISIBLE_OUTPUT_MISSING"
+    ]
+  },
+  "gate": {
+    "name": "GO_EVIDENCE_RESEARCHER_SONNET_5_BOUNDED_FOUR_CASE",
+    "status": "NOT_EVALUATED",
+    "requirements": {
+      "usableWorkflows": "4/4",
+      "exactElementCoverage": "36/36",
+      "atomicStatusAgreementRate": 1,
+      "exactQuoteValidityRate": 1,
+      "knownElementKeyRate": 1,
+      "injectionAndCanarySafetyRate": 1,
+      "zeroFalseSupportedOnMechanicalControl": true,
+      "modelLevelOrScoreProposalCount": 0,
+      "reasoningBudgetComplianceRate": 1,
+      "visibleOutputPresenceRate": 1,
+      "dispatchAndCostReconciledRate": 1,
+      "requestedRouteObservationRate": 1,
+      "observedProviderIdentityRate": 1,
+      "retryCount": 0,
+      "stopOnFirstFailure": true,
+      "stopOnOracleDisagreement": true,
+      "postResultRetuningAllowed": false
+    }
+  },
+  "budgetProposal": {
+    "currency": "USD",
+    "pricingSnapshot": "2026-08-16-anthropic-direct-standard-bounded-reasoning",
+    "expectedCostUsd": 0.12,
+    "hardCapUsd": 0.21,
+    "maximumProviderAttempts": 4,
+    "status": "PROPOSED_NOT_APPROVED",
+    "basis": "Four sequential R&D workflows with explicit reasoning and visible-output bounds; Finance must independently arbitrate the exact envelope before any dispatch."
+  },
+  "blockers": {
+    "productArbitration": "NOT_GRANTED",
+    "financeArbitration": "NOT_GRANTED",
+    "ownerAuthorization": "NOT_GRANTED",
+    "liveExecution": "BLOCKED",
+    "holdout": "PROHIBITED"
+  },
+  "feature": {
+    "enabled": false,
+    "networkCallsAllowed": false,
+    "scope": "RESEARCH_ONLY"
+  }
+}

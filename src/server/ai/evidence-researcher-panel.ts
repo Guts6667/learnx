@@ -145,7 +145,10 @@ const sha256 = (value: string): string =>
 
 function appendLedger(
   ledger: EvidenceResearcherPanelLedgerEvent[],
-  event: Omit<EvidenceResearcherPanelLedgerEvent, 'previousHash' | 'recordHash'>,
+  event: Omit<
+    EvidenceResearcherPanelLedgerEvent,
+    'previousHash' | 'recordHash'
+  >,
 ): void {
   const previousHash = ledger.at(-1)?.recordHash ?? null;
   const record = { ...event, previousHash };
@@ -211,7 +214,9 @@ function oracleAgreement(input: {
   );
 }
 
-function expectedCells(campaign: EvidenceResearcherExecutionCampaign): string[] {
+function expectedCells(
+  campaign: EvidenceResearcherExecutionCampaign,
+): string[] {
   return campaign.execution.caseIds.flatMap((caseId) =>
     Array.from(
       { length: campaign.execution.repetitionsPerCase },
@@ -299,6 +304,7 @@ export async function runEvidenceResearcherPanel(input: {
     ledger: EvidenceResearcherPanelLedgerEvent[];
     state: EvidenceResearcherPanelState;
   };
+  stopOnOracleDisagreement?: boolean;
 }): Promise<{
   ledger: EvidenceResearcherPanelLedgerEvent[];
   state: EvidenceResearcherPanelState;
@@ -318,7 +324,12 @@ export async function runEvidenceResearcherPanel(input: {
     },
   );
   const ledger = structuredClone(input.resume?.ledger ?? []);
-  assertResumeIntegrity({ campaignFingerprint, expectedCellKeys, ledger, state });
+  assertResumeIntegrity({
+    campaignFingerprint,
+    expectedCellKeys,
+    ledger,
+    state,
+  });
   const persist = async () => {
     state.updatedAt = new Date().toISOString();
     await input.onProgress?.({
@@ -341,7 +352,9 @@ export async function runEvidenceResearcherPanel(input: {
     const separator = cellKey.lastIndexOf(':');
     const caseId = cellKey.slice(0, separator);
     const repetition = Number(cellKey.slice(separator + 1));
-    const caseItem = input.corpus.cases.find((entry) => entry.caseId === caseId);
+    const caseItem = input.corpus.cases.find(
+      (entry) => entry.caseId === caseId,
+    );
     if (!caseItem) throw new Error('EVIDENCE_RESEARCHER_PANEL_CASE_NOT_FOUND');
     const prompt = buildEvidenceResearcherPrompt({
       canary: input.campaign.protocol.securityCanary,
@@ -354,16 +367,22 @@ export async function runEvidenceResearcherPanel(input: {
       completionUsdPerToken: input.completionUsdPerToken,
       maximumPromptUtf8Bytes: Buffer.byteLength(prompt),
       maximumProviderAttempts: 1,
-      outputTokenLimit: input.campaign.researcher.requestProfile.totalOutputTokenLimit,
+      outputTokenLimit:
+        input.campaign.researcher.requestProfile.totalOutputTokenLimit,
       promptUsdPerToken: input.promptUsdPerToken,
       schemaUtf8Bytes,
       transportAllowanceTokens: 2_048,
     });
     let attemptNumber =
-      state.attempts.filter((attempt) => attempt.cellKey === cellKey).length + 1;
-    while (attemptNumber <= input.campaign.retryPolicy.maximumRetriesPerWorkflow + 1) {
+      state.attempts.filter((attempt) => attempt.cellKey === cellKey).length +
+      1;
+    while (
+      attemptNumber <=
+      input.campaign.retryPolicy.maximumRetriesPerWorkflow + 1
+    ) {
       if (
-        state.attempts.length + 1 > input.campaign.retryPolicy.maximumProviderAttempts ||
+        state.attempts.length + 1 >
+          input.campaign.retryPolicy.maximumProviderAttempts ||
         actualCost() + costBound.maximumCostPerAttemptUsd >
           input.campaign.budgetProposal.hardCapUsd
       ) {
@@ -388,7 +407,9 @@ export async function runEvidenceResearcherPanel(input: {
         worstCaseAuthorizedUsd: costBound.maximumCostPerAttemptUsd,
       });
       await persist();
-      let result: Awaited<ReturnType<EvidenceResearcherPanelProvider['execute']>>;
+      let result: Awaited<
+        ReturnType<EvidenceResearcherPanelProvider['execute']>
+      >;
       try {
         result = await input.provider.execute({
           attemptNumber,
@@ -547,6 +568,11 @@ export async function runEvidenceResearcherPanel(input: {
       });
       if (status === 'VALID') {
         state.completedCellKeys.push(cellKey);
+        if (input.stopOnOracleDisagreement && agreement === false) {
+          state.stoppedReason = 'ORACLE_DISAGREEMENT';
+          await persist();
+          return { ledger, state };
+        }
         await persist();
         break;
       }

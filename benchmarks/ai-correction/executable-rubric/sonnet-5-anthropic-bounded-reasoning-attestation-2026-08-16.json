@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "source": "https://openrouter.ai/api/v1/models/anthropic/claude-sonnet-5/endpoints",
+  "reasoningSource": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+  "observedAt": "2026-08-16T07:12:24Z",
+  "modelId": "anthropic/claude-sonnet-5",
+  "modelSnapshot": "anthropic/claude-sonnet-5-20260630",
+  "providerName": "Anthropic",
+  "routeTag": "anthropic",
+  "routeProviderName": "Anthropic",
+  "status": 0,
+  "contextLength": 1000000,
+  "maxCompletionTokens": 128000,
+  "pricing": {
+    "promptUsdPerToken": 0.000002,
+    "completionUsdPerToken": 0.00001,
+    "inputCacheReadUsdPerToken": 0.0000002,
+    "inputCacheWriteUsdPerToken": 0.0000025
+  },
+  "supportedParameters": [
+    "max_tokens",
+    "stop",
+    "reasoning",
+    "include_reasoning",
+    "tools",
+    "tool_choice",
+    "structured_outputs",
+    "response_format",
+    "verbosity",
+    "reasoning_effort"
+  ],
+  "reasoningConfiguration": {
+    "budgetParameter": "reasoning.max_tokens",
+    "minimumBudgetTokens": 1024,
+    "requestedBudgetTokens": 1024,
+    "totalOutputTokenLimit": 2824,
+    "visibleOutputTokenReserve": 1800,
+    "invariant": "totalOutputTokenLimit=requestedBudgetTokens+visibleOutputTokenReserve",
+    "status": "OFFLINE_CAPABILITY_ATTESTED_RUNTIME_UNPROVEN"
+  },
+  "automaticRoutingAllowed": false,
+  "fallbackAllowed": false,
+  "selectionRationale": "The direct Anthropic route advertises reasoning.max_tokens, max_tokens, and strict structured outputs. LearnX reserves 1,024 completion tokens for reasoning and 1,800 for visible structured evidence output; the four-case gate must prove the runtime honors the bound.",
+  "warning": "Read-only catalog and documentation snapshot for a bounded R&D gate; it is not a production activation, runtime guarantee, or price guarantee."
+}

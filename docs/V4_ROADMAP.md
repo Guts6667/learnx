@@ -72,9 +72,11 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 - Panel Sonnet 5 : arrêté au 11e appel après 10 workflows valides et stables ;
   le profil par défaut a produit 2 500 tokens de raisonnement et aucune sortie
   visible sur le premier cas de mutation. Campagne close, sans reprise.
-- Gate suivant : corriger hors ligne la taxonomie d'erreur, puis définir sous
-  une nouvelle identité un profil séparant réellement le budget de raisonnement
-  de la sortie visible. Le holdout et V4-002 restent fermés jusque-là.
+- Gate suivant préparé hors ligne : une nouvelle identité fixe explicitement
+  1 024 tokens maximum de raisonnement et réserve 1 800 tokens de sortie
+  visible. Le gate frais couvre positif, négatif explicite, mutation critique
+  et injection ; Produit, Finance et propriétaire restent bloquants. Le
+  holdout et V4-002 restent fermés jusque-là.
 
 ### Gate B — premier contrat publiable
 
@@ -128,7 +130,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ACTIF` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3 puis son panel s'arrête techniquement au 11e appel, sans verdict pédagogique négatif. Aucune promotion. | Corriger l'observabilité et préparer un profil Sonnet borné sous une nouvelle identité avant tout nouvel appel. |
+| V4-009C | `ACTIF` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3 puis son panel s'arrête techniquement au 11e appel, sans verdict pédagogique négatif. Un profil Sonnet borné et son gate 4 cas sont prêts hors ligne, sans promotion. | Obtenir les arbitrages Produit/Finance puis un GO propriétaire distinct avant tout appel. |
 | V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |

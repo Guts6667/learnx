@@ -39,6 +39,7 @@
     "ai:gemini:panel:prepare": "node --import tsx scripts/prepare-v4-009c-gemini-panel.ts",
     "ai:gemini:panel": "node --import tsx scripts/run-v4-009c-gemini-panel.ts",
     "ai:evidence:panel:validate": "node --import tsx scripts/run-executable-rubric-gemini-panel.ts",
+    "ai:evidence:sonnet:gate:validate": "node --import tsx scripts/run-executable-rubric-sonnet5-bounded-gate.ts",
     "ai:evidence:sonnet:panel:validate": "node --import tsx scripts/run-executable-rubric-gemini-panel.ts --campaign=sonnet-5-evidence-researcher-panel.v1.json",
     "ai:evidence:screening:validate": "node --import tsx scripts/run-executable-rubric-sonnet5-screening.ts",
     "ai:evidence:smoke": "node --import tsx scripts/run-executable-rubric-gemini-smoke.ts",
