@@ -743,3 +743,43 @@ campagne, les deux manifestes quatre cas puis 10 × 2, le budget Finance et le G
 propriétaire ne sont pas attribués. V4-002 et V4-010 peuvent avancer hors ligne
 avec publication/live bloqués ; réseau, débit réel, falsificateur et holdout
 restent interdits.
+
+### 2026-08-16 — Campagne evidence-assist gelée hors ligne et promotion scindée
+
+Statut : `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL /
+FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED`.
+
+Sans réutiliser d'identifiant ou de résultat historique, la nouvelle identité
+est `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, empreinte
+`cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`.
+Elle fixe `OPENROUTER_CHAT`, modèle wire `anthropic/claude-sonnet-5`, route
+exacte `Anthropic`, fallback interdit, `reasoning.effort=none`, protocole/prompt
+`3.0.0`, validateur/segmenter `2.0.0` et coût `ACTUAL` obligatoire.
+
+Les deux étages sont gelés ensemble par le freeze set actif :
+
+- gate positif, négatif, mutation, injection :
+  `sonnet-5-evidence-assist-four-case.v1.json` ;
+- panel conditionnel 10 × 2 :
+  `sonnet-5-evidence-assist-panel-10x2.v1.json`.
+
+Leurs empreintes actives sont portées par
+`sonnet-5-evidence-assist-development-freeze-set.v1.json` et recopiées dans le
+manifeste de phase. La commande de préparation les régénère mécaniquement si le
+SHA d'une autorité documentaire change, sans modifier l'identité technique.
+
+Le runner importe réellement le protocole 3.0 hors tests, prépare quatre puis
+vingt contextes complets et reste fail-closed : `networkCallsAllowed=false` et
+`--execute` est refusé. Les enveloppes maximales calculées sont `0,251136 USD`
+pour quatre appels et `1,258760 USD` pour vingt ; elles restent
+`PROPOSED_NOT_APPROVED`. Aucun appel, coût réel, réservation ou autorisation
+n'est créé par cette préparation.
+
+La politique `evidence-assist-promotion-policy.v1.json` ferme l'ambiguïté
+terminale. `GO_TO_SEALED_HOLDOUT` exige `4/4` puis `20/20`
+mais garde `pipelinePromoted=false`. Après autorisation one-shot, seul un
+holdout autonome qualifié d'au moins 24 cas, scellé avant ouverture et réussi
+selon les seuils préenregistrés peut produire `GO_AUTONOMOUS_FORMATIVE`. Cet
+artefact, après autorisation de promotion, porte explicitement la mutation
+`eligibility.pipelinePromoted: false → true`. Aucun de ces deux artefacts n'est
+encore émis.

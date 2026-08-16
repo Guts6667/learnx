@@ -94,8 +94,10 @@ ou utiliser `humanReviewApproved` comme autorité. Le manifeste canonique de la
 phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json`. Le manifeste sans
 suffixe reste l'autorité historique épinglée par les campagnes closes.
 
-- `GO_TO_SEALED_HOLDOUT` est le gate préalable d'ouverture one-shot après le
-  corpus complet ; il ne promeut rien. Le gate final de promotion devient
+- `GO_TO_SEALED_HOLDOUT` est le gate préalable à la préparation et au scellement
+  après le corpus complet ; il conserve `pipelinePromoted=false` et ne vaut ni
+  ouverture ni promotion. Une autorisation propriétaire distincte permet
+  l'ouverture one-shot. Le gate final de promotion devient
   `GO_AUTONOMOUS_FORMATIVE` après succès du holdout : oracle autonome scellé,
   cas déterministes, métamorphismes, sécurité et citations exactes, variabilité
   bornée et abstention obligatoire.
@@ -172,10 +174,11 @@ raws et règles d'arrêt restent immuables et append-only.
   de la route exacte. Une omission du paramètre ne vaut jamais désactivation.
   L'attestation route-specific du 16 août prouve hors ligne
   `reasoning: { effort: "none" }`. Le statut devient
-  `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` : le préflight reste bloqué
-  faute d'identité de campagne, budget Finance et GO propriétaire.
-- Aucun identifiant de campagne, profil de requête ou gate n'est encore
-  attribué. Aucun identifiant ne doit être inventé dans la documentation.
+  `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` : le préflight reste bloqué faute
+  d'arbitrage du budget Finance et de GO propriétaire.
+- L'identité `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, le profil
+  de requête et les deux gates sont attribués et gelés hors ligne. Toute
+  modification versionne l'identité et recommence au gate quatre cas.
 - Les quatre cas positif, négatif, mutation et injection sont le premier gate.
   Le panel 10 cas × 2 n'est exécuté que si le gate fait `4/4`. Les deux étages,
   leurs seuils et leurs règles d'arrêt sont gelés ensemble avant le premier
@@ -214,12 +217,15 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 ### Maintenant — fermer la preuve autonome
 
 1. Conserver le segmenter, le contexte de requête, le raw provider, le schéma
-   evidence-assist et l'attestation de capacité sous tests fail-closed.
-2. Attribuer une identité immuable, puis geler ensemble le gate quatre
-   cas et le corpus complet conditionnel 10 × 2. La sélection, la taille et la
-   règle de changement sont définies ; les identifiants du manifeste
-   d'exécution restent à attribuer avant appel et ne sont pas inventés ici.
-3. Faire arbitrer le budget Finance et obtenir un GO propriétaire distinct.
+   evidence-assist et l'attestation de capacité sous tests fail-closed. Fait
+   hors ligne.
+2. Conserver l'identité immuable
+   `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0` et les deux manifestes
+   quatre cas puis 10 × 2 gelés ensemble. Fait hors ligne, zéro appel.
+3. Faire arbitrer par Finance la proposition maximale de `0,251136 USD` pour
+   le nouveau gate evidence-assist quatre cas, puis obtenir un GO propriétaire
+   distinct. Le plafond historique de `0,21 USD` appartient uniquement au gate
+   Sonnet borné clos et ne doit jamais être réutilisé.
 4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
    que si le gate fait `4/4`, sous exactement la même identité.
 5. Après 20/20, n'autoriser qu'une ouverture du holdout scellé via
@@ -1057,8 +1063,9 @@ Dépendances : V4-001.**
   ne proviennent jamais des relations candidates IA.
 - Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
   `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
-- `GO_TO_SEALED_HOLDOUT` autorise une seule ouverture après les gates de
-  développement ; seul le succès one-shot permet ensuite
+- `GO_TO_SEALED_HOLDOUT` autorise la préparation et le scellement après les
+  gates de développement ; une autorisation propriétaire distincte ouvre le
+  holdout une seule fois, et seul son succès one-shot permet ensuite
   `GO_AUTONOMOUS_FORMATIVE`. Aucun des deux ne peut être remplacé par une revue
   humaine ou un vote de modèles.
 
@@ -1539,8 +1546,8 @@ déterministes est adopté sous une nouvelle identité conformément à
 désactivation explicite à `OPENROUTER_CHAT`, modèle
 `anthropic/claude-sonnet-5`, route exacte `Anthropic`, fallback interdit et
 `reasoning.effort=none`. L'état courant est
-`CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` : aucun identifiant de campagne,
-profil ou gate n'est attribué et aucun budget/GO propriétaire n'est accordé.
+`OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` : identité, profil et gates sont
+attribués et empreintés ; aucun budget Finance/GO propriétaire n'est accordé.
 Les NO-GO ci-dessus restent inchangés.
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
@@ -1560,10 +1567,11 @@ reste fermé.**
 
 **État courant au 16 août 2026 : protocole evidence-assist 3.0.0, segmenter
 2.0.0, contexte/canari/raw et capacité de désactivation implémentés et attestés
-hors ligne ; aucun appel autorisé. Le prochain gate comprend quatre cas, puis
-un panel 10 × 2 strictement conditionnel sous la même identité. Le holdout,
-la publication V4-002 et le live V4-010 restent fermés ; leurs lots hors ligne
-sont actifs.**
+hors ligne. Le runner validate-only importe le protocole ; l'identité et les
+manifestes quatre cas puis 10 × 2 sont gelés ensemble. Les plafonds maximaux
+calculés restent `PROPOSED_NOT_APPROVED` et aucun appel n'est autorisé. Le
+holdout, la publication V4-002 et le live V4-010 restent fermés ; leurs lots
+hors ligne sont actifs.**
 
 ### Point de reprise pour le développement
 
@@ -1571,6 +1579,10 @@ sont actifs.**
   `WRITING/fr-FR`, oracle mécanique, pseudo-oracle sémantique 10×2, protocole
   `EVIDENCE_RESEARCHER`, calcul des gates, attestation catalogue et préflight
   bloqué par défaut.
+- Livré hors ligne : runner evidence-assist 3.0 validate-only, deux manifestes
+  liés par un freeze set, identité
+  `cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`
+  et commande idempotente de régénération/validation sans réseau.
 - La migration P0 dispatch/coût a été répétée sur une branche Neon jetable par
   le run Integration #125 (`31785569786`) ; son rapport est conservé dans
   `docs/V4_EXECUTABLE_RUBRIC_NEON_REHEARSAL_REPORT.md`.
@@ -1746,8 +1758,11 @@ sont actifs.**
   concernée. Ne pas revenir silencieusement à un modèle juge.
 - S'il passe 4/4, exécuter exactement le corpus complet 10 × 2 défini par le
   protocole 3.0.0. Après 20/20 et scellement indépendant du holdout, demander
-  `GO_TO_SEALED_HOLDOUT`; seul son succès one-shot ouvre la décision
-  `GO_AUTONOMOUS_FORMATIVE`.
+  `GO_TO_SEALED_HOLDOUT`, qui conserve `pipelinePromoted=false` et n'ouvre pas
+  le holdout. Après autorisation one-shot, seul un holdout qualifié d'au moins
+  24 cas, ouvert une fois et réussi selon les seuils préenregistrés peut
+  produire `GO_AUTONOMOUS_FORMATIVE` et la mutation explicite
+  `eligibility.pipelinePromoted: false → true`.
 - Un falsificateur est comparé à Gemini seul sur les mêmes sorties. Il n'est
   retenu que s'il réduit les faux statuts sans augmenter indûment l'abstention,
   la latence et le coût.

@@ -31,7 +31,7 @@ Dernière consolidation : 16 août 2026.
 | --- | --- | --- | --- |
 | Runtime canonique | `origin/dev` à `b38732f` | Fondations V4-001 à V4-009 intégrées mais inactives. | Le protocole evidence-assist 3.0.0 n'y est pas encore intégré. |
 | Candidat local | `b366ec9`, branche `codex/v4-evidence-assist-protocol` | Segmenter, contexte, raw, schéma candidate-only et capacité `reasoning=DISABLED` testés hors ligne. | Ni CI de livraison complète, ni appel, ni qualité du modèle, ni disponibilité utilisateur. |
-| Expérimentation | `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` | La route exacte sait sérialiser la désactivation explicite. | Aucun pipeline n'est promu et aucune ancienne campagne ne peut être réutilisée comme preuve 3.0.0. |
+| Expérimentation | `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` | Route, identité, gate quatre cas et panel 10 × 2 sont gelés hors ligne. | Budget Finance et GO propriétaire absents ; aucun pipeline n'est promu. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -73,11 +73,11 @@ V4-010 non branché et V4-011 fermé.**
 1. **Développement** fait passer le candidat local fondé sur `b366ec9` par la
    gate de livraison du dépôt, puis l'intègre au runtime canonique ; tant que ce
    n'est pas fait, ses capacités restent `LOCAL_NOT_INTEGRATED`.
-2. **Produit & pédagogie avec Développement** attribue l'identité de campagne et
-   gèle les quatre cas, le corpus complet 10 × 2, les seuils et les règles
-   d'arrêt. Ce travail reste hors ligne.
-3. **Finance & Pricing**, puis le **Propriétaire**, arbitrent seulement ensuite
-   l'enveloppe et l'autorisation des quatre premiers appels.
+2. **Produit & pédagogie avec Développement** conserve byte-identiques
+   l'identité, les quatre cas, le corpus complet 10 × 2, les seuils et les règles
+   d'arrêt désormais gelés. Ce travail reste hors ligne.
+3. **Finance & Pricing**, puis le **Propriétaire**, arbitrent l'enveloppe proposée
+   de `0,251136 USD` et l'autorisation des quatre premiers appels.
 
 V4-002 et V4-010 peuvent avancer en parallèle sous leurs hard-off respectifs.
 Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
@@ -121,22 +121,27 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   sans citation libre, niveau, score ou feedback. Ces relations candidates ne
   sont jamais consommées par un calcul mécanique. L'autorité est
   `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`.
-- Identifiants réutilisés et épinglés : adapter `OPENROUTER_CHAT`, modèle et ID
+- Identifiants épinglés : adapter `OPENROUTER_CHAT`, modèle et ID
   wire `anthropic/claude-sonnet-5`, snapshot catalogue
   `anthropic/claude-sonnet-5-20260630`, route exacte `Anthropic`, fallback
   interdit. Le protocole/prompt est `3.0.0`, le validateur/segmenter `2.0.0` et
   l'empreinte hors ligne est
   `cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a`.
-  Aucun identifiant de campagne, profil ou gate n'est encore attribué.
+  L'identité de campagne est
+  `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, empreinte
+  `cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`.
 - Capacité acquise hors ligne : l'attestation lie la route exacte à
   `reasoning.effort=none` et à un coût `ACTUAL` obligatoire. La route Anthropic
   directe est écartée tant que son coût reste estimé. L'état est
-  `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL`, pas un GO de campagne.
-- Blocages courants : identité/manifeste de campagne non attribués, enveloppe
-  quatre cas et corpus de développement 10 × 2 non gelés, budget Finance non
-  arbitré et GO propriétaire non accordé.
-- Ordre : geler ensemble quatre cas et le panel conditionnel 10 × 2, exécuter
-  les quatre cas après attestation et autorisations, puis exécuter le 10 × 2
+  `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL`, pas un GO d'appel.
+- Acquis hors ligne : runner validate-only, gate quatre cas et panel 10 × 2
+  gelés ensemble, zéro résultat historique réutilisé.
+- Les plafonds prudents proposés sont `0,251136 USD` puis `1,258760 USD`, non
+  approuvés. Le plafond `0,21 USD` est celui du gate Sonnet borné historique,
+  clos ; il n'est pas le plafond evidence-assist.
+- Blocages courants : budget Finance des quatre cas non arbitré et GO
+  propriétaire non accordé.
+- Ordre : exécuter les quatre cas après ces autorisations, puis exécuter le 10 × 2
   uniquement si le gate fait `4/4`, sous la même identité. Tout changement
   recommence à quatre cas.
 - Définition bornée : le **corpus de développement complet** est exactement la
@@ -164,9 +169,10 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 
 1. `GO_TO_SEALED_HOLDOUT` ne peut être demandé qu'après `4/4`, puis `20/20`
    sur le corpus de développement complet sous la même identité, tous les
-   gates absolus satisfaits, les coûts réconciliés et un holdout v3 authoré
-   indépendamment, validé, chiffré et scellé. Le Propriétaire autorise alors
-   une seule ouverture et une seule exécution ; ce GO ne promeut rien.
+   gates absolus satisfaits et les coûts réconciliés. Il conserve
+   `pipelinePromoted=false` et autorise seulement la préparation et le
+   scellement du holdout v3. Son ouverture one-shot exige une autorisation
+   propriétaire distincte.
 2. `GO_AUTONOMOUS_FORMATIVE` ne peut être rendu qu'après succès one-shot du
    holdout sous cette identité, réconciliation complète et absence de retuning
    post-résultat. Il promeut uniquement le pipeline exact pour le feedback
@@ -239,7 +245,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `ACTIF_HORS_LIGNE` | Candidat local `b366ec9` ; capacité attestée, `NO_MODEL_CALL`. | Oui : geler identité, 4 cas, 10×2, coûts et holdout indépendant. | Finance + GO propriétaire → 4/4 → 20/20 → `GO_TO_SEALED_HOLDOUT` → holdout → `GO_AUTONOMOUS_FORMATIVE`. | Produit & pédagogie ; Développement ; Finance ; Propriétaire aux GO. |
+| V4-009C | `ACTIF_HORS_LIGNE` | Protocole 3.0.0, runner, identité et deux étages gelés ; budgets proposés seulement, `NO_MODEL_CALL`. | Oui : durcir hors ligne le runner, les coûts et le holdout indépendant. | Finance + GO propriétaire → 4/4 → 20/20 → `GO_TO_SEALED_HOLDOUT` sans promotion → autorisation one-shot → holdout → `GO_AUTONOMOUS_FORMATIVE`. | Produit & pédagogie ; Développement ; Finance ; Propriétaire aux GO. |
 | V4-010 | `ACTIF_HORS_LIGNE` | 0 flow live ; fake provider et hard-off autorisés. | Oui : persistance, UX et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |
@@ -277,7 +283,8 @@ pas fusionnées :
 
 Le holdout actif v3 devra être authoré indépendamment des résultats candidats,
 qualifié par ses gates autonomes, puis scellé avant ouverture et consommé une
-seule fois après `GO_TO_SEALED_HOLDOUT`. Le v2 est conservé intact comme
+seule fois après une autorisation propriétaire distincte suivant
+`GO_TO_SEALED_HOLDOUT`. Le v2 est conservé intact comme
 `SUPERSEDED_HISTORICAL_DRAFT`. Un résultat ambigu ou non supporté produit une
 abstention, pas une validation humaine fictive.
 
@@ -306,13 +313,14 @@ abstention, pas une validation humaine fictive.
 ## Prochaines décisions du propriétaire
 
 Aucune décision de prix produit ou de paiement n'est nécessaire maintenant. La
-capacité route-specific `DISABLED` est attestée hors ligne. La prochaine décision
-exécutable est d'attribuer une identité de campagne, geler les deux étages quatre
-cas puis 10 × 2, arbitrer le budget R&D et accorder un GO propriétaire avant
-tout appel. Finance arbitre alors uniquement l'enveloppe des quatre cas, puis le
+capacité route-specific `DISABLED`, l'identité et les deux étages quatre cas puis
+10 × 2 sont gelés hors ligne. La prochaine décision exécutable est d'arbitrer le
+budget R&D maximal proposé de `0,251136 USD` et d'accorder un GO propriétaire
+avant tout appel. Finance arbitre alors uniquement l'enveloppe des quatre cas, puis le
 Propriétaire autorise ou refuse ces appels. Une autorisation distincte du panel
 n'est demandée qu'après un résultat `4/4`, sans changement d'identité. Après
-`20/20`, la décision suivante est `GO_TO_SEALED_HOLDOUT`, jamais une promotion.
-Le pipeline ne devient promu qu'après le holdout one-shot et
+`20/20`, la décision suivante est `GO_TO_SEALED_HOLDOUT`, jamais une promotion
+ni une autorisation d'ouverture. Le pipeline ne devient promu qu'après une
+autorisation distincte, le holdout one-shot et
 `GO_AUTONOMOUS_FORMATIVE`. La comparaison ≥3 candidats vient ensuite pour
 V4-018 et ne retarde pas ce premier parcours de faisabilité.

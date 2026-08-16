@@ -7,6 +7,11 @@ import { z } from 'zod';
 
 import { evidenceAssistProtocolFingerprint } from './evidence-assist-protocol.ts';
 import {
+  EVIDENCE_ASSIST_FOUR_CASE_MANIFEST_PATH,
+  EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH,
+  EVIDENCE_ASSIST_PANEL_MANIFEST_PATH,
+} from './evidence-assist-development-campaign.ts';
+import {
   SONNET_5_REASONING_ATTESTATION_PATH,
   SONNET_5_REASONING_ATTESTATION_SHA256,
 } from './sonnet-5-reasoning-capability-attestation.ts';
@@ -52,7 +57,25 @@ const activeManifestSchema = z
           key: z.string(),
           nextProtocol: z
             .object({
+              campaignFreezeSet: z.object({
+                manifest: z.literal(EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH),
+                manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                networkCallsAllowed: z.literal(false),
+              }),
               executionStatus: z.literal('NO_MODEL_CALL'),
+              gatePlan: z.object({
+                stageOne: z.object({
+                  manifest: z.literal(EVIDENCE_ASSIST_FOUR_CASE_MANIFEST_PATH),
+                  manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                }),
+                stageTwo: z.object({
+                  manifest: z.literal(EVIDENCE_ASSIST_PANEL_MANIFEST_PATH),
+                  manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                }),
+              }),
+              identityAssignmentStatus: z.literal(
+                'ASSIGNED_AND_FROZEN_OFFLINE',
+              ),
               pinnedIdentifiers: z.object({
                 offlineProtocolFingerprint: z.string().regex(/^[a-f0-9]{64}$/u),
               }),
@@ -65,7 +88,7 @@ const activeManifestSchema = z
                   SONNET_5_REASONING_ATTESTATION_SHA256,
                 ),
               }),
-              status: z.literal('CAPABILITY_ATTESTED_OFFLINE'),
+              status: z.literal('OFFLINE_CAMPAIGN_FROZEN'),
             })
             .optional(),
         })
@@ -75,7 +98,23 @@ const activeManifestSchema = z
       authorityMode: z.literal('AUTONOMOUS_NO_HUMAN_REVIEW'),
       humanReviewRequired: z.literal(false),
       name: z.literal('GO_AUTONOMOUS_FORMATIVE'),
+      policy: z.object({
+        path: z.literal(
+          'benchmarks/ai-correction/executable-rubric/evidence-assist-promotion-policy.v1.json',
+        ),
+        sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+      }),
       status: z.literal('NOT_MET'),
+      transitions: z.tuple([
+        z.object({
+          decision: z.literal('GO_TO_SEALED_HOLDOUT'),
+          pipelinePromotedAfter: z.literal(false),
+        }),
+        z.object({
+          decision: z.literal('GO_AUTONOMOUS_FORMATIVE'),
+          pipelinePromotedAfter: z.literal(true),
+        }),
+      ]),
     }),
     schemaVersion: z.literal('3.0.0'),
     status: z.literal('RESEARCH_NO_PIPELINE_PROMOTED'),
@@ -103,7 +142,7 @@ describe('active autonomous correction phase manifest', () => {
     expect(active.immutableVerdicts).toEqual(historical.immutableVerdicts);
   });
 
-  it('binds the active protocol, holdout and capability attestation by SHA-256', () => {
+  it('binds the active protocol, campaigns, holdout and capability attestation by SHA-256', () => {
     const promotionBlocker = active.openBlockers.find(
       ({ key }) => key === 'EXECUTABLE_RUBRIC_PROMOTION_GATE',
     );
@@ -119,6 +158,19 @@ describe('active autonomous correction phase manifest', () => {
     );
     expect(sha256(read(SONNET_5_REASONING_ATTESTATION_PATH))).toBe(
       SONNET_5_REASONING_ATTESTATION_SHA256,
+    );
+    const nextProtocol = promotionBlocker?.nextProtocol;
+    expect(sha256(read(EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH))).toBe(
+      nextProtocol?.campaignFreezeSet.manifestSha256,
+    );
+    expect(sha256(read(EVIDENCE_ASSIST_FOUR_CASE_MANIFEST_PATH))).toBe(
+      nextProtocol?.gatePlan.stageOne.manifestSha256,
+    );
+    expect(sha256(read(EVIDENCE_ASSIST_PANEL_MANIFEST_PATH))).toBe(
+      nextProtocol?.gatePlan.stageTwo.manifestSha256,
+    );
+    expect(sha256(read(active.promotionGate.policy.path))).toBe(
+      active.promotionGate.policy.sha256,
     );
   });
 

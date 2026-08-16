@@ -135,8 +135,8 @@ coût n'est disponible qu'en estimation.
 
 Cette attestation ne prouve ni disponibilité du compte, ni succès d'un appel,
 ni qualité pédagogique. Le statut reste
-`CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` jusqu'au gel d'une identité de
-campagne, au budget Finance et au GO propriétaire.
+`OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` : l'identité est gelée, mais le
+budget Finance et le GO propriétaire restent absents.
 
 ## 7. Gates de développement et de promotion
 
@@ -159,9 +159,23 @@ ne sont pas comptés dans ces 20. Aucun résultat historique n'est réutilisé.
 
 Changer un texte, un gold, une attente, un ordre, une répétition, un seuil ou la
 sélection impose une nouvelle version de corpus, une nouvelle identité de
-campagne et un retour au gate quatre cas. Le manifeste exact du lot d'exécution
-reste à attribuer avant tout appel ; la présente définition n'invente pas son
-identifiant.
+campagne et un retour au gate quatre cas.
+
+Le paquet de développement gelé porte l'identité
+`learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, empreinte
+`cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`.
+Les manifestes `sonnet-5-evidence-assist-four-case.v1.json` et
+`sonnet-5-evidence-assist-panel-10x2.v1.json` sont liés par
+`sonnet-5-evidence-assist-development-freeze-set.v1.json`. Ils utilisent zéro
+résultat historique, restent `networkCallsAllowed=false` et ne peuvent être
+exécutés avant deux arbitrages distincts Finance/propriétaire.
+
+Le calcul prudent propose, sans les approuver, des plafonds R&D de
+`0,251136 USD` pour quatre appels et `1,258760 USD` pour vingt appels. Le second
+plafond reste purement conditionnel à `4/4`. Ces valeurs ne sont ni un prix
+produit ni une permission de dépense. Le plafond `0,21 USD` appartient au gate
+Sonnet borné historique désormais clos ; il ne finance ni ne limite cette
+nouvelle identité evidence-assist.
 
 ### 7.2 Séquence obligatoire
 
@@ -175,8 +189,9 @@ identifiant.
 5. en parallèle des appels mais indépendamment de leurs sorties, authoring,
    validation autonome, chiffrement et scellement du holdout v3 ;
 6. après 20/20 et tous les seuils de développement, décision
-   `GO_TO_SEALED_HOLDOUT` autorisant une seule ouverture/exécution ;
-7. après succès one-shot du holdout et réconciliation complète, décision
+   `GO_TO_SEALED_HOLDOUT` autorisant seulement la préparation et le scellement ;
+7. après autorisation distincte, ouverture unique du holdout ;
+8. après succès one-shot du holdout et réconciliation complète, décision
    `GO_AUTONOMOUS_FORMATIVE` sur le pipeline exact.
 
 Gates absolus : 100 % des identifiants résolus par LearnX, zéro identifiant
@@ -189,14 +204,21 @@ campagne et recommence au gate quatre cas.
 ### 7.3 Portée des deux décisions
 
 - `GO_TO_SEALED_HOLDOUT` exige : 4/4, 20/20, seuils absolus satisfaits, aucune
-  adaptation post-résultat, coûts réconciliés, holdout v3 indépendant et
-  scellé, puis autorisation one-shot du Propriétaire. Il ne promeut pas le
-  modèle et n'ouvre aucun ticket live.
+  adaptation post-résultat et coûts réconciliés. Il conserve obligatoirement
+  `pipelinePromoted=false`, autorise la préparation et le scellement, mais pas
+  l'ouverture. Une autorisation one-shot distincte du Propriétaire est requise.
 - `GO_AUTONOMOUS_FORMATIVE` exige : holdout one-shot valide sous la même
   identité, seuils préenregistrés satisfaits, zéro incident non réconcilié et
-  aucun retuning. Il promeut seulement ce pipeline pour le feedback
+  aucun retuning. Le holdout qualifié contient au moins 24 cas. Seul cet
+  artefact peut muter explicitement `eligibility.pipelinePromoted` de `false` à
+  `true`. Il promeut seulement ce pipeline pour le feedback
   `WRITING/fr-FR` faible risque. V4-002 doit encore publier le contrat et V4-010
   doit encore franchir son propre gate de cohorte avant un utilisateur.
+
+La politique machine est
+`benchmarks/ai-correction/executable-rubric/evidence-assist-promotion-policy.v1.json`.
+À la date de cette spécification, aucun artefact de transition n'est émis et le
+pipeline reste non promu.
 
 La comparaison d'au moins trois candidats devient un benchmark secondaire de
 robustesse et d'économie après la faisabilité du pipeline exact. Elle ne bloque

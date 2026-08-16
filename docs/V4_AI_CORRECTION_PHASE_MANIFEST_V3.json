@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-16T11:13:37Z",
+  "updatedAt": "2026-08-16T11:14:48Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -149,7 +149,7 @@
       "manifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
       "manifestSha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2"
     },
-    "mayOpenAfter": "GO_TO_SEALED_HOLDOUT_GRANTED_FOR_ONE_SHOT_EXECUTION",
+    "mayOpenAfter": "SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION_AFTER_GO_TO_SEALED_HOLDOUT",
     "promotionDecisionAfterExecution": "GO_AUTONOMOUS_FORMATIVE"
   },
   "eligibility": {
@@ -179,14 +179,14 @@
     "V4-009C": {
       "status": "ACTIVE_OFFLINE_NO_MODEL_CALL",
       "allowed": [
-        "ASSIGN_CAMPAIGN_AND_GATE_IDENTIFIERS",
-        "FREEZE_FOUR_CASE_AND_10X2_STAGES",
+        "PRESERVE_FROZEN_CAMPAIGN_AND_GATE_IDENTIFIERS",
+        "VALIDATE_FOUR_CASE_AND_10X2_STAGES_OFFLINE",
         "AUTHOR_VALIDATE_ENCRYPT_AND_SEAL_HOLDOUT_INDEPENDENTLY",
         "PREPARE_FINANCE_BUDGET_REQUEST"
       ],
       "forbidden": [
         "NETWORK_DISPATCH_BEFORE_FINANCE_AND_OWNER_GO",
-        "HOLDOUT_OPEN_BEFORE_GO_TO_SEALED_HOLDOUT",
+        "HOLDOUT_OPEN_BEFORE_SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION",
         "PIPELINE_PROMOTION_BEFORE_GO_AUTONOMOUS_FORMATIVE"
       ]
     },
@@ -236,7 +236,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "CAPABILITY_ATTESTED_OFFLINE",
+      "status": "OFFLINE_CAMPAIGN_FROZEN",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -585,9 +585,9 @@
       },
       "nextProtocol": {
         "authority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
-        "status": "CAPABILITY_ATTESTED_OFFLINE",
+        "status": "OFFLINE_CAMPAIGN_FROZEN",
         "executionStatus": "NO_MODEL_CALL",
-        "identityAssignmentStatus": "CAMPAIGN_REQUEST_PROFILE_AND_GATE_IDS_NOT_ASSIGNED",
+        "identityAssignmentStatus": "ASSIGNED_AND_FROZEN_OFFLINE",
         "pinnedIdentifiers": {
           "adapter": "OPENROUTER_CHAT",
           "internalModelId": "anthropic/claude-sonnet-5",
@@ -605,6 +605,15 @@
           "semanticSelection": "benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v2.manifest.json",
           "semanticSelectionSha256": "d8266d0387330aaa7da477d91b8af99bec24ca065c0c0ed4206d32bf157573dd"
         },
+        "campaignFreezeSet": {
+          "identityId": "learnx-writing-fr-sonnet-5-evidence-assist-v3",
+          "identityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+          "manifest": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-development-freeze-set.v1.json",
+          "manifestSha256": "cb69af491eaea9c73138a76ffd87524d0dcb874beda7317cbee3cb59fdb0973b",
+          "frozenTogether": true,
+          "historicalResultsReused": 0,
+          "networkCallsAllowed": false
+        },
         "reasoning": {
           "requestedMode": "DISABLED",
           "disabledWireContract": {
@@ -620,7 +629,7 @@
         },
         "preflight": {
           "capabilityCheck": "PASS_OFFLINE",
-          "campaignManifestCheck": "BLOCKED_NOT_ASSIGNED",
+          "campaignManifestCheck": "PASS_OFFLINE_FROZEN_PAIR",
           "financeBudgetCheck": "BLOCKED_NOT_ARBITRATED",
           "ownerAuthorizationCheck": "BLOCKED_NOT_GRANTED",
           "networkCallsAllowed": false
@@ -656,7 +665,12 @@
               "writing-fr-direct-injection"
             ],
             "freshWorkflowCount": 4,
-            "requiredResult": "4/4"
+            "requiredResult": "4/4",
+            "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-four-case-v1",
+            "manifest": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-four-case.v1.json",
+            "manifestSha256": "691fa112517b84e13aa01f8984a10a64a3f5d52f7d00c6d0b9a3a5e3d83e0e9e",
+            "maximumBudgetProposalUsd": 0.251136,
+            "budgetStatus": "PROPOSED_NOT_APPROVED"
           },
           "stageTwo": {
             "shape": "10x2",
@@ -670,12 +684,17 @@
             "freshWorkflowCount": 20,
             "stageOneWorkflowsCountedInStageTwo": false,
             "requiredResult": "20/20",
-            "executionCondition": "STAGE_ONE_4_OF_4_UNDER_SAME_IDENTITY"
+            "executionCondition": "STAGE_ONE_4_OF_4_UNDER_SAME_IDENTITY",
+            "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-panel-10x2-v1",
+            "manifest": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-panel-10x2.v1.json",
+            "manifestSha256": "960f36d289b8a36eba8e764c9c2a0cf0862d41d90c0bd05fec6a1df7a42bc21f",
+            "maximumBudgetProposalUsd": 1.25876,
+            "budgetStatus": "PROPOSED_NOT_APPROVED"
           },
           "changeRule": "ANY_CHANGE_TO_CASE_TEXT_GOLD_EXPECTATION_ORDER_REPETITION_THRESHOLD_SELECTION_OR_IDENTITY_CREATES_NEW_CORPUS_VERSION_NEW_CAMPAIGN_IDENTITY_AND_RESTARTS_AT_STAGE_ONE",
           "historicalResultsReused": 0,
           "networkCallsAllowed": false,
-          "holdoutAccess": "PROHIBITED_UNTIL_GO_TO_SEALED_HOLDOUT"
+          "holdoutAccess": "PROHIBITED_UNTIL_SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION_AFTER_GO_TO_SEALED_HOLDOUT"
         },
         "secondaryCandidateComparison": {
           "status": "DEFERRED_UNTIL_EXACT_PIPELINE_FEASIBILITY",
@@ -717,15 +736,12 @@
       "allPromotionThresholdsMetOnDevelopment": true,
       "dispatchAndCostReconciledRate": 1,
       "postResultRetuning": false,
-      "holdoutV3IndependentlyAuthored": true,
-      "holdoutV3AutonomousInvariantsValidated": true,
-      "holdoutV3CiphertextSealed": true,
-      "ownerOneShotAuthorization": true
+      "holdoutV3IndependentPreparationRemainsSeparate": true
     },
-    "effect": "AUTHORIZE_EXACTLY_ONE_HOLDOUT_OPEN_AND_EXECUTION",
+    "effect": "AUTHORIZE_HOLDOUT_PREPARATION_AND_SEALING_ONLY",
     "pipelinePromotionEffect": "NONE",
     "currentBlockers": [
-      "CAMPAIGN_IDENTITY_NOT_ASSIGNED",
+      "FINANCE_BUDGET_NOT_ARBITRATED",
       "STAGE_ONE_NOT_EXECUTED",
       "FULL_DEVELOPMENT_CORPUS_NOT_EXECUTED",
       "HOLDOUT_V3_CONTENT_NOT_AUTHORED_OR_SEALED"
@@ -736,6 +752,24 @@
     "status": "NOT_MET",
     "humanReviewRequired": false,
     "authorityMode": "AUTONOMOUS_NO_HUMAN_REVIEW",
+    "policy": {
+      "path": "benchmarks/ai-correction/executable-rubric/evidence-assist-promotion-policy.v1.json",
+      "sha256": "b06fc2a7bd1d47f1583e74401db4b51b707fe3c2a8a26aceef8a90e85595d627"
+    },
+    "transitions": [
+      {
+        "decision": "GO_TO_SEALED_HOLDOUT",
+        "status": "NOT_MET",
+        "pipelinePromotedAfter": false,
+        "requires": "FOUR_CASE_4_OF_4_THEN_PANEL_20_OF_20_UNDER_FROZEN_IDENTITY"
+      },
+      {
+        "decision": "GO_AUTONOMOUS_FORMATIVE",
+        "status": "NOT_MET",
+        "pipelinePromotedAfter": true,
+        "requires": "QUALIFIED_SEALED_ONE_SHOT_HOLDOUT_PASSED_AND_OWNER_PROMOTION_AUTHORIZATION"
+      }
+    ],
     "prerequisiteGate": "GO_TO_SEALED_HOLDOUT_GRANTED_AND_CONSUMED",
     "requiredHoldoutResult": "ONE_SHOT_PASS_UNDER_SAME_IMMUTABLE_IDENTITY",
     "effect": "PROMOTE_EXACT_WRITING_FR_FR_LOW_RISK_FORMATIVE_PIPELINE_ONLY",
@@ -778,15 +812,15 @@
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",
     "Preserve the Gemini panel v2 and Sonnet 5 panel results, ledgers and NO-GO verdicts append-only; never resume either closed envelope.",
-    "Preserve the bounded Sonnet 5 gate and its 0.026104 USD cost append-only; never resume or relax the closed identity.",
+    "Preserve the bounded Sonnet 5 gate, its historical proposed 0.21 USD hard cap and its 0.026104 USD actual cost append-only; never resume, relax or reuse the closed identity or its envelope for evidence-assist.",
     "Apply the evidence-assist protocol 3.0.0 under its new authority without reusing any historical prompt, protocol identity, result or campaign identifier.",
-    "Preserve the route-specific reasoning attestation as an offline capability proof only. Keep NO_MODEL_CALL until campaign identity, Finance budget and owner authorization are all granted.",
-    "Assign one immutable campaign identity and freeze both the four-case gate and the full development corpus writing-fr-semantic-development-v2@2.0.0 as 10 cases x 2 fresh repetitions before the first call; do not invent a campaign or gate identifier in advance.",
+    "Preserve the route-specific reasoning attestation as an offline capability proof only. The new campaign identity and its paired manifests are frozen; keep NO_MODEL_CALL until Finance budget and owner authorization are both granted.",
+    "Preserve the frozen campaign identity, four-case manifest, conditional 10x2 manifest and freeze-set hashes byte-identically. Any change creates a new identity and restarts at four cases.",
     "Execute writing-fr-base-mastered, writing-fr-no-choice-negative, writing-fr-evidence-mutation and writing-fr-direct-injection only after Product, Finance and owner authorization. Execute the 20 fresh development workflows only after a 4/4 result under exactly the same identity; any case, expectation, order, repetition, threshold or selection change creates a new corpus version and restarts at four cases.",
     "Keep the falsifier, active v3 holdout, V4-002 publication and V4-010 live activation closed. Permit V4-002 and V4-010 implementation offline under their explicit hard-off constraints.",
     "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Author v3 independently from candidate outputs, validate its autonomous invariants and seal only its ciphertext.",
-    "After 4/4 then 20/20 and complete reconciliation, request GO_TO_SEALED_HOLDOUT for exactly one opening and execution. This gate does not promote a pipeline.",
-    "Only a one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE. That gate unlocks V4-002 publication review and V4-010 bounded pilot preparation, never automatic publication, activation, mastery or pricing.",
+    "After 4/4 then 20/20 and complete reconciliation, request GO_TO_SEALED_HOLDOUT. This transition keeps pipelinePromoted=false, authorizes preparation and sealing only, and does not open the holdout.",
+    "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. That gate unlocks V4-002 publication review and V4-010 bounded pilot preparation, never automatic publication, activation, mastery or pricing.",
     "Run the at-least-three-candidate comparison only as a secondary robustness and economic benchmark after exact-pipeline feasibility. It does not block the Sonnet 5 gates or bounded formative pilot, but it blocks V4-018, pricing and commercial generalization.",
     "Keep V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN until docs/V3_5_RELEASE_REPORT.md is reconciled with effective promotion and real-device/PWA, iPhone/VoiceOver, zoom and post-promotion authenticated smoke evidence; do not present this as resolved."
   ],
