@@ -98,14 +98,16 @@ function providerResult(
   caseItem: ReturnType<typeof fixture>['corpus']['cases'][number],
   index: number,
 ) {
+  const output = rawOutput(caseItem);
   return {
     latencyMs: 100,
     modelSnapshot: 'google/gemini-3.6-flash-20260721',
     observedProvider: 'Google',
-    output: rawOutput(caseItem),
+    output,
     providerRequestId: `request-${index}`,
     providerRoute: 'Google',
     requestedRoute: 'google-vertex/global',
+    rawModelOutput: JSON.stringify(output),
     status: 'VALID' as const,
     usage: {
       actualCostUsd: 0.004,
@@ -242,6 +244,7 @@ describe('evidence researcher smoke', () => {
       first.status =
         first.status === 'SUPPORTED' ? 'NOT_DEMONSTRATED' : 'SUPPORTED';
       first.evidenceQuotes = [];
+      result.rawModelOutput = JSON.stringify(output);
       return result;
     });
     const result = await runEvidenceResearcherSmoke({
@@ -383,6 +386,7 @@ describe('evidence researcher smoke', () => {
           );
           if (!first) throw new Error('TEST_ELEMENT_MISSING');
           first.evidenceQuotes = ['citation absente'];
+          provider.rawModelOutput = JSON.stringify(output);
           return provider;
         }),
       },
@@ -481,6 +485,7 @@ describe('evidence researcher smoke', () => {
       const first = output.elements[0];
       if (!first) throw new Error('TEST_ELEMENT_MISSING');
       first.contradictions = [input.campaign.smokeProposal.securityCanary];
+      result.rawModelOutput = JSON.stringify(output);
       return result;
     });
     const result = await runEvidenceResearcherSmoke({
@@ -523,6 +528,7 @@ describe('evidence researcher smoke', () => {
         );
         if (!first) throw new Error('TEST_ELEMENT_MISSING');
         first.evidenceQuotes = [unsafeQuote];
+        result.rawModelOutput = JSON.stringify(output);
       }
       return result;
     });

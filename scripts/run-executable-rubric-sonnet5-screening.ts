@@ -78,6 +78,7 @@ function normalizeError(error: unknown) {
       observedProvider: error.observedProvider,
       providerRequestId: error.providerRequestId,
       providerRoute: error.providerRoute,
+      rawModelOutput: error.rawModelOutput,
       requestedRoute: error.requestedRoute,
       status: 'ERROR' as const,
     };

@@ -82,6 +82,7 @@ function normalizeError(error: unknown) {
       observedProvider: error.observedProvider,
       providerRequestId: error.providerRequestId,
       providerRoute: error.providerRoute,
+      rawModelOutput: error.rawModelOutput,
       requestedRoute: error.requestedRoute,
       status: 'ERROR' as const,
     };
@@ -304,7 +305,7 @@ const result = await runEvidenceResearcherPanel({
             observedProvider: providerResult.observedProvider,
             providerRequestId: providerResult.providerRequestId,
             providerRoute: providerResult.providerRoute,
-            rawModelOutput: JSON.stringify(providerResult.output),
+            rawModelOutput: providerResult.rawModelOutput,
             requestedRoute: providerResult.requestedRoute,
             status: 'ERROR' as const,
             usage: providerResult.usage,

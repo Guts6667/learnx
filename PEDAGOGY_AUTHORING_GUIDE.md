@@ -773,101 +773,71 @@ scientifique.
 
 ## 12. Contrat versionné de correction assistée par IA
 
-Une rubrique historique ne suffit pas à autoriser une correction IA. Toute
-production libre candidate possède un contrat séparé, relu humainement et
-validé par `correctionContractSchema` dans
-`src/lib/ai-correction-contracts.ts`.
+Une rubrique historique ne suffit pas à autoriser une correction IA. Pour le
+MVP autonome, une production libre candidate possède un contrat exécutable
+séparé, versionné et conforme à
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`.
 
-Le contrat suit cette structure :
+Ce contrat prépare deux canaux distincts :
 
-```json
-{
-  "schemaVersion": 1,
-  "contractKey": "project-framing-correction",
-  "version": "1.0.0",
-  "lifecycle": {
-    "status": "DRAFT",
-    "publishedAt": null
-  },
-  "target": {
-    "kind": "EXERCISE",
-    "activityKey": "frame-a-project",
-    "activityType": "writing"
-  },
-  "evidence": {
-    "primaryKind": "TEXT",
-    "acceptedKinds": ["TEXT"]
-  },
-  "objectives": ["Évaluer une proposition de cadrage de projet."],
-  "criteria": [
-    {
-      "key": "direction",
-      "label": "Direction du projet",
-      "objective": "Formuler une direction commune et vérifiable.",
-      "weight": 100,
-      "expectedElements": ["Un résultat observable."],
-      "acceptableVariants": [],
-      "commonErrors": ["Confondre objectif et liste de tâches."],
-      "performanceLevels": [
-        {
-          "key": "insufficient",
-          "label": "Insuffisant",
-          "score": 0,
-          "description": "La direction reste invérifiable."
-        },
-        {
-          "key": "mastered",
-          "label": "Maîtrisé",
-          "score": 100,
-          "description": "La direction est explicite et mesurable."
-        }
-      ],
-      "calibratedExamples": [
-        {
-          "responseExcerpt": "Livrer le prototype mesuré auprès de cinq usagers.",
-          "expectedLevelKey": "mastered",
-          "rationale": "Le résultat et la mesure sont explicites."
-        }
-      ]
-    }
-  ],
-  "authorizedReferences": [
-    {
-      "referenceId": "REF-PROJECT-FRAMING",
-      "locator": "Section 2"
-    }
-  ],
-  "passingScore": 70,
-  "secondPass": {
-    "enabled": true,
-    "confidenceThreshold": 0.7,
-    "maxPasses": 2,
-    "triggers": ["LOW_CONFIDENCE"]
-  }
-}
+1. des constats mécaniques authorés, seuls éventuellement scorables ;
+2. une vue evidence-assist candidate-only, sans points, poids, niveaux, seuil
+   ou règle de maîtrise exposés au modèle.
+
+Le contrat complet conserve les cibles de remédiation, les templates authorés
+et le binding immuable vers l'activité et la version du programme, mais ces
+données restent côté LearnX et ne sont jamais exposées au modèle. La vue
+candidate décrit chaque élément comme une proposition atomique et porte
+uniquement :
+
+- une clé stable et une formulation non ambiguë ;
+- des exemples positifs et contre-exemples ;
+- les variantes acceptables ;
+- les signaux de contradiction et la règle de preuve.
+
+Le modèle ne choisit jamais un niveau et ne génère aucune citation libre. LearnX
+segmente la réponse et lui fournit uniquement des `spanIds`. La sortie admise
+est :
+
+```text
+elementKey
++ EVIDENCE_FOR_ELEMENT | EVIDENCE_AGAINST_ELEMENT | ABSTAIN
++ 0 à 4 spanIds
 ```
+
+Une relation est toujours relative à la proposition de l'élément. Si l'élément
+décrit un défaut, un passage montrant ce défaut est
+`EVIDENCE_FOR_ELEMENT`. Une omission ou `ABSTAIN` reste `UNRESOLVED` et ne
+devient jamais `NOT_DEMONSTRATED`.
 
 Règles bloquantes :
 
-- les poids des critères sont des entiers positifs et totalisent exactement
-  100 ; ils ne sont jamais déduits au runtime ;
-- le nombre de critères dépend de la production et n'est pas fixé par le
-  moteur ;
-- chaque clé de critère et de niveau est stable et unique dans sa portée ;
-- chaque exemple étalonné référence un niveau déclaré ;
-- `authorizedReferences` contient des identifiants du sidecar éditorial, pas
-  des ressources apprenant copiées ni le contenu intégral des sources ;
-- `PUBLISHED` exige `publishedAt`. Une version publiée est immuable ; toute
-  évolution crée une nouvelle version sémantique et ne modifie jamais les
-  corrections historiques ;
-- le runtime V4 accepte uniquement `TEXT`. `FILE`, `IMAGE`, `AUDIO`,
-  `TRANSCRIPT` et `STRUCTURED_DATA` sont réservés à de futurs tickets ;
-- `oral` reste indisponible au runtime V4, même si le contrat le décrit ;
-- l'absence de contrat publié et valide masque ou désactive la correction IA ;
-- le modèle choisit un niveau authoré et cite la réponse. Il ne fournit jamais
-  le score autoritaire : le serveur le recalcule depuis niveaux et poids.
+- une relation candidate IA ne peut être convertie en statut mécanique ni
+  alimenter niveau, score, maîtrise, progression ou `VALIDATED` ;
+- le contrat publié est immuable ; toute évolution crée une nouvelle version et
+  conserve les résultats historiques ;
+- la segmentation, la polarité et les cardinalités doivent être compatibles
+  avec les exemples authorés ;
+- les éléments redondants ou doubles pénalisations sont refusés ;
+- les critères holistiques non atomisables restent hors du MVP ;
+- `editorial.references` reste distinct de `lesson.resources` et des extraits
+  de la réponse apprenant ;
+- le runtime initial accepte uniquement `WRITING/fr-FR` à faible risque ;
+- l'absence de contrat publié et lié à l'activité masque la correction IA.
 
-Les contrats ne sont pas ajoutés automatiquement aux rubriques existantes. Leur
-inventaire de départ est consigné dans
-`docs/V4_CORRECTION_CONTRACT_INVENTORY.md` et chaque conversion requiert une
-revue pédagogique humaine.
+En l'absence d'évaluateur humain, la qualification d'un contrat ne simule aucune
+approbation. Elle exige avant publication :
+
+1. compilation déterministe sans niveau inatteignable, règle non monotone,
+   combinaison non couverte ou double pénalisation ;
+2. mutation testing de chaque propriété bloquante ;
+3. exemples et contre-exemples gelés avant toute sortie candidate ;
+4. tests métamorphiques de paraphrase, ordre, concision, Unicode, négation et
+   injection ;
+5. empreintes du contrat, de l'activité, du programme et du corpus autonome ;
+6. gate `GO_AUTONOMOUS_FORMATIVE` puis autorisation de publication distincte.
+
+Les contrats ne sont pas ajoutés automatiquement aux activités existantes.
+Leur inventaire de départ est consigné dans
+`docs/V4_CORRECTION_CONTRACT_INVENTORY.md`. V4-002 reste actif hors ligne mais
+la publication et toute activité live restent bloquées jusqu'aux gates.

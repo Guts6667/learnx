@@ -2147,6 +2147,7 @@ describe('correction provider adapters', () => {
       output: { answer: 'ok' },
       providerRequestId: 'or-request',
       providerRoute: 'Anthropic',
+      rawModelOutput: '{"answer":"ok"}',
       requestedRoute: 'Anthropic',
       usage: {
         actualCostUsd: 0.012,
@@ -2318,6 +2319,7 @@ describe('correction provider adapters', () => {
       observedProvider: 'OpenAI',
       providerRequestId: 'openai-request',
       providerRoute: 'OpenAI',
+      rawModelOutput: '{"answer":"openai"}',
       requestedRoute: 'OpenAI',
       usage: { costSource: 'ESTIMATED', reasoningTokens: 2, visibleOutputTokens: 10 },
     });
@@ -2330,6 +2332,7 @@ describe('correction provider adapters', () => {
       observedProvider: 'Anthropic',
       providerRequestId: 'anthropic-request',
       providerRoute: 'Anthropic',
+      rawModelOutput: '{"answer":"anthropic"}',
       requestedRoute: 'Anthropic',
       usage: { costSource: 'ESTIMATED', reasoningTokens: 0, visibleOutputTokens: 14 },
     });

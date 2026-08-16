@@ -664,3 +664,82 @@ second échec de profil Sonnet 5, le retuning de profil et la recherche large de
 modèles sont arrêtés. La prochaine décision porte sur l'architecture : MVP
 déterministe plus étroit, ou révision explicite de la route/architecture sous
 une nouvelle identité. Le panel 10×2, le holdout et V4-010 restent fermés.
+
+### 2026-08-16 — Arbitrage evidence-assist, capacité route non attestée
+
+Statut : `CAPABILITY_NOT_ATTESTED / NO_MODEL_CALL`.
+
+Le Propriétaire adopte `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` comme nouvelle
+autorité de protocole. LearnX segmente désormais la réponse avant appel ; le
+modèle ne peut proposer que `SUPPORTS`, `CONTRADICTS` ou `ABSTAIN` sur des
+identifiants de passages fournis. Il ne produit ni citation libre, offsets,
+niveau, score, `PASS/FAIL`, effet de progression ou feedback libre.
+
+Cette entrée ne modifie ni ne requalifie aucun résultat Gemini ou Sonnet 5
+antérieur. Leurs verdicts, campagnes, coûts, raws, états et ledgers restent
+immuables et append-only ; aucun résultat historique ne sera réutilisé dans le
+nouveau gate.
+
+Les paramètres déjà attestés qui restent épinglés sont le modèle
+`anthropic/claude-sonnet-5`, le snapshot
+`anthropic/claude-sonnet-5-20260630` et la route `Anthropic`. Le nouveau prompt
+et protocole sont distincts, en version `2.0.0`. L'empreinte du protocole hors
+ligne calculée depuis le code est
+`6056a4c9f110b221ce93f970791d2532ac0aa2e9c1976f0010214322d078bfa9`.
+Aucun identifiant de campagne, profil de requête ou gate n'est encore attribué ;
+aucun n'est inventé par cette entrée.
+
+Le mode requis est `DISABLED` explicitement. Une omission du paramètre ne vaut
+jamais désactivation. Les métadonnées disponibles de la route exacte
+n'attestent pas encore cette capacité : le préflight doit donc échouer avant
+réservation et dispatch. Aucun appel, coût ou budget n'est engagé. Finance et le
+Propriétaire ne sont pas sollicités pour un GO d'appel avant réussite de cette
+attestation hors ligne.
+
+Après attestation, les deux étages sont préenregistrés et gelés ensemble sous
+une seule identité : quatre cas positif, négatif, mutation et injection, puis
+un panel 10 cas × 2 si et seulement si le premier gate fait `4/4`. Tout
+changement de modèle, snapshot, route, prompt, protocole, règles, seuils ou cas
+crée une nouvelle identité et recommence au gate quatre cas.
+
+Le holdout actif est désormais
+`benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
+Il reste non authoré, non scellé et inexécutable. Le manifeste v2 reste intact
+et devient `SUPERSEDED_HISTORICAL_DRAFT`. Le falsificateur, le holdout, V4-002
+et l'activation réelle de V4-010 restent fermés.
+
+### 2026-08-16 — Evidence-assist 3.0.0 et capacité Sonnet 5 attestée hors ligne
+
+Statut : `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL / CAMPAIGN_NOT_ASSIGNED /
+FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED`.
+
+Sans modifier l'entrée précédente ni aucun NO-GO, le protocole est durci sous
+une nouvelle version `3.0.0`, validateur et segmenter `2.0.0`, empreinte
+`cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a`.
+LearnX borne et segmente la réponse, génère un canari 128 bits, sépare les
+messages système/utilisateur et lie raw, tâche, rubrique, réponse et spans dans
+un contexte empreinté.
+
+Le modèle ne propose plus `SUPPORTS|CONTRADICTS`. Son contrat est désormais
+`elementKey + EVIDENCE_FOR_ELEMENT|EVIDENCE_AGAINST_ELEMENT|ABSTAIN + spanIds`.
+Ces relations sont relatives à la proposition exacte de l'élément, y compris
+quand elle décrit un défaut. Elles restent candidates : elles ne peuvent être
+converties en statut atomique ni alimenter score, niveau, maîtrise ou
+progression. Une erreur individuelle est isolée ; une omission ou abstention
+reste `UNRESOLVED`.
+
+L'attestation
+`sonnet-5-reasoning-capability-attestation-2026-08-16.json`, SHA-256
+`620a9a993004545028811f39ce1f39ac59e73730b3844b3346229165a32b1834`,
+prouve hors ligne deux sérialisations. La voie retenue pour une future campagne
+est `OPENROUTER_CHAT`, modèle wire `anthropic/claude-sonnet-5`, route exacte
+`Anthropic`, fallback interdit et `reasoning.effort=none`, avec coût `ACTUAL`
+obligatoire. La voie Anthropic directe emploie `claude-sonnet-5` et
+`thinking.type=disabled`, mais reste bloquée car l'adapter ne produit qu'un coût
+estimé.
+
+Cette preuve de capacité n'autorise ni appel ni promotion. L'identité de
+campagne, les deux manifestes quatre cas puis 10 × 2, le budget Finance et le GO
+propriétaire ne sont pas attribués. V4-002 et V4-010 peuvent avancer hors ligne
+avec publication/live bloqués ; réseau, débit réel, falsificateur et holdout
+restent interdits.

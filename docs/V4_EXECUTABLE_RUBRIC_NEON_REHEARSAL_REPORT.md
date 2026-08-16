@@ -1,5 +1,11 @@
 # Répétition Neon — moteur de rubrique exécutable V4
 
+> **Addendum du 16 août 2026.** Ce rapport conserve le gate humain historique
+> tel qu'il existait lors de la répétition. Il est supersédé pour la voie active
+> par `V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` et
+> `V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` : aucun évaluateur humain n'est requis
+> ni simulé ; le holdout v3 reste fermé jusqu'à sa qualification autonome.
+
 ## Résultat
 
 La migration additive `20260813160000_add_provider_call_intent` est rejouable

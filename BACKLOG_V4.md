@@ -2,9 +2,10 @@
 
 ## Statut et autorité
 
-- Version : 1.7.0
+- Version : 1.9.0
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
-- Dernière consolidation : 15 août 2026 — roadmap exécutable et smoke Gemini 1.3 positif
+- Dernière consolidation : 16 août 2026 — protocole evidence-assist 3.0.0
+  implémenté hors ligne, capacité de désactivation attestée, aucun appel autorisé
 - Baseline : V3.5 officiellement clôturée et son système visuel documenté
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
@@ -12,12 +13,13 @@
 
 La vue de pilotage courante est `docs/V4_ROADMAP.md`. Elle résume l'état réel,
 le chemin critique et les gates sans remplacer les critères détaillés du présent
-backlog. La spécification autoritaire de la nouvelle correction est
-`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La spécification composite
-`docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md` reste une baseline historique utile
-pour les garanties de coût, d'idempotence et de réconciliation ; elle ne définit
-plus l'autorité pédagogique cible. Les deux références Atlas validées pour les
-crédits et la correction sont :
+backlog. La spécification autoritaire du moteur de correction est
+`docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La nouvelle identité de protocole
+de recherche sémantique est régie par
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. La spécification composite locale
+reste une baseline historique utile pour les garanties de coût, d'idempotence
+et de réconciliation ; elle n'est plus une autorité active. Les deux références
+Atlas validées pour les crédits et la correction sont :
 
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html`.
@@ -80,7 +82,8 @@ La correction V4 fonctionne sans évaluateur humain opérationnel ou de
 promotion. Les campagnes historiques et leurs revues restent des preuves
 immuables, mais aucune nouvelle campagne ne peut simuler une approbation humaine
 ou utiliser `humanReviewApproved` comme autorité. Le manifeste canonique de la
-phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json`.
+phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json`. Le manifeste sans
+suffixe reste l'autorité historique épinglée par les campagnes closes.
 
 - Le gate de promotion devient `GO_AUTONOMOUS_FORMATIVE` : oracle autonome
   scellé, cas déterministes, métamorphismes, sécurité et citations exactes,
@@ -126,44 +129,90 @@ cherche plus un modèle chargé de noter. La spécification canonique devient
   preuves. Un falsificateur d'une autre famille n'est ajouté que dans une
   expérience indépendante démontrant un gain net.
 
+### Amendement validé — evidence-assist à passages déterministes
+
+Le 16 août 2026, le Propriétaire a approuvé
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` comme nouvelle autorité de protocole
+pour la prochaine expérimentation. Cette décision ne modifie ni ne requalifie
+aucune campagne Gemini ou Sonnet 5 antérieure : leurs verdicts, coûts, ledgers,
+raws et règles d'arrêt restent immuables et append-only.
+
+- LearnX segmente la réponse avant appel, attribue des identifiants opaques aux
+  passages et conserve seul les offsets, textes exacts et empreintes.
+- Le modèle ne peut proposer que `EVIDENCE_FOR_ELEMENT`,
+  `EVIDENCE_AGAINST_ELEMENT` ou `ABSTAIN` sur des identifiants fournis. Ces
+  relations restent candidates et ne peuvent alimenter aucun score, niveau ou
+  statut atomique du moteur historique. Il ne produit ni citation libre, score,
+  `PASS/FAIL`, progression ou
+  feedback libre. Une omission ou une abstention devient `UNRESOLVED`, jamais
+  automatiquement `NOT_DEMONSTRATED`.
+- La cible expérimentale reste `anthropic/claude-sonnet-5`, catalogue snapshot
+  `anthropic/claude-sonnet-5-20260630`, via `OPENROUTER_CHAT`, route exacte
+  `Anthropic` et fallback interdit. Le prompt et le protocole portent la version
+  `3.0.0`, le validateur et le segmenter `2.0.0` ; l'empreinte du protocole
+  hors ligne est
+  `cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a`.
+- Le raisonnement doit être explicitement `DISABLED` par une capacité attestée
+  de la route exacte. Une omission du paramètre ne vaut jamais désactivation.
+  L'attestation route-specific du 16 août prouve hors ligne
+  `reasoning: { effort: "none" }`. Le statut devient
+  `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` : le préflight reste bloqué
+  faute d'identité de campagne, budget Finance et GO propriétaire.
+- Aucun identifiant de campagne, profil de requête ou gate n'est encore
+  attribué. Aucun identifiant ne doit être inventé dans la documentation.
+- Les quatre cas positif, négatif, mutation et injection sont le premier gate.
+  Le panel 10 cas × 2 n'est exécuté que si le gate fait `4/4`. Les deux étages,
+  leurs seuils et leurs règles d'arrêt sont gelés ensemble avant le premier
+  appel ; toute modification recommence au gate quatre cas sous une nouvelle
+  identité.
+- Le holdout actif devient
+  `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
+  Il reste non authoré, non scellé et inexécutable. Le manifeste v2 est conservé
+  intact avec le statut `SUPERSEDED_HISTORICAL_DRAFT`.
+- Le falsificateur, le holdout, la publication V4-002 et l'activation réelle de
+  V4-010 restent fermés. V4-002 et V4-010 avancent hors ligne : authoring,
+  compilation, fake provider, feature flag forcé à off et tests sans réseau ni
+  débit réel.
+
 V4 ne doit jamais être anticipée dans un ticket V3 ou V3.5. Un ticket V4
 correspond idéalement à un commit ou une pull request autonome.
 
-## Vue de pilotage au 15 août 2026
+## Vue de pilotage au 16 août 2026
 
 Cette section est la synthèse courte. Les statuts détaillés, dépendances et
 preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 
 ### Maintenant — fermer la preuve autonome
 
-1. Intégrer la preuve du smoke Gemini 1.3 positif sans la présenter comme une
-   promotion : un cas positif, 1 appel, 0 retry, coût réconcilié.
-2. Préenregistrer puis faire arbitrer séparément le gate « maîtrisé + négatif +
-   injection ». Aucun nouvel appel n'est autorisé par le smoke positif.
-3. Si ce gate passe, exécuter le panel 10 cas × 2 sous la même identité, puis
-   appliquer `GO_AUTONOMOUS_FORMATIVE` sur des oracles mécaniques, tests
-   métamorphiques et pseudo-oracles scellés. Aucun évaluateur humain n'est
-   simulé.
-4. Publier un premier contrat `WRITING/fr-FR` seulement s'il est
-   `FULLY_COMPILABLE`, versionné et couvert par ses templates et remédiations.
+1. Conserver le segmenter, le contexte de requête, le raw provider, le schéma
+   evidence-assist et l'attestation de capacité sous tests fail-closed.
+2. Attribuer une identité immuable, puis geler ensemble le gate quatre
+   cas et le panel conditionnel 10 × 2. Aucun identifiant n'est anticipé dans
+   ce backlog.
+3. Faire arbitrer le budget Finance et obtenir un GO propriétaire distinct.
+4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
+   que si le gate fait `4/4`, sous exactement la même identité.
+5. Publier un premier contrat `WRITING/fr-FR` seulement si le protocole franchit
+   ses gates autonomes et si le contrat est `FULLY_COMPILABLE`, versionné et
+   couvert par ses templates et remédiations.
 
 ### Ensuite — livrer le premier flow apprenant
 
-5. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
+6. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
    de preuves, exécution déterministe de la rubrique, feedback authoré,
    révision/clarification et libération en cas d'échec technique.
-6. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
+7. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
    aucun effet sur `ConceptProgress`, `StageProgress` ou `VALIDATED`.
-7. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
+8. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
    compréhension UX avant d'activer prix ou paiement.
 
 ### Plus tard — économie, paiement et extension
 
-8. Calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
+9. Calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
    observés ; les catalogues actuels restent `DRAFT/INACTIVE`.
-9. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
+10. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
    finance et conseil externe.
-10. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
+11. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
     multi-notions et corrigé serveur ne peut pas prouver la maîtrise.
 
 ### Vérités à ne plus perdre
@@ -171,8 +220,9 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 - 0 contrat V4 est `PUBLISHED` ; 0 activité est éligible au runtime IA.
 - Le moteur de rubrique exécutable existe en recherche/hors ligne ; V4-010
   n'est pas branché à l'application.
-- Le smoke Gemini 1.3 positif prouve le contrat de citation sur un cas évident,
-  pas la sécurité complète, la discrimination négative ou la production.
+- Le smoke Gemini 1.3 positif et les NO-GO Gemini/Sonnet 5 restent des preuves
+  historiques ; aucun ne promeut un pipeline. Le protocole 3.0.0 n'a encore
+  effectué aucun appel : sa capacité est attestée hors ligne, pas sa qualité.
 - Le registre `SourceVersion → Passage → Claim → KnowledgePack →
   RubricElement` est une fondation future. Il sépare grounding externe et preuve
   apprenant ; son absence ne bloque pas le premier pilote court et faible risque.
@@ -404,11 +454,13 @@ la grammaire visuelle.
 3. Une correction n'est possible que si l'activité possède un contrat de
    correction publié, versionné et compatible.
 4. Le modèle ne choisit ni les critères, ni les niveaux, ni leurs poids, ni le
-   seuil de réussite. Il cherche ou conteste des preuves ; LearnX exécute la
-   rubrique authorée et calcule seul le niveau et l'éventuel score indicatif.
-5. La sortie IA propose uniquement des statuts atomiques et des spans de la
-   réponse. LearnX rejette toute preuve absente, hors réponse ou rattachée à un
-   élément inconnu.
+   seuil. Il propose seulement des relations candidates entre des éléments et
+   des passages fournis. Ces relations ne sont jamais une entrée du calcul de
+   niveau, de score, de maîtrise ou de progression.
+5. Les constats mécaniques scorables et les relations IA candidates utilisent
+   des types et certificats séparés. LearnX rejette toute clé ou span inconnu,
+   conserve les offsets et hashes, et interdit toute conversion des candidats
+   IA vers les statuts atomiques scorables de l'ancien moteur.
 6. Le modèle, le prompt, le contrat, le catalogue de prix et le résultat sont
    versionnés afin de rendre toute correction reproductible et auditable.
 7. Aucun routeur automatique ne choisit silencieusement un modèle. V4 promeut
@@ -457,8 +509,10 @@ la grammaire visuelle.
     attribuer, confirmer ou remplacer un score.
 21. Une ambiguïté matérielle déclenche au maximum une clarification ciblée
     issue du contrat ; elle ne transforme pas la correction en conversation.
-22. Si la preuve ne permet pas un niveau stable, LearnX ne fabrique ni score
-    précis ni verdict : l'apprenant révise ou clarifie sa réponse complète.
+22. Aucune relation sémantique IA ne fonde un niveau ou un score, stable ou non.
+    L'apprenant peut réviser ou clarifier sa réponse complète à partir des
+    observations formatives ; seul un constat mécanique indépendant est
+    scoré.
 23. Toute révision ou clarification crée une nouvelle version immuable de la
     soumission et conserve le même snapshot de rubrique. Une réponse strictement
     identique restitue le certificat existant sans nouvel appel ni débit.
@@ -833,7 +887,8 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ## V4-002 — Contrat de correction pédagogique versionné
 
-**Priorité : P0 pédagogie. Dépendances : V4-001.**
+**Statut : ACTIF HORS LIGNE — PUBLICATION BLOQUÉE. Priorité : P0 pédagogie.
+Dépendances : V4-001.**
 
 ### Périmètre
 
@@ -843,10 +898,14 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 - Inclure objectifs, critères, poids, niveaux de performance, éléments attendus,
   variantes acceptables, erreurs fréquentes, sources autorisées, exemples
   étalonnés, seuil, règles de preuve, propriété des pénalités et clarification.
-- Définir la sortie structurée minimale du chercheur : statut atomique, spans
-  exacts, contradictions, ambiguïtés et confiance diagnostique par élément. Le
-  serveur compile la rubrique, calcule niveaux et score indicatif, produit le
-  feedback depuis les templates et décide toute transition.
+- Définir une vue candidate distincte du contrat : proposition de l'élément,
+  variantes, contre-exemples, règle candidate de un à quatre spans et aucune
+  donnée de points, poids, niveau ou score. Le modèle retourne uniquement
+  `elementKey + EVIDENCE_FOR_ELEMENT|EVIDENCE_AGAINST_ELEMENT|ABSTAIN +
+  spanIds`. Le serveur résout les spans et conserve les relations comme
+  observations candidates non scorables.
+- Définir séparément les constats mécaniques authorés qui peuvent, eux seuls,
+  alimenter une règle de niveau ou un score indicatif côté serveur.
 - Étendre le guide d'authoring sans imposer un nombre arbitraire de critères.
 - Préparer un inventaire des activités existantes éligibles, incomplètes ou
   explicitement non compatibles.
@@ -863,16 +922,19 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ### Hors périmètre
 
-- Génération automatique de rubriques, migration globale et correction live.
+- Génération automatique de rubriques, migration globale, publication éligible
+  et correction live avant le gate autonome.
 
 ### Critères d'acceptation
 
 - Les poids totalisent 100 % et sont authorés, jamais inférés au runtime.
-- Les bandes d'appréciation et règles d'affichage du score sont versionnées ;
-  elles ne créent aucun verrou de progression.
+- Les bandes et règles de score mécanique sont versionnées ; une relation IA
+  candidate ne peut en modifier ni l'entrée ni la sortie.
 - Le contrat publié est immuable ; une nouvelle version n'altère pas les
   corrections historiques.
 - Une activité sans contrat valide ne peut pas proposer une correction IA.
+- Un test négatif prouve qu'aucun candidat evidence-assist ne peut être consommé
+  par un calcul de niveau, score, maîtrise ou progression.
 - Les informations éditoriales de preuve restent compatibles avec les règles
   de sourcing existantes.
 - Le premier contrat faible risque peut être publié sans registre de knowledge
@@ -901,10 +963,10 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   hallucination, calibration, sécurité, latence et coût complet.
 - Mesurer médiane, P75, P90, retry, clarification, faux statuts, couverture,
   abstention et variabilité.
-- Mesurer d'abord l'exactitude des statuts atomiques, les spans, les faux
-  `SUPPORTED`/`NOT_DEMONSTRATED`, la localité, la monotonie, la couverture et
-  l'abstention. Les niveaux sont ensuite recalculés par le moteur, jamais
-  attribués par un candidat.
+- Mesurer les relations candidates, les identifiants de spans, faux supports,
+  omissions, abstentions, polarité, couverture et variabilité. Ne jamais
+  recalculer de niveau depuis ces relations : le corpus mécanique du moteur et
+  le corpus sémantique evidence-assist restent deux preuves séparées.
 - Définir les seuils de promotion, régression et rollback d'un modèle.
 - Produire un rapport sans envoyer de donnée réelle non anonymisée.
 - Conserver les campagnes mono-modèle et composites comme baselines historiques.
@@ -939,13 +1001,13 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
   Pour la bêta, `eventualUnusableRunRate` doit rester ≤ 2 % et aucune sortie
   invalide ne peut être montrée ou débitée. `firstAttemptInvalidRate` devient un
   indicateur opérationnel avec cible ≤ 10 %, sans masquer les retries.
-- Le gate chercheur impose 20/20 workflows utilisables, spans exacts, clés
-  connues, sécurité injection/canari et réconciliation à 100 %, aucun faux
-  `SUPPORTED` sur contrôle mécanique, aucune exigence inconnue et aucune sortie
-  de niveau, score ou feedback libre par le modèle.
-- Le gate du moteur impose zéro double pénalisation, zéro combinaison non
-  couverte, zéro niveau inatteignable, monotonie et localité. Un score exact est
-  interdit dès qu'une ambiguïté peut modifier un niveau.
+- Le gate evidence-assist impose d'abord 4/4, puis 20/20 sous la même identité :
+  spans connus, raw et contexte liés, sécurité injection/canari et coûts
+  réconciliés à 100 %, zéro faux support critique, clé inconnue, champ interdit
+  ou consommation d'une relation candidate par un score/niveau.
+- Le gate mécanique du moteur impose zéro double pénalisation, combinaison non
+  couverte ou niveau inatteignable, ainsi que monotonie et localité. Ses entrées
+  ne proviennent jamais des relations candidates IA.
 - Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
   `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
 
@@ -999,13 +1061,13 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ### Périmètre
 
-- Persister requête, état, soumission, snapshot du contrat, identité du pipeline,
-  prompts, modèles et rôles, statuts atomiques, certificat de preuve, score
-  indicatif calculé, état pédagogique et historique.
+- Persister requête, raw fournisseur, contexte et canari empreintés, soumission,
+  snapshot du contrat, identité du pipeline, prompts, modèles, relations IA
+  candidates, constats mécaniques et certificats distincts.
 - Rendre la création et les transitions idempotentes et concurrent-safe.
-- Exécuter côté serveur les règles de niveau, le score pondéré et les templates
-  formatifs ; aucun modèle ne peut décider d'une validation, d'un niveau final
-  ou modifier la progression.
+- Exécuter côté serveur les éventuelles règles mécaniques de niveau/score et les
+  templates formatifs. Les relations IA candidates ne peuvent être passées à
+  ces règles ni décider d'une validation ou modifier la progression.
 - Préserver les soumissions, historiques antérieurs et redémarrages existants ;
   aucune nouvelle correction manuelle ne peut être créée dans le flow V4.
 - Distinguer correction déterministe, correction IA et validation scientifique.
@@ -1017,6 +1079,8 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 ### Critères d'acceptation
 
 - Une même clé d'idempotence ne crée ni double correction ni double coût logique.
+- Une sortie fournisseur valide conserve sa chaîne assistant brute exacte ; le
+  parse ne peut pas devenir rétrospectivement la source de preuve brute.
 - Le texte, le score et l'appréciation IA ne peuvent pas modifier directement
   la progression ou terminer l'activité.
 - Les corrections historiques restent lisibles après évolution du contrat.
@@ -1209,9 +1273,10 @@ de route épinglée et de réconciliation restent réutilisées.**
 
 ### Gate de consultation avant code
 
-- **Produit & pédagogie — pilote** : fournir la version approuvée de
-  `docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md` et vérifier que modèle, serveur et
-  progression conservent leurs autorités respectives.
+- **Produit & pédagogie — pilote** : appliquer l'autorité courante
+  `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` et vérifier que modèle, serveur et
+  progression conservent leurs autorités respectives. La spec composite locale
+  non versionnée n'est pas une autorité active.
 - **Finance & Pricing — consultation obligatoire** : confirmer le périmètre du
   devis unique, les appels inclus, les retries absorbés, le règlement et les
   dimensions de coût à mesurer sans activer de prix.
@@ -1224,8 +1289,9 @@ de route épinglée et de réconciliation restent réutilisées.**
 
 ### Périmètre historique livré
 
-- Réauditer les livraisons V4-003, V4-004, V4-005 et V4-007 contre la spec
-  composite et documenter les écarts sans réécrire l'historique.
+- Réauditer les livraisons V4-003, V4-004, V4-005 et V4-007 contre leurs
+  contrats historiques, puis documenter les écarts avec l'autorité
+  evidence-assist sans réécrire l'historique.
 - Déprécier dans le chemin V4 toute autorité binaire, score, confiance globale
   ou décision de seconde passe provenant directement du modèle.
 - Ajouter une identité composite immuable : primaire, vérificateur ciblé,
@@ -1412,9 +1478,19 @@ sortie visible. Une nouvelle identité bornée à 1 024 tokens de raisonnement a
 ensuite dépassé cette limite dès son premier appel (`1 082`) et s'est arrêtée
 avant validation sémantique. Ce second résultat est un NO-GO technique de
 profil, pas un verdict pédagogique sur Sonnet 5. Le retuning de profil et la
-recherche large de modèles sont arrêtés ; la prochaine étape est un arbitrage
-d'architecture entre MVP déterministe étroit et révision explicite de la
-route/architecture. Aucun holdout, V4-002 ou V4-010 n'est ouvert.
+recherche large de modèles sont arrêtés ; à cet instant historique, la prochaine
+étape était un arbitrage d'architecture et aucun holdout ou travail live n'était
+ouvert.
+
+Arbitrage postérieur du 16 août 2026 : le protocole evidence-assist à passages
+déterministes est adopté sous une nouvelle identité conformément à
+`docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Une attestation ultérieure lie la
+désactivation explicite à `OPENROUTER_CHAT`, modèle
+`anthropic/claude-sonnet-5`, route exacte `Anthropic`, fallback interdit et
+`reasoning.effort=none`. L'état courant est
+`CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` : aucun identifiant de campagne,
+profil ou gate n'est attribué et aucun budget/GO propriétaire n'est accordé.
+Les NO-GO ci-dessus restent inchangés.
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
@@ -1430,6 +1506,13 @@ validation. L'unique smoke frais a terminé `VALID`, Finance l'a réconcilié et
 Produit/pédagogie l'a approuvé comme cas positif seulement. Il autorise la
 préparation, pas l'exécution, du gate maîtrisé + négatif + injection. Le panel
 reste fermé.**
+
+**État courant au 16 août 2026 : protocole evidence-assist 3.0.0, segmenter
+2.0.0, contexte/canari/raw et capacité de désactivation implémentés et attestés
+hors ligne ; aucun appel autorisé. Le prochain gate comprend quatre cas, puis
+un panel 10 × 2 strictement conditionnel sous la même identité. Le holdout,
+la publication V4-002 et le live V4-010 restent fermés ; leurs lots hors ligne
+sont actifs.**
 
 ### Point de reprise pour le développement
 
@@ -1510,6 +1593,11 @@ reste fermé.**
   immédiatement en cas d'échec du gate.
 - Le holdout, le falsificateur et l'intégration utilisateur restent interdits à
   ce stade. Un GO du chercheur n'autorise que l'étape de preuve suivante.
+- Les instructions Gemini et citation libre de cette section décrivent les
+  identités historiques. Pour toute nouvelle campagne, la spécification
+  evidence-assist impose des passages déterministes, des relations candidates
+  seulement et le statut `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` jusqu'au
+  gel de campagne, budget Finance et GO propriétaire.
 
 ### Décision et continuité de preuve
 
@@ -1540,8 +1628,9 @@ reste fermé.**
   dont l'occurrence est unique, puis dériver côté serveur les offsets et le
   SHA-256. Aucun passage du contexte ne peut être présenté comme extrait de
   l'apprenant.
-- Produire un certificat de preuve reconstructible et dériver niveaux, score
-  indicatif et feedback exclusivement côté LearnX.
+- Produire un certificat candidate-only reconstructible. Ne jamais convertir
+  ses relations en statuts atomiques, niveau, score, maîtrise ou progression ;
+  seuls des constats mécaniques indépendants peuvent alimenter ces calculs.
 - Séparer correction, exécution et finance ; conserver les garanties `CALL_INTENT`,
   idempotence locale et réconciliation du P0.
 
@@ -1579,18 +1668,22 @@ reste fermé.**
   et des artefacts bruts empreintés. Aucun appel concurrent ou hors manifeste ne
   participe aux métriques.
 
-### Gates préenregistrés
+### Gates historiques et successeur evidence-assist
 
 - Compilateur : zéro propriétaire illégal, double pénalisation, niveau
   inatteignable, règle non monotone, combinaison non couverte ou score exact
   sous ambiguïté matérielle. Les mutations prévues doivent toutes être détectées.
-- Chercheur : 20/20 workflows utilisables, spans exacts, clés connues, sécurité
-  injection/canari et coûts réconciliés à 100 % ; zéro faux `SUPPORTED` sur les
-  contrôles mécaniques, exigence inconnue ou proposition de niveau/score.
-- Mesurer séparément exactitude des statuts, faux `SUPPORTED`, faux
-  `NOT_DEMONSTRATED`, couverture, abstention, variabilité, latence et coûts par
-  famille d'éléments et transformation. Ne pas fusionner corpus mécanique,
-  synthétique et shadow réel.
+- Les métriques `SUPPORTED`/`NOT_DEMONSTRATED` appartiennent uniquement aux
+  campagnes historiques. Le successeur 3.0.0 mesure
+  `EVIDENCE_FOR_ELEMENT|EVIDENCE_AGAINST_ELEMENT|ABSTAIN`, d'abord sur 4/4 puis
+  sur 20/20 sous la même identité.
+- Le successeur exige à 100 % : IDs/offsets/hashes LearnX, raw lié au contexte,
+  sécurité injection/canari, identité/route et coûts réconciliés ; il exige
+  zéro faux support critique, champ interdit ou relation candidate consommée
+  par un score, niveau, maîtrise ou progression.
+- Mesurer séparément relation, polarité, faux support, couverture, abstention,
+  rejets locaux, variabilité, latence et coûts. Ne pas fusionner corpus
+  mécanique, synthétique et shadow réel.
 - Les golds synthétiques, métamorphismes et seuils sont scellés avant le
   candidat. Aucun `humanReviewApproved` n'est simulé.
 - Aucun seuil, gold, prompt, cas ou contrôle n'est modifié après lecture des
@@ -1620,8 +1713,9 @@ reste fermé.**
 
 ## V4-010 — Correction des productions libres d'exercice
 
-**Priorité : P0 utilisateur. Dépendances : V4-009 et GO d'un moteur exécutable
-et de son chercheur de preuves issus de V4-009C.**
+**Statut : ACTIF HORS LIGNE — ACTIVATION LIVE BLOQUÉE. Priorité : P0
+utilisateur. Le fake provider, le feature flag forcé à off et les tests peuvent
+avancer ; tout réseau/débit/live dépend du GO V4-009C et d'un contrat publié.**
 
 ### Périmètre
 
@@ -1632,14 +1726,14 @@ et de son chercheur de preuves issus de V4-009C.**
   propose aucun appel IA.
 - Afficher prix estimé/plafond, soldes utilisés et confirmation avant lancement.
 - Afficher attente, reprise, erreur, crédits libérés et résultat structuré.
-- Présenter niveaux calculés par LearnX, preuves, forces, éléments non démontrés
-  et proposition de révision issue des templates authorés, sans masquer la
-  réponse de l'apprenant.
+- Présenter les constats mécaniques indépendants et, dans une zone distincte,
+  les passages associés à des observations IA candidates, les éléments non
+  résolus et les propositions de révision issues des templates authorés.
 - Nommer les preuves internes « Extrait de votre réponse » et séparer toute
   source externe dans une zone « Références mobilisées ».
-- Présenter un score indicatif serveur et une appréciation formative, sans
-  libellé académique « validé/rejeté » et sans effet sur la progression. Aucun
-  score exact n'est publié si une ambiguïté peut modifier un niveau.
+- Ne présenter un score indicatif que pour une partie intégralement mécanique et
+  indépendante. Aucun score ou niveau ne dépend du nombre, de la polarité ou de
+  la couverture des relations IA candidates.
 - Expliquer sobrement les états `FEEDBACK_READY`, `REVISION_REQUIRED`,
   `CLARIFICATION_REQUIRED` et `TEMPORARILY_UNAVAILABLE` avec des libellés
   humains. Ils ne sont jamais présentés comme une validation académique.
@@ -1669,9 +1763,10 @@ et de son chercheur de preuves issus de V4-009C.**
 - L'utilisateur connaît le maximum avant confirmation et le débit final après.
 - Un état de révision, clarification ou indisponibilité est expliqué sans produire une fausse
   conclusion, exposer les modèles ni suggérer qu'un humain répondra.
-- Le serveur contrôle spans, clés, propriétés, contradictions, injections et
-  couverture, puis exécute la rubrique versionnée. Aucun modèle ne fournit le
-  niveau, le score, le verdict ou le feedback final.
+- Le serveur contrôle raw, contexte, canari, spans, clés, injections et
+  couverture. Il conserve les relations comme candidats non scorables ; aucun
+  modèle ni mapping applicatif ne fournit le niveau, score, verdict ou feedback
+  final.
 - Un futur falsificateur n'est appelé que s'il a été promu séparément et inclus
   dans le devis initial. Il ne vote pas, ne moyenne pas et ne remplace jamais la
   décision déterministe de LearnX.
@@ -1680,8 +1775,9 @@ et de son chercheur de preuves issus de V4-009C.**
 - Une nouvelle tentative ne concatène jamais automatiquement l'ancien devoir et
   un complément : le payload soumis doit représenter la réponse complète que
   l'apprenant souhaite faire évaluer.
-- Le certificat restitue pour chaque critère la version de règle, les statuts
-  atomiques, les spans `start/end/hash`, les contradictions et le niveau calculé.
+- Le certificat sépare les constats mécaniques des observations candidates et
+  restitue les spans `start/end/hash`, versions et éléments non résolus. Sa
+  partie IA expose toujours `level:null` et `indicativeScore:null`.
 - Aucun état, score, certificat ou événement de correction ne modifie
   `ConceptProgress`, `StageProgress` ou `StageAssessmentSubmission.VALIDATED`.
 - Clavier, lecteur d'écran, 320/390 px, zoom 200 % et erreurs réseau sont couverts.
@@ -2215,7 +2311,7 @@ V4-010, V4-011 et V4-014 disponibles.**
 
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html` ;
-- `docs/V4_AI_CORRECTION_COMPOSITE_SPEC.md`.
+- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`.
 
 ### Périmètre
 

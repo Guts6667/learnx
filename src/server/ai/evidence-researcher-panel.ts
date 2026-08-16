@@ -164,11 +164,8 @@ function rawReceipt(input: {
       'rawModelOutput' | 'rawModelOutputSha256' | 'rawModelOutputTruncated'
     >
   | undefined {
-  const source =
-    input.result.status === 'VALID'
-      ? JSON.stringify(input.result.output)
-      : input.result.rawModelOutput;
-  if (!source) return undefined;
+  const source = input.result.rawModelOutput;
+  if (source === undefined) return undefined;
   const sanitized = source.replaceAll(input.canary, '[REDACTED_CANARY]');
   const characters = Array.from(sanitized);
   return {
@@ -455,7 +452,9 @@ export async function runEvidenceResearcherPanel(input: {
         canary: input.campaign.protocol.securityCanary,
         result,
       });
-      let rawPersistenceFailed = false;
+      let rawPersistenceErrorCode = received
+        ? undefined
+        : 'RAW_MODEL_OUTPUT_MISSING';
       if (received) {
         try {
           await input.onRawReceived({
@@ -476,7 +475,7 @@ export async function runEvidenceResearcherPanel(input: {
             usage: result.usage,
           });
         } catch {
-          rawPersistenceFailed = true;
+          rawPersistenceErrorCode = 'RAW_MODEL_OUTPUT_PERSISTENCE_FAILED';
         }
       }
       const before = input.campaign.budgetProposal.hardCapUsd - actualCost();
@@ -485,9 +484,9 @@ export async function runEvidenceResearcherPanel(input: {
       let errorCode = result.status === 'VALID' ? undefined : result.errorCode;
       let output: EvidencePass | undefined;
       let agreement: boolean | undefined;
-      if (rawPersistenceFailed) {
+      if (rawPersistenceErrorCode) {
         status = 'ERROR';
-        errorCode = 'RAW_MODEL_OUTPUT_PERSISTENCE_FAILED';
+        errorCode = rawPersistenceErrorCode;
       } else if (
         actualCostUsd === undefined ||
         result.usage?.costSource !== 'ACTUAL' ||

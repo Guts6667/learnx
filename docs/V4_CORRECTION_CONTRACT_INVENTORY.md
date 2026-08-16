@@ -1,6 +1,6 @@
 # Inventaire V4 des contrats de correction
 
-- **Date de référence** : 11 août 2026
+- **Date de référence** : 16 août 2026
 - **Ticket** : V4-002
 - **Portée** : bundles JSON présents dans `seed/`
 - **Décision** : inventaire seulement, sans migration ni activation IA
@@ -46,7 +46,7 @@ restent néanmoins déterministes et sont exclues de la correction IA.
 - 26 évaluations finales possèdent une rubrique dont les poids totalisent 100,
   mais cette rubrique historique reste insuffisante pour une correction V4 ;
 - les exercices `practice` et `project`, ainsi que les évaluations
-  `simulation`, doivent en plus faire l'objet d'une revue attestant que la
+  `simulation`, doivent en plus passer un contrôle de schéma prouvant que la
   preuve attendue est entièrement textuelle.
 
 ### Explicitement incompatibles avec le runtime V4
@@ -61,12 +61,15 @@ restent néanmoins déterministes et sont exclues de la correction IA.
 
 Une activité passe d'« incomplète » à « éligible » uniquement après :
 
-1. authoring et revue humaine d'un contrat conforme au schéma
-   `correctionContractSchema` ;
-2. publication immuable d'une version ;
-3. preuve textuelle compatible avec le runtime V4 ;
-4. corpus étalon approuvé dans V4-003 ;
-5. persistance et contrôle serveur livrés par les tickets ultérieurs.
+1. authoring d'une rubrique atomique compatible avec le protocole
+   evidence-assist 3.0.0 et compilation déterministe réussie ;
+2. mutation testing, métamorphismes, exemples et contre-exemples gelés avant
+   toute sortie candidate, sans simuler une approbation humaine ;
+3. preuve textuelle compatible avec le runtime V4 et binding immuable vers
+   l'activité et la version du programme ;
+4. gate autonome V4-003 réussi, puis publication immuable distincte ;
+5. persistance séparant constats mécaniques et relations candidates, avec tests
+   prouvant zéro effet IA sur score, maîtrise ou progression.
 
 Cet inventaire ne modifie aucune activité, rubrique, progression ou donnée
 utilisateur existante.

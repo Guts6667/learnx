@@ -7,13 +7,17 @@ questions : où en sommes-nous, quel est le prochain gate, qu'est-ce qui bloque
 la valeur utilisateur et qu'est-ce qui est volontairement différé.
 
 - `BACKLOG_V4.md` reste l'autorité détaillée des tickets et critères.
-- `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json` reste l'état machine de la
-  recherche IA.
+- `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` est l'état machine courant de
+  la recherche IA.
+- `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json` reste l'autorité historique
+  épinglée par les campagnes closes.
 - `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` reste l'historique append-only.
+- `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md` régit la nouvelle identité de
+  protocole à passages déterministes.
 - Cette roadmap ne transforme jamais une preuve expérimentale en livraison
   produit.
 
-Dernière consolidation : 15 août 2026.
+Dernière consolidation : 16 août 2026.
 
 ## Légende
 
@@ -34,7 +38,7 @@ la correction IA n'est pas encore une fonctionnalité de l'application.
 
 Le chemin critique est désormais très étroit :
 
-1. prouver qu'un modèle sait rechercher des preuves exactes et sûres ;
+1. éprouver un modèle limité à des relations candidates sur des spans LearnX ;
 2. publier une rubrique `WRITING/fr-FR` réellement exécutable ;
 3. brancher ce moteur au flow apprenant sous feature flag ;
 4. mesurer qualité et coûts réels ;
@@ -63,12 +67,11 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
 - Gate v2 réussi : trois sorties valides, négatif correctement discriminé et
   injection sûre. Il autorise seulement la préparation du panel 10×2 ; aucune
   nouvelle dépense n'est autorisée.
-- Préparation 10×2 terminée hors ligne : route demandée et fournisseur observé
+- Préparation 10×2 historique terminée hors ligne : route demandée et fournisseur observé
   sont séparés, la sélection v2 remplace le seul pseudo-oracle inconclusif sans
   réécrire les corpus historiques, et le runner reste validate-only. Le
   panel v2 clos après 10 workflows valides puis une citation non exacte ; aucun
-  appel supplémentaire ni V4-002 avant nouvel arbitrage
-  pessimistes ; Finance doit arbitrer cet écart avant tout GO.
+  appel supplémentaire n'est autorisé sous cette identité.
 - Panel Sonnet 5 : arrêté au 11e appel après 10 workflows valides et stables ;
   le profil par défaut a produit 2 500 tokens de raisonnement et aucune sortie
   visible sur le premier cas de mutation. Campagne close, sans reprise.
@@ -77,14 +80,41 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   validation sémantique. `0/4` workflow est terminé ; le coût réel de
   `0,026104 USD` est réconcilié. C'est un NO-GO technique du profil, sans
   verdict pédagogique sur Sonnet 5.
-- Décision suivante : arrêter le retuning de profil et la recherche large de
-  modèles, puis arbitrer entre un MVP déterministe plus étroit ou une révision
-  explicite de l'architecture/route sous une nouvelle identité. Le holdout,
-  V4-002 et V4-010 restent fermés jusque-là.
+- Arbitrage adopté : le prochain protocole est evidence-assist à passages
+  déterministes. LearnX résout les spans ; le modèle ne propose que des
+  relations `EVIDENCE_FOR_ELEMENT`, `EVIDENCE_AGAINST_ELEMENT` ou `ABSTAIN`,
+  sans citation libre, niveau, score ou feedback. Ces relations candidates ne
+  sont jamais consommées par un calcul mécanique. L'autorité est
+  `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`.
+- Identifiants réutilisés et épinglés : adapter `OPENROUTER_CHAT`, modèle et ID
+  wire `anthropic/claude-sonnet-5`, snapshot catalogue
+  `anthropic/claude-sonnet-5-20260630`, route exacte `Anthropic`, fallback
+  interdit. Le protocole/prompt est `3.0.0`, le validateur/segmenter `2.0.0` et
+  l'empreinte hors ligne est
+  `cbbb273979027fc1654a11e68202b5c7aa55876c2019f1262db35d19f9a41c5a`.
+  Aucun identifiant de campagne, profil ou gate n'est encore attribué.
+- Capacité acquise hors ligne : l'attestation lie la route exacte à
+  `reasoning.effort=none` et à un coût `ACTUAL` obligatoire. La route Anthropic
+  directe est écartée tant que son coût reste estimé. L'état est
+  `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL`, pas un GO de campagne.
+- Blocages courants : identité/manifeste de campagne non attribués, gate quatre
+  cas et panel 10 × 2 non gelés, budget Finance non arbitré et GO propriétaire
+  non accordé.
+- Ordre : geler ensemble quatre cas et le panel conditionnel 10 × 2, exécuter
+  les quatre cas après attestation et autorisations, puis exécuter le 10 × 2
+  uniquement si le gate fait `4/4`, sous la même identité. Tout changement
+  recommence à quatre cas.
+- Le manifeste actif de holdout est
+  `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json` ;
+  il reste non authoré, non scellé et inexécutable. Le v2 reste intact comme
+  `SUPERSEDED_HISTORICAL_DRAFT`. Le falsificateur, le holdout, la publication
+  V4-002 et le live V4-010 restent fermés ; les deux tickets avancent hors ligne.
 
 ### Gate B — premier contrat publiable
 
 Ticket principal : `V4-002`.
+
+Statut : `ACTIVE_OFFLINE / PUBLICATION_BLOCKED`.
 
 - Cible unique : `WRITING/fr-FR`, texte, faible risque.
 - Le contrat doit être `PUBLISHED` et `FULLY_COMPILABLE`.
@@ -98,6 +128,9 @@ Ticket principal : `V4-002`.
 ### Gate C — premier flow utilisateur
 
 Ticket principal : `V4-010`.
+
+Statut : `ACTIVE_OFFLINE / LIVE_BLOCKED` avec fake provider et feature flag
+forcé à off ; aucun réseau ou débit réel.
 
 - Brancher remise → devis/réservation → recherche de preuves → règles LearnX →
   certificat → feedback authoré.
@@ -124,7 +157,7 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | Ticket | Statut courant | Réalité vérifiée / limite | Prochaine condition |
 | --- | --- | --- | --- |
 | V4-001 | `LIVRÉ — INACTIF` | ADR et frontières établies. | Réviser seulement si l'architecture cible change. |
-| V4-002 | `ACTIF` | Schéma et archétype DRAFT ; 0 contrat publié. | Publier un premier WRITING/fr-FR entièrement compilable. |
+| V4-002 | `ACTIF HORS LIGNE / PUBLICATION BLOQUÉE` | Schéma et archétype DRAFT ; 0 contrat publié. | Finaliser le contrat candidate-only et ses mutations ; publication après GO. |
 | V4-003 | `ACTIF` | Baselines historiques conservées ; aucun modèle promu. | Fermer les gates 009C puis comparer sur identités reproductibles. |
 | V4-004 | `LIVRÉ — INACTIF` | Adaptateurs et tests existent pour la recherche. | Activation uniquement via 009C/010. |
 | V4-005 | `LIVRÉ — INACTIF` | Persistance et états fondés, runtime utilisateur non branché. | Intégration V4-010. |
@@ -134,8 +167,8 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 | V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
 | V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
 | V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `ARBITRAGE ARCHITECTURE` | Gemini panel v2 NO-GO ; Sonnet 5 passe 3/3, puis deux profils de panel échouent techniquement. Le gate borné s'arrête au premier appel (`1082 > 1024` tokens de raisonnement), sans verdict pédagogique négatif. | Choisir explicitement entre MVP déterministe étroit et révision d'architecture/route ; aucun nouvel appel par défaut. |
-| V4-010 | `BLOQUÉ` | Aucun flow IA utilisateur actif. | 009C GO + contrat V4-002 publié. |
+| V4-009C | `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` | Les NO-GO historiques restent immuables. Le protocole 3.0.0 et `reasoning=DISABLED` sont attestés hors ligne ; aucune campagne n'est autorisée. | Attribuer/geler l'identité, budget Finance + GO propriétaire, réussir 4/4 puis seulement 10 × 2. |
+| V4-010 | `ACTIF HORS LIGNE / LIVE BLOQUÉ` | Aucun flow utilisateur actif ; fake provider et hard-off autorisés. | Live seulement après GO 009C + contrat publié. |
 | V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
 | V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |
 | V4-013 | `PLANIFIÉ` | Sandbox marchand non activé. | Qualité, finance et conseil externe. |
@@ -170,10 +203,11 @@ pas fusionnées :
 5. **shadow réel non annoté et consenti** : stabilité, couverture, abstention,
    dérive et coût seulement, jamais exactitude pédagogique revendiquée.
 
-Le holdout de remplacement devra être authoré indépendamment des résultats
-candidats, scellé avant ouverture et consommé une seule fois après GO du corpus
-de développement. Un résultat ambigu ou non supporté produit une abstention,
-pas une validation humaine fictive.
+Le holdout actif v3 devra être authoré indépendamment des résultats candidats,
+qualifié par ses gates autonomes, puis scellé avant ouverture et consommé une
+seule fois après GO du corpus de développement. Le v2 est conservé intact comme
+`SUPERSEDED_HISTORICAL_DRAFT`. Un résultat ambigu ou non supporté produit une
+abstention, pas une validation humaine fictive.
 
 ## Pistes parallèles et frontières de version
 
@@ -199,7 +233,10 @@ pas une validation humaine fictive.
 
 ## Prochaines décisions du propriétaire
 
-Aucune décision de prix ou de paiement n'est nécessaire maintenant. Le prochain
-arbitrage utile intervient lorsque le gate « maîtrisé + négatif + injection »
-est préenregistré et chiffré : Finance arbitre alors l'enveloppe exacte, puis le
-Propriétaire autorise ou refuse séparément les appels.
+Aucune décision de prix produit ou de paiement n'est nécessaire maintenant. La
+capacité route-specific `DISABLED` est attestée hors ligne. La prochaine décision
+exécutable est d'attribuer une identité de campagne, geler les deux étages quatre
+cas puis 10 × 2, arbitrer le budget R&D et accorder un GO propriétaire avant
+tout appel. Finance arbitre alors uniquement l'enveloppe des quatre cas, puis le
+Propriétaire autorise ou refuse ces appels. Une autorisation distincte du panel
+n'est demandée qu'après un résultat `4/4`, sans changement d'identité.

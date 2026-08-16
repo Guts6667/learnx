@@ -8,6 +8,14 @@
   Finance & Pricing selon le backlog V4 1.0.1
 - **Portée** : architecture et stratégie de migration uniquement
 
+> **Addendum du 16 août 2026.** Les frontières serveur, ledger, réservation,
+> idempotence et réconciliation de cet ADR restent autoritaires. En revanche,
+> ses passages où le modèle choisit un niveau, où un score est recalculé depuis
+> une sortie sémantique ou où une seconde passe est prévue sont historiques et
+> supersédés par `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Le modèle propose
+> désormais seulement des relations candidates sur des spans LearnX ; elles ne
+> peuvent alimenter score, niveau, maîtrise ou progression.
+
 ## 1. Contexte
 
 LearnX corrige aujourd'hui de manière déterministe les quiz et les

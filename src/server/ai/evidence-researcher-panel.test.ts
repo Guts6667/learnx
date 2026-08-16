@@ -90,14 +90,16 @@ function validResult(
   caseItem: ExecutableRubricSemanticCorpus['cases'][number],
   requestId: string,
 ) {
+  const output = outputFor(caseItem);
   return {
     latencyMs: 10,
     modelSnapshot: 'google/gemini-3.6-flash',
     observedProvider: 'Google',
-    output: outputFor(caseItem),
+    output,
     providerRequestId: requestId,
     providerRoute: 'Google',
     requestedRoute: 'google-vertex/global',
+    rawModelOutput: JSON.stringify(output),
     status: 'VALID' as const,
     usage: {
       actualCostUsd: 0.001,
@@ -259,7 +261,7 @@ describe('evidence researcher panel runner', () => {
     expect(result.state.stoppedReason).toBe('COST_RECONCILIATION_REQUIRED');
   });
 
-  it('preserves a provider output error when no raw output exists', async () => {
+  it('fails closed when a provider output error has no raw receipt', async () => {
     const input = await fixture();
     const onRawReceived = vi.fn();
     const result = await runEvidenceResearcherPanel({
@@ -293,10 +295,53 @@ describe('evidence researcher panel runner', () => {
     expect(onRawReceived).not.toHaveBeenCalled();
     expect(result.state.attempts).toHaveLength(1);
     expect(result.state.attempts[0]).toMatchObject({
-      errorCode: 'MODEL_OUTPUT_TRUNCATED',
+      errorCode: 'RAW_MODEL_OUTPUT_MISSING',
       providerRequestId: 'request-truncated',
-      status: 'INVALID',
+      status: 'ERROR',
     });
+    expect(result.state.stoppedReason).toBe('RAW_MODEL_OUTPUT_MISSING');
+  });
+
+  it('persists an exact empty raw receipt for a truncated output with no visible text', async () => {
+    const input = await fixture();
+    const onRawReceived = vi.fn();
+    const result = await runEvidenceResearcherPanel({
+      ...input,
+      completionUsdPerToken: 0.00000375,
+      onRawReceived,
+      promptUsdPerToken: 0.00000075,
+      provider: {
+        execute: vi.fn(() =>
+          Promise.resolve({
+            errorCode: 'MODEL_OUTPUT_TRUNCATED',
+            latencyMs: 1_392,
+            modelSnapshot: 'google/gemini-3.6-flash',
+            observedProvider: 'Google',
+            providerRequestId: 'request-truncated-empty',
+            providerRoute: 'Google',
+            rawModelOutput: '',
+            requestedRoute: 'google-vertex/global',
+            status: 'INVALID' as const,
+            usage: {
+              actualCostUsd: 0.032642,
+              costSource: 'ACTUAL' as const,
+              inputTokens: 3_821,
+              reasoningTokens: 2_500,
+              visibleOutputTokens: 0,
+            },
+          }),
+        ),
+      },
+    });
+
+    expect(onRawReceived).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rawModelOutput: '',
+        rawModelOutputSha256:
+          'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+        rawModelOutputTruncated: false,
+      }),
+    );
     expect(result.state.stoppedReason).toBe('MODEL_OUTPUT_TRUNCATED');
   });
 });

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 3,
+  "holdoutId": "writing-fr-evidence-assist-holdout-v3",
+  "holdoutVersion": "3.0.0",
+  "status": "CONTENT_NOT_AUTHORED",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "protocol": {
+    "authorityPath": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
+    "segmentationVersion": "2.0.0"
+  },
+  "minimumCaseCount": 24,
+  "caseCount": 0,
+  "qualification": {
+    "status": "PENDING_AUTONOMOUS_QUALIFICATION",
+    "qualifiedAt": null,
+    "constructionManifestSha256": null,
+    "validationRecordSha256": null,
+    "candidateOutputsAccessibleDuringAuthoring": false,
+    "candidateResultsReused": 0,
+    "gates": {
+      "mechanicalOracle": false,
+      "metamorphic": false,
+      "mutation": false,
+      "injectionAndCanary": false
+    }
+  },
+  "encryptedArtifact": {
+    "algorithm": "AES-256-GCM",
+    "path": "writing-fr-holdout.v3.enc.json",
+    "sha256": null
+  },
+  "sealed": false,
+  "executable": false,
+  "openedAt": null,
+  "prohibitions": [
+    "NO_PLAINTEXT_IN_REPOSITORY",
+    "NO_OPEN_BEFORE_FULL_DEVELOPMENT_GO",
+    "NO_TUNING_FROM_HOLDOUT",
+    "NO_CANDIDATE_OUTPUT_ACCESS_DURING_AUTHORING",
+    "NO_EXECUTION_WITHOUT_AUTONOMOUS_QUALIFICATION"
+  ]
+}
