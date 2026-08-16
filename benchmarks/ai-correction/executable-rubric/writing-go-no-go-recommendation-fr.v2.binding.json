@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "bindingKey": "pilot-go-no-go-recommendation-fr",
+  "bindingVersion": "1.0.0-draft",
+  "bindingFingerprint": "1df61e8cfbbcaa414d591aabea9317aae22100f7816478e2c0b34fc45e587ddc",
+  "lifecycle": "DRAFT",
+  "protocolVersion": "3.0.0",
+  "pilotRisk": "LOW",
+  "runtime": {
+    "allowedExecution": "OFFLINE_PREPARATION_ONLY",
+    "aiCorrectionEligible": false,
+    "publicationEligible": false
+  },
+  "target": {
+    "kind": "EXERCISE",
+    "programSlug": "pilotage-projets-ia-iso-42001",
+    "stageSlug": "cadrer-valeur-faisabilite",
+    "moduleSlug": "business-case-ia",
+    "lessonSlug": "arbitrer-options-couts-go-no-go",
+    "activityKey": "activity-rediger-recommandation-go-no-go",
+    "activityType": "writing",
+    "language": "fr-FR"
+  },
+  "artifacts": {
+    "pedagogySpec": {
+      "path": "content/pilotage-projets-ia-iso-42001/specs/PEDAGOGY_SPEC_098.json",
+      "sha256": "34b54b7e5656151a951170e0e046788b9b007af0144d40a86b22630f80433af0",
+      "specId": "PEDAGOGY_SPEC_098"
+    },
+    "seedProgram": {
+      "path": "seed/pilotage-projets-ia-iso-42001-program.json",
+      "sha256": "6b2e6b76906d7d020b5a01997625c34b3ee6a2ca70ece69bf4bcaa883056b39c"
+    },
+    "rubric": {
+      "path": "benchmarks/ai-correction/executable-rubric/writing-go-no-go-recommendation-fr.v2.json",
+      "sha256": "f5300bbe97103b7f0b64c674a34d003e4e397fec207bc54d823feb197cc5ebd4",
+      "compiledFingerprint": "6206d4a8dfab0715da008de1265e63a1e246b753026a72622447277c19ed47b4",
+      "rubricKey": "v4-writing-go-no-go-recommendation-fr",
+      "rubricVersion": "2.0.0-draft"
+    }
+  },
+  "candidateOutcome": {
+    "semanticAuthority": "CANDIDATE_ONLY",
+    "indicativeScore": null,
+    "scoreAuthority": "NONE",
+    "level": null,
+    "levelAuthority": "NONE",
+    "masteryEffect": "NONE",
+    "progressionEffect": "NONE"
+  }
+}

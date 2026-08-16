@@ -75,6 +75,13 @@ const rubricElementSchema = z
     pointsByCriterion: z.record(stableKeySchema, statusPointsSchema),
     polarity: z.enum(['POSITIVE', 'NEGATIVE']),
     positiveExamples: z.array(z.string().trim().min(1)).min(1),
+    remediation: z
+      .object({
+        completionEvidence: z.string().trim().min(1),
+        learnerAction: z.string().trim().min(1),
+      })
+      .strict()
+      .optional(),
     requiredFromLevelKey: levelKeySchema,
     sharedWithCriterionKeys: z.array(stableKeySchema),
     templates: z
@@ -116,10 +123,21 @@ const rubricCriterionSchema = z
 
 export const executableRubricSchema = z
   .object({
+    candidateRelationPolicy: z
+      .object({
+        authority: z.literal('CANDIDATE_ONLY'),
+        levelAuthority: z.literal('NONE'),
+        masteryEffect: z.literal('NONE'),
+        progressionEffect: z.literal('NONE'),
+        scoreAuthority: z.literal('NONE'),
+      })
+      .strict()
+      .optional(),
     eligibility: z.enum([
       'FULLY_COMPILABLE',
       'PARTIALLY_COMPILABLE',
       'UNSUPPORTED_AUTONOMOUSLY',
+      'EVIDENCE_ASSIST_ONLY',
     ]),
     elements: z.array(rubricElementSchema).min(1).max(64),
     language: z.string().trim().min(2),
@@ -372,6 +390,15 @@ function validateElementPolarity(
 
 export function compileExecutableRubric(input: unknown): CompiledExecutableRubric {
   const rubric = executableRubricSchema.parse(input);
+  if (
+    rubric.candidateRelationPolicy &&
+    rubric.scorePolicy.indicativeScoreEnabled
+  ) {
+    throw new RubricCompilationError(
+      'CANDIDATE_RELATIONS_CANNOT_ENABLE_SCORE',
+      'A candidate-only rubric cannot enable an indicative score.',
+    );
+  }
   assertUnique(
     rubric.criteria.map(({ key }) => key),
     'DUPLICATE_CRITERION_KEY',
@@ -722,6 +749,9 @@ export function buildEvidenceCertificate(input: {
   };
 }): EvidenceCertificate {
   const { rubric } = input.compiled;
+  if (rubric.candidateRelationPolicy) {
+    throw new Error('CANDIDATE_RELATIONS_NOT_SCORABLE');
+  }
   const expectedKeys = rubric.elements.map(({ key }) => key);
   assertUnique(
     input.consolidatedEvidence.elements.map(({ elementKey }) => elementKey),

@@ -1,0 +1,748 @@
+{
+  "schemaVersion": 1,
+  "rubricKey": "v4-writing-go-no-go-recommendation-fr",
+  "rubricVersion": "2.0.0-draft",
+  "ruleSetVersion": "2.0.0",
+  "lifecycle": "DRAFT",
+  "language": "fr-FR",
+  "modality": "WRITING",
+  "eligibility": "EVIDENCE_ASSIST_ONLY",
+  "progressionAuthority": "NONE",
+  "candidateRelationPolicy": {
+    "authority": "CANDIDATE_ONLY",
+    "scoreAuthority": "NONE",
+    "levelAuthority": "NONE",
+    "masteryEffect": "NONE",
+    "progressionEffect": "NONE"
+  },
+  "scorePolicy": {
+    "indicativeScoreEnabled": false,
+    "publishExactScoreWhenAmbiguousLevelIsStable": false
+  },
+  "criteria": [
+    {
+      "key": "decision-position",
+      "label": "Décision proposée",
+      "description": "La réponse formule une décision délimitée parmi go, go conditionnel, no-go ou exploration supplémentaire.",
+      "weight": 20,
+      "levels": [
+        {
+          "key": "insufficient",
+          "minimumPoints": -200
+        },
+        {
+          "key": "partial",
+          "minimumPoints": 50
+        },
+        {
+          "key": "mastered",
+          "minimumPoints": 100
+        }
+      ]
+    },
+    {
+      "key": "evidence-uncertainty",
+      "label": "Preuves et incertitudes",
+      "description": "La réponse distingue les éléments observables du dossier, l'incertitude restante et leur lien avec la décision.",
+      "weight": 30,
+      "levels": [
+        {
+          "key": "insufficient",
+          "minimumPoints": -200
+        },
+        {
+          "key": "partial",
+          "minimumPoints": 33
+        },
+        {
+          "key": "mastered",
+          "minimumPoints": 100
+        }
+      ]
+    },
+    {
+      "key": "conditions-controls",
+      "label": "Conditions et critères d'arrêt",
+      "description": "La réponse rend les conditions, responsabilités et critères d'arrêt contrôlables.",
+      "weight": 30,
+      "levels": [
+        {
+          "key": "insufficient",
+          "minimumPoints": -200
+        },
+        {
+          "key": "partial",
+          "minimumPoints": 33
+        },
+        {
+          "key": "mastered",
+          "minimumPoints": 100
+        }
+      ]
+    },
+    {
+      "key": "envelope-review",
+      "label": "Enveloppe et réexamen",
+      "description": "La réponse borne ce qui est autorisé maintenant et fixe le prochain point de décision.",
+      "weight": 20,
+      "levels": [
+        {
+          "key": "insufficient",
+          "minimumPoints": -200
+        },
+        {
+          "key": "partial",
+          "minimumPoints": 50
+        },
+        {
+          "key": "mastered",
+          "minimumPoints": 100
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "key": "decision-mode-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "evidence-uncertainty",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "Je recommande un go conditionnel.",
+        "Je recommande une exploration supplémentaire avant toute décision de déploiement."
+      ],
+      "negativeExamples": [
+        "Plusieurs options restent possibles et elles présentent toutes des avantages."
+      ],
+      "acceptableVariants": [
+        "Une formulation équivalente est acceptable si l'une des quatre orientations est identifiable sans interprétation libre."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 2,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Aucune orientation n'est retenue alors que le texte annonce une recommandation."
+      ],
+      "pointsByCriterion": {
+        "decision-position": {
+          "SUPPORTED": 50,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -50
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "L'orientation de décision est identifiable.",
+        "notDemonstrated": "Indiquez explicitement go, go conditionnel, no-go ou exploration supplémentaire.",
+        "contradicted": "L'orientation annoncée est contredite par un autre passage ; retenez une décision unique.",
+        "ambiguous": "La décision peut être comprise de plusieurs façons ; nommez l'orientation retenue."
+      },
+      "remediation": {
+        "learnerAction": "Commencer la recommandation par une phrase qui nomme une seule orientation de décision.",
+        "completionEvidence": "Une phrase autonome permet d'identifier go, go conditionnel, no-go ou exploration supplémentaire."
+      }
+    },
+    {
+      "key": "decision-scope-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "evidence-uncertainty",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "Le go concerne uniquement un pilote de six semaines sur le flux documentaire interne.",
+        "Le no-go porte sur le déploiement, pas sur la collecte des données manquantes."
+      ],
+      "negativeExamples": ["Je recommande de poursuivre le projet."],
+      "acceptableVariants": [
+        "La portée peut être décrite par un périmètre, une population, un usage, une phase ou une exclusion explicite."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 3,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "La recommandation autorise simultanément un pilote limité et un déploiement général."
+      ],
+      "pointsByCriterion": {
+        "decision-position": {
+          "SUPPORTED": 50,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -50
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "La portée de la décision est délimitée.",
+        "notDemonstrated": "Précisez exactement ce qui est autorisé, différé ou refusé.",
+        "contradicted": "Deux portées incompatibles sont annoncées ; conservez une délimitation cohérente.",
+        "ambiguous": "La portée reste équivoque ; ajoutez le périmètre et les exclusions de la décision."
+      },
+      "remediation": {
+        "learnerAction": "Compléter la décision par le périmètre autorisé et au moins une limite explicite.",
+        "completionEvidence": "Le lecteur peut distinguer ce qui commence maintenant de ce qui reste hors décision."
+      }
+    },
+    {
+      "key": "unresolved-decision-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "decision-position",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "evidence-uncertainty",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "La conclusion recommande un no-go puis autorise le déploiement dans les mêmes conditions."
+      ],
+      "negativeExamples": [
+        "Le texte recommande un go conditionnel et distingue clairement les conditions d'un no-go de repli."
+      ],
+      "acceptableVariants": [
+        "Une option principale et une solution de repli ne constituent pas une contradiction si leurs déclencheurs sont distincts."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Les spans doivent matérialiser deux décisions incompatibles applicables aux mêmes conditions."
+      },
+      "contradictionSignals": [
+        "Go et no-go sont tous deux présentés comme décision finale sans condition de résolution."
+      ],
+      "pointsByCriterion": {
+        "decision-position": {
+          "SUPPORTED": -100,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": 0
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Deux décisions incompatibles restent actives ; résolvez cette contradiction.",
+        "notDemonstrated": "Aucune contradiction non résolue de décision n'est repérée.",
+        "contradicted": "Les passages examinés ne démontrent pas une contradiction de décision.",
+        "ambiguous": "Les décisions semblent incompatibles ; explicitez les conditions qui les départagent."
+      },
+      "remediation": {
+        "learnerAction": "Conserver une décision principale et transformer toute autre option en repli assorti d'un déclencheur explicite.",
+        "completionEvidence": "Chaque orientation restante s'applique à des conditions distinctes et non concurrentes."
+      }
+    },
+    {
+      "key": "scenario-evidence-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "evidence-uncertainty",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "Le scénario central chiffre le coût complet et le scénario défavorable montre une reprise humaine supérieure."
+      ],
+      "negativeExamples": ["L'option IA est manifestement la meilleure."],
+      "acceptableVariants": [
+        "Une donnée, une contrainte ou un constat qualitatif vérifiable du dossier peut constituer la preuve."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Le texte qualifie une opinion générale de preuve sans élément du dossier."
+      ],
+      "pointsByCriterion": {
+        "evidence-uncertainty": {
+          "SUPPORTED": 34,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -34
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "La recommandation mobilise un élément vérifiable du dossier.",
+        "notDemonstrated": "Ajoutez une donnée, une contrainte ou un constat vérifiable du dossier.",
+        "contradicted": "L'élément présenté comme preuve entre en conflit avec le dossier ; corrigez-le.",
+        "ambiguous": "L'élément peut provenir du dossier, mais son identification reste imprécise."
+      },
+      "remediation": {
+        "learnerAction": "Remplacer une appréciation générale par un élément précis déjà présent dans le dossier.",
+        "completionEvidence": "Le passage permet de retrouver le fait, la donnée ou la contrainte mobilisée."
+      }
+    },
+    {
+      "key": "uncertainty-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "evidence-uncertainty",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "Le taux réel de reprise humaine reste inconnu et peut modifier le coût complet."
+      ],
+      "negativeExamples": [
+        "Les estimations prouvent que le bénéfice sera atteint."
+      ],
+      "acceptableVariants": [
+        "L'incertitude peut porter sur une hypothèse, une donnée manquante, une plage d'estimation ou une dépendance non résolue."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 3,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Une hypothèse est ensuite présentée comme un résultat certain."
+      ],
+      "pointsByCriterion": {
+        "evidence-uncertainty": {
+          "SUPPORTED": 33,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -33
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Une incertitude déterminante est explicitée.",
+        "notDemonstrated": "Nommez l'incertitude qui pourrait modifier la décision.",
+        "contradicted": "Le texte reconnaît puis efface la même incertitude ; conservez son statut conditionnel.",
+        "ambiguous": "Le passage peut décrire une incertitude ; précisez ce qui n'est pas encore établi."
+      },
+      "remediation": {
+        "learnerAction": "Ajouter une phrase qui nomme l'hypothèse non vérifiée et son impact possible sur la décision.",
+        "completionEvidence": "Le lecteur sait ce qui reste inconnu et pourquoi cela compte."
+      }
+    },
+    {
+      "key": "decision-evidence-relation",
+      "type": "RELATION",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "evidence-uncertainty",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "Parce que le coût du scénario défavorable dépasse l'enveloppe, je recommande un pilote limité plutôt qu'un déploiement."
+      ],
+      "negativeExamples": [
+        "Le texte cite un coût puis annonce la décision dans un paragraphe séparé sans expliquer le lien."
+      ],
+      "acceptableVariants": [
+        "Le lien peut être causal, comparatif, conditionnel ou fondé sur la proportionnalité."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Au moins un span matérialise l'élément du dossier et un autre la décision ou leur liaison explicite."
+      },
+      "contradictionSignals": [
+        "La raison invoquée soutient une décision opposée à celle qui est recommandée."
+      ],
+      "pointsByCriterion": {
+        "evidence-uncertainty": {
+          "SUPPORTED": 33,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -33
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Le lien entre un élément du dossier et la décision est explicite.",
+        "notDemonstrated": "Expliquez comment la preuve citée conduit à cette décision.",
+        "contradicted": "Le lien annoncé ne soutient pas la décision formulée ; révisez le raisonnement.",
+        "ambiguous": "Le lien entre preuve et décision peut mener à plusieurs conclusions ; explicitez le mécanisme décisif."
+      },
+      "remediation": {
+        "learnerAction": "Relier une preuve précise à la recommandation avec une phrase causale, comparative ou conditionnelle.",
+        "completionEvidence": "La phrase explique pourquoi la preuve rend la décision proposée proportionnée."
+      }
+    },
+    {
+      "key": "material-fact-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "evidence-uncertainty",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "conditions-controls",
+        "envelope-review"
+      ],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "La réponse inverse une tendance décisive du dossier ou invente un résultat présenté comme acquis."
+      ],
+      "negativeExamples": [
+        "La réponse paraphrase une plage d'estimation sans lui donner une précision absente."
+      ],
+      "acceptableVariants": [
+        "Une approximation stylistique sans effet sur la décision n'est pas une contradiction matérielle."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": "Le span identifie l'affirmation qui contredit matériellement le contexte fiable."
+      },
+      "contradictionSignals": [
+        "Un chiffre, une tendance, une contrainte ou un statut d'incertitude est inversé."
+      ],
+      "pointsByCriterion": {
+        "evidence-uncertainty": {
+          "SUPPORTED": -100,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": 0
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Une affirmation matérielle contredit le dossier ; corrigez ou retirez ce passage.",
+        "notDemonstrated": "Aucune contradiction matérielle avec le dossier n'est repérée.",
+        "contradicted": "Le passage examiné ne démontre pas de contradiction matérielle.",
+        "ambiguous": "L'affirmation peut contredire le dossier ; reformulez-la en distinguant fait et hypothèse."
+      },
+      "remediation": {
+        "learnerAction": "Vérifier l'affirmation contre le dossier puis la corriger, la supprimer ou la qualifier comme hypothèse.",
+        "completionEvidence": "Le passage révisé n'attribue au dossier aucune donnée ou certitude absente."
+      }
+    },
+    {
+      "key": "prerequisite-condition-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "conditions-controls",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "Le pilote ne commence qu'après validation de l'accès aux données et du protocole d'évaluation."
+      ],
+      "negativeExamples": [
+        "Le projet peut avancer lorsque les conditions seront réunies."
+      ],
+      "acceptableVariants": [
+        "Une condition peut être une action préalable, une preuve attendue ou un seuil vérifiable."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "La condition est déclarée obligatoire puis présentée comme facultative."
+      ],
+      "pointsByCriterion": {
+        "conditions-controls": {
+          "SUPPORTED": 34,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -34
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Une condition préalable vérifiable est formulée.",
+        "notDemonstrated": "Transformez la réserve générale en condition préalable observable.",
+        "contradicted": "La condition est contredite ailleurs ; indiquez si elle est réellement bloquante.",
+        "ambiguous": "La condition reste interprétable ; précisez l'action ou la preuve attendue."
+      },
+      "remediation": {
+        "learnerAction": "Réécrire une réserve sous la forme « avant X, obtenir Y ».",
+        "completionEvidence": "La condition possède un déclencheur et une preuve de clôture observables."
+      }
+    },
+    {
+      "key": "critical-condition-owner-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "conditions-controls",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "La responsable des données fournit l'autorisation documentée avant le lancement."
+      ],
+      "negativeExamples": ["L'équipe devra résoudre la question des données."],
+      "acceptableVariants": [
+        "Le propriétaire peut être un rôle, une fonction ou une instance de décision identifiable."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Deux propriétaires exclusifs sont attribués à la même condition sans répartition."
+      ],
+      "pointsByCriterion": {
+        "conditions-controls": {
+          "SUPPORTED": 33,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -33
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Un propriétaire identifiable porte la condition critique.",
+        "notDemonstrated": "Attribuez la condition critique à un rôle ou une instance identifiable.",
+        "contradicted": "La responsabilité annoncée est incompatible avec un autre passage ; clarifiez le propriétaire.",
+        "ambiguous": "La responsabilité est collective ou implicite ; nommez qui doit agir ou décider."
+      },
+      "remediation": {
+        "learnerAction": "Associer chaque condition critique à un rôle responsable et à l'action attendue.",
+        "completionEvidence": "Une phrase permet d'identifier qui doit produire la preuve de clôture."
+      }
+    },
+    {
+      "key": "stop-criterion-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "conditions-controls",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "envelope-review"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "Le pilote s'arrête si le taux de reprise humaine reste supérieur au seuil convenu après deux cycles."
+      ],
+      "negativeExamples": [
+        "Nous arrêterons si les résultats ne sont pas satisfaisants."
+      ],
+      "acceptableVariants": [
+        "Le critère peut être quantitatif ou qualitatif s'il est observable et lié à une décision d'arrêt."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Le même seuil déclenche à la fois l'arrêt et la poursuite sans règle de priorité."
+      ],
+      "pointsByCriterion": {
+        "conditions-controls": {
+          "SUPPORTED": 33,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -33
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Un critère observable déclenche l'arrêt.",
+        "notDemonstrated": "Ajoutez un signal observable qui impose l'arrêt ou la révision.",
+        "contradicted": "Le critère d'arrêt est incompatible avec une règle de poursuite ; résolvez le conflit.",
+        "ambiguous": "Le signal d'arrêt reste subjectif ; indiquez l'observation qui déclenche la décision."
+      },
+      "remediation": {
+        "learnerAction": "Formuler le critère sous la forme « arrêter si [observation] à [échéance] ».",
+        "completionEvidence": "Le critère peut être constaté sans inventer une appréciation nouvelle."
+      }
+    },
+    {
+      "key": "unresolved-control-contradiction",
+      "type": "CONTRADICTION",
+      "polarity": "NEGATIVE",
+      "ownerCriterionKey": "conditions-controls",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "envelope-review"
+      ],
+      "obligation": "SUPPORTING",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "Une condition est annoncée comme préalable obligatoire puis le lancement est autorisé avant sa clôture."
+      ],
+      "negativeExamples": [
+        "Le lancement est autorisé seulement après la preuve de clôture de la condition."
+      ],
+      "acceptableVariants": [
+        "Une exception n'est pas contradictoire si son autorité, son périmètre et son déclencheur sont explicites."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 2,
+        "maximumSpans": 4,
+        "relationshipDescription": "Les spans doivent montrer une incompatibilité entre une condition ou un arrêt et l'autorisation proposée."
+      },
+      "contradictionSignals": [
+        "Le texte autorise de poursuivre indépendamment d'un critère présenté comme bloquant."
+      ],
+      "pointsByCriterion": {
+        "conditions-controls": {
+          "SUPPORTED": -100,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": 0
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Une règle de contrôle est contredite par l'autorisation proposée ; rendez-la opérante.",
+        "notDemonstrated": "Aucune contradiction non résolue entre contrôle et décision n'est repérée.",
+        "contradicted": "Les passages examinés ne démontrent pas de contradiction de contrôle.",
+        "ambiguous": "Le contrôle semble contredit ; précisez s'il bloque, suspend ou réoriente la décision."
+      },
+      "remediation": {
+        "learnerAction": "Choisir l'effet exact de chaque condition : blocage, suspension, révision ou simple suivi.",
+        "completionEvidence": "Aucune phrase n'autorise ce que la condition interdit dans les mêmes circonstances."
+      }
+    },
+    {
+      "key": "authorized-envelope-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "envelope-review",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "conditions-controls"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "partial",
+      "positiveExamples": [
+        "L'autorisation couvre au maximum six semaines de pilote, deux équipes et l'effort budgétaire central présenté au dossier."
+      ],
+      "negativeExamples": ["Le sponsor autorise les moyens nécessaires."],
+      "acceptableVariants": [
+        "L'enveloppe peut borner le budget, l'effort, le temps, la population, les données ou les systèmes concernés."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 4,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "L'enveloppe est limitée puis rendue illimitée dans la même recommandation."
+      ],
+      "pointsByCriterion": {
+        "envelope-review": {
+          "SUPPORTED": 50,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -50
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "L'enveloppe autorisée est bornée.",
+        "notDemonstrated": "Précisez la limite de temps, d'effort, de budget ou de périmètre autorisée.",
+        "contradicted": "Deux enveloppes incompatibles sont annoncées ; conservez une borne unique ou expliquez leur articulation.",
+        "ambiguous": "L'enveloppe n'est pas contrôlable ; ajoutez au moins une limite observable."
+      },
+      "remediation": {
+        "learnerAction": "Ajouter une phrase qui borne explicitement les moyens ou le périmètre autorisés.",
+        "completionEvidence": "Le sponsor peut déterminer si une dépense ou une extension dépasse l'autorisation."
+      }
+    },
+    {
+      "key": "reconsideration-date-stated",
+      "type": "FACT",
+      "polarity": "POSITIVE",
+      "ownerCriterionKey": "envelope-review",
+      "sharedWithCriterionKeys": [],
+      "excludedCriterionKeys": [
+        "decision-position",
+        "evidence-uncertainty",
+        "conditions-controls"
+      ],
+      "obligation": "REQUIRED",
+      "requiredFromLevelKey": "mastered",
+      "positiveExamples": [
+        "Le sponsor réexamine la décision le 15 octobre après réception des résultats du pilote."
+      ],
+      "negativeExamples": ["La décision sera revue ultérieurement."],
+      "acceptableVariants": [
+        "Une date calendaire ou une échéance déterminable à partir d'un événement daté est acceptable."
+      ],
+      "evidenceRule": {
+        "exactResponseSpansRequired": true,
+        "minimumSpans": 1,
+        "maximumSpans": 2,
+        "relationshipDescription": null
+      },
+      "contradictionSignals": [
+        "Deux dates de réexamen incompatibles sont maintenues sans priorité."
+      ],
+      "pointsByCriterion": {
+        "envelope-review": {
+          "SUPPORTED": 50,
+          "NOT_DEMONSTRATED": 0,
+          "CONTRADICTED": -50
+        }
+      },
+      "ambiguousResolutions": ["SUPPORTED", "NOT_DEMONSTRATED"],
+      "templates": {
+        "supported": "Une échéance déterminable fixe le prochain réexamen.",
+        "notDemonstrated": "Ajoutez une date ou une échéance déterminable pour la prochaine décision.",
+        "contradicted": "Les échéances de réexamen se contredisent ; retenez une date de décision.",
+        "ambiguous": "Le moment du réexamen reste indéterminé ; rendez l'échéance calculable."
+      },
+      "remediation": {
+        "learnerAction": "Fixer une date de réexamen et nommer les résultats attendus à cette date.",
+        "completionEvidence": "Le prochain point de décision peut être inscrit au calendrier sans supposition."
+      }
+    }
+  ]
+}
