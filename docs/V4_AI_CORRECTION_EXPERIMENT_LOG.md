@@ -641,3 +641,26 @@ Le validate-only borne une tentative à `0,049252 USD` et quatre tentatives à
 `0,197008 USD`. Le plafond de `0,21 USD` reste une proposition non approuvée.
 Aucun appel ne peut partir avant arbitrages Produit/pédagogie et Finance, puis
 GO propriétaire distinct sur l'empreinte gelée.
+
+### 2026-08-16 — Gate Sonnet 5 borné arrêté sur dépassement de raisonnement
+
+Statut : `NO_GO_TECHNICAL_REQUEST_PROFILE / FINANCE_RECONCILED_CLOSED / NO_REPLAY`.
+
+Le run `2026-08-16T07-55-27-707Z` a envoyé un seul des quatre appels
+préenregistrés. Le fournisseur a retourné `1 082` tokens de raisonnement pour
+un maximum explicite de `1 024`, soit un dépassement de `58` tokens (`5,66 %`).
+La sortie visible contient `758` tokens et la sortie totale `1 840`, sous la
+limite totale de `2 824`. Le runner a persisté le raw borné, l'usage, le coût et
+le request id, puis s'est arrêté sur
+`EVIDENCE_RESEARCHER_REASONING_BUDGET_EXCEEDED` avant validation sémantique.
+
+Aucun workflow n'est compté comme terminé et aucun verdict pédagogique sur
+Sonnet 5 n'est tiré de ce raw. Les trois autres appels n'ont pas été envoyés ;
+aucun retry ou fallback n'a eu lieu. Finance réconcilie un `CALL_INTENT` et un
+`CALL_OUTCOME` pour `0,026104 USD`, sans coût orphelin, puis ferme l'enveloppe.
+
+Cette identité est figée en NO-GO technique et ne sera pas reprise. Après ce
+second échec de profil Sonnet 5, le retuning de profil et la recherche large de
+modèles sont arrêtés. La prochaine décision porte sur l'architecture : MVP
+déterministe plus étroit, ou révision explicite de la route/architecture sous
+une nouvelle identité. Le panel 10×2, le holdout et V4-010 restent fermés.

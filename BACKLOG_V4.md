@@ -1405,13 +1405,16 @@ l'activation de V4-010.**
 
 ## V4-009C — Moteur de rubrique exécutable et recherche de preuves Gemini
 
-Mise à jour du 15 août 2026 : le panel Gemini v2 est figé en NO-GO après une
-citation non exacte. Le screening Sonnet 5 termine 3/3 `VALID` sous le même
-protocole 1.3, mais l'identité `reasoning OFF` est non reproductible : le
-fournisseur a produit et facturé des tokens de raisonnement malgré l'omission
-du paramètre. Une nouvelle identité `PROVIDER_DEFAULT/UNSPECIFIED` et son panel
-10×2 sont préparés hors ligne ; Produit, Finance et propriétaire restent
-bloquants. Aucun holdout ou V4-002 n'est ouvert par cette préparation.
+Mise à jour du 16 août 2026 : le panel Gemini v2 est figé en NO-GO après une
+citation non exacte. Le screening Sonnet 5 termine 3/3 `VALID`, mais son panel
+s'arrête techniquement au 11e appel avec 2 500 tokens de raisonnement et aucune
+sortie visible. Une nouvelle identité bornée à 1 024 tokens de raisonnement a
+ensuite dépassé cette limite dès son premier appel (`1 082`) et s'est arrêtée
+avant validation sémantique. Ce second résultat est un NO-GO technique de
+profil, pas un verdict pédagogique sur Sonnet 5. Le retuning de profil et la
+recherche large de modèles sont arrêtés ; la prochaine étape est un arbitrage
+d'architecture entre MVP déterministe étroit et révision explicite de la
+route/architecture. Aucun holdout, V4-002 ou V4-010 n'est ouvert.
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
 documentée du mini-panel V4-009B. Bloque l'activation réelle de V4-010.**
