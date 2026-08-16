@@ -22,12 +22,27 @@ async function fixture() {
     selectionText,
     specText,
   ] = await Promise.all([
-    readFile(resolve(base, 'gemini-google-vertex-attestation-2026-08-14-reasoning.json'), 'utf8'),
-    readFile(resolve(base, 'gemini-evidence-researcher-panel.v1.3-v2.json'), 'utf8'),
+    readFile(
+      resolve(
+        base,
+        'gemini-google-vertex-attestation-2026-08-14-reasoning.json',
+      ),
+      'utf8',
+    ),
+    readFile(
+      resolve(base, 'gemini-evidence-researcher-panel.v1.3-v2.json'),
+      'utf8',
+    ),
     readFile(resolve(base, 'writing-fr-semantic-development.v1.json'), 'utf8'),
-    readFile(resolve(base, 'writing-fr-semantic-three-case-development.v2.json'), 'utf8'),
+    readFile(
+      resolve(base, 'writing-fr-semantic-three-case-development.v2.json'),
+      'utf8',
+    ),
     readFile(resolve(base, 'writing-recommendation-fr.v1.json'), 'utf8'),
-    readFile(resolve(base, 'writing-fr-semantic-development.v2.manifest.json'), 'utf8'),
+    readFile(
+      resolve(base, 'writing-fr-semantic-development.v2.manifest.json'),
+      'utf8',
+    ),
     readFile(resolve('docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md'), 'utf8'),
   ]);
   const rubric = JSON.parse(rubricText) as unknown;
@@ -44,8 +59,14 @@ async function fixture() {
     compiled,
     selection: JSON.parse(selectionText) as unknown,
     sources: [
-      { path: 'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json', text: historicText },
-      { path: 'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json', text: revisedText },
+      {
+        path: 'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-development.v1.json',
+        text: historicText,
+      },
+      {
+        path: 'benchmarks/ai-correction/executable-rubric/writing-fr-semantic-three-case-development.v2.json',
+        text: revisedText,
+      },
     ],
   });
   return { campaign, campaignFileText: campaignText, compiled, corpus };
@@ -65,7 +86,10 @@ function outputFor(
   };
 }
 
-function validResult(caseItem: ExecutableRubricSemanticCorpus['cases'][number], requestId: string) {
+function validResult(
+  caseItem: ExecutableRubricSemanticCorpus['cases'][number],
+  requestId: string,
+) {
   return {
     latencyMs: 10,
     modelSnapshot: 'google/gemini-3.6-flash',
@@ -136,7 +160,40 @@ describe('evidence researcher panel runner', () => {
       provider: { execute },
     });
     expect(result.state.completedCellKeys).toHaveLength(20);
-    expect(result.state.attempts.every(({ oracleAgreement }) => oracleAgreement === false)).toBe(true);
+    expect(
+      result.state.attempts.every(
+        ({ oracleAgreement }) => oracleAgreement === false,
+      ),
+    ).toBe(true);
+  });
+
+  it('stops a strict gate after the first oracle disagreement', async () => {
+    const input = await fixture();
+    const execute = vi.fn(({ caseItem, cellKey }) => {
+      const result = validResult(caseItem, `request-${cellKey}`);
+      result.output.elements[0] = {
+        confidence: 0.8,
+        contradictions: [],
+        elementKey: result.output.elements[0]?.elementKey ?? '',
+        evidenceQuotes: [],
+        status: 'AMBIGUOUS',
+      };
+      return Promise.resolve(result);
+    });
+
+    const result = await runEvidenceResearcherPanel({
+      ...input,
+      completionUsdPerToken: 0.00000375,
+      onRawReceived: vi.fn(),
+      promptUsdPerToken: 0.00000075,
+      provider: { execute },
+      stopOnOracleDisagreement: true,
+    });
+
+    expect(execute).toHaveBeenCalledTimes(1);
+    expect(result.state.completedCellKeys).toHaveLength(1);
+    expect(result.state.attempts[0]?.oracleAgreement).toBe(false);
+    expect(result.state.stoppedReason).toBe('ORACLE_DISAGREEMENT');
   });
 
   it('retries only a reconciled allowlisted transport error', async () => {
@@ -164,7 +221,9 @@ describe('evidence researcher panel runner', () => {
           },
         });
       }
-      return Promise.resolve(validResult(caseItem, `request-${cellKey}-${calls}`));
+      return Promise.resolve(
+        validResult(caseItem, `request-${cellKey}-${calls}`),
+      );
     });
     const result = await runEvidenceResearcherPanel({
       ...input,

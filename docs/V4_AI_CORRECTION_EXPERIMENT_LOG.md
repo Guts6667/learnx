@@ -619,3 +619,25 @@ Finance clôture `11` intents et `11` outcomes sans orphelin pour un coût R&D d
 de `0,95 USD`. Aucun retry, fallback, resume, panel complémentaire ou holdout
 n'est autorisé. Ce résultat invalide le requestProfile courant pour ce panel,
 mais ne constitue pas un verdict pédagogique négatif sur Sonnet 5.
+
+### 2026-08-16 — Gate Sonnet 5 à raisonnement borné préparé hors ligne
+
+Statut : `OFFLINE_READY / PRODUCT_NOT_ARBITRATED / FINANCE_NOT_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Sans modifier les résultats Sonnet 5 précédents, une nouvelle identité
+`evidence-researcher-sonnet-5-3.0.0` fixe explicitement un maximum de `1 024`
+tokens de raisonnement et une réserve de `1 800` tokens visibles dans une
+limite totale de `2 824`. Le catalogue de la route Anthropic annonce les
+paramètres requis ; le runtime reste à prouver par un gate frais.
+
+Le gate préenregistre quatre cas existants et immuables : positif évident,
+négatif explicite, mutation critique de preuve/raisonnement et injection. Il
+ne réutilise aucun résultat historique, autorise quatre tentatives maximum,
+zéro retry/fallback et s'arrête au premier défaut. Les exigences incluent
+`4/4` workflows, `36/36` éléments, citations, sécurité, identité, coût et
+budget de raisonnement à `100 %`.
+
+Le validate-only borne une tentative à `0,049252 USD` et quatre tentatives à
+`0,197008 USD`. Le plafond de `0,21 USD` reste une proposition non approuvée.
+Aucun appel ne peut partir avant arbitrages Produit/pédagogie et Finance, puis
+GO propriétaire distinct sur l'empreinte gelée.
