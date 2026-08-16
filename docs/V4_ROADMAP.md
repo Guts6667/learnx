@@ -2,13 +2,16 @@
 
 ## Objet et autorité
 
-Cette page donne une vision opérationnelle de V4. Elle répond à quatre
-questions : où en sommes-nous, quel est le prochain gate, qu'est-ce qui bloque
-la valeur utilisateur et qu'est-ce qui est volontairement différé.
+Cette page est le **registre humain unique de progression V4**. Elle répond à
+six questions : qu'est-ce qui est intégré, qu'est-ce qui existe seulement sur
+une branche locale, qu'est-ce qui a seulement une valeur expérimentale,
+qu'est-ce qui est actif pour un utilisateur, quel ticket peut reprendre et quel
+gate le ferme.
 
-- `BACKLOG_V4.md` reste l'autorité détaillée des tickets et critères.
+- `BACKLOG_V4.md` reste l'autorité détaillée des périmètres, dépendances et
+  critères d'acceptation ; il ne porte pas un second registre de statut.
 - `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json` est l'état machine courant de
-  la recherche IA.
+  la recherche IA et doit refléter le présent registre.
 - `docs/V4_AI_CORRECTION_PHASE_MANIFEST.json` reste l'autorité historique
   épinglée par les campagnes closes.
 - `docs/V4_AI_CORRECTION_EXPERIMENT_LOG.md` reste l'historique append-only.
@@ -16,19 +19,37 @@ la valeur utilisateur et qu'est-ce qui est volontairement différé.
   protocole à passages déterministes.
 - Cette roadmap ne transforme jamais une preuve expérimentale en livraison
   produit.
+- En cas d'écart sur le statut courant, cette page tranche pour la lecture
+  humaine et le manifeste V3 tranche pour l'automatisation. L'écart doit alors
+  être corrigé dans le même ticket documentaire.
 
 Dernière consolidation : 16 août 2026.
 
-## Légende
+## Plans d'état à ne pas confondre
+
+| Plan | État au 16 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
+| --- | --- | --- | --- |
+| Runtime canonique | `origin/dev` à `b38732f` | Fondations V4-001 à V4-009 intégrées mais inactives. | Le protocole evidence-assist 3.0.0 n'y est pas encore intégré. |
+| Candidat local | `b366ec9`, branche `codex/v4-evidence-assist-protocol` | Segmenter, contexte, raw, schéma candidate-only et capacité `reasoning=DISABLED` testés hors ligne. | Ni CI de livraison complète, ni appel, ni qualité du modèle, ni disponibilité utilisateur. |
+| Expérimentation | `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` | La route exacte sait sérialiser la désactivation explicite. | Aucun pipeline n'est promu et aucune ancienne campagne ne peut être réutilisée comme preuve 3.0.0. |
+| Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
+| Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
+
+Le dernier plan est indépendant de l'évaluation autonome des modèles : il ne
+réintroduit pas d'évaluateur humain dans la correction IA. Il bloque en
+revanche toute affirmation de **clôture de release V4** tant que le rapport V3.5
+n'est pas réconcilié avec une preuve de promotion et ses contrôles externes.
+
+## Légende du registre
 
 | Statut | Signification |
 | --- | --- |
-| `LIVRÉ — INACTIF` | Fondation intégrée, mais non disponible comme offre utilisateur. |
-| `ACTIF` | Travail courant sur le chemin critique. |
-| `BLOQUÉ` | Le ticket ne doit pas démarrer avant son gate explicite. |
-| `PLANIFIÉ` | Périmètre décidé, dépendances non encore réunies. |
-| `HISTORIQUE` | Preuve conservée, architecture ou expérience non promue. |
-| `À AUDITER` | Une baseline existe, mais son reliquat V4 doit être vérifié avant clôture. |
+| `LIVRÉ_INACTIF` | Fondation ou preuve close disponible, sans activation utilisateur ; aucun nouveau travail sauf intégration explicitement citée. |
+| `ACTIF_HORS_LIGNE` | Le ticket peut reprendre maintenant sous hard-off, sans réseau, débit, publication ni promesse live. |
+| `BLOQUÉ` | Le ticket ou sa prochaine tranche ne doit pas démarrer avant le gate indiqué. |
+
+`Historique` et `local non intégré` sont des niveaux de preuve, pas des
+statuts de progression concurrents.
 
 ## Résumé exécutif
 
@@ -46,6 +67,20 @@ Le chemin critique est désormais très étroit :
 
 État honnête : **0 contrat V4 publié, 0 activité éligible, aucun pipeline promu,
 V4-010 non branché et V4-011 fermé.**
+
+### Prochaines actions sans ambiguïté
+
+1. **Développement** fait passer le candidat local fondé sur `b366ec9` par la
+   gate de livraison du dépôt, puis l'intègre au runtime canonique ; tant que ce
+   n'est pas fait, ses capacités restent `LOCAL_NOT_INTEGRATED`.
+2. **Produit & pédagogie avec Développement** attribue l'identité de campagne et
+   gèle les quatre cas, le corpus complet 10 × 2, les seuils et les règles
+   d'arrêt. Ce travail reste hors ligne.
+3. **Finance & Pricing**, puis le **Propriétaire**, arbitrent seulement ensuite
+   l'enveloppe et l'autorisation des quatre premiers appels.
+
+V4-002 et V4-010 peuvent avancer en parallèle sous leurs hard-off respectifs.
+Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
 
 ## Chemin critique
 
@@ -97,18 +132,50 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   `reasoning.effort=none` et à un coût `ACTUAL` obligatoire. La route Anthropic
   directe est écartée tant que son coût reste estimé. L'état est
   `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL`, pas un GO de campagne.
-- Blocages courants : identité/manifeste de campagne non attribués, gate quatre
-  cas et panel 10 × 2 non gelés, budget Finance non arbitré et GO propriétaire
-  non accordé.
+- Blocages courants : identité/manifeste de campagne non attribués, enveloppe
+  quatre cas et corpus de développement 10 × 2 non gelés, budget Finance non
+  arbitré et GO propriétaire non accordé.
 - Ordre : geler ensemble quatre cas et le panel conditionnel 10 × 2, exécuter
   les quatre cas après attestation et autorisations, puis exécuter le 10 × 2
   uniquement si le gate fait `4/4`, sous la même identité. Tout changement
   recommence à quatre cas.
+- Définition bornée : le **corpus de développement complet** est exactement la
+  sélection scellée
+  `writing-fr-semantic-development-v2@2.0.0`, soit 10 cas synthétiques distincts
+  exécutés deux fois, pour 20 workflows frais. Les quatre workflows de
+  faisabilité ne sont pas comptés dans ces 20 et aucun résultat historique
+  n'est réutilisé. L'identifiant, le SHA-256, l'ordre et les deux répétitions
+  doivent être liés au manifeste de campagne avant le premier appel.
+- Toute modification d'un cas, d'une attente, de l'ordre, du nombre de
+  répétitions ou de la sélection crée une nouvelle version de corpus, une
+  nouvelle identité de campagne et un retour au gate quatre cas.
+- La comparaison d'au moins trois candidats devient une phase secondaire de
+  robustesse et d'économie, après preuve de faisabilité du pipeline Sonnet 5
+  exact. Elle ne bloque ni son premier gate 4/4, ni son corpus 10 × 2, ni son
+  holdout autonome borné ; elle bloque la calibration économique V4-018 et
+  toute généralisation commerciale.
 - Le manifeste actif de holdout est
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json` ;
   il reste non authoré, non scellé et inexécutable. Le v2 reste intact comme
   `SUPERSEDED_HISTORICAL_DRAFT`. Le falsificateur, le holdout, la publication
   V4-002 et le live V4-010 restent fermés ; les deux tickets avancent hors ligne.
+
+### Les deux GO autonomes
+
+1. `GO_TO_SEALED_HOLDOUT` ne peut être demandé qu'après `4/4`, puis `20/20`
+   sur le corpus de développement complet sous la même identité, tous les
+   gates absolus satisfaits, les coûts réconciliés et un holdout v3 authoré
+   indépendamment, validé, chiffré et scellé. Le Propriétaire autorise alors
+   une seule ouverture et une seule exécution ; ce GO ne promeut rien.
+2. `GO_AUTONOMOUS_FORMATIVE` ne peut être rendu qu'après succès one-shot du
+   holdout sous cette identité, réconciliation complète et absence de retuning
+   post-résultat. Il promeut uniquement le pipeline exact pour le feedback
+   `WRITING/fr-FR` faible risque. Il autorise la publication V4-002 et la
+   préparation du pilote V4-010, jamais son activation automatique.
+
+Un échec ou une modification entre ces gates ferme l'identité. Aucune seconde
+ouverture du holdout, approbation humaine fictive ou vote de modèles n'est
+admis.
 
 ### Gate B — premier contrat publiable
 
@@ -119,8 +186,10 @@ Statut : `ACTIVE_OFFLINE / PUBLICATION_BLOCKED`.
 - Cible unique : `WRITING/fr-FR`, texte, faible risque.
 - Le contrat doit être `PUBLISHED` et `FULLY_COMPILABLE`.
 - Il doit authorer éléments atomiques, propriétaires des pénalités, variantes,
-  contre-exemples, contradictions, règles de preuve, ambiguïtés, niveaux,
-  templates et remédiations.
+  contre-exemples, contradictions, règles de preuve, ambiguïtés, templates et
+  remédiations. Niveaux et pondérations ne sont admis que dans une sous-grille
+  mécanique explicite, indépendante des relations IA candidates ; sans constat
+  mécanique, score et niveau restent désactivés et nuls.
 - Les critères `HOLISTIC` ou non formalisables restent hors MVP autonome.
 - La publication reste interdite tant que le compilateur, les tests de mutation
   et le gate autonome ne passent pas.
@@ -152,37 +221,40 @@ Tickets principaux : `V4-012`, `V4-017`, `V4-018`, `V4-018A`, `V4-019`.
 - Le paiement reste après la preuve qualité et les validations externes.
 - La release exige une procédure de rollback et un kill switch opérationnel.
 
-## Registre d'état par ticket
+## Registre unique de progression par ticket
 
-| Ticket | Statut courant | Réalité vérifiée / limite | Prochaine condition |
-| --- | --- | --- | --- |
-| V4-001 | `LIVRÉ — INACTIF` | ADR et frontières établies. | Réviser seulement si l'architecture cible change. |
-| V4-002 | `ACTIF HORS LIGNE / PUBLICATION BLOQUÉE` | Schéma et archétype DRAFT ; 0 contrat publié. | Finaliser le contrat candidate-only et ses mutations ; publication après GO. |
-| V4-003 | `ACTIF` | Baselines historiques conservées ; aucun modèle promu. | Fermer les gates 009C puis comparer sur identités reproductibles. |
-| V4-004 | `LIVRÉ — INACTIF` | Adaptateurs et tests existent pour la recherche. | Activation uniquement via 009C/010. |
-| V4-005 | `LIVRÉ — INACTIF` | Persistance et états fondés, runtime utilisateur non branché. | Intégration V4-010. |
-| V4-006 | `LIVRÉ — INACTIF` | Ledger/réservations fondés. | Calibration et activation après qualité. |
-| V4-007 | `LIVRÉ — INACTIF` | Catalogue générique DRAFT ; aucun prix actif. | Coûts P50/P90 et arbitrage propriétaire. |
-| V4-008 | `LIVRÉ — INACTIF` | Allocations et limites administratives fondées. | Revue avant pilote fermé. |
-| V4-008A | `HISTORIQUE` | Garanties techniques réutilisées ; juge composite abandonné. | Aucun nouveau travail pédagogique sur l'ancien pipeline. |
-| V4-009 | `LIVRÉ — INACTIF` | Orchestration et réconciliation disponibles/rejouées. | Brancher uniquement un pipeline promu. |
-| V4-009B | `HISTORIQUE` | Mistral + Sonnet = NO-GO pédagogique. | Conserver comme comparaison, ne pas relancer par défaut. |
-| V4-009C | `CAPABILITY_ATTESTED_OFFLINE / NO_MODEL_CALL` | Les NO-GO historiques restent immuables. Le protocole 3.0.0 et `reasoning=DISABLED` sont attestés hors ligne ; aucune campagne n'est autorisée. | Attribuer/geler l'identité, budget Finance + GO propriétaire, réussir 4/4 puis seulement 10 × 2. |
-| V4-010 | `ACTIF HORS LIGNE / LIVE BLOQUÉ` | Aucun flow utilisateur actif ; fake provider et hard-off autorisés. | Live seulement après GO 009C + contrat publié. |
-| V4-011 | `BLOQUÉ` | Aucun gate cumulatif déterministe livré. | Preuve de maîtrise multi-notions côté serveur. |
-| V4-012 | `PLANIFIÉ` | Données de production absentes. | Pilote V4-010 instrumenté. |
-| V4-013 | `PLANIFIÉ` | Sandbox marchand non activé. | Qualité, finance et conseil externe. |
-| V4-014 | `PLANIFIÉ` | Packs/SKU non actifs. | V4-013 + prix validés. |
-| V4-015 | `PLANIFIÉ` | Clôture financière non active. | Paiement réel et règles externes. |
-| V4-016 | `À AUDITER` | Vue d'annonce V5 à distinguer du créateur fonctionnel. | Vérifier baseline et promesse avant clôture. |
-| V4-016A | `À AUDITER` | Landing V3.5 existe ; enrichissements V4 à confirmer. | N'afficher que preuves/prix validés. |
-| V4-016B | `PLANIFIÉ` | Les nouvelles surfaces V4 nécessitent leurs gabarits desktop. | Spécifications Atlas + écrans V4 stabilisés. |
-| V4-016C | `PLANIFIÉ` | Reprise multi-programmes à confirmer dans le runtime. | Audit UX et données disponibles. |
-| V4-016G | `PLANIFIÉ` | Direction Atlas validée, surfaces runtime absentes. | Implémenter avec V4-010 et les écrans crédits. |
-| V4-017 | `PLANIFIÉ` | Plusieurs fondations existent, audit final non clos. | Avant pilote réel et avant paiement. |
-| V4-018 | `BLOQUÉ` | Aucun coût de correction produit promu. | Mesures du pilote et modèle/pipeline retenu. |
-| V4-018A | `BLOQUÉ` | Cohortes commerciales non ouvertes. | V4-018 + budgets approuvés. |
-| V4-019 | `BLOQUÉ` | V4 incomplète. | Tous gates qualité, UX, finance, sécurité et rollback. |
+`Oui` signifie que le lot cité peut commencer maintenant ; cela ne l'autorise
+jamais à franchir son gate live.
+
+| Ticket | Statut unique | Niveau de preuve actuel | Reprenable maintenant | Dépendance ou gate de sortie | Responsable de la prochaine action |
+| --- | --- | --- | --- | --- | --- |
+| V4-001 | `LIVRÉ_INACTIF` | ADR intégrée. | Non. | Réouvrir seulement si l'architecture change. | Développement. |
+| V4-002 | `ACTIF_HORS_LIGNE` | Archétype `FULLY_COMPILABLE`, lifecycle DRAFT ; 0 contrat publié. | Oui : contrat candidate-only, canal mécanique séparé, templates et mutations. | Publication après `GO_AUTONOMOUS_FORMATIVE` et approbation propriétaire. | Produit & pédagogie, avec Développement. |
+| V4-003 | `ACTIF_HORS_LIGNE` | Baselines historiques closes ; archétype V4-002 DRAFT suffisant pour la recherche hors ligne ; nouveau protocole sans appel. | Oui : identités, corpus, seuils et rapport reproductible. | Faisabilité Sonnet 5, puis comparaison ≥3 candidats avant V4-018, pas avant le premier gate. La publication V4-002 n'est requise que pour le live. | Produit & pédagogie ; Finance pour chaque enveloppe. |
+| V4-004 | `LIVRÉ_INACTIF` | Adaptateurs disponibles dans le runtime canonique ; extension 3.0.0 locale. | Non hors intégration du candidat local. | Activation par V4-009C/V4-010 seulement. | Développement. |
+| V4-005 | `LIVRÉ_INACTIF` | Persistance fondée, aucun runtime utilisateur branché. | Non hors intégration V4-010. | Pipeline promu et contrat publié. | Développement. |
+| V4-006 | `LIVRÉ_INACTIF` | Ledger et réservation fondés. | Non. | Calibration après pilote. | Développement + Finance. |
+| V4-007 | `LIVRÉ_INACTIF` | Catalogue DRAFT, aucun prix actif. | Non. | Coûts P50/P90 puis arbitrage propriétaire. | Finance & Pricing. |
+| V4-008 | `LIVRÉ_INACTIF` | Allocations et limites fondées. | Non. | Revue avant cohorte fermée. | Développement + Finance. |
+| V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
+| V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
+| V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
+| V4-009C | `ACTIF_HORS_LIGNE` | Candidat local `b366ec9` ; capacité attestée, `NO_MODEL_CALL`. | Oui : geler identité, 4 cas, 10×2, coûts et holdout indépendant. | Finance + GO propriétaire → 4/4 → 20/20 → `GO_TO_SEALED_HOLDOUT` → holdout → `GO_AUTONOMOUS_FORMATIVE`. | Produit & pédagogie ; Développement ; Finance ; Propriétaire aux GO. |
+| V4-010 | `ACTIF_HORS_LIGNE` | 0 flow live ; fake provider et hard-off autorisés. | Oui : persistance, UX et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
+| V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
+| V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |
+| V4-013 | `BLOQUÉ` | Sandbox marchand non activé. | Non. | Qualité prouvée + validations externes. | Développement + conseil externe. |
+| V4-014 | `BLOQUÉ` | Aucun SKU ni checkout actif. | Non. | V4-013 + prix V4-018 validés. | Développement + Finance. |
+| V4-015 | `BLOQUÉ` | Aucune clôture financière live. | Non. | V4-012 + V4-014 + règles externes. | Finance & Pricing. |
+| V4-016 | `ACTIF_HORS_LIGNE` | Baseline d'annonce à réauditer. | Oui : audit de promesse uniquement. | Pas de clôture release tant que le gate externe V3.5 reste ouvert. | Produit & pédagogie. |
+| V4-016A | `ACTIF_HORS_LIGNE` | Landing V3.5 disponible, aucune promesse IA/prix activable. | Oui : audit de contenu sans publier de capacité. | V4-010 live, prix V4-018 et gate externe V3.5. | Direction artistique + Produit + Finance. |
+| V4-016B | `BLOQUÉ` | Nouvelles surfaces V4 non stabilisées. | Non. | V4-010/012/014/016A/016G stabilisés. | Direction artistique. |
+| V4-016C | `ACTIF_HORS_LIGNE` | Besoin multi-programmes documenté, runtime à réauditer. | Oui : réaudit API/UX sans effet IA. | Revue desktop V4-016B et gate release externe pour la clôture. | Produit & pédagogie + Développement. |
+| V4-016G | `BLOQUÉ` | Direction Atlas validée, contrats runtime absents. | Non hors spécification. | V4-007/010/011/014 disponibles. | Direction artistique. |
+| V4-017 | `BLOQUÉ` | Fondations sécurité présentes, audit final non clos. | Non comme ticket complet. | V4-013 + pipeline/pilote bornés. | Développement. |
+| V4-018 | `BLOQUÉ` | Aucun coût de correction produit promu. | Non. | V4-003/010/012/014/017 ; comparaison secondaire ≥3 candidats. | Finance & Pricing. |
+| V4-018A | `BLOQUÉ` | Cohortes non ouvertes. | Non. | V4-018 + budgets approuvés. | Finance & Pricing. |
+| V4-019 | `BLOQUÉ` | V4 incomplète et gate release externe V3.5 ouvert. | Non. | Tous gates qualité, UX, finance, sécurité, rollback et assurance release externe. | Développement ; GO final du Propriétaire. |
 
 ## Protocole autonome — aucune fausse validation humaine
 
@@ -205,7 +277,7 @@ pas fusionnées :
 
 Le holdout actif v3 devra être authoré indépendamment des résultats candidats,
 qualifié par ses gates autonomes, puis scellé avant ouverture et consommé une
-seule fois après GO du corpus de développement. Le v2 est conservé intact comme
+seule fois après `GO_TO_SEALED_HOLDOUT`. Le v2 est conservé intact comme
 `SUPERSEDED_HISTORICAL_DRAFT`. Un résultat ambigu ou non supporté produit une
 abstention, pas une validation humaine fictive.
 
@@ -239,4 +311,8 @@ exécutable est d'attribuer une identité de campagne, geler les deux étages qu
 cas puis 10 × 2, arbitrer le budget R&D et accorder un GO propriétaire avant
 tout appel. Finance arbitre alors uniquement l'enveloppe des quatre cas, puis le
 Propriétaire autorise ou refuse ces appels. Une autorisation distincte du panel
-n'est demandée qu'après un résultat `4/4`, sans changement d'identité.
+n'est demandée qu'après un résultat `4/4`, sans changement d'identité. Après
+`20/20`, la décision suivante est `GO_TO_SEALED_HOLDOUT`, jamais une promotion.
+Le pipeline ne devient promu qu'après le holdout one-shot et
+`GO_AUTONOMOUS_FORMATIVE`. La comparaison ≥3 candidats vient ensuite pour
+V4-018 et ne retarde pas ce premier parcours de faisabilité.

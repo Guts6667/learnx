@@ -2,18 +2,23 @@
 
 ## Statut et autorité
 
-- Version : 1.9.0
+- Version : 1.10.0
 - Statut : **V4 en cours — fondations livrées, preuve autonome IA sur le chemin critique**
 - Dernière consolidation : 16 août 2026 — protocole evidence-assist 3.0.0
   implémenté hors ligne, capacité de désactivation attestée, aucun appel autorisé
-- Baseline : V3.5 officiellement clôturée et son système visuel documenté
+- Baseline technique : candidat V3.5 et système visuel documentés. Le rapport
+  `docs/V3_5_RELEASE_REPORT.md` conserve honnêtement un gate externe ouvert :
+  promotion effective, appareil/PWA, iPhone/VoiceOver, zoom et smoke authentifié
+  post-promotion ne sont pas attestés comme achevés.
 - Sources de cadrage : décisions produit sur la correction IA, OpenRouter,
   crédits LearnX, modèle économique, séparation V4/V5 et direction artistique
   Atlas sans vert validée le 10 août 2026
 
-La vue de pilotage courante est `docs/V4_ROADMAP.md`. Elle résume l'état réel,
-le chemin critique et les gates sans remplacer les critères détaillés du présent
-backlog. La spécification autoritaire du moteur de correction est
+La vue de pilotage courante est `docs/V4_ROADMAP.md`. Elle constitue le registre
+humain unique de l'état, des tickets reprenables, des prochaines actions et des
+gates ; le présent backlog conserve les périmètres, dépendances et critères
+détaillés sans maintenir un second statut concurrent. La spécification
+autoritaire du moteur de correction est
 `docs/V4_EXECUTABLE_RUBRIC_ENGINE_SPEC.md`. La nouvelle identité de protocole
 de recherche sémantique est régie par
 `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. La spécification composite locale
@@ -24,7 +29,10 @@ Atlas validées pour les crédits et la correction sont :
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-correction-flow.html` ;
 - `/Users/rayanchambet/.codex/visualizations/2026/08/10/019fea7c-39ea-7540-b74f-d7bbd2ccf22c/learnx-v4-atlas-surfaces.html`.
 
-Ce document fixe le périmètre détaillé de V4. V3.5 est clôturée et V4 a démarré.
+Ce document fixe le périmètre détaillé de V4. Le travail V4 hors ligne est
+autorisé et a démarré sur la baseline technique V3.5. Cette autorisation ne
+réécrit pas `docs/V3_5_RELEASE_REPORT.md` et ne transforme pas son gate externe
+ouvert en validation accomplie ; ce gate devra être fermé avant la clôture V4.
 Un ticket ne devient une instruction d'implémentation qu'après réaudit du code
 et du schéma réellement livrés, puis reformulation détaillée du ticket actif.
 
@@ -70,7 +78,8 @@ les nouvelles implémentations ; cette section conserve la décision historique.
   produit unique avant activation.
 - Aucun modèle ni pipeline n'est encore promu ; le holdout scellé reste fermé
   tant qu'un candidat n'a pas franchi le corpus complet de développement et le
-  gate `GO_AUTONOMOUS_FORMATIVE`.
+  gate d'admission one-shot défini par l'autorité active. Son ouverture ne vaut
+  jamais promotion.
 
 Les états `CONFIRMED`, `UNCERTAIN`, `PROVISIONAL` et la contestation par seconde
 analyse décrits dans les amendements historiques ne sont plus les états cibles
@@ -85,9 +94,11 @@ ou utiliser `humanReviewApproved` comme autorité. Le manifeste canonique de la
 phase est `docs/V4_AI_CORRECTION_PHASE_MANIFEST_V3.json`. Le manifeste sans
 suffixe reste l'autorité historique épinglée par les campagnes closes.
 
-- Le gate de promotion devient `GO_AUTONOMOUS_FORMATIVE` : oracle autonome
-  scellé, cas déterministes, métamorphismes, sécurité et citations exactes,
-  variabilité bornée et abstention obligatoire.
+- `GO_TO_SEALED_HOLDOUT` est le gate préalable d'ouverture one-shot après le
+  corpus complet ; il ne promeut rien. Le gate final de promotion devient
+  `GO_AUTONOMOUS_FORMATIVE` après succès du holdout : oracle autonome scellé,
+  cas déterministes, métamorphismes, sécurité et citations exactes, variabilité
+  bornée et abstention obligatoire.
 - Une preuve autonome publiable fournit un feedback formatif ; une ambiguïté
   matérielle masque le score exact et exige une clarification ; une exécution
   indisponible ne publie ni feedback ni débit.
@@ -113,6 +124,11 @@ cherche plus un modèle chargé de noter. La spécification canonique devient
 - Une rubrique atomique, compilée et versionnée détermine les niveaux. Les
   éléments `SUPPORTED`, `CONTRADICTED`, `NOT_DEMONSTRATED` et `AMBIGUOUS` sont
   rattachés à des spans exacts de la réponse.
+- Cette phrase décrit uniquement le canal mécanique historique/exécutable. Sous
+  evidence-assist 3.0.0, une relation IA candidate ne peut produire aucun de
+  ces statuts atomiques ni alimenter une règle de niveau. Seuls des constats
+  mécaniques indépendants, calculés par une règle LearnX pure et authorée, sont
+  scorables. En leur absence, niveau et score restent `null`.
 - LearnX contrôle les spans, la propriété des pénalités, les injections et les
   règles, puis émet un certificat de preuve reconstructible. Le feedback MVP
   provient uniquement de templates authorés.
@@ -165,6 +181,19 @@ raws et règles d'arrêt restent immuables et append-only.
   leurs seuils et leurs règles d'arrêt sont gelés ensemble avant le premier
   appel ; toute modification recommence au gate quatre cas sous une nouvelle
   identité.
+- Le panel 10 × 2 est le corpus de développement complet, pas un prélude à un
+  ensemble indéfini : il lie la sélection scellée
+  `writing-fr-semantic-development-v2@2.0.0`, ses 10 cas, leur ordre et deux
+  répétitions fraîches, soit 20 workflows hors des quatre cas. Changer un seul
+  de ces paramètres versionne le corpus, ferme la campagne et recommence à 4.
+- Deux décisions sont distinctes : `GO_TO_SEALED_HOLDOUT`, après 4/4 puis 20/20
+  et scellement indépendant du holdout, autorise son unique ouverture sans
+  promouvoir ; `GO_AUTONOMOUS_FORMATIVE`, après succès one-shot du holdout,
+  promeut uniquement le pipeline exact pour le pilote formatif borné.
+- La comparaison de trois candidats devient une preuve secondaire de robustesse
+  et d'économie après faisabilité du pipeline exact. Elle ne bloque pas le gate
+  Sonnet 5, le 10 × 2, le holdout ou le pilote borné ; elle reste bloquante pour
+  V4-018, la tarification et toute généralisation commerciale.
 - Le holdout actif devient
   `benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json`.
   Il reste non authoré, non scellé et inexécutable. Le manifeste v2 est conservé
@@ -187,32 +216,37 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 1. Conserver le segmenter, le contexte de requête, le raw provider, le schéma
    evidence-assist et l'attestation de capacité sous tests fail-closed.
 2. Attribuer une identité immuable, puis geler ensemble le gate quatre
-   cas et le panel conditionnel 10 × 2. Aucun identifiant n'est anticipé dans
-   ce backlog.
+   cas et le corpus complet conditionnel 10 × 2. La sélection, la taille et la
+   règle de changement sont définies ; les identifiants du manifeste
+   d'exécution restent à attribuer avant appel et ne sont pas inventés ici.
 3. Faire arbitrer le budget Finance et obtenir un GO propriétaire distinct.
 4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
    que si le gate fait `4/4`, sous exactement la même identité.
-5. Publier un premier contrat `WRITING/fr-FR` seulement si le protocole franchit
-   ses gates autonomes et si le contrat est `FULLY_COMPILABLE`, versionné et
-   couvert par ses templates et remédiations.
+5. Après 20/20, n'autoriser qu'une ouverture du holdout scellé via
+   `GO_TO_SEALED_HOLDOUT`, puis rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si
+   son exécution one-shot réussit sans retuning.
+6. Publier un premier contrat `WRITING/fr-FR` seulement après ce GO, s'il est
+   `FULLY_COMPILABLE`, versionné, couvert par ses templates/remédiations et s'il
+   prouve que les relations candidates ne sont jamais scorées.
 
 ### Ensuite — livrer le premier flow apprenant
 
-6. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
+7. Brancher V4-010 au runtime : remise textuelle, devis/réservation, recherche
    de preuves, exécution déterministe de la rubrique, feedback authoré,
    révision/clarification et libération en cas d'échec technique.
-7. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
+8. Piloter sous feature flag, sur contenu faible risque, avec crédits offerts et
    aucun effet sur `ConceptProgress`, `StageProgress` ou `VALIDATED`.
-8. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
+9. Mesurer qualité publiée, couverture, abstention, coût P50/P90, incidents et
    compréhension UX avant d'activer prix ou paiement.
 
 ### Plus tard — économie, paiement et extension
 
-9. Calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
-   observés ; les catalogues actuels restent `DRAFT/INACTIVE`.
-10. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
+10. Comparer au moins trois candidats sur des identités reproductibles, puis
+    calibrer catalogue, dashboard, marges et cohortes sur les coûts réellement
+    observés ; les catalogues actuels restent `DRAFT/INACTIVE`.
+11. Ouvrir Revolut, packs et clôture financière seulement après gates qualité,
    finance et conseil externe.
-11. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
+12. Maintenir V4-011 fermé tant qu'un contrôle cumulatif déterministe,
     multi-notions et corrigé serveur ne peut pas prouver la maîtrise.
 
 ### Vérités à ne plus perdre
@@ -341,7 +375,7 @@ silencieusement l'historique.
 | V4-008A | Produit & pédagogie : identité, déclenchement, consolidation et états du pipeline composite. Finance & Pricing : coût, plafond et retries absorbés du workflow. Direction artistique : conformité du contrat aux surfaces Atlas validées. Aucun appel facturable avant gel de l'identité. |
 | V4-009 | Finance & Pricing : réservation, règlement, libération, retries absorbés et réconciliation. Produit & pédagogie : consentement, absence de débit surprise et historique compréhensible. |
 | V4-009B | Produit & pédagogie : protocole préenregistré, oracle autonome scellé, métamorphismes et verdict `GO_AUTONOMOUS_FORMATIVE`. Finance & Pricing : budget maximal, coût complet par correction utilisable et règle d'arrêt. Développement : répétition Neon, instrumentation et identité technique reproductible. Aucun `24×3` ni holdout sans GO du mini-panel. |
-| V4-009C | Produit & pédagogie : panel Gemini modernisé, grille formative, oracle autonome et abstention. Finance & Pricing : plafond R&D et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste, runner et traçabilité append-only. Aucun appel facturable sans GO distinct. |
+| V4-009C | Produit & pédagogie : pipeline evidence-assist exact, quatre cas, corpus complet 10 × 2, holdout autonome et abstention. Finance & Pricing : plafonds R&D distincts et coût par correction utilisable. Développement : enveloppe de sécurité déterministe, manifeste et traçabilité append-only. Le Propriétaire rend séparément `GO_TO_SEALED_HOLDOUT` puis `GO_AUTONOMOUS_FORMATIVE` ; aucun appel facturable sans GO d'enveloppe. |
 | V4-010 | Produit & pédagogie : flow complet de preuve, feedback, révision et clarification ciblée. Direction artistique : quatre états du moteur exécutable et hiérarchie mobile/desktop avant validation visuelle. |
 | V4-011 | Produit & pédagogie : séparation remise/feedback/maîtrise, formats éligibles, contrat cumulatif déterministe et absence de revue humaine. Finance & Pricing : coût/devis des nouvelles versions de soumission. Direction artistique : comparaison des versions, révision et clarification. Ticket fermé tant que le gate déterministe n'est pas livré. |
 | V4-012 | Finance & Pricing : définitions des coûts, marge, réconciliation et alertes. Produit & pédagogie : métriques de qualité interprétables sans réduire la pédagogie à une moyenne. |
@@ -849,7 +883,8 @@ Tickets principaux : V4-016A, V4-016B, V4-016G, V4-018 et V4-019.
 
 ## V4-001 — ADR correction IA, financement et frontières de confiance
 
-**Priorité : P0. Dépendances : V3.5 officiellement clôturée.**
+**Priorité : P0. Dépendance historique satisfaite par la baseline technique
+V3.5 ; son assurance de release externe reste à réconcilier avant V4-019.**
 
 ### Périmètre
 
@@ -906,6 +941,10 @@ Dépendances : V4-001.**
   observations candidates non scorables.
 - Définir séparément les constats mécaniques authorés qui peuvent, eux seuls,
   alimenter une règle de niveau ou un score indicatif côté serveur.
+- Si le contrat ne possède aucun constat mécanique indépendant, sa version
+  publiable impose `indicativeScoreEnabled=false`, `level:null` et
+  `indicativeScore:null`. Les poids et points historiques ne rendent jamais une
+  relation evidence-assist scorable.
 - Étendre le guide d'authoring sans imposer un nombre arbitraire de critères.
 - Préparer un inventaire des activités existantes éligibles, incomplètes ou
   explicitement non compatibles.
@@ -935,6 +974,8 @@ Dépendances : V4-001.**
 - Une activité sans contrat valide ne peut pas proposer une correction IA.
 - Un test négatif prouve qu'aucun candidat evidence-assist ne peut être consommé
   par un calcul de niveau, score, maîtrise ou progression.
+- Un second test négatif prouve qu'un comptage, une polarité, une couverture ou
+  une absence de relations candidates ne peut contourner cette interdiction.
 - Les informations éditoriales de preuve restent compatibles avec les règles
   de sourcing existantes.
 - Le premier contrat faible risque peut être publié sans registre de knowledge
@@ -959,8 +1000,13 @@ Dépendances : V4-001.**
   mécanique à oracle exécutable, corpus sémantique synthétique qualifié de
   pseudo-oracle et shadow réel non annoté mesurant seulement stabilité,
   couverture, abstention, coût et dérive.
-- Comparer au moins trois candidats sur français, accord par critère,
-  hallucination, calibration, sécurité, latence et coût complet.
+- Valider d'abord la faisabilité du pipeline exact Sonnet 5 sous evidence-assist
+  3.0.0 : 4/4 puis corpus de développement complet 10 × 2. Cette preuve mono-
+  candidat peut progresser jusqu'au holdout et au pilote formatif borné.
+- Comparer ensuite au moins trois candidats sur des identités reproductibles
+  pour robustesse, latence et coût complet. Cette phase secondaire ne bloque pas
+  le premier gate Sonnet 5 ; elle bloque V4-018, le prix et la généralisation
+  commerciale. Les campagnes historiques sous un autre rôle ne comptent pas.
 - Mesurer médiane, P75, P90, retry, clarification, faux statuts, couverture,
   abstention et variabilité.
 - Mesurer les relations candidates, les identifiants de spans, faux supports,
@@ -1001,7 +1047,8 @@ Dépendances : V4-001.**
   Pour la bêta, `eventualUnusableRunRate` doit rester ≤ 2 % et aucune sortie
   invalide ne peut être montrée ou débitée. `firstAttemptInvalidRate` devient un
   indicateur opérationnel avec cible ≤ 10 %, sans masquer les retries.
-- Le gate evidence-assist impose d'abord 4/4, puis 20/20 sous la même identité :
+- Le gate evidence-assist impose d'abord 4/4, puis les 20/20 du corpus complet
+  borné sous la même identité :
   spans connus, raw et contexte liés, sécurité injection/canari et coûts
   réconciliés à 100 %, zéro faux support critique, clé inconnue, champ interdit
   ou consommation d'une relation candidate par un score/niveau.
@@ -1010,6 +1057,10 @@ Dépendances : V4-001.**
   ne proviennent jamais des relations candidates IA.
 - Le holdout reste scellé jusqu'au GO du corpus complet de développement. Aucun
   `UNCERTAIN` ou `UNUSABLE` n'est présenté ou facturé comme correction complète.
+- `GO_TO_SEALED_HOLDOUT` autorise une seule ouverture après les gates de
+  développement ; seul le succès one-shot permet ensuite
+  `GO_AUTONOMOUS_FORMATIVE`. Aucun des deux ne peut être remplacé par une revue
+  humaine ou un vote de modèles.
 
 ### Tests et risques
 
@@ -1691,10 +1742,12 @@ sont actifs.**
 
 ### Suite conditionnelle
 
-- Si Gemini échoue comme chercheur, arrêter et documenter la famille d'éléments
+- Si le chercheur exact échoue, arrêter et documenter la famille d'éléments
   concernée. Ne pas revenir silencieusement à un modèle juge.
-- S'il passe, tester sur un corpus sémantique plus large sous la même identité,
-  puis demander un GO avant le holdout one-shot.
+- S'il passe 4/4, exécuter exactement le corpus complet 10 × 2 défini par le
+  protocole 3.0.0. Après 20/20 et scellement indépendant du holdout, demander
+  `GO_TO_SEALED_HOLDOUT`; seul son succès one-shot ouvre la décision
+  `GO_AUTONOMOUS_FORMATIVE`.
 - Un falsificateur est comparé à Gemini seul sur les mêmes sorties. Il n'est
   retenu que s'il réduit les faux statuts sans augmenter indûment l'abstention,
   la latence et le coût.
@@ -2528,8 +2581,8 @@ calibration V4-018.**
 
 ## V4-019 — Audit final, déploiement et clôture V4
 
-**Priorité : P0 release. Dépendances : V3.5 clôturée, V4-001 à V4-018A,
-V4-016A, V4-016B, V4-016C et V4-016G.**
+**Priorité : P0 release. Dépendances : assurance release V3.5 réconciliée,
+V4-001 à V4-018A, V4-016A, V4-016B, V4-016C et V4-016G.**
 
 ### Périmètre
 
@@ -2540,6 +2593,10 @@ V4-016A, V4-016B, V4-016C et V4-016G.**
   à la matrice V3.5-008 sans assimiler fidélité à l'atlas et qualité d'usage.
 - Exécuter lint, typecheck, tests, build, E2E, migrations sur clone Neon,
   tests sandbox paiement et smoke production borné.
+- Réconcilier explicitement le rapport V3.5 encore marqué « clôture officielle
+  en attente » avec la preuve de promotion, les contrôles appareil/PWA,
+  iPhone/VoiceOver, zoom et le smoke authentifié post-promotion. V4-019 ne les
+  déclare jamais implicitement réussis.
 - Vérifier clés, budgets, kill switches, alertes, sauvegarde et rollback.
 - Réconcilier un cycle complet : achat → crédits → correction → règlement →
   clôture, ainsi qu'un échec et un litige.
