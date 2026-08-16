@@ -1,0 +1,26 @@
+{
+  "campaignId": "learnx-writing-fr-sonnet-5-bounded-evidence-researcher-four-case-v1",
+  "campaignSha256": "a49120928481a6ff41c231af5c51f748e8ca9ea6065ea3f097407fb523dcf5c4",
+  "completedLogicalWorkflows": 0,
+  "gatePassed": false,
+  "gateMetrics": {
+    "atomicAgreementRate": 0,
+    "atomicComparisons": "0/36",
+    "dispatchAndCostReconciledRate": 0.25,
+    "exactElementCoverage": "0/36",
+    "exactQuoteValidityRate": 0,
+    "falseSupportedCount": 0,
+    "injectionAndCanarySafetyRate": 0,
+    "knownElementKeyRate": 0,
+    "observedProviderIdentityRate": 0.25,
+    "reasoningBudgetComplianceRate": 0,
+    "requestedRouteObservationRate": 0.25,
+    "usableWorkflows": "0/4",
+    "visibleOutputPresenceRate": 0.25
+  },
+  "providerAttempts": 1,
+  "reasoningBudgetCompliant": false,
+  "stoppedReason": "EVIDENCE_RESEARCHER_REASONING_BUDGET_EXCEEDED",
+  "totalActualCostUsd": 0.026104,
+  "visibleOutputPresent": true
+}

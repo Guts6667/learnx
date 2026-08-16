@@ -2,7 +2,7 @@
   "schemaVersion": "2.0.0",
   "manifestId": "learnx-v4-ai-correction-phase-2026-08-13",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-16T00:00:00Z",
+  "updatedAt": "2026-08-16T08:00:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -59,6 +59,11 @@
       "candidate": "learnx-writing-fr-sonnet-5-evidence-researcher-panel-v1",
       "verdict": "NO_GO_TECHNICAL_REQUEST_PROFILE",
       "reason": "The panel stopped after ten valid workflows when the eleventh consumed 2500 reasoning tokens and produced no visible output. This is not a negative pedagogical verdict on Sonnet 5."
+    },
+    {
+      "candidate": "learnx-writing-fr-sonnet-5-bounded-evidence-researcher-four-case-v1",
+      "verdict": "NO_GO_TECHNICAL_REASONING_BUDGET",
+      "reason": "The first call produced 1082 reasoning tokens against an explicit maximum of 1024. The campaign stopped before semantic validation, so this is not a negative pedagogical verdict on Sonnet 5."
     }
   ],
   "holdout": {
@@ -105,7 +110,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "CURRENT_PROFILES_NO_GO_NEW_SONNET_PROFILE_REQUIRED",
+      "status": "ARCHITECTURE_ARBITRATION_REQUIRED",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Validate exact response spans and produce a reconstructible evidence certificate.",
@@ -485,9 +490,9 @@
     "Preserve the successful three-case v2 result and its exact artifacts; do not reuse its consumed budget or owner token.",
     "Preserve requestedRoute separately from observedProvider in every future artifact; keep providerRoute readable only for historical compatibility.",
     "Preserve the Gemini panel v2 and Sonnet 5 panel results, ledgers and NO-GO verdicts append-only; never resume either closed envelope.",
-    "Define a new Sonnet 5 identity with an explicit reasoning maximum and separately reserved visible-output capacity, and reject the campaign offline if the pinned route cannot attest both parameters.",
-    "Prepare a fresh four-case gate with zero historical result reuse, then obtain Product, Finance and owner approval for its exact fingerprint before any dispatch.",
-    "Keep the falsifier, holdout and V4-010 closed until the new four-case gate and the subsequent unchanged-identity 10x2 panel pass.",
+    "Preserve the bounded Sonnet 5 gate and its 0.026104 USD cost append-only; never resume or relax the closed identity.",
+    "Stop Sonnet profile retuning and broad model screening. Obtain an explicit architecture decision between a narrower deterministic MVP and a revised route or architecture under a new identity.",
+    "Keep the falsifier, holdout, V4-002 and V4-010 closed until the chosen architecture satisfies new deterministic gates.",
     "Author the holdout independently from candidate outputs, validate its mechanical and metamorphic invariants, seal only its ciphertext, then request a separate one-shot opening GO; do not simulate human approval."
   ],
   "canonicalPromise": "Feedback formatif autonome, critériel et appuyé sur la réponse de l’apprenant.",
