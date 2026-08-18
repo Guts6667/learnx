@@ -1,0 +1,37 @@
+name: Cleanup SourceLab bootstrap
+
+on:
+  push:
+    branches:
+      - agent/sourcelab-programs
+    paths:
+      - .github/workflows/cleanup-sourcelab-bootstrap.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove temporary bootstrap workflows
+        run: |
+          rm -f .github/workflows/fix-materialize-sourcelab-programs.yml
+          rm -f .github/workflows/cleanup-sourcelab-bootstrap.yml
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to clean."
+            exit 0
+          fi
+          git commit -m "chore(sourcelab): remove bootstrap workflows [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
