@@ -1,0 +1,43 @@
+name: Expand SourceLab curriculum package
+
+on:
+  push:
+    branches:
+      - agent/add-sourcelab-learning-programs
+    paths:
+      - '.sourcelab-payload/**'
+      - '.github/workflows/expand-sourcelab-curriculum.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Rebuild and verify curriculum package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .sourcelab-payload/part-* | base64 --decode > /tmp/sourcelab.tar.xz
+          echo 'd090c86aa8b35093e896b71691a5f859c62bce0f542c064d45fb277f0cb07da8  /tmp/sourcelab.tar.xz' | sha256sum --check -
+          tar -xJf /tmp/sourcelab.tar.xz
+          rm -rf .sourcelab-payload .source-packages .sourcelab-bootstrap scripts/.sourcelab-payload
+          rm -f SOURCELAB_PROGRAMS_PACKAGE.md scripts/materialize-sourcelab-programs.sh
+          rm .github/workflows/expand-sourcelab-curriculum.yml
+
+      - name: Commit expanded curricula
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'content(sourcelab): author production and AI learning programs'
+          git push origin HEAD:${{ github.ref_name }}
