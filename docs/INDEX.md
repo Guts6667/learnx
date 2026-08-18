@@ -85,6 +85,33 @@ construit une base de type Lead Implementer. Il ne revendique ni formation
 accréditée ni équivalence avec une certification dont l’organisme et le
 programme d’examen ne sont pas encore confirmés.
 
+## Programme Fondations d’ingénierie pour Product Engineers
+
+- Présentation et statut :
+  `content/engineering-foundations-product-engineers/README.md`
+- Blueprint :
+  `content/engineering-foundations-product-engineers/CURRICULUM_BLUEPRINT.md`
+- Projet fil rouge partagé :
+  `content/engineering-foundations-product-engineers/GROUNDED_INSPECTOR_PROJECT.md`
+
+Ce programme reste un blueprint en brouillon. Il renforce architecture, backend,
+infrastructure, Docker, fiabilité et sécurité applicative sans viser un rôle
+DevOps ou SRE. Aucun seed n’est encore branché au moteur.
+
+## Programme AI Product Engineer en TypeScript
+
+- Présentation et statut :
+  `content/ai-product-engineer-typescript/README.md`
+- Blueprint :
+  `content/ai-product-engineer-typescript/CURRICULUM_BLUEPRINT.md`
+- Projet fil rouge partagé :
+  `content/engineering-foundations-product-engineers/GROUNDED_INSPECTOR_PROJECT.md`
+
+Ce programme reste un blueprint en brouillon. Il couvre ingestion, embeddings,
+retrieval, RAG, citations, abstention, évaluations, observabilité, workflows et
+connecteur LearnX en lecture seule. Il est distinct du parcours de gouvernance
+IA et n’exige pas Python. Aucun seed n’est encore branché au moteur.
+
 ## Psychology Foundations — English pilot
 
 - Blueprint : `content/psychology-foundations-pilot/CURRICULUM_BLUEPRINT.md`
