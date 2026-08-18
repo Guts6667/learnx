@@ -41,6 +41,12 @@
 - identifiants `PEDAGOGY_SPEC_126` à `149` et `PEDAGOGY_STAGE_ASSESSMENT_027` à `038` uniques ;
 - séparation LearnX / SourceLab explicitée dans les blueprints et activités.
 
+## État de livraison
+
+- Les 44 fichiers finaux sont matérialisés directement dans `content/`, `seed/` et `docs/`.
+- Aucun paquet binaire, fragment de transport ou workflow temporaire n’est conservé dans le diff final.
+- Les deux programmes restent volontairement en brouillon et ne modifient pas le seed automatique de production.
+
 ## Limites restantes
 
 - Ce contrôle ne remplace pas l’exécution du parseur Zod réel de `prisma/seed.ts` dans le dépôt LearnX.
