@@ -1,0 +1,93 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_033",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "cadrer-qualite-ia",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Définir les contrats et preuves IA",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Cadrer Program Builder et Assessment Reviewer, créer leur dataset initial et décider des gates de qualité avant l’implémentation.",
+    "instructions": [
+      "Définir les deux contrats produit, décisions et non-objectifs.",
+      "Cartographier erreurs, enjeux et supervision.",
+      "Créer les catégories du dataset et au moins dix cas critiques.",
+      "Définir baseline, métriques séparées et gates de promotion.",
+      "Rédiger une recommandation go/no-go pour l’implémentation."
+    ],
+    "case": "Cas fictif — L’équipe veut « ajouter GPT partout » et juge la qualité sur cinq démonstrations choisies. Elle propose de publier automatiquement les programmes et d’enregistrer directement les scores, sans dataset, baseline, politique d’escalade ni distinction entre erreur de style et source inventée.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Note produit-technique, matrice de risques, dataset versionné et tableau des gates.",
+    "conceptSlugs": [
+      "contrat-produit-ia",
+      "evaluation-versionnee"
+    ],
+    "rubric": [
+      {
+        "criterion": "Contrats produit",
+        "weight": 25,
+        "requirements": [
+          "Entrées, sorties, décisions et limites sont explicites.",
+          "LearnX reste autorité de publication et de score final."
+        ]
+      },
+      {
+        "criterion": "Risques et supervision",
+        "weight": 25,
+        "requirements": [
+          "Erreurs critiques et escalades sont définies.",
+          "La baseline non-IA est identifiable."
+        ]
+      },
+      {
+        "criterion": "Dataset",
+        "weight": 30,
+        "requirements": [
+          "Cas nominaux, absents, contradictoires et adversariaux sont couverts.",
+          "Les attendus sont vérifiables."
+        ]
+      },
+      {
+        "criterion": "Gates",
+        "weight": 20,
+        "requirements": [
+          "Retrieval, génération et décision sont mesurés séparément.",
+          "Les erreurs non compensables bloquent la release."
+        ]
+      }
+    ],
+    "remediation": "Remplacer les objectifs vagues par des résultats observables, ajouter les cas absents et séparer toute métrique moyenne des erreurs critiques."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-138-NIST_AI_RMF",
+      "REF-138-OPENAI_PRODUCTION",
+      "REF-139-OPENAI_EVALS",
+      "REF-139-NIST_AI_RMF"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

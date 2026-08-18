@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_145",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "generer-programmes-sources",
+  "moduleSlug": "program-authoring",
+  "lesson": {
+    "title": "Générer un blueprint et modifier sans dérive",
+    "slug": "generer-blueprint-modifier-sans-derive",
+    "summary": "Produire d’abord l’architecture LearnX, valider ses dépendances, puis générer les leçons et appliquer des changements ciblés sans réécriture silencieuse.",
+    "objectives": [
+      "Générer un blueprint aligné aux résultats et évaluations.",
+      "Valider le JSON et les règles LearnX hors modèle.",
+      "Appliquer une modification ciblée en préservant les sections verrouillées."
+    ],
+    "prerequisites": [
+      "Disposer d’un brief pédagogique validé."
+    ],
+    "estimatedMinutes": 105,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-generer-blueprint-modifier-sans-derive-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La génération progressive sépare brief, blueprint, leçons, banques de questions et publication. Chaque étape produit un artefact structuré contrôlé avant la suivante, ce qui limite le coût d’une mauvaise décision initiale.",
+          "sourceKeys": [
+            "learnx-authoring",
+            "learnx-editorial"
+          ]
+        }
+      },
+      {
+        "key": "content-generer-blueprint-modifier-sans-derive-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab génère titres, étapes, modules, leçons, objectifs, livrables et évaluations. Après validation, il génère une seule leçon avec ses sources. La demande « ajoute les retries » crée un patch ciblé plutôt qu’un programme entièrement nouveau.",
+          "sourceKeys": [
+            "learnx-authoring",
+            "openai-structured"
+          ]
+        }
+      },
+      {
+        "key": "content-generer-blueprint-modifier-sans-derive-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Les invariants LearnX — notion obligatoire évaluée, étape avec évaluation finale, clés stables, références existantes et séquence complète — sont vérifiés par du code déterministe. Le modèle ne s’auto-certifie pas compatible.",
+          "sourceKeys": [
+            "learnx-authoring"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "learnx-authoring",
+        "type": "website",
+        "title": "Guide de rédaction des PEDAGOGY_SPEC — LearnX",
+        "author": "LearnX",
+        "url": "https://github.com/Guts6667/learnx/blob/main/PEDAGOGY_AUTHORING_GUIDE.md",
+        "citation": "LearnX. (2026). Guide de rédaction des PEDAGOGY_SPEC. Dépôt LearnX.",
+        "description": "Consulter la partie consacrée à contrat des leçons, ressources, notions, activités et séquences puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant contrat des leçons, ressources, notions, activités et séquences.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "contrat des leçons, ressources, notions, activités et séquences",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "learnx-editorial",
+        "type": "website",
+        "title": "Gouvernance éditoriale — LearnX",
+        "author": "LearnX",
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "citation": "LearnX. (2026). Gouvernance éditoriale. Dépôt LearnX.",
+        "description": "Consulter la partie consacrée à sourcing, publication, alignement et contrôles puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sourcing, publication, alignement et contrôles.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sourcing, publication, alignement et contrôles",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "openai-structured",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (2026). Structured model outputs. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à schémas de sortie et validation structurée puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant schémas de sortie et validation structurée.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "schémas de sortie et validation structurée",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Génération pédagogique contrôlée",
+        "slug": "generation-pedagogique-controlee",
+        "description": "La génération progresse par artefacts validés, patches ciblés et contrôles déterministes.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "learnx-authoring",
+          "learnx-editorial",
+          "openai-structured"
+        ],
+        "assessment": {
+          "key": "assessment-generation-pedagogique-controlee",
+          "type": "quiz",
+          "title": "Mini-évaluation — Génération pédagogique contrôlée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-generer-blueprint-modifier-sans-derive",
+        "title": "Produire l’export LearnX",
+        "description": "Implémenter Brief → Blueprint → leçon, validateur des invariants et patch ciblé avec sections verrouillées. Générer un programme test et démontrer une modification sans dérive.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-generer-blueprint-modifier-sans-derive",
+        "title": "Quiz de leçon — Générer un blueprint et modifier sans dérive",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un export contient une `resourceKey` absente de la leçon. Quel résultat ?",
+            "explanation": "Une référence cassée invalide le contrat.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le validateur bloque l’export et localise l’erreur.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le seed doit l’ignorer silencieusement.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La ressource est inventée automatiquement.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que conserver dans l’historique d’une génération ?",
+            "explanation": "L’historique rend les décisions et changements auditables.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Entrées et versions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Diff accepté",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Sources utilisées",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Uniquement le texte final",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Générer tout le programme en un seul appel facilite nécessairement la correction ciblée.",
+            "explanation": "Un pipeline par artefacts rend les modifications plus maîtrisables.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-generer-blueprint-modifier-sans-derive-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "learnx-authoring"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-generer-blueprint-modifier-sans-derive-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-generer-blueprint-modifier-sans-derive-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "learnx-editorial"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-generer-blueprint-modifier-sans-derive"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-generation-pedagogique-controlee"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-generer-blueprint-modifier-sans-derive"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-145-LEARNX_AUTHORING",
+        "type": "official_documentation",
+        "authors": [
+          "LearnX"
+        ],
+        "organization": "LearnX",
+        "title": "Guide de rédaction des PEDAGOGY_SPEC — LearnX",
+        "year": 2026,
+        "edition": null,
+        "publication": "LearnX",
+        "doi": null,
+        "url": "https://github.com/Guts6667/learnx/blob/main/PEDAGOGY_AUTHORING_GUIDE.md",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-145-LEARNX_EDITORIAL",
+        "type": "official_documentation",
+        "authors": [
+          "LearnX"
+        ],
+        "organization": "LearnX",
+        "title": "Gouvernance éditoriale — LearnX",
+        "year": 2026,
+        "edition": null,
+        "publication": "LearnX",
+        "doi": null,
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-145-OPENAI_STRUCTURED",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-145-LEARNX_AUTHORING",
+            "locator": "contrat des leçons, ressources, notions, activités et séquences",
+            "supports": "Soutient le bloc sur génération pédagogique contrôlée."
+          },
+          {
+            "referenceId": "REF-145-LEARNX_EDITORIAL",
+            "locator": "sourcing, publication, alignement et contrôles",
+            "supports": "Soutient le bloc sur génération pédagogique contrôlée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-145-LEARNX_AUTHORING",
+            "locator": "contrat des leçons, ressources, notions, activités et séquences",
+            "supports": "Soutient le bloc sur génération pédagogique contrôlée."
+          },
+          {
+            "referenceId": "REF-145-OPENAI_STRUCTURED",
+            "locator": "schémas de sortie et validation structurée",
+            "supports": "Soutient le bloc sur génération pédagogique contrôlée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-145-LEARNX_AUTHORING",
+            "locator": "contrat des leçons, ressources, notions, activités et séquences",
+            "supports": "Soutient le bloc sur génération pédagogique contrôlée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "learnx-authoring",
+        "referenceIds": [
+          "REF-145-LEARNX_AUTHORING"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour contrat des leçons, ressources, notions, activités et séquences.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "learnx-editorial",
+        "referenceIds": [
+          "REF-145-LEARNX_EDITORIAL"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sourcing, publication, alignement et contrôles.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-structured",
+        "referenceIds": [
+          "REF-145-OPENAI_STRUCTURED"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour schémas de sortie et validation structurée.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "generation-pedagogique-controlee",
+        "assessmentTitle": "Mini-évaluation — Génération pédagogique contrôlée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi valider le blueprint avant les leçons complètes ?",
+            "explanation": "La génération progressive réduit les reprises.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour corriger la structure avant de payer et réviser beaucoup de contenu.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour supprimer toute évaluation.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour rendre les sources facultatives.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels invariants doivent être vérifiés par du code ?",
+            "explanation": "Les invariants structurels sont déterministes.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Clés référencées existantes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Notions obligatoires évaluées",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Séquence sans doublon",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Style jugé élégant",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une demande de modification ciblée autorise le modèle à réécrire les sections verrouillées si sa proposition semble meilleure.",
+            "explanation": "Le verrou est un contrat utilisateur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "generation-pedagogique-controlee",
+          "contentKeys": [
+            "content-generer-blueprint-modifier-sans-derive-1",
+            "content-generer-blueprint-modifier-sans-derive-2",
+            "content-generer-blueprint-modifier-sans-derive-3"
+          ],
+          "resourceKeys": [
+            "learnx-authoring",
+            "learnx-editorial",
+            "openai-structured"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-generer-blueprint-modifier-sans-derive"
+          },
+          "assessmentKey": "assessment-generation-pedagogique-controlee",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

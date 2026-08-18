@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_032",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "operer-et-diagnostiquer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Restaurer SourceLab après incident",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Détecter, contenir et résoudre un incident impliquant backlog, retries et saturation PostgreSQL, puis produire les preuves d’exploitation du produit.",
+    "instructions": [
+      "Établir impact et chronologie à partir des signaux disponibles.",
+      "Attribuer coordination, technique et communication.",
+      "Mitiger sans créer de doublons ni perte de données.",
+      "Choisir roll-forward, rollback ou restauration et le justifier.",
+      "Vérifier service, jobs et données, puis produire un postmortem et un runbook."
+    ],
+    "case": "Cas fictif — Après une release, les erreurs de parsing sont classées comme transitoires. Les retries sans backoff saturent les connexions PostgreSQL, le backlog augmente et certains utilisateurs relancent leurs imports. Les logs contiennent trop de texte mais ne relient pas API et worker. Une migration récente rend l’ancien binaire partiellement incompatible.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Simulation chronométrée de 60 minutes, journal d’incident, tableau de bord, postmortem et runbook d’exploitation.",
+    "conceptSlugs": [
+      "observabilite-correlee",
+      "reponse-incident"
+    ],
+    "rubric": [
+      {
+        "criterion": "Détection et impact",
+        "weight": 20,
+        "requirements": [
+          "Les symptômes utilisateurs, backlog et saturation sont reliés.",
+          "Faits et hypothèses sont séparés."
+        ]
+      },
+      {
+        "criterion": "Mitigation et restauration",
+        "weight": 30,
+        "requirements": [
+          "L’impact est réduit rapidement.",
+          "La décision tient compte de la compatibilité données/code."
+        ]
+      },
+      {
+        "criterion": "Intégrité et vérification",
+        "weight": 25,
+        "requirements": [
+          "Jobs, doublons et décomptes sont contrôlés.",
+          "La reprise du backlog est observée."
+        ]
+      },
+      {
+        "criterion": "Apprentissage opérationnel",
+        "weight": 25,
+        "requirements": [
+          "Postmortem sans blâme et actions attribuées.",
+          "Runbook et alertes permettent une réponse future plus rapide."
+        ]
+      }
+    ],
+    "remediation": "Rejouer l’incident avec les signaux manquants ajoutés, corriger la mitigation qui augmente l’impact et joindre les tests ou alertes prouvant la prévention."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-136-OTEL_SIGNALS",
+      "REF-136-OTEL_NODE",
+      "REF-136-GOOGLE_SRE_MONITORING",
+      "REF-137-GOOGLE_SRE_INCIDENTS",
+      "REF-137-GOOGLE_SRE_MONITORING",
+      "REF-137-NODE_PROCESS"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

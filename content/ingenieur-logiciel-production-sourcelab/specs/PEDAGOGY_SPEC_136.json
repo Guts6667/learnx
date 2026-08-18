@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_136",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "operer-et-diagnostiquer",
+  "moduleSlug": "observabilite-incidents",
+  "lesson": {
+    "title": "Instrumenter le parcours d’un import",
+    "slug": "instrumenter-parcours-import",
+    "summary": "Relier logs structurés, métriques et traces autour d’un identifiant d’import pour comprendre latence, erreurs et saturation sans journaliser les contenus sensibles.",
+    "objectives": [
+      "Distinguer logs, métriques et traces.",
+      "Définir des signaux centrés sur le parcours utilisateur.",
+      "Propager un identifiant de corrélation entre API et worker."
+    ],
+    "prerequisites": [
+      "Avoir une verticale déployable en staging."
+    ],
+    "estimatedMinutes": 85,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-instrumenter-parcours-import-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Les logs décrivent des événements, les métriques agrègent des mesures et les traces relient les étapes d’une opération distribuée. Leur valeur vient d’un vocabulaire cohérent et d’une corrélation, pas du volume brut collecté.",
+          "sourceKeys": [
+            "otel-signals",
+            "otel-node"
+          ]
+        }
+      },
+      {
+        "key": "content-instrumenter-parcours-import-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour un import SourceLab, une trace relie réception, stockage, création du job, parsing et finalisation. Les métriques suivent taux de succès, durée, taille de file et âge du plus ancien job ; les logs portent identifiants et codes d’erreur.",
+          "sourceKeys": [
+            "otel-node",
+            "google-sre-monitoring"
+          ]
+        }
+      },
+      {
+        "key": "content-instrumenter-parcours-import-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Ne pas journaliser le contenu des fichiers, URLs signées, tokens ou données personnelles par défaut. Commencer par les symptômes utilisateurs et les quatre signaux utiles, puis ajouter une donnée seulement si elle répond à une question opérationnelle.",
+          "sourceKeys": [
+            "google-sre-monitoring"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "otel-signals",
+        "type": "website",
+        "title": "Signals",
+        "author": "OpenTelemetry",
+        "url": "https://opentelemetry.io/docs/concepts/signals/",
+        "citation": "OpenTelemetry. (2026). Signals. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à traces, métriques, logs et baggage puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant traces, métriques, logs et baggage.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "traces, métriques, logs et baggage",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "otel-node",
+        "type": "website",
+        "title": "Getting started — Node.js",
+        "author": "OpenTelemetry",
+        "url": "https://opentelemetry.io/docs/languages/js/getting-started/nodejs/",
+        "citation": "OpenTelemetry. (2026). Getting started — Node.js. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à instrumentation d’une application Node.js puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant instrumentation d’une application Node.js.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "instrumentation d’une application Node.js",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "google-sre-monitoring",
+        "type": "website",
+        "title": "Monitoring Distributed Systems",
+        "author": "Google",
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "citation": "Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.). (2016). Monitoring Distributed Systems. Site Reliability Engineering. O’Reilly/Google.",
+        "description": "Consulter la partie consacrée à signaux, alertes et symptômes utilisateurs puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant signaux, alertes et symptômes utilisateurs.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "signaux, alertes et symptômes utilisateurs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Observabilité corrélée",
+        "slug": "observabilite-correlee",
+        "description": "Les signaux reliés à une même opération permettent d’expliquer son résultat sans exposer son contenu.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "otel-signals",
+          "otel-node",
+          "google-sre-monitoring"
+        ],
+        "assessment": {
+          "key": "assessment-observabilite-correlee",
+          "type": "quiz",
+          "title": "Mini-évaluation — Observabilité corrélée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-instrumenter-parcours-import",
+        "title": "Créer le tableau de bord d’import",
+        "description": "Instrumenter API et worker avec request/job/trace IDs, produire métriques de succès, latence et backlog, puis définir trois alertes et les données explicitement exclues.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-instrumenter-parcours-import",
+        "title": "Quiz de leçon — Instrumenter le parcours d’un import",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le taux de succès reste stable mais le backlog augmente. Quelle hypothèse tester ?",
+            "explanation": "Le stock de travail indique un problème de capacité ou de débit.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le débit d’arrivée dépasse le débit de traitement.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le CSS est mal minifié.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le DNS du navigateur a changé de police.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions peuvent aider sans créer une cardinalité incontrôlée ?",
+            "explanation": "Les labels métriques doivent rester bornés.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Type de traitement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Statut normalisé",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Version du worker",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "ID unique de chaque utilisateur comme label métrique",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Collecter davantage de logs améliore toujours le diagnostic, quel qu’en soit le contenu.",
+            "explanation": "Bruit, coût et risque de données peuvent dégrader l’exploitation.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-instrumenter-parcours-import-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "otel-signals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-instrumenter-parcours-import-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "otel-node"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-instrumenter-parcours-import-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "google-sre-monitoring"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-instrumenter-parcours-import"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-observabilite-correlee"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-instrumenter-parcours-import"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-136-OTEL_SIGNALS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenTelemetry"
+        ],
+        "organization": "OpenTelemetry",
+        "title": "Signals",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenTelemetry",
+        "doi": null,
+        "url": "https://opentelemetry.io/docs/concepts/signals/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-136-OTEL_NODE",
+        "type": "official_documentation",
+        "authors": [
+          "OpenTelemetry"
+        ],
+        "organization": "OpenTelemetry",
+        "title": "Getting started — Node.js",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenTelemetry",
+        "doi": null,
+        "url": "https://opentelemetry.io/docs/languages/js/getting-started/nodejs/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-136-GOOGLE_SRE_MONITORING",
+        "type": "official_documentation",
+        "authors": [
+          "Google"
+        ],
+        "organization": "Google",
+        "title": "Monitoring Distributed Systems",
+        "year": 2016,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-OTEL_SIGNALS",
+            "locator": "traces, métriques, logs et baggage",
+            "supports": "Soutient le bloc sur observabilité corrélée."
+          },
+          {
+            "referenceId": "REF-136-OTEL_NODE",
+            "locator": "instrumentation d’une application Node.js",
+            "supports": "Soutient le bloc sur observabilité corrélée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-OTEL_NODE",
+            "locator": "instrumentation d’une application Node.js",
+            "supports": "Soutient le bloc sur observabilité corrélée."
+          },
+          {
+            "referenceId": "REF-136-GOOGLE_SRE_MONITORING",
+            "locator": "signaux, alertes et symptômes utilisateurs",
+            "supports": "Soutient le bloc sur observabilité corrélée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-GOOGLE_SRE_MONITORING",
+            "locator": "signaux, alertes et symptômes utilisateurs",
+            "supports": "Soutient le bloc sur observabilité corrélée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "otel-signals",
+        "referenceIds": [
+          "REF-136-OTEL_SIGNALS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour traces, métriques, logs et baggage.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "otel-node",
+        "referenceIds": [
+          "REF-136-OTEL_NODE"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour instrumentation d’une application Node.js.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "google-sre-monitoring",
+        "referenceIds": [
+          "REF-136-GOOGLE_SRE_MONITORING"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour signaux, alertes et symptômes utilisateurs.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "observabilite-correlee",
+        "assessmentTitle": "Mini-évaluation — Observabilité corrélée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel signal montre directement que les utilisateurs attendent de plus en plus longtemps ?",
+            "explanation": "Les symptômes doivent être liés à l’expérience du service.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "La latence de bout en bout et l’âge du plus ancien job.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le nombre de lignes de code.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de tags Git.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que peut contenir un log structuré sûr ?",
+            "explanation": "Le contexte technique suffit souvent sans contenu sensible.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Identifiant de job",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Code d’erreur",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Étape et durée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Texte intégral d’un document confidentiel",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une trace distribuée est utile seulement si tous les services partagent la même base de données.",
+            "explanation": "Elle relie les contextes à travers des frontières de services.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "observabilite-correlee",
+          "contentKeys": [
+            "content-instrumenter-parcours-import-1",
+            "content-instrumenter-parcours-import-2",
+            "content-instrumenter-parcours-import-3"
+          ],
+          "resourceKeys": [
+            "otel-signals",
+            "otel-node",
+            "google-sre-monitoring"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-instrumenter-parcours-import"
+          },
+          "assessmentKey": "assessment-observabilite-correlee",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

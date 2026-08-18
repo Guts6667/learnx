@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_132",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "faire-evoluer-donnees",
+  "moduleSlug": "postgresql-et-migrations",
+  "lesson": {
+    "title": "Modéliser sources, versions et provenance",
+    "slug": "modeliser-sources-versions-provenance",
+    "summary": "Concevoir le modèle minimal de SourceLab pour conserver projet, document logique, version, fichier, extraction et provenance sans écraser l’historique.",
+    "objectives": [
+      "Transformer les invariants produit en contraintes de données.",
+      "Séparer document logique et version importée.",
+      "Choisir des index à partir de requêtes réelles."
+    ],
+    "prerequisites": [
+      "Savoir créer et traiter un job idempotent."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-modeliser-sources-versions-provenance-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La modélisation traduit des invariants : un document logique peut avoir plusieurs versions ; une version possède une empreinte et une provenance ; un traitement produit des artefacts sans réécrire silencieusement l’entrée.",
+          "sourceKeys": [
+            "postgres-constraints",
+            "prisma-models"
+          ]
+        }
+      },
+      {
+        "key": "content-modeliser-sources-versions-provenance-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Dans SourceLab, `Source` représente la ressource suivie, `SourceVersion` un import immuable, `StoredObject` le fichier et `Extraction` un résultat versionné. Une contrainte unique sur projet, source et hash empêche une version identique dupliquée.",
+          "sourceKeys": [
+            "postgres-constraints",
+            "prisma-models"
+          ]
+        }
+      },
+      {
+        "key": "content-modeliser-sources-versions-provenance-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un index n’est pas une décoration du schéma. Il répond à une requête mesurée — par exemple lister les sources récentes d’un projet ou réclamer le prochain job — et ajoute un coût aux écritures.",
+          "sourceKeys": [
+            "postgres-explain"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "postgres-constraints",
+        "type": "website",
+        "title": "Constraints",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Constraints. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à contraintes, unicité et intégrité référentielle puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant contraintes, unicité et intégrité référentielle.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "contraintes, unicité et intégrité référentielle",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "postgres-explain",
+        "type": "website",
+        "title": "Using EXPLAIN",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/using-explain.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Using EXPLAIN. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à plans de requête et mesure avant optimisation puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant plans de requête et mesure avant optimisation.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "plans de requête et mesure avant optimisation",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "prisma-models",
+        "type": "website",
+        "title": "Models",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/models",
+        "citation": "Prisma. (2026). Models. Documentation Prisma ORM. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à modèles, identifiants, relations et contraintes puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant modèles, identifiants, relations et contraintes.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "modèles, identifiants, relations et contraintes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Modèle versionné de source",
+        "slug": "modele-versionne-source",
+        "description": "Le modèle conserve l’identité logique, les versions immuables et la provenance de chaque transformation.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "postgres-constraints",
+          "postgres-explain",
+          "prisma-models"
+        ],
+        "assessment": {
+          "key": "assessment-modele-versionne-source",
+          "type": "quiz",
+          "title": "Mini-évaluation — Modèle versionné de source",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-modeliser-sources-versions-provenance",
+        "title": "Concevoir le schéma SourceLab V1",
+        "description": "Créer le diagramme et les modèles Prisma pour Project, Source, SourceVersion, StoredObject, Extraction et ProcessingJob. Documenter contraintes, suppressions et trois requêtes critiques.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-modeliser-sources-versions-provenance",
+        "title": "Quiz de leçon — Modéliser sources, versions et provenance",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une nouvelle extraction corrige un bug de parsing. Que faut-il faire ?",
+            "explanation": "La provenance permet de comparer et d’auditer les transformations.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Créer un nouvel artefact lié à la même version et au parseur corrigé.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Écraser sans trace l’extraction précédente.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Créer un nouvel utilisateur.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles contraintes peuvent protéger l’intégrité ?",
+            "explanation": "La base doit refuser les états impossibles.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Clé étrangère",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Unicité du hash dans son périmètre",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Valeurs d’état limitées",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Placeholder UI",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "La suppression en cascade est toujours le bon choix pour les sources pédagogiques.",
+            "explanation": "La politique de rétention et l’historique doivent guider la suppression.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-sources-versions-provenance-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-constraints"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-sources-versions-provenance-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "prisma-models"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modeliser-sources-versions-provenance-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-explain"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-modeliser-sources-versions-provenance"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-modele-versionne-source"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-modeliser-sources-versions-provenance"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-132-POSTGRES_CONSTRAINTS",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Constraints",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-132-POSTGRES_EXPLAIN",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Using EXPLAIN",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/using-explain.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-132-PRISMA_MODELS",
+        "type": "official_documentation",
+        "authors": [
+          "Prisma"
+        ],
+        "organization": "Prisma",
+        "title": "Models",
+        "year": 2026,
+        "edition": null,
+        "publication": "Prisma",
+        "doi": null,
+        "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/models",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-POSTGRES_CONSTRAINTS",
+            "locator": "contraintes, unicité et intégrité référentielle",
+            "supports": "Soutient le bloc sur modèle versionné de source."
+          },
+          {
+            "referenceId": "REF-132-PRISMA_MODELS",
+            "locator": "modèles, identifiants, relations et contraintes",
+            "supports": "Soutient le bloc sur modèle versionné de source."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-POSTGRES_CONSTRAINTS",
+            "locator": "contraintes, unicité et intégrité référentielle",
+            "supports": "Soutient le bloc sur modèle versionné de source."
+          },
+          {
+            "referenceId": "REF-132-PRISMA_MODELS",
+            "locator": "modèles, identifiants, relations et contraintes",
+            "supports": "Soutient le bloc sur modèle versionné de source."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-POSTGRES_EXPLAIN",
+            "locator": "plans de requête et mesure avant optimisation",
+            "supports": "Soutient le bloc sur modèle versionné de source."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "postgres-constraints",
+        "referenceIds": [
+          "REF-132-POSTGRES_CONSTRAINTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour contraintes, unicité et intégrité référentielle.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "postgres-explain",
+        "referenceIds": [
+          "REF-132-POSTGRES_EXPLAIN"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour plans de requête et mesure avant optimisation.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "prisma-models",
+        "referenceIds": [
+          "REF-132-PRISMA_MODELS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour modèles, identifiants, relations et contraintes.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "modele-versionne-source",
+        "assessmentTitle": "Mini-évaluation — Modèle versionné de source",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi séparer `Source` et `SourceVersion` ?",
+            "explanation": "L’identité et l’état d’un document évoluent à des rythmes différents.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour conserver une identité logique tout en historisant chaque import.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour éviter toute clé étrangère.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour stocker les mots de passe dans la version.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations soutiennent la provenance d’une extraction ?",
+            "explanation": "La transformation doit être reconstructible et attribuable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Version source",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Version du parseur",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Date et statut du traitement",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur de l’interface",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Ajouter un index sans requête cible mesurée est toujours sans coût.",
+            "explanation": "Les index consomment stockage et temps d’écriture.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "modele-versionne-source",
+          "contentKeys": [
+            "content-modeliser-sources-versions-provenance-1",
+            "content-modeliser-sources-versions-provenance-2",
+            "content-modeliser-sources-versions-provenance-3"
+          ],
+          "resourceKeys": [
+            "postgres-constraints",
+            "postgres-explain",
+            "prisma-models"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-modeliser-sources-versions-provenance"
+          },
+          "assessmentKey": "assessment-modele-versionne-source",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

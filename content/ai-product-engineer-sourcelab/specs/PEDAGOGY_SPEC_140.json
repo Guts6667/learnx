@@ -1,0 +1,518 @@
+{
+  "specId": "PEDAGOGY_SPEC_140",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "ingerer-et-structurer-sources",
+  "moduleSlug": "parsing-et-chunking",
+  "lesson": {
+    "title": "Extraire le contenu sans perdre la provenance",
+    "slug": "extraire-contenu-provenance",
+    "summary": "Transformer fichiers et URLs SourceLab en contenu normalisé tout en conservant document, version, localisateur, méthode d’extraction et erreurs.",
+    "objectives": [
+      "Définir un pipeline d’extraction par type de matériau.",
+      "Conserver provenance et localisateurs jusqu’au résultat final.",
+      "Classer limites, contenu non textuel et échecs de parsing."
+    ],
+    "prerequisites": [
+      "Avoir un dataset de cas d’usage et une infrastructure de jobs idempotents."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-extraire-contenu-provenance-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L’ingestion transforme un artefact source en représentations exploitables. Chaque transformation doit conserver le lien vers la version d’origine, la méthode, le moment et le localisateur afin qu’une citation ou une correction puisse revenir à la preuve.",
+          "sourceKeys": [
+            "w3c-prov",
+            "openai-file-inputs"
+          ]
+        }
+      },
+      {
+        "key": "content-extraire-contenu-provenance-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Un PDF SourceLab produit des pages, blocs et éléments de structure. Chaque fragment garde `sourceVersionId`, page, ordre et hash. Une image sans texte fiable reste marquée comme non interprétée ou exige une description validée.",
+          "sourceKeys": [
+            "openai-file-inputs",
+            "w3c-prov"
+          ]
+        }
+      },
+      {
+        "key": "content-extraire-contenu-provenance-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le parsing ne doit pas inventer la structure manquante. Tables, colonnes, scans et documents protégés peuvent perdre de l’information ; l’état `REVIEW_REQUIRED` vaut mieux qu’un texte silencieusement corrompu.",
+          "sourceKeys": [
+            "openai-file-inputs"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-file-inputs",
+        "type": "website",
+        "title": "File inputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/file-inputs",
+        "citation": "OpenAI. (2026). File inputs. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à fichiers, types supportés et extraction de contenu puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant fichiers, types supportés et extraction de contenu.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "fichiers, types supportés et extraction de contenu",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "w3c-prov",
+        "type": "document",
+        "title": "PROV Overview",
+        "author": "World Wide Web Consortium",
+        "url": "https://www.w3.org/TR/prov-overview/",
+        "citation": "Groth, P., & Moreau, L. (Eds.). (2013). PROV-Overview. W3C Working Group Note.",
+        "description": "Consulter la partie consacrée à provenance, entités, activités et agents puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant provenance, entités, activités et agents.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "provenance, entités, activités et agents",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Provenance documentaire",
+        "slug": "provenance-documentaire",
+        "description": "Chaque contenu dérivé reste rattaché à une version, une transformation et un localisateur contrôlables.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-file-inputs",
+          "w3c-prov"
+        ],
+        "assessment": {
+          "key": "assessment-provenance-documentaire",
+          "type": "quiz",
+          "title": "Mini-évaluation — Provenance documentaire",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-extraire-contenu-provenance",
+        "title": "Construire le pipeline d’extraction",
+        "description": "Implémenter au moins texte, HTML et PDF ; enregistrer artefact, version de parseur, localisateurs, avertissements et statut. Tester doublon, fichier vide et extraction partielle.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-extraire-contenu-provenance",
+        "title": "Quiz de leçon — Extraire le contenu sans perdre la provenance",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le même URL change de contenu. Comment préserver l’historique ?",
+            "explanation": "La version distingue l’identité du contenu observé.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Créer une nouvelle version liée à la même source logique.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Écraser l’ancienne extraction.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Créer un nouveau compte utilisateur.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels cas doivent faire partie des tests d’ingestion ?",
+            "explanation": "Ils représentent des limites réelles de parsing.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "PDF scanné",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "HTML avec navigation répétée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Fichier non supporté",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Bouton sans hover",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un hash identique peut aider à détecter un doublon de contenu.",
+            "explanation": "L’empreinte fournit un signal stable, à interpréter dans son périmètre.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-extraire-contenu-provenance-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "w3c-prov"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-extraire-contenu-provenance-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-file-inputs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-extraire-contenu-provenance-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-extraire-contenu-provenance"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-provenance-documentaire"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-extraire-contenu-provenance"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-140-OPENAI_FILE_INPUTS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "File inputs",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/file-inputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-140-W3C_PROV",
+        "type": "official_documentation",
+        "authors": [
+          "World Wide Web Consortium"
+        ],
+        "organization": "World Wide Web Consortium",
+        "title": "PROV Overview",
+        "year": 2013,
+        "edition": null,
+        "publication": "World Wide Web Consortium",
+        "doi": null,
+        "url": "https://www.w3.org/TR/prov-overview/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-W3C_PROV",
+            "locator": "provenance, entités, activités et agents",
+            "supports": "Soutient le bloc sur provenance documentaire."
+          },
+          {
+            "referenceId": "REF-140-OPENAI_FILE_INPUTS",
+            "locator": "fichiers, types supportés et extraction de contenu",
+            "supports": "Soutient le bloc sur provenance documentaire."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-OPENAI_FILE_INPUTS",
+            "locator": "fichiers, types supportés et extraction de contenu",
+            "supports": "Soutient le bloc sur provenance documentaire."
+          },
+          {
+            "referenceId": "REF-140-W3C_PROV",
+            "locator": "provenance, entités, activités et agents",
+            "supports": "Soutient le bloc sur provenance documentaire."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-OPENAI_FILE_INPUTS",
+            "locator": "fichiers, types supportés et extraction de contenu",
+            "supports": "Soutient le bloc sur provenance documentaire."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-file-inputs",
+        "referenceIds": [
+          "REF-140-OPENAI_FILE_INPUTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour fichiers, types supportés et extraction de contenu.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "w3c-prov",
+        "referenceIds": [
+          "REF-140-W3C_PROV"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour provenance, entités, activités et agents.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "provenance-documentaire",
+        "assessmentTitle": "Mini-évaluation — Provenance documentaire",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une extraction ne peut pas préserver une table complexe. Quel état est le plus honnête ?",
+            "explanation": "L’incertitude doit être visible.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Marquer la limite et demander une revue ou une autre méthode.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réordonner arbitrairement les cellules.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Présenter le résultat comme exact.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles métadonnées soutiennent une citation vérifiable ?",
+            "explanation": "La citation doit retrouver précisément le matériau.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Version source",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Page ou section",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Hash ou identifiant du fragment",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Température du modèle sans contexte",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Conserver uniquement le texte final suffit pour reconstruire toute la provenance.",
+            "explanation": "Les transformations et localisateurs seraient perdus.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "provenance-documentaire",
+          "contentKeys": [
+            "content-extraire-contenu-provenance-1",
+            "content-extraire-contenu-provenance-2",
+            "content-extraire-contenu-provenance-3"
+          ],
+          "resourceKeys": [
+            "openai-file-inputs",
+            "w3c-prov"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-extraire-contenu-provenance"
+          },
+          "assessmentKey": "assessment-provenance-documentaire",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

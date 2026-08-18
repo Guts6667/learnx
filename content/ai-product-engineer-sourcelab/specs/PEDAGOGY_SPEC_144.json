@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_144",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "generer-programmes-sources",
+  "moduleSlug": "program-authoring",
+  "lesson": {
+    "title": "Construire le funnel et valider le brief",
+    "slug": "construire-funnel-valider-brief",
+    "summary": "Transformer une demande, des matériaux et des inconnues en brief pédagogique validé avant toute génération de structure ou de leçon.",
+    "objectives": [
+      "Définir les questions obligatoires communes et adaptatives.",
+      "Détecter manque, contradiction et promesse irréaliste.",
+      "Produire un brief structuré modifiable et validable."
+    ],
+    "prerequisites": [
+      "Disposer d’un retrieval hybride évalué sur les sources SourceLab."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-construire-funnel-valider-brief-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le funnel ne sert pas à accumuler des réponses : il réduit les inconnues qui changent une décision pédagogique. Il combine champs obligatoires, questions dépendantes du domaine et questions générées à partir des contradictions du corpus.",
+          "sourceKeys": [
+            "learnx-editorial",
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-funnel-valider-brief-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour « apprendre Docker », SourceLab demande niveau initial, capacité finale, stack, durée, projet, environnements et hors périmètre. S’il détecte Kubernetes dans une source mais un objectif « pas DevOps », il soumet explicitement cet arbitrage.",
+          "sourceKeys": [
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-funnel-valider-brief-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le modèle produit un objet Brief conforme à un schéma ; l’utilisateur voit sources disponibles, hypothèses, inconnues et contradictions avant de valider. Une valeur absente reste absente : elle n’est pas complétée silencieusement.",
+          "sourceKeys": [
+            "openai-structured",
+            "learnx-editorial"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-structured",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (2026). Structured model outputs. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à schémas de sortie et validation structurée puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant schémas de sortie et validation structurée.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "schémas de sortie et validation structurée",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "learnx-editorial",
+        "type": "website",
+        "title": "Gouvernance éditoriale — LearnX",
+        "author": "LearnX",
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "citation": "LearnX. (2026). Gouvernance éditoriale. Dépôt LearnX.",
+        "description": "Consulter la partie consacrée à sourcing, publication, alignement et contrôles puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sourcing, publication, alignement et contrôles.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sourcing, publication, alignement et contrôles",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "nist-ai-rmf",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Consulter la partie consacrée à gouvernance, cartographie, mesure et gestion des risques puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant gouvernance, cartographie, mesure et gestion des risques.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "gouvernance, cartographie, mesure et gestion des risques",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Brief pédagogique validé",
+        "slug": "brief-pedagogique-valide",
+        "description": "Le brief rend explicites public, résultats, contraintes, sources, inconnues, périmètre et critères d’évaluation.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-structured",
+          "learnx-editorial",
+          "nist-ai-rmf"
+        ],
+        "assessment": {
+          "key": "assessment-brief-pedagogique-valide",
+          "type": "quiz",
+          "title": "Mini-évaluation — Brief pédagogique validé",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-funnel-valider-brief",
+        "title": "Implémenter le funnel SourceLab",
+        "description": "Créer le schéma Brief, les questions communes et un mécanisme adaptatif. Tester besoin complet, besoin vague et sources contradictoires, puis exiger validation avant génération.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-funnel-valider-brief",
+        "title": "Quiz de leçon — Construire le funnel et valider le brief",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Deux sources donnent des niveaux prérequis incompatibles. Quelle action vient d’abord ?",
+            "explanation": "Le système ne doit pas masquer un conflit matériel.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Présenter la contradiction et demander une décision.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Choisir aléatoirement la source la plus longue.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Fusionner les niveaux sans avertissement.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles réponses du funnel doivent être verrouillables ?",
+            "explanation": "Les éléments approuvés ne doivent pas changer implicitement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Public validé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Résultats d’apprentissage",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Contraintes non négociables",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Erreur de parsing non revue",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un brief conforme au schéma prouve automatiquement sa cohérence pédagogique.",
+            "explanation": "La validité structurelle et la qualité sémantique sont distinctes.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-funnel-valider-brief-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "learnx-editorial"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-funnel-valider-brief-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-funnel-valider-brief-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-funnel-valider-brief"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-brief-pedagogique-valide"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-funnel-valider-brief"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-144-OPENAI_STRUCTURED",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-144-LEARNX_EDITORIAL",
+        "type": "official_documentation",
+        "authors": [
+          "LearnX"
+        ],
+        "organization": "LearnX",
+        "title": "Gouvernance éditoriale — LearnX",
+        "year": 2026,
+        "edition": null,
+        "publication": "LearnX",
+        "doi": null,
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-144-NIST_AI_RMF",
+        "type": "official_documentation",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-144-LEARNX_EDITORIAL",
+            "locator": "sourcing, publication, alignement et contrôles",
+            "supports": "Soutient le bloc sur brief pédagogique validé."
+          },
+          {
+            "referenceId": "REF-144-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur brief pédagogique validé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-144-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur brief pédagogique validé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-144-OPENAI_STRUCTURED",
+            "locator": "schémas de sortie et validation structurée",
+            "supports": "Soutient le bloc sur brief pédagogique validé."
+          },
+          {
+            "referenceId": "REF-144-LEARNX_EDITORIAL",
+            "locator": "sourcing, publication, alignement et contrôles",
+            "supports": "Soutient le bloc sur brief pédagogique validé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-structured",
+        "referenceIds": [
+          "REF-144-OPENAI_STRUCTURED"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour schémas de sortie et validation structurée.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "learnx-editorial",
+        "referenceIds": [
+          "REF-144-LEARNX_EDITORIAL"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sourcing, publication, alignement et contrôles.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "nist-ai-rmf",
+        "referenceIds": [
+          "REF-144-NIST_AI_RMF"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour gouvernance, cartographie, mesure et gestion des risques.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "brief-pedagogique-valide",
+        "assessmentTitle": "Mini-évaluation — Brief pédagogique validé",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand une question adaptative est-elle utile ?",
+            "explanation": "Chaque question doit éclairer une décision.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Quand sa réponse peut modifier le périmètre, la structure ou l’évaluation.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quand elle répète une information déjà validée.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quand elle permet d’inventer une préférence.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit afficher le brief ?",
+            "explanation": "La transparence précède la génération.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Résultat attendu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Hors périmètre",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Sources manquantes et hypothèses",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Certitudes fabriquées",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le modèle peut choisir seul la durée finale sans signaler que l’objectif semble irréaliste.",
+            "explanation": "Le conflit doit être rendu visible à l’utilisateur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "brief-pedagogique-valide",
+          "contentKeys": [
+            "content-construire-funnel-valider-brief-1",
+            "content-construire-funnel-valider-brief-2",
+            "content-construire-funnel-valider-brief-3"
+          ],
+          "resourceKeys": [
+            "openai-structured",
+            "learnx-editorial",
+            "nist-ai-rmf"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-funnel-valider-brief"
+          },
+          "assessmentKey": "assessment-brief-pedagogique-valide",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

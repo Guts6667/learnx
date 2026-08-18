@@ -2,22 +2,43 @@
 
 ## Statut
 
-- Slug : `ingenieur-logiciel-production-sourcelab`
-- Statut : `draft`
-- Classification : `CONTENT_ONLY` pour le contenu ; enregistrement du seed à faire dans un commit technique ciblé
-- Durée indicative : 42 jours, environ 48 heures
-- Public : développeur front-end expérimenté / Product Builder maîtrisant TypeScript
+- Version : 1.0.0
+- Statut : brouillon privé
+- Classification pédagogique : `CONTENT_ONLY`
+- Date de création : 18 août 2026
+- Projet fil rouge : SourceLab, développé dans un dépôt et une base séparés de LearnX
+- Publication : interdite tant que les revues éditoriale, technique, pédagogique et les contrôles de liens ne sont pas terminés
 
 ## Finalité
 
-Ce parcours renforce les compétences nécessaires pour posséder une verticale logicielle jusqu’à la production sans viser un rôle DevOps. Il construit SourceLab V1 : projets de sources, import, traitement asynchrone, classement et export d’un Source Pack.
+Renforcer les compétences qui permettent à un développeur produit de posséder une verticale complète : comprendre son runtime, containeriser, intégrer API, worker et base, faire évoluer les données, tester réellement, livrer puis diagnostiquer. Le programme ne vise ni l’administration d’une plateforme, ni Kubernetes avancé, ni une reconversion DevOps.
 
-## Relation à SourceLab et LearnX
+## Prérequis
 
-Le programme pose le socle opérationnel utilisé ensuite par le parcours IA. LearnX n’est pas le terrain d’exercice : il reste intact et recevra seulement les contenus pédagogiques.
+Maîtriser TypeScript, savoir construire une interface et appeler une API. Une première expérience de Node.js ou PostgreSQL aide, mais les mécanismes nécessaires sont reconstruits pendant le parcours.
 
-Le code produit pendant les exercices vit dans un **dépôt SourceLab séparé** avec sa propre base. Aucun exercice ne demande de modifier le dépôt LearnX. LearnX héberge uniquement le parcours ; l’intégration future utilisera des exports JSON ou des API explicites, jamais une base partagée.
+## Résultat produit
 
-## État éditorial
+À la fin, SourceLab V1 permet de créer un projet, importer une source, suivre son traitement asynchrone, conserver versions et provenance, inspecter les statuts puis exporter un Source Pack. Le produit local possède API, worker, PostgreSQL, Docker Compose, tests d’intégration, CI, staging, observabilité et runbook.
 
-Les leçons, quiz, banques de notions et évaluations d’étape sont authorés en brouillon. Les URL officielles ont été ouvertes ou recoupées le 2026-08-18 ; leur réouverture et une revue humaine éditoriale et technique restent bloquantes avant publication.
+## Frontière avec LearnX
+
+SourceLab résout hors de LearnX la préparation et le traitement des sources. Il ne lit pas la base LearnX et ne partage aucun secret. Le futur lien se fera par export JSON ou API explicitement authentifiée.
+
+LearnX sert à suivre le parcours et à importer ultérieurement les artefacts validés. Le programme n’ajoute aucune fonctionnalité IA, table, endpoint ou dépendance au dépôt LearnX. Les exercices sont réalisés dans le dépôt autonome SourceLab.
+
+## Contenu du dossier
+
+- `CURRICULUM_BLUEPRINT.md` : progression et livrables ;
+- `specs/` : spécifications détaillées de chaque leçon ;
+- `stage-assessments/` : évaluations finales des étapes ;
+- bundle Prisma correspondant dans `seed/`.
+
+## Conditions avant publication
+
+- vérifier chaque URL et sa section cible ;
+- faire relire les choix techniques et les exercices ;
+- exécuter les contrôles de compatibilité du seed ;
+- valider la charge réelle avec l’apprenant ;
+- confirmer que le dépôt SourceLab est disponible sans modifier le repo LearnX ;
+- conserver le programme en brouillon si une ressource ou une évaluation n’est pas vérifiée.

@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_027",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "comprendre-runtime-et-reseau",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Diagnostiquer une verticale SourceLab",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Diagnostiquer une API et un worker volontairement mal configurés en suivant les couches réseau, HTTP et runtime, puis proposer un arrêt propre.",
+    "instructions": [
+      "Tracer le trajet de la requête et séparer les hypothèses par couche.",
+      "Proposer une séquence de tests observables avant toute modification.",
+      "Identifier les erreurs de configuration et définir la validation au démarrage.",
+      "Décrire puis implémenter une séquence d’arrêt propre de l’API et du worker.",
+      "Produire un diagnostic final distinguant symptômes, causes, preuves et correction."
+    ],
+    "case": "Cas fictif — SourceLab fonctionne avec `curl` sur une machine mais l’interface affiche un timeout. Dans l’environnement conteneurisé, l’API utilise `localhost` pour joindre un service, le worker démarre sans une variable obligatoire et un déploiement l’interrompt pendant une écriture. Plusieurs logs contiennent des messages différents mais aucun identifiant commun.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Rapport de diagnostic de 2 à 3 pages, commandes et sorties utiles, patch TypeScript et démonstration de l’arrêt propre.",
+    "conceptSlugs": [
+      "chaine-execution-http",
+      "cycle-vie-processus"
+    ],
+    "rubric": [
+      {
+        "criterion": "Localisation de la panne",
+        "weight": 30,
+        "requirements": [
+          "Les couches DNS, connexion, HTTP et application sont distinguées.",
+          "Chaque conclusion est liée à une observation."
+        ]
+      },
+      {
+        "criterion": "Configuration de runtime",
+        "weight": 25,
+        "requirements": [
+          "Les variables obligatoires sont validées au démarrage.",
+          "Les erreurs et codes de sortie sont exploitables."
+        ]
+      },
+      {
+        "criterion": "Arrêt propre",
+        "weight": 25,
+        "requirements": [
+          "Le service cesse de prendre du travail.",
+          "Connexions et écritures sont traitées dans un délai borné."
+        ]
+      },
+      {
+        "criterion": "Communication",
+        "weight": 20,
+        "requirements": [
+          "Le rapport sépare symptôme, hypothèse, test, résultat et correction.",
+          "Aucun secret n’est exposé."
+        ]
+      }
+    ],
+    "remediation": "Reprendre les couches non testées, remplacer toute supposition par une observation et rejouer le scénario jusqu’à obtenir un diagnostic reproductible."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-126-MDN_HTTP",
+      "REF-126-NODE_HTTP",
+      "REF-127-NODE_PROCESS",
+      "REF-127-NODE_ENV",
+      "REF-127-NODE_ERRORS",
+      "REF-127-NODE_HTTP"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

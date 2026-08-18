@@ -1,0 +1,588 @@
+{
+  "specId": "PEDAGOGY_SPEC_149",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "securiser-et-mettre-production",
+  "moduleSlug": "securite-observabilite-llm",
+  "lesson": {
+    "title": "Livrer, observer et décider la promotion",
+    "slug": "livrer-observer-decider-promotion",
+    "summary": "Tracer retrieval et génération, suivre qualité, coût et latence, exécuter les evals dans la CI et promouvoir seulement une configuration versionnée qui respecte les gates.",
+    "objectives": [
+      "Instrumenter un run IA sans exposer les contenus sensibles.",
+      "Relier version, coût, latence et scores d’évaluation.",
+      "Définir canary, rollback et surveillance post-release."
+    ],
+    "prerequisites": [
+      "Avoir sécurisé les prototypes et automatisé le red team."
+    ],
+    "estimatedMinutes": 105,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-livrer-observer-decider-promotion-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un run IA versionne modèle, prompt, configuration de retrieval, dataset ou entrée, résultat, latence, usage et décision. L’observabilité doit permettre de localiser une régression entre ingestion, retrieval, génération, validation et routing.",
+          "sourceKeys": [
+            "otel-genai",
+            "openai-evals"
+          ]
+        }
+      },
+      {
+        "key": "content-livrer-observer-decider-promotion-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "La CI SourceLab exécute les datasets et bloque source inventée, fuite ou baisse de recall. Staging rejoue des cas synthétiques, puis un canary limité compare qualité, coût et latence avant d’élargir.",
+          "sourceKeys": [
+            "openai-evals",
+            "openai-production"
+          ]
+        }
+      },
+      {
+        "key": "content-livrer-observer-decider-promotion-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Ne pas enregistrer par défaut les documents ou réponses brutes dans un outil tiers. Utiliser identifiants, hashes, catégories et échantillons explicitement autorisés. Prévoir un kill switch et une configuration précédente identifiable.",
+          "sourceKeys": [
+            "openai-production",
+            "otel-genai"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "otel-genai",
+        "type": "website",
+        "title": "Semantic conventions for generative AI systems",
+        "author": "OpenTelemetry",
+        "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+        "citation": "OpenTelemetry. (2026). Semantic conventions for generative AI systems. Spécification. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à attributs et événements d’observabilité GenAI puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant attributs et événements d’observabilité GenAI.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "attributs et événements d’observabilité GenAI",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "openai-production",
+        "type": "website",
+        "title": "Production best practices",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/production-best-practices",
+        "citation": "OpenAI. (2026). Production best practices. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à sécurité des clés, staging, limites, coûts et opérations puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sécurité des clés, staging, limites, coûts et opérations.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sécurité des clés, staging, limites, coûts et opérations",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Working with evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (2026). Working with evals. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à datasets, critères, runs et comparaison de qualité puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant datasets, critères, runs et comparaison de qualité.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "datasets, critères, runs et comparaison de qualité",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Promotion IA fondée sur les preuves",
+        "slug": "promotion-ia-preuves",
+        "description": "Une configuration versionnée est promue lorsque evals, sécurité, coût et exploitation respectent des gates explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "otel-genai",
+          "openai-production",
+          "openai-evals"
+        ],
+        "assessment": {
+          "key": "assessment-promotion-ia-preuves",
+          "type": "quiz",
+          "title": "Mini-évaluation — Promotion IA fondée sur les preuves",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-livrer-observer-decider-promotion",
+        "title": "Conduire la release finale",
+        "description": "Instrumenter les deux pipelines, ajouter les evals et attaques à la CI, définir budgets et gates, déployer en staging puis simuler canary, rollback et rapport de décision.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-livrer-observer-decider-promotion",
+        "title": "Quiz de leçon — Livrer, observer et décider la promotion",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une nouvelle version passe les evals offline mais échoue en staging sur les timeouts. Quelle décision ?",
+            "explanation": "La production exige qualité et fiabilité opérationnelle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ne pas promouvoir et diagnostiquer l’écart d’environnement ou de charge.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Promouvoir car les evals qualité passent.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer les timeouts.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir le dossier final portfolio ?",
+            "explanation": "Le portfolio montre preuves, arbitrages et limites.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Architecture et décisions",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Résultats d’evals et erreurs",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Threat model et runbook",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Promesse d’absence totale de bug",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le projet final doit être fusionné dans le repo LearnX pour avoir une valeur.",
+            "explanation": "SourceLab reste autonome et fournit contrats, exports et preuves réutilisables.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-livrer-observer-decider-promotion-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "otel-genai"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-livrer-observer-decider-promotion-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-livrer-observer-decider-promotion-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-production"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-livrer-observer-decider-promotion"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-promotion-ia-preuves"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-livrer-observer-decider-promotion"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-149-OTEL_GENAI",
+        "type": "official_documentation",
+        "authors": [
+          "OpenTelemetry"
+        ],
+        "organization": "OpenTelemetry",
+        "title": "Semantic conventions for generative AI systems",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenTelemetry",
+        "doi": null,
+        "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-149-OPENAI_PRODUCTION",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Production best practices",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/production-best-practices",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-149-OPENAI_EVALS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Working with evals",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-149-OTEL_GENAI",
+            "locator": "attributs et événements d’observabilité GenAI",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          },
+          {
+            "referenceId": "REF-149-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-149-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          },
+          {
+            "referenceId": "REF-149-OPENAI_PRODUCTION",
+            "locator": "sécurité des clés, staging, limites, coûts et opérations",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-149-OPENAI_PRODUCTION",
+            "locator": "sécurité des clés, staging, limites, coûts et opérations",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          },
+          {
+            "referenceId": "REF-149-OTEL_GENAI",
+            "locator": "attributs et événements d’observabilité GenAI",
+            "supports": "Soutient le bloc sur promotion ia fondée sur les preuves."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "otel-genai",
+        "referenceIds": [
+          "REF-149-OTEL_GENAI"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour attributs et événements d’observabilité GenAI.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-production",
+        "referenceIds": [
+          "REF-149-OPENAI_PRODUCTION"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sécurité des clés, staging, limites, coûts et opérations.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": [
+          "REF-149-OPENAI_EVALS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour datasets, critères, runs et comparaison de qualité.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "promotion-ia-preuves",
+        "assessmentTitle": "Mini-évaluation — Promotion IA fondée sur les preuves",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel identifiant doit relier retrieval, génération et résultat ?",
+            "explanation": "La corrélation reconstruit le parcours.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un run/trace ID propagé à travers les étapes.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le texte intégral du document comme label.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une valeur aléatoire différente à chaque étape.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels gates peuvent bloquer une release ?",
+            "explanation": "Les seuils reflètent criticité et expérience.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Fuite inter-projets",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Source inventée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Dépassement durable du budget de latence",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Changement mineur de ponctuation",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une baisse de coût justifie toujours la promotion, même si la qualité critique régresse.",
+            "explanation": "Coût et qualité sont des contraintes simultanées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "promotion-ia-preuves",
+          "contentKeys": [
+            "content-livrer-observer-decider-promotion-1",
+            "content-livrer-observer-decider-promotion-2",
+            "content-livrer-observer-decider-promotion-3"
+          ],
+          "resourceKeys": [
+            "otel-genai",
+            "openai-production",
+            "openai-evals"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-livrer-observer-decider-promotion"
+          },
+          "assessmentKey": "assessment-promotion-ia-preuves",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

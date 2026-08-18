@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_031",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-et-livrer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Construire la chaîne de preuve SourceLab",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Automatiser la construction, les tests et la promotion staging d’une version SourceLab identifiée.",
+    "instructions": [
+      "Construire une matrice unitaire, intégration et E2E ciblée.",
+      "Créer un environnement PostgreSQL jetable et appliquer l’historique des migrations.",
+      "Construire une image identifiée par SHA et conserver les rapports.",
+      "Déployer la même image en staging sous environnement protégé.",
+      "Exécuter un smoke test et documenter la porte production."
+    ],
+    "case": "Cas fictif — Les tests unitaires sont verts, mais une migration échoue seulement sur PostgreSQL réel et l’image déployée n’est pas celle testée. Les rapports disparaissent lorsque le workflow échoue et les secrets staging sont disponibles dans tous les jobs.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Workflow GitHub Actions, tests et fixtures, artefacts, preuve de staging et note de promotion.",
+    "conceptSlugs": [
+      "test-integration-realiste",
+      "promotion-artefact"
+    ],
+    "rubric": [
+      {
+        "criterion": "Matrice de tests",
+        "weight": 25,
+        "requirements": [
+          "Les risques métier et d’intégration ont le bon niveau de test.",
+          "La base est isolée et jetable."
+        ]
+      },
+      {
+        "criterion": "CI reproductible",
+        "weight": 25,
+        "requirements": [
+          "Installation, migration, tests et build sont déterministes.",
+          "Les rapports sont conservés même en échec."
+        ]
+      },
+      {
+        "criterion": "Promotion",
+        "weight": 30,
+        "requirements": [
+          "Le même artefact est promu.",
+          "Staging possède secrets, règles et smoke test propres."
+        ]
+      },
+      {
+        "criterion": "Sécurité et documentation",
+        "weight": 20,
+        "requirements": [
+          "Permissions minimales et secrets sont explicités.",
+          "La porte production et les limites sont compréhensibles."
+        ]
+      }
+    ],
+    "remediation": "Faire échouer volontairement chaque gate, vérifier qu’aucune promotion n’a lieu, puis corriger l’isolation, l’identité de l’artefact ou la protection concernée."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-134-VITEST_GUIDE",
+      "REF-134-PLAYWRIGHT_TESTS",
+      "REF-134-TESTCONTAINERS_NODE",
+      "REF-135-GITHUB_WORKFLOWS",
+      "REF-135-GITHUB_ENVIRONMENTS",
+      "REF-135-GITHUB_ARTIFACTS"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

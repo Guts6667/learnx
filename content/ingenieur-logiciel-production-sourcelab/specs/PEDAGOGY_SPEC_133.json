@@ -1,0 +1,576 @@
+{
+  "specId": "PEDAGOGY_SPEC_133",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "faire-evoluer-donnees",
+  "moduleSlug": "postgresql-et-migrations",
+  "lesson": {
+    "title": "Déployer une migration compatible et vérifiable",
+    "slug": "deployer-migration-compatible-verifiable",
+    "summary": "Appliquer une évolution additive, backfiller les données, promouvoir le code compatible et prévoir roll-forward ou restauration sans confondre migration et seed.",
+    "objectives": [
+      "Distinguer migration de schéma, backfill et seed.",
+      "Planifier une évolution compatible entre deux versions applicatives.",
+      "Définir preuves avant/après et stratégie de retour."
+    ],
+    "prerequisites": [
+      "Disposer du modèle versionné SourceLab V1."
+    ],
+    "estimatedMinutes": 95,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-deployer-migration-compatible-verifiable-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une migration versionne l’évolution du schéma ; un backfill transforme des données existantes ; un seed crée ou synchronise des données de référence. En production, appliquer une migration déjà révisée n’est pas la même opération que la générer.",
+          "sourceKeys": [
+            "prisma-migrations"
+          ]
+        }
+      },
+      {
+        "key": "content-deployer-migration-compatible-verifiable-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour ajouter `contentHash` obligatoire, SourceLab peut d’abord créer la colonne nullable, déployer un code qui la renseigne, backfiller par lots, vérifier les absences puis rendre la colonne non nulle dans une migration suivante.",
+          "sourceKeys": [
+            "prisma-custom-migrations"
+          ]
+        }
+      },
+      {
+        "key": "content-deployer-migration-compatible-verifiable-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le plan de retour dépend des écritures et du schéma. Après une migration destructive, redéployer l’ancien binaire peut être dangereux. Privilégier les changements compatibles et un roll-forward, avec sauvegarde vérifiée si une restauration devient nécessaire.",
+          "sourceKeys": [
+            "prisma-migrations",
+            "postgres-isolation"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "prisma-migrations",
+        "type": "website",
+        "title": "Development and production",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate/workflows/development-and-production",
+        "citation": "Prisma. (2026). Development and production. Documentation Prisma Migrate. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à création en développement et application en production puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant création en développement et application en production.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "création en développement et application en production",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "prisma-custom-migrations",
+        "type": "website",
+        "title": "Customizing migrations",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate/workflows/customizing-migrations",
+        "citation": "Prisma. (2026). Customizing migrations. Documentation Prisma Migrate. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à édition d’une migration et évolution sans perte puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant édition d’une migration et évolution sans perte.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "édition d’une migration et évolution sans perte",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "postgres-isolation",
+        "type": "website",
+        "title": "Transaction Isolation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Transaction Isolation. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à isolation, anomalies et nouvelles tentatives puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant isolation, anomalies et nouvelles tentatives.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "isolation, anomalies et nouvelles tentatives",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Migration compatible",
+        "slug": "migration-compatible",
+        "description": "Une évolution sûre sépare expansion, migration des données, bascule et retrait, avec preuves et décision de retour.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "prisma-migrations",
+          "prisma-custom-migrations",
+          "postgres-isolation"
+        ],
+        "assessment": {
+          "key": "assessment-migration-compatible",
+          "type": "quiz",
+          "title": "Mini-évaluation — Migration compatible",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-deployer-migration-compatible-verifiable",
+        "title": "Répéter une migration SourceLab",
+        "description": "Ajouter un champ obligatoire par stratégie expand-and-contract sur une base de test contenant des données. Capturer décomptes avant/après, rejouer l’historique et rédiger le plan de roll-forward/restore.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-deployer-migration-compatible-verifiable",
+        "title": "Quiz de leçon — Déployer une migration compatible et vérifiable",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le nouveau code écrit un champ que l’ancien schéma ne connaît pas. Quel risque existe lors d’un déploiement désordonné ?",
+            "explanation": "L’ordre et la compatibilité doivent être explicités.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le code peut échouer avant l’application de la migration.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le navigateur change de DNS.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le volume devient un registre Docker.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles opérations doivent être idempotentes ou reprenables ?",
+            "explanation": "Une reprise contrôlée réduit le risque opérationnel.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Backfill par lots",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Vérification après interruption",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Application des données de référence",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Suppression irréversible sans sauvegarde",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une sauvegarde non restaurée ni vérifiée constitue une preuve suffisante de récupérabilité.",
+            "explanation": "La restauration ou au moins une vérification de lecture est nécessaire.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-deployer-migration-compatible-verifiable-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "prisma-migrations"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-deployer-migration-compatible-verifiable-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "prisma-custom-migrations"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-deployer-migration-compatible-verifiable-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-isolation"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-deployer-migration-compatible-verifiable"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-migration-compatible"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-deployer-migration-compatible-verifiable"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-133-PRISMA_MIGRATIONS",
+        "type": "official_documentation",
+        "authors": [
+          "Prisma"
+        ],
+        "organization": "Prisma",
+        "title": "Development and production",
+        "year": 2026,
+        "edition": null,
+        "publication": "Prisma",
+        "doi": null,
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate/workflows/development-and-production",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-133-PRISMA_CUSTOM_MIGRATIONS",
+        "type": "official_documentation",
+        "authors": [
+          "Prisma"
+        ],
+        "organization": "Prisma",
+        "title": "Customizing migrations",
+        "year": 2026,
+        "edition": null,
+        "publication": "Prisma",
+        "doi": null,
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate/workflows/customizing-migrations",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-133-POSTGRES_ISOLATION",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Transaction Isolation",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-PRISMA_MIGRATIONS",
+            "locator": "création en développement et application en production",
+            "supports": "Soutient le bloc sur migration compatible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-PRISMA_CUSTOM_MIGRATIONS",
+            "locator": "édition d’une migration et évolution sans perte",
+            "supports": "Soutient le bloc sur migration compatible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-PRISMA_MIGRATIONS",
+            "locator": "création en développement et application en production",
+            "supports": "Soutient le bloc sur migration compatible."
+          },
+          {
+            "referenceId": "REF-133-POSTGRES_ISOLATION",
+            "locator": "isolation, anomalies et nouvelles tentatives",
+            "supports": "Soutient le bloc sur migration compatible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "prisma-migrations",
+        "referenceIds": [
+          "REF-133-PRISMA_MIGRATIONS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour création en développement et application en production.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "prisma-custom-migrations",
+        "referenceIds": [
+          "REF-133-PRISMA_CUSTOM_MIGRATIONS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour édition d’une migration et évolution sans perte.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "postgres-isolation",
+        "referenceIds": [
+          "REF-133-POSTGRES_ISOLATION"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour isolation, anomalies et nouvelles tentatives.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "migration-compatible",
+        "assessmentTitle": "Mini-évaluation — Migration compatible",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel ordre réduit le risque pour une nouvelle colonne obligatoire ?",
+            "explanation": "L’expansion compatible laisse le temps de migrer les données.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ajouter nullable, renseigner, vérifier, puis contraindre.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Contraindre immédiatement sans données.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer la table puis recréer.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves collecter autour d’une migration ?",
+            "explanation": "Les preuves doivent porter sur le schéma et les données affectées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Décomptes critiques",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Historique des migrations",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Requêtes d’intégrité",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Capture de la page d’accueil uniquement",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "`prisma migrate deploy` crée automatiquement une nouvelle migration à partir du schéma local.",
+            "explanation": "Il applique les migrations déjà présentes ; la création relève du développement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "migration-compatible",
+          "contentKeys": [
+            "content-deployer-migration-compatible-verifiable-1",
+            "content-deployer-migration-compatible-verifiable-2",
+            "content-deployer-migration-compatible-verifiable-3"
+          ],
+          "resourceKeys": [
+            "prisma-migrations",
+            "prisma-custom-migrations",
+            "postgres-isolation"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-deployer-migration-compatible-verifiable"
+          },
+          "assessmentKey": "assessment-migration-compatible",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

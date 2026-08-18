@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_143",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "retrouver-bons-passages",
+  "moduleSlug": "embeddings-et-retrieval",
+  "lesson": {
+    "title": "Construire une recherche hybride et un reranking",
+    "slug": "construire-recherche-hybride-reranking",
+    "summary": "Combiner recherche lexicale et sémantique, fusionner leurs rangs, reranker un petit ensemble et définir l’abstention à partir d’évaluations.",
+    "objectives": [
+      "Identifier les forces complémentaires du lexical et du vectoriel.",
+      "Fusionner et reranker des candidats traçables.",
+      "Calibrer top-k, seuil et abstention sur le dataset."
+    ],
+    "prerequisites": [
+      "Disposer d’un retriever vectoriel filtré."
+    ],
+    "estimatedMinutes": 100,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-construire-recherche-hybride-reranking-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La recherche lexicale favorise les termes explicites, identifiants et formulations exactes ; la recherche vectorielle rapproche des formulations sémantiquement voisines. Une recherche hybride combine les classements avant une éventuelle étape de reranking.",
+          "sourceKeys": [
+            "postgres-textsearch",
+            "pgvector"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-recherche-hybride-reranking-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Une question sur `SIGTERM` peut être mieux servie par le lexical, tandis que « arrêt propre du worker » bénéficie du vectoriel. SourceLab fusionne les deux listes, déduplique par chunk et rerank les dix meilleurs candidats vers quatre passages.",
+          "sourceKeys": [
+            "postgres-textsearch",
+            "pgvector"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-recherche-hybride-reranking-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le reranking ne répare pas un corpus absent ni des permissions incorrectes. L’abstention doit s’appuyer sur des cas sans réponse et sur la qualité des preuves récupérées, pas sur une phrase générique du modèle.",
+          "sourceKeys": [
+            "openai-retrieval"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "postgres-textsearch",
+        "type": "website",
+        "title": "Full Text Search",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/textsearch.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Full Text Search. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à tsvector, tsquery et classement lexical puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant tsvector, tsquery et classement lexical.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "tsvector, tsquery et classement lexical",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "pgvector",
+        "type": "website",
+        "title": "pgvector",
+        "author": "pgvector contributors",
+        "url": "https://github.com/pgvector/pgvector",
+        "citation": "pgvector contributors. (2026). pgvector. Dépôt officiel et documentation. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à stockage vectoriel, distances, index et recherche hybride puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant stockage vectoriel, distances, index et recherche hybride.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "stockage vectoriel, distances, index et recherche hybride",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (2026). Retrieval. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à indexation, recherche, filtres et réglages de pertinence puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant indexation, recherche, filtres et réglages de pertinence.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "indexation, recherche, filtres et réglages de pertinence",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Retrieval hybride calibré",
+        "slug": "retrieval-hybride-calibre",
+        "description": "Le système combine signaux lexicaux et sémantiques, puis choisit contexte ou abstention selon des mesures.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "postgres-textsearch",
+          "pgvector",
+          "openai-retrieval"
+        ],
+        "assessment": {
+          "key": "assessment-retrieval-hybride-calibre",
+          "type": "quiz",
+          "title": "Mini-évaluation — Retrieval hybride calibré",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-recherche-hybride-reranking",
+        "title": "Comparer trois retrievers",
+        "description": "Évaluer lexical, vectoriel et hybride avec fusion/reranking. Rapporter recall@k, MRR, latence, coût, cas sans réponse et décision de configuration.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-recherche-hybride-reranking",
+        "title": "Quiz de leçon — Construire une recherche hybride et un reranking",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le vectoriel rate les noms de variables mais comprend les paraphrases. Quelle solution tester ?",
+            "explanation": "Les deux signaux sont complémentaires.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ajouter le lexical puis fusionner les rangs.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supprimer les noms de variables.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Envoyer tout le corpus au modèle.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels cas doivent calibrer l’abstention ?",
+            "explanation": "L’abstention protège lorsque la preuve est insuffisante.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Question sans réponse",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Sources contradictoires",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Passages faibles ou hors périmètre",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Question dont le titre est court",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Augmenter top-k réduit toujours le coût et le bruit.",
+            "explanation": "Plus de passages augmente contexte, coût et risque de distraction.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-recherche-hybride-reranking-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-textsearch"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-recherche-hybride-reranking-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pgvector"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-recherche-hybride-reranking-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-recherche-hybride-reranking"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-retrieval-hybride-calibre"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-recherche-hybride-reranking"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-143-POSTGRES_TEXTSEARCH",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Full Text Search",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/textsearch.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-143-PGVECTOR",
+        "type": "official_documentation",
+        "authors": [
+          "pgvector contributors"
+        ],
+        "organization": "pgvector contributors",
+        "title": "pgvector",
+        "year": 2026,
+        "edition": null,
+        "publication": "pgvector contributors",
+        "doi": null,
+        "url": "https://github.com/pgvector/pgvector",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-143-OPENAI_RETRIEVAL",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-143-POSTGRES_TEXTSEARCH",
+            "locator": "tsvector, tsquery et classement lexical",
+            "supports": "Soutient le bloc sur retrieval hybride calibré."
+          },
+          {
+            "referenceId": "REF-143-PGVECTOR",
+            "locator": "stockage vectoriel, distances, index et recherche hybride",
+            "supports": "Soutient le bloc sur retrieval hybride calibré."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-143-POSTGRES_TEXTSEARCH",
+            "locator": "tsvector, tsquery et classement lexical",
+            "supports": "Soutient le bloc sur retrieval hybride calibré."
+          },
+          {
+            "referenceId": "REF-143-PGVECTOR",
+            "locator": "stockage vectoriel, distances, index et recherche hybride",
+            "supports": "Soutient le bloc sur retrieval hybride calibré."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-143-OPENAI_RETRIEVAL",
+            "locator": "indexation, recherche, filtres et réglages de pertinence",
+            "supports": "Soutient le bloc sur retrieval hybride calibré."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "postgres-textsearch",
+        "referenceIds": [
+          "REF-143-POSTGRES_TEXTSEARCH"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour tsvector, tsquery et classement lexical.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "pgvector",
+        "referenceIds": [
+          "REF-143-PGVECTOR"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour stockage vectoriel, distances, index et recherche hybride.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": [
+          "REF-143-OPENAI_RETRIEVAL"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour indexation, recherche, filtres et réglages de pertinence.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "retrieval-hybride-calibre",
+        "assessmentTitle": "Mini-évaluation — Retrieval hybride calibré",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel cas favorise souvent la recherche lexicale ?",
+            "explanation": "Le lexical excelle sur les termes précis.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un identifiant technique exact comme `PEDAGOGY_SPEC_126`.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une paraphrase éloignée sans mot partagé.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une image sans texte.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit conserver la fusion de résultats ?",
+            "explanation": "La fusion reste auditable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Identité du chunk",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rangs et scores d’origine",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Provenance",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Texte inventé pour compléter",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un reranker peut retrouver un document qui n’apparaît dans aucun candidat initial.",
+            "explanation": "Il réordonne l’ensemble qu’on lui fournit.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "retrieval-hybride-calibre",
+          "contentKeys": [
+            "content-construire-recherche-hybride-reranking-1",
+            "content-construire-recherche-hybride-reranking-2",
+            "content-construire-recherche-hybride-reranking-3"
+          ],
+          "resourceKeys": [
+            "postgres-textsearch",
+            "pgvector",
+            "openai-retrieval"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-recherche-hybride-reranking"
+          },
+          "assessmentKey": "assessment-retrieval-hybride-calibre",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

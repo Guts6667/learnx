@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_131",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-api-worker-donnees",
+  "moduleSlug": "contrats-et-jobs",
+  "lesson": {
+    "title": "Garantir idempotence, retries et concurrence",
+    "slug": "garantir-idempotence-retries-concurrence",
+    "summary": "Éviter les doubles imports et les jobs perdus lorsque les requêtes sont répétées, qu’un worker s’arrête ou que plusieurs workers réclament le même travail.",
+    "objectives": [
+      "Distinguer nouvelle tentative sûre et duplication métier.",
+      "Définir une clé d’idempotence et une stratégie de retry.",
+      "Coordonner plusieurs workers avec transaction et verrouillage."
+    ],
+    "prerequisites": [
+      "Avoir défini le cycle de vie du job SourceLab."
+    ],
+    "estimatedMinutes": 95,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-garantir-idempotence-retries-concurrence-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L’idempotence garantit qu’une même intention rejouée ne crée pas plusieurs effets métier. Un retry réexécute une opération après un échec transitoire ; il doit être borné, observable et compatible avec les écritures déjà effectuées.",
+          "sourceKeys": [
+            "rfc-idempotent",
+            "postgres-isolation"
+          ]
+        }
+      },
+      {
+        "key": "content-garantir-idempotence-retries-concurrence-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab calcule une clé à partir du projet, du hash du fichier et d’une clé de demande. Deux appels identiques retrouvent le même import. Pour réclamer un job, le worker utilise une transaction et un verrou qui empêche deux workers de traiter simultanément la même ligne.",
+          "sourceKeys": [
+            "postgres-locking"
+          ]
+        }
+      },
+      {
+        "key": "content-garantir-idempotence-retries-concurrence-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Ne pas classer toutes les erreurs comme récupérables. Un timeout réseau peut justifier un backoff ; un fichier non supporté doit échouer définitivement. Après un crash, un lease expiré permet de rendre le job à nouveau réclamable.",
+          "sourceKeys": [
+            "postgres-isolation",
+            "postgres-locking"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "rfc-idempotent",
+        "type": "document",
+        "title": "HTTP Semantics — Idempotent Methods",
+        "author": "IETF",
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods",
+        "citation": "Fielding, R., Nottingham, M., & Reschke, J. (2022). HTTP Semantics, section 9.2.2. RFC 9110.",
+        "description": "Consulter la partie consacrée à sémantique des méthodes idempotentes puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sémantique des méthodes idempotentes.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sémantique des méthodes idempotentes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "postgres-isolation",
+        "type": "website",
+        "title": "Transaction Isolation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Transaction Isolation. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à isolation, anomalies et nouvelles tentatives puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant isolation, anomalies et nouvelles tentatives.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "isolation, anomalies et nouvelles tentatives",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "postgres-locking",
+        "type": "website",
+        "title": "Explicit Locking",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/explicit-locking.html",
+        "citation": "PostgreSQL Global Development Group. (2026). Explicit Locking. Documentation PostgreSQL courante. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à verrous de lignes, blocages et deadlocks puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant verrous de lignes, blocages et deadlocks.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "verrous de lignes, blocages et deadlocks",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Traitement asynchrone sûr",
+        "slug": "traitement-asynchrone-sur",
+        "description": "Idempotence, retries bornés et contrôle de concurrence empêchent doublons et travaux orphelins.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "rfc-idempotent",
+          "postgres-isolation",
+          "postgres-locking"
+        ],
+        "assessment": {
+          "key": "assessment-traitement-asynchrone-sur",
+          "type": "quiz",
+          "title": "Mini-évaluation — Traitement asynchrone sûr",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-garantir-idempotence-retries-concurrence",
+        "title": "Tester les pannes du worker",
+        "description": "Implémenter clé d’idempotence, réclamation atomique, compteur de tentatives et lease. Écrire des tests pour double requête, deux workers, crash après réclamation et erreur définitive.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-garantir-idempotence-retries-concurrence",
+        "title": "Quiz de leçon — Garantir idempotence, retries et concurrence",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le worker écrit le résultat puis tombe avant de marquer le job terminé. Quelle protection est la plus importante ?",
+            "explanation": "Une reprise ne doit pas dupliquer l’effet déjà écrit.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Rendre l’écriture du résultat idempotente et coordonner résultat/statut transactionnellement.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Désactiver les logs.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer le job au démarrage.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels signaux suggèrent un job orphelin ?",
+            "explanation": "Le lease et le heartbeat rendent la propriété observable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Lease expiré",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "État PROCESSING sans heartbeat récent",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Worker propriétaire absent",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Titre du projet trop court",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une contrainte unique en base peut compléter la vérification applicative contre les doublons.",
+            "explanation": "La contrainte protège l’invariant même sous concurrence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-garantir-idempotence-retries-concurrence-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "rfc-idempotent"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-garantir-idempotence-retries-concurrence-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-locking"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-garantir-idempotence-retries-concurrence-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-isolation"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-garantir-idempotence-retries-concurrence"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-traitement-asynchrone-sur"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-garantir-idempotence-retries-concurrence"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-131-RFC_IDEMPOTENT",
+        "type": "official_documentation",
+        "authors": [
+          "IETF"
+        ],
+        "organization": "IETF",
+        "title": "HTTP Semantics — Idempotent Methods",
+        "year": 2022,
+        "edition": null,
+        "publication": "IETF",
+        "doi": null,
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-131-POSTGRES_ISOLATION",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Transaction Isolation",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-131-POSTGRES_LOCKING",
+        "type": "official_documentation",
+        "authors": [
+          "PostgreSQL Global Development Group"
+        ],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Explicit Locking",
+        "year": 2026,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/explicit-locking.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-RFC_IDEMPOTENT",
+            "locator": "sémantique des méthodes idempotentes",
+            "supports": "Soutient le bloc sur traitement asynchrone sûr."
+          },
+          {
+            "referenceId": "REF-131-POSTGRES_ISOLATION",
+            "locator": "isolation, anomalies et nouvelles tentatives",
+            "supports": "Soutient le bloc sur traitement asynchrone sûr."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-POSTGRES_LOCKING",
+            "locator": "verrous de lignes, blocages et deadlocks",
+            "supports": "Soutient le bloc sur traitement asynchrone sûr."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-POSTGRES_ISOLATION",
+            "locator": "isolation, anomalies et nouvelles tentatives",
+            "supports": "Soutient le bloc sur traitement asynchrone sûr."
+          },
+          {
+            "referenceId": "REF-131-POSTGRES_LOCKING",
+            "locator": "verrous de lignes, blocages et deadlocks",
+            "supports": "Soutient le bloc sur traitement asynchrone sûr."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "rfc-idempotent",
+        "referenceIds": [
+          "REF-131-RFC_IDEMPOTENT"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sémantique des méthodes idempotentes.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "postgres-isolation",
+        "referenceIds": [
+          "REF-131-POSTGRES_ISOLATION"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour isolation, anomalies et nouvelles tentatives.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "postgres-locking",
+        "referenceIds": [
+          "REF-131-POSTGRES_LOCKING"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour verrous de lignes, blocages et deadlocks.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "traitement-asynchrone-sur",
+        "assessmentTitle": "Mini-évaluation — Traitement asynchrone sûr",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Deux requêtes portent la même clé d’idempotence et le même payload. Quel résultat est attendu ?",
+            "explanation": "La clé représente la même intention.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Elles renvoient la même opération métier sans duplication.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Deux jobs indépendants.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une suppression automatique du premier job.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés appartiennent à une stratégie de retry saine ?",
+            "explanation": "Le retry doit être borné et expliqué.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Nombre maximal de tentatives",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Backoff",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Classification transitoire ou définitive",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Boucle infinie silencieuse",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une transaction `READ COMMITTED` empêche automatiquement toutes les anomalies de concurrence métier.",
+            "explanation": "Les invariants complexes peuvent nécessiter verrous, contraintes ou isolation adaptée.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "traitement-asynchrone-sur",
+          "contentKeys": [
+            "content-garantir-idempotence-retries-concurrence-1",
+            "content-garantir-idempotence-retries-concurrence-2",
+            "content-garantir-idempotence-retries-concurrence-3"
+          ],
+          "resourceKeys": [
+            "rfc-idempotent",
+            "postgres-isolation",
+            "postgres-locking"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-garantir-idempotence-retries-concurrence"
+          },
+          "assessmentKey": "assessment-traitement-asynchrone-sur",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

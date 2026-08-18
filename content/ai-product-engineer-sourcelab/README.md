@@ -1,23 +1,44 @@
-# AI Product Engineer — RAG et évaluation avec SourceLab
+# AI Product Engineer — RAG et évaluation pour SourceLab
 
 ## Statut
 
-- Slug : `ai-product-engineer-sourcelab`
-- Statut : `draft`
-- Classification : `CONTENT_ONLY` pour le contenu ; enregistrement du seed à faire dans un commit technique ciblé
-- Durée indicative : 56 jours, environ 60 heures
-- Public : développeur front-end expérimenté / Product Builder maîtrisant TypeScript
+- Version : 1.0.0
+- Statut : brouillon privé
+- Classification pédagogique : `CONTENT_ONLY`
+- Date de création : 18 août 2026
+- Projet fil rouge : SourceLab, développé dans un dépôt et une base séparés de LearnX
+- Publication : interdite tant que les revues éditoriale, technique, pédagogique et les contrôles de liens ne sont pas terminés
 
 ## Finalité
 
-Ce parcours transforme SourceLab V1 en laboratoire puis démonstrateur de deux usages : Program Builder et Assessment Reviewer. Il enseigne ingestion, embeddings, retrieval hybride, évaluations, génération structurée, sécurité et observabilité.
+Transformer SourceLab V1 en laboratoire d’AI Product Engineering centré sur deux usages : générer des programmes LearnX sourcés à partir d’un besoin et de matériaux, puis proposer une correction structurée de réponses libres à partir d’une rubrique et de contenus autorisés. Le RAG reste une infrastructure au service de ces usages.
 
-## Relation à SourceLab et LearnX
+## Prérequis
 
-Le parcours reprend le même dépôt SourceLab externe. Program Builder exporte un bundle LearnX ; Assessment Reviewer produit une recommandation structurée. LearnX conserve publication, progression et décision finale.
+Avoir terminé le programme Ingénieur logiciel en production — Construire SourceLab ou démontrer un niveau équivalent sur API Node.js, PostgreSQL, traitements asynchrones, Docker, tests, CI et observabilité.
 
-Le code produit pendant les exercices vit dans un **dépôt SourceLab séparé** avec sa propre base. Aucun exercice ne demande de modifier le dépôt LearnX. LearnX héberge uniquement le parcours ; l’intégration future utilisera des exports JSON ou des API explicites, jamais une base partagée.
+## Résultat produit
 
-## État éditorial
+À la fin, SourceLab contient un Program Builder et un Assessment Reviewer en démonstration. Ils reposent sur ingestion versionnée, chunking évalué, embeddings, recherche hybride, sorties structurées, datasets, sécurité, observabilité et gates de promotion. Aucun brouillon n’est publié et aucune note définitive n’est écrite automatiquement dans LearnX.
 
-Les leçons, quiz, banques de notions et évaluations d’étape sont authorés en brouillon. Les URL officielles ont été ouvertes ou recoupées le 2026-08-18 ; leur réouverture et une revue humaine éditoriale et technique restent bloquantes avant publication.
+## Frontière avec LearnX
+
+SourceLab génère, analyse et recommande ; LearnX importe, publie, conserve progression et décide. Les bases restent séparées. Le premier contrat d’intégration est un export LearnX-compatible, puis éventuellement une API limitée.
+
+LearnX sert à suivre le parcours et à importer ultérieurement les artefacts validés. Le programme n’ajoute aucune fonctionnalité IA, table, endpoint ou dépendance au dépôt LearnX. Les exercices sont réalisés dans le dépôt autonome SourceLab.
+
+## Contenu du dossier
+
+- `CURRICULUM_BLUEPRINT.md` : progression et livrables ;
+- `specs/` : spécifications détaillées de chaque leçon ;
+- `stage-assessments/` : évaluations finales des étapes ;
+- bundle Prisma correspondant dans `seed/`.
+
+## Conditions avant publication
+
+- vérifier chaque URL et sa section cible ;
+- faire relire les choix techniques et les exercices ;
+- exécuter les contrôles de compatibilité du seed ;
+- valider la charge réelle avec l’apprenant ;
+- confirmer que le dépôt SourceLab est disponible sans modifier le repo LearnX ;
+- conserver le programme en brouillon si une ressource ou une évaluation n’est pas vérifiée.

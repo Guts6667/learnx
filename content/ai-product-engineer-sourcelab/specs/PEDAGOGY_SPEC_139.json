@@ -1,0 +1,518 @@
+{
+  "specId": "PEDAGOGY_SPEC_139",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "cadrer-qualite-ia",
+  "moduleSlug": "architecture-et-evaluations",
+  "lesson": {
+    "title": "Construire les datasets et gates d’évaluation",
+    "slug": "construire-datasets-gates-evaluation",
+    "summary": "Créer des jeux de cas représentatifs avant d’optimiser prompts, retrieval ou modèles, puis définir les seuils qui autorisent comparaison et livraison.",
+    "objectives": [
+      "Constituer un dataset versionné à partir de cas réels et adversariaux.",
+      "Séparer métriques de retrieval, génération et décision produit.",
+      "Définir des gates et une analyse d’erreurs reproductible."
+    ],
+    "prerequisites": [
+      "Avoir formalisé les deux contrats produit IA."
+    ],
+    "estimatedMinutes": 90,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-construire-datasets-gates-evaluation-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une évaluation relie un ensemble d’entrées représentatives à des critères et résultats attendus. Le dataset doit couvrir succès nominal, absence d’information, ambiguïté, contradiction, cas atypique et attaque ; il évolue avec les erreurs observées.",
+          "sourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-datasets-gates-evaluation-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Le dataset Program Builder contient des briefs complets, trop vagues et contradictoires. Le dataset Assessment Reviewer contient réponses correctes courtes, réponses longues mais hors sujet, formulations inattendues et cas nécessitant un humain.",
+          "sourceKeys": [
+            "openai-evals"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-datasets-gates-evaluation-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Ne fusionner pas toutes les erreurs dans un score moyen. Une amélioration de style ne compense pas une source inventée. Les gates critiques sont binaires ou fortement pondérés ; les métriques secondaires éclairent ensuite les arbitrages.",
+          "sourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Working with evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (2026). Working with evals. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à datasets, critères, runs et comparaison de qualité puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant datasets, critères, runs et comparaison de qualité.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "datasets, critères, runs et comparaison de qualité",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Consulter la partie consacrée à gouvernance, cartographie, mesure et gestion des risques puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant gouvernance, cartographie, mesure et gestion des risques.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "gouvernance, cartographie, mesure et gestion des risques",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Évaluation versionnée",
+        "slug": "evaluation-versionnee",
+        "description": "Un dataset, des critères et des seuils versionnés rendent les changements comparables et les régressions visibles.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-evals",
+          "nist-ai-rmf"
+        ],
+        "assessment": {
+          "key": "assessment-evaluation-versionnee",
+          "type": "quiz",
+          "title": "Mini-évaluation — Évaluation versionnée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-datasets-gates-evaluation",
+        "title": "Créer le dataset initial",
+        "description": "Authorer au moins 20 cas par usage, avec catégorie, entrée, attendu, critères, criticité et justification. Exécuter une baseline et produire un rapport d’erreurs.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-datasets-gates-evaluation",
+        "title": "Quiz de leçon — Construire les datasets et gates d’évaluation",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une nouvelle configuration augmente la note moyenne mais invente une citation sur 2 % des cas. Que faire ?",
+            "explanation": "La traçabilité est un gate non compensable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Bloquer la promotion et analyser cette régression critique.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Promouvoir car la moyenne monte.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Retirer les cas difficiles du dataset.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que versionner avec un run ?",
+            "explanation": "Les entrées de l’expérience doivent être reconstructibles.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Dataset",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Prompt et modèle",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Configuration de retrieval",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Opinion du testeur non documentée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un dataset ne doit jamais changer afin de conserver exactement le même score pour toujours.",
+            "explanation": "Il doit garder des versions et intégrer les nouveaux risques.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-datasets-gates-evaluation-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-datasets-gates-evaluation-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-datasets-gates-evaluation-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-datasets-gates-evaluation"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-evaluation-versionnee"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-datasets-gates-evaluation"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-139-OPENAI_EVALS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Working with evals",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-139-NIST_AI_RMF",
+        "type": "official_documentation",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur évaluation versionnée."
+          },
+          {
+            "referenceId": "REF-139-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur évaluation versionnée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur évaluation versionnée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur évaluation versionnée."
+          },
+          {
+            "referenceId": "REF-139-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur évaluation versionnée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": [
+          "REF-139-OPENAI_EVALS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour datasets, critères, runs et comparaison de qualité.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "nist-ai-rmf",
+        "referenceIds": [
+          "REF-139-NIST_AI_RMF"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour gouvernance, cartographie, mesure et gestion des risques.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "evaluation-versionnee",
+        "assessmentTitle": "Mini-évaluation — Évaluation versionnée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand ajouter un cas au dataset ?",
+            "explanation": "Le dataset devient la mémoire vérifiable du comportement attendu.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Lorsqu’il représente un usage, un risque ou une erreur que l’on veut détecter durablement.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Uniquement après la mise en production.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quand il rend le score plus flatteur.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions doivent rester séparées pour un RAG ?",
+            "explanation": "La séparation permet de localiser la cause.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Qualité du retrieval",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Fidélité de la génération",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Décision d’abstention",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Popularité du logo",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un score moyen élevé prouve qu’aucune erreur critique n’existe.",
+            "explanation": "Une erreur rare et grave peut être masquée par la moyenne.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "evaluation-versionnee",
+          "contentKeys": [
+            "content-construire-datasets-gates-evaluation-1",
+            "content-construire-datasets-gates-evaluation-2",
+            "content-construire-datasets-gates-evaluation-3"
+          ],
+          "resourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-datasets-gates-evaluation"
+          },
+          "assessmentKey": "assessment-evaluation-versionnee",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

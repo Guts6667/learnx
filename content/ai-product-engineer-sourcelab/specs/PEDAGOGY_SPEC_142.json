@@ -1,0 +1,512 @@
+{
+  "specId": "PEDAGOGY_SPEC_142",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "retrouver-bons-passages",
+  "moduleSlug": "embeddings-et-retrieval",
+  "lesson": {
+    "title": "Implémenter embeddings et recherche vectorielle",
+    "slug": "implementer-embeddings-recherche-vectorielle",
+    "summary": "Créer les embeddings des chunks, les stocker dans PostgreSQL avec pgvector et interroger la similarité tout en filtrant strictement projet, version et permissions.",
+    "objectives": [
+      "Expliquer ce que mesure un embedding sans lui attribuer une compréhension magique.",
+      "Stocker et interroger les vecteurs avec pgvector.",
+      "Évaluer recherche exacte, index approximatif et filtrage."
+    ],
+    "prerequisites": [
+      "Avoir choisi une stratégie de chunking mesurée."
+    ],
+    "estimatedMinutes": 100,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-implementer-embeddings-recherche-vectorielle-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un embedding représente un contenu par un vecteur utilisé pour comparer sa proximité à d’autres contenus. La similarité fournit un classement, pas une preuve de vérité ni une autorisation d’accès.",
+          "sourceKeys": [
+            "openai-embeddings",
+            "pgvector"
+          ]
+        }
+      },
+      {
+        "key": "content-implementer-embeddings-recherche-vectorielle-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab calcule l’embedding d’un chunk et de la question, filtre d’abord sur le projet et la version autorisés, puis classe par distance cosinus. Le résultat conserve score, rang et localisateur.",
+          "sourceKeys": [
+            "pgvector"
+          ]
+        }
+      },
+      {
+        "key": "content-implementer-embeddings-recherche-vectorielle-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Commencer par la recherche exacte sur un corpus maîtrisé. Les index HNSW ou IVFFlat échangent ressources, temps et rappel ; leur adoption doit être justifiée par une mesure de volume et de latence.",
+          "sourceKeys": [
+            "pgvector"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-embeddings",
+        "type": "website",
+        "title": "Vector embeddings",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/embeddings",
+        "citation": "OpenAI. (2026). Vector embeddings. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à embeddings, similarité et cas d’usage de recherche puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant embeddings, similarité et cas d’usage de recherche.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "embeddings, similarité et cas d’usage de recherche",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "pgvector",
+        "type": "website",
+        "title": "pgvector",
+        "author": "pgvector contributors",
+        "url": "https://github.com/pgvector/pgvector",
+        "citation": "pgvector contributors. (2026). pgvector. Dépôt officiel et documentation. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à stockage vectoriel, distances, index et recherche hybride puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant stockage vectoriel, distances, index et recherche hybride.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "stockage vectoriel, distances, index et recherche hybride",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Recherche vectorielle filtrée",
+        "slug": "recherche-vectorielle-filtree",
+        "description": "La similarité classe des passages à l’intérieur d’un périmètre d’accès déjà autorisé et évalué.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-embeddings",
+          "pgvector"
+        ],
+        "assessment": {
+          "key": "assessment-recherche-vectorielle-filtree",
+          "type": "quiz",
+          "title": "Mini-évaluation — Recherche vectorielle filtrée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-implementer-embeddings-recherche-vectorielle",
+        "title": "Construire le retriever vectoriel",
+        "description": "Ajouter pgvector, versionner modèle/dimensions, indexer le corpus, implémenter filtres et top-k, puis mesurer exact vs HNSW sur le dataset.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-implementer-embeddings-recherche-vectorielle",
+        "title": "Quiz de leçon — Implémenter embeddings et recherche vectorielle",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Après ajout d’un index approximatif, le bon passage disparaît parfois du top-k. Quelle mesure regarder ?",
+            "explanation": "L’index approximatif échange précision du voisinage et performance.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le recall comparé à la recherche exacte.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La longueur du nom de table.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nombre de boutons.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles opérations appartiennent au pipeline d’indexation ?",
+            "explanation": "Le vecteur doit rester relié au contenu.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Normaliser le chunk",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Calculer l’embedding",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Stocker provenance et version",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Supprimer le texte source",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "La distance cosinus est l’unique métrique supportée par pgvector.",
+            "explanation": "pgvector prend aussi en charge L2, produit interne et d’autres distances.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-implementer-embeddings-recherche-vectorielle-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-embeddings"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-implementer-embeddings-recherche-vectorielle-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pgvector"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-implementer-embeddings-recherche-vectorielle-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-implementer-embeddings-recherche-vectorielle"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-recherche-vectorielle-filtree"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-implementer-embeddings-recherche-vectorielle"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-142-OPENAI_EMBEDDINGS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Vector embeddings",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/embeddings",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-142-PGVECTOR",
+        "type": "official_documentation",
+        "authors": [
+          "pgvector contributors"
+        ],
+        "organization": "pgvector contributors",
+        "title": "pgvector",
+        "year": 2026,
+        "edition": null,
+        "publication": "pgvector contributors",
+        "doi": null,
+        "url": "https://github.com/pgvector/pgvector",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-142-OPENAI_EMBEDDINGS",
+            "locator": "embeddings, similarité et cas d’usage de recherche",
+            "supports": "Soutient le bloc sur recherche vectorielle filtrée."
+          },
+          {
+            "referenceId": "REF-142-PGVECTOR",
+            "locator": "stockage vectoriel, distances, index et recherche hybride",
+            "supports": "Soutient le bloc sur recherche vectorielle filtrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-142-PGVECTOR",
+            "locator": "stockage vectoriel, distances, index et recherche hybride",
+            "supports": "Soutient le bloc sur recherche vectorielle filtrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-142-PGVECTOR",
+            "locator": "stockage vectoriel, distances, index et recherche hybride",
+            "supports": "Soutient le bloc sur recherche vectorielle filtrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-embeddings",
+        "referenceIds": [
+          "REF-142-OPENAI_EMBEDDINGS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour embeddings, similarité et cas d’usage de recherche.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "pgvector",
+        "referenceIds": [
+          "REF-142-PGVECTOR"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour stockage vectoriel, distances, index et recherche hybride.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "recherche-vectorielle-filtree",
+        "assessmentTitle": "Mini-évaluation — Recherche vectorielle filtrée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que garantit un score de similarité élevé ?",
+            "explanation": "Le score reste un signal de classement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Une proximité selon le modèle et la métrique, pas la véracité.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une autorisation d’accès.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une réponse nécessairement complète.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que versionner avec un embedding ?",
+            "explanation": "Une réindexation dépend de ces paramètres.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Modèle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Dimensions",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Texte ou hash du chunk",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Thème visuel",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le modèle doit décider quels projets l’utilisateur a le droit de rechercher.",
+            "explanation": "Les permissions sont appliquées par le serveur avant ou pendant la requête.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "recherche-vectorielle-filtree",
+          "contentKeys": [
+            "content-implementer-embeddings-recherche-vectorielle-1",
+            "content-implementer-embeddings-recherche-vectorielle-2",
+            "content-implementer-embeddings-recherche-vectorielle-3"
+          ],
+          "resourceKeys": [
+            "openai-embeddings",
+            "pgvector"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-implementer-embeddings-recherche-vectorielle"
+          },
+          "assessmentKey": "assessment-recherche-vectorielle-filtree",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

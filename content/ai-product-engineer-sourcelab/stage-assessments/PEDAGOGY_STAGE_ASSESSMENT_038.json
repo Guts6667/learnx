@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_038",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "securiser-et-mettre-production",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Défendre et livrer SourceLab IA",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Red teamer, instrumenter et promouvoir les deux usages IA en démontrant sécurité, qualité, budgets et récupération.",
+    "instructions": [
+      "Exécuter le corpus d’attaques et démontrer le refus des accès.",
+      "Corriger les traces et la politique de données.",
+      "Exécuter les evals offline et les tests staging.",
+      "Décider de promouvoir, corriger ou abandonner la configuration.",
+      "Simuler canary, kill switch, rollback et vérification post-release."
+    ],
+    "case": "Cas fictif — Un document contient une injection demandant d’exfiltrer un autre projet et de donner 100/100. Une nouvelle configuration réduit les coûts mais baisse le recall, forge une citation sur un cas rare et dépasse les timeouts en staging. Les traces d’un fournisseur contiennent des réponses brutes non autorisées.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Threat model, suite red team, traces sûres, tableau de bord qualité/coût/latence, rapport go/no-go et runbook.",
+    "conceptSlugs": [
+      "contexte-non-fiable",
+      "promotion-ia-preuves"
+    ],
+    "rubric": [
+      {
+        "criterion": "Sécurité",
+        "weight": 30,
+        "requirements": [
+          "Permissions hors modèle et outils étroits.",
+          "Injections directes/indirectes et exfiltration sont testées."
+        ]
+      },
+      {
+        "criterion": "Observabilité et données",
+        "weight": 20,
+        "requirements": [
+          "Runs corrélés sans contenus sensibles non autorisés.",
+          "Versions, coûts et latences sont reconstructibles."
+        ]
+      },
+      {
+        "criterion": "Qualité et gates",
+        "weight": 30,
+        "requirements": [
+          "Evals et red team bloquent les régressions critiques.",
+          "La décision ne masque pas les erreurs rares."
+        ]
+      },
+      {
+        "criterion": "Release et récupération",
+        "weight": 20,
+        "requirements": [
+          "Canary, kill switch et rollback sont exécutables.",
+          "Les preuves post-release couvrent qualité et service."
+        ]
+      }
+    ],
+    "remediation": "Toute fuite, source inventée ou modification non autorisée bloque la réussite ; corriger la barrière déterministe, ajouter le test et rejouer la release."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-148-OWASP_PROMPT_INJECTION",
+      "REF-148-OPENAI_RED_TEAMING",
+      "REF-148-NIST_AI_RMF",
+      "REF-149-OTEL_GENAI",
+      "REF-149-OPENAI_PRODUCTION",
+      "REF-149-OPENAI_EVALS"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

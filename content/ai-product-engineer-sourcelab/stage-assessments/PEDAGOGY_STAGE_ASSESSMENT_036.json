@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_036",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "generer-programmes-sources",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Générer un programme LearnX contrôlé",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Transformer besoin, réponses au funnel et Source Pack en brief, blueprint et leçon LearnX validés, puis appliquer une modification ciblée.",
+    "instructions": [
+      "Conduire le funnel jusqu’à un brief explicite et validé.",
+      "Présenter contradictions, durée irréaliste et hors périmètre.",
+      "Générer puis valider le blueprint.",
+      "Générer une leçon avec sources, quiz et séquence LearnX.",
+      "Appliquer un patch ciblé sans modifier les sections verrouillées."
+    ],
+    "case": "Cas fictif — Un utilisateur demande un programme Docker de deux semaines pour devenir « expert DevOps », fournit des documents contradictoires et souhaite exclure Kubernetes. Le premier modèle invente une source, crée une notion sans évaluation et réécrit le public après la demande « ajoute les retries ».",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Historique funnel, brief, blueprint, PEDAGOGY_SPEC brouillon, rapport de validation et diff ciblé.",
+    "conceptSlugs": [
+      "brief-pedagogique-valide",
+      "generation-pedagogique-controlee"
+    ],
+    "rubric": [
+      {
+        "criterion": "Funnel et brief",
+        "weight": 25,
+        "requirements": [
+          "Les inconnues matérielles sont posées comme questions.",
+          "Public, résultat, durée et hors périmètre sont validés."
+        ]
+      },
+      {
+        "criterion": "Blueprint",
+        "weight": 20,
+        "requirements": [
+          "La progression relie objectifs, livrables et évaluations.",
+          "Le périmètre reste réaliste."
+        ]
+      },
+      {
+        "criterion": "Compatibilité LearnX",
+        "weight": 30,
+        "requirements": [
+          "Sources, notions, banques, quiz et séquence sont cohérents.",
+          "Les contrôles déterministes passent."
+        ]
+      },
+      {
+        "criterion": "Modification ciblée",
+        "weight": 25,
+        "requirements": [
+          "Les sections verrouillées restent identiques.",
+          "Le diff et sa justification sont conservés."
+        ]
+      }
+    ],
+    "remediation": "Bloquer toute source ou clé inventée, revenir au dernier artefact validé et régénérer uniquement la partie défaillante."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-144-OPENAI_STRUCTURED",
+      "REF-144-LEARNX_EDITORIAL",
+      "REF-144-NIST_AI_RMF",
+      "REF-145-LEARNX_AUTHORING",
+      "REF-145-LEARNX_EDITORIAL",
+      "REF-145-OPENAI_STRUCTURED"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

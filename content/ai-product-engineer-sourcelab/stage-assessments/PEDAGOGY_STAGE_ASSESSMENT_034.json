@@ -1,0 +1,93 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_034",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "ingerer-et-structurer-sources",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Produire un corpus traçable",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Importer un corpus hétérogène, conserver la provenance, comparer le chunking et produire un Source Pack réindexable.",
+    "instructions": [
+      "Importer et versionner les matériaux sans écrasement.",
+      "Extraire avec localisateurs et avertissements.",
+      "Classer les limites nécessitant revue.",
+      "Implémenter trois chunkings et exécuter le dataset.",
+      "Choisir une stratégie et produire le Source Pack."
+    ],
+    "case": "Cas fictif — Le corpus contient HTML, PDF natif, PDF scanné, notes et versions contradictoires. Une première extraction perd les numéros de page, mélange une table et du texte, puis découpe chaque document tous les 500 caractères sans conserver les titres.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Pipeline, corpus de test, artefacts de provenance, rapport de chunking et export Source Pack.",
+    "conceptSlugs": [
+      "provenance-documentaire",
+      "chunking-evalue"
+    ],
+    "rubric": [
+      {
+        "criterion": "Ingestion et version",
+        "weight": 25,
+        "requirements": [
+          "Les originaux et versions restent identifiables.",
+          "Doublons et erreurs sont explicites."
+        ]
+      },
+      {
+        "criterion": "Provenance",
+        "weight": 25,
+        "requirements": [
+          "Chaque fragment retrouve document et localisateur.",
+          "Les limites de parsing sont visibles."
+        ]
+      },
+      {
+        "criterion": "Expérience de chunking",
+        "weight": 30,
+        "requirements": [
+          "Trois stratégies sont comparées sur les mêmes cas.",
+          "Qualité, coût et citations sont analysés."
+        ]
+      },
+      {
+        "criterion": "Décision et export",
+        "weight": 20,
+        "requirements": [
+          "Le choix est fondé sur les résultats.",
+          "Le Source Pack est réindexable et documenté."
+        ]
+      }
+    ],
+    "remediation": "Reprendre tout fragment sans provenance ou structure fiable, ajouter le cas au dataset et réindexer avec une stratégie justifiée."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-140-OPENAI_FILE_INPUTS",
+      "REF-140-W3C_PROV",
+      "REF-141-LANGCHAIN_SPLITTERS",
+      "REF-141-OPENAI_RETRIEVAL"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

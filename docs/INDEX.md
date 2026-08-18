@@ -100,6 +100,43 @@ humaines linguistique, pédagogique et culturelle/juridique ne sont pas
 approuvées dans le workflow bilingue. Leur publication et leur progression sont
 indépendantes du programme français.
 
+## Programme Ingénieur logiciel en production — SourceLab
+
+- Présentation et statut :
+  `content/ingenieur-logiciel-production-sourcelab/README.md`
+- Blueprint :
+  `content/ingenieur-logiciel-production-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications de leçons :
+  `content/ingenieur-logiciel-production-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ingenieur-logiciel-production-sourcelab/stage-assessments/`
+- Bundle en attente d’enregistrement après revue :
+  `seed/ingenieur-logiciel-production-sourcelab-program.json`
+
+Ce parcours construit SourceLab V1 dans un dépôt et une base séparés de LearnX.
+Il couvre le niveau runtime, Docker, intégration, données, tests, CI/CD et
+exploitation nécessaire à un Product Engineer, sans viser une reconversion
+DevOps. Le bundle reste un brouillon non importé par défaut tant que les revues
+humaines et le contrôle ciblé du seed ne sont pas terminés.
+
+## Programme AI Product Engineer — SourceLab
+
+- Présentation et statut :
+  `content/ai-product-engineer-sourcelab/README.md`
+- Blueprint :
+  `content/ai-product-engineer-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications de leçons :
+  `content/ai-product-engineer-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ai-product-engineer-sourcelab/stage-assessments/`
+- Bundle en attente d’enregistrement après revue :
+  `seed/ai-product-engineer-sourcelab-program.json`
+
+Ce parcours ajoute à SourceLab V1 l’ingestion traçable, le RAG évalué, le
+Program Builder et l’Assessment Reviewer. Il ne publie aucun programme et ne
+valide aucune note LearnX automatiquement. Le dépôt, la base et les secrets
+restent séparés de LearnX.
+
 ## Archives
 
 - `docs/archive/v1/` : backlog et point d'entrée historique V1.

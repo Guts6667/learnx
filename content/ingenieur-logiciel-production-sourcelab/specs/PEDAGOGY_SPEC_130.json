@@ -1,0 +1,512 @@
+{
+  "specId": "PEDAGOGY_SPEC_130",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-api-worker-donnees",
+  "moduleSlug": "contrats-et-jobs",
+  "lesson": {
+    "title": "Concevoir l’API d’import et le cycle d’un job",
+    "slug": "concevoir-api-import-cycle-job",
+    "summary": "Transformer l’import d’une source en contrat HTTP explicite et en machine d’états observable plutôt qu’en traitement long caché dans une requête.",
+    "objectives": [
+      "Définir un contrat d’API validé et versionnable.",
+      "Modéliser les états et transitions d’un job.",
+      "Séparer acceptation de la demande et exécution asynchrone."
+    ],
+    "prerequisites": [
+      "Pouvoir lancer API, worker et PostgreSQL avec Compose."
+    ],
+    "estimatedMinutes": 85,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-concevoir-api-import-cycle-job-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un contrat d’API précise entrées, sorties, erreurs et invariants. Pour un traitement asynchrone, l’API accepte la demande, crée une ressource job et permet d’en consulter l’état ; elle ne prétend pas que le travail est terminé.",
+          "sourceKeys": [
+            "hono-validation",
+            "rfc-idempotent"
+          ]
+        }
+      },
+      {
+        "key": "content-concevoir-api-import-cycle-job-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "`POST /projects/:id/sources` valide le fichier et les métadonnées, crée un job `PENDING`, puis répond `202` avec son identifiant. Le worker fait évoluer le job vers `PROCESSING`, `SUCCEEDED` ou `FAILED` selon des transitions contrôlées.",
+          "sourceKeys": [
+            "hono-validation"
+          ]
+        }
+      },
+      {
+        "key": "content-concevoir-api-import-cycle-job-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un statut métier ne doit pas être déduit seulement d’un message libre. Les transitions autorisées, timestamps, tentatives et erreurs normalisées forment un contrat testable par l’interface et les opérations.",
+          "sourceKeys": [
+            "hono-validation"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "hono-validation",
+        "type": "website",
+        "title": "Validation",
+        "author": "Hono",
+        "url": "https://hono.dev/docs/guides/validation",
+        "citation": "Hono. (2026). Validation. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à validation des entrées et intégration des validateurs puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant validation des entrées et intégration des validateurs.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "validation des entrées et intégration des validateurs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "rfc-idempotent",
+        "type": "document",
+        "title": "HTTP Semantics — Idempotent Methods",
+        "author": "IETF",
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods",
+        "citation": "Fielding, R., Nottingham, M., & Reschke, J. (2022). HTTP Semantics, section 9.2.2. RFC 9110.",
+        "description": "Consulter la partie consacrée à sémantique des méthodes idempotentes puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sémantique des méthodes idempotentes.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sémantique des méthodes idempotentes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Cycle de vie d’un job",
+        "slug": "cycle-vie-job",
+        "description": "Un job asynchrone possède des états explicites, des transitions autorisées et une identité consultable.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "hono-validation",
+          "rfc-idempotent"
+        ],
+        "assessment": {
+          "key": "assessment-cycle-vie-job",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cycle de vie d’un job",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-concevoir-api-import-cycle-job",
+        "title": "Spécifier et implémenter l’import",
+        "description": "Rédiger le contrat Zod et HTTP de création/consultation d’un job, implémenter ses transitions côté serveur et couvrir les entrées invalides ainsi que les états terminaux.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-concevoir-api-import-cycle-job",
+        "title": "Quiz de leçon — Concevoir l’API d’import et le cycle d’un job",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une source échoue définitivement au parsing. Quel état est le plus approprié ?",
+            "explanation": "Un état terminal explicite empêche l’attente infinie.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "FAILED avec code d’erreur et détail sûr.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "PENDING sans limite de temps.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "SUCCEEDED avec contenu vide.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles transitions doivent être refusées par défaut ?",
+            "explanation": "Les transitions impossibles doivent échouer de façon visible.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "SUCCEEDED vers PROCESSING",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "FAILED définitif vers SUCCEEDED sans nouvelle exécution",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "PENDING vers un état inconnu",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "PENDING vers PROCESSING",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Valider le JSON côté client suffit à protéger le contrat d’API.",
+            "explanation": "La validation faisant foi doit être exécutée côté serveur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-concevoir-api-import-cycle-job-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "hono-validation"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-concevoir-api-import-cycle-job-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-concevoir-api-import-cycle-job-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "rfc-idempotent"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-concevoir-api-import-cycle-job"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-cycle-vie-job"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-concevoir-api-import-cycle-job"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-130-HONO_VALIDATION",
+        "type": "official_documentation",
+        "authors": [
+          "Hono"
+        ],
+        "organization": "Hono",
+        "title": "Validation",
+        "year": 2026,
+        "edition": null,
+        "publication": "Hono",
+        "doi": null,
+        "url": "https://hono.dev/docs/guides/validation",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-130-RFC_IDEMPOTENT",
+        "type": "official_documentation",
+        "authors": [
+          "IETF"
+        ],
+        "organization": "IETF",
+        "title": "HTTP Semantics — Idempotent Methods",
+        "year": 2022,
+        "edition": null,
+        "publication": "IETF",
+        "doi": null,
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-idempotent-methods",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-HONO_VALIDATION",
+            "locator": "validation des entrées et intégration des validateurs",
+            "supports": "Soutient le bloc sur cycle de vie d’un job."
+          },
+          {
+            "referenceId": "REF-130-RFC_IDEMPOTENT",
+            "locator": "sémantique des méthodes idempotentes",
+            "supports": "Soutient le bloc sur cycle de vie d’un job."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-HONO_VALIDATION",
+            "locator": "validation des entrées et intégration des validateurs",
+            "supports": "Soutient le bloc sur cycle de vie d’un job."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-HONO_VALIDATION",
+            "locator": "validation des entrées et intégration des validateurs",
+            "supports": "Soutient le bloc sur cycle de vie d’un job."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "hono-validation",
+        "referenceIds": [
+          "REF-130-HONO_VALIDATION"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour validation des entrées et intégration des validateurs.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "rfc-idempotent",
+        "referenceIds": [
+          "REF-130-RFC_IDEMPOTENT"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sémantique des méthodes idempotentes.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "cycle-vie-job",
+        "assessmentTitle": "Mini-évaluation — Cycle de vie d’un job",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi répondre `202 Accepted` à la création d’un traitement long ?",
+            "explanation": "Le statut distingue acceptation et résultat final.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour indiquer que la demande est acceptée sans affirmer que le traitement est terminé.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour masquer toute erreur de validation.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour rendre automatiquement la méthode idempotente.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles données rendent un job observable ?",
+            "explanation": "Le client et l’opérateur doivent comprendre le cycle du traitement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "État",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Nombre de tentatives",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Timestamps et erreur normalisée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur préférée de l’utilisateur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "L’interface peut inventer un état `SUCCEEDED` si elle n’a pas encore reçu de réponse du serveur.",
+            "explanation": "La source de vérité du statut est côté serveur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "cycle-vie-job",
+          "contentKeys": [
+            "content-concevoir-api-import-cycle-job-1",
+            "content-concevoir-api-import-cycle-job-2",
+            "content-concevoir-api-import-cycle-job-3"
+          ],
+          "resourceKeys": [
+            "hono-validation",
+            "rfc-idempotent"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-concevoir-api-import-cycle-job"
+          },
+          "assessmentKey": "assessment-cycle-vie-job",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

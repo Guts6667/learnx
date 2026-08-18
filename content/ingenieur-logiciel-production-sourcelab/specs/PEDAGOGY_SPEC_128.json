@@ -1,0 +1,512 @@
+{
+  "specId": "PEDAGOGY_SPEC_128",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "containeriser-sourcelab",
+  "moduleSlug": "docker-et-compose",
+  "lesson": {
+    "title": "Construire des images Node.js reproductibles",
+    "slug": "construire-images-node-reproductibles",
+    "summary": "Créer des images séparées pour l’API et le worker SourceLab, avec builds multi-stage, dépendances verrouillées, utilisateur non-root et contenu d’exécution minimal.",
+    "objectives": [
+      "Expliquer la différence entre image, conteneur et couche.",
+      "Écrire un Dockerfile multi-stage reproductible.",
+      "Réduire la surface et le contenu de l’image d’exécution."
+    ],
+    "prerequisites": [
+      "Comprendre le cycle de vie d’un processus Node.js."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-construire-images-node-reproductibles-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une image est un artefact immuable construit en couches ; un conteneur est une exécution isolée de cette image avec sa propre couche écrivable. Reproduire un environnement suppose de verrouiller dépendances, contexte de build et commande de runtime.",
+          "sourceKeys": [
+            "docker-overview"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-images-node-reproductibles-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour SourceLab, l’étape de build installe les dépendances avec le lockfile et compile TypeScript. L’étape finale ne reçoit que le code compilé et les dépendances nécessaires, puis s’exécute avec un utilisateur non-root.",
+          "sourceKeys": [
+            "docker-multistage"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-images-node-reproductibles-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une image plus petite n’est pas automatiquement sûre. Il faut également contrôler la provenance de l’image de base, les secrets absents du contexte, l’utilisateur, les mises à jour et les dépendances réellement embarquées.",
+          "sourceKeys": [
+            "docker-overview",
+            "docker-multistage"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "docker-overview",
+        "type": "website",
+        "title": "Docker overview",
+        "author": "Docker",
+        "url": "https://docs.docker.com/get-started/docker-overview/",
+        "citation": "Docker. (2026). Docker overview. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à images, conteneurs, registres et architecture Docker puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant images, conteneurs, registres et architecture Docker.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "images, conteneurs, registres et architecture Docker",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "docker-multistage",
+        "type": "website",
+        "title": "Multi-stage builds",
+        "author": "Docker",
+        "url": "https://docs.docker.com/build/building/multi-stage/",
+        "citation": "Docker. (2026). Multi-stage builds. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à séparation des étapes de build et réduction de l’image d’exécution puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant séparation des étapes de build et réduction de l’image d’exécution.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "séparation des étapes de build et réduction de l’image d’exécution",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Image d’exécution reproductible",
+        "slug": "image-execution-reproductible",
+        "description": "Une image fiable sépare construction et exécution, verrouille ses entrées et ne contient que le nécessaire.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "docker-overview",
+          "docker-multistage"
+        ],
+        "assessment": {
+          "key": "assessment-image-execution-reproductible",
+          "type": "quiz",
+          "title": "Mini-évaluation — Image d’exécution reproductible",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-images-node-reproductibles",
+        "title": "Containeriser l’API et le worker",
+        "description": "Écrire deux Dockerfiles multi-stage ou un Dockerfile paramétré, ajouter `.dockerignore`, exécuter en non-root et documenter comment vérifier le contenu et la commande de chaque image.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-images-node-reproductibles",
+        "title": "Quiz de leçon — Construire des images Node.js reproductibles",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le dossier `.git` et un fichier `.env` sont envoyés au build. Quelle correction est prioritaire ?",
+            "explanation": "Le contexte peut exposer des secrets et invalider le cache.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Les exclure avec `.dockerignore` et vérifier qu’aucun secret n’a été copié.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ajouter un port supplémentaire.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Augmenter la mémoire de PostgreSQL.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles vérifications appartiennent à l’image d’exécution ?",
+            "explanation": "La runtime image doit rester ciblée.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Utilisateur non-root",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Commande de démarrage",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Absence d’outils de build inutiles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Présence du cache local pnpm complet",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Utiliser le tag `latest` suffit à identifier de manière immuable la version déployée.",
+            "explanation": "Un tag peut être déplacé ; un digest ou une version précise fournit une identité plus stable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-images-node-reproductibles-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-overview"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-images-node-reproductibles-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-multistage"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-images-node-reproductibles-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-images-node-reproductibles"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-image-execution-reproductible"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-images-node-reproductibles"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-128-DOCKER_OVERVIEW",
+        "type": "official_documentation",
+        "authors": [
+          "Docker"
+        ],
+        "organization": "Docker",
+        "title": "Docker overview",
+        "year": 2026,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/get-started/docker-overview/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-128-DOCKER_MULTISTAGE",
+        "type": "official_documentation",
+        "authors": [
+          "Docker"
+        ],
+        "organization": "Docker",
+        "title": "Multi-stage builds",
+        "year": 2026,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/build/building/multi-stage/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-DOCKER_OVERVIEW",
+            "locator": "images, conteneurs, registres et architecture Docker",
+            "supports": "Soutient le bloc sur image d’exécution reproductible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-DOCKER_MULTISTAGE",
+            "locator": "séparation des étapes de build et réduction de l’image d’exécution",
+            "supports": "Soutient le bloc sur image d’exécution reproductible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-DOCKER_OVERVIEW",
+            "locator": "images, conteneurs, registres et architecture Docker",
+            "supports": "Soutient le bloc sur image d’exécution reproductible."
+          },
+          {
+            "referenceId": "REF-128-DOCKER_MULTISTAGE",
+            "locator": "séparation des étapes de build et réduction de l’image d’exécution",
+            "supports": "Soutient le bloc sur image d’exécution reproductible."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "docker-overview",
+        "referenceIds": [
+          "REF-128-DOCKER_OVERVIEW"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour images, conteneurs, registres et architecture Docker.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "docker-multistage",
+        "referenceIds": [
+          "REF-128-DOCKER_MULTISTAGE"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour séparation des étapes de build et réduction de l’image d’exécution.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "image-execution-reproductible",
+        "assessmentTitle": "Mini-évaluation — Image d’exécution reproductible",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi utiliser un build multi-stage ?",
+            "explanation": "Les artefacts nécessaires sont copiés vers une image d’exécution plus ciblée.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour séparer les outils de compilation de l’image finale.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour partager automatiquement la base entre conteneurs.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour rendre les volumes immuables.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles entrées influencent la reproductibilité d’une image ?",
+            "explanation": "Le build doit être déterminé par des entrées versionnées et contrôlées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Image de base",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Lockfile",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Contexte de build",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Historique du navigateur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un conteneur en cours d’exécution est identique à son image, sans aucune couche écrivable.",
+            "explanation": "Le conteneur possède une couche écrivable éphémère.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "image-execution-reproductible",
+          "contentKeys": [
+            "content-construire-images-node-reproductibles-1",
+            "content-construire-images-node-reproductibles-2",
+            "content-construire-images-node-reproductibles-3"
+          ],
+          "resourceKeys": [
+            "docker-overview",
+            "docker-multistage"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-images-node-reproductibles"
+          },
+          "assessmentKey": "assessment-image-execution-reproductible",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
