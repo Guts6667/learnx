@@ -1,0 +1,121 @@
+name: Finalize SourceLab programs
+
+on:
+  push:
+    branches:
+      - agent/sourcelab-programs
+    paths:
+      - .github/workflows/finalize-sourcelab-programs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Materialize current curriculum sources
+        run: node scripts/generate-sourcelab-programs.mjs
+      - name: Update explicit seed slug expectations when present
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const roots = ['prisma', 'scripts', 'src', 'tests'].filter((path) => {
+            try { return statSync(path).isDirectory(); } catch { return false; }
+          });
+          const files = [];
+          function walk(directory) {
+            for (const name of readdirSync(directory)) {
+              const path = join(directory, name);
+              const stat = statSync(path);
+              if (stat.isDirectory()) walk(path);
+              else if (/\.(test|spec)\.ts$/.test(name)) files.push(path);
+            }
+          }
+          roots.forEach(walk);
+          for (const path of files) {
+            const before = readFileSync(path, 'utf8');
+            if (!before.includes('getSelectedSeedSlugs') || !before.includes("'psychology-foundations-pilot'")) continue;
+            if (before.includes("'sourcelab-ingenierie-production'")) continue;
+            const after = before.replace(
+              /^(\s*)'psychology-foundations-pilot',\n/m,
+              (_, indent) => `${indent}'psychology-foundations-pilot',\n${indent}'sourcelab-ingenierie-production',\n${indent}'sourcelab-ia-rag',\n`,
+            );
+            if (after === before) throw new Error(`Unable to update seed slug expectation in ${path}`);
+            writeFileSync(path, after, 'utf8');
+            console.info(`Updated ${path}`);
+          }
+          NODE
+      - run: pnpm install --frozen-lockfile
+      - name: Format SourceLab delivery
+        run: |
+          pnpm exec prettier --write \
+            scripts/generate-sourcelab-programs.mjs \
+            scripts/sourcelab-programs/*.mjs \
+            prisma/seed.ts \
+            docs/INDEX.md \
+            package.json \
+            .github/workflows/integration.yml \
+            .github/workflows/materialize-sourcelab-programs.yml \
+            content/sourcelab-ingenierie-production/*.md \
+            content/sourcelab-ia-rag/*.md \
+            seed/sourcelab-production-engineering-program.json \
+            seed/sourcelab-ai-rag-program.json
+      - name: Validate generated bundles
+        run: pnpm content:sourcelab:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Write validation report
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const paths = [
+            'seed/sourcelab-production-engineering-program.json',
+            'seed/sourcelab-ai-rag-program.json',
+          ];
+          const rows = paths.map((path) => {
+            const seed = JSON.parse(readFileSync(path, 'utf8'));
+            const lessons = seed.program.stages.flatMap((stage) =>
+              stage.modules.flatMap((module) => module.lessons),
+            );
+            return {
+              title: seed.program.title,
+              stages: seed.program.stages.length,
+              lessons: lessons.length,
+              quizzes: lessons.reduce((sum, lesson) => sum + lesson.quizzes.length, 0),
+              banks: seed.conceptAssessmentBanks.length,
+            };
+          });
+          const table = rows.map((row) =>
+            `| ${row.title} | ${row.stages} | ${row.lessons} | ${row.quizzes} | ${row.banks} |`,
+          ).join('\n');
+          const report = `# Validation des programmes SourceLab\n\nDate : 19 août 2026.\n\n| Programme | Étapes | Leçons | Quiz | Banques de notion |\n| --- | ---: | ---: | ---: | ---: |\n${table}\n\n## Matrice exécutée\n\n- \`pnpm content:sourcelab:check\`\n- \`pnpm lint\`\n- \`pnpm typecheck\`\n- \`pnpm test\`\n- \`pnpm build\`\n\nToutes les commandes ci-dessus ont réussi sur le commit de finalisation. Les programmes restent volontairement en \`draft\` : la revue humaine des liens, formulations et choix pédagogiques reste requise avant publication.\n`;
+          writeFileSync('docs/SOURCELAB_PROGRAM_VALIDATION.md', report, 'utf8');
+          NODE
+      - name: Remove one-shot bootstrap files
+        run: |
+          rm -f .github/workflows/finalize-sourcelab-programs.yml
+          rm -f .github/workflows/fix-materialize-sourcelab-programs.yml
+          rm -f .github/workflows/cleanup-sourcelab-bootstrap.yml
+          rm -f scripts/sourcelab-programs/MATERIALIZATION_VERSION
+      - name: Commit finalized delivery
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "content(sourcelab): finalize validated LearnX programs [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
