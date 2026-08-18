@@ -1,0 +1,568 @@
+{
+  "specId": "PEDAGOGY_SPEC_131",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-donnees-traitements",
+  "moduleSlug": "module-integrer-donnees-traitements",
+  "lesson": {
+    "title": "Traiter les imports avec un worker idempotent",
+    "slug": "traiter-imports-worker-idempotent",
+    "summary": "Exécuter les traitements longs hors requête HTTP, réserver les jobs de manière concurrente et reprendre les erreurs sans produire de doublons.",
+    "objectives": [
+      "Expliquer la livraison au moins une fois et ses conséquences.",
+      "Réserver un job avec verrouillage transactionnel sans double traitement.",
+      "Classer les erreurs en récupérables ou définitives et borner les retries."
+    ],
+    "prerequisites": [
+      "Avoir défini ProcessingJob et les transitions du Source Workspace."
+    ],
+    "estimatedMinutes": 210,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-asynchronisme",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "L’API enregistre l’intention et retourne un identifiant de job ; le worker prend ensuite le travail. Ce découplage protège le temps de réponse et permet de contrôler la concurrence, mais il introduit des états intermédiaires que le produit doit rendre visibles.",
+          "sourceKeys": ["postgres-transactions"]
+        }
+      },
+      {
+        "key": "content-reservation-job",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Une file PostgreSQL simple peut réserver un job dans une transaction avec FOR UPDATE SKIP LOCKED. Le verrou évite que deux workers sélectionnent la même ligne au même moment ; la transaction doit rester courte et enregistrer la prise en charge avant d’effectuer le travail externe.",
+          "sourceKeys": ["postgres-select-locking"]
+        }
+      },
+      {
+        "key": "content-idempotence-retry",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un retry signifie qu’une étape peut être rejouée. Chaque effet doit donc être idempotent ou protégé par une clé stable : stocker un même hash, créer une même version ou publier un même résultat ne doit pas multiplier les données. Les erreurs de timeout peuvent être retentées ; un format interdit doit échouer définitivement.",
+          "sourceKeys": ["postgres-transactions", "postgres-select-locking"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "postgres-select-locking",
+        "type": "website",
+        "title": "SELECT — PostgreSQL Documentation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html",
+        "citation": "PostgreSQL Global Development Group. (n.d.). SELECT — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "guidance": {
+          "objective": "Réserver un job sans que deux workers le traitent simultanément.",
+          "instructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+          "scope": "Clause locking, FOR UPDATE et SKIP LOCKED",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "postgres-transactions",
+        "type": "website",
+        "title": "Transactions — PostgreSQL Documentation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "guidance": {
+          "objective": "Protéger la cohérence entre fichier, source, version et job.",
+          "instructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+          "scope": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "node-process",
+        "type": "website",
+        "title": "Process — Node.js Documentation",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/process.html",
+        "citation": "Node.js. (2026). Process — Node.js Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "guidance": {
+          "objective": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
+          "instructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+          "scope": "process, process.env, exit codes, signals et événements de terminaison",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Traitement asynchrone idempotent",
+        "slug": "traitement-asynchrone-idempotent",
+        "description": "Un worker fiable peut reprendre un job au moins une fois sans dupliquer les effets, tout en bornant concurrence, délais et tentatives.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["postgres-select-locking"],
+        "assessment": {
+          "key": "assessment-traitement-asynchrone-idempotent",
+          "type": "case_question",
+          "title": "Mini-évaluation — Traitement asynchrone idempotent",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-traiter-imports-worker-idempotent",
+        "title": "Construire la boucle de jobs SourceLab",
+        "description": "Implémenter enqueue, claim, heartbeat optionnel, success et failure. Lancer deux workers concurrents, tuer l’un pendant un import, puis redémarrer. Prouver qu’un seul résultat canonique existe, que le job abandonné redevient récupérable et qu’une erreur définitive n’est pas retentée.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-traiter-imports-worker-idempotent",
+        "title": "Quiz — Worker et idempotence",
+        "description": "Vérifier les acquis essentiels de la leçon « Traiter les imports avec un worker idempotent ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi garder la transaction de réservation courte ?",
+            "explanation": "Le travail long ne doit pas immobiliser la transaction.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Éviter de conserver un verrou pendant le traitement externe",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supprimer l’historique",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Rendre le worker synchrone",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Éviter les identifiants",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une archive est dans un format interdit. Quelle politique ?",
+            "explanation": "Aucune nouvelle tentative ne changera le format fourni.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Échec définitif avec raison explicite",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Retry sans limite",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Masquer l’erreur et marquer READY",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Redémarrer PostgreSQL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Deux exécutions du même job peuvent créer deux versions identiques sans que ce soit un problème.",
+            "explanation": "Le résultat canonique doit être protégé des doublons.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-asynchronisme"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-select-locking"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-reservation-job"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-transactions"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-idempotence-retry"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-process"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-traiter-imports-worker-idempotent"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-traitement-asynchrone-idempotent"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-traiter-imports-worker-idempotent"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-131-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "SELECT — PostgreSQL Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/sql-select.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-131-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Transactions — PostgreSQL Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-131-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Node.js",
+        "title": "Process — Node.js Documentation",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/process.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-02",
+            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+            "supports": "Soutient le bloc « content-asynchronisme » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-01",
+            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
+            "supports": "Soutient le bloc « content-reservation-job » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-131-02",
+            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-131-01",
+            "locator": "Clause locking, FOR UPDATE et SKIP LOCKED",
+            "supports": "Soutient le bloc « content-idempotence-retry » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "postgres-select-locking",
+        "referenceIds": ["REF-131-01"],
+        "pedagogicalRationale": "Réserver un job sans que deux workers le traitent simultanément.",
+        "learnerInstructions": "Lire locking clause ; expliquer FOR UPDATE SKIP LOCKED et ses limites pour une file de jobs.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "postgres-transactions",
+        "referenceIds": ["REF-131-02"],
+        "pedagogicalRationale": "Protéger la cohérence entre fichier, source, version et job.",
+        "learnerInstructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "node-process",
+        "referenceIds": ["REF-131-03"],
+        "pedagogicalRationale": "Relier l’exécution d’une application Node.js à son processus, sa configuration et son arrêt.",
+        "learnerInstructions": "Lire les sections sur process.env, exitCode et les signaux ; relever ce qui change entre démarrage, exécution et arrêt.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "traitement-asynchrone-idempotent",
+        "assessmentTitle": "Mini-évaluation — Traitement asynchrone idempotent",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel problème SKIP LOCKED aide-t-il à éviter ?",
+            "explanation": "Le verrouillage coordonne les consommateurs concurrents.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Deux workers attendant ou prenant la même ligne disponible",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La perte du DNS",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le manque de CSS",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La compilation TypeScript",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments rendent un retry plus sûr ?",
+            "explanation": "La reprise doit être contrôlée et observable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Clé d’idempotence",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Effets transactionnels",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Nombre maximal de tentatives",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Classification de l’erreur",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Délai infini sans journal",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un endpoint idempotent ne peut jamais retourner une erreur.",
+            "explanation": "L’idempotence concerne l’effet répété, pas l’absence d’échec.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "traitement-asynchrone-idempotent",
+          "contentKeys": [
+            "content-asynchronisme",
+            "content-reservation-job",
+            "content-idempotence-retry"
+          ],
+          "resourceKeys": [
+            "postgres-select-locking",
+            "postgres-transactions",
+            "node-process"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-traiter-imports-worker-idempotent"
+          },
+          "assessmentKey": "assessment-traitement-asynchrone-idempotent",
+          "rationale": "La production « Une file PostgreSQL et un worker concurrents, reprenables et idempotents. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Traiter les imports avec un worker idempotent » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

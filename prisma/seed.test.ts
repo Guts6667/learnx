@@ -10,6 +10,8 @@ import {
   readPsychologyFoundationsPilotSeed,
   readSampleProgram,
   readSampleSeed,
+  readSourceLabAiSeed,
+  readSourceLabProductionSeed,
   seedSampleProgram,
   type SeedProgramRepository,
 } from './seed';
@@ -169,6 +171,8 @@ describe('seed program selection', () => {
       'platform-apm-entretien-tryhackme',
       'pilotage-projets-ia-iso-42001',
       'psychology-foundations-pilot',
+      'ingenieur-logiciel-production-sourcelab',
+      'ai-product-engineer-sourcelab',
     ]);
   });
 
@@ -194,6 +198,15 @@ describe('seed program selection', () => {
         LEARNX_SEED_PROGRAM_SLUG: 'psychology-foundations-pilot',
       }),
     ).toEqual(['psychology-foundations-pilot']);
+  });
+
+  it.each([
+    'ingenieur-logiciel-production-sourcelab',
+    'ai-product-engineer-sourcelab',
+  ])('peut isoler le programme SourceLab %s', (slug) => {
+    expect(getSelectedSeedSlugs({ LEARNX_SEED_PROGRAM_SLUG: slug })).toEqual([
+      slug,
+    ]);
   });
 
   it('rejects an unknown program instead of falling back to the full seed', () => {
@@ -481,6 +494,138 @@ function createRepository() {
 }
 
 describe('sample program seed', () => {
+  it.each([
+    {
+      assessmentNumbers: [27, 28, 29, 30],
+      directory: 'ingenieur-logiciel-production-sourcelab',
+      readSeed: readSourceLabProductionSeed,
+      slug: 'ingenieur-logiciel-production-sourcelab',
+      specNumbers: [126, 127, 128, 129, 130, 131, 132, 133],
+    },
+    {
+      assessmentNumbers: [31, 32, 33, 34],
+      directory: 'ai-product-engineer-sourcelab',
+      readSeed: readSourceLabAiSeed,
+      slug: 'ai-product-engineer-sourcelab',
+      specNumbers: [134, 135, 136, 137, 138, 139, 140, 141],
+    },
+  ])(
+    'lit, contrôle et importe le programme SourceLab $slug de façon idempotente',
+    async ({ assessmentNumbers, directory, readSeed, slug, specNumbers }) => {
+      const seed = await readSeed();
+      const context = createRepository();
+      const lessons = seed.program.stages.flatMap((stage) =>
+        stage.modules.flatMap((module) => module.lessons),
+      );
+
+      expect(seed.program).toMatchObject({
+        locale: 'fr',
+        slug,
+        status: 'draft',
+      });
+      expect(seed.program.stages).toHaveLength(4);
+      expect(lessons).toHaveLength(8);
+      expect(seed.conceptAssessmentBanks).toHaveLength(8);
+      expect(lessons.every((lesson) => lesson.concepts.length === 1)).toBe(
+        true,
+      );
+      expect(lessons.every((lesson) => lesson.tasks.length === 1)).toBe(true);
+      expect(lessons.every((lesson) => lesson.quizzes.length === 1)).toBe(true);
+
+      for (const number of specNumbers) {
+        const sidecar = JSON.parse(
+          await readFile(
+            `content/${directory}/specs/PEDAGOGY_SPEC_${String(number).padStart(3, '0')}.json`,
+            'utf8',
+          ),
+        ) as {
+          editorial: {
+            assessmentBanks: (typeof seed.conceptAssessmentBanks)[number]['assessmentBanks'];
+            review: { readyForPublication: boolean };
+            status: string;
+          };
+          lesson: (typeof lessons)[number];
+          moduleSlug: string;
+          programSlug: string;
+          stageSlug: string;
+        };
+        const stage = seed.program.stages.find(
+          (candidate) => candidate.slug === sidecar.stageSlug,
+        );
+        const module = stage?.modules.find(
+          (candidate) => candidate.slug === sidecar.moduleSlug,
+        );
+        const group = seed.conceptAssessmentBanks.find(
+          (candidate) =>
+            candidate.programSlug === sidecar.programSlug &&
+            candidate.stageSlug === sidecar.stageSlug &&
+            candidate.moduleSlug === sidecar.moduleSlug &&
+            candidate.lessonSlug === sidecar.lesson.slug,
+        );
+
+        expect(module?.lessons).toContainEqual(sidecar.lesson);
+        expect(group?.assessmentBanks).toEqual(
+          sidecar.editorial.assessmentBanks,
+        );
+        expect(sidecar.editorial.status).toBe('draft');
+        expect(sidecar.editorial.review.readyForPublication).toBe(false);
+      }
+
+      for (const number of assessmentNumbers) {
+        const sidecar = JSON.parse(
+          await readFile(
+            `content/${directory}/stage-assessments/PEDAGOGY_STAGE_ASSESSMENT_${String(number).padStart(3, '0')}.json`,
+            'utf8',
+          ),
+        ) as {
+          assessment: {
+            rubric: Array<{ weight: number }>;
+            seed: { title: string; type: string };
+          };
+          editorial: {
+            review: { readyForPublication: boolean };
+            status: string;
+          };
+          stageSlug: string;
+        };
+        const assessment = seed.program.stages.find(
+          (stage) => stage.slug === sidecar.stageSlug,
+        )?.assessment;
+
+        expect(assessment).toMatchObject(sidecar.assessment.seed);
+        expect(assessment?.rubric).toEqual(sidecar.assessment.rubric);
+        expect(
+          sidecar.assessment.rubric.reduce(
+            (total, criterion) => total + criterion.weight,
+            0,
+          ),
+        ).toBe(100);
+        expect(sidecar.editorial.status).toBe('draft');
+        expect(sidecar.editorial.review.readyForPublication).toBe(false);
+      }
+
+      await seedSampleProgram(
+        context.repository,
+        'user-1',
+        seed.program,
+        seed.conceptAssessmentBanks,
+      );
+      await seedSampleProgram(
+        context.repository,
+        'user-1',
+        seed.program,
+        seed.conceptAssessmentBanks,
+      );
+
+      expect(context.programs).toHaveLength(1);
+      expect(context.stages).toHaveLength(4);
+      expect(context.modules).toHaveLength(4);
+      expect(context.lessons).toHaveLength(8);
+      expect(context.concepts).toHaveLength(8);
+      expect(context.stageAssessments).toHaveLength(4);
+    },
+  );
+
   it('reads and imports the English psychology pilot as an isolated draft', async () => {
     const seed = await readPsychologyFoundationsPilotSeed();
     const context = createRepository();
@@ -1126,9 +1271,7 @@ describe('sample program seed', () => {
       expect(typeof sidecar.editorial.review.pedagogicalAlignment).toBe(
         'boolean',
       );
-      expect(typeof sidecar.editorial.review.seedCompatibility).toBe(
-        'boolean',
-      );
+      expect(typeof sidecar.editorial.review.seedCompatibility).toBe('boolean');
     }
 
     for (const sidecar of assessmentSidecars) {

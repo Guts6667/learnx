@@ -100,6 +100,37 @@ humaines linguistique, pédagogique et culturelle/juridique ne sont pas
 approuvées dans le workflow bilingue. Leur publication et leur progression sont
 indépendantes du programme français.
 
+## Ingénieur logiciel en production — Construire SourceLab
+
+- Présentation et statut :
+  `content/ingenieur-logiciel-production-sourcelab/README.md`
+- Blueprint :
+  `content/ingenieur-logiciel-production-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications :
+  `content/ingenieur-logiciel-production-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ingenieur-logiciel-production-sourcelab/stage-assessments/`
+- Bundle Prisma :
+  `seed/ingenieur-logiciel-production-sourcelab-program.json`
+
+Ce parcours construit SourceLab V1 dans un dépôt et une base séparés de LearnX.
+Il reste en brouillon jusqu’aux revues éditoriale, technique et des liens.
+
+## AI Product Engineer — RAG et évaluation avec SourceLab
+
+- Présentation et statut : `content/ai-product-engineer-sourcelab/README.md`
+- Blueprint :
+  `content/ai-product-engineer-sourcelab/CURRICULUM_BLUEPRINT.md`
+- Spécifications : `content/ai-product-engineer-sourcelab/specs/`
+- Évaluations d’étape :
+  `content/ai-product-engineer-sourcelab/stage-assessments/`
+- Bundle Prisma : `seed/ai-product-engineer-sourcelab-program.json`
+
+Ce parcours ajoute corpus, retrieval, RAG, Program Builder et moteur de rubrique
+exécutable au projet SourceLab autonome. Les modèles recherchent ou contestent
+des preuves ; LearnX conserve les calculs déterministes. Le programme reste en
+brouillon jusqu’aux revues éditoriale, technique et des liens.
+
 ## Archives
 
 - `docs/archive/v1/` : backlog et point d'entrée historique V1.

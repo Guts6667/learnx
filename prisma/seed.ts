@@ -666,6 +666,16 @@ export async function readPsychologyFoundationsPilotSeed(): Promise<SampleSeed> 
   return readSeedFile('seed/psychology-foundations-pilot-program.json');
 }
 
+export async function readSourceLabProductionSeed(): Promise<SampleSeed> {
+  return readSeedFile(
+    'seed/ingenieur-logiciel-production-sourcelab-program.json',
+  );
+}
+
+export async function readSourceLabAiSeed(): Promise<SampleSeed> {
+  return readSeedFile('seed/ai-product-engineer-sourcelab-program.json');
+}
+
 export async function readSampleProgram(): Promise<SampleProgram> {
   return (await readSampleSeed()).program;
 }
@@ -690,6 +700,14 @@ const seedDefinitions = [
   {
     read: readPsychologyFoundationsPilotSeed,
     slug: 'psychology-foundations-pilot',
+  },
+  {
+    read: readSourceLabProductionSeed,
+    slug: 'ingenieur-logiciel-production-sourcelab',
+  },
+  {
+    read: readSourceLabAiSeed,
+    slug: 'ai-product-engineer-sourcelab',
   },
 ] as const;
 

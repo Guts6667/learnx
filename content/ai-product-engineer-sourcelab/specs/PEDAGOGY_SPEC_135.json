@@ -1,0 +1,578 @@
+{
+  "specId": "PEDAGOGY_SPEC_135",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "preparer-corpus-ia-fiable",
+  "moduleSlug": "module-preparer-corpus-ia-fiable",
+  "lesson": {
+    "title": "Extraire, normaliser et versionner un corpus traçable",
+    "slug": "extraire-normaliser-versionner-corpus",
+    "summary": "Transformer les Source Packs de SourceLab en corpus indexable sans perdre provenance, structure, version, permissions ni distinction entre source de rédaction et ressource apprenant.",
+    "objectives": [
+      "Définir un format canonique de document et de segment.",
+      "Conserver provenance, version, localisation et permissions pendant l’extraction.",
+      "Comparer des stratégies de chunking adaptées aux contenus pédagogiques."
+    ],
+    "prerequisites": [
+      "Avoir défini les contrats IA et maîtriser le pipeline de jobs SourceLab."
+    ],
+    "estimatedMinutes": 210,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-document-canonique",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le corpus ne doit pas être une simple liste de chaînes. Chaque document canonique relie contenu, source, version, langue, rôle éditorial, droits, hash et état de validation. Chaque segment conserve un localisateur permettant de revenir à la page, section, bloc LearnX ou plage de texte d’origine.",
+          "sourceKeys": ["openai-retrieval", "nist-genai-profile"]
+        }
+      },
+      {
+        "key": "content-chunking-structure",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le chunking fixe est simple mais peut séparer un titre de son explication ou mélanger deux notions. Pour SourceLab, une stratégie structurelle respecte d’abord programme, leçon, section et paragraphe, puis applique une limite de taille avec chevauchement mesuré. Le bon découpage est celui qui améliore le retrieval sur un dataset réel.",
+          "sourceKeys": ["openai-retrieval", "openai-file-search"]
+        }
+      },
+      {
+        "key": "content-provenance-permission",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un segment hérite de la visibilité de sa source. Les permissions doivent filtrer les candidats avant qu’ils n’atteignent le modèle ; demander ensuite au modèle d’ignorer un document interdit n’est pas un contrôle d’accès. Toute réindexation crée une version identifiable et ne remplace pas silencieusement le corpus évalué.",
+          "sourceKeys": ["nist-genai-profile", "openai-retrieval"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "openai-file-search",
+        "type": "website",
+        "title": "File search",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/tools-file-search",
+        "citation": "OpenAI. (n.d.). File search. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire paramètres, citations et filtres ; dresser avantages et limites pour un prototype SourceLab.",
+        "guidance": {
+          "objective": "Comparer un retrieval managé à une implémentation contrôlée.",
+          "instructions": "Lire paramètres, citations et filtres ; dresser avantages et limites pour un prototype SourceLab.",
+          "scope": "Recherche sur fichiers, citations et résultats inclus",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision humaine.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Corpus versionné et traçable",
+        "slug": "corpus-versionne-tracable",
+        "description": "Chaque segment indexé conserve provenance, version, localisateur, rôle et permissions afin que toute génération puisse être expliquée et reproduite.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openai-retrieval"],
+        "assessment": {
+          "key": "assessment-corpus-versionne-tracable",
+          "type": "case_question",
+          "title": "Mini-évaluation — Corpus versionné et traçable",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-extraire-normaliser-versionner-corpus",
+        "title": "Construire le pipeline de corpus",
+        "description": "Étendre le worker pour produire DocumentVersion et Chunk à partir de textes, pages HTML et contenus LearnX exportés. Implémenter chunking fixe et structurel, conserver les offsets/localisateurs, propager les permissions et rendre la réindexation idempotente. Générer un rapport comparant nombre de chunks, tailles et ruptures sémantiques.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-extraire-normaliser-versionner-corpus",
+        "title": "Quiz — Corpus et chunking",
+        "description": "Vérifier les acquis essentiels de la leçon « Extraire, normaliser et versionner un corpus traçable ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi tester plusieurs chunkings sur un dataset ?",
+            "explanation": "Il n’existe pas de taille optimale universelle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Leur qualité dépend des questions, de la structure et des contenus réels",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour produire plus de fichiers",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Parce que le plus petit est toujours meilleur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour éviter les métadonnées",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quand appliquer les permissions ?",
+            "explanation": "Le contrôle doit filtrer la récupération elle-même.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Avant de fournir les passages au modèle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Après publication seulement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Dans le texte du prompt uniquement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Après avoir journalisé le document complet",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Réindexer silencieusement avec un autre modèle conserve automatiquement la comparabilité des résultats.",
+            "explanation": "Le changement de modèle produit une nouvelle version à évaluer.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-document-canonique"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-chunking-structure"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-file-search"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-provenance-permission"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-extraire-normaliser-versionner-corpus"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-corpus-versionne-tracable"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-extraire-normaliser-versionner-corpus"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-135-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-135-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "File search",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/tools-file-search",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-135-03",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-01",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-document-canonique » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-135-03",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-document-canonique » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-01",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-chunking-structure » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-135-02",
+            "locator": "Recherche sur fichiers, citations et résultats inclus",
+            "supports": "Soutient le bloc « content-chunking-structure » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-03",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-provenance-permission » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-135-01",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-provenance-permission » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-135-01"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-file-search",
+        "referenceIds": ["REF-135-02"],
+        "pedagogicalRationale": "Comparer un retrieval managé à une implémentation contrôlée.",
+        "learnerInstructions": "Lire paramètres, citations et filtres ; dresser avantages et limites pour un prototype SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-135-03"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision humaine.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "corpus-versionne-tracable",
+        "assessmentTitle": "Mini-évaluation — Corpus versionné et traçable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle métadonnée permet d’ouvrir la preuve exacte ?",
+            "explanation": "La provenance utile doit revenir au passage d’origine.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un localisateur vers la section ou plage d’origine",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le score global du modèle",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La couleur du projet",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le nom du container",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés doivent versionner le corpus ?",
+            "explanation": "Ces éléments modifient les résultats de retrieval.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Contenu extrait",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Stratégie de chunking",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Modèle d’embedding",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Permissions ou filtres applicables",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Ordre aléatoire d’affichage",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un chunk peut perdre l’identité de sa source si son embedding est stocké.",
+            "explanation": "Le vecteur ne remplace ni la provenance ni le localisateur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "corpus-versionne-tracable",
+          "contentKeys": [
+            "content-document-canonique",
+            "content-chunking-structure",
+            "content-provenance-permission"
+          ],
+          "resourceKeys": [
+            "openai-retrieval",
+            "openai-file-search",
+            "nist-genai-profile"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-extraire-normaliser-versionner-corpus"
+          },
+          "assessmentKey": "assessment-corpus-versionne-tracable",
+          "rationale": "La production « Un corpus canonique, versionné et indexable, avec deux stratégies de chunking comparables. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Extraire, normaliser et versionner un corpus traçable » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

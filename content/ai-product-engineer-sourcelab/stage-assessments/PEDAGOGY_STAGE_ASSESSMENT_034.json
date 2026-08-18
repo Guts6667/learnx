@@ -1,0 +1,99 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_034",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "evaluer-reponses-livrer-ia",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Livrer le moteur de rubrique et la qualité IA",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Évaluer des réponses libres avec une rubrique exécutable, des preuves vérifiables et des décisions déterministes, puis défendre une release sous contraintes de qualité, coût, latence, sécurité et confidentialité.",
+    "instructions": [
+      "Construire un corpus mécanique et un corpus synthétique distincts, compiler une rubrique atomique, puis évaluer les statuts FEEDBACK_READY, REVISION_REQUIRED, CLARIFICATION_REQUIRED et TEMPORARILY_UNAVAILABLE. Pendant la simulation, traiter une régression de preuves et une prompt injection dans une source, décider go/no-go, restaurer la version sûre et produire le rapport d’incident."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Évaluer des réponses et livrer les fonctions IA ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "evaluation-assistee-rubrique",
+      "boucle-qualite-securite-ia"
+    ],
+    "rubric": [
+      {
+        "criterion": "Rubrique exécutable et certificat de preuve",
+        "weight": 25,
+        "requirements": [
+          "Les éléments atomiques, leurs propriétaires et les règles de niveau préexistent à la réponse.",
+          "Chaque statut s’appuie sur des extraits exacts et un certificat reconstructible.",
+          "Les règles de localité et de monotonie empêchent la double pénalisation."
+        ]
+      },
+      {
+        "criterion": "Décision déterministe et abstention",
+        "weight": 20,
+        "requirements": [
+          "Les modèles ne produisent ni niveau, ni score, ni PASS/FAIL.",
+          "LearnX calcule les niveaux à partir des statuts atomiques validés.",
+          "Une ambiguïté matérielle déclenche une clarification sans score exact ni effet sur la progression."
+        ]
+      },
+      {
+        "criterion": "Évaluations et observabilité",
+        "weight": 25,
+        "requirements": [
+          "Retrieval, génération et outcome produit sont mesurés séparément.",
+          "Run, corpus, prompt, modèle et dataset sont versionnés.",
+          "Coût, p95 et erreurs sont suivis sans données sensibles inutiles."
+        ]
+      },
+      {
+        "criterion": "Sécurité et release",
+        "weight": 30,
+        "requirements": [
+          "Les injections directes et indirectes sont testées.",
+          "Permissions, outils et sorties sont validés hors modèle.",
+          "Le go/no-go, rollback et rétablissement sont démontrés."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-140-01",
+      "REF-140-02",
+      "REF-140-03",
+      "REF-140-04",
+      "REF-141-01",
+      "REF-141-02",
+      "REF-141-03",
+      "REF-141-04",
+      "REF-141-05",
+      "REF-141-06"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Évaluer des réponses et livrer les fonctions IA ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

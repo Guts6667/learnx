@@ -1,0 +1,694 @@
+{
+  "specId": "PEDAGOGY_SPEC_132",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-livrer-operer",
+  "moduleSlug": "module-tester-livrer-operer",
+  "lesson": {
+    "title": "Tester migrations et intégrations réelles",
+    "slug": "tester-migrations-integrations-reelles",
+    "summary": "Choisir le bon niveau de test, exécuter les frontières importantes contre PostgreSQL et répéter les migrations sans dépendre d’une base partagée.",
+    "objectives": [
+      "Distinguer tests unitaires, intégration, contrat, E2E et smoke.",
+      "Créer un environnement de test jetable et déterministe.",
+      "Vérifier une migration additive et son effet sur des données existantes."
+    ],
+    "prerequisites": ["Disposer du worker et du modèle de données SourceLab."],
+    "estimatedMinutes": 200,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-pyramide-preuves",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un test unitaire isole une règle ; un test d’intégration vérifie plusieurs composants réels ; un E2E suit un usage visible ; un smoke confirme rapidement qu’une version déployée répond. Remplacer PostgreSQL par un mock dans tous les tests supprime précisément les transactions et verrous que SourceLab doit prouver.",
+          "sourceKeys": ["vitest-guide", "playwright-intro"]
+        }
+      },
+      {
+        "key": "content-base-jetable",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un environnement de test fiable part d’un schéma connu, applique les migrations, charge des fixtures minimales et est détruit après l’exécution. Les tests ne doivent jamais écrire dans une base partagée ni dépendre d’un ordre caché.",
+          "sourceKeys": ["prisma-migrate", "github-actions-workflows"]
+        }
+      },
+      {
+        "key": "content-migration-compatible",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une évolution prudente est souvent additive : ajouter le nouveau champ, déployer un code compatible, backfiller, imposer la contrainte puis supprimer l’ancien chemin plus tard. La migration et le binaire doivent être raisonnés ensemble ; « rollback de code » n’annule pas automatiquement une transformation de données.",
+          "sourceKeys": ["prisma-migrate", "postgres-explain"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "vitest-guide",
+        "type": "website",
+        "title": "Vitest Guide",
+        "author": "Vitest",
+        "url": "https://vitest.dev/guide/",
+        "citation": "Vitest. (n.d.). Vitest Guide. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’introduction, les tests et mocking ; classer les tests SourceLab par niveau.",
+        "guidance": {
+          "objective": "Tester la logique métier sans masquer les frontières importantes.",
+          "instructions": "Lire l’introduction, les tests et mocking ; classer les tests SourceLab par niveau.",
+          "scope": "Tests, assertions, mocks et configuration",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "playwright-intro",
+        "type": "website",
+        "title": "Installation and getting started",
+        "author": "Playwright",
+        "url": "https://playwright.dev/docs/intro",
+        "citation": "Playwright. (n.d.). Installation and getting started. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’introduction et la trace viewer ; définir le smoke test du Source Workspace.",
+        "guidance": {
+          "objective": "Vérifier un parcours utilisateur contre une application réellement démarrée.",
+          "instructions": "Lire l’introduction et la trace viewer ; définir le smoke test du Source Workspace.",
+          "scope": "Runner, isolation, locators et traces",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "prisma-migrate",
+        "type": "website",
+        "title": "Prisma Migrate",
+        "author": "Prisma",
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate",
+        "citation": "Prisma. (n.d.). Prisma Migrate. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow et distinguer génération, revue SQL et application en production.",
+        "guidance": {
+          "objective": "Faire évoluer le schéma de SourceLab avec un historique reproductible.",
+          "instructions": "Lire le workflow et distinguer génération, revue SQL et application en production.",
+          "scope": "Migrations de développement, déploiement et personnalisation SQL",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      },
+      {
+        "key": "postgres-explain",
+        "type": "website",
+        "title": "Using EXPLAIN — PostgreSQL Documentation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/using-explain.html",
+        "citation": "PostgreSQL Global Development Group. (n.d.). Using EXPLAIN — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’introduction et EXPLAIN ANALYZE ; établir un protocole avant/après pour une liste de sources.",
+        "guidance": {
+          "objective": "Mesurer une requête avant de proposer un index.",
+          "instructions": "Lire l’introduction et EXPLAIN ANALYZE ; établir un protocole avant/après pour une liste de sources.",
+          "scope": "Plans d’exécution, coûts et EXPLAIN ANALYZE",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 4
+      },
+      {
+        "key": "github-actions-workflows",
+        "type": "website",
+        "title": "Workflows and actions reference",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
+        "citation": "GitHub. (n.d.). Workflows and actions reference. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+        "guidance": {
+          "objective": "Construire une CI reproductible et lisible.",
+          "instructions": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+          "scope": "Workflows, jobs, events, cache, artefacts et déploiements",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Preuve d’intégration reproductible",
+        "slug": "preuve-integration-reproductible",
+        "description": "Les tests doivent exercer les frontières et migrations qui portent le risque, dans un environnement isolé et recréable.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["vitest-guide"],
+        "assessment": {
+          "key": "assessment-preuve-integration-reproductible",
+          "type": "case_question",
+          "title": "Mini-évaluation — Preuve d’intégration reproductible",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-tester-migrations-integrations-reelles",
+        "title": "Créer la matrice de tests SourceLab",
+        "description": "Écrire des tests unitaires pour les transitions, des tests d’intégration API-worker-PostgreSQL, un E2E du parcours import → READY et un smoke de santé. Ajouter une migration de version de source, conserver des fixtures pré-migration, appliquer la migration puis vérifier données et contraintes. Produire un rapport en cas d’échec.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-tester-migrations-integrations-reelles",
+        "title": "Quiz — Tests et migrations",
+        "description": "Vérifier les acquis essentiels de la leçon « Tester migrations et intégrations réelles ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi conserver un artefact de test ?",
+            "explanation": "Traces et rapports réduisent le temps de compréhension.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Faciliter le diagnostic d’un échec reproductible",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Masquer le statut du job",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter les assertions",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Remplacer la base",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel ordre est le plus sûr pour renommer un champ utilisé ?",
+            "explanation": "La compatibilité progressive évite une rupture entre code et schéma.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Ajouter le nouveau chemin compatible, migrer, basculer, retirer plus tard",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supprimer immédiatement puis corriger",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Modifier la production à la main sans migration",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ignorer les anciennes données",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Rejouer l’historique des migrations sur un schéma vide peut détecter une dépendance oubliée.",
+            "explanation": "Le replay vérifie que le dépôt suffit à reconstruire le schéma.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-pyramide-preuves"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "vitest-guide"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-base-jetable"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "playwright-intro"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-migration-compatible"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "prisma-migrate"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-explain"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-actions-workflows"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-tester-migrations-integrations-reelles"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-preuve-integration-reproductible"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-tester-migrations-integrations-reelles"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-132-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Vitest",
+        "title": "Vitest Guide",
+        "year": null,
+        "edition": null,
+        "publication": "Vitest",
+        "doi": null,
+        "url": "https://vitest.dev/guide/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-132-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Playwright",
+        "title": "Installation and getting started",
+        "year": null,
+        "edition": null,
+        "publication": "Playwright",
+        "doi": null,
+        "url": "https://playwright.dev/docs/intro",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-132-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Prisma",
+        "title": "Prisma Migrate",
+        "year": null,
+        "edition": null,
+        "publication": "Prisma",
+        "doi": null,
+        "url": "https://www.prisma.io/docs/orm/prisma-migrate",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-132-04",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Using EXPLAIN — PostgreSQL Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/using-explain.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-132-05",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "GitHub",
+        "title": "Workflows and actions reference",
+        "year": null,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-01",
+            "locator": "Tests, assertions, mocks et configuration",
+            "supports": "Soutient le bloc « content-pyramide-preuves » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-132-02",
+            "locator": "Runner, isolation, locators et traces",
+            "supports": "Soutient le bloc « content-pyramide-preuves » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-03",
+            "locator": "Migrations de développement, déploiement et personnalisation SQL",
+            "supports": "Soutient le bloc « content-base-jetable » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-132-05",
+            "locator": "Workflows, jobs, events, cache, artefacts et déploiements",
+            "supports": "Soutient le bloc « content-base-jetable » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-132-03",
+            "locator": "Migrations de développement, déploiement et personnalisation SQL",
+            "supports": "Soutient le bloc « content-migration-compatible » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-132-04",
+            "locator": "Plans d’exécution, coûts et EXPLAIN ANALYZE",
+            "supports": "Soutient le bloc « content-migration-compatible » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "vitest-guide",
+        "referenceIds": ["REF-132-01"],
+        "pedagogicalRationale": "Tester la logique métier sans masquer les frontières importantes.",
+        "learnerInstructions": "Lire l’introduction, les tests et mocking ; classer les tests SourceLab par niveau.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "playwright-intro",
+        "referenceIds": ["REF-132-02"],
+        "pedagogicalRationale": "Vérifier un parcours utilisateur contre une application réellement démarrée.",
+        "learnerInstructions": "Lire l’introduction et la trace viewer ; définir le smoke test du Source Workspace.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "prisma-migrate",
+        "referenceIds": ["REF-132-03"],
+        "pedagogicalRationale": "Faire évoluer le schéma de SourceLab avec un historique reproductible.",
+        "learnerInstructions": "Lire le workflow et distinguer génération, revue SQL et application en production.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "postgres-explain",
+        "referenceIds": ["REF-132-04"],
+        "pedagogicalRationale": "Mesurer une requête avant de proposer un index.",
+        "learnerInstructions": "Lire l’introduction et EXPLAIN ANALYZE ; établir un protocole avant/après pour une liste de sources.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "github-actions-workflows",
+        "referenceIds": ["REF-132-05"],
+        "pedagogicalRationale": "Construire une CI reproductible et lisible.",
+        "learnerInstructions": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "preuve-integration-reproductible",
+        "assessmentTitle": "Mini-évaluation — Preuve d’intégration reproductible",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel test prouve le mieux FOR UPDATE SKIP LOCKED ?",
+            "explanation": "Le comportement dépend du moteur et de la concurrence réels.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un test d’intégration avec deux connexions PostgreSQL concurrentes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un snapshot de composant",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un mock qui retourne toujours un job",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un test de couleur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés doit avoir la base de CI ?",
+            "explanation": "L’isolation protège les données et la déterminisme.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Isolée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Recréable",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Migrations appliquées",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Détruite ou nettoyée explicitement",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Partagée avec la production",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un test E2E remplace tous les tests unitaires et d’intégration.",
+            "explanation": "Les niveaux couvrent des risques et diagnostics différents.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "preuve-integration-reproductible",
+          "contentKeys": [
+            "content-pyramide-preuves",
+            "content-base-jetable",
+            "content-migration-compatible"
+          ],
+          "resourceKeys": [
+            "vitest-guide",
+            "playwright-intro",
+            "prisma-migrate",
+            "postgres-explain",
+            "github-actions-workflows"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-tester-migrations-integrations-reelles"
+          },
+          "assessmentKey": "assessment-preuve-integration-reproductible",
+          "rationale": "La production « Une matrice de tests complète et une migration répétée sur un environnement jetable. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Tester migrations et intégrations réelles » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

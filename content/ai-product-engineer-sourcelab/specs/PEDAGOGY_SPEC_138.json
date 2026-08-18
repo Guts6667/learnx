@@ -1,0 +1,637 @@
+{
+  "specId": "PEDAGOGY_SPEC_138",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "creer-program-builder",
+  "moduleSlug": "module-creer-program-builder",
+  "lesson": {
+    "title": "Transformer un besoin en funnel et brief pédagogique",
+    "slug": "transformer-besoin-funnel-brief-pedagogique",
+    "summary": "Concevoir le premier usage produit du Program Builder : recueillir un besoin incomplet, détecter les inconnues et produire un brief validé avant toute génération de programme.",
+    "objectives": [
+      "Définir les questions communes et adaptatives du funnel.",
+      "Distinguer faits, contraintes, préférences, hypothèses et inconnues.",
+      "Produire un brief structuré modifiable et traçable vers les réponses et sources."
+    ],
+    "prerequisites": [
+      "Disposer du RAG sourcé et des contrats du Program Builder."
+    ],
+    "estimatedMinutes": 220,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-funnel-produit",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le funnel ne doit pas maximiser le nombre de questions ; il doit réduire les décisions ambiguës. Des questions communes établissent public, niveau initial, résultat observable, durée, contexte d’usage et contraintes. Des questions adaptatives apparaissent lorsque le brief ou les sources révèlent un manque, une contradiction ou un domaine sensible.",
+          "sourceKeys": ["nist-genai-profile", "openai-structured-outputs"]
+        }
+      },
+      {
+        "key": "content-classification-informations",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Chaque information reçoit une catégorie et une provenance : fait fourni, contrainte, préférence, hypothèse, source, contradiction ou question ouverte. Le modèle peut reformuler et relier ; il ne doit pas promouvoir une hypothèse en fait. Le brief conserve l’origine de chaque décision importante.",
+          "sourceKeys": ["openai-retrieval", "nist-genai-profile"]
+        }
+      },
+      {
+        "key": "content-validation-avant-generation",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le brief est une porte de validation produit. L’utilisateur confirme public, résultats, périmètre, hors-périmètre, rythme, sources, évaluations et risques avant que SourceLab génère un blueprint. Corriger un brief coûte moins cher et produit moins de dérive que régénérer un programme complet.",
+          "sourceKeys": ["openai-structured-outputs", "openai-evals"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-structured-outputs",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "guidance": {
+          "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+          "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+          "scope": "Schémas, validation et sorties structurées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision humaine.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 3
+      },
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "guidance": {
+          "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+          "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+          "scope": "Datasets, graders, runs et comparaison",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Brief pédagogique validé",
+        "slug": "brief-pedagogique-valide",
+        "description": "Le funnel transforme des matériaux hétérogènes en décisions explicites, sourcées et confirmées avant la conception du programme.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openai-structured-outputs"],
+        "assessment": {
+          "key": "assessment-brief-pedagogique-valide",
+          "type": "case_question",
+          "title": "Mini-évaluation — Brief pédagogique validé",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-transformer-besoin-funnel-brief-pedagogique",
+        "title": "Construire le funnel adaptatif du Program Builder",
+        "description": "Définir un schéma de brief, dix questions communes et des règles générant des questions complémentaires à partir des inconnues. Utiliser trois demandes volontairement incomplètes. Afficher une synthèse modifiable avec provenance, contradictions et informations manquantes ; empêcher la génération tant que les champs bloquants ne sont pas validés.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-transformer-besoin-funnel-brief-pedagogique",
+        "title": "Quiz — Funnel et brief",
+        "description": "Vérifier les acquis essentiels de la leçon « Transformer un besoin en funnel et brief pédagogique ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand générer le blueprint ?",
+            "explanation": "La structure dépend du problème validé.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Après validation du brief et de ses inconnues bloquantes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Dès le premier mot saisi",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Avant l’import des sources",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Après publication",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quelle question est la plus utile ?",
+            "explanation": "Le résultat observable guide objectifs et évaluations.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Que doit être capable de produire ou réaliser l’apprenant à la fin ?",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quelle couleur doit avoir le bouton suivant ?",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quel modèle est le plus médiatisé ?",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Combien de questions pouvons-nous poser ?",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le funnel adaptatif peut être entièrement aléatoire.",
+            "explanation": "Les questions doivent découler de décisions ou lacunes identifiées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-funnel-produit"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured-outputs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-classification-informations"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-validation-avant-generation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-transformer-besoin-funnel-brief-pedagogique"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-brief-pedagogique-valide"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-transformer-besoin-funnel-brief-pedagogique"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-138-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-138-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-138-03",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-138-04",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Evals",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-03",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-funnel-produit » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-138-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-funnel-produit » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-02",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-classification-informations » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-138-03",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-classification-informations » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-validation-avant-generation » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-138-04",
+            "locator": "Datasets, graders, runs et comparaison",
+            "supports": "Soutient le bloc « content-validation-avant-generation » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-structured-outputs",
+        "referenceIds": ["REF-138-01"],
+        "pedagogicalRationale": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+        "learnerInstructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-138-02"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-138-03"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision humaine.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": ["REF-138-04"],
+        "pedagogicalRationale": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+        "learnerInstructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "brief-pedagogique-valide",
+        "assessmentTitle": "Mini-évaluation — Brief pédagogique validé",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le but principal du funnel ?",
+            "explanation": "Les questions doivent éclairer des choix.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Réduire les inconnues qui affectent l’architecture pédagogique",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Collecter le maximum de texte",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Commencer la génération plus tôt",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Remplacer toute décision utilisateur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles catégories doivent rester distinctes ?",
+            "explanation": "La qualification évite l’invention silencieuse.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Fait fourni",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Hypothèse",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Contrainte",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Question ouverte",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Tout convertir en vérité confirmée",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une contradiction entre deux sources doit être résolue automatiquement sans la montrer.",
+            "explanation": "Elle doit être exposée et traitée par une règle ou décision explicite.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "brief-pedagogique-valide",
+          "contentKeys": [
+            "content-funnel-produit",
+            "content-classification-informations",
+            "content-validation-avant-generation"
+          ],
+          "resourceKeys": [
+            "openai-structured-outputs",
+            "openai-retrieval",
+            "nist-genai-profile",
+            "openai-evals"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-transformer-besoin-funnel-brief-pedagogique"
+          },
+          "assessmentKey": "assessment-brief-pedagogique-valide",
+          "rationale": "La production « Un funnel adaptatif et un brief traçable, révisable et validé avant génération. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Transformer un besoin en funnel et brief pédagogique » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

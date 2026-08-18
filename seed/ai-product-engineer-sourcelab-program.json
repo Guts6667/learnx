@@ -1,0 +1,3377 @@
+{
+  "program": {
+    "title": "AI Product Engineer — RAG et évaluation avec SourceLab",
+    "slug": "ai-product-engineer-sourcelab",
+    "canonicalProgramKey": "ai-product-engineer-sourcelab",
+    "locale": "fr",
+    "description": "Parcours TypeScript consacré à l’ingestion documentaire, aux embeddings, à pgvector, au retrieval hybride, au RAG sourcé, aux évaluations, à la sécurité et à l’observabilité. Il transforme SourceLab V1 en Program Builder et moteur de rubrique exécutable utiles à LearnX, tout en conservant SourceLab dans un dépôt et une base séparés.",
+    "status": "draft",
+    "position": 7,
+    "estimatedDurationDays": 49,
+    "stages": [
+      {
+        "title": "Préparer un corpus IA fiable",
+        "slug": "preparer-corpus-ia-fiable",
+        "position": 1,
+        "estimatedDurationDays": 9,
+        "assessment": {
+          "title": "Évaluation — Spécifier et produire un corpus SourceLab",
+          "type": "case_study",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Cadrer les deux usages IA et transformer un Source Pack hétérogène en corpus versionné, traçable et autorisé.",
+          "instructions": "À partir d’un projet contenant documents, liens, contenus LearnX, doublons et une source contradictoire, produire les ADR des deux fonctions IA, le modèle canonique, deux chunkings, la propagation des permissions et un rapport de qualité. Montrer les inconnues qui bloquent encore la génération.",
+          "rubric": [
+            {
+              "criterion": "Cadrage produit",
+              "weight": 25,
+              "requirements": [
+                "Les deux usages, responsabilités et non-objectifs sont distincts.",
+                "Les sorties, abstentions et autorités déterministes sont explicites.",
+                "Aucune décision finale LearnX n’est déléguée implicitement."
+              ]
+            },
+            {
+              "criterion": "Corpus et provenance",
+              "weight": 30,
+              "requirements": [
+                "Chaque segment possède source, version et localisateur.",
+                "Rôles éditoriaux et permissions sont conservés.",
+                "La réindexation est versionnée et idempotente."
+              ]
+            },
+            {
+              "criterion": "Chunking et qualité",
+              "weight": 25,
+              "requirements": [
+                "Deux stratégies sont comparées sur des cas réels.",
+                "Les ruptures de structure sont analysées.",
+                "Le choix est présenté comme hypothèse mesurable."
+              ]
+            },
+            {
+              "criterion": "Traçabilité et limites",
+              "weight": 20,
+              "requirements": [
+                "Contradictions et inconnues sont visibles.",
+                "Les sources non vérifiées ne deviennent pas des faits.",
+                "Le rapport permet de reproduire le corpus."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Préparer un corpus IA fiable",
+            "slug": "module-preparer-corpus-ia-fiable",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Cadrer les usages IA et les contrats de SourceLab",
+                "slug": "cadrer-usages-ia-contrats-sourcelab",
+                "summary": "Définir précisément ce que l’IA doit faire dans SourceLab — générer des programmes ou rechercher des preuves dans une réponse — sans lui déléguer les décisions déterministes de LearnX.",
+                "objectives": [
+                  "Distinguer les responsabilités du Program Builder et du moteur de rubrique exécutable.",
+                  "Séparer workflow déterministe, retrieval, génération et décision serveur.",
+                  "Définir des contrats d’entrée, de sortie, de preuve et d’abstention."
+                ],
+                "prerequisites": [
+                  "Avoir livré SourceLab V1 ou disposer d’un service équivalent avec ingestion, jobs et observabilité."
+                ],
+                "estimatedMinutes": 170,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-deux-usages",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "SourceLab utilise l’IA dans deux usages bornés. Le Program Builder transforme un besoin, des réponses de funnel et des sources en blueprint puis en contenu LearnX modifiable. Pour une réponse libre, les modèles recherchent ou contestent uniquement des preuves reliées à une rubrique atomique. L’utilisateur décide de publier un programme ; LearnX valide les preuves, applique les règles de niveau et peut s’abstenir sans déléguer cette autorité au modèle.",
+                      "sourceKeys": [
+                        "nist-genai-profile",
+                        "openai-structured-outputs"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-workflow-et-rag",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Le RAG ne réentraîne pas le modèle : il sélectionne des passages pertinents et les joint à la requête. Le workflow détermine l’ordre des étapes, les validations et les arrêts. Un agent n’est utile que lorsqu’un choix dynamique d’outil apporte plus de valeur que la complexité et l’incertitude ajoutées.",
+                      "sourceKeys": ["openai-retrieval", "ai-sdk-agents"]
+                    }
+                  },
+                  {
+                    "key": "content-contrat-abstention",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Une sortie structurée valide ne garantit pas une conclusion fondée. Les contrats doivent prévoir provenance, éléments recherchés, extraits exacts, limites et états comme FEEDBACK_READY, CLARIFICATION_REQUIRED ou TEMPORARILY_UNAVAILABLE. Une inconnue doit rester inconnue ; elle ne devient ni une preuve ni un niveau pour remplir un schéma.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "nist-genai-profile"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision explicite du produit.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-structured-outputs",
+                    "type": "website",
+                    "title": "Structured model outputs",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+                    "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                    "guidance": {
+                      "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+                      "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                      "scope": "Schémas, validation et sorties structurées",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 3
+                  },
+                  {
+                    "key": "ai-sdk-agents",
+                    "type": "website",
+                    "title": "Agents",
+                    "author": "Vercel",
+                    "url": "https://ai-sdk.dev/docs/agents/overview",
+                    "citation": "Vercel. (n.d.). Agents. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+                    "guidance": {
+                      "objective": "Distinguer workflow déterministe et autonomie agentique.",
+                      "instructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+                      "scope": "Agents, outils, boucles et conditions d’arrêt",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Architecture IA bornée par le produit",
+                    "slug": "architecture-ia-bornee-produit",
+                    "description": "Les modèles interviennent dans un workflow explicite avec données autorisées, sortie structurée et abstention ; les autorités déterministes sont définies avant l’implémentation.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["nist-genai-profile"],
+                    "assessment": {
+                      "key": "assessment-architecture-ia-bornee-produit",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Architecture IA bornée par le produit",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-cadrer-usages-ia-contrats-sourcelab",
+                    "title": "Écrire les contrats des deux fonctions IA",
+                    "description": "Rédiger deux ADR : Program Builder et moteur de rubrique exécutable. Pour chaque fonction, préciser utilisateur, problème, entrées autorisées, sorties, provenance, erreurs, autorité de décision, états d’abstention, données conservées, métriques et critères d’arrêt. Créer les schémas Zod correspondants et cinq cas invalides.",
+                    "type": "writing",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-cadrer-usages-ia-contrats-sourcelab",
+                    "title": "Quiz — Cadrage IA",
+                    "description": "Vérifier les acquis essentiels de la leçon « Cadrer les usages IA et les contrats de SourceLab ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Qui détermine les niveaux d’une correction formative dans le cadrage SourceLab-LearnX ?",
+                        "explanation": "Les modèles proposent des preuves ; LearnX valide ces preuves et applique les règles versionnées.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "LearnX à partir des preuves validées et de la rubrique versionnée",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Le modèle seul",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "La base vectorielle",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Le fichier importé",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quand préférer un workflow déterministe ?",
+                        "explanation": "La détermination est préférable quand la fiabilité prime sur l’autonomie.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Quand les étapes et contrôles doivent être répétables et auditables",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Quand on veut maximiser le nombre d’outils",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Quand aucune sortie n’est définie",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Pour éviter toute validation",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Program Builder et chercheur de preuves doivent nécessairement partager le même prompt.",
+                        "explanation": "Ils ont objectifs, contextes, risques et contrats distincts.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-deux-usages"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-workflow-et-rag"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-structured-outputs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-contrat-abstention"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "ai-sdk-agents"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-cadrer-usages-ia-contrats-sourcelab"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-architecture-ia-bornee-produit"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-cadrer-usages-ia-contrats-sourcelab"
+                  }
+                ]
+              },
+              {
+                "title": "Extraire, normaliser et versionner un corpus traçable",
+                "slug": "extraire-normaliser-versionner-corpus",
+                "summary": "Transformer les Source Packs de SourceLab en corpus indexable sans perdre provenance, structure, version, permissions ni distinction entre source de rédaction et ressource apprenant.",
+                "objectives": [
+                  "Définir un format canonique de document et de segment.",
+                  "Conserver provenance, version, localisation et permissions pendant l’extraction.",
+                  "Comparer des stratégies de chunking adaptées aux contenus pédagogiques."
+                ],
+                "prerequisites": [
+                  "Avoir défini les contrats IA et maîtriser le pipeline de jobs SourceLab."
+                ],
+                "estimatedMinutes": 210,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-document-canonique",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le corpus ne doit pas être une simple liste de chaînes. Chaque document canonique relie contenu, source, version, langue, rôle éditorial, droits, hash et état de validation. Chaque segment conserve un localisateur permettant de revenir à la page, section, bloc LearnX ou plage de texte d’origine.",
+                      "sourceKeys": ["openai-retrieval", "nist-genai-profile"]
+                    }
+                  },
+                  {
+                    "key": "content-chunking-structure",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Le chunking fixe est simple mais peut séparer un titre de son explication ou mélanger deux notions. Pour SourceLab, une stratégie structurelle respecte d’abord programme, leçon, section et paragraphe, puis applique une limite de taille avec chevauchement mesuré. Le bon découpage est celui qui améliore le retrieval sur un dataset réel.",
+                      "sourceKeys": ["openai-retrieval", "openai-file-search"]
+                    }
+                  },
+                  {
+                    "key": "content-provenance-permission",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Un segment hérite de la visibilité de sa source. Les permissions doivent filtrer les candidats avant qu’ils n’atteignent le modèle ; demander ensuite au modèle d’ignorer un document interdit n’est pas un contrôle d’accès. Toute réindexation crée une version identifiable et ne remplace pas silencieusement le corpus évalué.",
+                      "sourceKeys": ["nist-genai-profile", "openai-retrieval"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-file-search",
+                    "type": "website",
+                    "title": "File search",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/tools-file-search",
+                    "citation": "OpenAI. (n.d.). File search. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire paramètres, citations et filtres ; dresser avantages et limites pour un prototype SourceLab.",
+                    "guidance": {
+                      "objective": "Comparer un retrieval managé à une implémentation contrôlée.",
+                      "instructions": "Lire paramètres, citations et filtres ; dresser avantages et limites pour un prototype SourceLab.",
+                      "scope": "Recherche sur fichiers, citations et résultats inclus",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 2
+                  },
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision humaine.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Corpus versionné et traçable",
+                    "slug": "corpus-versionne-tracable",
+                    "description": "Chaque segment indexé conserve provenance, version, localisateur, rôle et permissions afin que toute génération puisse être expliquée et reproduite.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openai-retrieval"],
+                    "assessment": {
+                      "key": "assessment-corpus-versionne-tracable",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Corpus versionné et traçable",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-extraire-normaliser-versionner-corpus",
+                    "title": "Construire le pipeline de corpus",
+                    "description": "Étendre le worker pour produire DocumentVersion et Chunk à partir de textes, pages HTML et contenus LearnX exportés. Implémenter chunking fixe et structurel, conserver les offsets/localisateurs, propager les permissions et rendre la réindexation idempotente. Générer un rapport comparant nombre de chunks, tailles et ruptures sémantiques.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-extraire-normaliser-versionner-corpus",
+                    "title": "Quiz — Corpus et chunking",
+                    "description": "Vérifier les acquis essentiels de la leçon « Extraire, normaliser et versionner un corpus traçable ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Pourquoi tester plusieurs chunkings sur un dataset ?",
+                        "explanation": "Il n’existe pas de taille optimale universelle.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Leur qualité dépend des questions, de la structure et des contenus réels",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Pour produire plus de fichiers",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Parce que le plus petit est toujours meilleur",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Pour éviter les métadonnées",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quand appliquer les permissions ?",
+                        "explanation": "Le contrôle doit filtrer la récupération elle-même.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Avant de fournir les passages au modèle",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Après publication seulement",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Dans le texte du prompt uniquement",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Après avoir journalisé le document complet",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Réindexer silencieusement avec un autre modèle conserve automatiquement la comparabilité des résultats.",
+                        "explanation": "Le changement de modèle produit une nouvelle version à évaluer.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-document-canonique"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-chunking-structure"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-file-search"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-provenance-permission"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-extraire-normaliser-versionner-corpus"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-corpus-versionne-tracable"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-extraire-normaliser-versionner-corpus"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Construire retrieval et RAG sourcé",
+        "slug": "construire-retrieval-rag-source",
+        "position": 2,
+        "estimatedDurationDays": 12,
+        "assessment": {
+          "title": "Évaluation — Comparer et défendre un retriever SourceLab",
+          "type": "practical_exercise",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Implémenter et comparer recherche vectorielle, lexicale et hybride, puis générer des réponses avec citations vérifiées et abstention.",
+          "instructions": "Créer un dataset d’au moins trente questions incluant termes exacts, paraphrases, réponses multi-passages, contradictions et absence. Mesurer recall@k, rang, latence et coût des trois retrievers. Livrer un RAG dont les citations sont vérifiées côté serveur et démontrer les cas d’abstention.",
+          "rubric": [
+            {
+              "criterion": "Embeddings et stockage",
+              "weight": 20,
+              "requirements": [
+                "Modèle, dimension et distance sont versionnés.",
+                "La recherche exacte sert de référence.",
+                "Les filtres de permissions précèdent le contexte."
+              ]
+            },
+            {
+              "criterion": "Comparaison retrieval",
+              "weight": 30,
+              "requirements": [
+                "Les trois approches utilisent le même dataset.",
+                "Les métriques et erreurs sont séparées.",
+                "Le compromis qualité-latence est argumenté."
+              ]
+            },
+            {
+              "criterion": "RAG et citations",
+              "weight": 30,
+              "requirements": [
+                "Le contexte conserve provenance et localisateurs.",
+                "Chaque citation est validée côté serveur.",
+                "Les contradictions et absences déclenchent un comportement explicite."
+              ]
+            },
+            {
+              "criterion": "Décision technique",
+              "weight": 20,
+              "requirements": [
+                "La configuration retenue est justifiée.",
+                "Les limites et seuils à revoir sont documentés.",
+                "Aucune généralisation n’est tirée d’un corpus insuffisant."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Construire retrieval et RAG sourcé",
+            "slug": "module-construire-retrieval-rag-source",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Comprendre embeddings, distances et pgvector",
+                "slug": "comprendre-embeddings-distances-pgvector",
+                "summary": "Implémenter une recherche sémantique en TypeScript et PostgreSQL en comprenant ce que représente un embedding, comment mesurer la proximité et quand indexer approximativement.",
+                "objectives": [
+                  "Générer et stocker des embeddings avec un contrat provider-agnostic.",
+                  "Utiliser distance cosinus, top-k, filtres et recherche exacte.",
+                  "Mesurer le compromis entre index approximatif, latence et rappel."
+                ],
+                "prerequisites": ["Disposer d’un corpus de chunks versionnés."],
+                "estimatedMinutes": 220,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-embedding-representation",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Un embedding représente une entrée par un vecteur dont la géométrie encode certaines proximités apprises. Une proximité élevée indique une similarité utile au modèle d’embedding, pas une preuve de vérité, d’autorité ou d’équivalence pédagogique. Les métadonnées et filtres restent indispensables.",
+                      "sourceKeys": ["ai-sdk-embeddings"]
+                    }
+                  },
+                  {
+                    "key": "content-distance-recherche",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "pgvector permet la recherche exacte et des index approximatifs comme HNSW ou IVFFlat. La recherche exacte sert de référence de rappel ; un index approximatif accélère les grands corpus au prix de résultats potentiellement différents. La fonction de distance doit être compatible avec le modèle et le protocole choisi.",
+                      "sourceKeys": ["pgvector-readme"]
+                    }
+                  },
+                  {
+                    "key": "content-topk-seuil",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Top-k, seuil et filtre répondent à des questions distinctes : combien de candidats examiner, quelle pertinence minimale accepter et qui a le droit d’être candidat. Augmenter top-k peut améliorer le rappel mais aussi le coût, le bruit et la longueur du contexte. Ces réglages doivent être mesurés ensemble.",
+                      "sourceKeys": ["pgvector-readme", "openai-retrieval"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "ai-sdk-embeddings",
+                    "type": "website",
+                    "title": "AI SDK Core — Embeddings",
+                    "author": "Vercel",
+                    "url": "https://ai-sdk.dev/docs/ai-sdk-core/embeddings",
+                    "citation": "Vercel. (n.d.). AI SDK Core — Embeddings. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire embed et embedMany ; préparer un contrat provider-agnostic pour SourceLab.",
+                    "guidance": {
+                      "objective": "Générer des embeddings en TypeScript et suivre leur usage.",
+                      "instructions": "Lire embed et embedMany ; préparer un contrat provider-agnostic pour SourceLab.",
+                      "scope": "embed, embedMany, batch et similarité",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 1
+                  },
+                  {
+                    "key": "pgvector-readme",
+                    "type": "website",
+                    "title": "pgvector — Open-source vector similarity search for Postgres",
+                    "author": "pgvector",
+                    "url": "https://github.com/pgvector/pgvector",
+                    "citation": "pgvector. (n.d.). pgvector — Open-source vector similarity search for Postgres. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+                    "guidance": {
+                      "objective": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+                      "instructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+                      "scope": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 2
+                  },
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 3
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Recherche vectorielle mesurée",
+                    "slug": "recherche-vectorielle-mesuree",
+                    "description": "La recherche vectorielle combine représentation, distance, filtres et paramètres dont la qualité doit être mesurée contre une référence.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["ai-sdk-embeddings"],
+                    "assessment": {
+                      "key": "assessment-recherche-vectorielle-mesuree",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Recherche vectorielle mesurée",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-comprendre-embeddings-distances-pgvector",
+                    "title": "Construire le retriever vectoriel",
+                    "description": "Ajouter pgvector, une abstraction EmbeddingProvider TypeScript et l’indexation batch. Implémenter une recherche exacte filtrée par projet/version/permission, puis HNSW. Sur un dataset de questions, mesurer latence et rappel des bons chunks par rapport à l’exact, et documenter dimension, modèle, distance et coût.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-comprendre-embeddings-distances-pgvector",
+                    "title": "Quiz — Embeddings et pgvector",
+                    "description": "Vérifier les acquis essentiels de la leçon « Comprendre embeddings, distances et pgvector ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quel paramètre borne le nombre initial de voisins retournés ?",
+                        "explanation": "Top-k fixe le nombre de candidats.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "top-k",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Le code HTTP",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Le PID",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Le TTL de session",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Pourquoi versionner le modèle d’embedding ?",
+                        "explanation": "Les résultats ne sont comparables que si la représentation est identifiée.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Un changement peut modifier tous les vecteurs et classements",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Pour changer la langue de l’interface",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Pour éviter PostgreSQL",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Pour masquer les coûts",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Les permissions peuvent être appliquées après la génération sans risque.",
+                        "explanation": "Un passage interdit ne doit jamais entrer dans le contexte du modèle.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-embedding-representation"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "ai-sdk-embeddings"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-distance-recherche"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "pgvector-readme"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-topk-seuil"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-comprendre-embeddings-distances-pgvector"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-recherche-vectorielle-mesuree"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-comprendre-embeddings-distances-pgvector"
+                  }
+                ]
+              },
+              {
+                "title": "Construire une recherche hybride et un RAG sourcé",
+                "slug": "construire-recherche-hybride-rag-source",
+                "summary": "Combiner recherche lexicale et sémantique, sélectionner un contexte contrôlé et produire des réponses qui citent ou s’abstiennent plutôt que masquer les limites du corpus.",
+                "objectives": [
+                  "Comparer recherche lexicale, vectorielle et hybride.",
+                  "Assembler un contexte avec provenance et budget explicite.",
+                  "Produire citations vérifiables et abstention lorsque les preuves sont insuffisantes."
+                ],
+                "prerequisites": [
+                  "Avoir implémenté le retriever vectoriel et son dataset de questions."
+                ],
+                "estimatedMinutes": 230,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-hybrid-search",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La recherche lexicale excelle sur identifiants, termes rares et formulations exactes ; la recherche vectorielle couvre mieux les paraphrases. Une recherche hybride exécute les deux, normalise ou fusionne leurs classements — par exemple avec Reciprocal Rank Fusion — puis peut reranker un petit ensemble. Elle doit être comparée à chaque composant.",
+                      "sourceKeys": ["pgvector-readme"]
+                    }
+                  },
+                  {
+                    "key": "content-contexte-source",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Le contexte envoyé au modèle est une sélection versionnée de passages, chacun accompagné d’un identifiant de source et d’un localisateur. Le prompt distingue instructions de l’application et contenu récupéré. Le modèle ne doit citer qu’un identifiant fourni, puis le serveur vérifie que chaque citation correspond réellement au contexte.",
+                      "sourceKeys": [
+                        "openai-retrieval",
+                        "openai-structured-outputs"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-abstention",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Lorsque le retrieval ne fournit pas de preuve suffisante, la bonne sortie est une abstention structurée avec les informations manquantes. Répondre de manière plausible dégrade plus le produit qu’un refus explicite, surtout pour la correction et la génération de contenus pédagogiques.",
+                      "sourceKeys": [
+                        "nist-genai-profile",
+                        "openai-structured-outputs"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "pgvector-readme",
+                    "type": "website",
+                    "title": "pgvector — Open-source vector similarity search for Postgres",
+                    "author": "pgvector",
+                    "url": "https://github.com/pgvector/pgvector",
+                    "citation": "pgvector. (n.d.). pgvector — Open-source vector similarity search for Postgres. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+                    "guidance": {
+                      "objective": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+                      "instructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+                      "scope": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "openai-structured-outputs",
+                    "type": "website",
+                    "title": "Structured model outputs",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+                    "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                    "guidance": {
+                      "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+                      "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                      "scope": "Schémas, validation et sorties structurées",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 3
+                  },
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision humaine.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "RAG sourcé avec abstention",
+                    "slug": "rag-source-abstention",
+                    "description": "Un RAG fiable sélectionne et vérifie un contexte autorisé, expose ses citations et refuse lorsque ce contexte ne soutient pas la réponse.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["pgvector-readme"],
+                    "assessment": {
+                      "key": "assessment-rag-source-abstention",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — RAG sourcé avec abstention",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-construire-recherche-hybride-rag-source",
+                    "title": "Comparer trois retrievers et générer une réponse vérifiable",
+                    "description": "Implémenter full-text search, fusion hybride et éventuel reranking. Comparer vectoriel, lexical et hybride sur le dataset. Ajouter une génération structurée contenant answer, citations et status. Vérifier côté serveur les citations et créer des cas réponse présente, répartie, contradictoire et absente.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-construire-recherche-hybride-rag-source",
+                    "title": "Quiz — Recherche hybride et RAG",
+                    "description": "Vérifier les acquis essentiels de la leçon « Construire une recherche hybride et un RAG sourcé ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quand retourner INSUFFICIENT_CONTEXT ?",
+                        "explanation": "L’abstention est liée aux preuves disponibles.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Quand les passages autorisés ne soutiennent pas la conclusion demandée",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Quand le modèle répond lentement seulement",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Quand le style est concis",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Quand la question contient un point",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Pourquoi conserver le rang et le score des passages ?",
+                        "explanation": "Le diagnostic exige la trace des candidats sélectionnés.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Diagnostiquer si l’erreur vient du retrieval ou de la génération",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Décorer l’interface",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Remplacer les sources",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Éviter tout test",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Une citation inventée mais ressemblant à une vraie URL peut être acceptée.",
+                        "explanation": "Les citations doivent provenir d’identifiants fournis et être validées.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-hybrid-search"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "pgvector-readme"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-contexte-source"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-abstention"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-structured-outputs"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-construire-recherche-hybride-rag-source"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-rag-source-abstention"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-construire-recherche-hybride-rag-source"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Créer le Program Builder",
+        "slug": "creer-program-builder",
+        "position": 3,
+        "estimatedDurationDays": 14,
+        "assessment": {
+          "title": "Évaluation — Générer un programme LearnX contrôlé",
+          "type": "project",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Transformer une demande et un corpus en brief validé, blueprint, leçons et export LearnX modifiable sans réécriture silencieuse.",
+          "instructions": "Utiliser une demande incomplète et des sources fournies. Générer les questions adaptatives, faire valider le brief, produire un blueprint puis une étape complète. Exécuter l’adaptateur LearnX, corriger les erreurs, puis appliquer trois modifications ciblées avec diff et respect des éléments verrouillés.",
+          "rubric": [
+            {
+              "criterion": "Funnel et brief",
+              "weight": 25,
+              "requirements": [
+                "Les questions éclairent des décisions identifiées.",
+                "Faits, hypothèses, contraintes et inconnues restent distincts.",
+                "Les champs bloquants sont validés avant génération."
+              ]
+            },
+            {
+              "criterion": "Architecture pédagogique",
+              "weight": 25,
+              "requirements": [
+                "Objectifs, notions, activités et évaluations sont alignés.",
+                "La charge et les prérequis sont cohérents.",
+                "Les sources soutiennent les blocs générés."
+              ]
+            },
+            {
+              "criterion": "Compatibilité LearnX",
+              "weight": 25,
+              "requirements": [
+                "Le format passe les validations déterministes.",
+                "Clés, slugs, séquences et évaluations requises sont présents.",
+                "Les références inexistantes bloquent l’export."
+              ]
+            },
+            {
+              "criterion": "Édition ciblée",
+              "weight": 25,
+              "requirements": [
+                "Le diff annonce le périmètre.",
+                "Les éléments verrouillés ne sont pas modifiés.",
+                "Les dépendances affectées sont signalées avant application."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Créer le Program Builder",
+            "slug": "module-creer-program-builder",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Transformer un besoin en funnel et brief pédagogique",
+                "slug": "transformer-besoin-funnel-brief-pedagogique",
+                "summary": "Concevoir le premier usage produit du Program Builder : recueillir un besoin incomplet, détecter les inconnues et produire un brief validé avant toute génération de programme.",
+                "objectives": [
+                  "Définir les questions communes et adaptatives du funnel.",
+                  "Distinguer faits, contraintes, préférences, hypothèses et inconnues.",
+                  "Produire un brief structuré modifiable et traçable vers les réponses et sources."
+                ],
+                "prerequisites": [
+                  "Disposer du RAG sourcé et des contrats du Program Builder."
+                ],
+                "estimatedMinutes": 220,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-funnel-produit",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le funnel ne doit pas maximiser le nombre de questions ; il doit réduire les décisions ambiguës. Des questions communes établissent public, niveau initial, résultat observable, durée, contexte d’usage et contraintes. Des questions adaptatives apparaissent lorsque le brief ou les sources révèlent un manque, une contradiction ou un domaine sensible.",
+                      "sourceKeys": [
+                        "nist-genai-profile",
+                        "openai-structured-outputs"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-classification-informations",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Chaque information reçoit une catégorie et une provenance : fait fourni, contrainte, préférence, hypothèse, source, contradiction ou question ouverte. Le modèle peut reformuler et relier ; il ne doit pas promouvoir une hypothèse en fait. Le brief conserve l’origine de chaque décision importante.",
+                      "sourceKeys": ["openai-retrieval", "nist-genai-profile"]
+                    }
+                  },
+                  {
+                    "key": "content-validation-avant-generation",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Le brief est une porte de validation produit. L’utilisateur confirme public, résultats, périmètre, hors-périmètre, rythme, sources, évaluations et risques avant que SourceLab génère un blueprint. Corriger un brief coûte moins cher et produit moins de dérive que régénérer un programme complet.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "openai-evals"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openai-structured-outputs",
+                    "type": "website",
+                    "title": "Structured model outputs",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+                    "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                    "guidance": {
+                      "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+                      "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                      "scope": "Schémas, validation et sorties structurées",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision humaine.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 3
+                  },
+                  {
+                    "key": "openai-evals",
+                    "type": "website",
+                    "title": "Evals",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/evals",
+                    "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                    "guidance": {
+                      "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+                      "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                      "scope": "Datasets, graders, runs et comparaison",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Brief pédagogique validé",
+                    "slug": "brief-pedagogique-valide",
+                    "description": "Le funnel transforme des matériaux hétérogènes en décisions explicites, sourcées et confirmées avant la conception du programme.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openai-structured-outputs"],
+                    "assessment": {
+                      "key": "assessment-brief-pedagogique-valide",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Brief pédagogique validé",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-transformer-besoin-funnel-brief-pedagogique",
+                    "title": "Construire le funnel adaptatif du Program Builder",
+                    "description": "Définir un schéma de brief, dix questions communes et des règles générant des questions complémentaires à partir des inconnues. Utiliser trois demandes volontairement incomplètes. Afficher une synthèse modifiable avec provenance, contradictions et informations manquantes ; empêcher la génération tant que les champs bloquants ne sont pas validés.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-transformer-besoin-funnel-brief-pedagogique",
+                    "title": "Quiz — Funnel et brief",
+                    "description": "Vérifier les acquis essentiels de la leçon « Transformer un besoin en funnel et brief pédagogique ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quand générer le blueprint ?",
+                        "explanation": "La structure dépend du problème validé.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Après validation du brief et de ses inconnues bloquantes",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Dès le premier mot saisi",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Avant l’import des sources",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Après publication",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quelle question est la plus utile ?",
+                        "explanation": "Le résultat observable guide objectifs et évaluations.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Que doit être capable de produire ou réaliser l’apprenant à la fin ?",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Quelle couleur doit avoir le bouton suivant ?",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Quel modèle est le plus médiatisé ?",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Combien de questions pouvons-nous poser ?",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Le funnel adaptatif peut être entièrement aléatoire.",
+                        "explanation": "Les questions doivent découler de décisions ou lacunes identifiées.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-funnel-produit"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-structured-outputs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-classification-informations"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-validation-avant-generation"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-evals"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-transformer-besoin-funnel-brief-pedagogique"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-brief-pedagogique-valide"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-transformer-besoin-funnel-brief-pedagogique"
+                  }
+                ]
+              },
+              {
+                "title": "Générer un blueprint puis modifier des leçons ciblées",
+                "slug": "generer-blueprint-modifier-lecons-ciblees",
+                "summary": "Construire le pipeline de création progressive : blueprint d’abord, contenu ensuite, validation LearnX à chaque frontière et modifications limitées aux éléments explicitement ciblés.",
+                "objectives": [
+                  "Générer une architecture pédagogique alignée sur le brief et les sources.",
+                  "Produire un programme compatible avec les contrats LearnX sans inventer les références.",
+                  "Appliquer une modification locale sans réécrire silencieusement les éléments verrouillés."
+                ],
+                "prerequisites": [
+                  "Avoir implémenté et validé le brief pédagogique."
+                ],
+                "estimatedMinutes": 250,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-generation-progressive",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Le Program Builder suit des artefacts intermédiaires : brief, blueprint, étape, leçon, évaluations puis export. Chaque artefact est validé avant de devenir entrée du suivant. Cette progression rend les erreurs localisables et permet à l’utilisateur de corriger la structure avant de payer le coût d’un contenu complet.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "ai-sdk-agents"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-alignement-learnx",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Un programme LearnX exige une hiérarchie, des objectifs observables, des notions évaluées, une séquence explicite, des sources et une évaluation finale par étape. SourceLab génère vers un modèle canonique, puis un adaptateur déterministe vérifie slugs, clés, positions, références et types autorisés avant export.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "openai-retrieval"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-modification-ciblee",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Une demande comme « ajoute une leçon sur les retries » doit produire un patch sur un périmètre annoncé. Les éléments validés peuvent être verrouillés ; toute dépendance affectée est signalée avant application. La conversation ne doit pas devenir une permission de régénérer tout le programme.",
+                      "sourceKeys": ["openai-evals", "nist-genai-profile"]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openai-structured-outputs",
+                    "type": "website",
+                    "title": "Structured model outputs",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+                    "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                    "guidance": {
+                      "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+                      "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                      "scope": "Schémas, validation et sorties structurées",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-retrieval",
+                    "type": "website",
+                    "title": "Retrieval",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+                    "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                    "guidance": {
+                      "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+                      "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+                      "scope": "Vector stores, recherche sémantique, attributs et ranking",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "ai-sdk-agents",
+                    "type": "website",
+                    "title": "Agents",
+                    "author": "Vercel",
+                    "url": "https://ai-sdk.dev/docs/agents/overview",
+                    "citation": "Vercel. (n.d.). Agents. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+                    "guidance": {
+                      "objective": "Distinguer workflow déterministe et autonomie agentique.",
+                      "instructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+                      "scope": "Agents, outils, boucles et conditions d’arrêt",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 3
+                  },
+                  {
+                    "key": "openai-evals",
+                    "type": "website",
+                    "title": "Evals",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/evals",
+                    "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                    "guidance": {
+                      "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+                      "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                      "scope": "Datasets, graders, runs et comparaison",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 4
+                  },
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision humaine.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 5
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Génération pédagogique progressive et contrôlée",
+                    "slug": "generation-pedagogique-controlee",
+                    "description": "La création est décomposée en artefacts validés et modifications ciblées, avec un adaptateur déterministe vers LearnX.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openai-structured-outputs"],
+                    "assessment": {
+                      "key": "assessment-generation-pedagogique-controlee",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Génération pédagogique progressive et contrôlée",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-generer-blueprint-modifier-lecons-ciblees",
+                    "title": "Livrer le prototype Program Builder",
+                    "description": "À partir du brief du programme infrastructure, générer un blueprint, le faire valider, puis générer une étape et deux leçons. Construire l’adaptateur LearnX et son rapport d’erreurs. Implémenter verrouillage et patch ciblé ; tester ajout de leçon, réduction de durée, remplacement d’une ressource et demande contradictoire.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-generer-blueprint-modifier-lecons-ciblees",
+                    "title": "Quiz — Program Builder",
+                    "description": "Vérifier les acquis essentiels de la leçon « Générer un blueprint puis modifier des leçons ciblées ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Que faire si une ressource citée n’existe pas ?",
+                        "explanation": "La traçabilité est une condition de qualité.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Bloquer l’export et demander une source vérifiable",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Inventer une URL probable",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Supprimer silencieusement la notion",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Publier puis vérifier plus tard",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quel résultat produire avant d’appliquer un patch large ?",
+                        "explanation": "L’utilisateur doit comprendre ce qui changera.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Un aperçu du périmètre et des dépendances affectées",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Une nouvelle base de données",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Une note automatique définitive",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Un changement sans diff",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Un LLM qui produit du JSON valide élimine le besoin de validation Zod.",
+                        "explanation": "Le serveur doit toujours valider la sortie externe.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-generation-progressive"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-structured-outputs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-alignement-learnx"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-retrieval"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-modification-ciblee"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "ai-sdk-agents"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-evals"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-generer-blueprint-modifier-lecons-ciblees"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-generation-pedagogique-controlee"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-generer-blueprint-modifier-lecons-ciblees"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Évaluer des réponses et livrer les fonctions IA",
+        "slug": "evaluer-reponses-livrer-ia",
+        "position": 4,
+        "estimatedDurationDays": 14,
+        "assessment": {
+          "title": "Évaluation finale — Livrer le moteur de rubrique et la qualité IA",
+          "type": "simulation",
+          "isRequired": true,
+          "passingScore": 70,
+          "description": "Évaluer des réponses libres avec une rubrique exécutable, des preuves vérifiables et des décisions déterministes, puis défendre une release sous contraintes de qualité, coût, latence, sécurité et confidentialité.",
+          "instructions": "Construire un corpus mécanique et un corpus synthétique distincts, compiler une rubrique atomique, puis évaluer les statuts FEEDBACK_READY, REVISION_REQUIRED, CLARIFICATION_REQUIRED et TEMPORARILY_UNAVAILABLE. Pendant la simulation, traiter une régression de preuves et une prompt injection dans une source, décider go/no-go, restaurer la version sûre et produire le rapport d’incident.",
+          "rubric": [
+            {
+              "criterion": "Rubrique exécutable et certificat de preuve",
+              "weight": 25,
+              "requirements": [
+                "Les éléments atomiques, leurs propriétaires et les règles de niveau préexistent à la réponse.",
+                "Chaque statut s’appuie sur des extraits exacts et un certificat reconstructible.",
+                "Les règles de localité et de monotonie empêchent la double pénalisation."
+              ]
+            },
+            {
+              "criterion": "Décision déterministe et abstention",
+              "weight": 20,
+              "requirements": [
+                "Les modèles ne produisent ni niveau, ni score, ni PASS/FAIL.",
+                "LearnX calcule les niveaux à partir des statuts atomiques validés.",
+                "Une ambiguïté matérielle déclenche une clarification sans score exact ni effet sur la progression."
+              ]
+            },
+            {
+              "criterion": "Évaluations et observabilité",
+              "weight": 25,
+              "requirements": [
+                "Retrieval, génération et outcome produit sont mesurés séparément.",
+                "Run, corpus, prompt, modèle et dataset sont versionnés.",
+                "Coût, p95 et erreurs sont suivis sans données sensibles inutiles."
+              ]
+            },
+            {
+              "criterion": "Sécurité et release",
+              "weight": 30,
+              "requirements": [
+                "Les injections directes et indirectes sont testées.",
+                "Permissions, outils et sorties sont validés hors modèle.",
+                "Le go/no-go, rollback et rétablissement sont démontrés."
+              ]
+            }
+          ]
+        },
+        "modules": [
+          {
+            "title": "Évaluer des réponses et livrer les fonctions IA",
+            "slug": "module-evaluer-reponses-livrer-ia",
+            "position": 1,
+            "lessons": [
+              {
+                "title": "Corriger un texte libre avec une grille préexistante",
+                "slug": "corriger-texte-libre-grille-preexistante",
+                "summary": "Construire un moteur de rubrique exécutable : rechercher des preuves exactes dans une réponse, les valider, calculer les niveaux côté LearnX et s’abstenir lorsque l’ambiguïté est matérielle.",
+                "objectives": [
+                  "Transformer une grille en éléments atomiques observables, propriétaires et non redondants.",
+                  "Produire un certificat de preuve puis calculer niveaux et feedback par règles déterministes.",
+                  "Tester localité, monotonie, concision, ambiguïté, injection et abstention."
+                ],
+                "prerequisites": [
+                  "Disposer du RAG sourcé et du contrat d’évaluation."
+                ],
+                "estimatedMinutes": 240,
+                "position": 1,
+                "contentBlocks": [
+                  {
+                    "key": "content-rubrique-avant-reponse",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "La grille existe avant la réponse et décompose chaque critère en éléments atomiques avec propriétaire, règles de preuve, contradictions et niveaux atteignables. Une lacune ne peut pénaliser que son élément propriétaire, sauf partage explicitement authoré. Ajouter une exigence après lecture ou réutiliser une même lacune pour deux critères rend la correction incohérente.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "nist-genai-profile"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-feedback-structure",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Le premier modèle recherche des éléments démontrés et retourne des extraits exacts de la réponse ; un falsificateur peut contester ces preuves sans voir de niveau proposé. LearnX valide les spans, compile les statuts atomiques, calcule les niveaux et produit un feedback depuis des templates authorés. Le certificat conserve rubrique, règles, preuves, contradictions et empreinte du pipeline.",
+                      "sourceKeys": [
+                        "openai-structured-outputs",
+                        "openai-evals"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-confiance-escalade",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "La confiance numérique déclarée par un modèle n’a aucune autorité décisionnelle. LearnX teste toutes les résolutions possibles d’un élément ambigu : si elles donnent le même niveau, le feedback peut être rendu ; si elles changent le niveau, aucun score exact n’est affiché et une clarification ciblée crée une nouvelle version de la réponse.",
+                      "sourceKeys": [
+                        "openai-safety-best-practices",
+                        "nist-genai-profile"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openai-structured-outputs",
+                    "type": "website",
+                    "title": "Structured model outputs",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+                    "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                    "guidance": {
+                      "objective": "Contraindre les preuves produites par les modèles avant tout calcul LearnX.",
+                      "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+                      "scope": "Schémas, validation et sorties structurées",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-evals",
+                    "type": "website",
+                    "title": "Evals",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/evals",
+                    "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                    "guidance": {
+                      "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+                      "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                      "scope": "Datasets, graders, runs et comparaison",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 2
+                  },
+                  {
+                    "key": "openai-safety-best-practices",
+                    "type": "website",
+                    "title": "Safety best practices",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+                    "citation": "OpenAI. (n.d.). Safety best practices. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+                    "guidance": {
+                      "objective": "Définir des garde-fous proportionnés pour génération et correction.",
+                      "instructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+                      "scope": "Adversarial testing, limitation des entrées/sorties et contrôles déterministes",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 3
+                  },
+                  {
+                    "key": "nist-genai-profile",
+                    "type": "document",
+                    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+                    "author": "National Institute of Standards and Technology",
+                    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+                    "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                    "guidance": {
+                      "objective": "Relier qualité technique, impacts et décision explicite du produit.",
+                      "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+                      "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 20,
+                    "position": 4
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Correction formative par rubrique exécutable",
+                    "slug": "evaluation-assistee-rubrique",
+                    "description": "Les modèles recherchent ou contestent des preuves dans une réponse ; LearnX applique une rubrique compilée, rend un feedback traçable et s’abstient lorsque l’incertitude change le niveau.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openai-structured-outputs"],
+                    "assessment": {
+                      "key": "assessment-evaluation-assistee-rubrique",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Correction formative par rubrique exécutable",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-corriger-texte-libre-grille-preexistante",
+                    "title": "Construire le moteur de rubrique exécutable",
+                    "description": "Créer un corpus mécanique et un corpus synthétique séparés : réponse complète concise, formulation inattendue, verbosité vide, retrait d’une preuve, contradiction, citation fausse et tentative d’influencer le chercheur. Compiler les éléments et leurs propriétaires, valider les spans, calculer les niveaux côté serveur et tester FEEDBACK_READY, REVISION_REQUIRED, CLARIFICATION_REQUIRED et TEMPORARILY_UNAVAILABLE.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-corriger-texte-libre-grille-preexistante",
+                    "title": "Quiz — Rubrique exécutable",
+                    "description": "Vérifier les acquis essentiels de la leçon « Corriger un texte libre avec une grille préexistante ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Que faire d’une réponse correcte avec une formulation inattendue ?",
+                        "explanation": "La grille mesure la compétence, pas la copie d’un exemple.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "L’évaluer selon le critère et l’évidence, sans exiger la réponse modèle mot pour mot",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "La rejeter automatiquement",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Ajouter un critère de style après coup",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Ignorer la grille",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quel état convient lorsque deux résolutions plausibles d’une ambiguïté produisent des niveaux différents ?",
+                        "explanation": "Une ambiguïté matériellement décisive exige une clarification ciblée plutôt qu’un score artificiellement précis.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "CLARIFICATION_REQUIRED",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "FEEDBACK_READY par défaut",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "READY_TO_PUBLISH",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "NO_LOG",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Le score indicatif calculé par le moteur de rubrique doit modifier directement la progression LearnX.",
+                        "explanation": "Remise, feedback formatif et maîtrise restent trois états distincts.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": false,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": true,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-rubrique-avant-reponse"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-structured-outputs"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-feedback-structure"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-evals"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-confiance-escalade"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-safety-best-practices"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "nist-genai-profile"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-corriger-texte-libre-grille-preexistante"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-evaluation-assistee-rubrique"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-corriger-texte-libre-grille-preexistante"
+                  }
+                ]
+              },
+              {
+                "title": "Évaluer, sécuriser et opérer les fonctions IA",
+                "slug": "evaluer-securiser-operer-fonctions-ia",
+                "summary": "Créer la boucle de qualité finale : datasets versionnés, mesures retrieval/preuves, traces minimisées, tests de prompt injection et critères de release pour le Program Builder et le moteur de rubrique.",
+                "objectives": [
+                  "Séparer métriques de retrieval, génération et produit.",
+                  "Construire une suite de non-régression avec coût et latence.",
+                  "Protéger documents, outils, traces et sorties contre injection et fuite de données."
+                ],
+                "prerequisites": [
+                  "Avoir implémenté les prototypes Program Builder et moteur de rubrique exécutable."
+                ],
+                "estimatedMinutes": 260,
+                "position": 2,
+                "contentBlocks": [
+                  {
+                    "key": "content-evals-separees",
+                    "type": "definition",
+                    "position": 1,
+                    "content": {
+                      "text": "Une réponse incorrecte peut venir du corpus, du chunking, du retrieval, du prompt, du modèle ou de la validation. Les évaluations séparent recall@k et rang du bon passage, fidélité et citations, respect du schéma, qualité du feedback et outcome produit. Un score agrégé unique masque la cause.",
+                      "sourceKeys": [
+                        "openai-evals",
+                        "openai-model-optimization"
+                      ]
+                    }
+                  },
+                  {
+                    "key": "content-observabilite-ia",
+                    "type": "definition",
+                    "position": 2,
+                    "content": {
+                      "text": "Chaque run référence versions du corpus, modèle, prompt, schéma et dataset. Les traces suivent latence, tokens, coût, outils et erreurs, mais l’enregistrement des entrées et sorties sensibles peut être désactivé ou pseudonymisé. L’observabilité doit permettre de reproduire une régression sans créer une copie incontrôlée des documents.",
+                      "sourceKeys": ["ai-sdk-telemetry", "langfuse-docs"]
+                    }
+                  },
+                  {
+                    "key": "content-securite-injection",
+                    "type": "callout",
+                    "position": 3,
+                    "content": {
+                      "text": "Un document importé peut contenir des instructions destinées au modèle. SourceLab le traite comme donnée non fiable, sépare les instructions système, limite les outils, valide leurs paramètres et teste l’exfiltration, les citations inventées et les accès croisés. Aucune permission ne dépend du fait que le modèle « accepte » de la respecter.",
+                      "sourceKeys": [
+                        "owasp-prompt-injection",
+                        "openai-safety-best-practices"
+                      ]
+                    }
+                  }
+                ],
+                "resources": [
+                  {
+                    "key": "openai-evals",
+                    "type": "website",
+                    "title": "Evals",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/evals",
+                    "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                    "guidance": {
+                      "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+                      "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+                      "scope": "Datasets, graders, runs et comparaison",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 1
+                  },
+                  {
+                    "key": "openai-model-optimization",
+                    "type": "website",
+                    "title": "Model optimization",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/model-optimization",
+                    "citation": "OpenAI. (n.d.). Model optimization. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire la boucle d’optimisation et classer les erreurs entre données, retrieval, prompt et modèle.",
+                    "guidance": {
+                      "objective": "Améliorer le système à partir d’erreurs mesurées plutôt que changer de modèle au hasard.",
+                      "instructions": "Lire la boucle d’optimisation et classer les erreurs entre données, retrieval, prompt et modèle.",
+                      "scope": "Evals, prompting, fine-tuning et boucle d’amélioration",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 2
+                  },
+                  {
+                    "key": "ai-sdk-telemetry",
+                    "type": "website",
+                    "title": "AI SDK Core — Telemetry",
+                    "author": "Vercel",
+                    "url": "https://ai-sdk.dev/docs/ai-sdk-core/telemetry",
+                    "citation": "Vercel. (n.d.). AI SDK Core — Telemetry. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire la configuration et identifier ce qu’il faut désactiver ou anonymiser dans les traces.",
+                    "guidance": {
+                      "objective": "Observer embeddings, générations et outils sans exposer les données sensibles.",
+                      "instructions": "Lire la configuration et identifier ce qu’il faut désactiver ou anonymiser dans les traces.",
+                      "scope": "OpenTelemetry, spans, tokens, inputs et sorties",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 3
+                  },
+                  {
+                    "key": "langfuse-docs",
+                    "type": "website",
+                    "title": "Langfuse Documentation",
+                    "author": "Langfuse",
+                    "url": "https://langfuse.com/docs",
+                    "citation": "Langfuse. (n.d.). Langfuse Documentation. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Explorer observability, prompt management, datasets et experiments ; définir le minimum utile au Lab.",
+                    "guidance": {
+                      "objective": "Relier chaque génération à sa version, son dataset et ses évaluations.",
+                      "instructions": "Explorer observability, prompt management, datasets et experiments ; définir le minimum utile au Lab.",
+                      "scope": "Traces, prompts, datasets, experiments et scores",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 4
+                  },
+                  {
+                    "key": "owasp-prompt-injection",
+                    "type": "website",
+                    "title": "LLM01: Prompt Injection",
+                    "author": "OWASP GenAI Security Project",
+                    "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+                    "citation": "OWASP GenAI Security Project. (2025). LLM01: Prompt Injection. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire description, exemples et mitigations ; transformer cinq risques en tests adversariaux SourceLab.",
+                    "guidance": {
+                      "objective": "Traiter tout document importé comme une donnée non fiable.",
+                      "instructions": "Lire description, exemples et mitigations ; transformer cinq risques en tests adversariaux SourceLab.",
+                      "scope": "Injection directe/indirecte, impacts et mitigations",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 15,
+                    "position": 5
+                  },
+                  {
+                    "key": "openai-safety-best-practices",
+                    "type": "website",
+                    "title": "Safety best practices",
+                    "author": "OpenAI",
+                    "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+                    "citation": "OpenAI. (n.d.). Safety best practices. Documentation officielle, consultée le 18 août 2026.",
+                    "description": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+                    "guidance": {
+                      "objective": "Définir des garde-fous proportionnés pour génération et correction.",
+                      "instructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+                      "scope": "Adversarial testing, limitation des entrées/sorties et contrôles déterministes",
+                      "urlStatus": "ok",
+                      "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+                      "alternativeResourceKey": null
+                    },
+                    "isRequired": true,
+                    "estimatedMinutes": 12,
+                    "position": 6
+                  }
+                ],
+                "concepts": [
+                  {
+                    "title": "Boucle de qualité et sécurité IA",
+                    "slug": "boucle-qualite-securite-ia",
+                    "description": "La release d’une fonction IA exige des datasets, métriques séparées, provenance, coûts, traces minimisées et scénarios adversariaux avec seuils explicites.",
+                    "position": 1,
+                    "isRequired": true,
+                    "masteryThreshold": 70,
+                    "resourceKeys": ["openai-evals"],
+                    "assessment": {
+                      "key": "assessment-boucle-qualite-securite-ia",
+                      "type": "case_question",
+                      "title": "Mini-évaluation — Boucle de qualité et sécurité IA",
+                      "questionCount": 3
+                    }
+                  }
+                ],
+                "tasks": [
+                  {
+                    "key": "exercise-evaluer-securiser-operer-fonctions-ia",
+                    "title": "Préparer la release IA de SourceLab",
+                    "description": "Construire trois datasets versionnés : retrieval, authoring et assessment. Exécuter une baseline, comparer un changement de chunking ou prompt, puis produire un rapport qualité-coût-latence. Ajouter instrumentation et red team : injection indirecte, accès croisé, source inventée, outil hors périmètre et fuite dans les logs. Définir les gates de staging et rollback.",
+                    "type": "project",
+                    "isRequired": true,
+                    "weight": 2,
+                    "position": 1,
+                    "resourceKeys": []
+                  }
+                ],
+                "quizzes": [
+                  {
+                    "key": "quiz-evaluer-securiser-operer-fonctions-ia",
+                    "title": "Quiz — Evals, sécurité et opérations IA",
+                    "description": "Vérifier les acquis essentiels de la leçon « Évaluer, sécuriser et opérer les fonctions IA ».",
+                    "passingScore": 70,
+                    "isRequired": true,
+                    "position": 1,
+                    "questions": [
+                      {
+                        "type": "single_choice",
+                        "prompt": "Quelle pratique réduit le risque des traces ?",
+                        "explanation": "L’observabilité doit respecter la minimisation.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Désactiver ou minimiser l’enregistrement des contenus sensibles tout en gardant les métadonnées utiles",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Journaliser tous les documents",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Supprimer les request IDs",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Ne mesurer aucune latence",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 1
+                      },
+                      {
+                        "type": "single_choice",
+                        "prompt": "Une modification améliore la qualité mais double le coût et le p95. Que faire ?",
+                        "explanation": "La release dépend de plusieurs contraintes produit.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Arbitrer avec les budgets et outcomes définis plutôt que promouvoir automatiquement",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Toujours déployer",
+                            "isCorrect": false,
+                            "position": 2
+                          },
+                          {
+                            "label": "Ignorer la latence",
+                            "isCorrect": false,
+                            "position": 3
+                          },
+                          {
+                            "label": "Supprimer les evals",
+                            "isCorrect": false,
+                            "position": 4
+                          }
+                        ],
+                        "position": 2
+                      },
+                      {
+                        "type": "true_false",
+                        "prompt": "Une prompt injection indirecte peut se trouver dans un document récupéré.",
+                        "explanation": "Le contenu externe peut tenter de modifier le comportement du modèle.",
+                        "acceptedAnswers": [],
+                        "options": [
+                          {
+                            "label": "Vrai",
+                            "isCorrect": true,
+                            "position": 1
+                          },
+                          {
+                            "label": "Faux",
+                            "isCorrect": false,
+                            "position": 2
+                          }
+                        ],
+                        "position": 3
+                      }
+                    ]
+                  }
+                ],
+                "sequence": [
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-evals-separees"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-evals"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-observabilite-ia"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-model-optimization"
+                  },
+                  {
+                    "kind": "CONTENT",
+                    "key": "content-securite-injection"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "ai-sdk-telemetry"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "langfuse-docs"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "owasp-prompt-injection"
+                  },
+                  {
+                    "kind": "RESOURCE",
+                    "key": "openai-safety-best-practices"
+                  },
+                  {
+                    "kind": "EXERCISE",
+                    "key": "exercise-evaluer-securiser-operer-fonctions-ia"
+                  },
+                  {
+                    "kind": "CONCEPT_ASSESSMENT",
+                    "key": "assessment-boucle-qualite-securite-ia"
+                  },
+                  {
+                    "kind": "QUIZ",
+                    "key": "quiz-evaluer-securiser-operer-fonctions-ia"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "conceptAssessmentBanks": [
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "preparer-corpus-ia-fiable",
+      "moduleSlug": "module-preparer-corpus-ia-fiable",
+      "lessonSlug": "cadrer-usages-ia-contrats-sourcelab",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "architecture-ia-bornee-produit",
+          "assessmentTitle": "Mini-évaluation — Architecture IA bornée par le produit",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel énoncé décrit correctement le RAG ?",
+              "explanation": "Le RAG agit sur le contexte, pas sur les paramètres appris.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Il récupère un contexte pertinent au moment de la requête sans modifier les poids du modèle",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Il entraîne automatiquement un nouveau modèle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Il garantit toute réponse vraie",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Il remplace les permissions serveur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels éléments doivent être définis avant le prompt ?",
+              "explanation": "Le contrat produit encadre l’usage du modèle.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Entrées autorisées",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Schéma de sortie",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Cas d’abstention",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Responsabilité de validation",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Couleur du logo du fournisseur",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un JSON conforme au schéma prouve que les affirmations sont soutenues par les sources.",
+              "explanation": "La validité structurelle et la fidélité factuelle sont deux contrôles différents.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "preparer-corpus-ia-fiable",
+      "moduleSlug": "module-preparer-corpus-ia-fiable",
+      "lessonSlug": "extraire-normaliser-versionner-corpus",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "corpus-versionne-tracable",
+          "assessmentTitle": "Mini-évaluation — Corpus versionné et traçable",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quelle métadonnée permet d’ouvrir la preuve exacte ?",
+              "explanation": "La provenance utile doit revenir au passage d’origine.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Un localisateur vers la section ou plage d’origine",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le score global du modèle",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La couleur du projet",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Le nom du container",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles propriétés doivent versionner le corpus ?",
+              "explanation": "Ces éléments modifient les résultats de retrieval.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Contenu extrait",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Stratégie de chunking",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Modèle d’embedding",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Permissions ou filtres applicables",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Ordre aléatoire d’affichage",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un chunk peut perdre l’identité de sa source si son embedding est stocké.",
+              "explanation": "Le vecteur ne remplace ni la provenance ni le localisateur.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "construire-retrieval-rag-source",
+      "moduleSlug": "module-construire-retrieval-rag-source",
+      "lessonSlug": "comprendre-embeddings-distances-pgvector",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "recherche-vectorielle-mesuree",
+          "assessmentTitle": "Mini-évaluation — Recherche vectorielle mesurée",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Que signifie principalement une faible distance entre deux embeddings ?",
+              "explanation": "La proximité sémantique n’établit pas l’autorité ni la vérité.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Le modèle les représente comme proches selon sa géométrie",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Les deux textes sont juridiquement équivalents",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "La source est automatiquement fiable",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "La réponse est complète",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quels réglages influencent le retrieval vectoriel ?",
+              "explanation": "La qualité dépend du pipeline complet.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Modèle d’embedding",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Distance",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Top-k",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Filtres de métadonnées",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Nom de la branche Git uniquement",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Un index approximatif doit être évalué contre une recherche exacte pour mesurer le rappel.",
+              "explanation": "La recherche exacte fournit une référence utile.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": false,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "construire-retrieval-rag-source",
+      "moduleSlug": "module-construire-retrieval-rag-source",
+      "lessonSlug": "construire-recherche-hybride-rag-source",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "rag-source-abstention",
+          "assessmentTitle": "Mini-évaluation — RAG sourcé avec abstention",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel avantage apporte la recherche lexicale ?",
+              "explanation": "La correspondance exacte complète la similarité sémantique.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Retrouver précisément des termes rares, identifiants ou formulations exactes",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Comprendre automatiquement toute intention",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Garantir la vérité",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Remplacer les permissions",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit vérifier le serveur après génération ?",
+              "explanation": "Les contrôles déterministes entourent la génération.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Chaque citation existe dans le contexte",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Le statut d’abstention respecte le contrat",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "La sortie respecte le schéma",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Que le modèle affirme être certain",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Ajouter davantage de chunks au contexte améliore toujours la réponse.",
+              "explanation": "Le bruit, le coût et les contradictions peuvent augmenter.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "creer-program-builder",
+      "moduleSlug": "module-creer-program-builder",
+      "lessonSlug": "transformer-besoin-funnel-brief-pedagogique",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "brief-pedagogique-valide",
+          "assessmentTitle": "Mini-évaluation — Brief pédagogique validé",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quel est le but principal du funnel ?",
+              "explanation": "Les questions doivent éclairer des choix.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Réduire les inconnues qui affectent l’architecture pédagogique",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Collecter le maximum de texte",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Commencer la génération plus tôt",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Remplacer toute décision utilisateur",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Quelles catégories doivent rester distinctes ?",
+              "explanation": "La qualification évite l’invention silencieuse.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Fait fourni",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Hypothèse",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Contrainte",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Question ouverte",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Tout convertir en vérité confirmée",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une contradiction entre deux sources doit être résolue automatiquement sans la montrer.",
+              "explanation": "Elle doit être exposée et traitée par une règle ou décision explicite.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "creer-program-builder",
+      "moduleSlug": "module-creer-program-builder",
+      "lessonSlug": "generer-blueprint-modifier-lecons-ciblees",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "generation-pedagogique-controlee",
+          "assessmentTitle": "Mini-évaluation — Génération pédagogique progressive et contrôlée",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi générer le blueprint avant les leçons ?",
+              "explanation": "La décomposition réduit le coût des erreurs amont.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Valider structure et progression avant un contenu coûteux à refaire",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Rendre le JSON plus long",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Éviter toute source",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Supprimer les évaluations",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que vérifie l’adaptateur LearnX ?",
+              "explanation": "Le contrat technique doit être déterministe.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Types autorisés",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Clés et slugs",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Références de séquence",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Évaluations requises",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Opinion esthétique du modèle uniquement",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une modification ciblée peut réécrire les éléments verrouillés si le modèle la juge utile.",
+              "explanation": "Le verrou est une décision utilisateur et doit être respecté.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "evaluer-reponses-livrer-ia",
+      "moduleSlug": "module-evaluer-reponses-livrer-ia",
+      "lessonSlug": "corriger-texte-libre-grille-preexistante",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "evaluation-assistee-rubrique",
+          "assessmentTitle": "Mini-évaluation — Correction formative par rubrique exécutable",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Quand compiler la rubrique exécutable ?",
+              "explanation": "Les éléments, propriétaires et règles préexistent à la réponse pour protéger la cohérence.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Avant de soumettre la réponse au moteur",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Après avoir vu le style",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Uniquement en cas de désaccord",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Après publication du score",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que doit contenir un certificat de preuve reconstructible ?",
+              "explanation": "Chaque niveau calculé doit pouvoir être relié à la règle et aux preuves validées.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Clé de l’élément et statut atomique",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Offsets et hash des extraits de la réponse",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Identifiant et version de la règle appliquée",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Version de la rubrique et empreinte du pipeline",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Une nouvelle exigence non prévue",
+                  "isCorrect": false,
+                  "position": 5
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Une réponse plus longue mérite automatiquement un meilleur score.",
+              "explanation": "La note dépend des critères, pas de la longueur.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "programSlug": "ai-product-engineer-sourcelab",
+      "stageSlug": "evaluer-reponses-livrer-ia",
+      "moduleSlug": "module-evaluer-reponses-livrer-ia",
+      "lessonSlug": "evaluer-securiser-operer-fonctions-ia",
+      "assessmentBanks": [
+        {
+          "conceptSlug": "boucle-qualite-securite-ia",
+          "assessmentTitle": "Mini-évaluation — Boucle de qualité et sécurité IA",
+          "questions": [
+            {
+              "type": "single_choice",
+              "prompt": "Pourquoi séparer retrieval et génération dans les evals ?",
+              "explanation": "Une mesure diagnostique guide l’amélioration.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Identifier la couche responsable d’une erreur et choisir la correction appropriée",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Produire deux fois plus de graphiques",
+                  "isCorrect": false,
+                  "position": 2
+                },
+                {
+                  "label": "Éviter les datasets",
+                  "isCorrect": false,
+                  "position": 3
+                },
+                {
+                  "label": "Garantir un score parfait",
+                  "isCorrect": false,
+                  "position": 4
+                }
+              ],
+              "position": 1
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "Que versionner pour reproduire un run ?",
+              "explanation": "Les entrées du système déterminent le résultat.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Corpus",
+                  "isCorrect": true,
+                  "position": 1
+                },
+                {
+                  "label": "Prompt",
+                  "isCorrect": true,
+                  "position": 2
+                },
+                {
+                  "label": "Modèle",
+                  "isCorrect": true,
+                  "position": 3
+                },
+                {
+                  "label": "Schéma de sortie",
+                  "isCorrect": true,
+                  "position": 4
+                },
+                {
+                  "label": "Dataset",
+                  "isCorrect": true,
+                  "position": 5
+                },
+                {
+                  "label": "Position de la fenêtre navigateur",
+                  "isCorrect": false,
+                  "position": 6
+                }
+              ],
+              "position": 2
+            },
+            {
+              "type": "true_false",
+              "prompt": "Le modèle peut être le seul mécanisme de contrôle d’accès aux documents.",
+              "explanation": "Les permissions doivent être appliquées par le système avant le contexte.",
+              "acceptedAnswers": [],
+              "options": [
+                {
+                  "label": "Vrai",
+                  "isCorrect": false,
+                  "position": 1
+                },
+                {
+                  "label": "Faux",
+                  "isCorrect": true,
+                  "position": 2
+                }
+              ],
+              "position": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

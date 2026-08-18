@@ -1,0 +1,694 @@
+{
+  "specId": "PEDAGOGY_SPEC_139",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "creer-program-builder",
+  "moduleSlug": "module-creer-program-builder",
+  "lesson": {
+    "title": "Générer un blueprint puis modifier des leçons ciblées",
+    "slug": "generer-blueprint-modifier-lecons-ciblees",
+    "summary": "Construire le pipeline de création progressive : blueprint d’abord, contenu ensuite, validation LearnX à chaque frontière et modifications limitées aux éléments explicitement ciblés.",
+    "objectives": [
+      "Générer une architecture pédagogique alignée sur le brief et les sources.",
+      "Produire un programme compatible avec les contrats LearnX sans inventer les références.",
+      "Appliquer une modification locale sans réécrire silencieusement les éléments verrouillés."
+    ],
+    "prerequisites": ["Avoir implémenté et validé le brief pédagogique."],
+    "estimatedMinutes": 250,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-generation-progressive",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Le Program Builder suit des artefacts intermédiaires : brief, blueprint, étape, leçon, évaluations puis export. Chaque artefact est validé avant de devenir entrée du suivant. Cette progression rend les erreurs localisables et permet à l’utilisateur de corriger la structure avant de payer le coût d’un contenu complet.",
+          "sourceKeys": ["openai-structured-outputs", "ai-sdk-agents"]
+        }
+      },
+      {
+        "key": "content-alignement-learnx",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un programme LearnX exige une hiérarchie, des objectifs observables, des notions évaluées, une séquence explicite, des sources et une évaluation finale par étape. SourceLab génère vers un modèle canonique, puis un adaptateur déterministe vérifie slugs, clés, positions, références et types autorisés avant export.",
+          "sourceKeys": ["openai-structured-outputs", "openai-retrieval"]
+        }
+      },
+      {
+        "key": "content-modification-ciblee",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une demande comme « ajoute une leçon sur les retries » doit produire un patch sur un périmètre annoncé. Les éléments validés peuvent être verrouillés ; toute dépendance affectée est signalée avant application. La conversation ne doit pas devenir une permission de régénérer tout le programme.",
+          "sourceKeys": ["openai-evals", "nist-genai-profile"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-structured-outputs",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "guidance": {
+          "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+          "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+          "scope": "Schémas, validation et sorties structurées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "ai-sdk-agents",
+        "type": "website",
+        "title": "Agents",
+        "author": "Vercel",
+        "url": "https://ai-sdk.dev/docs/agents/overview",
+        "citation": "Vercel. (n.d.). Agents. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+        "guidance": {
+          "objective": "Distinguer workflow déterministe et autonomie agentique.",
+          "instructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+          "scope": "Agents, outils, boucles et conditions d’arrêt",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      },
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "guidance": {
+          "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+          "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+          "scope": "Datasets, graders, runs et comparaison",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 4
+      },
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision humaine.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 5
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Génération pédagogique progressive et contrôlée",
+        "slug": "generation-pedagogique-controlee",
+        "description": "La création est décomposée en artefacts validés et modifications ciblées, avec un adaptateur déterministe vers LearnX.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openai-structured-outputs"],
+        "assessment": {
+          "key": "assessment-generation-pedagogique-controlee",
+          "type": "case_question",
+          "title": "Mini-évaluation — Génération pédagogique progressive et contrôlée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-generer-blueprint-modifier-lecons-ciblees",
+        "title": "Livrer le prototype Program Builder",
+        "description": "À partir du brief du programme infrastructure, générer un blueprint, le faire valider, puis générer une étape et deux leçons. Construire l’adaptateur LearnX et son rapport d’erreurs. Implémenter verrouillage et patch ciblé ; tester ajout de leçon, réduction de durée, remplacement d’une ressource et demande contradictoire.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-generer-blueprint-modifier-lecons-ciblees",
+        "title": "Quiz — Program Builder",
+        "description": "Vérifier les acquis essentiels de la leçon « Générer un blueprint puis modifier des leçons ciblées ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que faire si une ressource citée n’existe pas ?",
+            "explanation": "La traçabilité est une condition de qualité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Bloquer l’export et demander une source vérifiable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Inventer une URL probable",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer silencieusement la notion",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Publier puis vérifier plus tard",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel résultat produire avant d’appliquer un patch large ?",
+            "explanation": "L’utilisateur doit comprendre ce qui changera.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un aperçu du périmètre et des dépendances affectées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une nouvelle base de données",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une note automatique définitive",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un changement sans diff",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un LLM qui produit du JSON valide élimine le besoin de validation Zod.",
+            "explanation": "Le serveur doit toujours valider la sortie externe.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-generation-progressive"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured-outputs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-alignement-learnx"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modification-ciblee"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ai-sdk-agents"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-generer-blueprint-modifier-lecons-ciblees"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-generation-pedagogique-controlee"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-generer-blueprint-modifier-lecons-ciblees"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-139-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-139-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-139-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Vercel",
+        "title": "Agents",
+        "year": null,
+        "edition": null,
+        "publication": "Vercel",
+        "doi": null,
+        "url": "https://ai-sdk.dev/docs/agents/overview",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-139-04",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Evals",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-139-05",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-generation-progressive » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-139-03",
+            "locator": "Agents, outils, boucles et conditions d’arrêt",
+            "supports": "Soutient le bloc « content-generation-progressive » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-alignement-learnx » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-139-02",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-alignement-learnx » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-139-04",
+            "locator": "Datasets, graders, runs et comparaison",
+            "supports": "Soutient le bloc « content-modification-ciblee » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-139-05",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-modification-ciblee » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-structured-outputs",
+        "referenceIds": ["REF-139-01"],
+        "pedagogicalRationale": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+        "learnerInstructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-139-02"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "ai-sdk-agents",
+        "referenceIds": ["REF-139-03"],
+        "pedagogicalRationale": "Distinguer workflow déterministe et autonomie agentique.",
+        "learnerInstructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": ["REF-139-04"],
+        "pedagogicalRationale": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+        "learnerInstructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-139-05"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision humaine.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "generation-pedagogique-controlee",
+        "assessmentTitle": "Mini-évaluation — Génération pédagogique progressive et contrôlée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi générer le blueprint avant les leçons ?",
+            "explanation": "La décomposition réduit le coût des erreurs amont.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Valider structure et progression avant un contenu coûteux à refaire",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rendre le JSON plus long",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter toute source",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Supprimer les évaluations",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que vérifie l’adaptateur LearnX ?",
+            "explanation": "Le contrat technique doit être déterministe.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Types autorisés",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Clés et slugs",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Références de séquence",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Évaluations requises",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Opinion esthétique du modèle uniquement",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une modification ciblée peut réécrire les éléments verrouillés si le modèle la juge utile.",
+            "explanation": "Le verrou est une décision utilisateur et doit être respecté.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "generation-pedagogique-controlee",
+          "contentKeys": [
+            "content-generation-progressive",
+            "content-alignement-learnx",
+            "content-modification-ciblee"
+          ],
+          "resourceKeys": [
+            "openai-structured-outputs",
+            "openai-retrieval",
+            "ai-sdk-agents",
+            "openai-evals",
+            "nist-genai-profile"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-generer-blueprint-modifier-lecons-ciblees"
+          },
+          "assessmentKey": "assessment-generation-pedagogique-controlee",
+          "rationale": "La production « Un Program Builder progressif exportant un programme LearnX vérifié et modifiable par patch ciblé. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Générer un blueprint puis modifier des leçons ciblées » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

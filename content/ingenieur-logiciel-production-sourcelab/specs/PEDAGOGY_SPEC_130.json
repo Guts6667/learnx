@@ -1,0 +1,571 @@
+{
+  "specId": "PEDAGOGY_SPEC_130",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-donnees-traitements",
+  "moduleSlug": "module-integrer-donnees-traitements",
+  "lesson": {
+    "title": "Concevoir les contrats et le modèle du Source Workspace",
+    "slug": "concevoir-contrats-modele-source-workspace",
+    "summary": "Transformer le besoin produit — créer un projet, importer et qualifier des sources — en contrats API et modèle de données cohérents, versionnés et testables.",
+    "objectives": [
+      "Définir les états et invariants du cycle de vie d’une source.",
+      "Valider les entrées et normaliser les erreurs côté serveur.",
+      "Modéliser projet, fichier, source, version et job sans dupliquer leur responsabilité."
+    ],
+    "prerequisites": ["Avoir un environnement Compose fonctionnel."],
+    "estimatedMinutes": 190,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-contrat-api",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un contrat d’API décrit ce que le client peut envoyer, ce que le serveur garantit et comment les échecs sont représentés. La validation doit précéder l’écriture. SourceLab ne doit pas créer une source partielle lorsque le type, le projet ou les métadonnées requises sont invalides.",
+          "sourceKeys": ["hono-validation", "zod-documentation"]
+        }
+      },
+      {
+        "key": "content-modele-source",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le fichier binaire, la source éditoriale et sa version ne sont pas le même objet. Le fichier possède une empreinte et un emplacement ; la source possède un rôle pédagogique et des métadonnées ; la version relie un contenu extrait à l’état du matériau à un instant donné. Cette séparation permet déduplication et traçabilité.",
+          "sourceKeys": ["postgres-transactions"]
+        }
+      },
+      {
+        "key": "content-machine-etats",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Les statuts doivent former une machine d’états explicite : UPLOADED, QUEUED, PROCESSING, READY, NEEDS_REVIEW ou FAILED, avec transitions autorisées. Un statut ne remplace pas l’historique ni la raison d’échec ; il offre une vue actuelle au produit.",
+          "sourceKeys": ["postgres-transactions", "zod-documentation"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "hono-validation",
+        "type": "website",
+        "title": "Validation — Hono Documentation",
+        "author": "Hono",
+        "url": "https://hono.dev/docs/guides/validation",
+        "citation": "Hono. (n.d.). Validation — Hono Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et produire le contrat d’une création de projet et d’un import de source.",
+        "guidance": {
+          "objective": "Définir des contrats d’API validés avant la logique métier.",
+          "instructions": "Lire le guide et produire le contrat d’une création de projet et d’un import de source.",
+          "scope": "Validation des entrées, middleware et réponses",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 1
+      },
+      {
+        "key": "zod-documentation",
+        "type": "website",
+        "title": "Zod Documentation",
+        "author": "Zod",
+        "url": "https://zod.dev/",
+        "citation": "Zod. (n.d.). Zod Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire schemas, parse/safeParse et error formatting ; définir deux schémas SourceLab.",
+        "guidance": {
+          "objective": "Partager un contrat exécutable entre API, worker et tests.",
+          "instructions": "Lire schemas, parse/safeParse et error formatting ; définir deux schémas SourceLab.",
+          "scope": "Schemas, parsing, erreurs et inférence TypeScript",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "postgres-transactions",
+        "type": "website",
+        "title": "Transactions — PostgreSQL Documentation",
+        "author": "PostgreSQL Global Development Group",
+        "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+        "citation": "PostgreSQL Global Development Group. (n.d.). Transactions — PostgreSQL Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "guidance": {
+          "objective": "Protéger la cohérence entre fichier, source, version et job.",
+          "instructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+          "scope": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Contrat métier du Source Workspace",
+        "slug": "contrat-metier-source-workspace",
+        "description": "Le modèle et l’API doivent préserver les invariants du cycle de vie des sources tout en exposant des erreurs et transitions explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["hono-validation"],
+        "assessment": {
+          "key": "assessment-contrat-metier-source-workspace",
+          "type": "case_question",
+          "title": "Mini-évaluation — Contrat métier du Source Workspace",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-concevoir-contrats-modele-source-workspace",
+        "title": "Spécifier et implémenter le premier contrat vertical",
+        "description": "Écrire les schémas Zod et endpoints pour créer un projet, enregistrer une source et consulter son statut. Modéliser Project, FileObject, Source, SourceVersion et ProcessingJob dans Prisma. Ajouter une transaction pour l’import initial et des tests couvrant payload invalide, projet absent, doublon et succès.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-concevoir-contrats-modele-source-workspace",
+        "title": "Quiz — Contrats et modèle",
+        "description": "Vérifier les acquis essentiels de la leçon « Concevoir les contrats et le modèle du Source Workspace ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel mécanisme protège plusieurs écritures qui doivent réussir ensemble ?",
+            "explanation": "La transaction garantit l’atomicité de l’unité métier.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Une transaction",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un commentaire TypeScript",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un volume Docker",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Un retry aveugle",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel champ aide à détecter un fichier strictement identique ?",
+            "explanation": "Le hash porte sur le contenu plutôt que sur le nom.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Une empreinte cryptographique du contenu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le nom affiché seulement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La date locale du navigateur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La position dans la liste",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "NEEDS_REVIEW et FAILED représentent nécessairement la même situation.",
+            "explanation": "Le premier demande une décision éditoriale ; le second indique un traitement non abouti.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-contrat-api"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "hono-validation"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-modele-source"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "zod-documentation"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-machine-etats"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "postgres-transactions"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-concevoir-contrats-modele-source-workspace"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-contrat-metier-source-workspace"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-concevoir-contrats-modele-source-workspace"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-130-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Hono",
+        "title": "Validation — Hono Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "Hono",
+        "doi": null,
+        "url": "https://hono.dev/docs/guides/validation",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-130-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Zod",
+        "title": "Zod Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "Zod",
+        "doi": null,
+        "url": "https://zod.dev/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-130-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "PostgreSQL Global Development Group",
+        "title": "Transactions — PostgreSQL Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "PostgreSQL Global Development Group",
+        "doi": null,
+        "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-01",
+            "locator": "Validation des entrées, middleware et réponses",
+            "supports": "Soutient le bloc « content-contrat-api » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-130-02",
+            "locator": "Schemas, parsing, erreurs et inférence TypeScript",
+            "supports": "Soutient le bloc « content-contrat-api » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-03",
+            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+            "supports": "Soutient le bloc « content-modele-source » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-130-03",
+            "locator": "BEGIN, COMMIT, ROLLBACK, atomicité et savepoints",
+            "supports": "Soutient le bloc « content-machine-etats » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-130-02",
+            "locator": "Schemas, parsing, erreurs et inférence TypeScript",
+            "supports": "Soutient le bloc « content-machine-etats » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "hono-validation",
+        "referenceIds": ["REF-130-01"],
+        "pedagogicalRationale": "Définir des contrats d’API validés avant la logique métier.",
+        "learnerInstructions": "Lire le guide et produire le contrat d’une création de projet et d’un import de source.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "zod-documentation",
+        "referenceIds": ["REF-130-02"],
+        "pedagogicalRationale": "Partager un contrat exécutable entre API, worker et tests.",
+        "learnerInstructions": "Lire schemas, parse/safeParse et error formatting ; définir deux schémas SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "postgres-transactions",
+        "referenceIds": ["REF-130-03"],
+        "pedagogicalRationale": "Protéger la cohérence entre fichier, source, version et job.",
+        "learnerInstructions": "Lire le tutoriel puis décrire les écritures qui doivent réussir ou échouer ensemble lors d’un import.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "contrat-metier-source-workspace",
+        "assessmentTitle": "Mini-évaluation — Contrat métier du Source Workspace",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi séparer fichier et source ?",
+            "explanation": "La séparation rend provenance et réutilisation explicites.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un même matériau technique et son rôle pédagogique ont des cycles et métadonnées distincts",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour supprimer les transactions",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter tout identifiant",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Parce que PostgreSQL interdit les fichiers",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir une erreur d’API utile ?",
+            "explanation": "Le client a besoin d’un contrat stable sans fuite interne.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Code stable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Message compréhensible",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Détails de validation non sensibles",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Request ID",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Stack complète en production",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le frontend peut être la seule autorité sur les transitions de statut.",
+            "explanation": "Les invariants et autorisations doivent être imposés côté serveur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "contrat-metier-source-workspace",
+          "contentKeys": [
+            "content-contrat-api",
+            "content-modele-source",
+            "content-machine-etats"
+          ],
+          "resourceKeys": [
+            "hono-validation",
+            "zod-documentation",
+            "postgres-transactions"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-concevoir-contrats-modele-source-workspace"
+          },
+          "assessmentKey": "assessment-contrat-metier-source-workspace",
+          "rationale": "La production « Une verticale Project → Source → Status avec contrats Zod, modèle Prisma et tests. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Concevoir les contrats et le modèle du Source Workspace » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
