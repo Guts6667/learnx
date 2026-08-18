@@ -1,0 +1,627 @@
+{
+  "specId": "PEDAGOGY_SPEC_137",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "construire-retrieval-rag-source",
+  "moduleSlug": "module-construire-retrieval-rag-source",
+  "lesson": {
+    "title": "Construire une recherche hybride et un RAG sourcé",
+    "slug": "construire-recherche-hybride-rag-source",
+    "summary": "Combiner recherche lexicale et sémantique, sélectionner un contexte contrôlé et produire des réponses qui citent ou s’abstiennent plutôt que masquer les limites du corpus.",
+    "objectives": [
+      "Comparer recherche lexicale, vectorielle et hybride.",
+      "Assembler un contexte avec provenance et budget explicite.",
+      "Produire citations vérifiables et abstention lorsque les preuves sont insuffisantes."
+    ],
+    "prerequisites": [
+      "Avoir implémenté le retriever vectoriel et son dataset de questions."
+    ],
+    "estimatedMinutes": 230,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-hybrid-search",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La recherche lexicale excelle sur identifiants, termes rares et formulations exactes ; la recherche vectorielle couvre mieux les paraphrases. Une recherche hybride exécute les deux, normalise ou fusionne leurs classements — par exemple avec Reciprocal Rank Fusion — puis peut reranker un petit ensemble. Elle doit être comparée à chaque composant.",
+          "sourceKeys": ["pgvector-readme"]
+        }
+      },
+      {
+        "key": "content-contexte-source",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le contexte envoyé au modèle est une sélection versionnée de passages, chacun accompagné d’un identifiant de source et d’un localisateur. Le prompt distingue instructions de l’application et contenu récupéré. Le modèle ne doit citer qu’un identifiant fourni, puis le serveur vérifie que chaque citation correspond réellement au contexte.",
+          "sourceKeys": ["openai-retrieval", "openai-structured-outputs"]
+        }
+      },
+      {
+        "key": "content-abstention",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Lorsque le retrieval ne fournit pas de preuve suffisante, la bonne sortie est une abstention structurée avec les informations manquantes. Répondre de manière plausible dégrade plus le produit qu’un refus explicite, surtout pour la correction et la génération de contenus pédagogiques.",
+          "sourceKeys": ["nist-genai-profile", "openai-structured-outputs"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "pgvector-readme",
+        "type": "website",
+        "title": "pgvector — Open-source vector similarity search for Postgres",
+        "author": "pgvector",
+        "url": "https://github.com/pgvector/pgvector",
+        "citation": "pgvector. (n.d.). pgvector — Open-source vector similarity search for Postgres. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+        "guidance": {
+          "objective": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+          "instructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+          "scope": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "openai-structured-outputs",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "guidance": {
+          "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+          "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+          "scope": "Schémas, validation et sorties structurées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision humaine.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "RAG sourcé avec abstention",
+        "slug": "rag-source-abstention",
+        "description": "Un RAG fiable sélectionne et vérifie un contexte autorisé, expose ses citations et refuse lorsque ce contexte ne soutient pas la réponse.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["pgvector-readme"],
+        "assessment": {
+          "key": "assessment-rag-source-abstention",
+          "type": "case_question",
+          "title": "Mini-évaluation — RAG sourcé avec abstention",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-recherche-hybride-rag-source",
+        "title": "Comparer trois retrievers et générer une réponse vérifiable",
+        "description": "Implémenter full-text search, fusion hybride et éventuel reranking. Comparer vectoriel, lexical et hybride sur le dataset. Ajouter une génération structurée contenant answer, citations et status. Vérifier côté serveur les citations et créer des cas réponse présente, répartie, contradictoire et absente.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-recherche-hybride-rag-source",
+        "title": "Quiz — Recherche hybride et RAG",
+        "description": "Vérifier les acquis essentiels de la leçon « Construire une recherche hybride et un RAG sourcé ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand retourner INSUFFICIENT_CONTEXT ?",
+            "explanation": "L’abstention est liée aux preuves disponibles.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Quand les passages autorisés ne soutiennent pas la conclusion demandée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quand le modèle répond lentement seulement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quand le style est concis",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Quand la question contient un point",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi conserver le rang et le score des passages ?",
+            "explanation": "Le diagnostic exige la trace des candidats sélectionnés.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Diagnostiquer si l’erreur vient du retrieval ou de la génération",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Décorer l’interface",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Remplacer les sources",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Éviter tout test",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une citation inventée mais ressemblant à une vraie URL peut être acceptée.",
+            "explanation": "Les citations doivent provenir d’identifiants fournis et être validées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-hybrid-search"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pgvector-readme"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-contexte-source"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-abstention"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured-outputs"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-recherche-hybride-rag-source"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-rag-source-abstention"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-recherche-hybride-rag-source"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-137-01",
+        "type": "official_software_documentation",
+        "authors": [],
+        "organization": "pgvector",
+        "title": "pgvector — Open-source vector similarity search for Postgres",
+        "year": null,
+        "edition": null,
+        "publication": "pgvector",
+        "doi": null,
+        "url": "https://github.com/pgvector/pgvector",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-137-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-137-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-137-04",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-01",
+            "locator": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+            "supports": "Soutient le bloc « content-hybrid-search » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-02",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-contexte-source » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-137-03",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-contexte-source » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-04",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-abstention » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-137-03",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-abstention » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "pgvector-readme",
+        "referenceIds": ["REF-137-01"],
+        "pedagogicalRationale": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+        "learnerInstructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-137-02"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-structured-outputs",
+        "referenceIds": ["REF-137-03"],
+        "pedagogicalRationale": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+        "learnerInstructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-137-04"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision humaine.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "rag-source-abstention",
+        "assessmentTitle": "Mini-évaluation — RAG sourcé avec abstention",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel avantage apporte la recherche lexicale ?",
+            "explanation": "La correspondance exacte complète la similarité sémantique.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Retrouver précisément des termes rares, identifiants ou formulations exactes",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Comprendre automatiquement toute intention",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Garantir la vérité",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Remplacer les permissions",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit vérifier le serveur après génération ?",
+            "explanation": "Les contrôles déterministes entourent la génération.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Chaque citation existe dans le contexte",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le statut d’abstention respecte le contrat",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "La sortie respecte le schéma",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Que le modèle affirme être certain",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Ajouter davantage de chunks au contexte améliore toujours la réponse.",
+            "explanation": "Le bruit, le coût et les contradictions peuvent augmenter.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "rag-source-abstention",
+          "contentKeys": [
+            "content-hybrid-search",
+            "content-contexte-source",
+            "content-abstention"
+          ],
+          "resourceKeys": [
+            "pgvector-readme",
+            "openai-retrieval",
+            "openai-structured-outputs",
+            "nist-genai-profile"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-recherche-hybride-rag-source"
+          },
+          "assessmentKey": "assessment-rag-source-abstention",
+          "rationale": "La production « Un RAG hybride avec citations serveur, abstention et rapport comparatif. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Construire une recherche hybride et un RAG sourcé » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

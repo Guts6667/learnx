@@ -1,0 +1,98 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_033",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "creer-program-builder",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Générer un programme LearnX contrôlé",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Transformer une demande et un corpus en brief validé, blueprint, leçons et export LearnX modifiable sans réécriture silencieuse.",
+    "instructions": [
+      "Utiliser une demande incomplète et des sources fournies. Générer les questions adaptatives, faire valider le brief, produire un blueprint puis une étape complète. Exécuter l’adaptateur LearnX, corriger les erreurs, puis appliquer trois modifications ciblées avec diff et respect des éléments verrouillés."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Créer le Program Builder ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "brief-pedagogique-valide",
+      "generation-pedagogique-controlee"
+    ],
+    "rubric": [
+      {
+        "criterion": "Funnel et brief",
+        "weight": 25,
+        "requirements": [
+          "Les questions éclairent des décisions identifiées.",
+          "Faits, hypothèses, contraintes et inconnues restent distincts.",
+          "Les champs bloquants sont validés avant génération."
+        ]
+      },
+      {
+        "criterion": "Architecture pédagogique",
+        "weight": 25,
+        "requirements": [
+          "Objectifs, notions, activités et évaluations sont alignés.",
+          "La charge et les prérequis sont cohérents.",
+          "Les sources soutiennent les blocs générés."
+        ]
+      },
+      {
+        "criterion": "Compatibilité LearnX",
+        "weight": 25,
+        "requirements": [
+          "Le format passe les validations déterministes.",
+          "Clés, slugs, séquences et évaluations requises sont présents.",
+          "Les références inexistantes bloquent l’export."
+        ]
+      },
+      {
+        "criterion": "Édition ciblée",
+        "weight": 25,
+        "requirements": [
+          "Le diff annonce le périmètre.",
+          "Les éléments verrouillés ne sont pas modifiés.",
+          "Les dépendances affectées sont signalées avant application."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-138-01",
+      "REF-138-02",
+      "REF-138-03",
+      "REF-138-04",
+      "REF-139-01",
+      "REF-139-02",
+      "REF-139-03",
+      "REF-139-04",
+      "REF-139-05"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Créer le Program Builder ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

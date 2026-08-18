@@ -1,0 +1,566 @@
+{
+  "specId": "PEDAGOGY_SPEC_136",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "construire-retrieval-rag-source",
+  "moduleSlug": "module-construire-retrieval-rag-source",
+  "lesson": {
+    "title": "Comprendre embeddings, distances et pgvector",
+    "slug": "comprendre-embeddings-distances-pgvector",
+    "summary": "Implémenter une recherche sémantique en TypeScript et PostgreSQL en comprenant ce que représente un embedding, comment mesurer la proximité et quand indexer approximativement.",
+    "objectives": [
+      "Générer et stocker des embeddings avec un contrat provider-agnostic.",
+      "Utiliser distance cosinus, top-k, filtres et recherche exacte.",
+      "Mesurer le compromis entre index approximatif, latence et rappel."
+    ],
+    "prerequisites": ["Disposer d’un corpus de chunks versionnés."],
+    "estimatedMinutes": 220,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-embedding-representation",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un embedding représente une entrée par un vecteur dont la géométrie encode certaines proximités apprises. Une proximité élevée indique une similarité utile au modèle d’embedding, pas une preuve de vérité, d’autorité ou d’équivalence pédagogique. Les métadonnées et filtres restent indispensables.",
+          "sourceKeys": ["ai-sdk-embeddings"]
+        }
+      },
+      {
+        "key": "content-distance-recherche",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "pgvector permet la recherche exacte et des index approximatifs comme HNSW ou IVFFlat. La recherche exacte sert de référence de rappel ; un index approximatif accélère les grands corpus au prix de résultats potentiellement différents. La fonction de distance doit être compatible avec le modèle et le protocole choisi.",
+          "sourceKeys": ["pgvector-readme"]
+        }
+      },
+      {
+        "key": "content-topk-seuil",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Top-k, seuil et filtre répondent à des questions distinctes : combien de candidats examiner, quelle pertinence minimale accepter et qui a le droit d’être candidat. Augmenter top-k peut améliorer le rappel mais aussi le coût, le bruit et la longueur du contexte. Ces réglages doivent être mesurés ensemble.",
+          "sourceKeys": ["pgvector-readme", "openai-retrieval"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "ai-sdk-embeddings",
+        "type": "website",
+        "title": "AI SDK Core — Embeddings",
+        "author": "Vercel",
+        "url": "https://ai-sdk.dev/docs/ai-sdk-core/embeddings",
+        "citation": "Vercel. (n.d.). AI SDK Core — Embeddings. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire embed et embedMany ; préparer un contrat provider-agnostic pour SourceLab.",
+        "guidance": {
+          "objective": "Générer des embeddings en TypeScript et suivre leur usage.",
+          "instructions": "Lire embed et embedMany ; préparer un contrat provider-agnostic pour SourceLab.",
+          "scope": "embed, embedMany, batch et similarité",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "pgvector-readme",
+        "type": "website",
+        "title": "pgvector — Open-source vector similarity search for Postgres",
+        "author": "pgvector",
+        "url": "https://github.com/pgvector/pgvector",
+        "citation": "pgvector. (n.d.). pgvector — Open-source vector similarity search for Postgres. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+        "guidance": {
+          "objective": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+          "instructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+          "scope": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 2
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Recherche vectorielle mesurée",
+        "slug": "recherche-vectorielle-mesuree",
+        "description": "La recherche vectorielle combine représentation, distance, filtres et paramètres dont la qualité doit être mesurée contre une référence.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["ai-sdk-embeddings"],
+        "assessment": {
+          "key": "assessment-recherche-vectorielle-mesuree",
+          "type": "case_question",
+          "title": "Mini-évaluation — Recherche vectorielle mesurée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-comprendre-embeddings-distances-pgvector",
+        "title": "Construire le retriever vectoriel",
+        "description": "Ajouter pgvector, une abstraction EmbeddingProvider TypeScript et l’indexation batch. Implémenter une recherche exacte filtrée par projet/version/permission, puis HNSW. Sur un dataset de questions, mesurer latence et rappel des bons chunks par rapport à l’exact, et documenter dimension, modèle, distance et coût.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-comprendre-embeddings-distances-pgvector",
+        "title": "Quiz — Embeddings et pgvector",
+        "description": "Vérifier les acquis essentiels de la leçon « Comprendre embeddings, distances et pgvector ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel paramètre borne le nombre initial de voisins retournés ?",
+            "explanation": "Top-k fixe le nombre de candidats.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "top-k",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le code HTTP",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le PID",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le TTL de session",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi versionner le modèle d’embedding ?",
+            "explanation": "Les résultats ne sont comparables que si la représentation est identifiée.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un changement peut modifier tous les vecteurs et classements",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour changer la langue de l’interface",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter PostgreSQL",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour masquer les coûts",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les permissions peuvent être appliquées après la génération sans risque.",
+            "explanation": "Un passage interdit ne doit jamais entrer dans le contexte du modèle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-embedding-representation"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ai-sdk-embeddings"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-distance-recherche"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "pgvector-readme"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-topk-seuil"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-comprendre-embeddings-distances-pgvector"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-recherche-vectorielle-mesuree"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-comprendre-embeddings-distances-pgvector"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-136-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Vercel",
+        "title": "AI SDK Core — Embeddings",
+        "year": null,
+        "edition": null,
+        "publication": "Vercel",
+        "doi": null,
+        "url": "https://ai-sdk.dev/docs/ai-sdk-core/embeddings",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-136-02",
+        "type": "official_software_documentation",
+        "authors": [],
+        "organization": "pgvector",
+        "title": "pgvector — Open-source vector similarity search for Postgres",
+        "year": null,
+        "edition": null,
+        "publication": "pgvector",
+        "doi": null,
+        "url": "https://github.com/pgvector/pgvector",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-136-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-01",
+            "locator": "embed, embedMany, batch et similarité",
+            "supports": "Soutient le bloc « content-embedding-representation » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-02",
+            "locator": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+            "supports": "Soutient le bloc « content-distance-recherche » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-136-02",
+            "locator": "Types vectoriels, distances, recherche exacte/approximative et hybrid search",
+            "supports": "Soutient le bloc « content-topk-seuil » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-136-03",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-topk-seuil » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "ai-sdk-embeddings",
+        "referenceIds": ["REF-136-01"],
+        "pedagogicalRationale": "Générer des embeddings en TypeScript et suivre leur usage.",
+        "learnerInstructions": "Lire embed et embedMany ; préparer un contrat provider-agnostic pour SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "pgvector-readme",
+        "referenceIds": ["REF-136-02"],
+        "pedagogicalRationale": "Stocker et rechercher les embeddings en mesurant le compromis vitesse-rappel.",
+        "learnerInstructions": "Lire distance, indexing, hybrid search et monitoring ; relever les opérateurs et le protocole de mesure.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-136-03"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "recherche-vectorielle-mesuree",
+        "assessmentTitle": "Mini-évaluation — Recherche vectorielle mesurée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que signifie principalement une faible distance entre deux embeddings ?",
+            "explanation": "La proximité sémantique n’établit pas l’autorité ni la vérité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le modèle les représente comme proches selon sa géométrie",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Les deux textes sont juridiquement équivalents",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La source est automatiquement fiable",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "La réponse est complète",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels réglages influencent le retrieval vectoriel ?",
+            "explanation": "La qualité dépend du pipeline complet.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Modèle d’embedding",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Distance",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Top-k",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Filtres de métadonnées",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Nom de la branche Git uniquement",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un index approximatif doit être évalué contre une recherche exacte pour mesurer le rappel.",
+            "explanation": "La recherche exacte fournit une référence utile.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "recherche-vectorielle-mesuree",
+          "contentKeys": [
+            "content-embedding-representation",
+            "content-distance-recherche",
+            "content-topk-seuil"
+          ],
+          "resourceKeys": [
+            "ai-sdk-embeddings",
+            "pgvector-readme",
+            "openai-retrieval"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-comprendre-embeddings-distances-pgvector"
+          },
+          "assessmentKey": "assessment-recherche-vectorielle-mesuree",
+          "rationale": "La production « Un retriever vectoriel TypeScript/pgvector accompagné d’un benchmark exact versus HNSW. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Comprendre embeddings, distances et pgvector » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

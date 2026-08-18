@@ -1,0 +1,566 @@
+{
+  "specId": "PEDAGOGY_SPEC_128",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "containeriser-environnement-multiservice",
+  "moduleSlug": "module-containeriser-environnement-multiservice",
+  "lesson": {
+    "title": "Construire une image TypeScript reproductible",
+    "slug": "construire-image-typescript-reproductible",
+    "summary": "Containeriser l’API SourceLab en comprenant les couches, le contexte de build, la séparation build/runtime et les propriétés opérationnelles de l’image.",
+    "objectives": [
+      "Expliquer la différence entre image, container, couche et registre.",
+      "Écrire un Dockerfile multi-stage ne contenant que le runtime nécessaire.",
+      "Réduire les risques liés au cache, aux secrets et à l’utilisateur root."
+    ],
+    "prerequisites": [
+      "Disposer d’une API SourceLab démarrant et s’arrêtant proprement."
+    ],
+    "estimatedMinutes": 190,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-image-container",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une image est un artefact immuable composé de couches ; un container est une exécution de cette image avec sa configuration, son réseau et son système de fichiers écrivable. Recréer un container ne doit donc pas être assimilé à restaurer ses données.",
+          "sourceKeys": ["docker-overview"]
+        }
+      },
+      {
+        "key": "content-multistage",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Un build multi-stage sépare installation, compilation et runtime. Pour SourceLab, le compilateur, les tests et les dépendances de développement restent hors de l’image finale ; seuls le JavaScript produit, les dépendances de production et les fichiers explicitement requis sont copiés.",
+          "sourceKeys": [
+            "docker-multi-stage-builds",
+            "docker-build-best-practices"
+          ]
+        }
+      },
+      {
+        "key": "content-reproductibilite-securite",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une image exploitable utilise une base identifiée, un lockfile, un contexte réduit par .dockerignore, un utilisateur non-root et aucun secret incorporé. Le tag facilite la lecture humaine ; le digest identifie précisément le contenu déployé.",
+          "sourceKeys": ["docker-build-best-practices"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "docker-overview",
+        "type": "website",
+        "title": "Docker overview",
+        "author": "Docker",
+        "url": "https://docs.docker.com/get-started/docker-overview/",
+        "citation": "Docker. (n.d.). Docker overview. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
+        "guidance": {
+          "objective": "Distinguer image, container, registre et runtime.",
+          "instructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
+          "scope": "Images, containers, registries et architecture du moteur",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "docker-multi-stage-builds",
+        "type": "website",
+        "title": "Multi-stage builds",
+        "author": "Docker",
+        "url": "https://docs.docker.com/build/building/multi-stage/",
+        "citation": "Docker. (n.d.). Multi-stage builds. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
+        "guidance": {
+          "objective": "Séparer dépendances, compilation et runtime dans un Dockerfile TypeScript.",
+          "instructions": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
+          "scope": "Stages de build, COPY --from et cible runtime",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "docker-build-best-practices",
+        "type": "website",
+        "title": "Building best practices",
+        "author": "Docker",
+        "url": "https://docs.docker.com/build/building/best-practices/",
+        "citation": "Docker. (n.d.). Building best practices. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
+        "guidance": {
+          "objective": "Construire une image petite, reproductible et exploitable.",
+          "instructions": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
+          "scope": "Images de base, cache, contexte, sécurité et CI",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Image de runtime reproductible",
+        "slug": "image-runtime-reproductible",
+        "description": "Une image de production doit pouvoir être reconstruite, inspectée et exécutée avec un contenu minimal, sans dépendre d’un état local caché.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["docker-overview"],
+        "assessment": {
+          "key": "assessment-image-runtime-reproductible",
+          "type": "case_question",
+          "title": "Mini-évaluation — Image de runtime reproductible",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-image-typescript-reproductible",
+        "title": "Containeriser l’API SourceLab",
+        "description": "Écrire un Dockerfile multi-stage et un .dockerignore. Construire l’image deux fois, expliquer l’usage du cache, inspecter sa taille et son utilisateur, puis exécuter l’API avec une configuration injectée au runtime. Prouver qu’aucun fichier .env, source TypeScript inutile ou secret n’est présent.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-image-typescript-reproductible",
+        "title": "Quiz — Images et Dockerfile",
+        "description": "Vérifier les acquis essentiels de la leçon « Construire une image TypeScript reproductible ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "À quoi sert .dockerignore ?",
+            "explanation": "Le contexte est envoyé au builder ; le réduire améliore vitesse et sécurité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Exclure du contexte les fichiers inutiles ou sensibles avant le build",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Bloquer le réseau du container",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Créer un volume",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Valider les variables",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi exécuter avec un utilisateur non-root ?",
+            "explanation": "Le principe du moindre privilège s’applique aussi au runtime.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Limiter l’impact d’une compromission ou d’une erreur dans le container",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rendre TypeScript plus rapide",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter les migrations",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Remplacer TLS",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un tag mutable garantit à lui seul que staging et production exécutent les mêmes octets.",
+            "explanation": "Un digest ou un artefact immuable fournit une identité plus forte.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-image-container"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-overview"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-multistage"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-multi-stage-builds"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-reproductibilite-securite"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-build-best-practices"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-image-typescript-reproductible"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-image-runtime-reproductible"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-image-typescript-reproductible"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-128-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Docker",
+        "title": "Docker overview",
+        "year": null,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/get-started/docker-overview/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-128-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Docker",
+        "title": "Multi-stage builds",
+        "year": null,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/build/building/multi-stage/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-128-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Docker",
+        "title": "Building best practices",
+        "year": null,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/build/building/best-practices/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-01",
+            "locator": "Images, containers, registries et architecture du moteur",
+            "supports": "Soutient le bloc « content-image-container » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-02",
+            "locator": "Stages de build, COPY --from et cible runtime",
+            "supports": "Soutient le bloc « content-multistage » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-128-03",
+            "locator": "Images de base, cache, contexte, sécurité et CI",
+            "supports": "Soutient le bloc « content-multistage » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-128-03",
+            "locator": "Images de base, cache, contexte, sécurité et CI",
+            "supports": "Soutient le bloc « content-reproductibilite-securite » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "docker-overview",
+        "referenceIds": ["REF-128-01"],
+        "pedagogicalRationale": "Distinguer image, container, registre et runtime.",
+        "learnerInstructions": "Lire l’overview et expliquer avec SourceLab ce qui est construit une fois, exécuté plusieurs fois et persiste hors container.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "docker-multi-stage-builds",
+        "referenceIds": ["REF-128-02"],
+        "pedagogicalRationale": "Séparer dépendances, compilation et runtime dans un Dockerfile TypeScript.",
+        "learnerInstructions": "Lire la page et identifier les fichiers qui doivent ou ne doivent pas atteindre l’image finale.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "docker-build-best-practices",
+        "referenceIds": ["REF-128-03"],
+        "pedagogicalRationale": "Construire une image petite, reproductible et exploitable.",
+        "learnerInstructions": "Lire les recommandations sur images de base, cache, multi-stage et CI ; convertir cinq points en critères de revue.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "image-runtime-reproductible",
+        "assessmentTitle": "Mini-évaluation — Image de runtime reproductible",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel élément doit rester hors de l’image runtime ?",
+            "explanation": "Le multi-stage retire les outils de construction de la cible finale.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le compilateur TypeScript utilisé uniquement pendant le build",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le JavaScript compilé",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le fichier package nécessaire au runtime",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le code de démarrage",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels choix améliorent la reproductibilité ?",
+            "explanation": "La reproductibilité réduit les entrées implicites.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Lockfile figé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Base image identifiée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Contexte de build minimal",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Copier le répertoire personnel complet",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un container est une sauvegarde durable des données de l’application.",
+            "explanation": "Le filesystem écrivable du container est remplaçable ; la persistance doit être externe.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "image-runtime-reproductible",
+          "contentKeys": [
+            "content-image-container",
+            "content-multistage",
+            "content-reproductibilite-securite"
+          ],
+          "resourceKeys": [
+            "docker-overview",
+            "docker-multi-stage-builds",
+            "docker-build-best-practices"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-image-typescript-reproductible"
+          },
+          "assessmentKey": "assessment-image-runtime-reproductible",
+          "rationale": "La production « Une image API multi-stage documentée, inspectée et exécutable sans état local implicite. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Construire une image TypeScript reproductible » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

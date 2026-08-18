@@ -1,0 +1,635 @@
+{
+  "specId": "PEDAGOGY_SPEC_140",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "evaluer-reponses-livrer-ia",
+  "moduleSlug": "module-evaluer-reponses-livrer-ia",
+  "lesson": {
+    "title": "Corriger un texte libre avec une grille préexistante",
+    "slug": "corriger-texte-libre-grille-preexistante",
+    "summary": "Construire un moteur de rubrique exécutable : rechercher des preuves exactes dans une réponse, les valider, calculer les niveaux côté LearnX et s’abstenir lorsque l’ambiguïté est matérielle.",
+    "objectives": [
+      "Transformer une grille en éléments atomiques observables, propriétaires et non redondants.",
+      "Produire un certificat de preuve puis calculer niveaux et feedback par règles déterministes.",
+      "Tester localité, monotonie, concision, ambiguïté, injection et abstention."
+    ],
+    "prerequisites": ["Disposer du RAG sourcé et du contrat d’évaluation."],
+    "estimatedMinutes": 240,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-rubrique-avant-reponse",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La grille existe avant la réponse et décompose chaque critère en éléments atomiques avec propriétaire, règles de preuve, contradictions et niveaux atteignables. Une lacune ne peut pénaliser que son élément propriétaire, sauf partage explicitement authoré. Ajouter une exigence après lecture ou réutiliser une même lacune pour deux critères rend la correction incohérente.",
+          "sourceKeys": ["openai-structured-outputs", "nist-genai-profile"]
+        }
+      },
+      {
+        "key": "content-feedback-structure",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le premier modèle recherche des éléments démontrés et retourne des extraits exacts de la réponse ; un falsificateur peut contester ces preuves sans voir de niveau proposé. LearnX valide les spans, compile les statuts atomiques, calcule les niveaux et produit un feedback depuis des templates authorés. Le certificat conserve rubrique, règles, preuves, contradictions et empreinte du pipeline.",
+          "sourceKeys": ["openai-structured-outputs", "openai-evals"]
+        }
+      },
+      {
+        "key": "content-confiance-escalade",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "La confiance numérique déclarée par un modèle n’a aucune autorité décisionnelle. LearnX teste toutes les résolutions possibles d’un élément ambigu : si elles donnent le même niveau, le feedback peut être rendu ; si elles changent le niveau, aucun score exact n’est affiché et une clarification ciblée crée une nouvelle version de la réponse.",
+          "sourceKeys": ["openai-safety-best-practices", "nist-genai-profile"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-structured-outputs",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "guidance": {
+          "objective": "Contraindre les preuves produites par les modèles avant tout calcul LearnX.",
+          "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+          "scope": "Schémas, validation et sorties structurées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "guidance": {
+          "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+          "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+          "scope": "Datasets, graders, runs et comparaison",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "openai-safety-best-practices",
+        "type": "website",
+        "title": "Safety best practices",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+        "citation": "OpenAI. (n.d.). Safety best practices. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+        "guidance": {
+          "objective": "Définir des garde-fous proportionnés pour génération et correction.",
+          "instructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+          "scope": "Adversarial testing, limitation des entrées/sorties et contrôles déterministes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      },
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision explicite du produit.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Correction formative par rubrique exécutable",
+        "slug": "evaluation-assistee-rubrique",
+        "description": "Les modèles recherchent ou contestent des preuves dans une réponse ; LearnX applique une rubrique compilée, rend un feedback traçable et s’abstient lorsque l’incertitude change le niveau.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openai-structured-outputs"],
+        "assessment": {
+          "key": "assessment-evaluation-assistee-rubrique",
+          "type": "case_question",
+          "title": "Mini-évaluation — Correction formative par rubrique exécutable",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-corriger-texte-libre-grille-preexistante",
+        "title": "Construire le moteur de rubrique exécutable",
+        "description": "Créer un corpus mécanique et un corpus synthétique séparés : réponse complète concise, formulation inattendue, verbosité vide, retrait d’une preuve, contradiction, citation fausse et tentative d’influencer le chercheur. Compiler les éléments et leurs propriétaires, valider les spans, calculer les niveaux côté serveur et tester FEEDBACK_READY, REVISION_REQUIRED, CLARIFICATION_REQUIRED et TEMPORARILY_UNAVAILABLE.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-corriger-texte-libre-grille-preexistante",
+        "title": "Quiz — Rubrique exécutable",
+        "description": "Vérifier les acquis essentiels de la leçon « Corriger un texte libre avec une grille préexistante ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Que faire d’une réponse correcte avec une formulation inattendue ?",
+            "explanation": "La grille mesure la compétence, pas la copie d’un exemple.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "L’évaluer selon le critère et l’évidence, sans exiger la réponse modèle mot pour mot",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La rejeter automatiquement",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ajouter un critère de style après coup",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ignorer la grille",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel état convient lorsque deux résolutions plausibles d’une ambiguïté produisent des niveaux différents ?",
+            "explanation": "Une ambiguïté matériellement décisive exige une clarification ciblée plutôt qu’un score artificiellement précis.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "CLARIFICATION_REQUIRED",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "FEEDBACK_READY par défaut",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "READY_TO_PUBLISH",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "NO_LOG",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le score indicatif calculé par le moteur de rubrique doit modifier directement la progression LearnX.",
+            "explanation": "Remise, feedback formatif et maîtrise restent trois états distincts.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-rubrique-avant-reponse"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured-outputs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-feedback-structure"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-confiance-escalade"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-safety-best-practices"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-corriger-texte-libre-grille-preexistante"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-evaluation-assistee-rubrique"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-corriger-texte-libre-grille-preexistante"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-140-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-140-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Evals",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-140-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Safety best practices",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-140-04",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-rubrique-avant-reponse » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-140-04",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-rubrique-avant-reponse » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-01",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-feedback-structure » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-140-02",
+            "locator": "Datasets, graders, runs et comparaison",
+            "supports": "Soutient le bloc « content-feedback-structure » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-140-03",
+            "locator": "Adversarial testing et limitation des entrées/sorties",
+            "supports": "Soutient le bloc « content-confiance-escalade » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-140-04",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-confiance-escalade » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-structured-outputs",
+        "referenceIds": ["REF-140-01"],
+        "pedagogicalRationale": "Contraindre les preuves produites par les modèles avant tout calcul LearnX.",
+        "learnerInstructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": ["REF-140-02"],
+        "pedagogicalRationale": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+        "learnerInstructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-safety-best-practices",
+        "referenceIds": ["REF-140-03"],
+        "pedagogicalRationale": "Définir des garde-fous proportionnés pour génération et correction.",
+        "learnerInstructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-140-04"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision explicite du produit.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "evaluation-assistee-rubrique",
+        "assessmentTitle": "Mini-évaluation — Correction formative par rubrique exécutable",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand compiler la rubrique exécutable ?",
+            "explanation": "Les éléments, propriétaires et règles préexistent à la réponse pour protéger la cohérence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Avant de soumettre la réponse au moteur",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Après avoir vu le style",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Uniquement en cas de désaccord",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Après publication du score",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir un certificat de preuve reconstructible ?",
+            "explanation": "Chaque niveau calculé doit pouvoir être relié à la règle et aux preuves validées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Clé de l’élément et statut atomique",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Offsets et hash des extraits de la réponse",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Identifiant et version de la règle appliquée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Version de la rubrique et empreinte du pipeline",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Une nouvelle exigence non prévue",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une réponse plus longue mérite automatiquement un meilleur score.",
+            "explanation": "La note dépend des critères, pas de la longueur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "evaluation-assistee-rubrique",
+          "contentKeys": [
+            "content-rubrique-avant-reponse",
+            "content-feedback-structure",
+            "content-confiance-escalade"
+          ],
+          "resourceKeys": [
+            "openai-structured-outputs",
+            "openai-evals",
+            "openai-safety-best-practices",
+            "nist-genai-profile"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-corriger-texte-libre-grille-preexistante"
+          },
+          "assessmentKey": "assessment-evaluation-assistee-rubrique",
+          "rationale": "La production « Un moteur de rubrique exécutable avec recherche de preuves, certificat vérifiable, calcul déterministe et abstention. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Corriger un texte libre avec une grille préexistante » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

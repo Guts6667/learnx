@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_028",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "containeriser-environnement-multiservice",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Exécuter SourceLab localement avec Docker",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Livrer une stack locale reproductible API-worker-PostgreSQL démarrant avec une commande et résistant aux remplacements de containers.",
+    "instructions": [
+      "Construire les images et compose.yaml, puis démontrer build froid et avec cache, démarrage sain, persistance, configuration runtime, communication interne, remplacement d’un container et erreur de readiness. Fournir une fiche de revue sécurité et exploitation."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Containeriser un environnement multi-service ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "image-runtime-reproductible",
+      "environnement-multiservice-reproductible"
+    ],
+    "rubric": [
+      {
+        "criterion": "Images reproductibles",
+        "weight": 25,
+        "requirements": [
+          "Les Dockerfiles sont multi-stage et figés par lockfile.",
+          "Le runtime ne contient ni secrets ni outils inutiles.",
+          "L’utilisateur non-root et le contexte réduit sont vérifiés."
+        ]
+      },
+      {
+        "criterion": "Orchestration",
+        "weight": 30,
+        "requirements": [
+          "API, worker et base ont des responsabilités séparées.",
+          "Healthchecks et conditions de démarrage reflètent la readiness.",
+          "Réseau interne et ports publiés sont correctement utilisés."
+        ]
+      },
+      {
+        "criterion": "Persistance et configuration",
+        "weight": 25,
+        "requirements": [
+          "Les données métier survivent au remplacement.",
+          "Les données reconstruisibles ne sont pas persistées sans raison.",
+          "La configuration est injectée au runtime."
+        ]
+      },
+      {
+        "criterion": "Reproductibilité",
+        "weight": 20,
+        "requirements": [
+          "Une commande documentée démarre la stack.",
+          "Les preuves couvrent un démarrage depuis un environnement propre.",
+          "Les limites locales sont explicites."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-128-01",
+      "REF-128-02",
+      "REF-128-03",
+      "REF-129-01",
+      "REF-129-02",
+      "REF-129-03"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Containeriser un environnement multi-service ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

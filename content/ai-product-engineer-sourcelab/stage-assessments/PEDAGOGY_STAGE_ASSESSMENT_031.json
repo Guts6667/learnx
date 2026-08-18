@@ -1,0 +1,96 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_031",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "preparer-corpus-ia-fiable",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Spécifier et produire un corpus SourceLab",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Cadrer les deux usages IA et transformer un Source Pack hétérogène en corpus versionné, traçable et autorisé.",
+    "instructions": [
+      "À partir d’un projet contenant documents, liens, contenus LearnX, doublons et une source contradictoire, produire les ADR des deux fonctions IA, le modèle canonique, deux chunkings, la propagation des permissions et un rapport de qualité. Montrer les inconnues qui bloquent encore la génération."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Préparer un corpus IA fiable ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "architecture-ia-bornee-produit",
+      "corpus-versionne-tracable"
+    ],
+    "rubric": [
+      {
+        "criterion": "Cadrage produit",
+        "weight": 25,
+        "requirements": [
+          "Les deux usages, responsabilités et non-objectifs sont distincts.",
+          "Les sorties, abstentions et autorités déterministes sont explicites.",
+          "Aucune décision finale LearnX n’est déléguée implicitement."
+        ]
+      },
+      {
+        "criterion": "Corpus et provenance",
+        "weight": 30,
+        "requirements": [
+          "Chaque segment possède source, version et localisateur.",
+          "Rôles éditoriaux et permissions sont conservés.",
+          "La réindexation est versionnée et idempotente."
+        ]
+      },
+      {
+        "criterion": "Chunking et qualité",
+        "weight": 25,
+        "requirements": [
+          "Deux stratégies sont comparées sur des cas réels.",
+          "Les ruptures de structure sont analysées.",
+          "Le choix est présenté comme hypothèse mesurable."
+        ]
+      },
+      {
+        "criterion": "Traçabilité et limites",
+        "weight": 20,
+        "requirements": [
+          "Contradictions et inconnues sont visibles.",
+          "Les sources non vérifiées ne deviennent pas des faits.",
+          "Le rapport permet de reproduire le corpus."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-134-01",
+      "REF-134-02",
+      "REF-134-03",
+      "REF-134-04",
+      "REF-135-01",
+      "REF-135-02",
+      "REF-135-03"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Préparer un corpus IA fiable ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
