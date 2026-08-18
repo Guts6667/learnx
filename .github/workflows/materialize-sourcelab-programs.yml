@@ -1,0 +1,50 @@
+name: Materialize SourceLab programs
+
+on:
+  push:
+    branches:
+      - agent/sourcelab-programs
+    paths:
+      - scripts/generate-sourcelab-programs.mjs
+      - scripts/sourcelab-programs/**
+      - .github/workflows/materialize-sourcelab-programs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Generate and validate SourceLab curricula
+        run: |
+          node scripts/generate-sourcelab-programs.mjs
+          node scripts/generate-sourcelab-programs.mjs --check
+      - name: Commit generated LearnX content
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            seed/sourcelab-production-engineering-program.json \
+            seed/sourcelab-ai-rag-program.json \
+            content/sourcelab-ingenierie-production \
+            content/sourcelab-ia-rag \
+            prisma/seed.ts \
+            docs/INDEX.md \
+            package.json \
+            .github/workflows/integration.yml
+          if git diff --cached --quiet; then
+            echo "Generated content is already up to date."
+            exit 0
+          fi
+          git commit -m "content(sourcelab): materialize LearnX programs [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
