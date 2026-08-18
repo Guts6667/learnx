@@ -1,0 +1,518 @@
+{
+  "specId": "PEDAGOGY_SPEC_147",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "corriger-textes-libres",
+  "moduleSlug": "assessment-reviewer",
+  "lesson": {
+    "title": "Calibrer confiance, cohérence et revue humaine",
+    "slug": "calibrer-confiance-revue-humaine",
+    "summary": "Mesurer stabilité et accord avec des évaluations humaines, détecter les cas difficiles et router automatiquement vers feedback, confirmation ou revue obligatoire.",
+    "objectives": [
+      "Évaluer accord, cohérence et biais sur un dataset annoté.",
+      "Définir une confiance fondée sur signaux observables.",
+      "Créer des règles d’escalade proportionnées à l’enjeu."
+    ],
+    "prerequisites": [
+      "Disposer d’une correction structurée par rubrique."
+    ],
+    "estimatedMinutes": 105,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-calibrer-confiance-revue-humaine-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La confiance utile n’est pas une auto-déclaration du modèle. Elle combine disponibilité des sources, couverture des critères, accord entre runs ou évaluateurs, validité de la sortie et distance aux cas annotés.",
+          "sourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-calibrer-confiance-revue-humaine-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab route une réponse factuelle bien couverte vers `AUTO_FEEDBACK`, une réponse atypique mais plausible vers `HUMAN_CONFIRMATION_REQUIRED`, et un domaine sensible ou une source contradictoire vers `HUMAN_REVIEW_REQUIRED`.",
+          "sourceKeys": [
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-calibrer-confiance-revue-humaine-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Mesurer les écarts par sous-groupes de longueur, style, langue et type de réponse. Une note stable peut rester systématiquement biaisée ; l’accord global ne suffit pas à valider tous les profils de cas.",
+          "sourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Working with evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (2026). Working with evals. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à datasets, critères, runs et comparaison de qualité puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant datasets, critères, runs et comparaison de qualité.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "datasets, critères, runs et comparaison de qualité",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "nist-ai-rmf",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Consulter la partie consacrée à gouvernance, cartographie, mesure et gestion des risques puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant gouvernance, cartographie, mesure et gestion des risques.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "gouvernance, cartographie, mesure et gestion des risques",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Escalade calibrée",
+        "slug": "escalade-calibree",
+        "description": "La route de décision dépend de preuves de qualité, de l’incertitude et de l’enjeu, pas d’un score arbitraire du modèle.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-evals",
+          "nist-ai-rmf"
+        ],
+        "assessment": {
+          "key": "assessment-escalade-calibree",
+          "type": "quiz",
+          "title": "Mini-évaluation — Escalade calibrée",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-calibrer-confiance-revue-humaine",
+        "title": "Évaluer et router les corrections",
+        "description": "Faire annoter un sous-ensemble, mesurer accord par critère et stabilité, définir règles de routing, puis documenter faux positifs, faux négatifs et procédure de contestation.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-calibrer-confiance-revue-humaine",
+        "title": "Quiz de leçon — Calibrer confiance, cohérence et revue humaine",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "L’accord humain-modèle est bon globalement mais faible sur les réponses très courtes. Que faire ?",
+            "explanation": "Les performances segmentées révèlent les zones de risque.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Créer une règle ou une amélioration ciblée et suivre ce sous-groupe.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Masquer le sous-groupe.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Conserver uniquement la moyenne.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit permettre une contestation ?",
+            "explanation": "La revue doit être explicable et auditable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Voir les critères appliqués",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Corriger la décision finale",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Conserver la trace de la révision",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Effacer silencieusement le run initial",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une correction automatique doit toujours modifier directement la progression LearnX.",
+            "explanation": "LearnX reste l’autorité finale selon la politique choisie.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-calibrer-confiance-revue-humaine-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-calibrer-confiance-revue-humaine-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-calibrer-confiance-revue-humaine-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-calibrer-confiance-revue-humaine"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-escalade-calibree"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-calibrer-confiance-revue-humaine"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-147-OPENAI_EVALS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Working with evals",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-147-NIST_AI_RMF",
+        "type": "official_documentation",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-147-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur escalade calibrée."
+          },
+          {
+            "referenceId": "REF-147-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur escalade calibrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-147-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur escalade calibrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-147-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur escalade calibrée."
+          },
+          {
+            "referenceId": "REF-147-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur escalade calibrée."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": [
+          "REF-147-OPENAI_EVALS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour datasets, critères, runs et comparaison de qualité.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "nist-ai-rmf",
+        "referenceIds": [
+          "REF-147-NIST_AI_RMF"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour gouvernance, cartographie, mesure et gestion des risques.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "escalade-calibree",
+        "assessmentTitle": "Mini-évaluation — Escalade calibrée",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel signal est le moins fiable comme confiance à lui seul ?",
+            "explanation": "Une valeur non calibrée n’a pas de signification opérationnelle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un nombre produit par le modèle disant « 0,92 » sans calibration.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Accord sur un dataset annoté.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Couverture des critères et sources.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Qu’est-ce qui peut déclencher une revue humaine ?",
+            "explanation": "Le routing combine incertitude et risque.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Source insuffisante",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réponse atypique",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Enjeu élevé",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Statut HTTP 200 seul",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une forte cohérence entre plusieurs runs prouve l’absence de biais systématique.",
+            "explanation": "Le système peut répéter la même erreur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "escalade-calibree",
+          "contentKeys": [
+            "content-calibrer-confiance-revue-humaine-1",
+            "content-calibrer-confiance-revue-humaine-2",
+            "content-calibrer-confiance-revue-humaine-3"
+          ],
+          "resourceKeys": [
+            "openai-evals",
+            "nist-ai-rmf"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-calibrer-confiance-revue-humaine"
+          },
+          "assessmentKey": "assessment-escalade-calibree",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

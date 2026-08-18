@@ -1,0 +1,94 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_029",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-api-worker-donnees",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Rendre l’import asynchrone fiable",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Implémenter le cycle complet d’un import SourceLab, puis démontrer qu’il résiste aux répétitions, crashes et workers concurrents.",
+    "instructions": [
+      "Définir et valider le contrat de création et consultation des jobs.",
+      "Implémenter les transitions autorisées et les états terminaux.",
+      "Ajouter idempotence, réclamation atomique, lease, retry borné et erreurs définitives.",
+      "Écrire les tests des quatre pannes du cas.",
+      "Expliquer les garanties obtenues et celles qui restent hors périmètre."
+    ],
+    "case": "Cas fictif — Un utilisateur clique deux fois sur Importer, deux workers réclament le même job et l’un s’arrête après avoir écrit le résultat mais avant de changer le statut. Une erreur de fichier non supporté est réessayée sans fin.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "API et worker fonctionnels, schéma d’états, tests d’intégration, journal des exécutions et note d’architecture.",
+    "conceptSlugs": [
+      "cycle-vie-job",
+      "traitement-asynchrone-sur"
+    ],
+    "rubric": [
+      {
+        "criterion": "Contrat et états",
+        "weight": 25,
+        "requirements": [
+          "Entrées, sorties et transitions sont explicites.",
+          "Les erreurs terminales ne restent pas bloquées."
+        ]
+      },
+      {
+        "criterion": "Idempotence",
+        "weight": 25,
+        "requirements": [
+          "Une même intention ne duplique pas l’effet.",
+          "La base complète les contrôles applicatifs."
+        ]
+      },
+      {
+        "criterion": "Concurrence et reprise",
+        "weight": 30,
+        "requirements": [
+          "Deux workers ne traitent pas simultanément le même job.",
+          "Un crash rend le travail récupérable sans double résultat."
+        ]
+      },
+      {
+        "criterion": "Tests et explication",
+        "weight": 20,
+        "requirements": [
+          "Les pannes sont automatisées.",
+          "Les garanties sont formulées sans exagération."
+        ]
+      }
+    ],
+    "remediation": "Reproduire toute duplication ou perte, identifier l’invariant absent, ajouter la contrainte ou transaction correspondante et conserver le test de non-régression."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-130-HONO_VALIDATION",
+      "REF-130-RFC_IDEMPOTENT",
+      "REF-131-RFC_IDEMPOTENT",
+      "REF-131-POSTGRES_ISOLATION",
+      "REF-131-POSTGRES_LOCKING"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

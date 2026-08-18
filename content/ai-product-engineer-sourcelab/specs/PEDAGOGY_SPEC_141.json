@@ -1,0 +1,512 @@
+{
+  "specId": "PEDAGOGY_SPEC_141",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "ingerer-et-structurer-sources",
+  "moduleSlug": "parsing-et-chunking",
+  "lesson": {
+    "title": "Comparer des stratégies de chunking",
+    "slug": "comparer-strategies-chunking",
+    "summary": "Découper les sources selon leur structure et mesurer l’effet sur retrieval, citations et coût au lieu d’adopter une taille arbitraire.",
+    "objectives": [
+      "Expliquer le compromis taille, contexte et précision.",
+      "Implémenter plusieurs stratégies de découpage.",
+      "Comparer les stratégies sur un dataset de retrieval."
+    ],
+    "prerequisites": [
+      "Disposer d’extractions versionnées et localisées."
+    ],
+    "estimatedMinutes": 95,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-comparer-strategies-chunking-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un chunk doit être assez autonome pour être retrouvé et assez contextualisé pour être compris. Une taille fixe simple peut couper une définition de son exemple ; un découpage structurel exploite titres, paragraphes et frontières métier.",
+          "sourceKeys": [
+            "langchain-splitters",
+            "openai-retrieval"
+          ]
+        }
+      },
+      {
+        "key": "content-comparer-strategies-chunking-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour une leçon LearnX, SourceLab peut créer un chunk par bloc de contenu enrichi du titre de la leçon, puis un chunk distinct pour la rubrique. Pour un PDF, il compare découpage fixe, paragraphes avec chevauchement et sections.",
+          "sourceKeys": [
+            "langchain-splitters"
+          ]
+        }
+      },
+      {
+        "key": "content-comparer-strategies-chunking-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "La meilleure stratégie dépend des questions. Mesurer rappel du bon passage, précision des citations, nombre de tokens et cas où l’information traverse plusieurs chunks ; ne pas choisir seulement sur une intuition de taille.",
+          "sourceKeys": [
+            "openai-retrieval"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "langchain-splitters",
+        "type": "website",
+        "title": "Text splitters",
+        "author": "LangChain",
+        "url": "https://docs.langchain.com/oss/javascript/integrations/splitters",
+        "citation": "LangChain. (2026). Text splitters. Documentation JavaScript. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à stratégies de découpage et séparateurs puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant stratégies de découpage et séparateurs.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "stratégies de découpage et séparateurs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (2026). Retrieval. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à indexation, recherche, filtres et réglages de pertinence puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant indexation, recherche, filtres et réglages de pertinence.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "indexation, recherche, filtres et réglages de pertinence",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Chunking évalué",
+        "slug": "chunking-evalue",
+        "description": "Le découpage est une hypothèse mesurée sur les requêtes et documents cibles.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "langchain-splitters",
+          "openai-retrieval"
+        ],
+        "assessment": {
+          "key": "assessment-chunking-evalue",
+          "type": "quiz",
+          "title": "Mini-évaluation — Chunking évalué",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-comparer-strategies-chunking",
+        "title": "Exécuter l’expérience de chunking",
+        "description": "Implémenter trois stratégies, indexer le même corpus, exécuter le dataset de questions et comparer recall@k, rang, citations, tokens et erreurs qualitatives.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-comparer-strategies-chunking",
+        "title": "Quiz de leçon — Comparer des stratégies de chunking",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une définition et sa limite sont séparées par le chunking. Quelle piste tester ?",
+            "explanation": "Le découpage doit préserver les unités de sens.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Respecter la section ou augmenter un chevauchement ciblé.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Supprimer la limite.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Baisser la qualité du dataset.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels documents peuvent nécessiter des stratégies distinctes ?",
+            "explanation": "La structure et le format modifient les frontières utiles.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Leçon structurée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Article HTML",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "PDF à colonnes",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Même chaîne vide",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Changer le chunking exige de réindexer les fragments concernés.",
+            "explanation": "Les unités stockées et leurs embeddings changent.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-comparer-strategies-chunking-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "langchain-splitters"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-comparer-strategies-chunking-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-comparer-strategies-chunking-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-comparer-strategies-chunking"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-chunking-evalue"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-comparer-strategies-chunking"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-141-LANGCHAIN_SPLITTERS",
+        "type": "official_documentation",
+        "authors": [
+          "LangChain"
+        ],
+        "organization": "LangChain",
+        "title": "Text splitters",
+        "year": 2026,
+        "edition": null,
+        "publication": "LangChain",
+        "doi": null,
+        "url": "https://docs.langchain.com/oss/javascript/integrations/splitters",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-141-OPENAI_RETRIEVAL",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-LANGCHAIN_SPLITTERS",
+            "locator": "stratégies de découpage et séparateurs",
+            "supports": "Soutient le bloc sur chunking évalué."
+          },
+          {
+            "referenceId": "REF-141-OPENAI_RETRIEVAL",
+            "locator": "indexation, recherche, filtres et réglages de pertinence",
+            "supports": "Soutient le bloc sur chunking évalué."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-LANGCHAIN_SPLITTERS",
+            "locator": "stratégies de découpage et séparateurs",
+            "supports": "Soutient le bloc sur chunking évalué."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-OPENAI_RETRIEVAL",
+            "locator": "indexation, recherche, filtres et réglages de pertinence",
+            "supports": "Soutient le bloc sur chunking évalué."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "langchain-splitters",
+        "referenceIds": [
+          "REF-141-LANGCHAIN_SPLITTERS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour stratégies de découpage et séparateurs.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": [
+          "REF-141-OPENAI_RETRIEVAL"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour indexation, recherche, filtres et réglages de pertinence.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "chunking-evalue",
+        "assessmentTitle": "Mini-évaluation — Chunking évalué",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel problème crée un chunk trop petit ?",
+            "explanation": "La pertinence locale ne suffit pas si le sens dépend du voisinage.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Il peut perdre le contexte nécessaire à l’interprétation.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il empêche toute indexation SQL.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il rend automatiquement la réponse plus exacte.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles dimensions comparer entre stratégies ?",
+            "explanation": "La stratégie touche qualité, coût et traçabilité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Recall du passage attendu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Tokens récupérés",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Stabilité des localisateurs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Nombre de couleurs dans l’interface",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un chevauchement plus grand améliore toujours la qualité sans contrepartie.",
+            "explanation": "Il augmente duplication, stockage et contexte récupéré.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "chunking-evalue",
+          "contentKeys": [
+            "content-comparer-strategies-chunking-1",
+            "content-comparer-strategies-chunking-2",
+            "content-comparer-strategies-chunking-3"
+          ],
+          "resourceKeys": [
+            "langchain-splitters",
+            "openai-retrieval"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-comparer-strategies-chunking"
+          },
+          "assessmentKey": "assessment-chunking-evalue",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

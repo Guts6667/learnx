@@ -1,0 +1,512 @@
+{
+  "specId": "PEDAGOGY_SPEC_138",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "cadrer-qualite-ia",
+  "moduleSlug": "architecture-et-evaluations",
+  "lesson": {
+    "title": "Définir les deux usages IA et leurs limites",
+    "slug": "definir-usages-ia-limites",
+    "summary": "Cadrer SourceLab autour de deux résultats précis — générer des programmes et proposer des corrections de textes libres — sans transformer le produit en chatbot généraliste.",
+    "objectives": [
+      "Formuler chaque usage IA comme une décision ou production observable.",
+      "Séparer capacité du modèle et garanties du produit.",
+      "Définir périmètre, non-objectifs et escalade humaine."
+    ],
+    "prerequisites": [
+      "Disposer de SourceLab V1 avec imports, jobs, sources versionnées et observabilité de base."
+    ],
+    "estimatedMinutes": 80,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-definir-usages-ia-limites-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une fonctionnalité IA est un système complet : données, modèle, code, interface, règles, utilisateurs et supervision. Sa qualité ne se résume pas à une réponse impressionnante ; elle dépend d’un usage défini, de critères mesurables et d’un traitement explicite des erreurs.",
+          "sourceKeys": [
+            "nist-ai-rmf",
+            "openai-production"
+          ]
+        }
+      },
+      {
+        "key": "content-definir-usages-ia-limites-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab retient deux contrats : produire un brouillon de programme LearnX à réviser, et proposer une correction structurée soumise à des règles de confiance. Il n’a pas pour objectif initial de publier seul ni d’attribuer une note définitive.",
+          "sourceKeys": [
+            "nist-ai-rmf"
+          ]
+        }
+      },
+      {
+        "key": "content-definir-usages-ia-limites-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Commencer par une baseline simple : brief structuré sans RAG pour l’authoring, rubrique déterministe et revue humaine pour l’évaluation. Le composant IA doit démontrer un gain mesuré par rapport à cette baseline.",
+          "sourceKeys": [
+            "openai-production"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-ai-rmf",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "citation": "Tabassi, E. (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0). NIST AI 100-1. https://doi.org/10.6028/NIST.AI.100-1",
+        "description": "Consulter la partie consacrée à gouvernance, cartographie, mesure et gestion des risques puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant gouvernance, cartographie, mesure et gestion des risques.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "gouvernance, cartographie, mesure et gestion des risques",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "openai-production",
+        "type": "website",
+        "title": "Production best practices",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/production-best-practices",
+        "citation": "OpenAI. (2026). Production best practices. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à sécurité des clés, staging, limites, coûts et opérations puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sécurité des clés, staging, limites, coûts et opérations.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sécurité des clés, staging, limites, coûts et opérations",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Contrat produit IA",
+        "slug": "contrat-produit-ia",
+        "description": "Le contrat précise entrée, sortie, décision, risque, supervision et preuve de qualité de chaque usage.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "nist-ai-rmf",
+          "openai-production"
+        ],
+        "assessment": {
+          "key": "assessment-contrat-produit-ia",
+          "type": "quiz",
+          "title": "Mini-évaluation — Contrat produit IA",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-definir-usages-ia-limites",
+        "title": "Rédiger la fiche des deux usages",
+        "description": "Produire pour Program Builder et Assessment Reviewer : utilisateur, déclencheur, entrée, sortie, décision, non-objectifs, erreurs acceptables, erreurs critiques, revue humaine et métriques.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-definir-usages-ia-limites",
+        "title": "Quiz de leçon — Définir les deux usages IA et leurs limites",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le Program Builder génère une leçon non sourcée mais bien écrite. Quel verdict produit ?",
+            "explanation": "La fluidité ne remplace pas la provenance.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "La sortie échoue au gate de traçabilité et reste brouillon.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La publier car le style est bon.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’utiliser comme source de référence.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles erreurs doivent déclencher une revue ou un blocage ?",
+            "explanation": "Les erreurs critiques touchent la confiance et l’autorité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Source inventée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Modification d’une section verrouillée",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Score sans critère appliqué",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Titre légèrement plus long",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le RAG est la fonctionnalité visible principale que l’utilisateur doit apprendre à manipuler.",
+            "explanation": "Le RAG reste une infrastructure au service de résultats produit.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-definir-usages-ia-limites-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-ai-rmf"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definir-usages-ia-limites-2"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-definir-usages-ia-limites-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-production"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-definir-usages-ia-limites"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-contrat-produit-ia"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-definir-usages-ia-limites"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-138-NIST_AI_RMF",
+        "type": "official_documentation",
+        "authors": [
+          "National Institute of Standards and Technology"
+        ],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+        "year": 2023,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": "https://doi.org/10.6028/NIST.AI.100-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-138-OPENAI_PRODUCTION",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Production best practices",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/production-best-practices",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur contrat produit ia."
+          },
+          {
+            "referenceId": "REF-138-OPENAI_PRODUCTION",
+            "locator": "sécurité des clés, staging, limites, coûts et opérations",
+            "supports": "Soutient le bloc sur contrat produit ia."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-NIST_AI_RMF",
+            "locator": "gouvernance, cartographie, mesure et gestion des risques",
+            "supports": "Soutient le bloc sur contrat produit ia."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-138-OPENAI_PRODUCTION",
+            "locator": "sécurité des clés, staging, limites, coûts et opérations",
+            "supports": "Soutient le bloc sur contrat produit ia."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-ai-rmf",
+        "referenceIds": [
+          "REF-138-NIST_AI_RMF"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour gouvernance, cartographie, mesure et gestion des risques.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-production",
+        "referenceIds": [
+          "REF-138-OPENAI_PRODUCTION"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sécurité des clés, staging, limites, coûts et opérations.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "contrat-produit-ia",
+        "assessmentTitle": "Mini-évaluation — Contrat produit IA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel résultat correspond au périmètre initial d’Assessment Reviewer ?",
+            "explanation": "La décision finale reste contrôlée par LearnX ou un réviseur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Une proposition structurée de feedback et de score à confirmer selon les règles.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Une note définitive impossible à contester.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une conversation générale sans grille.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit préciser un contrat produit IA ?",
+            "explanation": "Les garanties sont produites par le système et son processus.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Cas d’usage",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Critères de qualité",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Escalade et limites",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Promesse de perfection",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Choisir un modèle plus puissant suffit à supprimer le besoin d’évaluation.",
+            "explanation": "La qualité doit être mesurée sur le cas réel, quel que soit le modèle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "contrat-produit-ia",
+          "contentKeys": [
+            "content-definir-usages-ia-limites-1",
+            "content-definir-usages-ia-limites-2",
+            "content-definir-usages-ia-limites-3"
+          ],
+          "resourceKeys": [
+            "nist-ai-rmf",
+            "openai-production"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-definir-usages-ia-limites"
+          },
+          "assessmentKey": "assessment-contrat-produit-ia",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_028",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "containeriser-sourcelab",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Livrer SourceLab localement avec Docker",
+      "type": "project",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Construire un environnement local reproductible pour l’API, le worker et PostgreSQL, puis en démontrer sécurité de base, readiness et persistance.",
+    "instructions": [
+      "Construire les images multi-stage de l’API et du worker.",
+      "Créer un `compose.yaml` avec réseau interne, volume et healthchecks.",
+      "Documenter variables, commandes et critères de readiness.",
+      "Prouver la persistance après recréation des conteneurs.",
+      "Inspecter l’image finale et corriger les expositions inutiles."
+    ],
+    "case": "Cas fictif — Un nouveau développeur doit lancer SourceLab sans installer PostgreSQL ni reproduire manuellement les versions de Node.js. Le premier essai contient le fichier `.env` dans l’image, s’exécute en root, publie tous les ports et démarre l’API avant que la base soit prête.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Dépôt exécutable par `docker compose up --build`, README de démarrage, rapport d’inspection et vidéo ou journal de démonstration.",
+    "conceptSlugs": [
+      "image-execution-reproductible",
+      "environnement-local-compose"
+    ],
+    "rubric": [
+      {
+        "criterion": "Images reproductibles",
+        "weight": 30,
+        "requirements": [
+          "Build multi-stage et lockfile utilisés.",
+          "Image finale ciblée et utilisateur non-root."
+        ]
+      },
+      {
+        "criterion": "Orchestration",
+        "weight": 30,
+        "requirements": [
+          "Services reliés par noms de service et réseau interne.",
+          "Healthchecks et dépendances expriment la readiness."
+        ]
+      },
+      {
+        "criterion": "Persistance et configuration",
+        "weight": 20,
+        "requirements": [
+          "Les données survivent à la recréation.",
+          "Variables et secrets ne sont pas incorporés à l’image."
+        ]
+      },
+      {
+        "criterion": "Preuve et documentation",
+        "weight": 20,
+        "requirements": [
+          "Le démarrage est reproductible depuis zéro.",
+          "Les limites et commandes de diagnostic sont explicites."
+        ]
+      }
+    ],
+    "remediation": "Corriger chaque échec de reproductibilité, secret, readiness ou persistance, puis refaire la démonstration depuis un environnement propre."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-128-DOCKER_OVERVIEW",
+      "REF-128-DOCKER_MULTISTAGE",
+      "REF-129-DOCKER_STARTUP",
+      "REF-129-DOCKER_NETWORK",
+      "REF-129-DOCKER_VOLUMES"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "specId": "PEDAGOGY_SPEC_134",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-et-livrer",
+  "moduleSlug": "tests-integration-ci",
+  "lesson": {
+    "title": "Tester SourceLab avec ses dépendances réelles",
+    "slug": "tester-sourcelab-dependances-reelles",
+    "summary": "Construire une pyramide de tests qui garde la logique rapide tout en vérifiant API, worker, migrations, PostgreSQL et parcours utilisateur sur un environnement jetable.",
+    "objectives": [
+      "Choisir le niveau de test selon le risque.",
+      "Créer un environnement d’intégration isolé et déterministe.",
+      "Tester les pannes et reprises du traitement asynchrone."
+    ],
+    "prerequisites": [
+      "Avoir une verticale API-worker-base migrable."
+    ],
+    "estimatedMinutes": 90,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-tester-sourcelab-dependances-reelles-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un test unitaire isole une règle ; un test d’intégration vérifie la collaboration de composants réels ; un test E2E observe un parcours depuis l’interface. Le bon niveau minimise le mock des risques que l’on cherche précisément à vérifier.",
+          "sourceKeys": [
+            "vitest-guide",
+            "playwright-tests"
+          ]
+        }
+      },
+      {
+        "key": "content-tester-sourcelab-dependances-reelles-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "SourceLab teste en unité les transitions de job, en intégration la réclamation concurrente sur PostgreSQL, puis en E2E l’import d’un fichier jusqu’au statut `READY` dans l’interface.",
+          "sourceKeys": [
+            "testcontainers-node",
+            "playwright-tests"
+          ]
+        }
+      },
+      {
+        "key": "content-tester-sourcelab-dependances-reelles-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un test d’intégration utile possède sa base isolée, applique les migrations, crée ses propres données et nettoie l’environnement. Il ne doit jamais viser une base partagée ou dépendre d’un ordre caché.",
+          "sourceKeys": [
+            "testcontainers-node",
+            "vitest-guide"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "vitest-guide",
+        "type": "website",
+        "title": "Getting Started",
+        "author": "Vitest",
+        "url": "https://vitest.dev/guide/",
+        "citation": "Vitest. (2026). Getting Started. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à tests, assertions, isolation et exécution puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant tests, assertions, isolation et exécution.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "tests, assertions, isolation et exécution",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "playwright-tests",
+        "type": "website",
+        "title": "Writing tests",
+        "author": "Microsoft",
+        "url": "https://playwright.dev/docs/writing-tests",
+        "citation": "Microsoft. (2026). Writing tests. Documentation Playwright. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à tests navigateur, isolation et assertions puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant tests navigateur, isolation et assertions.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "tests navigateur, isolation et assertions",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "testcontainers-node",
+        "type": "website",
+        "title": "Testcontainers for Node.js",
+        "author": "Testcontainers",
+        "url": "https://node.testcontainers.org/",
+        "citation": "Testcontainers. (2026). Testcontainers for Node.js. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à dépendances jetables pour tests d’intégration puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant dépendances jetables pour tests d’intégration.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "dépendances jetables pour tests d’intégration",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Test d’intégration réaliste",
+        "slug": "test-integration-realiste",
+        "description": "Le test exerce le contrat entre composants avec des dépendances jetables et des données maîtrisées.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "vitest-guide",
+          "playwright-tests",
+          "testcontainers-node"
+        ],
+        "assessment": {
+          "key": "assessment-test-integration-realiste",
+          "type": "quiz",
+          "title": "Mini-évaluation — Test d’intégration réaliste",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-tester-sourcelab-dependances-reelles",
+        "title": "Créer la matrice de tests SourceLab",
+        "description": "Implémenter un test unitaire, deux tests d’intégration PostgreSQL/API-worker et un parcours Playwright. Ajouter un scénario de crash/reprise et documenter ce qui reste mocké.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-tester-sourcelab-dependances-reelles",
+        "title": "Quiz de leçon — Tester SourceLab avec ses dépendances réelles",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un test passe seul mais échoue selon l’ordre de la suite. Quelle cause rechercher d’abord ?",
+            "explanation": "Les tests doivent être indépendants.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un état partagé ou un nettoyage incomplet.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La licence Docker.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le titre du programme.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels scénarios appartiennent à l’intégration asynchrone ?",
+            "explanation": "Ils vérifient les garanties du pipeline.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Double import",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Worker interrompu",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Erreur de parsing définitive",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Modification de la police",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Mocker PostgreSQL permet de démontrer qu’une migration SQL réelle est valide.",
+            "explanation": "La migration doit être exécutée sur un moteur compatible.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-sourcelab-dependances-reelles-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "vitest-guide"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-sourcelab-dependances-reelles-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "testcontainers-node"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-tester-sourcelab-dependances-reelles-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "playwright-tests"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-tester-sourcelab-dependances-reelles"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-test-integration-realiste"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-tester-sourcelab-dependances-reelles"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-134-VITEST_GUIDE",
+        "type": "official_documentation",
+        "authors": [
+          "Vitest"
+        ],
+        "organization": "Vitest",
+        "title": "Getting Started",
+        "year": 2026,
+        "edition": null,
+        "publication": "Vitest",
+        "doi": null,
+        "url": "https://vitest.dev/guide/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-134-PLAYWRIGHT_TESTS",
+        "type": "official_documentation",
+        "authors": [
+          "Microsoft"
+        ],
+        "organization": "Microsoft",
+        "title": "Writing tests",
+        "year": 2026,
+        "edition": null,
+        "publication": "Microsoft",
+        "doi": null,
+        "url": "https://playwright.dev/docs/writing-tests",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-134-TESTCONTAINERS_NODE",
+        "type": "official_documentation",
+        "authors": [
+          "Testcontainers"
+        ],
+        "organization": "Testcontainers",
+        "title": "Testcontainers for Node.js",
+        "year": 2026,
+        "edition": null,
+        "publication": "Testcontainers",
+        "doi": null,
+        "url": "https://node.testcontainers.org/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-VITEST_GUIDE",
+            "locator": "tests, assertions, isolation et exécution",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          },
+          {
+            "referenceId": "REF-134-PLAYWRIGHT_TESTS",
+            "locator": "tests navigateur, isolation et assertions",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-TESTCONTAINERS_NODE",
+            "locator": "dépendances jetables pour tests d’intégration",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          },
+          {
+            "referenceId": "REF-134-PLAYWRIGHT_TESTS",
+            "locator": "tests navigateur, isolation et assertions",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-TESTCONTAINERS_NODE",
+            "locator": "dépendances jetables pour tests d’intégration",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          },
+          {
+            "referenceId": "REF-134-VITEST_GUIDE",
+            "locator": "tests, assertions, isolation et exécution",
+            "supports": "Soutient le bloc sur test d’intégration réaliste."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "vitest-guide",
+        "referenceIds": [
+          "REF-134-VITEST_GUIDE"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour tests, assertions, isolation et exécution.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "playwright-tests",
+        "referenceIds": [
+          "REF-134-PLAYWRIGHT_TESTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour tests navigateur, isolation et assertions.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "testcontainers-node",
+        "referenceIds": [
+          "REF-134-TESTCONTAINERS_NODE"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour dépendances jetables pour tests d’intégration.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "test-integration-realiste",
+        "assessmentTitle": "Mini-évaluation — Test d’intégration réaliste",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel test protège le mieux la réclamation concurrente d’un job PostgreSQL ?",
+            "explanation": "Le risque porte sur la collaboration et la concurrence réelles.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un test d’intégration avec deux workers et une base réelle isolée.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un snapshot du bouton.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Un test unitaire qui mocke toutes les transactions.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles propriétés rendent un environnement de test sûr ?",
+            "explanation": "L’isolation empêche les effets croisés et les pertes.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Jetable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Explicitement ciblé",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Initialisé par migrations",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Partagé avec la production",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un test E2E doit couvrir toutes les branches de toutes les fonctions.",
+            "explanation": "Les E2E ciblent les parcours critiques ; les détails relèvent de tests plus bas.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "test-integration-realiste",
+          "contentKeys": [
+            "content-tester-sourcelab-dependances-reelles-1",
+            "content-tester-sourcelab-dependances-reelles-2",
+            "content-tester-sourcelab-dependances-reelles-3"
+          ],
+          "resourceKeys": [
+            "vitest-guide",
+            "playwright-tests",
+            "testcontainers-node"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-tester-sourcelab-dependances-reelles"
+          },
+          "assessmentKey": "assessment-test-integration-realiste",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,571 @@
+{
+  "specId": "PEDAGOGY_SPEC_129",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "containeriser-sourcelab",
+  "moduleSlug": "docker-et-compose",
+  "lesson": {
+    "title": "Orchestrer API, worker et PostgreSQL avec Compose",
+    "slug": "orchestrer-api-worker-postgres-compose",
+    "summary": "Assembler la première verticale SourceLab localement avec réseau de services, volume persistant, healthchecks et dépendances fondées sur l’état réellement prêt.",
+    "objectives": [
+      "Configurer la découverte de services sur un réseau Compose.",
+      "Distinguer démarrage du processus et readiness.",
+      "Choisir ce qui doit être persistant ou éphémère."
+    ],
+    "prerequisites": [
+      "Disposer d’images reproductibles pour l’API et le worker."
+    ],
+    "estimatedMinutes": 90,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-orchestrer-api-worker-postgres-compose-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Compose décrit des services, réseaux, volumes et dépendances. Le nom du service fournit une adresse DNS interne ; publier un port vers l’hôte est différent d’exposer un service aux autres conteneurs.",
+          "sourceKeys": [
+            "docker-network"
+          ]
+        }
+      },
+      {
+        "key": "content-orchestrer-api-worker-postgres-compose-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "L’API et le worker SourceLab se connectent à `postgres:5432` sur le réseau Compose, tandis que le navigateur appelle un port publié sur l’hôte. Les données PostgreSQL vivent dans un volume nommé, pas dans la couche écrivable du conteneur.",
+          "sourceKeys": [
+            "docker-network",
+            "docker-volumes"
+          ]
+        }
+      },
+      {
+        "key": "content-orchestrer-api-worker-postgres-compose-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "`depends_on` dans son usage simple ordonne le démarrage mais ne prouve pas que la dépendance est prête. Une condition fondée sur un healthcheck réduit les courses au démarrage, sans remplacer les retries de l’application.",
+          "sourceKeys": [
+            "docker-startup"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "docker-startup",
+        "type": "website",
+        "title": "Control startup and shutdown order in Compose",
+        "author": "Docker",
+        "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+        "citation": "Docker. (2026). Control startup and shutdown order in Compose. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à depends_on, conditions et healthchecks puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant depends_on, conditions et healthchecks.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "depends_on, conditions et healthchecks",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "docker-network",
+        "type": "website",
+        "title": "Networking overview",
+        "author": "Docker",
+        "url": "https://docs.docker.com/engine/network/",
+        "citation": "Docker. (2026). Networking overview. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à réseaux, DNS de services et publication de ports puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant réseaux, DNS de services et publication de ports.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "réseaux, DNS de services et publication de ports",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "docker-volumes",
+        "type": "website",
+        "title": "Volumes",
+        "author": "Docker",
+        "url": "https://docs.docker.com/engine/storage/volumes/",
+        "citation": "Docker. (2026). Volumes. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à persistance et cycle de vie des volumes puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant persistance et cycle de vie des volumes.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "persistance et cycle de vie des volumes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Environnement local composé",
+        "slug": "environnement-local-compose",
+        "description": "Un environnement reproductible relie services, readiness, réseau et persistance sans confondre leurs cycles de vie.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "docker-startup",
+          "docker-network",
+          "docker-volumes"
+        ],
+        "assessment": {
+          "key": "assessment-environnement-local-compose",
+          "type": "quiz",
+          "title": "Mini-évaluation — Environnement local composé",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-orchestrer-api-worker-postgres-compose",
+        "title": "Livrer la verticale locale",
+        "description": "Créer `compose.yaml` pour web/API, worker et PostgreSQL. Ajouter healthchecks, volume, réseau, variables documentées et une procédure prouvant redémarrage et persistance.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-orchestrer-api-worker-postgres-compose",
+        "title": "Quiz de leçon — Orchestrer API, worker et PostgreSQL avec Compose",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "L’API démarre avant PostgreSQL puis ne réessaie jamais. Quelle solution est la plus robuste ?",
+            "explanation": "La readiness réduit la course, les retries gèrent les indisponibilités transitoires.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Combiner healthcheck de dépendance et retries bornés côté application.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Ajouter un délai fixe très long.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Publier tous les ports vers Internet.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles données devraient survivre à `docker compose down` sans suppression des volumes ?",
+            "explanation": "Les données métier vivent dans un stockage persistant.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Projets SourceLab",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Métadonnées de sources",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "États de jobs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Fichiers temporaires de build",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Publier le port PostgreSQL est nécessaire pour que l’API du même réseau Compose s’y connecte.",
+            "explanation": "Les services communiquent directement sur le réseau interne.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-worker-postgres-compose-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-network"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-worker-postgres-compose-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-volumes"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-orchestrer-api-worker-postgres-compose-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "docker-startup"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-orchestrer-api-worker-postgres-compose"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-environnement-local-compose"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-orchestrer-api-worker-postgres-compose"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-129-DOCKER_STARTUP",
+        "type": "official_documentation",
+        "authors": [
+          "Docker"
+        ],
+        "organization": "Docker",
+        "title": "Control startup and shutdown order in Compose",
+        "year": 2026,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-129-DOCKER_NETWORK",
+        "type": "official_documentation",
+        "authors": [
+          "Docker"
+        ],
+        "organization": "Docker",
+        "title": "Networking overview",
+        "year": 2026,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/engine/network/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-129-DOCKER_VOLUMES",
+        "type": "official_documentation",
+        "authors": [
+          "Docker"
+        ],
+        "organization": "Docker",
+        "title": "Volumes",
+        "year": 2026,
+        "edition": null,
+        "publication": "Docker",
+        "doi": null,
+        "url": "https://docs.docker.com/engine/storage/volumes/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-129-DOCKER_NETWORK",
+            "locator": "réseaux, DNS de services et publication de ports",
+            "supports": "Soutient le bloc sur environnement local composé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-129-DOCKER_NETWORK",
+            "locator": "réseaux, DNS de services et publication de ports",
+            "supports": "Soutient le bloc sur environnement local composé."
+          },
+          {
+            "referenceId": "REF-129-DOCKER_VOLUMES",
+            "locator": "persistance et cycle de vie des volumes",
+            "supports": "Soutient le bloc sur environnement local composé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-129-DOCKER_STARTUP",
+            "locator": "depends_on, conditions et healthchecks",
+            "supports": "Soutient le bloc sur environnement local composé."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "docker-startup",
+        "referenceIds": [
+          "REF-129-DOCKER_STARTUP"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour depends_on, conditions et healthchecks.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "docker-network",
+        "referenceIds": [
+          "REF-129-DOCKER_NETWORK"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour réseaux, DNS de services et publication de ports.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "docker-volumes",
+        "referenceIds": [
+          "REF-129-DOCKER_VOLUMES"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour persistance et cycle de vie des volumes.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "environnement-local-compose",
+        "assessmentTitle": "Mini-évaluation — Environnement local composé",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Depuis le worker, quelle adresse vise normalement PostgreSQL dans Compose ?",
+            "explanation": "La découverte de services utilise le DNS du réseau Compose.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le nom du service PostgreSQL sur le réseau interne.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "localhost de l’hôte dans tous les cas.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "L’URL publique de production.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit prouver un healthcheck de base de données utile ?",
+            "explanation": "Readiness ne garantit pas toutes les opérations futures.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Le service accepte une connexion",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La commande se termine dans un délai borné",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Que toutes les migrations futures réussiront",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un volume nommé conserve les données lorsque le conteneur PostgreSQL est recréé, tant que le volume n’est pas supprimé.",
+            "explanation": "Le volume a un cycle de vie distinct du conteneur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "environnement-local-compose",
+          "contentKeys": [
+            "content-orchestrer-api-worker-postgres-compose-1",
+            "content-orchestrer-api-worker-postgres-compose-2",
+            "content-orchestrer-api-worker-postgres-compose-3"
+          ],
+          "resourceKeys": [
+            "docker-startup",
+            "docker-network",
+            "docker-volumes"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-orchestrer-api-worker-postgres-compose"
+          },
+          "assessmentKey": "assessment-environnement-local-compose",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

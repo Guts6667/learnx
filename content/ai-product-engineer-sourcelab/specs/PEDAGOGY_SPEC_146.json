@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_146",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "corriger-textes-libres",
+  "moduleSlug": "assessment-reviewer",
+  "lesson": {
+    "title": "Appliquer une rubrique avec une sortie structurée",
+    "slug": "appliquer-rubrique-sortie-structuree",
+    "summary": "Évaluer une réponse critère par critère à partir d’une rubrique préexistante et d’un contexte autorisé, puis produire feedback, preuves et proposition de score séparés.",
+    "objectives": [
+      "Construire un contexte d’évaluation minimal et autorisé.",
+      "Appliquer chaque critère sans en inventer.",
+      "Valider une sortie structurée et relier chaque jugement à la réponse."
+    ],
+    "prerequisites": [
+      "Disposer de sources retrouvables et de sorties structurées validées."
+    ],
+    "estimatedMinutes": 100,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-appliquer-rubrique-sortie-structuree-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La correction assistée part d’une consigne, d’une rubrique définie avant la réponse, des notions attendues et d’un contexte autorisé. Elle produit un jugement par critère ; le score agrégé vient ensuite selon les poids, sans critère improvisé.",
+          "sourceKeys": [
+            "openai-structured",
+            "learnx-editorial"
+          ]
+        }
+      },
+      {
+        "key": "content-appliquer-rubrique-sortie-structuree-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Pour « expliquer image et conteneur », Assessment Reviewer identifie les passages de la réponse associés aux deux définitions, vérifie l’exemple, attribue un statut par critère et distingue erreur conceptuelle, omission et problème de clarté.",
+          "sourceKeys": [
+            "openai-evals"
+          ]
+        }
+      },
+      {
+        "key": "content-appliquer-rubrique-sortie-structuree-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le feedback doit être utile même si le score est rejeté. Conserver extrait de réponse, critère, justification, source et incertitude permet à un humain de confirmer ou corriger la proposition.",
+          "sourceKeys": [
+            "openai-evals",
+            "learnx-editorial"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-structured",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (2026). Structured model outputs. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à schémas de sortie et validation structurée puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant schémas de sortie et validation structurée.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "schémas de sortie et validation structurée",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Working with evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (2026). Working with evals. Documentation API. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à datasets, critères, runs et comparaison de qualité puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant datasets, critères, runs et comparaison de qualité.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "datasets, critères, runs et comparaison de qualité",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "learnx-editorial",
+        "type": "website",
+        "title": "Gouvernance éditoriale — LearnX",
+        "author": "LearnX",
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "citation": "LearnX. (2026). Gouvernance éditoriale. Dépôt LearnX.",
+        "description": "Consulter la partie consacrée à sourcing, publication, alignement et contrôles puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant sourcing, publication, alignement et contrôles.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "sourcing, publication, alignement et contrôles",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Correction par rubrique",
+        "slug": "correction-par-rubrique",
+        "description": "Chaque jugement applique un critère préexistant à une preuve de la réponse et produit une justification contrôlable.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "openai-structured",
+          "openai-evals",
+          "learnx-editorial"
+        ],
+        "assessment": {
+          "key": "assessment-correction-par-rubrique",
+          "type": "quiz",
+          "title": "Mini-évaluation — Correction par rubrique",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-appliquer-rubrique-sortie-structuree",
+        "title": "Construire Assessment Reviewer V1",
+        "description": "Définir le schéma de review, implémenter retrieval du contexte, évaluation critère par critère et calcul déterministe du score. Tester sorties invalides et critère non applicable.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-appliquer-rubrique-sortie-structuree",
+        "title": "Quiz de leçon — Appliquer une rubrique avec une sortie structurée",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une réponse correcte utilise un exemple inattendu. Quelle conduite ?",
+            "explanation": "La rubrique porte sur la compétence.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Évaluer selon le critère, pas selon la ressemblance à un exemple modèle.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "La rejeter automatiquement.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ajouter une pénalité cachée.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles sorties doivent être séparées ?",
+            "explanation": "La séparation permet des politiques différentes.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Score proposé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Feedback pédagogique",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Niveau de confiance",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Mot de passe de l’utilisateur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une sortie JSON valide prouve que le jugement est pédagogiquement exact.",
+            "explanation": "La structure n’est qu’un prérequis technique.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-appliquer-rubrique-sortie-structuree-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-appliquer-rubrique-sortie-structuree-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-appliquer-rubrique-sortie-structuree-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "learnx-editorial"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-appliquer-rubrique-sortie-structuree"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-correction-par-rubrique"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-appliquer-rubrique-sortie-structuree"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Product Engineer TypeScript ayant construit SourceLab V1 ou possédant un niveau équivalent en backend, Docker, tests et exploitation.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-146-OPENAI_STRUCTURED",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-146-OPENAI_EVALS",
+        "type": "official_documentation",
+        "authors": [
+          "OpenAI"
+        ],
+        "organization": "OpenAI",
+        "title": "Working with evals",
+        "year": 2026,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-146-LEARNX_EDITORIAL",
+        "type": "official_documentation",
+        "authors": [
+          "LearnX"
+        ],
+        "organization": "LearnX",
+        "title": "Gouvernance éditoriale — LearnX",
+        "year": 2026,
+        "edition": null,
+        "publication": "LearnX",
+        "doi": null,
+        "url": "https://github.com/Guts6667/learnx/blob/main/EDITORIAL_GUIDELINES.md",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-146-OPENAI_STRUCTURED",
+            "locator": "schémas de sortie et validation structurée",
+            "supports": "Soutient le bloc sur correction par rubrique."
+          },
+          {
+            "referenceId": "REF-146-LEARNX_EDITORIAL",
+            "locator": "sourcing, publication, alignement et contrôles",
+            "supports": "Soutient le bloc sur correction par rubrique."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-146-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur correction par rubrique."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-146-OPENAI_EVALS",
+            "locator": "datasets, critères, runs et comparaison de qualité",
+            "supports": "Soutient le bloc sur correction par rubrique."
+          },
+          {
+            "referenceId": "REF-146-LEARNX_EDITORIAL",
+            "locator": "sourcing, publication, alignement et contrôles",
+            "supports": "Soutient le bloc sur correction par rubrique."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-structured",
+        "referenceIds": [
+          "REF-146-OPENAI_STRUCTURED"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour schémas de sortie et validation structurée.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": [
+          "REF-146-OPENAI_EVALS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour datasets, critères, runs et comparaison de qualité.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "learnx-editorial",
+        "referenceIds": [
+          "REF-146-LEARNX_EDITORIAL"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour sourcing, publication, alignement et contrôles.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "correction-par-rubrique",
+        "assessmentTitle": "Mini-évaluation — Correction par rubrique",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand le score global doit-il être calculé ?",
+            "explanation": "L’agrégation ne doit pas précéder le jugement explicite.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Après les résultats par critère, selon les poids définis.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Avant de lire la réponse.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "À partir de la longueur uniquement.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit relier une justification ?",
+            "explanation": "La proposition doit être contrôlable.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Critère",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Extrait de réponse",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Source ou notion pertinente",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Préférence stylistique non déclarée",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le modèle peut ajouter un critère important après lecture de la réponse sans modifier la rubrique.",
+            "explanation": "Cela changerait rétroactivement les règles d’évaluation.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "correction-par-rubrique",
+          "contentKeys": [
+            "content-appliquer-rubrique-sortie-structuree-1",
+            "content-appliquer-rubrique-sortie-structuree-2",
+            "content-appliquer-rubrique-sortie-structuree-3"
+          ],
+          "resourceKeys": [
+            "openai-structured",
+            "openai-evals",
+            "learnx-editorial"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-appliquer-rubrique-sortie-structuree"
+          },
+          "assessmentKey": "assessment-correction-par-rubrique",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

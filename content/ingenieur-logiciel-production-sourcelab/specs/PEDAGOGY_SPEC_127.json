@@ -1,0 +1,652 @@
+{
+  "specId": "PEDAGOGY_SPEC_127",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "comprendre-runtime-et-reseau",
+  "moduleSlug": "runtime-node-et-http",
+  "lesson": {
+    "title": "Diagnostiquer le runtime, la configuration et l’arrêt",
+    "slug": "diagnostiquer-runtime-configuration-arret",
+    "summary": "Comprendre processus, variables d’environnement, sorties, codes d’erreur et signaux pour rendre l’API et le worker SourceLab prévisibles au démarrage comme à l’arrêt.",
+    "objectives": [
+      "Distinguer configuration de build et configuration de runtime.",
+      "Interpréter un code de sortie, une erreur et un signal.",
+      "Concevoir un arrêt propre qui cesse d’accepter du travail avant de terminer."
+    ],
+    "prerequisites": [
+      "Avoir tracé une requête HTTP jusqu’au processus Node.js."
+    ],
+    "estimatedMinutes": 80,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-diagnostiquer-runtime-configuration-arret-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un processus Node.js possède un environnement, un répertoire de travail, des entrées-sorties, un PID et un cycle de vie. Les variables disponibles au build ne sont pas automatiquement celles du runtime ; une configuration indispensable doit être validée au démarrage.",
+          "sourceKeys": [
+            "node-process",
+            "node-env"
+          ]
+        }
+      },
+      {
+        "key": "content-diagnostiquer-runtime-configuration-arret-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Le worker SourceLab peut démarrer sans `DATABASE_URL`, puis échouer au premier job. Une meilleure conception valide la configuration, écrit une erreur exploitable, sort avec un code non nul et évite de laisser croire que le service est prêt.",
+          "sourceKeys": [
+            "node-env",
+            "node-errors"
+          ]
+        }
+      },
+      {
+        "key": "content-diagnostiquer-runtime-configuration-arret-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Lors d’un `SIGTERM`, un service fiable cesse de prendre de nouveaux jobs, termine ou rend récupérable le travail en cours, ferme ses connexions puis sort. `process.exit()` brutal peut interrompre des écritures ou tronquer des logs.",
+          "sourceKeys": [
+            "node-process",
+            "node-http"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "node-process",
+        "type": "website",
+        "title": "Process",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/process.html",
+        "citation": "Node.js. (2026). Process. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à processus, codes de sortie, signaux et variables d’environnement puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant processus, codes de sortie, signaux et variables d’environnement.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "processus, codes de sortie, signaux et variables d’environnement",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "node-env",
+        "type": "website",
+        "title": "Environment Variables",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/environment_variables.html",
+        "citation": "Node.js. (2026). Environment Variables. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à variables d’environnement et fichiers .env puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant variables d’environnement et fichiers .env.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "variables d’environnement et fichiers .env",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "node-errors",
+        "type": "website",
+        "title": "Errors",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/errors.html",
+        "citation": "Node.js. (2026). Errors. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à erreurs opérationnelles, stack et codes d’erreur puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant erreurs opérationnelles, stack et codes d’erreur.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "erreurs opérationnelles, stack et codes d’erreur",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      },
+      {
+        "key": "node-http",
+        "type": "website",
+        "title": "HTTP",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/http.html",
+        "citation": "Node.js. (2026). HTTP. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à serveurs HTTP, timeouts et arrêt puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant serveurs HTTP, timeouts et arrêt.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "serveurs HTTP, timeouts et arrêt",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Cycle de vie d’un processus",
+        "slug": "cycle-vie-processus",
+        "description": "Le démarrage, l’état prêt, les erreurs et l’arrêt doivent être explicites et observables.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "node-process",
+          "node-env",
+          "node-errors",
+          "node-http"
+        ],
+        "assessment": {
+          "key": "assessment-cycle-vie-processus",
+          "type": "quiz",
+          "title": "Mini-évaluation — Cycle de vie d’un processus",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-diagnostiquer-runtime-configuration-arret",
+        "title": "Écrire le contrat de runtime",
+        "description": "Produire le tableau des variables de l’API et du worker, leur caractère obligatoire, leur validation, le comportement en cas d’absence et la séquence d’arrêt propre.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-diagnostiquer-runtime-configuration-arret",
+        "title": "Quiz de leçon — Diagnostiquer le runtime, la configuration et l’arrêt",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le worker sort avec le code 0 après une erreur fatale de configuration. Quel risque cela crée-t-il ?",
+            "explanation": "Le code de sortie communique le résultat du processus à son environnement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "L’orchestrateur peut interpréter l’arrêt comme un succès.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "PostgreSQL crée un index.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le navigateur perd son cache CSS.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles données sont utiles dans un événement d’erreur sans exposer de secret ?",
+            "explanation": "Les secrets ne doivent jamais apparaître dans les logs.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Code d’erreur normalisé",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Identifiant de requête ou de job",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Étape échouée",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Valeur complète de DATABASE_URL",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Capturer un signal garantit à lui seul qu’aucune donnée ne sera perdue.",
+            "explanation": "Le gestionnaire doit réellement coordonner l’arrêt et ses délais.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-diagnostiquer-runtime-configuration-arret-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-process"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-diagnostiquer-runtime-configuration-arret-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-env"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-diagnostiquer-runtime-configuration-arret-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-http"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-errors"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-diagnostiquer-runtime-configuration-arret"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-cycle-vie-processus"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-diagnostiquer-runtime-configuration-arret"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-127-NODE_PROCESS",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "Process",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/process.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-127-NODE_ENV",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "Environment Variables",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/environment_variables.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-127-NODE_ERRORS",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "Errors",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/errors.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-127-NODE_HTTP",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "HTTP",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/http.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-127-NODE_PROCESS",
+            "locator": "processus, codes de sortie, signaux et variables d’environnement",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          },
+          {
+            "referenceId": "REF-127-NODE_ENV",
+            "locator": "variables d’environnement et fichiers .env",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-127-NODE_ENV",
+            "locator": "variables d’environnement et fichiers .env",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          },
+          {
+            "referenceId": "REF-127-NODE_ERRORS",
+            "locator": "erreurs opérationnelles, stack et codes d’erreur",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-127-NODE_PROCESS",
+            "locator": "processus, codes de sortie, signaux et variables d’environnement",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          },
+          {
+            "referenceId": "REF-127-NODE_HTTP",
+            "locator": "serveurs HTTP, timeouts et arrêt",
+            "supports": "Soutient le bloc sur cycle de vie d’un processus."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "node-process",
+        "referenceIds": [
+          "REF-127-NODE_PROCESS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour processus, codes de sortie, signaux et variables d’environnement.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "node-env",
+        "referenceIds": [
+          "REF-127-NODE_ENV"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour variables d’environnement et fichiers .env.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "node-errors",
+        "referenceIds": [
+          "REF-127-NODE_ERRORS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour erreurs opérationnelles, stack et codes d’erreur.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "node-http",
+        "referenceIds": [
+          "REF-127-NODE_HTTP"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour serveurs HTTP, timeouts et arrêt.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "cycle-vie-processus",
+        "assessmentTitle": "Mini-évaluation — Cycle de vie d’un processus",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Une variable obligatoire manque au démarrage. Quel comportement est préférable ?",
+            "explanation": "Une erreur de configuration doit être détectée avant d’exposer un service faussement prêt.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Refuser de démarrer avec une erreur claire et un code non nul.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Utiliser silencieusement une chaîne vide.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Attendre le premier utilisateur pour signaler le problème.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit couvrir un arrêt propre du worker ?",
+            "explanation": "L’arrêt protège la cohérence du travail et les dépendances.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Cesser de réclamer de nouveaux jobs",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Finaliser ou libérer le job en cours",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Fermer les connexions",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Effacer l’historique des jobs",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les variables injectées pendant le build sont toujours disponibles dans tout environnement d’exécution.",
+            "explanation": "Build et runtime sont deux contextes distincts.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "cycle-vie-processus",
+          "contentKeys": [
+            "content-diagnostiquer-runtime-configuration-arret-1",
+            "content-diagnostiquer-runtime-configuration-arret-2",
+            "content-diagnostiquer-runtime-configuration-arret-3"
+          ],
+          "resourceKeys": [
+            "node-process",
+            "node-env",
+            "node-errors",
+            "node-http"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-diagnostiquer-runtime-configuration-arret"
+          },
+          "assessmentKey": "assessment-cycle-vie-processus",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_030",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "faire-evoluer-donnees",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Faire évoluer le modèle SourceLab",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Faire évoluer le modèle de sources versionnées sur une base contenant des données, sans perte ni incompatibilité silencieuse.",
+    "instructions": [
+      "Proposer le modèle cible et ses invariants.",
+      "Écrire une stratégie expand-and-contract et les migrations.",
+      "Backfiller par lots de façon reprenable.",
+      "Mesurer la requête critique avant/après l’index proposé.",
+      "Définir preuves, roll-forward et restauration coordonnée."
+    ],
+    "case": "Cas fictif — SourceLab doit ajouter un hash de contenu obligatoire, historiser les extractions et accélérer la liste des jobs réclamables. La base contient déjà des sources, certaines sans fichier, et l’ancienne version de l’API doit rester compatible pendant la première étape du déploiement.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Migrations Prisma/SQL, script de backfill, rapport d’intégrité et performance, plan de déploiement et de retour.",
+    "conceptSlugs": [
+      "modele-versionne-source",
+      "migration-compatible"
+    ],
+    "rubric": [
+      {
+        "criterion": "Modèle et contraintes",
+        "weight": 25,
+        "requirements": [
+          "Source logique, versions et artefacts sont distingués.",
+          "Les invariants sont protégés par la base."
+        ]
+      },
+      {
+        "criterion": "Migration compatible",
+        "weight": 30,
+        "requirements": [
+          "Expansion, backfill, contrainte et retrait sont séparés.",
+          "Le traitement peut reprendre après interruption."
+        ]
+      },
+      {
+        "criterion": "Mesure et index",
+        "weight": 20,
+        "requirements": [
+          "La requête cible est mesurée.",
+          "Le coût de l’index est discuté."
+        ]
+      },
+      {
+        "criterion": "Récupérabilité",
+        "weight": 25,
+        "requirements": [
+          "Les preuves avant/après sont définies.",
+          "Roll-forward et restauration tiennent compte du schéma et des écritures."
+        ]
+      }
+    ],
+    "remediation": "Reprendre l’évolution qui casse l’ancienne version ou perd des données, restaurer le clone de test et démontrer une séquence compatible."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-132-POSTGRES_CONSTRAINTS",
+      "REF-132-POSTGRES_EXPLAIN",
+      "REF-132-PRISMA_MODELS",
+      "REF-133-PRISMA_MIGRATIONS",
+      "REF-133-PRISMA_CUSTOM_MIGRATIONS",
+      "REF-133-POSTGRES_ISOLATION"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,518 @@
+{
+  "specId": "PEDAGOGY_SPEC_126",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "comprendre-runtime-et-reseau",
+  "moduleSlug": "runtime-node-et-http",
+  "lesson": {
+    "title": "Suivre une requête du navigateur au processus Node.js",
+    "slug": "suivre-requete-processus-http",
+    "summary": "Relier URL, DNS, connexion, requête HTTP, port d’écoute et processus Node.js afin de localiser une panne au lieu de traiter le serveur comme une boîte noire.",
+    "objectives": [
+      "Décrire le trajet d’une requête jusqu’au processus qui l’exécute.",
+      "Distinguer hôte, port, route HTTP et processus.",
+      "Utiliser des observations simples pour isoler une panne réseau ou applicative."
+    ],
+    "prerequisites": [
+      "Savoir appeler une API HTTP depuis une application TypeScript."
+    ],
+    "estimatedMinutes": 75,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-suivre-requete-processus-http-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une requête HTTP traverse plusieurs couches : résolution du nom, connexion à une adresse et un port, échange HTTP, routage applicatif puis exécution du gestionnaire. Une erreur visible dans le navigateur ne permet pas, à elle seule, de savoir quelle couche a échoué.",
+          "sourceKeys": [
+            "mdn-http",
+            "node-http"
+          ]
+        }
+      },
+      {
+        "key": "content-suivre-requete-processus-http-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Dans SourceLab, le navigateur appelle `POST /api/sources`. Si le nom résout mais qu’aucun processus n’écoute sur le port attendu, le problème précède Hono. Si le serveur répond `404`, la connexion fonctionne et le diagnostic se déplace vers le routage.",
+          "sourceKeys": [
+            "mdn-http",
+            "node-http"
+          ]
+        }
+      },
+      {
+        "key": "content-suivre-requete-processus-http-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Réflexe de diagnostic : observer du plus externe au plus interne — résolution, connexion, réponse HTTP, logs du processus, puis logique métier — et conserver la première preuve qui invalide une hypothèse.",
+          "sourceKeys": [
+            "mdn-http"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "mdn-http",
+        "type": "website",
+        "title": "An overview of HTTP",
+        "author": "Mozilla",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "citation": "Mozilla. (2026). An overview of HTTP. MDN Web Docs. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à requêtes, réponses, méthodes, statuts et intermédiaires puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant requêtes, réponses, méthodes, statuts et intermédiaires.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "requêtes, réponses, méthodes, statuts et intermédiaires",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 1
+      },
+      {
+        "key": "node-http",
+        "type": "website",
+        "title": "HTTP",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/http.html",
+        "citation": "Node.js. (2026). HTTP. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à serveurs HTTP, timeouts et arrêt puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant serveurs HTTP, timeouts et arrêt.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "serveurs HTTP, timeouts et arrêt",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Chaîne d’exécution HTTP",
+        "slug": "chaine-execution-http",
+        "description": "Une requête relie des couches observables dont chacune possède ses propres symptômes et tests.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "mdn-http",
+          "node-http"
+        ],
+        "assessment": {
+          "key": "assessment-chaine-execution-http",
+          "type": "quiz",
+          "title": "Mini-évaluation — Chaîne d’exécution HTTP",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-suivre-requete-processus-http",
+        "title": "Tracer une requête SourceLab",
+        "description": "Dessiner le trajet d’un import de source depuis le navigateur jusqu’au gestionnaire API. Pour chaque couche, indiquer une commande ou une observation qui permet de confirmer son fonctionnement.",
+        "type": "practice",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-suivre-requete-processus-http",
+        "title": "Quiz de leçon — Suivre une requête du navigateur au processus Node.js",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "L’API fonctionne avec `curl` depuis l’hôte mais pas depuis le conteneur web. Quel test vient en premier ?",
+            "explanation": "Le contexte réseau n’est pas le même entre l’hôte et un conteneur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vérifier le nom de service et le réseau vus depuis le conteneur.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Réécrire le formulaire.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ajouter un index PostgreSQL.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles informations appartiennent au contrat HTTP observable ?",
+            "explanation": "Le PID est un détail d’exécution, pas une partie du contrat HTTP.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Méthode",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Chemin",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Statut",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "PID du serveur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un timeout et une réponse 500 prouvent la même cause.",
+            "explanation": "Ils sont deux symptômes distincts et doivent être diagnostiqués séparément.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-suivre-requete-processus-http-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "mdn-http"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-suivre-requete-processus-http-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-http"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-suivre-requete-processus-http-3"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-suivre-requete-processus-http"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-chaine-execution-http"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-suivre-requete-processus-http"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-126-MDN_HTTP",
+        "type": "official_documentation",
+        "authors": [
+          "Mozilla"
+        ],
+        "organization": "Mozilla",
+        "title": "An overview of HTTP",
+        "year": 2026,
+        "edition": null,
+        "publication": "Mozilla",
+        "doi": null,
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-126-NODE_HTTP",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "HTTP",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/http.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-126-MDN_HTTP",
+            "locator": "requêtes, réponses, méthodes, statuts et intermédiaires",
+            "supports": "Soutient le bloc sur chaîne d’exécution http."
+          },
+          {
+            "referenceId": "REF-126-NODE_HTTP",
+            "locator": "serveurs HTTP, timeouts et arrêt",
+            "supports": "Soutient le bloc sur chaîne d’exécution http."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-126-MDN_HTTP",
+            "locator": "requêtes, réponses, méthodes, statuts et intermédiaires",
+            "supports": "Soutient le bloc sur chaîne d’exécution http."
+          },
+          {
+            "referenceId": "REF-126-NODE_HTTP",
+            "locator": "serveurs HTTP, timeouts et arrêt",
+            "supports": "Soutient le bloc sur chaîne d’exécution http."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-126-MDN_HTTP",
+            "locator": "requêtes, réponses, méthodes, statuts et intermédiaires",
+            "supports": "Soutient le bloc sur chaîne d’exécution http."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "mdn-http",
+        "referenceIds": [
+          "REF-126-MDN_HTTP"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour requêtes, réponses, méthodes, statuts et intermédiaires.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "node-http",
+        "referenceIds": [
+          "REF-126-NODE_HTTP"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour serveurs HTTP, timeouts et arrêt.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "chaine-execution-http",
+        "assessmentTitle": "Mini-évaluation — Chaîne d’exécution HTTP",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un appel retourne immédiatement `404`. Quelle conclusion est la plus solide ?",
+            "explanation": "Un 404 est une réponse applicative : la connexion et le serveur ont au moins traité la requête.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Une réponse HTTP a été obtenue ; il faut vérifier la route et le contrat.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le DNS est nécessairement en panne.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Aucun processus ne tourne sur la machine.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles observations aident à localiser une panne avant de modifier le code métier ?",
+            "explanation": "Les couches de transport et HTTP doivent être observées avant d’accuser la logique métier.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Résolution du nom",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Connexion au port",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Statut et corps HTTP",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Couleur du bouton",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "`localhost` désigne toujours la machine de l’utilisateur final, même depuis un conteneur.",
+            "explanation": "Dans un conteneur, localhost désigne ce conteneur lui-même.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "chaine-execution-http",
+          "contentKeys": [
+            "content-suivre-requete-processus-http-1",
+            "content-suivre-requete-processus-http-2",
+            "content-suivre-requete-processus-http-3"
+          ],
+          "resourceKeys": [
+            "mdn-http",
+            "node-http"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-suivre-requete-processus-http"
+          },
+          "assessmentKey": "assessment-chaine-execution-http",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

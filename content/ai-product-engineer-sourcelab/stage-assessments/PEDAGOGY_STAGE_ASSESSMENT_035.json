@@ -1,0 +1,94 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_035",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "retrouver-bons-passages",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Construire le retriever SourceLab",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Implémenter recherche vectorielle, lexicale, hybride et reranking, puis calibrer contexte et abstention sans fuite inter-projets.",
+    "instructions": [
+      "Construire la baseline vectorielle exacte et mesurer son recall.",
+      "Ajouter les filtres d’accès dans la requête.",
+      "Comparer index approximatif à l’exact.",
+      "Implémenter lexical, fusion et reranking.",
+      "Calibrer top-k et abstention sur les cas sans réponse."
+    ],
+    "case": "Cas fictif — La recherche vectorielle comprend les paraphrases mais rate des identifiants exacts. Après ajout de HNSW, certains bons passages disparaissent du top-5. Un filtre projet est appliqué après récupération et permet à des chunks non autorisés d’influencer le classement.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Service de retrieval, requêtes SQL, dataset, rapport comparatif et tests d’isolation.",
+    "conceptSlugs": [
+      "recherche-vectorielle-filtree",
+      "retrieval-hybride-calibre"
+    ],
+    "rubric": [
+      {
+        "criterion": "Vectoriel",
+        "weight": 25,
+        "requirements": [
+          "Embeddings et versions sont traçables.",
+          "Exact et approximatif sont comparés."
+        ]
+      },
+      {
+        "criterion": "Hybride et reranking",
+        "weight": 25,
+        "requirements": [
+          "Les signaux complémentaires sont fusionnés de façon auditable.",
+          "Le reranker ne masque pas les candidats initiaux."
+        ]
+      },
+      {
+        "criterion": "Permissions",
+        "weight": 30,
+        "requirements": [
+          "Le filtrage est serveur et préalable.",
+          "Les tests inter-projets sont bloquants."
+        ]
+      },
+      {
+        "criterion": "Calibration",
+        "weight": 20,
+        "requirements": [
+          "Top-k, latence et abstention reposent sur des mesures.",
+          "Les cas sans réponse restent sans réponse."
+        ]
+      }
+    ],
+    "remediation": "Corriger toute fuite avant d’optimiser, comparer à l’exact, puis ajouter les requêtes ratées au dataset et recalibrer."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-142-OPENAI_EMBEDDINGS",
+      "REF-142-PGVECTOR",
+      "REF-143-POSTGRES_TEXTSEARCH",
+      "REF-143-PGVECTOR",
+      "REF-143-OPENAI_RETRIEVAL"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

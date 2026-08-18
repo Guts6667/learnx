@@ -1,0 +1,570 @@
+{
+  "specId": "PEDAGOGY_SPEC_137",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "operer-et-diagnostiquer",
+  "moduleSlug": "observabilite-incidents",
+  "lesson": {
+    "title": "Traiter un incident et restaurer le service",
+    "slug": "traiter-incident-restaurer-service",
+    "summary": "Détecter, contenir et résoudre un incident SourceLab en séparant impact, mitigation, cause et prévention, puis produire un postmortem exploitable.",
+    "objectives": [
+      "Prioriser la restauration de l’impact utilisateur.",
+      "Organiser rôles, communication et journal d’incident.",
+      "Transformer la cause en actions correctives vérifiables."
+    ],
+    "prerequisites": [
+      "Disposer de signaux corrélés sur le parcours d’import."
+    ],
+    "estimatedMinutes": 95,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-traiter-incident-restaurer-service-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Un incident est géré comme un problème opérationnel : établir l’impact, nommer une coordination, contenir, restaurer, communiquer et conserver une chronologie. L’analyse de cause vient après la mitigation lorsque le service reste dégradé.",
+          "sourceKeys": [
+            "google-sre-incidents"
+          ]
+        }
+      },
+      {
+        "key": "content-traiter-incident-restaurer-service-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Une nouvelle image SourceLab provoque des retries rapides et sature les connexions PostgreSQL. La mitigation peut suspendre les nouveaux imports, revenir à l’image identifiée précédente ou réduire la concurrence avant de corriger la classification des erreurs.",
+          "sourceKeys": [
+            "google-sre-monitoring"
+          ]
+        }
+      },
+      {
+        "key": "content-traiter-incident-restaurer-service-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Le postmortem ne cherche pas un coupable. Il décrit conditions, détection, décisions et barrières manquantes ; chaque action possède propriétaire, échéance et preuve d’efficacité. Un rollback applicatif doit tenir compte de la compatibilité du schéma.",
+          "sourceKeys": [
+            "google-sre-incidents"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "google-sre-incidents",
+        "type": "website",
+        "title": "Managing Incidents",
+        "author": "Google",
+        "url": "https://sre.google/sre-book/managing-incidents/",
+        "citation": "Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.). (2016). Managing Incidents. Site Reliability Engineering. O’Reilly/Google.",
+        "description": "Consulter la partie consacrée à rôles, coordination et réponse à incident puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant rôles, coordination et réponse à incident.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "rôles, coordination et réponse à incident",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "google-sre-monitoring",
+        "type": "website",
+        "title": "Monitoring Distributed Systems",
+        "author": "Google",
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "citation": "Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (Eds.). (2016). Monitoring Distributed Systems. Site Reliability Engineering. O’Reilly/Google.",
+        "description": "Consulter la partie consacrée à signaux, alertes et symptômes utilisateurs puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant signaux, alertes et symptômes utilisateurs.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "signaux, alertes et symptômes utilisateurs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "node-process",
+        "type": "website",
+        "title": "Process",
+        "author": "Node.js",
+        "url": "https://nodejs.org/api/process.html",
+        "citation": "Node.js. (2026). Process. Documentation officielle. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à processus, codes de sortie, signaux et variables d’environnement puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant processus, codes de sortie, signaux et variables d’environnement.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "processus, codes de sortie, signaux et variables d’environnement",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Réponse à incident",
+        "slug": "reponse-incident",
+        "description": "La réponse coordonne mitigation, restauration, communication et apprentissage à partir de preuves.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "google-sre-incidents",
+          "google-sre-monitoring",
+          "node-process"
+        ],
+        "assessment": {
+          "key": "assessment-reponse-incident",
+          "type": "quiz",
+          "title": "Mini-évaluation — Réponse à incident",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-traiter-incident-restaurer-service",
+        "title": "Conduire l’incident final",
+        "description": "Exécuter un scénario où le worker sature la base après déploiement. Tenir la chronologie, restaurer, vérifier les jobs, communiquer l’état puis écrire un postmortem avec actions testables.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-traiter-incident-restaurer-service",
+        "title": "Quiz de leçon — Traiter un incident et restaurer le service",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Un rollback du code rend les écritures incompatibles avec la migration appliquée. Que faire ?",
+            "explanation": "Code et schéma forment un ensemble de compatibilité.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Évaluer roll-forward ou restauration coordonnée du code et des données.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Redéployer au hasard plusieurs versions.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer les logs.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quelles preuves vérifier après restauration ?",
+            "explanation": "La restauration doit être confirmée techniquement et métier.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Taux d’erreur revenu au niveau attendu",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Backlog repris sans doublon",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Décomptes et intégrité des jobs",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Nombre de commits du mois",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "La clôture d’un incident intervient dès que l’alerte disparaît, sans vérifier l’expérience utilisateur.",
+            "explanation": "Le service et les données doivent être validés.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-incident-restaurer-service-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "google-sre-incidents"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-incident-restaurer-service-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "google-sre-monitoring"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-traiter-incident-restaurer-service-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "node-process"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-traiter-incident-restaurer-service"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-reponse-incident"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-traiter-incident-restaurer-service"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-137-GOOGLE_SRE_INCIDENTS",
+        "type": "official_documentation",
+        "authors": [
+          "Google"
+        ],
+        "organization": "Google",
+        "title": "Managing Incidents",
+        "year": 2016,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/sre-book/managing-incidents/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-137-GOOGLE_SRE_MONITORING",
+        "type": "official_documentation",
+        "authors": [
+          "Google"
+        ],
+        "organization": "Google",
+        "title": "Monitoring Distributed Systems",
+        "year": 2016,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-137-NODE_PROCESS",
+        "type": "official_documentation",
+        "authors": [
+          "Node.js"
+        ],
+        "organization": "Node.js",
+        "title": "Process",
+        "year": 2026,
+        "edition": null,
+        "publication": "Node.js",
+        "doi": null,
+        "url": "https://nodejs.org/api/process.html",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-GOOGLE_SRE_INCIDENTS",
+            "locator": "rôles, coordination et réponse à incident",
+            "supports": "Soutient le bloc sur réponse à incident."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-GOOGLE_SRE_MONITORING",
+            "locator": "signaux, alertes et symptômes utilisateurs",
+            "supports": "Soutient le bloc sur réponse à incident."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-137-GOOGLE_SRE_INCIDENTS",
+            "locator": "rôles, coordination et réponse à incident",
+            "supports": "Soutient le bloc sur réponse à incident."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "google-sre-incidents",
+        "referenceIds": [
+          "REF-137-GOOGLE_SRE_INCIDENTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour rôles, coordination et réponse à incident.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "google-sre-monitoring",
+        "referenceIds": [
+          "REF-137-GOOGLE_SRE_MONITORING"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour signaux, alertes et symptômes utilisateurs.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "node-process",
+        "referenceIds": [
+          "REF-137-NODE_PROCESS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour processus, codes de sortie, signaux et variables d’environnement.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "reponse-incident",
+        "assessmentTitle": "Mini-évaluation — Réponse à incident",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Le service est encore indisponible. Quelle priorité vient avant l’analyse complète de cause ?",
+            "explanation": "La mitigation protège d’abord les utilisateurs et les données.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Réduire l’impact et restaurer un service sûr.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rédiger immédiatement un article public détaillé.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Refactorer tout le domaine.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que doit contenir un journal d’incident ?",
+            "explanation": "La chronologie distingue faits et hypothèses.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Heures et observations",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Décisions et responsables",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Résultats des mitigations",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Hypothèses présentées comme certitudes",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un postmortem utile peut conclure uniquement « erreur humaine » sans analyser les conditions du système.",
+            "explanation": "Il doit identifier les barrières et conditions qui ont permis l’impact.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "reponse-incident",
+          "contentKeys": [
+            "content-traiter-incident-restaurer-service-1",
+            "content-traiter-incident-restaurer-service-2",
+            "content-traiter-incident-restaurer-service-3"
+          ],
+          "resourceKeys": [
+            "google-sre-incidents",
+            "google-sre-monitoring",
+            "node-process"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-traiter-incident-restaurer-service"
+          },
+          "assessmentKey": "assessment-reponse-incident",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,582 @@
+{
+  "specId": "PEDAGOGY_SPEC_135",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-et-livrer",
+  "moduleSlug": "tests-integration-ci",
+  "lesson": {
+    "title": "Construire une CI et promouvoir un artefact",
+    "slug": "construire-ci-promouvoir-artefact",
+    "summary": "Automatiser qualité, build, tests d’intégration, artefacts et déploiement staging tout en protégeant les secrets et la promotion production.",
+    "objectives": [
+      "Structurer un workflow en jobs et dépendances.",
+      "Construire et identifier un artefact une seule fois.",
+      "Protéger staging et production par environnements et smoke tests."
+    ],
+    "prerequisites": [
+      "Disposer d’une matrice de tests reproductible."
+    ],
+    "estimatedMinutes": 90,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-construire-ci-promouvoir-artefact-1",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La CI fournit une preuve reproductible sur un commit : installation verrouillée, analyse statique, tests, build et rapports. La livraison promeut un artefact identifié plutôt que de reconstruire silencieusement une version différente.",
+          "sourceKeys": [
+            "github-workflows",
+            "github-artifacts"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-ci-promouvoir-artefact-2",
+        "type": "example",
+        "position": 2,
+        "content": {
+          "text": "Le workflow SourceLab construit les images taguées par SHA, démarre une base jetable, applique les migrations, exécute les tests, conserve les rapports puis déploie la même image en staging avant un smoke test.",
+          "sourceKeys": [
+            "github-workflows",
+            "github-artifacts"
+          ]
+        }
+      },
+      {
+        "key": "content-construire-ci-promouvoir-artefact-3",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un environnement GitHub peut limiter les branches, retenir ses secrets et exiger une approbation avant le job de production. Cette protection ne remplace pas les vérifications du déploiement ni les permissions minimales du workflow.",
+          "sourceKeys": [
+            "github-environments"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "github-workflows",
+        "type": "website",
+        "title": "About workflows",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/writing-workflows/about-workflows",
+        "citation": "GitHub. (2026). About workflows. GitHub Actions documentation. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à workflows, événements, jobs et étapes puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant workflows, événements, jobs et étapes.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "workflows, événements, jobs et étapes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 1
+      },
+      {
+        "key": "github-environments",
+        "type": "website",
+        "title": "Deployment environments",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/deployment-environments",
+        "citation": "GitHub. (2026). Deployment environments. GitHub Actions documentation. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à cibles, protections, secrets et approbations puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant cibles, protections, secrets et approbations.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "cibles, protections, secrets et approbations",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 2
+      },
+      {
+        "key": "github-artifacts",
+        "type": "website",
+        "title": "Store and share data with workflow artifacts",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/tutorials/store-and-share-data",
+        "citation": "GitHub. (2026). Store and share data with workflow artifacts. GitHub Actions documentation. Consulté le 18 août 2026.",
+        "description": "Consulter la partie consacrée à artefacts de build et rapports puis relever les règles applicables à l’exercice SourceLab.",
+        "guidance": {
+          "objective": "Identifier les principes utiles concernant artefacts de build et rapports.",
+          "instructions": "Lire la section ciblée, noter deux règles et une limite, puis les relier au livrable SourceLab.",
+          "scope": "artefacts de build et rapports",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Ressource web ou document public en anglais ; utiliser la navigation par titres ou la recherche dans la page.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 9,
+        "position": 3
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Promotion d’artefact",
+        "slug": "promotion-artefact",
+        "description": "Une version construite, testée et identifiée est promue entre environnements avec contrôles explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": [
+          "github-workflows",
+          "github-environments",
+          "github-artifacts"
+        ],
+        "assessment": {
+          "key": "assessment-promotion-artefact",
+          "type": "quiz",
+          "title": "Mini-évaluation — Promotion d’artefact",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-ci-promouvoir-artefact",
+        "title": "Livrer le pipeline SourceLab",
+        "description": "Créer un workflow PR puis staging : lint, typecheck, tests, build d’images, tests d’intégration, artefacts, déploiement staging et smoke. Documenter les permissions et la porte production.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-ci-promouvoir-artefact",
+        "title": "Quiz de leçon — Construire une CI et promouvoir un artefact",
+        "description": "Vérifier la capacité à transférer les principes de la leçon à un scénario SourceLab.",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Les tests échouent mais l’image est quand même publiée. Quel principe manque ?",
+            "explanation": "Les dépendances entre jobs doivent bloquer la promotion.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Un gate qui conditionne la publication au succès des vérifications.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Un volume partagé avec le navigateur.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Une route GET supplémentaire.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments conserver comme artefacts CI ?",
+            "explanation": "Les artefacts aident le diagnostic sans exposer de secrets.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Rapport de tests",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Rapport de performance",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Résultat de répétition des migrations",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Secrets en clair",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un smoke test staging remplace l’ensemble des tests d’intégration.",
+            "explanation": "Il vérifie rapidement le déploiement, pas tous les invariants.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-ci-promouvoir-artefact-1"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-workflows"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-ci-promouvoir-artefact-2"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-artifacts"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-construire-ci-promouvoir-artefact-3"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-environments"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-ci-promouvoir-artefact"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-promotion-artefact"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-ci-promouvoir-artefact"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur front-end TypeScript expérimenté souhaitant maîtriser la verticale jusqu’à la production sans devenir DevOps.",
+    "owner": "Rayan / LearnX",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-135-GITHUB_WORKFLOWS",
+        "type": "official_documentation",
+        "authors": [
+          "GitHub"
+        ],
+        "organization": "GitHub",
+        "title": "About workflows",
+        "year": 2026,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/writing-workflows/about-workflows",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-135-GITHUB_ENVIRONMENTS",
+        "type": "official_documentation",
+        "authors": [
+          "GitHub"
+        ],
+        "organization": "GitHub",
+        "title": "Deployment environments",
+        "year": 2026,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/deployment-environments",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      },
+      {
+        "id": "REF-135-GITHUB_ARTIFACTS",
+        "type": "official_documentation",
+        "authors": [
+          "GitHub"
+        ],
+        "organization": "GitHub",
+        "title": "Store and share data with workflow artifacts",
+        "year": 2026,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/tutorials/store-and-share-data",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Source primaire institutionnelle ou documentation officielle ; revérifier la version et le périmètre avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-GITHUB_WORKFLOWS",
+            "locator": "workflows, événements, jobs et étapes",
+            "supports": "Soutient le bloc sur promotion d’artefact."
+          },
+          {
+            "referenceId": "REF-135-GITHUB_ARTIFACTS",
+            "locator": "artefacts de build et rapports",
+            "supports": "Soutient le bloc sur promotion d’artefact."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-GITHUB_WORKFLOWS",
+            "locator": "workflows, événements, jobs et étapes",
+            "supports": "Soutient le bloc sur promotion d’artefact."
+          },
+          {
+            "referenceId": "REF-135-GITHUB_ARTIFACTS",
+            "locator": "artefacts de build et rapports",
+            "supports": "Soutient le bloc sur promotion d’artefact."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-135-GITHUB_ENVIRONMENTS",
+            "locator": "cibles, protections, secrets et approbations",
+            "supports": "Soutient le bloc sur promotion d’artefact."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Les affirmations sont bornées à des mécanismes documentés par des sources primaires officielles.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "github-workflows",
+        "referenceIds": [
+          "REF-135-GITHUB_WORKFLOWS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour workflows, événements, jobs et étapes.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "github-environments",
+        "referenceIds": [
+          "REF-135-GITHUB_ENVIRONMENTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour cibles, protections, secrets et approbations.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      },
+      {
+        "resourceKey": "github-artifacts",
+        "referenceIds": [
+          "REF-135-GITHUB_ARTIFACTS"
+        ],
+        "pedagogicalRationale": "Fournit la référence primaire pour artefacts de build et rapports.",
+        "learnerInstructions": "Extraire deux règles opérationnelles et une limite pour le livrable de la leçon.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML ou document public ; texte consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Contrôle automatique et revue humaine finale encore requis avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "promotion-artefact",
+        "assessmentTitle": "Mini-évaluation — Promotion d’artefact",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi taguer une image avec le SHA du commit ?",
+            "explanation": "L’identité de l’artefact soutient audit et rollback.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Pour relier sans ambiguïté l’artefact au code testé.",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Pour chiffrer automatiquement les secrets.",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Pour éviter toute migration.",
+                "isCorrect": false,
+                "position": 3
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que peut protéger un environnement de déploiement ?",
+            "explanation": "Les règles s’appliquent avant l’accès du job à l’environnement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Secrets spécifiques",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Branches autorisées",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Approbation avant le job",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Code déjà exécuté sur le runner avant la protection",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Reconstruire séparément en staging et production garantit que les deux environnements utilisent exactement le même artefact.",
+            "explanation": "Deux builds peuvent diverger ; promouvoir le même artefact réduit cette incertitude.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Apport sourcé, mise en situation SourceLab, règle de décision, production pratique, mini-évaluation puis transfert par quiz.",
+      "cycles": [
+        {
+          "conceptSlug": "promotion-artefact",
+          "contentKeys": [
+            "content-construire-ci-promouvoir-artefact-1",
+            "content-construire-ci-promouvoir-artefact-2",
+            "content-construire-ci-promouvoir-artefact-3"
+          ],
+          "resourceKeys": [
+            "github-workflows",
+            "github-environments",
+            "github-artifacts"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-ci-promouvoir-artefact"
+          },
+          "assessmentKey": "assessment-promotion-artefact",
+          "rationale": "La production oblige à appliquer le concept avant la vérification et le quiz de transfert."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et pédagogique requise.",
+        "Les URLs et versions de documentations évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab reste dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création initiale de la leçon SourceLab, de ses activités, quiz et banques d’évaluation.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

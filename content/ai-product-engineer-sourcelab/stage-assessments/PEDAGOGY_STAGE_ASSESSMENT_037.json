@@ -1,0 +1,94 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_037",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "corriger-textes-libres",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Proposer une correction fiable",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Évaluer un corpus de réponses par rubrique, calibrer la confiance et router les cas vers feedback automatique, confirmation ou revue humaine.",
+    "instructions": [
+      "Appliquer la rubrique critère par critère et citer la réponse.",
+      "Calculer le score hors modèle à partir des poids.",
+      "Comparer aux annotations humaines et segmenter les erreurs.",
+      "Définir les règles de confiance et de routing.",
+      "Démontrer la contestation et la correction de la décision finale."
+    ],
+    "case": "Cas fictif — Le corpus comporte réponses concises correctes, réponses longues hors sujet, formulations atypiques et contradictions avec les sources. Le modèle favorise les réponses longues et attribue parfois une forte confiance à un jugement instable. Une réponse porte sur un domaine à enjeu élevé.",
+    "estimatedMinutes": 90,
+    "submissionFormat": "Service Assessment Reviewer, dataset annoté, rapport d’accord/biais, règles de routing et journal de revue.",
+    "conceptSlugs": [
+      "correction-par-rubrique",
+      "escalade-calibree"
+    ],
+    "rubric": [
+      {
+        "criterion": "Application de la rubrique",
+        "weight": 30,
+        "requirements": [
+          "Aucun critère n’est inventé.",
+          "Chaque jugement est relié à une preuve."
+        ]
+      },
+      {
+        "criterion": "Sortie et score",
+        "weight": 20,
+        "requirements": [
+          "Le schéma est validé.",
+          "Le score est calculé déterministement."
+        ]
+      },
+      {
+        "criterion": "Calibration",
+        "weight": 30,
+        "requirements": [
+          "Accord, stabilité et sous-groupes sont mesurés.",
+          "La confiance n’est pas une auto-déclaration brute."
+        ]
+      },
+      {
+        "criterion": "Revue humaine",
+        "weight": 20,
+        "requirements": [
+          "Le routing est proportionné à l’enjeu.",
+          "La décision peut être contestée et corrigée."
+        ]
+      }
+    ],
+    "remediation": "Réexaminer les critères en désaccord, ajouter les cas difficiles, réduire l’automatisation ou élargir la revue jusqu’à respecter les gates."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-146-OPENAI_STRUCTURED",
+      "REF-146-OPENAI_EVALS",
+      "REF-146-LEARNX_EDITORIAL",
+      "REF-147-OPENAI_EVALS",
+      "REF-147-NIST_AI_RMF"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine technique, éditoriale et pédagogique requise.",
+        "Le cas et les données sont fictifs ; l’évaluation porte sur un dépôt SourceLab externe à LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "OpenAI avec validation produit de Rayan",
+        "change": "Création de l’évaluation finale de l’étape SourceLab.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
