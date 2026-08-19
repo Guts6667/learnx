@@ -1,0 +1,763 @@
+{
+  "specId": "PEDAGOGY_SPEC_141",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "evaluer-reponses-livrer-ia",
+  "moduleSlug": "module-evaluer-reponses-livrer-ia",
+  "lesson": {
+    "title": "Évaluer, sécuriser et opérer les fonctions IA",
+    "slug": "evaluer-securiser-operer-fonctions-ia",
+    "summary": "Créer la boucle de qualité finale : datasets versionnés, mesures retrieval/preuves, traces minimisées, tests de prompt injection et critères de release pour le Program Builder et le moteur de rubrique.",
+    "objectives": [
+      "Séparer métriques de retrieval, génération et produit.",
+      "Construire une suite de non-régression avec coût et latence.",
+      "Protéger documents, outils, traces et sorties contre injection et fuite de données."
+    ],
+    "prerequisites": [
+      "Avoir implémenté les prototypes Program Builder et moteur de rubrique exécutable."
+    ],
+    "estimatedMinutes": 260,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-evals-separees",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "Une réponse incorrecte peut venir du corpus, du chunking, du retrieval, du prompt, du modèle ou de la validation. Les évaluations séparent recall@k et rang du bon passage, fidélité et citations, respect du schéma, qualité du feedback et outcome produit. Un score agrégé unique masque la cause.",
+          "sourceKeys": ["openai-evals", "openai-model-optimization"]
+        }
+      },
+      {
+        "key": "content-observabilite-ia",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Chaque run référence versions du corpus, modèle, prompt, schéma et dataset. Les traces suivent latence, tokens, coût, outils et erreurs, mais l’enregistrement des entrées et sorties sensibles peut être désactivé ou pseudonymisé. L’observabilité doit permettre de reproduire une régression sans créer une copie incontrôlée des documents.",
+          "sourceKeys": ["ai-sdk-telemetry", "langfuse-docs"]
+        }
+      },
+      {
+        "key": "content-securite-injection",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un document importé peut contenir des instructions destinées au modèle. SourceLab le traite comme donnée non fiable, sépare les instructions système, limite les outils, valide leurs paramètres et teste l’exfiltration, les citations inventées et les accès croisés. Aucune permission ne dépend du fait que le modèle « accepte » de la respecter.",
+          "sourceKeys": [
+            "owasp-prompt-injection",
+            "openai-safety-best-practices"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "openai-evals",
+        "type": "website",
+        "title": "Evals",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "citation": "OpenAI. (n.d.). Evals. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "guidance": {
+          "objective": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+          "instructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+          "scope": "Datasets, graders, runs et comparaison",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "openai-model-optimization",
+        "type": "website",
+        "title": "Model optimization",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/model-optimization",
+        "citation": "OpenAI. (n.d.). Model optimization. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire la boucle d’optimisation et classer les erreurs entre données, retrieval, prompt et modèle.",
+        "guidance": {
+          "objective": "Améliorer le système à partir d’erreurs mesurées plutôt que changer de modèle au hasard.",
+          "instructions": "Lire la boucle d’optimisation et classer les erreurs entre données, retrieval, prompt et modèle.",
+          "scope": "Evals, prompting, fine-tuning et boucle d’amélioration",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 2
+      },
+      {
+        "key": "ai-sdk-telemetry",
+        "type": "website",
+        "title": "AI SDK Core — Telemetry",
+        "author": "Vercel",
+        "url": "https://ai-sdk.dev/docs/ai-sdk-core/telemetry",
+        "citation": "Vercel. (n.d.). AI SDK Core — Telemetry. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire la configuration et identifier ce qu’il faut désactiver ou anonymiser dans les traces.",
+        "guidance": {
+          "objective": "Observer embeddings, générations et outils sans exposer les données sensibles.",
+          "instructions": "Lire la configuration et identifier ce qu’il faut désactiver ou anonymiser dans les traces.",
+          "scope": "OpenTelemetry, spans, tokens, inputs et sorties",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 3
+      },
+      {
+        "key": "langfuse-docs",
+        "type": "website",
+        "title": "Langfuse Documentation",
+        "author": "Langfuse",
+        "url": "https://langfuse.com/docs",
+        "citation": "Langfuse. (n.d.). Langfuse Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Explorer observability, prompt management, datasets et experiments ; définir le minimum utile au Lab.",
+        "guidance": {
+          "objective": "Relier chaque génération à sa version, son dataset et ses évaluations.",
+          "instructions": "Explorer observability, prompt management, datasets et experiments ; définir le minimum utile au Lab.",
+          "scope": "Traces, prompts, datasets, experiments et scores",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 4
+      },
+      {
+        "key": "owasp-prompt-injection",
+        "type": "website",
+        "title": "LLM01: Prompt Injection",
+        "author": "OWASP GenAI Security Project",
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+        "citation": "OWASP GenAI Security Project. (2025). LLM01: Prompt Injection. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire description, exemples et mitigations ; transformer cinq risques en tests adversariaux SourceLab.",
+        "guidance": {
+          "objective": "Traiter tout document importé comme une donnée non fiable.",
+          "instructions": "Lire description, exemples et mitigations ; transformer cinq risques en tests adversariaux SourceLab.",
+          "scope": "Injection directe/indirecte, impacts et mitigations",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "openai-safety-best-practices",
+        "type": "website",
+        "title": "Safety best practices",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+        "citation": "OpenAI. (n.d.). Safety best practices. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+        "guidance": {
+          "objective": "Définir des garde-fous proportionnés pour génération et correction.",
+          "instructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+          "scope": "Adversarial testing, limitation des entrées/sorties et contrôles déterministes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Boucle de qualité et sécurité IA",
+        "slug": "boucle-qualite-securite-ia",
+        "description": "La release d’une fonction IA exige des datasets, métriques séparées, provenance, coûts, traces minimisées et scénarios adversariaux avec seuils explicites.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["openai-evals"],
+        "assessment": {
+          "key": "assessment-boucle-qualite-securite-ia",
+          "type": "case_question",
+          "title": "Mini-évaluation — Boucle de qualité et sécurité IA",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-evaluer-securiser-operer-fonctions-ia",
+        "title": "Préparer la release IA de SourceLab",
+        "description": "Construire trois datasets versionnés : retrieval, authoring et assessment. Exécuter une baseline, comparer un changement de chunking ou prompt, puis produire un rapport qualité-coût-latence. Ajouter instrumentation et red team : injection indirecte, accès croisé, source inventée, outil hors périmètre et fuite dans les logs. Définir les gates de staging et rollback.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-evaluer-securiser-operer-fonctions-ia",
+        "title": "Quiz — Evals, sécurité et opérations IA",
+        "description": "Vérifier les acquis essentiels de la leçon « Évaluer, sécuriser et opérer les fonctions IA ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quelle pratique réduit le risque des traces ?",
+            "explanation": "L’observabilité doit respecter la minimisation.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Désactiver ou minimiser l’enregistrement des contenus sensibles tout en gardant les métadonnées utiles",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Journaliser tous les documents",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Supprimer les request IDs",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Ne mesurer aucune latence",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Une modification améliore la qualité mais double le coût et le p95. Que faire ?",
+            "explanation": "La release dépend de plusieurs contraintes produit.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Arbitrer avec les budgets et outcomes définis plutôt que promouvoir automatiquement",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Toujours déployer",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Ignorer la latence",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Supprimer les evals",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Une prompt injection indirecte peut se trouver dans un document récupéré.",
+            "explanation": "Le contenu externe peut tenter de modifier le comportement du modèle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": false,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-evals-separees"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-evals"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-observabilite-ia"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-model-optimization"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-securite-injection"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ai-sdk-telemetry"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "langfuse-docs"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "owasp-prompt-injection"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-safety-best-practices"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-evaluer-securiser-operer-fonctions-ia"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-boucle-qualite-securite-ia"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-evaluer-securiser-operer-fonctions-ia"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-141-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Evals",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/evals",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-141-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Model optimization",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/model-optimization",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-141-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Vercel",
+        "title": "AI SDK Core — Telemetry",
+        "year": null,
+        "edition": null,
+        "publication": "Vercel",
+        "doi": null,
+        "url": "https://ai-sdk.dev/docs/ai-sdk-core/telemetry",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-141-04",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Langfuse",
+        "title": "Langfuse Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "Langfuse",
+        "doi": null,
+        "url": "https://langfuse.com/docs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-141-05",
+        "type": "security_guidance",
+        "authors": [],
+        "organization": "OWASP GenAI Security Project",
+        "title": "LLM01: Prompt Injection",
+        "year": 2025,
+        "edition": null,
+        "publication": "OWASP GenAI Security Project",
+        "doi": null,
+        "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-141-06",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Safety best practices",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-01",
+            "locator": "Datasets, graders, runs et comparaison",
+            "supports": "Soutient le bloc « content-evals-separees » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-141-02",
+            "locator": "Evals, prompting, fine-tuning et boucle d’amélioration",
+            "supports": "Soutient le bloc « content-evals-separees » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-03",
+            "locator": "OpenTelemetry, spans, tokens, inputs et sorties",
+            "supports": "Soutient le bloc « content-observabilite-ia » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-141-04",
+            "locator": "Traces, prompts, datasets, experiments et scores",
+            "supports": "Soutient le bloc « content-observabilite-ia » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-141-05",
+            "locator": "Injection directe/indirecte, impacts et mitigations",
+            "supports": "Soutient le bloc « content-securite-injection » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-141-06",
+            "locator": "Adversarial testing et limitation des entrées/sorties",
+            "supports": "Soutient le bloc « content-securite-injection » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "openai-evals",
+        "referenceIds": ["REF-141-01"],
+        "pedagogicalRationale": "Construire des évaluations reproductibles avant de modifier prompts ou modèles.",
+        "learnerInstructions": "Lire le workflow d’évaluation et définir un dataset de référence pour SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-model-optimization",
+        "referenceIds": ["REF-141-02"],
+        "pedagogicalRationale": "Améliorer le système à partir d’erreurs mesurées plutôt que changer de modèle au hasard.",
+        "learnerInstructions": "Lire la boucle d’optimisation et classer les erreurs entre données, retrieval, prompt et modèle.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "ai-sdk-telemetry",
+        "referenceIds": ["REF-141-03"],
+        "pedagogicalRationale": "Observer embeddings, générations et outils sans exposer les données sensibles.",
+        "learnerInstructions": "Lire la configuration et identifier ce qu’il faut désactiver ou anonymiser dans les traces.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "langfuse-docs",
+        "referenceIds": ["REF-141-04"],
+        "pedagogicalRationale": "Relier chaque génération à sa version, son dataset et ses évaluations.",
+        "learnerInstructions": "Explorer observability, prompt management, datasets et experiments ; définir le minimum utile au Lab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "owasp-prompt-injection",
+        "referenceIds": ["REF-141-05"],
+        "pedagogicalRationale": "Traiter tout document importé comme une donnée non fiable.",
+        "learnerInstructions": "Lire description, exemples et mitigations ; transformer cinq risques en tests adversariaux SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-safety-best-practices",
+        "referenceIds": ["REF-141-06"],
+        "pedagogicalRationale": "Définir des garde-fous proportionnés pour génération et correction.",
+        "learnerInstructions": "Lire les recommandations de red teaming et de limitation des entrées/sorties ; concevoir les tests d’injection, d’abstention et de preuve du moteur de rubrique.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "boucle-qualite-securite-ia",
+        "assessmentTitle": "Mini-évaluation — Boucle de qualité et sécurité IA",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Pourquoi séparer retrieval et génération dans les evals ?",
+            "explanation": "Une mesure diagnostique guide l’amélioration.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Identifier la couche responsable d’une erreur et choisir la correction appropriée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Produire deux fois plus de graphiques",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter les datasets",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Garantir un score parfait",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Que versionner pour reproduire un run ?",
+            "explanation": "Les entrées du système déterminent le résultat.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Corpus",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Prompt",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Modèle",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Schéma de sortie",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Dataset",
+                "isCorrect": true,
+                "position": 5
+              },
+              {
+                "label": "Position de la fenêtre navigateur",
+                "isCorrect": false,
+                "position": 6
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Le modèle peut être le seul mécanisme de contrôle d’accès aux documents.",
+            "explanation": "Les permissions doivent être appliquées par le système avant le contexte.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "boucle-qualite-securite-ia",
+          "contentKeys": [
+            "content-evals-separees",
+            "content-observabilite-ia",
+            "content-securite-injection"
+          ],
+          "resourceKeys": [
+            "openai-evals",
+            "openai-model-optimization",
+            "ai-sdk-telemetry",
+            "langfuse-docs",
+            "owasp-prompt-injection",
+            "openai-safety-best-practices"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-evaluer-securiser-operer-fonctions-ia"
+          },
+          "assessmentKey": "assessment-boucle-qualite-securite-ia",
+          "rationale": "La production « Une suite d’évaluations et de sécurité versionnée, avec gates de release, observabilité et rollback. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Évaluer, sécuriser et opérer les fonctions IA » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

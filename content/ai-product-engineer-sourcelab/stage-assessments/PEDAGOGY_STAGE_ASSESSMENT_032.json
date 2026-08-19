@@ -1,0 +1,93 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_032",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "construire-retrieval-rag-source",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Comparer et défendre un retriever SourceLab",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Implémenter et comparer recherche vectorielle, lexicale et hybride, puis générer des réponses avec citations vérifiées et abstention.",
+    "instructions": [
+      "Créer un dataset d’au moins trente questions incluant termes exacts, paraphrases, réponses multi-passages, contradictions et absence. Mesurer recall@k, rang, latence et coût des trois retrievers. Livrer un RAG dont les citations sont vérifiées côté serveur et démontrer les cas d’abstention."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Construire retrieval et RAG sourcé ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": ["recherche-vectorielle-mesuree", "rag-source-abstention"],
+    "rubric": [
+      {
+        "criterion": "Embeddings et stockage",
+        "weight": 20,
+        "requirements": [
+          "Modèle, dimension et distance sont versionnés.",
+          "La recherche exacte sert de référence.",
+          "Les filtres de permissions précèdent le contexte."
+        ]
+      },
+      {
+        "criterion": "Comparaison retrieval",
+        "weight": 30,
+        "requirements": [
+          "Les trois approches utilisent le même dataset.",
+          "Les métriques et erreurs sont séparées.",
+          "Le compromis qualité-latence est argumenté."
+        ]
+      },
+      {
+        "criterion": "RAG et citations",
+        "weight": 30,
+        "requirements": [
+          "Le contexte conserve provenance et localisateurs.",
+          "Chaque citation est validée côté serveur.",
+          "Les contradictions et absences déclenchent un comportement explicite."
+        ]
+      },
+      {
+        "criterion": "Décision technique",
+        "weight": 20,
+        "requirements": [
+          "La configuration retenue est justifiée.",
+          "Les limites et seuils à revoir sont documentés.",
+          "Aucune généralisation n’est tirée d’un corpus insuffisant."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-136-01",
+      "REF-136-02",
+      "REF-136-03",
+      "REF-137-01",
+      "REF-137-02",
+      "REF-137-03",
+      "REF-137-04"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Construire retrieval et RAG sourcé ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

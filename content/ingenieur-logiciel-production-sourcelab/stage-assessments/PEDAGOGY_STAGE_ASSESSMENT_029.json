@@ -1,0 +1,95 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_029",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "integrer-donnees-traitements",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Livrer le Source Workspace résilient",
+      "type": "case_study",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Construire une verticale d’import de source de bout en bout, avec contrats, modèle, transitions, worker concurrent et reprise.",
+    "instructions": [
+      "Implémenter création de projet, import, consultation de statut et fiche source. Simuler double soumission, deux workers, arrêt au milieu, erreur récupérable et format interdit. Démontrer les invariants en base et expliquer la stratégie d’idempotence."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Intégrer données et traitements asynchrones ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "contrat-metier-source-workspace",
+      "traitement-asynchrone-idempotent"
+    ],
+    "rubric": [
+      {
+        "criterion": "Contrats et modèle",
+        "weight": 25,
+        "requirements": [
+          "Les schémas et erreurs sont typés et validés côté serveur.",
+          "Fichier, source, version et job sont séparés.",
+          "Les transitions interdites sont refusées."
+        ]
+      },
+      {
+        "criterion": "Atomicité et concurrence",
+        "weight": 30,
+        "requirements": [
+          "Les écritures liées sont transactionnelles.",
+          "Deux workers ne produisent pas deux résultats canoniques.",
+          "Les transactions longues et verrous sont évités."
+        ]
+      },
+      {
+        "criterion": "Retries et idempotence",
+        "weight": 25,
+        "requirements": [
+          "Les erreurs sont classées.",
+          "Les tentatives sont bornées et historisées.",
+          "Le replay ne duplique pas les effets."
+        ]
+      },
+      {
+        "criterion": "Usage produit",
+        "weight": 20,
+        "requirements": [
+          "L’interface rend les états compréhensibles.",
+          "Les cas NEEDS_REVIEW et FAILED sont distincts.",
+          "L’utilisateur peut reprendre ou corriger sans intervention SQL."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-130-01",
+      "REF-130-02",
+      "REF-130-03",
+      "REF-131-01",
+      "REF-131-02",
+      "REF-131-03"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Intégrer données et traitements asynchrones ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

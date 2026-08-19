@@ -1,0 +1,100 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_030",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-livrer-operer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation finale — Mettre SourceLab V1 en production",
+      "type": "simulation",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Préparer puis défendre la mise en production du Source Workspace, exécuter un incident simulé et produire les preuves de restauration.",
+    "instructions": [
+      "Présenter la matrice de tests, une migration additive, le pipeline CI, l’artefact, le staging, le smoke test, les signaux et le plan de déploiement. Pendant la simulation, diagnostiquer un backlog de jobs causé par une mauvaise configuration, contenir l’impact, restaurer puis rédiger le postmortem."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Tester, livrer et opérer SourceLab V1 ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": [
+      "preuve-integration-reproductible",
+      "boucle-livraison-exploitation"
+    ],
+    "rubric": [
+      {
+        "criterion": "Qualité et migrations",
+        "weight": 25,
+        "requirements": [
+          "Les niveaux de test couvrent les risques réels.",
+          "La base de test est isolée et recréable.",
+          "Migration, données existantes et compatibilité binaire sont vérifiées."
+        ]
+      },
+      {
+        "criterion": "CI/CD",
+        "weight": 25,
+        "requirements": [
+          "Le commit produit un artefact identifié.",
+          "La même version est promue entre environnements.",
+          "Protections, secrets, smoke tests et seuils d’arrêt sont définis."
+        ]
+      },
+      {
+        "criterion": "Observabilité",
+        "weight": 25,
+        "requirements": [
+          "Logs, métriques et traces permettent de suivre un import.",
+          "Les données sensibles sont minimisées.",
+          "Les alertes sont actionnables et liées à l’expérience."
+        ]
+      },
+      {
+        "criterion": "Incident et communication",
+        "weight": 25,
+        "requirements": [
+          "Impact, coordination et confinement sont explicites.",
+          "La restauration est prouvée par des contrôles.",
+          "Le postmortem identifie actions et propriétaires sans blâme."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-132-01",
+      "REF-132-02",
+      "REF-132-03",
+      "REF-132-04",
+      "REF-132-05",
+      "REF-133-01",
+      "REF-133-02",
+      "REF-133-03",
+      "REF-133-04",
+      "REF-133-05",
+      "REF-133-06"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Tester, livrer et opérer SourceLab V1 ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

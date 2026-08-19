@@ -1,0 +1,758 @@
+{
+  "specId": "PEDAGOGY_SPEC_133",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "tester-livrer-operer",
+  "moduleSlug": "module-tester-livrer-operer",
+  "lesson": {
+    "title": "Construire CI, observabilité, déploiement et réponse à incident",
+    "slug": "construire-ci-observabilite-deploiement",
+    "summary": "Transformer SourceLab V1 en service exploitable : validation automatique, artefact identifiable, signaux opérationnels, promotion contrôlée et procédure d’incident.",
+    "objectives": [
+      "Construire un pipeline qui valide le même artefact avant promotion.",
+      "Définir logs, métriques et traces utiles aux usages SourceLab.",
+      "Préparer smoke test, rollback ou roll-forward et conduite d’incident."
+    ],
+    "prerequisites": [
+      "Avoir une suite de tests et des migrations reproductibles."
+    ],
+    "estimatedMinutes": 240,
+    "position": 2,
+    "contentBlocks": [
+      {
+        "key": "content-ci-artefact",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "La CI transforme un commit en preuves : formatage, types, tests, build, migration et analyse de l’image. L’artefact déployé doit être identifié par le commit ou un digest ; reconstruire différemment à chaque environnement affaiblit la preuve.",
+          "sourceKeys": ["github-actions-workflows", "sre-release-engineering"]
+        }
+      },
+      {
+        "key": "content-observabilite",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Les logs structurés décrivent les événements, les métriques agrègent les tendances et les traces relient les étapes d’une opération. SourceLab doit suivre taux d’échec d’import, âge des jobs, latence p50/p95, saturation du worker et disponibilité des dépendances, sans journaliser le contenu sensible des documents.",
+          "sourceKeys": ["opentelemetry-js", "sre-monitoring"]
+        }
+      },
+      {
+        "key": "content-incident-deploiement",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Un déploiement n’est terminé qu’après smoke test et observation. En incident, définir impact, responsable de coordination, mesures de confinement, communication et critères de rétablissement. Le postmortem cherche les conditions du système, pas un coupable.",
+          "sourceKeys": [
+            "sre-incident-response",
+            "github-deployment-environments"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "github-actions-workflows",
+        "type": "website",
+        "title": "Workflows and actions reference",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
+        "citation": "GitHub. (n.d.). Workflows and actions reference. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+        "guidance": {
+          "objective": "Construire une CI reproductible et lisible.",
+          "instructions": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+          "scope": "Workflows, jobs, events, cache, artefacts et déploiements",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 1
+      },
+      {
+        "key": "github-deployment-environments",
+        "type": "website",
+        "title": "Deployment environments",
+        "author": "GitHub",
+        "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/deployment-environments",
+        "citation": "GitHub. (n.d.). Deployment environments. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire la page et proposer les protections minimales de l’environnement production.",
+        "guidance": {
+          "objective": "Séparer validation, staging et production.",
+          "instructions": "Lire la page et proposer les protections minimales de l’environnement production.",
+          "scope": "Protection, approbation, secrets et branches autorisées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 10,
+        "position": 2
+      },
+      {
+        "key": "opentelemetry-js",
+        "type": "website",
+        "title": "JavaScript — OpenTelemetry Documentation",
+        "author": "OpenTelemetry",
+        "url": "https://opentelemetry.io/docs/languages/js/",
+        "citation": "OpenTelemetry. (n.d.). JavaScript — OpenTelemetry Documentation. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’aperçu JavaScript et l’instrumentation ; définir les spans minimaux d’un import.",
+        "guidance": {
+          "objective": "Relier une requête web à un job worker et à ses dépendances.",
+          "instructions": "Lire l’aperçu JavaScript et l’instrumentation ; définir les spans minimaux d’un import.",
+          "scope": "Traces, métriques, logs et instrumentation Node.js",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "sre-monitoring",
+        "type": "website",
+        "title": "Monitoring Distributed Systems",
+        "author": "Google",
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "citation": "Google. (2016). Monitoring Distributed Systems. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire white-box/black-box et les quatre signaux ; proposer le tableau de bord SourceLab.",
+        "guidance": {
+          "objective": "Choisir des signaux actionnables plutôt qu’accumuler des logs.",
+          "instructions": "Lire white-box/black-box et les quatre signaux ; proposer le tableau de bord SourceLab.",
+          "scope": "Symptômes, causes, signaux et alertes",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 4
+      },
+      {
+        "key": "sre-release-engineering",
+        "type": "website",
+        "title": "Release Engineering",
+        "author": "Google",
+        "url": "https://sre.google/sre-book/release-engineering/",
+        "citation": "Google. (2016). Release Engineering. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire les principes puis définir build, promotion, smoke test et rollback SourceLab.",
+        "guidance": {
+          "objective": "Promouvoir une version testée et pouvoir restaurer le service.",
+          "instructions": "Lire les principes puis définir build, promotion, smoke test et rollback SourceLab.",
+          "scope": "Reproductibilité, automatisation, artefacts et déploiement",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 5
+      },
+      {
+        "key": "sre-incident-response",
+        "type": "website",
+        "title": "Incident Response",
+        "author": "Google",
+        "url": "https://sre.google/workbook/incident-response/",
+        "citation": "Google. (2018). Incident Response. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le chapitre et préparer un runbook court pour un worker bloqué.",
+        "guidance": {
+          "objective": "Conduire un incident sans improviser les responsabilités.",
+          "instructions": "Lire le chapitre et préparer un runbook court pour un worker bloqué.",
+          "scope": "Préparation, rôles, coordination, communication et rétrospective",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 6
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Boucle de livraison et d’exploitation",
+        "slug": "boucle-livraison-exploitation",
+        "description": "Une version est livrable lorsqu’elle est identifiée, validée, observable et accompagnée de seuils d’arrêt et de restauration.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["github-actions-workflows"],
+        "assessment": {
+          "key": "assessment-boucle-livraison-exploitation",
+          "type": "case_question",
+          "title": "Mini-évaluation — Boucle de livraison et d’exploitation",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-construire-ci-observabilite-deploiement",
+        "title": "Livrer SourceLab V1 et conduire un game day",
+        "description": "Créer le workflow CI, publier une image immuable, déployer en staging, exécuter le smoke import, puis promouvoir sous approbation. Ajouter logs avec request/job ID, spans API→worker et métriques. Injecter un mauvais secret ou un worker bloqué, conduire l’incident avec un runbook, restaurer le service et rédiger un postmortem court.",
+        "type": "project",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-construire-ci-observabilite-deploiement",
+        "title": "Quiz — Livraison et opérations",
+        "description": "Vérifier les acquis essentiels de la leçon « Construire CI, observabilité, déploiement et réponse à incident ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quand un déploiement peut-il être considéré comme validé ?",
+            "explanation": "La livraison inclut la vérification de l’artefact en environnement.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Après activation, smoke tests et observation des signaux définis",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Dès que le build commence",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Après le git push uniquement",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Quand le ticket est écrit",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quel est le rôle d’un postmortem sans blâme ?",
+            "explanation": "L’objectif est la réduction du risque futur.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Comprendre les conditions et améliorer le système",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Trouver une personne à sanctionner",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Éviter de documenter",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Prouver qu’aucune erreur n’existe",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un rollback applicatif est toujours sûr après une migration de données.",
+            "explanation": "La compatibilité du vieux code avec le nouveau schéma doit être vérifiée.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-ci-artefact"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-actions-workflows"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-observabilite"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "github-deployment-environments"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-incident-deploiement"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "opentelemetry-js"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "sre-monitoring"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "sre-release-engineering"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "sre-incident-response"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-construire-ci-observabilite-deploiement"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-boucle-livraison-exploitation"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-construire-ci-observabilite-deploiement"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur frontend TypeScript expérimenté et Product Manager technique souhaitant posséder une verticale jusqu’à la production.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-133-01",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "GitHub",
+        "title": "Workflows and actions reference",
+        "year": null,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/reference/workflows-and-actions",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-133-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "GitHub",
+        "title": "Deployment environments",
+        "year": null,
+        "edition": null,
+        "publication": "GitHub",
+        "doi": null,
+        "url": "https://docs.github.com/en/actions/concepts/workflows-and-actions/deployment-environments",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-133-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenTelemetry",
+        "title": "JavaScript — OpenTelemetry Documentation",
+        "year": null,
+        "edition": null,
+        "publication": "OpenTelemetry",
+        "doi": null,
+        "url": "https://opentelemetry.io/docs/languages/js/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-133-04",
+        "type": "engineering_handbook",
+        "authors": [],
+        "organization": "Google",
+        "title": "Monitoring Distributed Systems",
+        "year": 2016,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-133-05",
+        "type": "engineering_handbook",
+        "authors": [],
+        "organization": "Google",
+        "title": "Release Engineering",
+        "year": 2016,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/sre-book/release-engineering/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-133-06",
+        "type": "engineering_handbook",
+        "authors": [],
+        "organization": "Google",
+        "title": "Incident Response",
+        "year": 2018,
+        "edition": null,
+        "publication": "Google",
+        "doi": null,
+        "url": "https://sre.google/workbook/incident-response/",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-01",
+            "locator": "Workflows, jobs, events, cache, artefacts et déploiements",
+            "supports": "Soutient le bloc « content-ci-artefact » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-133-05",
+            "locator": "Reproductibilité, automatisation, artefacts et déploiement",
+            "supports": "Soutient le bloc « content-ci-artefact » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-03",
+            "locator": "Traces, métriques, logs et instrumentation Node.js",
+            "supports": "Soutient le bloc « content-observabilite » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-133-04",
+            "locator": "Symptômes, causes, signaux et alertes",
+            "supports": "Soutient le bloc « content-observabilite » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-133-06",
+            "locator": "Préparation, rôles, coordination, communication et rétrospective",
+            "supports": "Soutient le bloc « content-incident-deploiement » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-133-02",
+            "locator": "Protection, approbation, secrets et branches autorisées",
+            "supports": "Soutient le bloc « content-incident-deploiement » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "github-actions-workflows",
+        "referenceIds": ["REF-133-01"],
+        "pedagogicalRationale": "Construire une CI reproductible et lisible.",
+        "learnerInstructions": "Lire workflows, cache et artifacts ; dessiner les jobs de validation SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "github-deployment-environments",
+        "referenceIds": ["REF-133-02"],
+        "pedagogicalRationale": "Séparer validation, staging et production.",
+        "learnerInstructions": "Lire la page et proposer les protections minimales de l’environnement production.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "opentelemetry-js",
+        "referenceIds": ["REF-133-03"],
+        "pedagogicalRationale": "Relier une requête web à un job worker et à ses dépendances.",
+        "learnerInstructions": "Lire l’aperçu JavaScript et l’instrumentation ; définir les spans minimaux d’un import.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "sre-monitoring",
+        "referenceIds": ["REF-133-04"],
+        "pedagogicalRationale": "Choisir des signaux actionnables plutôt qu’accumuler des logs.",
+        "learnerInstructions": "Lire white-box/black-box et les quatre signaux ; proposer le tableau de bord SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "sre-release-engineering",
+        "referenceIds": ["REF-133-05"],
+        "pedagogicalRationale": "Promouvoir une version testée et pouvoir restaurer le service.",
+        "learnerInstructions": "Lire les principes puis définir build, promotion, smoke test et rollback SourceLab.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "sre-incident-response",
+        "referenceIds": ["REF-133-06"],
+        "pedagogicalRationale": "Conduire un incident sans improviser les responsabilités.",
+        "learnerInstructions": "Lire le chapitre et préparer un runbook court pour un worker bloqué.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "boucle-livraison-exploitation",
+        "assessmentTitle": "Mini-évaluation — Boucle de livraison et d’exploitation",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel identifiant relie le plus sûrement une image à son contenu ?",
+            "explanation": "Le digest identifie le contenu exact.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Son digest immuable",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le mot latest",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Le nom du développeur",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le port exposé",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels signaux sont utiles à SourceLab ?",
+            "explanation": "Les signaux doivent refléter expérience et capacité du système.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Âge du plus ancien job",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Taux d’échec des imports",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Latence API",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Saturation worker",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Nombre de lignes de code comme alerte immédiate",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Les logs doivent contenir les documents complets pour rendre tout incident plus simple.",
+            "explanation": "La minimisation protège confidentialité et réduit le risque opérationnel.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "boucle-livraison-exploitation",
+          "contentKeys": [
+            "content-ci-artefact",
+            "content-observabilite",
+            "content-incident-deploiement"
+          ],
+          "resourceKeys": [
+            "github-actions-workflows",
+            "github-deployment-environments",
+            "opentelemetry-js",
+            "sre-monitoring",
+            "sre-release-engineering",
+            "sre-incident-response"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-construire-ci-observabilite-deploiement"
+          },
+          "assessmentKey": "assessment-boucle-livraison-exploitation",
+          "rationale": "La production « SourceLab V1 déployé, observable, testable et accompagné d’un runbook et d’un postmortem. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Construire CI, observabilité, déploiement et réponse à incident » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

@@ -1,0 +1,266 @@
+[
+  {
+    "lesson": "Cadrer les usages IA et les contrats de SourceLab",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Cadrer les usages IA et les contrats de SourceLab",
+    "key": "openai-structured-outputs",
+    "title": "Structured model outputs",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Cadrer les usages IA et les contrats de SourceLab",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Cadrer les usages IA et les contrats de SourceLab",
+    "key": "ai-sdk-agents",
+    "title": "Agents",
+    "organization": "Vercel",
+    "url": "https://ai-sdk.dev/docs/agents/overview",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Extraire, normaliser et versionner un corpus traçable",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Extraire, normaliser et versionner un corpus traçable",
+    "key": "openai-file-search",
+    "title": "File search",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/tools-file-search",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Extraire, normaliser et versionner un corpus traçable",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Comprendre embeddings, distances et pgvector",
+    "key": "ai-sdk-embeddings",
+    "title": "AI SDK Core — Embeddings",
+    "organization": "Vercel",
+    "url": "https://ai-sdk.dev/docs/ai-sdk-core/embeddings",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Comprendre embeddings, distances et pgvector",
+    "key": "pgvector-readme",
+    "title": "pgvector — Open-source vector similarity search for Postgres",
+    "organization": "pgvector",
+    "url": "https://github.com/pgvector/pgvector",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Comprendre embeddings, distances et pgvector",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Construire une recherche hybride et un RAG sourcé",
+    "key": "pgvector-readme",
+    "title": "pgvector — Open-source vector similarity search for Postgres",
+    "organization": "pgvector",
+    "url": "https://github.com/pgvector/pgvector",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Construire une recherche hybride et un RAG sourcé",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Construire une recherche hybride et un RAG sourcé",
+    "key": "openai-structured-outputs",
+    "title": "Structured model outputs",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Construire une recherche hybride et un RAG sourcé",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Transformer un besoin en funnel et brief pédagogique",
+    "key": "openai-structured-outputs",
+    "title": "Structured model outputs",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Transformer un besoin en funnel et brief pédagogique",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Transformer un besoin en funnel et brief pédagogique",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Transformer un besoin en funnel et brief pédagogique",
+    "key": "openai-evals",
+    "title": "Evals",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/evals",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Générer un blueprint puis modifier des leçons ciblées",
+    "key": "openai-structured-outputs",
+    "title": "Structured model outputs",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Générer un blueprint puis modifier des leçons ciblées",
+    "key": "openai-retrieval",
+    "title": "Retrieval",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/retrieval",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Générer un blueprint puis modifier des leçons ciblées",
+    "key": "ai-sdk-agents",
+    "title": "Agents",
+    "organization": "Vercel",
+    "url": "https://ai-sdk.dev/docs/agents/overview",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Générer un blueprint puis modifier des leçons ciblées",
+    "key": "openai-evals",
+    "title": "Evals",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/evals",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Générer un blueprint puis modifier des leçons ciblées",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Corriger un texte libre avec une grille préexistante",
+    "key": "openai-structured-outputs",
+    "title": "Structured model outputs",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Corriger un texte libre avec une grille préexistante",
+    "key": "openai-evals",
+    "title": "Evals",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/evals",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Corriger un texte libre avec une grille préexistante",
+    "key": "openai-safety-best-practices",
+    "title": "Safety best practices",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Corriger un texte libre avec une grille préexistante",
+    "key": "nist-genai-profile",
+    "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+    "organization": "National Institute of Standards and Technology",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "openai-evals",
+    "title": "Evals",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/evals",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "openai-model-optimization",
+    "title": "Model optimization",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/model-optimization",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "ai-sdk-telemetry",
+    "title": "AI SDK Core — Telemetry",
+    "organization": "Vercel",
+    "url": "https://ai-sdk.dev/docs/ai-sdk-core/telemetry",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "langfuse-docs",
+    "title": "Langfuse Documentation",
+    "organization": "Langfuse",
+    "url": "https://langfuse.com/docs",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "owasp-prompt-injection",
+    "title": "LLM01: Prompt Injection",
+    "organization": "OWASP GenAI Security Project",
+    "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+    "checkedAt": "2026-08-18"
+  },
+  {
+    "lesson": "Évaluer, sécuriser et opérer les fonctions IA",
+    "key": "openai-safety-best-practices",
+    "title": "Safety best practices",
+    "organization": "OpenAI",
+    "url": "https://developers.openai.com/api/docs/guides/safety-best-practices",
+    "checkedAt": "2026-08-18"
+  }
+]

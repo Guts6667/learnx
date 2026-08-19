@@ -1,0 +1,637 @@
+{
+  "specId": "PEDAGOGY_SPEC_134",
+  "schemaVersion": 1,
+  "programSlug": "ai-product-engineer-sourcelab",
+  "stageSlug": "preparer-corpus-ia-fiable",
+  "moduleSlug": "module-preparer-corpus-ia-fiable",
+  "lesson": {
+    "title": "Cadrer les usages IA et les contrats de SourceLab",
+    "slug": "cadrer-usages-ia-contrats-sourcelab",
+    "summary": "Définir précisément ce que l’IA doit faire dans SourceLab — générer des programmes ou rechercher des preuves dans une réponse — sans lui déléguer les décisions déterministes de LearnX.",
+    "objectives": [
+      "Distinguer les responsabilités du Program Builder et du moteur de rubrique exécutable.",
+      "Séparer workflow déterministe, retrieval, génération et décision serveur.",
+      "Définir des contrats d’entrée, de sortie, de preuve et d’abstention."
+    ],
+    "prerequisites": [
+      "Avoir livré SourceLab V1 ou disposer d’un service équivalent avec ingestion, jobs et observabilité."
+    ],
+    "estimatedMinutes": 170,
+    "position": 1,
+    "contentBlocks": [
+      {
+        "key": "content-deux-usages",
+        "type": "definition",
+        "position": 1,
+        "content": {
+          "text": "SourceLab utilise l’IA dans deux usages bornés. Le Program Builder transforme un besoin, des réponses de funnel et des sources en blueprint puis en contenu LearnX modifiable. Pour une réponse libre, les modèles recherchent ou contestent uniquement des preuves reliées à une rubrique atomique. L’utilisateur décide de publier un programme ; LearnX valide les preuves, applique les règles de niveau et peut s’abstenir sans déléguer cette autorité au modèle.",
+          "sourceKeys": ["nist-genai-profile", "openai-structured-outputs"]
+        }
+      },
+      {
+        "key": "content-workflow-et-rag",
+        "type": "definition",
+        "position": 2,
+        "content": {
+          "text": "Le RAG ne réentraîne pas le modèle : il sélectionne des passages pertinents et les joint à la requête. Le workflow détermine l’ordre des étapes, les validations et les arrêts. Un agent n’est utile que lorsqu’un choix dynamique d’outil apporte plus de valeur que la complexité et l’incertitude ajoutées.",
+          "sourceKeys": ["openai-retrieval", "ai-sdk-agents"]
+        }
+      },
+      {
+        "key": "content-contrat-abstention",
+        "type": "callout",
+        "position": 3,
+        "content": {
+          "text": "Une sortie structurée valide ne garantit pas une conclusion fondée. Les contrats doivent prévoir provenance, éléments recherchés, extraits exacts, limites et états comme FEEDBACK_READY, CLARIFICATION_REQUIRED ou TEMPORARILY_UNAVAILABLE. Une inconnue doit rester inconnue ; elle ne devient ni une preuve ni un niveau pour remplir un schéma.",
+          "sourceKeys": ["openai-structured-outputs", "nist-genai-profile"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "key": "nist-genai-profile",
+        "type": "document",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "author": "National Institute of Standards and Technology",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "citation": "National Institute of Standards and Technology. (2024). Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "guidance": {
+          "objective": "Relier qualité technique, impacts et décision explicite du produit.",
+          "instructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+          "scope": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+          "urlStatus": "ok",
+          "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 20,
+        "position": 1
+      },
+      {
+        "key": "openai-structured-outputs",
+        "type": "website",
+        "title": "Structured model outputs",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "citation": "OpenAI. (n.d.). Structured model outputs. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "guidance": {
+          "objective": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+          "instructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+          "scope": "Schémas, validation et sorties structurées",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 2
+      },
+      {
+        "key": "openai-retrieval",
+        "type": "website",
+        "title": "Retrieval",
+        "author": "OpenAI",
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "citation": "OpenAI. (n.d.). Retrieval. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "guidance": {
+          "objective": "Comprendre le pipeline de récupération et les réglages de recherche.",
+          "instructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+          "scope": "Vector stores, recherche sémantique, attributs et ranking",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 15,
+        "position": 3
+      },
+      {
+        "key": "ai-sdk-agents",
+        "type": "website",
+        "title": "Agents",
+        "author": "Vercel",
+        "url": "https://ai-sdk.dev/docs/agents/overview",
+        "citation": "Vercel. (n.d.). Agents. Documentation officielle, consultée le 18 août 2026.",
+        "description": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+        "guidance": {
+          "objective": "Distinguer workflow déterministe et autonomie agentique.",
+          "instructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+          "scope": "Agents, outils, boucles et conditions d’arrêt",
+          "urlStatus": "ok",
+          "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+          "alternativeResourceKey": null
+        },
+        "isRequired": true,
+        "estimatedMinutes": 12,
+        "position": 4
+      }
+    ],
+    "concepts": [
+      {
+        "title": "Architecture IA bornée par le produit",
+        "slug": "architecture-ia-bornee-produit",
+        "description": "Les modèles interviennent dans un workflow explicite avec données autorisées, sortie structurée et abstention ; les autorités déterministes sont définies avant l’implémentation.",
+        "position": 1,
+        "isRequired": true,
+        "masteryThreshold": 70,
+        "resourceKeys": ["nist-genai-profile"],
+        "assessment": {
+          "key": "assessment-architecture-ia-bornee-produit",
+          "type": "case_question",
+          "title": "Mini-évaluation — Architecture IA bornée par le produit",
+          "questionCount": 3
+        }
+      }
+    ],
+    "tasks": [
+      {
+        "key": "exercise-cadrer-usages-ia-contrats-sourcelab",
+        "title": "Écrire les contrats des deux fonctions IA",
+        "description": "Rédiger deux ADR : Program Builder et moteur de rubrique exécutable. Pour chaque fonction, préciser utilisateur, problème, entrées autorisées, sorties, provenance, erreurs, autorité de décision, états d’abstention, données conservées, métriques et critères d’arrêt. Créer les schémas Zod correspondants et cinq cas invalides.",
+        "type": "writing",
+        "isRequired": true,
+        "weight": 2,
+        "position": 1,
+        "resourceKeys": []
+      }
+    ],
+    "quizzes": [
+      {
+        "key": "quiz-cadrer-usages-ia-contrats-sourcelab",
+        "title": "Quiz — Cadrage IA",
+        "description": "Vérifier les acquis essentiels de la leçon « Cadrer les usages IA et les contrats de SourceLab ».",
+        "passingScore": 70,
+        "isRequired": true,
+        "position": 1,
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Qui détermine les niveaux d’une correction formative dans le cadrage SourceLab-LearnX ?",
+            "explanation": "Les modèles proposent des preuves ; LearnX valide ces preuves et applique les règles versionnées.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "LearnX à partir des preuves validées et de la rubrique versionnée",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Le modèle seul",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "La base vectorielle",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Le fichier importé",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "single_choice",
+            "prompt": "Quand préférer un workflow déterministe ?",
+            "explanation": "La détermination est préférable quand la fiabilité prime sur l’autonomie.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Quand les étapes et contrôles doivent être répétables et auditables",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Quand on veut maximiser le nombre d’outils",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Quand aucune sortie n’est définie",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Pour éviter toute validation",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Program Builder et chercheur de preuves doivent nécessairement partager le même prompt.",
+            "explanation": "Ils ont objectifs, contextes, risques et contrats distincts.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequence": [
+      {
+        "kind": "CONTENT",
+        "key": "content-deux-usages"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "nist-genai-profile"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-workflow-et-rag"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-structured-outputs"
+      },
+      {
+        "kind": "CONTENT",
+        "key": "content-contrat-abstention"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "openai-retrieval"
+      },
+      {
+        "kind": "RESOURCE",
+        "key": "ai-sdk-agents"
+      },
+      {
+        "kind": "EXERCISE",
+        "key": "exercise-cadrer-usages-ia-contrats-sourcelab"
+      },
+      {
+        "kind": "CONCEPT_ASSESSMENT",
+        "key": "assessment-architecture-ia-bornee-produit"
+      },
+      {
+        "kind": "QUIZ",
+        "key": "quiz-cadrer-usages-ia-contrats-sourcelab"
+      }
+    ]
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "language": "fr",
+    "audience": "Développeur TypeScript/Product Engineer ayant déjà livré une API, un worker, PostgreSQL, Docker, tests et CI, et souhaitant construire des produits IA fiables sans dépendre de Python.",
+    "owner": "Rayan Chambet",
+    "createdAt": "2026-08-18",
+    "lastReviewedAt": null,
+    "nextReviewAt": null,
+    "references": [
+      {
+        "id": "REF-134-01",
+        "type": "institutional_framework",
+        "authors": [],
+        "organization": "National Institute of Standards and Technology",
+        "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+        "year": 2024,
+        "edition": null,
+        "publication": "National Institute of Standards and Technology",
+        "doi": null,
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-134-02",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Structured model outputs",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-134-03",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "OpenAI",
+        "title": "Retrieval",
+        "year": null,
+        "edition": null,
+        "publication": "OpenAI",
+        "doi": null,
+        "url": "https://developers.openai.com/api/docs/guides/retrieval",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "id": "REF-134-04",
+        "type": "official_documentation",
+        "authors": [],
+        "organization": "Vercel",
+        "title": "Agents",
+        "year": null,
+        "edition": null,
+        "publication": "Vercel",
+        "doi": null,
+        "url": "https://ai-sdk.dev/docs/agents/overview",
+        "accessedAt": "2026-08-18",
+        "evidenceLevel": "D",
+        "peerReviewed": false,
+        "language": "en",
+        "license": null,
+        "status": "verified",
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "contentBlockSources": [
+      {
+        "contentBlockPosition": 1,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-01",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-deux-usages » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-134-02",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-deux-usages » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 2,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-03",
+            "locator": "Vector stores, recherche sémantique, attributs et ranking",
+            "supports": "Soutient le bloc « content-workflow-et-rag » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-134-04",
+            "locator": "Agents, outils, boucles et conditions d’arrêt",
+            "supports": "Soutient le bloc « content-workflow-et-rag » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      },
+      {
+        "contentBlockPosition": 3,
+        "referenceLinks": [
+          {
+            "referenceId": "REF-134-02",
+            "locator": "Schémas, validation et sorties structurées",
+            "supports": "Soutient le bloc « content-contrat-abstention » et ses distinctions techniques."
+          },
+          {
+            "referenceId": "REF-134-01",
+            "locator": "Risques, gouvernance, mesure et gestion des systèmes génératifs",
+            "supports": "Soutient le bloc « content-contrat-abstention » et ses distinctions techniques."
+          }
+        ],
+        "confidence": "high",
+        "confidenceRationale": "Documentation officielle ou cadre institutionnel directement pertinent, synthétisé sans reproduire le texte source.",
+        "notApplicableReason": null
+      }
+    ],
+    "resourceChecks": [
+      {
+        "resourceKey": "nist-genai-profile",
+        "referenceIds": ["REF-134-01"],
+        "pedagogicalRationale": "Relier qualité technique, impacts et décision explicite du produit.",
+        "learnerInstructions": "Consulter le résumé et les risques pertinents pour contenus générés, confidentialité et supervision.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "PDF public en anglais ; utiliser la table des matières et les signets.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-structured-outputs",
+        "referenceIds": ["REF-134-02"],
+        "pedagogicalRationale": "Contraindre les résultats du Program Builder et du chercheur de preuves.",
+        "learnerInstructions": "Lire le guide et définir les champs qui doivent être refusés plutôt que réparés silencieusement.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "openai-retrieval",
+        "referenceIds": ["REF-134-03"],
+        "pedagogicalRationale": "Comprendre le pipeline de récupération et les réglages de recherche.",
+        "learnerInstructions": "Lire l’architecture de retrieval et relever corpus, filtres, top-k, score et résultats.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      },
+      {
+        "resourceKey": "ai-sdk-agents",
+        "referenceIds": ["REF-134-04"],
+        "pedagogicalRationale": "Distinguer workflow déterministe et autonomie agentique.",
+        "learnerInstructions": "Lire l’overview ; identifier les étapes SourceLab qui doivent rester déterministes.",
+        "language": "en",
+        "accessType": "open",
+        "accessibilityNotes": "Page HTML publique, structurée et consultable sans compte.",
+        "alternativeResourceKey": null,
+        "checkedAt": "2026-08-18",
+        "urlStatus": "ok",
+        "mediaSegment": null,
+        "transcriptAvailable": null,
+        "notes": "Documentation officielle évolutive ; version et contenu à revérifier avant publication."
+      }
+    ],
+    "assessmentBanks": [
+      {
+        "conceptSlug": "architecture-ia-bornee-produit",
+        "assessmentTitle": "Mini-évaluation — Architecture IA bornée par le produit",
+        "questions": [
+          {
+            "type": "single_choice",
+            "prompt": "Quel énoncé décrit correctement le RAG ?",
+            "explanation": "Le RAG agit sur le contexte, pas sur les paramètres appris.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Il récupère un contexte pertinent au moment de la requête sans modifier les poids du modèle",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Il entraîne automatiquement un nouveau modèle",
+                "isCorrect": false,
+                "position": 2
+              },
+              {
+                "label": "Il garantit toute réponse vraie",
+                "isCorrect": false,
+                "position": 3
+              },
+              {
+                "label": "Il remplace les permissions serveur",
+                "isCorrect": false,
+                "position": 4
+              }
+            ],
+            "position": 1
+          },
+          {
+            "type": "multiple_choice",
+            "prompt": "Quels éléments doivent être définis avant le prompt ?",
+            "explanation": "Le contrat produit encadre l’usage du modèle.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Entrées autorisées",
+                "isCorrect": true,
+                "position": 1
+              },
+              {
+                "label": "Schéma de sortie",
+                "isCorrect": true,
+                "position": 2
+              },
+              {
+                "label": "Cas d’abstention",
+                "isCorrect": true,
+                "position": 3
+              },
+              {
+                "label": "Responsabilité de validation",
+                "isCorrect": true,
+                "position": 4
+              },
+              {
+                "label": "Couleur du logo du fournisseur",
+                "isCorrect": false,
+                "position": 5
+              }
+            ],
+            "position": 2
+          },
+          {
+            "type": "true_false",
+            "prompt": "Un JSON conforme au schéma prouve que les affirmations sont soutenues par les sources.",
+            "explanation": "La validité structurelle et la fidélité factuelle sont deux contrôles différents.",
+            "acceptedAnswers": [],
+            "options": [
+              {
+                "label": "Vrai",
+                "isCorrect": false,
+                "position": 1
+              },
+              {
+                "label": "Faux",
+                "isCorrect": true,
+                "position": 2
+              }
+            ],
+            "position": 3
+          }
+        ]
+      }
+    ],
+    "sequenceRationale": {
+      "strategy": "Progression guidée : apport sourcé, ressource ciblée, mise en pratique, mini-évaluation de notion puis quiz de synthèse.",
+      "cycles": [
+        {
+          "conceptSlug": "architecture-ia-bornee-produit",
+          "contentKeys": [
+            "content-deux-usages",
+            "content-workflow-et-rag",
+            "content-contrat-abstention"
+          ],
+          "resourceKeys": [
+            "nist-genai-profile",
+            "openai-structured-outputs",
+            "openai-retrieval",
+            "ai-sdk-agents"
+          ],
+          "activity": {
+            "kind": "EXERCISE",
+            "key": "exercise-cadrer-usages-ia-contrats-sourcelab"
+          },
+          "assessmentKey": "assessment-architecture-ia-bornee-produit",
+          "rationale": "La production « Deux ADR et des contrats Zod explicitant responsabilités, autorités déterministes et abstention. » rend observable la maîtrise avant le quiz de synthèse."
+        }
+      ]
+    },
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "scientificAccuracy": false,
+      "pedagogicalAlignment": false,
+      "seedCompatibility": false,
+      "linksAndMedia": false,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue humaine éditoriale, technique et des liens requise.",
+        "Les documentations techniques évolutives doivent être revérifiées avant publication.",
+        "Le projet SourceLab est construit dans un dépôt et une base séparés de LearnX."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de la leçon « Cadrer les usages IA et les contrats de SourceLab » et de ses évaluations.",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}

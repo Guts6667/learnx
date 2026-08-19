@@ -1,0 +1,92 @@
+{
+  "specId": "PEDAGOGY_STAGE_ASSESSMENT_027",
+  "schemaVersion": 1,
+  "programSlug": "ingenieur-logiciel-production-sourcelab",
+  "stageSlug": "comprendre-runtime-diagnostiquer",
+  "assessment": {
+    "seed": {
+      "title": "Évaluation — Diagnostiquer une verticale SourceLab",
+      "type": "practical_exercise",
+      "isRequired": true,
+      "passingScore": 70
+    },
+    "description": "Diagnostiquer une version volontairement dégradée de l’API SourceLab et rendre sa configuration, sa santé et son arrêt observables.",
+    "instructions": [
+      "À partir de quatre symptômes fournis — port incorrect, variable absente, dépendance indisponible et arrêt interrompant une requête — produire pour chacun hypothèse, test, preuve, cause et correction. Livrer ensuite le bootstrap corrigé, les healthchecks et une démonstration de terminaison propre."
+    ],
+    "case": "Cas fil rouge SourceLab — étape « Comprendre le runtime et diagnostiquer ». Le produit reste autonome par rapport à LearnX ; les interactions futures passent par des contrats ou exports, jamais par une base partagée.",
+    "estimatedMinutes": 120,
+    "submissionFormat": "Dépôt du code et des preuves, note de décision de 2 à 4 pages, démonstration enregistrée ou en direct, et journal des limites connues.",
+    "conceptSlugs": ["chaine-execution-requete", "contrat-runtime"],
+    "rubric": [
+      {
+        "criterion": "Méthode de diagnostic",
+        "weight": 30,
+        "requirements": [
+          "Les frontières sont distinguées avant modification.",
+          "Chaque conclusion est reliée à une commande, un statut ou un log.",
+          "Les hypothèses invalidées sont conservées dans le rapport."
+        ]
+      },
+      {
+        "criterion": "Configuration et santé",
+        "weight": 25,
+        "requirements": [
+          "La configuration échoue rapidement sans exposer les secrets.",
+          "Liveness et readiness sont séparées.",
+          "La dépendance indisponible produit un statut cohérent."
+        ]
+      },
+      {
+        "criterion": "Arrêt propre",
+        "weight": 25,
+        "requirements": [
+          "Le service cesse d’accepter du nouveau travail.",
+          "Le traitement en cours est terminé ou annulé selon un délai documenté.",
+          "Les connexions et codes de sortie sont explicites."
+        ]
+      },
+      {
+        "criterion": "Communication technique",
+        "weight": 20,
+        "requirements": [
+          "Le rapport suit symptôme → hypothèse → test → résultat → correction.",
+          "Le diagramme représente le trajet réel.",
+          "Aucune correction n’est présentée comme certaine sans preuve."
+        ]
+      }
+    ],
+    "remediation": "Reprendre uniquement les critères sous 70 %, conserver les preuves initiales, joindre un diff des corrections et expliquer la nouvelle vérification."
+  },
+  "editorial": {
+    "version": "1.0.0",
+    "status": "draft",
+    "createdAt": "2026-08-18",
+    "referenceIds": [
+      "REF-126-01",
+      "REF-126-02",
+      "REF-126-03",
+      "REF-127-01",
+      "REF-127-02",
+      "REF-127-03"
+    ],
+    "review": {
+      "editorialReviewer": null,
+      "subjectReviewer": null,
+      "readyForPublication": false,
+      "notes": [
+        "Brouillon non publiable : revue technique, pédagogique et des liens requise.",
+        "Le cas et les incidents sont fictifs mais les productions doivent fonctionner réellement."
+      ]
+    },
+    "changeLog": [
+      {
+        "version": "1.0.0",
+        "date": "2026-08-18",
+        "author": "Rayan Chambet",
+        "change": "Création de l’évaluation finale de l’étape « Comprendre le runtime et diagnostiquer ».",
+        "reviewRequired": "editorial_and_subject"
+      }
+    ]
+  }
+}
