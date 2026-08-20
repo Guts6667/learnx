@@ -38,6 +38,14 @@ export const EVIDENCE_ASSIST_PANEL_MANIFEST_PATH =
   'benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-panel-10x2.v1.json';
 export const EVIDENCE_ASSIST_FREEZE_SET_MANIFEST_PATH =
   'benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-development-freeze-set.v1.json';
+export const EVIDENCE_ASSIST_GOLD_MAPPING_PATH =
+  'benchmarks/ai-correction/executable-rubric/evidence-assist-gold-mapping.v1.json';
+export const EVIDENCE_ASSIST_STOP_POLICY_PATH =
+  'benchmarks/ai-correction/executable-rubric/evidence-assist-stop-policy.v1.json';
+export const EVIDENCE_ASSIST_EVALUATOR_PATH =
+  'src/lib/evidence-assist-development-evaluator.ts';
+export const EVIDENCE_ASSIST_RUNNER_PATH =
+  'src/server/ai/evidence-assist-development-runner.ts';
 
 const RUBRIC_PATH =
   'benchmarks/ai-correction/executable-rubric/writing-recommendation-fr.v1.json';
@@ -805,3 +813,53 @@ export const evidenceAssistOfflineReadinessSchema = z
     status: z.literal('OFFLINE_READY_NO_MODEL_CALL'),
   })
   .strict();
+
+export const evidenceAssistExecutionIdentitySchema = z
+  .object({
+    campaignIdentityFingerprint: sha256Schema,
+    corpusBundleSha256: sha256Schema,
+    evaluatorSha256: sha256Schema,
+    executionIdentityFingerprint: sha256Schema,
+    goldMappingSha256: sha256Schema,
+    runnerSha256: sha256Schema,
+    schemaVersion: z.literal(1),
+    stopPolicySha256: sha256Schema,
+  })
+  .strict();
+
+export type EvidenceAssistExecutionIdentity = z.infer<
+  typeof evidenceAssistExecutionIdentitySchema
+>;
+
+export function createEvidenceAssistExecutionIdentity(input: {
+  campaignIdentityFingerprint: string;
+  evaluatorSourceText: string;
+  goldMappingText: string;
+  runnerSourceText: string;
+  semanticSelectionText: string;
+  semanticSourceV1Text: string;
+  semanticSourceV2Text: string;
+  stopPolicyText: string;
+}): EvidenceAssistExecutionIdentity {
+  const core = {
+    campaignIdentityFingerprint: sha256Schema.parse(
+      input.campaignIdentityFingerprint,
+    ),
+    corpusBundleSha256: sha256(
+      canonicalJson({
+        semanticSelectionSha256: sha256(input.semanticSelectionText),
+        semanticSourceV1Sha256: sha256(input.semanticSourceV1Text),
+        semanticSourceV2Sha256: sha256(input.semanticSourceV2Text),
+      }),
+    ),
+    evaluatorSha256: sha256(input.evaluatorSourceText),
+    goldMappingSha256: sha256(input.goldMappingText),
+    runnerSha256: sha256(input.runnerSourceText),
+    schemaVersion: 1 as const,
+    stopPolicySha256: sha256(input.stopPolicyText),
+  };
+  return evidenceAssistExecutionIdentitySchema.parse({
+    ...core,
+    executionIdentityFingerprint: sha256(canonicalJson(core)),
+  });
+}
