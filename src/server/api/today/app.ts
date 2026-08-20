@@ -19,7 +19,6 @@ import {
 import { requireUser, type AuthEnvironment } from '../_lib/auth.js';
 import { requireCapability } from '../_lib/authorization.js';
 import { ApiError, toApiErrorBody } from '../_lib/errors.js';
-import { getCurrentModuleRun } from '../_lib/module-runs.js';
 import { learningProgramWhere } from '../_lib/program-access-policy.js';
 
 interface ProgramRecord {
@@ -361,13 +360,22 @@ export function createPrismaTodayRepository(
         },
       });
       const moduleIds = [...new Set(lessons.map((lesson) => lesson.module.id))];
-      const currentRuns = await Promise.all(
-        moduleIds.map((moduleId) =>
-          getCurrentModuleRun(client, moduleId, userId),
-        ),
-      );
+      const currentRuns =
+        moduleIds.length === 0
+          ? []
+          : await client.moduleRun.findMany({
+              where: { moduleId: { in: moduleIds }, userId },
+              orderBy: [{ moduleId: 'asc' }, { sequence: 'desc' }],
+              select: { id: true, moduleId: true },
+            });
+      const currentRunByModule = new Map<string, string>();
+      for (const run of currentRuns) {
+        if (!currentRunByModule.has(run.moduleId)) {
+          currentRunByModule.set(run.moduleId, run.id);
+        }
+      }
       const currentRunIds = new Set(
-        currentRuns.flatMap((run) => (run ? [run.id] : [])),
+        currentRunByModule.values(),
       );
       return lessons.map((lesson) => ({
         ...lesson,
@@ -734,6 +742,86 @@ function selectFallbackProgram(programs: ProgramRecord[]) {
   })[0];
 }
 
+type TodayProgramStatus = 'COMPLETED' | 'IN_PROGRESS' | 'NOT_STARTED';
+
+function latestLessonForProgram(
+  lessons: LessonRecord[],
+  programId: string,
+): LessonRecord | undefined {
+  return [...lessons]
+    .filter(
+      (lesson) =>
+        lesson.progress[0]?.lastViewedAt &&
+        lesson.module.stage.program.id === programId,
+    )
+    .sort(
+      (left, right) =>
+        (right.progress[0]?.lastViewedAt?.getTime() ?? 0) -
+        (left.progress[0]?.lastViewedAt?.getTime() ?? 0),
+    )[0];
+}
+
+function programStatus(program: ProgramRecord): TodayProgramStatus {
+  const progress = program.progress[0];
+  if ((progress?.percent ?? 0) >= 100) return 'COMPLETED';
+  if (progress && (progress.percent > 0 || progress.lastViewedAt)) {
+    return 'IN_PROGRESS';
+  }
+  return 'NOT_STARTED';
+}
+
+function serializeProgramSummary(
+  program: ProgramRecord,
+  candidates: RecommendationCandidate[],
+  lessons: LessonRecord[],
+) {
+  const nextAction = selectDailyRecommendation(
+    candidates.filter((candidate) => candidate.programId === program.id),
+  );
+  const lastLesson = latestLessonForProgram(lessons, program.id);
+  const status = programStatus(program);
+  const lastActivity = lastLesson
+    ? {
+        at: lastLesson.progress[0]?.lastViewedAt,
+        href: lessonHref(
+          lastLesson.module.stage.program.slug,
+          lastLesson.slug,
+        ),
+        title: lastLesson.title,
+      }
+    : null;
+
+  return {
+    id: program.id,
+    lastActivity,
+    nextAction,
+    percent: program.progress[0]?.percent ?? 0,
+    resumeHref:
+      status === 'COMPLETED' && !nextAction
+        ? null
+        : (nextAction?.href ??
+          lastActivity?.href ??
+          `/program/${encodeURIComponent(program.slug)}`),
+    slug: program.slug,
+    status,
+    title: program.title,
+  };
+}
+
+function orderProgramSummaries(
+  programs: ProgramRecord[],
+  primaryProgramId: string | undefined,
+) {
+  return [...programs].sort((left, right) => {
+    if (left.id === primaryProgramId) return -1;
+    if (right.id === primaryProgramId) return 1;
+    const recentDifference =
+      (right.progress[0]?.lastViewedAt.getTime() ?? 0) -
+      (left.progress[0]?.lastViewedAt.getTime() ?? 0);
+    return recentDifference || left.position - right.position;
+  });
+}
+
 export function createTodayApp(options: TodayAppOptions = {}) {
   const app = new Hono<AuthEnvironment>();
   const now = options.now ?? (() => new Date());
@@ -779,35 +867,23 @@ export function createTodayApp(options: TodayAppOptions = {}) {
     const activeProgram = recommendation
       ? programs.find((program) => program.id === recommendation.programId)
       : fallbackProgram;
-    const lastLesson = [...lessons]
-      .filter(
-        (lesson) =>
-          lesson.progress[0]?.lastViewedAt &&
-          lesson.module.stage.program.id === activeProgram?.id,
-      )
-      .sort(
-        (left, right) =>
-          (right.progress[0]?.lastViewedAt?.getTime() ?? 0) -
-          (left.progress[0]?.lastViewedAt?.getTime() ?? 0),
-      )[0];
     const dueReviews = reviews.filter(
       (review) =>
         classifyReviewDate(review.dueAt, currentTime, timeZone) !==
         'FUTURE_REVIEW',
     );
+    const programSummaries = orderProgramSummaries(
+      programs,
+      activeProgram?.id,
+    ).map((program) => serializeProgramSummary(program, candidates, lessons));
+    const activeProgramSummary = programSummaries.find(
+      (program) => program.id === activeProgram?.id,
+    );
 
     return context.json({
       action: recommendation,
-      lastActivity: lastLesson
-        ? {
-            at: lastLesson.progress[0]?.lastViewedAt,
-            href: lessonHref(
-              lastLesson.module.stage.program.slug,
-              lastLesson.slug,
-            ),
-            title: lastLesson.title,
-          }
-        : null,
+      hasMorePrograms: false,
+      lastActivity: activeProgramSummary?.lastActivity ?? null,
       program: activeProgram
         ? {
             id: activeProgram.id,
@@ -816,6 +892,8 @@ export function createTodayApp(options: TodayAppOptions = {}) {
             title: activeProgram.title,
           }
         : null,
+      programCount: programSummaries.length,
+      programs: programSummaries,
       reviewsDue: dueReviews.length,
     });
   });

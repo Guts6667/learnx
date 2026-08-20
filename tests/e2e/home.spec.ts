@@ -168,8 +168,11 @@ async function installJourneyApi(page: Page) {
     if (method === 'GET' && path === '/api/today') {
       await respond({
         action: null,
+        hasMorePrograms: false,
         lastActivity: null,
         program: null,
+        programCount: 0,
+        programs: [],
         reviewsDue: 0,
       });
       return;
@@ -580,7 +583,7 @@ async function expectNoHorizontalOverflow(page: Page) {
     .toBe(true);
 }
 
-test('garde Mes programmes et Explorer utilisables sur tous les viewports', async ({
+test('garde Mes parcours et Découvrir utilisables sur tous les viewports', async ({
   page,
 }) => {
   await installJourneyApi(page);
@@ -594,8 +597,8 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
   }, credentials);
   await page.goto('/program');
 
-  const enrolledTab = page.getByRole('tab', { name: 'Mes programmes' });
-  const catalogTab = page.getByRole('tab', { name: 'Explorer' });
+  const enrolledTab = page.getByRole('tab', { name: 'Mes parcours' });
+  const catalogTab = page.getByRole('tab', { name: 'Découvrir' });
   await expect(enrolledTab).toHaveAttribute('aria-selected', 'true');
   await enrolledTab.focus();
   await enrolledTab.press('ArrowRight');
@@ -617,6 +620,43 @@ test('garde Mes programmes et Explorer utilisables sur tous les viewports', asyn
     await expect(
       page.getByRole('heading', { name: program.title }),
     ).toBeVisible();
+  }
+
+  await expectNoSeriousA11yViolations(page);
+});
+
+test('oriente la première arrivée sans afficher d’outils vides', async ({
+  page,
+}) => {
+  await installJourneyApi(page);
+  await page.goto('/login');
+  await page.evaluate(async (input) => {
+    await fetch('/api/auth/register', {
+      body: JSON.stringify(input),
+      headers: { 'content-type': 'application/json' },
+      method: 'POST',
+    });
+  }, credentials);
+
+  for (const viewport of [
+    { height: 700, width: 320 },
+    { height: 844, width: 390 },
+    { height: 900, width: 720 },
+    { height: 1000, width: 1440 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/today');
+    const action = page.getByRole('link', {
+      name: 'Choisir mon premier parcours',
+    });
+    await expect(action).toBeVisible();
+    await expect(action).toHaveAttribute(
+      'href',
+      '/program?view=discover&onboarding=1',
+    );
+    await expect(page.getByRole('searchbox')).toHaveCount(0);
+    await expect(page.getByText('Révisions dues')).toHaveCount(0);
+    await expectNoHorizontalOverflow(page);
   }
 
   await expectNoSeriousA11yViolations(page);
@@ -803,7 +843,7 @@ test('utilise des parents UX stables sans boucle entre programme, module et leç
     `/program/${program.slug}?stage=${stageSummary.slug}`,
   );
 
-  await page.getByRole('button', { name: 'Retour à Mes programmes' }).click();
+  await page.getByRole('button', { name: 'Retour à Mes parcours' }).click();
   await expect(page).toHaveURL('/program');
   await expect(
     page.getByRole('heading', { level: 1, name: 'Programmes' }),

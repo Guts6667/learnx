@@ -1,17 +1,18 @@
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ListRow } from '@/components/ui/ListRow';
 import { NavigationAction } from '@/components/ui/NavigationAction';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Section } from '@/components/ui/Section';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useTodayQuery, type TodayResponse } from '@/features/today/query';
+import { useI18n } from '@/i18n';
 import type { MessageKey } from '@/i18n/catalogs';
 import type { RecommendationKind } from '@/lib/recommendation';
-import { useI18n, type UiLocale } from '@/i18n';
-import { formatLocalizedDate } from '@/shared/locale';
 
 const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
   DUE_TODAY_REVIEW: 'today.action.dueReview',
@@ -24,11 +25,30 @@ const actionLabelKeys: Record<RecommendationKind, MessageKey> = {
   REQUIRED_QUIZ: 'today.action.requiredQuiz',
 };
 
-function formatLastActivity(value: string, locale: UiLocale): string {
-  return formatLocalizedDate(value, locale, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+type TodayProgram = TodayResponse['programs'][number];
+
+function normalizePrograms(data: TodayResponse): TodayProgram[] {
+  if (Array.isArray(data.programs)) return data.programs;
+  if (!data.program) return [];
+
+  return [
+    {
+      ...data.program,
+      lastActivity: data.lastActivity,
+      nextAction:
+        data.action?.programId === data.program.id ? data.action : null,
+      resumeHref:
+        data.action?.programId === data.program.id
+          ? data.action.href
+          : (data.lastActivity?.href ?? `/program/${data.program.slug}`),
+      status:
+        data.program.percent >= 100
+          ? 'COMPLETED'
+          : data.program.percent > 0
+            ? 'IN_PROGRESS'
+            : 'NOT_STARTED',
+    },
+  ];
 }
 
 export function TodayPage() {
@@ -49,18 +69,28 @@ export function TodayPage() {
       {query.isPending ? (
         <Skeleton label={t('today.loading')} />
       ) : query.error ? (
-        <ErrorState description={t('today.error')} />
+        <ErrorState
+          action={
+            <Button onClick={() => void query.reload()}>
+              {t('common.retry')}
+            </Button>
+          }
+          description={t('today.error')}
+        />
       ) : query.data?.program ? (
-        <TodayContent data={query.data} program={query.data.program} />
+        <TodayContent
+          data={query.data}
+          programs={normalizePrograms(query.data)}
+        />
       ) : (
         <EmptyState
           action={
-            <NavigationAction href="/program" variant="secondary">
-              {t('today.viewPrograms')}
+            <NavigationAction href="/program?view=discover&onboarding=1">
+              {t('today.chooseFirstProgram')}
             </NavigationAction>
           }
-          description={t('today.emptyProgram.description')}
-          title={t('today.emptyProgram.title')}
+          description={t('today.firstArrival.description')}
+          title={t('today.firstArrival.title')}
         />
       )}
     </section>
@@ -69,82 +99,168 @@ export function TodayPage() {
 
 function TodayContent({
   data,
-  program,
+  programs,
 }: {
   data: TodayResponse;
-  program: NonNullable<TodayResponse['program']>;
+  programs: TodayProgram[];
 }) {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
+  const primaryProgramId = data.action?.programId ?? data.program?.id;
+  const primaryProgram =
+    programs.find((program) => program.id === primaryProgramId) ?? programs[0];
+  const secondaryPrograms = programs.filter(
+    (program) => program.id !== primaryProgram?.id,
+  );
+  const visibleSecondaryPrograms = secondaryPrograms.slice(0, 5);
+  const hiddenProgramCount = Math.max(
+    (data.programCount ?? programs.length) -
+      visibleSecondaryPrograms.length -
+      (primaryProgram ? 1 : 0),
+    0,
+  );
+
   return (
-    <div class="grid min-w-0 gap-5 lg:grid-cols-12">
-      {data.action ? (
-        <Card class="space-y-5 lg:col-span-7 lg:row-span-2" tone="accent">
-          <Badge
-            tone={data.action.kind === 'OVERDUE_REVIEW' ? 'danger' : 'info'}
-          >
-            {t(actionLabelKeys[data.action.kind])}
-          </Badge>
-          <div>
-            <h2 class="text-xl font-semibold">{data.action.title}</h2>
+    <div class="space-y-8">
+      {data.action && primaryProgram ? (
+        <Card class="space-y-5" tone="accent">
+          <div class="space-y-2">
+            <Badge tone="info">{t(actionLabelKeys[data.action.kind])}</Badge>
+            <p class="ui-text-muted text-sm font-medium [overflow-wrap:anywhere]">
+              {primaryProgram.title}
+            </p>
+            <h2 class="text-xl font-semibold [overflow-wrap:anywhere]">
+              {data.action.title}
+            </h2>
             {data.action.stageTitle ? (
-              <p class="ui-text-muted mt-2 text-sm">
+              <p class="ui-text-muted text-sm leading-6 [overflow-wrap:anywhere]">
                 {data.action.stageTitle}
                 {data.action.moduleTitle ? ` · ${data.action.moduleTitle}` : ''}
                 {data.action.lessonTitle ? ` · ${data.action.lessonTitle}` : ''}
               </p>
             ) : null}
             {data.action.estimatedMinutes ? (
-              <p class="ui-text-muted mt-1 text-sm">
+              <p class="ui-text-muted text-sm">
                 {t('today.duration', { count: data.action.estimatedMinutes })}
               </p>
             ) : null}
           </div>
-          <NavigationAction class="w-full" href={data.action.href} size="lg">
+
+          {primaryProgram.percent > 0 ? (
+            <ProgressBar
+              label={t('today.progressLabel')}
+              value={primaryProgram.percent}
+            />
+          ) : null}
+
+          {data.reviewsDue > 0 ? (
+            <p class="ui-text-muted text-sm">
+              {t('today.reviewsDueCount', { count: data.reviewsDue })}
+            </p>
+          ) : null}
+
+          <NavigationAction
+            class="w-full sm:w-auto"
+            href={data.action.href}
+            size="lg"
+          >
             {t('common.continue')}
           </NavigationAction>
         </Card>
-      ) : (
-        <EmptyState
-          class="lg:col-span-7 lg:row-span-2"
-          description={t('today.upToDate.description')}
-          title={t('today.upToDate.title')}
-        />
-      )}
-
-      <Section class="space-y-4 lg:col-span-5">
-        <div>
-          <p class="ui-text-muted text-sm">{t('today.activeProgram')}</p>
-          <h2 class="mt-1 text-xl font-semibold">{program.title}</h2>
-        </div>
-        <ProgressBar
-          label={t('today.progress', { count: Math.round(program.percent) })}
-          value={program.percent}
-        />
-      </Section>
-
-      <div class="grid gap-3 sm:grid-cols-2 lg:col-span-5">
-        <Section>
-          <p class="ui-text-muted text-sm">{t('today.reviewsDue')}</p>
-          <p class="mt-2 text-2xl font-bold">{data.reviewsDue}</p>
-        </Section>
-        <Section>
-          <p class="ui-text-muted text-sm">{t('today.lastActivity')}</p>
-          {data.lastActivity ? (
-            <NavigationAction
-              class="mt-2 w-full"
-              href={data.lastActivity.href}
-              variant="ghost"
-            >
-              {data.lastActivity.title} ·{' '}
-              {formatLastActivity(data.lastActivity.at, locale)}
-            </NavigationAction>
-          ) : (
-            <p class="ui-text-muted mt-2 text-sm">
-              {t('today.noRecentActivity')}
+      ) : primaryProgram ? (
+        <Section title={primaryProgram.title}>
+          <div class="space-y-4">
+            <p class="ui-text-muted leading-7">
+              {t('today.upToDate.description')}
             </p>
-          )}
+            {primaryProgram.percent > 0 ? (
+              <ProgressBar
+                label={t('today.progressLabel')}
+                value={primaryProgram.percent}
+              />
+            ) : null}
+            {primaryProgram.status === 'COMPLETED' ? (
+              <Badge tone="info">{t('today.program.completed')}</Badge>
+            ) : null}
+          </div>
         </Section>
-      </div>
+      ) : null}
+
+      {visibleSecondaryPrograms.length > 0 ? (
+        <Section
+          action={
+            <NavigationAction href="/program" variant="ghost">
+              {t('today.viewMyPrograms')}
+            </NavigationAction>
+          }
+          description={t('today.activePrograms.description')}
+          title={t('today.activePrograms.title')}
+        >
+          <ul class="ui-list" role="list">
+            {visibleSecondaryPrograms.map((program) => (
+              <li key={program.id}>
+                <ProgramResumeRow program={program} />
+              </li>
+            ))}
+          </ul>
+          {hiddenProgramCount > 0 ? (
+            <p class="ui-text-muted mt-4 text-sm">
+              {t('today.morePrograms', { count: hiddenProgramCount })}
+            </p>
+          ) : null}
+        </Section>
+      ) : null}
     </div>
+  );
+}
+
+function ProgramResumeRow({ program }: { program: TodayProgram }) {
+  const { t } = useI18n();
+  const statusKey: MessageKey =
+    program.status === 'COMPLETED'
+      ? 'today.program.completed'
+      : program.status === 'IN_PROGRESS'
+        ? 'today.program.inProgress'
+        : 'today.program.notStarted';
+  const actionLabel =
+    program.status === 'NOT_STARTED'
+      ? t('today.startProgram')
+      : t('today.resumeProgram');
+
+  return (
+    <ListRow
+      aside={
+        program.status !== 'COMPLETED' && program.resumeHref ? (
+          <NavigationAction
+            aria-label={`${actionLabel} — ${program.title}`}
+            href={program.resumeHref}
+            variant="ghost"
+          >
+            {actionLabel}
+          </NavigationAction>
+        ) : (
+          <Badge tone="info">{t('today.program.completed')}</Badge>
+        )
+      }
+    >
+      <div class="space-y-1">
+        <h3 class="font-semibold [overflow-wrap:anywhere]">{program.title}</h3>
+        <p class="ui-text-muted text-sm">
+          {t(statusKey)}
+          {program.percent > 0 && program.status !== 'COMPLETED'
+            ? ` · ${t('common.percent', { count: Math.round(program.percent) })}`
+            : ''}
+        </p>
+        {program.lastActivity ? (
+          <p class="ui-text-muted text-sm [overflow-wrap:anywhere]">
+            {t('today.lastPosition')} · {program.lastActivity.title}
+          </p>
+        ) : null}
+        {program.nextAction ? (
+          <p class="ui-text-muted text-sm [overflow-wrap:anywhere]">
+            {t('today.nextAction')} · {program.nextAction.title}
+          </p>
+        ) : null}
+      </div>
+    </ListRow>
   );
 }
