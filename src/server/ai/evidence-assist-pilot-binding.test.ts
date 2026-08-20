@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -52,6 +53,10 @@ function baselineArtifacts(): ReadonlyMap<string, string> {
 
 function refingerprint(binding: Record<string, unknown>): void {
   binding.bindingFingerprint = evidenceAssistPilotBindingFingerprint(binding);
+}
+
+function sha256(value: string): string {
+  return createHash('sha256').update(value).digest('hex');
 }
 
 describe('draft evidence-assist pilot binding', () => {
@@ -154,6 +159,50 @@ describe('draft evidence-assist pilot binding', () => {
     expect(() => compileExecutableRubric(rubric)).toThrow(
       'A candidate-only rubric cannot enable an indicative score.',
     );
+  });
+
+  it('rejects incomplete templates, cross-criterion ownership and missing remediation', () => {
+    const templateMutation = JSON.parse(read(rubricPath)) as Record<
+      string,
+      unknown
+    >;
+    const firstTemplateElement = record(
+      (templateMutation.elements as unknown[])[0],
+    );
+    record(firstTemplateElement.templates).ambiguous = '';
+    expect(() => compileExecutableRubric(templateMutation)).toThrow();
+
+    const ownerMutation = JSON.parse(read(rubricPath)) as Record<
+      string,
+      unknown
+    >;
+    record((ownerMutation.elements as unknown[])[0]).ownerCriterionKey =
+      'envelope-review';
+    expect(() => compileExecutableRubric(ownerMutation)).toThrow(
+      'can affect only its owner and explicitly shared criteria',
+    );
+
+    const remediationMutation = JSON.parse(read(rubricPath)) as Record<
+      string,
+      unknown
+    >;
+    delete record((remediationMutation.elements as unknown[])[0]).remediation;
+    const mutatedRubricText = `${JSON.stringify(remediationMutation, null, 2)}\n`;
+    const mutatedCompiled = compileExecutableRubric(remediationMutation);
+    const mutatedBinding = structuredClone(baselineBinding());
+    const rubricReference = record(record(mutatedBinding.artifacts).rubric);
+    rubricReference.sha256 = sha256(mutatedRubricText);
+    rubricReference.compiledFingerprint = mutatedCompiled.rubricFingerprint;
+    refingerprint(mutatedBinding);
+    const artifacts = new Map(baselineArtifacts());
+    artifacts.set(rubricPath, mutatedRubricText);
+
+    expect(() =>
+      validateEvidenceAssistPilotBinding({
+        artifactTexts: artifacts,
+        binding: mutatedBinding,
+      }),
+    ).toThrow('EVIDENCE_ASSIST_BINDING_RUBRIC_NOT_CANDIDATE_ONLY');
   });
 
   it('rejects an altered activity or artifact path even with a recomputed fingerprint', () => {

@@ -136,14 +136,14 @@
     }
   ],
   "holdout": {
-    "status": "CONTENT_NOT_AUTHORED",
+    "status": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
     "sealed": false,
     "executable": false,
     "legacyPlaintextStatus": "COMPROMISED_AND_REMOVED_FROM_ACTIVE_TREE",
     "replacementManifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v3.manifest.json",
-    "replacementManifestSha256": "43415021f64e26c5de7a11ecd227c369a9b932ec911481ab84447f96e75f592f",
+    "replacementManifestSha256": "13a30f69d743a77bbde7bf9bd120b49a52a897c80caf5d38cbacda8b36e312da",
     "autonomousManifest": "benchmarks/ai-correction/autonomous/manifest.v2.json",
-    "autonomousManifestSha256": "e3d82b52fe77486754ebb199f5a9bc1daf8a674f5dbd34cd47c8f0c5ae0da490",
+    "autonomousManifestSha256": "4b1be824052866f2b0622ad38996e12ee0b4ba8155eb37b1fc46b81e18a745b6",
     "supersededHistoricalDraft": {
       "status": "SUPERSEDED_HISTORICAL_DRAFT",
       "manifest": "benchmarks/ai-correction/executable-rubric/writing-fr-holdout.v2.manifest.json",
@@ -744,7 +744,7 @@
       "FINANCE_BUDGET_NOT_ARBITRATED",
       "STAGE_ONE_NOT_EXECUTED",
       "FULL_DEVELOPMENT_CORPUS_NOT_EXECUTED",
-      "HOLDOUT_V3_CONTENT_NOT_AUTHORED_OR_SEALED"
+      "HOLDOUT_V3_EXPLICIT_OWNER_QUALIFICATION_AND_SEAL_AUTHORIZATION_PENDING"
     ]
   },
   "promotionGate": {

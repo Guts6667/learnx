@@ -38,6 +38,24 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
     minimumCaseCount: z.literal(24),
     modality: z.literal('WRITING'),
     openedAt: z.iso.datetime().nullable(),
+    pendingAuthoring: z
+      .object({
+        constructionManifest: z
+          .object({
+            path: z.literal('writing-fr-holdout.v3.construction.json'),
+            sha256: sha256Schema,
+          })
+          .strict(),
+        plaintextSha256: sha256Schema,
+        prevalidationRecord: z
+          .object({
+            path: z.literal('writing-fr-holdout.v3.prevalidation.json'),
+            sha256: sha256Schema,
+          })
+          .strict(),
+      })
+      .strict()
+      .nullable(),
     prohibitions: z
       .array(
         z.enum([
@@ -60,6 +78,7 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
     sealed: z.boolean(),
     status: z.enum([
       'CONTENT_NOT_AUTHORED',
+      'CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL',
       'SEALED_AWAITING_DEVELOPMENT_GO',
       'OPENED_ONE_SHOT',
     ]),
@@ -118,11 +137,7 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
           path: ['sealed'],
         });
       }
-    } else if (
-      qualificationComplete ||
-      encryptedArtifactPresent ||
-      manifest.caseCount !== 0
-    ) {
+    } else if (qualificationComplete || encryptedArtifactPresent) {
       context.addIssue({
         code: 'custom',
         message:
@@ -135,7 +150,9 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
       if (
         manifest.sealed ||
         manifest.executable ||
-        manifest.openedAt !== null
+        manifest.openedAt !== null ||
+        manifest.caseCount !== 0 ||
+        manifest.pendingAuthoring !== null
       ) {
         context.addIssue({
           code: 'custom',
@@ -145,11 +162,30 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
         });
       }
     }
+    if (manifest.status === 'CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL') {
+      if (
+        manifest.sealed ||
+        manifest.executable ||
+        manifest.openedAt !== null ||
+        manifest.caseCount < manifest.minimumCaseCount ||
+        manifest.pendingAuthoring === null ||
+        manifest.qualification.status !==
+          'PENDING_AUTONOMOUS_QUALIFICATION'
+      ) {
+        context.addIssue({
+          code: 'custom',
+          message:
+            'Prevalidated authoring must remain unsealed, non-executable and explicitly pending owner authorization.',
+          path: ['status'],
+        });
+      }
+    }
     if (manifest.status === 'SEALED_AWAITING_DEVELOPMENT_GO') {
       if (
         !manifest.sealed ||
         manifest.executable ||
-        manifest.openedAt !== null
+        manifest.openedAt !== null ||
+        manifest.pendingAuthoring !== null
       ) {
         context.addIssue({
           code: 'custom',
@@ -163,7 +199,8 @@ export const executableRubricAutonomousHoldoutManifestSchema = z
       if (
         !manifest.sealed ||
         !manifest.executable ||
-        manifest.openedAt === null
+        manifest.openedAt === null ||
+        manifest.pendingAuthoring !== null
       ) {
         context.addIssue({
           code: 'custom',

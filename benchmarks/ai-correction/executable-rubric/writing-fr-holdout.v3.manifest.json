@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "holdoutId": "writing-fr-evidence-assist-holdout-v3",
   "holdoutVersion": "3.0.0",
-  "status": "CONTENT_NOT_AUTHORED",
+  "status": "CONTENT_AUTHORED_PENDING_EXPLICIT_OWNER_SEAL",
   "language": "fr-FR",
   "modality": "WRITING",
   "protocol": {
@@ -10,7 +10,7 @@
     "segmentationVersion": "2.0.0"
   },
   "minimumCaseCount": 24,
-  "caseCount": 0,
+  "caseCount": 24,
   "qualification": {
     "status": "PENDING_AUTONOMOUS_QUALIFICATION",
     "qualifiedAt": null,
@@ -29,6 +29,17 @@
     "algorithm": "AES-256-GCM",
     "path": "writing-fr-holdout.v3.enc.json",
     "sha256": null
+  },
+  "pendingAuthoring": {
+    "constructionManifest": {
+      "path": "writing-fr-holdout.v3.construction.json",
+      "sha256": "f3199af3971b1b297f584d00ae1af58dcfb46e47979fa612ccf95bc5d6b0b81e"
+    },
+    "prevalidationRecord": {
+      "path": "writing-fr-holdout.v3.prevalidation.json",
+      "sha256": "c4896350541f9b797fda8690ac3455c0e0f3be57d852accaf52f50a439ba471f"
+    },
+    "plaintextSha256": "d1db9bde71af1d888c6ea7b7467ce2cd3d97b6aebb084f0126c582ddc2a05ddc"
   },
   "sealed": false,
   "executable": false,

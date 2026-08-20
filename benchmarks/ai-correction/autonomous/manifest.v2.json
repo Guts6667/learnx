@@ -1,13 +1,13 @@
 {
   "schemaVersion": 2,
   "manifestId": "learnx-writing-fr-autonomous-evidence-v2",
-  "status": "AUTONOMOUS_QUALIFICATION_PENDING",
+  "status": "AUTHORING_PREVALIDATED_EXPLICIT_OWNER_SEAL_PENDING",
   "oracleType": "AUTONOMOUS_MECHANICAL_METAMORPHIC_AND_SYNTHETIC",
   "humanValidationClaimed": false,
   "contract": {
-    "key": "v4-writing-recommendation-fr",
-    "version": "0.1.0-draft",
-    "status": "DRAFT_NOT_PUBLISHED"
+    "key": "v4-writing-go-no-go-recommendation-fr",
+    "version": "2.0.0-draft",
+    "status": "EVIDENCE_ASSIST_ONLY_DRAFT_NOT_PUBLISHED"
   },
   "development": {
     "path": "writing-fr-development-mini-panel.v1.json",
@@ -16,19 +16,21 @@
     "candidateResultsReusedForActiveGate": 0
   },
   "holdout": {
-    "status": "CONTENT_NOT_AUTHORED",
+    "status": "CONTENT_AUTHORED_PREVALIDATED_NOT_QUALIFIED_NOT_SEALED",
     "sealed": false,
     "executable": false,
     "replacementManifest": {
       "path": "../executable-rubric/writing-fr-holdout.v3.manifest.json",
-      "sha256": "43415021f64e26c5de7a11ecd227c369a9b932ec911481ab84447f96e75f592f"
+      "sha256": "13a30f69d743a77bbde7bf9bd120b49a52a897c80caf5d38cbacda8b36e312da"
     },
     "supersededHistoricalDraft": {
       "path": "../executable-rubric/writing-fr-holdout.v2.manifest.json",
       "sha256": "83b794db025d432af1250dea3edbbb0944b589dcbfe4dad32f14bc944a9531e2"
     },
+    "maySealAfter": "EXPLICIT_OWNER_AUTHORIZATION_TO_QUALIFY_AND_SEAL_V3",
     "mayOpenAfter": [
-      "GO_AUTONOMOUS_FORMATIVE_ON_FULL_DEVELOPMENT_CORPUS",
+      "FULL_DEVELOPMENT_CORPUS_GO",
+      "GO_TO_SEALED_HOLDOUT",
       "SEPARATE_ONE_SHOT_OWNER_AUTHORIZATION"
     ]
   },
