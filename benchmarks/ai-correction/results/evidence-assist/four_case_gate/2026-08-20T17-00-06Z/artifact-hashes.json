@@ -1,0 +1,7 @@
+{
+  "campaignManifestSha256": "691fa112517b84e13aa01f8984a10a64a3f5d52f7d00c6d0b9a3a5e3d83e0e9e",
+  "evaluatorSha256": "d5d4dc11b7cb1d4e811a75a53b025695ccde7882e2da28e3f9df90933b73cbb2",
+  "goldMappingSha256": "ef55bc07a885fa23505ac22debeb8ebd78265e8eb93f78c27e53fd25aa91f1d3",
+  "runnerSha256": "aec14071df4bf3f08fd2570190cc73964b12aed778bfcf220fa16e2757cbeab2",
+  "stopPolicySha256": "2d8e38ff4e9f0323edf308abd30ae087d35a5f8319edbd88ffa808f524e94f88"
+}

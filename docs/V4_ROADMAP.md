@@ -29,9 +29,9 @@ Dernière consolidation : 20 août 2026.
 
 | Plan | État au 16 août 2026 | Ce que cela prouve | Ce que cela ne prouve pas |
 | --- | --- | --- | --- |
-| Runtime canonique | `origin/dev` à `ead5be4` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0 et fake-flow hors ligne intégrés ; CI, fonctions réelles et déploiement dev verts. | Aucun appel modèle, contrat publié, débit réel ou disponibilité utilisateur de la correction. |
+| Runtime canonique | `origin/dev` à `0469060` | Fondations V4-001 à V4-010, protocole evidence-assist 3.0.0 et fake-flow hors ligne intégrés ; CI, fonctions réelles et déploiement dev verts. | Aucun contrat publié, débit utilisateur réel ou disponibilité utilisateur de la correction. |
 | Implémentation hors ligne | intégrée dans `origin/dev` | Segmenter, contexte, raw, schéma candidate-only, runner durci, contrat pilote DRAFT, holdout qualifié/scellé et fake-flow testés sous hard-off. | Ni qualité d'un modèle réel, ni ouverture du holdout, ni disponibilité utilisateur de la correction. |
-| Expérimentation | `OFFLINE_CAMPAIGN_FROZEN / FINANCE_GATE4_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL` | Route, identité, gate quatre cas et panel 10 × 2 sont gelés hors ligne ; le plafond du gate quatre cas est arbitré. | Le GO propriétaire du gate quatre cas et l'arbitrage du panel conditionnel sont absents ; aucun pipeline n'est promu. |
+| Expérimentation | `FOUR_CASE_GATE_NO_GO / CAMPAIGN_CLOSED / PANEL_NOT_AUTHORIZED` | Le gate evidence-assist a exécuté deux appels synthétiques, réconciliés à 100 %, puis s'est arrêté sur une divergence sémantique du cas négatif. | Aucun pipeline n'est promu ; mutation, injection, panel 10 × 2 et holdout n'ont pas été exécutés. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -70,12 +70,13 @@ V4-010 branché uniquement sur un fake provider hors ligne et V4-011 fermé.**
 
 ### Prochaines actions sans ambiguïté
 
-1. **Produit & pédagogie avec Développement** conserve byte-identiques
-   l'identité, les quatre cas, le corpus complet 10 × 2, les seuils et les règles
-   d'arrêt désormais gelés. Ce travail reste hors ligne.
-2. Le **Propriétaire** décide séparément du GO éphémère sur le plafond Finance
-   arbitré de `0,251136 USD` pour les quatre premiers appels. Finance devra
-   arbitrer séparément le panel conditionnel seulement après un résultat `4/4`.
+1. **Produit & pédagogie avec Développement** préserve byte-identiques la
+   campagne evidence-assist close, ses deux appels et ses règles gelées, puis
+   arbitre hors ligne la frontière entre absence de preuve et preuve explicite
+   du contraire. Aucun retuning ou replay n'est permis sous cette identité.
+2. Toute évolution de l'ontologie, du mapping, du gold, de l'évaluateur ou de
+   la télémétrie crée une nouvelle identité et exige un nouveau gate quatre cas,
+   un nouvel arbitrage Finance et un nouveau GO propriétaire.
 3. Le holdout v3 est désormais qualifié et scellé. Il reste fermé et son
    ouverture one-shot demeure un GO ultérieur distinct après les gates de
    développement.
@@ -90,12 +91,13 @@ Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
 - Le fake-flow V4-010 passe les tests de persistance, idempotence, versions,
   permissions, états publics et responsive, mais reste forcé à `OFF` en
   production et ne valide aucun modèle.
-- Le runner evidence-assist repasse hors ligne en `HARD_OFF`, avec
-  `modelCallsPerformed=0` et `networkCallsAllowed=false`.
-- La prochaine exécution facturable possible est uniquement le gate quatre cas
-  gelé. Elle exige un artefact d'autorisation éphémère et single-use liant
-  l'accord Finance et le GO propriétaire au plafond de `0,251136 USD`. Cette
-  autorisation n'est pas déduite d'un accord général sur la roadmap.
+- Le gate evidence-assist a consommé son autorisation HMAC single-use : deux
+  appels sur quatre ont été effectués, sans retry/fallback, pour
+  `0,025622 USD` réconciliés à 100 %. Le cas positif est à `9/9` et le cas
+  négatif à `7/9`, soit `16/18` (`88,8889 %`) au cumul.
+- Le runner est revenu en `HARD_OFF`. La campagne est close en
+  `NO_GO_SEMANTIC_DISAGREEMENT` ; mutation et injection n'ont pas été envoyés,
+  le panel 10 × 2 n'est pas autorisé et aucun replay n'est permis.
 - La qualification et le scellement du holdout v3 ont consommé l'autorisation
   exacte `AUTHORIZE_V4_HOLDOUT_V3_QUALIFICATION_AND_SEAL`. Le paquet demeure
   non exécutable ; cette décision n'autorise ni son ouverture, ni un appel
@@ -151,8 +153,8 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   `cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805`.
 - Capacité acquise hors ligne : l'attestation lie la route exacte à
   `reasoning.effort=none` et à un coût `ACTUAL` obligatoire. La route Anthropic
-  directe est écartée tant que son coût reste estimé. L'état est
-  `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL`, pas un GO d'appel.
+  directe est écartée tant que son coût reste estimé. L'état pré-exécution
+  était `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL`, pas un GO d'appel.
 - Acquis hors ligne : runner validate-only, gate quatre cas et panel 10 × 2
   gelés ensemble, zéro résultat historique réutilisé.
 - Le plafond prudent `0,251136 USD` du gate quatre cas est arbitré par Finance
@@ -160,11 +162,15 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   Le plafond conditionnel `1,258760 USD` du panel 10 × 2 reste non arbitré. Le
   plafond `0,21 USD` est celui du gate Sonnet borné historique, clos ; il n'est
   pas le plafond evidence-assist et n'est pas transférable.
-- Blocage courant : GO propriétaire distinct non accordé pour le gate quatre
-  cas. Aucun artefact HMAC d'exécution n'existe dans le dépôt.
-- Ordre : exécuter les quatre cas après ces autorisations, puis exécuter le 10 × 2
-  uniquement si le gate fait `4/4`, sous la même identité. Tout changement
-  recommence à quatre cas.
+- Résultat du gate : autorisation HMAC consommée une seule fois, deux appels
+  effectués, `0,025622 USD` réconciliés, puis arrêt obligatoire sur
+  `SEMANTIC_DISAGREEMENT`. Le cas négatif oppose le gold
+  `NOT_DEMONSTRATED` au signal plausible `EVIDENCE_AGAINST_ELEMENT` sur deux
+  éléments. Rapport : `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`.
+- Blocage courant : campagne close sans replay. Le panel 10 × 2 reste interdit
+  puisque le gate n'a pas fait `4/4`. Toute modification sémantique ou
+  technique crée une nouvelle identité et recommence à quatre cas après de
+  nouveaux arbitrages.
 - Définition bornée : le **corpus de développement complet** est exactement la
   sélection scellée
   `writing-fr-semantic-development-v2@2.0.0`, soit 10 cas synthétiques distincts
@@ -267,7 +273,7 @@ jamais à franchir son gate live.
 | V4-008A | `LIVRÉ_INACTIF` | Preuve historique ; juge composite abandonné. | Non. | Aucun travail sur l'ancien pipeline. | Produit & pédagogie. |
 | V4-009 | `LIVRÉ_INACTIF` | Orchestration et réconciliation intégrées/rejouées. | Non hors branchement V4-010. | Pipeline exact promu. | Développement. |
 | V4-009B | `LIVRÉ_INACTIF` | NO-GO historique immuable. | Non. | Ne jamais reprendre l'enveloppe close. | Produit & pédagogie. |
-| V4-009C | `ACTIF_HORS_LIGNE` | Protocole 3.0.0, runner, identité et deux étages gelés ; budgets proposés seulement, `NO_MODEL_CALL`. | Oui : durcir hors ligne le runner, les coûts et le holdout indépendant. | Finance + GO propriétaire → 4/4 → 20/20 → `GO_TO_SEALED_HOLDOUT` sans promotion → autorisation one-shot → holdout → `GO_AUTONOMOUS_FORMATIVE`. | Produit & pédagogie ; Développement ; Finance ; Propriétaire aux GO. |
+| V4-009C | `NO_GO_STAGE1_REVIEW_REQUIRED` | Protocole 3.0.0 et deux étages gelés ; gate quatre cas arrêté après 2 appels sur divergence sémantique, coût réconcilié. | Oui, hors ligne uniquement : arbitrer l'ontologie négative et combler la télémétrie sous une future identité. | Nouvelle identité + nouveaux arbitrages → nouveau 4/4 ; le panel 10 × 2 et le holdout restent fermés. | Produit & pédagogie ; Développement ; Finance ; Propriétaire aux GO. |
 | V4-010 | `ACTIF_HORS_LIGNE` | Fake-flow complet intégré sur `dev`, persistant, testé responsive et maintenu sous hard-off ; 0 flow live. | Oui : réaudit UX/contrats et tests sans réseau/débit. | Pipeline promu + contrat publié + gate de cohorte. | Développement, avec Produit & Direction artistique. |
 | V4-011 | `BLOQUÉ` | Aucun gate de maîtrise cumulatif déterministe. | Non. | V4-010 calibré + contrôle multi-notions serveur livré. | Produit & pédagogie + Développement. |
 | V4-012 | `BLOQUÉ` | Fondations financières sans données de pilote. | Non. | Pilote V4-010 instrumenté. | Finance & Pricing. |

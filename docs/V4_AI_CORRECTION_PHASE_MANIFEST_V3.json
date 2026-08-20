@@ -2,7 +2,7 @@
   "schemaVersion": "3.0.0",
   "manifestId": "learnx-v4-ai-correction-evidence-assist-phase-2026-08-16",
   "status": "RESEARCH_NO_PIPELINE_PROMOTED",
-  "updatedAt": "2026-08-20T16:01:23Z",
+  "updatedAt": "2026-08-20T17:18:00Z",
   "scope": {
     "language": "fr-FR",
     "modality": "TEXT",
@@ -246,7 +246,7 @@
     {
       "priority": "P1",
       "key": "EXECUTABLE_RUBRIC_PROMOTION_GATE",
-      "status": "OFFLINE_CAMPAIGN_FROZEN",
+      "status": "FOUR_CASE_GATE_NO_GO_SEMANTIC_DISAGREEMENT",
       "requirements": [
         "Compile one atomic WRITING rubric with no unreachable level, non-monotonic rule, illegal owner or double penalty.",
         "Segment response passages deterministically before dispatch, accept only known span identifiers and produce a reconstructible evidence certificate.",
@@ -595,8 +595,8 @@
       },
       "nextProtocol": {
         "authority": "docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md",
-        "status": "OFFLINE_CAMPAIGN_FROZEN",
-        "executionStatus": "NO_MODEL_CALL",
+        "status": "FOUR_CASE_GATE_NO_GO_CLOSED",
+        "executionStatus": "TWO_CALLS_STOPPED_NO_REPLAY",
         "identityAssignmentStatus": "ASSIGNED_AND_FROZEN_OFFLINE",
         "pinnedIdentifiers": {
           "adapter": "OPENROUTER_CHAT",
@@ -640,9 +640,9 @@
         "preflight": {
           "capabilityCheck": "PASS_OFFLINE",
           "campaignManifestCheck": "PASS_OFFLINE_FROZEN_PAIR",
-          "financeBudgetCheck": "ARBITRATED_GATE4_ONLY_OWNER_NOT_GRANTED",
+          "financeBudgetCheck": "ARBITRATED_RECONCILED_CLOSED",
           "financeArbitrationAuthority": "docs/V4_EVIDENCE_ASSIST_GATE4_FINANCE_ARBITRATION.md",
-          "ownerAuthorizationCheck": "BLOCKED_NOT_GRANTED",
+          "ownerAuthorizationCheck": "GRANTED_CONSUMED_SINGLE_USE",
           "networkCallsAllowed": false
         },
         "modelOutputContract": {
@@ -681,7 +681,24 @@
             "manifest": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-four-case.v1.json",
             "manifestSha256": "691fa112517b84e13aa01f8984a10a64a3f5d52f7d00c6d0b9a3a5e3d83e0e9e",
             "maximumBudgetProposalUsd": 0.251136,
-            "budgetStatus": "FINANCE_ARBITRATED_OWNER_NOT_GRANTED"
+            "budgetStatus": "FINANCE_RECONCILED_CLOSED",
+            "result": {
+              "status": "NO_GO",
+              "stoppedReason": "SEMANTIC_DISAGREEMENT",
+              "runPath": "benchmarks/ai-correction/results/evidence-assist/four_case_gate/2026-08-20T17-00-06Z",
+              "report": "docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md",
+              "modelCallsPerformed": 2,
+              "completedUsableWorkflows": 1,
+              "totalActualCostUsd": 0.025622,
+              "dispatchAndCostReconciliationRate": 1,
+              "atomicRelationAgreementRate": 0.8888888888888888,
+              "falseSupportCount": 0,
+              "requestedRoute": "Anthropic",
+              "observedProvider": "Anthropic",
+              "modelSnapshot": "anthropic/claude-sonnet-5",
+              "campaignClosed": true,
+              "replayAllowed": false
+            }
           },
           "stageTwo": {
             "shape": "10x2",
@@ -700,7 +717,8 @@
             "manifest": "benchmarks/ai-correction/executable-rubric/sonnet-5-evidence-assist-panel-10x2.v1.json",
             "manifestSha256": "960f36d289b8a36eba8e764c9c2a0cf0862d41d90c0bd05fec6a1df7a42bc21f",
             "maximumBudgetProposalUsd": 1.25876,
-            "budgetStatus": "CONDITIONAL_NOT_ARBITRATED"
+            "budgetStatus": "CONDITIONAL_NOT_ARBITRATED",
+            "status": "BLOCKED_STAGE_ONE_NO_GO"
           },
           "changeRule": "ANY_CHANGE_TO_CASE_TEXT_GOLD_EXPECTATION_ORDER_REPETITION_THRESHOLD_SELECTION_OR_IDENTITY_CREATES_NEW_CORPUS_VERSION_NEW_CAMPAIGN_IDENTITY_AND_RESTARTS_AT_STAGE_ONE",
           "historicalResultsReused": 0,
@@ -825,12 +843,12 @@
     "Preserve the Gemini panel v2 and Sonnet 5 panel results, ledgers and NO-GO verdicts append-only; never resume either closed envelope.",
     "Preserve the bounded Sonnet 5 gate, its historical proposed 0.21 USD hard cap and its 0.026104 USD actual cost append-only; never resume, relax or reuse the closed identity or its envelope for evidence-assist.",
     "Apply the evidence-assist protocol 3.0.0 under its new authority without reusing any historical prompt, protocol identity, result or campaign identifier.",
-    "Preserve the route-specific reasoning attestation as an offline capability proof only. The new campaign identity and its paired manifests are frozen. Finance has arbitrated only the four-case cap of 0.251136 USD; keep NO_MODEL_CALL until a separate owner authorization is granted.",
+    "Preserve the route-specific reasoning attestation as an offline capability proof only. The evidence-assist gate consumed its single-use authorization, performed two calls and closed on SEMANTIC_DISAGREEMENT with 0.025622 USD reconciled; never replay this identity.",
     "Preserve the frozen campaign identity, four-case manifest, conditional 10x2 manifest and freeze-set hashes byte-identically. Any change creates a new identity and restarts at four cases.",
-    "Execute writing-fr-base-mastered, writing-fr-no-choice-negative, writing-fr-evidence-mutation and writing-fr-direct-injection only after a separate owner authorization bound to the Finance-arbitrated cap. Execute the 20 fresh development workflows only after a 4/4 result under exactly the same identity, a distinct Finance arbitration for the conditional 1.258760 USD cap and a new owner authorization; any case, expectation, order, repetition, threshold or selection change creates a new corpus version and restarts at four cases.",
+    "Keep the unexecuted mutation and injection cases, the conditional 20-workflow panel and the holdout closed. The failed 4/4 prerequisite forbids stage two. Arbitrate the NOT_DEMONSTRATED versus explicit-negative-evidence boundary offline; any case, expectation, mapping, evaluator, runner, telemetry, order, repetition, threshold or selection change creates a new corpus version and restarts under a newly authorized four-case identity.",
     "Keep the falsifier, active v3 holdout, V4-002 publication and V4-010 live activation closed. Permit V4-002 and V4-010 implementation offline under their explicit hard-off constraints.",
     "Treat writing-fr-holdout.v2.manifest.json as SUPERSEDED_HISTORICAL_DRAFT without modifying it. Preserve the independently authored and autonomously qualified v3 ciphertext closed and non-executable until the distinct opening gates are met.",
-    "After 4/4 then 20/20 and complete reconciliation, request GO_TO_SEALED_HOLDOUT. This transition keeps pipelinePromoted=false, authorizes preparation and sealing only, and does not open the holdout.",
+    "Only a future newly identified campaign may request GO_TO_SEALED_HOLDOUT after fresh 4/4 then 20/20 results and complete reconciliation. The current campaign cannot make this transition.",
     "Only a separately authorized one-shot holdout pass under the same identity may produce GO_AUTONOMOUS_FORMATIVE and mutate eligibility.pipelinePromoted from false to true. That gate unlocks V4-002 publication review and V4-010 bounded pilot preparation, never automatic publication, activation, mastery or pricing.",
     "Run the at-least-three-candidate comparison only as a secondary robustness and economic benchmark after exact-pipeline feasibility. It does not block the Sonnet 5 gates or bounded formative pilot, but it blocks V4-018, pricing and commercial generalization.",
     "Keep V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN until docs/V3_5_RELEASE_REPORT.md is reconciled with effective promotion and real-device/PWA, iPhone/VoiceOver, zoom and post-promotion authenticated smoke evidence; do not present this as resolved."

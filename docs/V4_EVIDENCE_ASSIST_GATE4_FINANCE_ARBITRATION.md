@@ -92,3 +92,12 @@ propriétaire postérieur peut autoriser la création éphémère de l'artefact.
 Les manifestes de campagne et leur freeze set restent byte-identiques. Le
 panel, le holdout, V4-002 publié, V4-010 live, les crédits réels et tout prix
 utilisateur restent fermés.
+
+## Clôture post-exécution — 20 août 2026
+
+L'autorisation propriétaire postérieure a été matérialisée puis consommée une
+seule fois. Le gate s'est arrêté au deuxième appel sur
+`SEMANTIC_DISAGREEMENT`. Coût exact réconcilié : `0,025622 USD`, sans retry ni
+fallback. La campagne est close et son solde d'enveloppe n'est pas réutilisable.
+Le panel conditionnel reste non arbitré et interdit. Voir
+`docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`.

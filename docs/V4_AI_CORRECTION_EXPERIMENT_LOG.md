@@ -814,3 +814,41 @@ plafond historique `0,21 USD` reste clos sans transfert. La proposition
 conditionnelle `1,258760 USD` du panel 10 × 2 n'est pas arbitrée et exigera une
 nouvelle décision Finance après un résultat `4/4`. Les manifestes de campagne
 et leur freeze set restent byte-identiques.
+
+### 2026-08-20 — Gate evidence-assist quatre cas arrêté sur la polarité négative
+
+Statut : `NO_GO_SEMANTIC_DISAGREEMENT / CAMPAIGN_CLOSED / NO_REPLAY`.
+
+Rayan a accordé l'autorisation propriétaire exacte du gate synthétique quatre
+cas. Un artefact HMAC-SHA-256 éphémère, single-use et lié à l'arbitrage Finance,
+au `campaignId`, aux empreintes gelées, à quatre appels maximum et au plafond
+`0,251136 USD` a été consommé avant le premier dispatch. Aucun holdout, panel
+10 × 2, donnée utilisateur ou activation V4-010 n'a été ouvert.
+
+Le cas positif `writing-fr-base-mastered` termine à `9/9`. Le deuxième appel,
+`writing-fr-no-choice-negative`, termine à `7/9` : pour
+`identifiable-choice` et `explicit-recommendation`, le gold
+`NOT_DEMONSTRATED` n'autorisait que `ABSTAIN`/`OMITTED`, tandis que le modèle a
+retourné `EVIDENCE_AGAINST_ELEMENT` sur les passages exacts « sans choisir » et
+« Je ne formule aucune recommandation ». Le cumul est donc `16/18`, soit
+`88,8889 %`, sans faux support ni défaut de span, schéma, identité, sécurité,
+finance ou traçabilité.
+
+Le stop au premier `SEMANTIC_DISAGREEMENT` est obligatoire sous les règles
+gelées : deux appels ont été effectués, sans retry ni fallback ; mutation et
+injection n'ont pas été envoyés. Le coût exact réconcilié est `0,025622 USD`
+(`0,013046 + 0,012576`), route et fournisseur observé `Anthropic`, modèle
+`anthropic/claude-sonnet-5`. Le taux de sécurité observé ne constitue pas une
+preuve injection puisque ce cas n'a pas été exécuté.
+
+La relation négative est sémantiquement plausible : elle révèle une frontière
+du pseudo-oracle entre absence de preuve et preuve explicite du contraire, pas
+une erreur pédagogique évidente du modèle. Cette identité reste néanmoins
+close et ne peut être rejouée ou retunée. Toute évolution de l'ontologie, du
+mapping, du gold, du runner ou de la télémétrie crée une nouvelle identité et
+doit recommencer par un nouveau gate quatre cas autorisé. Le runner a persisté
+le coût `ACTUAL`, mais pas le détail entrée/raisonnement/sortie ; ces tokens ne
+sont pas reconstitués.
+
+Rapport : `docs/V4_EVIDENCE_ASSIST_GATE4_RESULT.md`. Artefacts append-only :
+`benchmarks/ai-correction/results/evidence-assist/four_case_gate/2026-08-20T17-00-06Z/`.

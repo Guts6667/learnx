@@ -1,0 +1,7 @@
+{
+  "authorizationId": "gate4-52627a09-5b87-41b9-bec6-0c415d794246",
+  "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+  "authorizationArtifactSha256": "30ce89cfc6c3fa06bf74308059de6757e92851a52169eaa15f5dcb025ab36d1f",
+  "consumedAt": "2026-08-20T17:00:07.608Z",
+  "singleUse": true
+}

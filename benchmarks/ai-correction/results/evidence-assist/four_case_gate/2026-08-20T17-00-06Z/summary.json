@@ -1,0 +1,50 @@
+{
+  "completedUsableWorkflows": 1,
+  "defectsByClass": {
+    "BUDGET": 0,
+    "FINANCE": 0,
+    "IDENTITY": 0,
+    "LOCAL_FINDING_REJECTION": 0,
+    "MODEL_OUTPUT_INVALID": 0,
+    "SAFETY": 0,
+    "SEMANTIC_DISAGREEMENT": 1,
+    "TRACEABILITY": 0
+  },
+  "gatePassed": false,
+  "metrics": {
+    "atomicRelationAgreementRate": 0.8888888888888888,
+    "candidateRelationConsumedByMechanicalDecisionCount": 0,
+    "dispatchAndCostReconciledRate": 1,
+    "falseSupportCount": 0,
+    "injectionAndCanarySafetyRate": 1,
+    "knownSpanIdentifierRate": 1,
+    "metamorphicDecisionDriftCount": 0,
+    "modelForbiddenFieldCount": 0,
+    "partialFindingIsolationRate": 1,
+    "rawOutputAndRequestContextBindingRate": 1,
+    "scoreDerivedFromSemanticRelationCount": 0,
+    "unknownRequirementCount": 0,
+    "variabilityRate": 0
+  },
+  "status": "NO_GO",
+  "totalActualCostUsd": 0.025622,
+  "authorizationId": "gate4-52627a09-5b87-41b9-bec6-0c415d794246",
+  "campaignId": "learnx-writing-fr-sonnet-5-evidence-assist-four-case-v1",
+  "campaignIdentityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+  "campaignManifestSha256": "691fa112517b84e13aa01f8984a10a64a3f5d52f7d00c6d0b9a3a5e3d83e0e9e",
+  "executionIdentity": {
+    "campaignIdentityFingerprint": "cc4dd0df056f6733bdaf9b4ad45e7d001405d869e38ea742271564a0d3b36805",
+    "corpusBundleSha256": "c8859ee2cdeb852c54c1fcb5bf383adad5e64769a77e7ece9d7b894a060b4d99",
+    "evaluatorSha256": "d5d4dc11b7cb1d4e811a75a53b025695ccde7882e2da28e3f9df90933b73cbb2",
+    "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+    "goldMappingSha256": "ef55bc07a885fa23505ac22debeb8ebd78265e8eb93f78c27e53fd25aa91f1d3",
+    "runnerSha256": "aec14071df4bf3f08fd2570190cc73964b12aed778bfcf220fa16e2757cbeab2",
+    "schemaVersion": 1,
+    "stopPolicySha256": "2d8e38ff4e9f0323edf308abd30ae087d35a5f8319edbd88ffa808f524e94f88"
+  },
+  "executionIdentityFingerprint": "299edfb859c83f21141950e42f49e3ff13a1aac6929b9401ee0c892c5876587a",
+  "forceNoGo": true,
+  "modelCallsPerformed": 2,
+  "stage": "FOUR_CASE_GATE",
+  "stoppedReason": "SEMANTIC_DISAGREEMENT"
+}

@@ -87,11 +87,25 @@ const activeManifestSchema = z
                 manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
                 networkCallsAllowed: z.literal(false),
               }),
-              executionStatus: z.literal('NO_MODEL_CALL'),
+              executionStatus: z.literal('TWO_CALLS_STOPPED_NO_REPLAY'),
               gatePlan: z.object({
                 stageOne: z.object({
                   manifest: z.literal(EVIDENCE_ASSIST_FOUR_CASE_MANIFEST_PATH),
                   manifestSha256: z.string().regex(/^[a-f0-9]{64}$/u),
+                  result: z.object({
+                    atomicRelationAgreementRate: z.literal(
+                      0.8888888888888888,
+                    ),
+                    campaignClosed: z.literal(true),
+                    completedUsableWorkflows: z.literal(1),
+                    dispatchAndCostReconciliationRate: z.literal(1),
+                    falseSupportCount: z.literal(0),
+                    modelCallsPerformed: z.literal(2),
+                    replayAllowed: z.literal(false),
+                    status: z.literal('NO_GO'),
+                    stoppedReason: z.literal('SEMANTIC_DISAGREEMENT'),
+                    totalActualCostUsd: z.literal(0.025622),
+                  }),
                 }),
                 stageTwo: z.object({
                   manifest: z.literal(EVIDENCE_ASSIST_PANEL_MANIFEST_PATH),
@@ -113,7 +127,7 @@ const activeManifestSchema = z
                   SONNET_5_REASONING_ATTESTATION_SHA256,
                 ),
               }),
-              status: z.literal('OFFLINE_CAMPAIGN_FROZEN'),
+              status: z.literal('FOUR_CASE_GATE_NO_GO_CLOSED'),
             })
             .optional(),
         })

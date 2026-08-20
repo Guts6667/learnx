@@ -174,9 +174,9 @@ raws et règles d'arrêt restent immuables et append-only.
 - Le raisonnement doit être explicitement `DISABLED` par une capacité attestée
   de la route exacte. Une omission du paramètre ne vaut jamais désactivation.
   L'attestation route-specific du 16 août prouve hors ligne
-  `reasoning: { effort: "none" }`. Le statut devient
-  `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` : le préflight reste bloqué faute
-  d'arbitrage du budget Finance et de GO propriétaire.
+  `reasoning: { effort: "none" }`. Le statut pré-exécution était
+  `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL`. L'autorisation ultérieure a été
+  consommée par le gate clos ; elle n'est ni réutilisable ni transférable.
 - L'identité `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0`, le profil
   de requête et les deux gates sont attribués et gelés hors ligne. Toute
   modification versionne l'identité et recommence au gate quatre cas.
@@ -225,14 +225,15 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 2. Conserver l'identité immuable
    `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0` et les deux manifestes
    quatre cas puis 10 × 2 gelés ensemble. Fait hors ligne, zéro appel.
-3. Finance a arbitré la proposition maximale de `0,251136 USD` pour le nouveau
-   gate evidence-assist quatre cas. Obtenir ensuite un GO propriétaire distinct
-   et éphémère avant tout appel. Le plafond historique de `0,21 USD` appartient
-   uniquement au gate Sonnet borné clos et ne doit jamais être réutilisé ; le
-   panel conditionnel `1,258760 USD` exige un arbitrage Finance séparé après
-   un résultat `4/4`.
-4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
-   que si le gate fait `4/4`, sous exactement la même identité.
+3. Le gate evidence-assist quatre cas a consommé son GO éphémère et s'est
+   arrêté après deux appels sur `SEMANTIC_DISAGREEMENT` : coût exact
+   `0,025622 USD`, réconciliation `100 %`, cas positif `9/9`, cas négatif
+   `7/9`. Mutation et injection n'ont pas été envoyés. Le plafond historique de
+   `0,21 USD` reste propre au gate Sonnet borné clos.
+4. Fermer cette identité sans replay. Le panel conditionnel 10 × 2 reste non
+   arbitré et interdit. Arbitrer hors ligne la frontière entre absence de preuve
+   et preuve explicite du contraire ; toute modification crée une nouvelle
+   identité et recommence par un gate quatre cas nouvellement autorisé.
 5. Après 20/20, confirmer la préparation du holdout scellé via
    `GO_TO_SEALED_HOLDOUT`, demander une autorisation one-shot distincte, puis
    rendre `GO_AUTONOMOUS_FORMATIVE` uniquement si son exécution réussit sans
@@ -1553,9 +1554,9 @@ déterministes est adopté sous une nouvelle identité conformément à
 `docs/V4_EVIDENCE_ASSIST_PROTOCOL_SPEC.md`. Une attestation ultérieure lie la
 désactivation explicite à `OPENROUTER_CHAT`, modèle
 `anthropic/claude-sonnet-5`, route exacte `Anthropic`, fallback interdit et
-`reasoning.effort=none`. L'état courant est
+`reasoning.effort=none`. L'état historique pré-exécution était
 `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` : identité, profil et gates sont
-attribués et empreintés ; aucun budget Finance/GO propriétaire n'est accordé.
+attribués et empreintés ; aucun budget Finance/GO propriétaire n'était accordé.
 Les NO-GO ci-dessus restent inchangés.
 
 **Priorité : P0 expérimentation. Dépendances : V4-003, V4-009 et clôture
@@ -1573,15 +1574,13 @@ Produit/pédagogie l'a approuvé comme cas positif seulement. Il autorise la
 préparation, pas l'exécution, du gate maîtrisé + négatif + injection. Le panel
 reste fermé.**
 
-**État courant au 20 août 2026 : protocole evidence-assist 3.0.0, segmenter
-2.0.0, contexte/canari/raw et capacité de désactivation implémentés et attestés
-hors ligne. Le runner validate-only importe le protocole ; l'identité et les
-manifestes quatre cas puis 10 × 2 sont gelés ensemble. Finance a arbitré
-uniquement le plafond `0,251136 USD` du gate quatre cas ; le GO propriétaire
-reste requis. Le plafond conditionnel `1,258760 USD` du panel 10 × 2 reste non
-arbitré et aucun appel n'est autorisé. Le
-holdout, la publication V4-002 et le live V4-010 restent fermés ; leurs lots
-hors ligne sont actifs.**
+**État courant au 20 août 2026 : le gate evidence-assist 3.0.0 a exécuté deux
+appels synthétiques sous son autorisation HMAC single-use, sans retry/fallback,
+pour `0,025622 USD` réconciliés à 100 %. Le positif est à `9/9`; le négatif à
+`7/9` car `EVIDENCE_AGAINST_ELEMENT` est plausible mais incompatible avec le
+gold gelé `NOT_DEMONSTRATED`. Le stop `SEMANTIC_DISAGREEMENT` clôt l'identité
+sans replay. Mutation, injection, panel 10 × 2, holdout, publication V4-002 et
+live V4-010 restent fermés.**
 
 ### Point de reprise pour le développement
 
