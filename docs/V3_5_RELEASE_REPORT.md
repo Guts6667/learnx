@@ -140,6 +140,44 @@ courant ». Aucun de ces contrôles n’est réputé réussi par le présent rap
 - Vérifier un cycle réel de demande d'accès, e-mail, vérification et activation
   sans créer de contact de test avant l'autorisation de promotion.
 
+## Addendum de non-régression — 20 août 2026
+
+Une nouvelle passe automatisée a été exécutée dans un worktree isolé sur la
+baseline source consolidée
+`251c6f7fd26361ffc57504dc06f3fb0d4ed91882`. Elle n'a modifié ni `main`, ni
+une base partagée, et n'a exécuté aucun seed. À cet instant, `origin/main`
+restait à `b5f50130c0aef611b340b812c875a5a4bc170bfc` ; cet addendum ne prétend donc
+pas que la baseline auditée est la version Production.
+
+Résultats **PASSED_AUTOMATED** :
+
+- `pnpm lint`, `pnpm typecheck` et `pnpm build` réussis ; build de production
+  avec 124 modules et 26 entrées PWA précachées ;
+- `pnpm test` réussi : 166 fichiers et 1044 tests ;
+- `pnpm test:e2e` réussi : 66 scénarios et 6 skips prévus, sur Chromium
+  desktop/mobile/tablette et WebKit mobile ;
+- `pnpm i18n:check` réussi : 800 clés alignées en français et anglais ;
+- `pnpm exec prisma validate` réussi ;
+- aperçu local du bundle : HTTP 200 pour la landing, la connexion, la demande
+  d'accès, `/today`, le manifeste et le service worker ;
+- manifeste confirmé avec `start_url=/today` et mode `standalone` ;
+- fixtures authentifiées automatisées vertes pour première arrivée,
+  V4-016C, programme, leçon, notes, administration, reconnexion et logout ;
+- cache privé, reflow 200 %, clavier/focus, axe, reduced motion et largeurs de
+  référence couverts sans régression bloquante.
+
+Statut **PENDING_REAL_DEVICE** inchangé :
+
+- installation, fermeture, réouverture et mise à jour PWA sur téléphone réel ;
+- changement de compte et absence de restauration privée sur la PWA installée ;
+- VoiceOver réel et grande taille de texte système mobile ;
+- smoke authentifié sur le commit effectivement promu ;
+- cycle e-mail réel de demande d'accès, uniquement après autorisation.
+
+La matrice détaillée, y compris la frontière entre preuve automatisée et preuve
+matérielle, se trouve dans `docs/V3_5_QA_MATRIX.md`. Le verdict reste **GO
+technique / clôture officielle en attente**, sans fausse validation humaine.
+
 ## Procédure de promotion recommandée
 
 1. Faire approuver ce rapport et le rendu humain final.
