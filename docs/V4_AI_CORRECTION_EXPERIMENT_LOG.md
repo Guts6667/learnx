@@ -783,3 +783,34 @@ selon les seuils préenregistrés peut produire `GO_AUTONOMOUS_FORMATIVE`. Cet
 artefact, après autorisation de promotion, porte explicitement la mutation
 `eligibility.pipelinePromoted: false → true`. Aucun de ces deux artefacts n'est
 encore émis.
+
+### 2026-08-20 — Arbitrage Finance du gate evidence-assist quatre cas
+
+Statut : `OFFLINE_READY / FINANCE_ARBITRATED_GATE4_ONLY /
+OWNER_NOT_GRANTED / NO_MODEL_CALL`.
+
+Sur la baseline consolidée
+`251c6f7fd26361ffc57504dc06f3fb0d4ed91882`, Finance & Pricing a qualifié
+l'identité gelée et arbitré uniquement l'enveloppe du gate quatre cas. Le
+snapshot épinglé facture l'entrée `0,000002 USD/token` et la sortie
+`0,000010 USD/token`. La borne par tentative est
+`10 912 × 0,000002 + 4 096 × 0,000010 = 0,062784 USD`, soit exactement
+`0,251136 USD` pour quatre appels maximum.
+
+L'arbitrage fixe zéro retry, zéro fallback, arrêt au premier défaut, coût
+`ACTUAL` obligatoire et réconciliation à 100 %. Le préflight est resté
+`VALIDATE_ONLY / HARD_OFF`, avec zéro appel et réseau interdit. Les tests de
+l'autorisation éphémère confirment la signature HMAC-SHA-256, le nonce fort,
+la durée maximale de 15 minutes, l'usage unique et la liaison stricte au
+plafond, à la campagne, à l'étage et à l'identité d'exécution.
+
+Le validate-only conserve `authorization.financeArbitration=NOT_GRANTED` tant
+qu'aucun artefact signé post-GO n'existe. Ce champ d'exécution ne contredit pas
+l'arbitrage documentaire : il empêche précisément de le confondre avec une
+autorisation de dispatch.
+
+Cet arbitrage ne vaut pas GO propriétaire et ne crée aucun artefact signé. Le
+plafond historique `0,21 USD` reste clos sans transfert. La proposition
+conditionnelle `1,258760 USD` du panel 10 × 2 n'est pas arbitrée et exigera une
+nouvelle décision Finance après un résultat `4/4`. Les manifestes de campagne
+et leur freeze set restent byte-identiques.

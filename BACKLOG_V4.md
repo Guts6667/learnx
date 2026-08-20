@@ -223,10 +223,12 @@ preuves sont maintenus dans `docs/V4_ROADMAP.md`.
 2. Conserver l'identité immuable
    `learnx-writing-fr-sonnet-5-evidence-assist-v3@1.0.0` et les deux manifestes
    quatre cas puis 10 × 2 gelés ensemble. Fait hors ligne, zéro appel.
-3. Faire arbitrer par Finance la proposition maximale de `0,251136 USD` pour
-   le nouveau gate evidence-assist quatre cas, puis obtenir un GO propriétaire
-   distinct. Le plafond historique de `0,21 USD` appartient uniquement au gate
-   Sonnet borné clos et ne doit jamais être réutilisé.
+3. Finance a arbitré la proposition maximale de `0,251136 USD` pour le nouveau
+   gate evidence-assist quatre cas. Obtenir ensuite un GO propriétaire distinct
+   et éphémère avant tout appel. Le plafond historique de `0,21 USD` appartient
+   uniquement au gate Sonnet borné clos et ne doit jamais être réutilisé ; le
+   panel conditionnel `1,258760 USD` exige un arbitrage Finance séparé après
+   un résultat `4/4`.
 4. Exécuter uniquement les quatre cas après ces arbitrages ; n'exécuter le 10 × 2
    que si le gate fait `4/4`, sous exactement la même identité.
 5. Après 20/20, confirmer la préparation du holdout scellé via
@@ -1569,11 +1571,13 @@ Produit/pédagogie l'a approuvé comme cas positif seulement. Il autorise la
 préparation, pas l'exécution, du gate maîtrisé + négatif + injection. Le panel
 reste fermé.**
 
-**État courant au 16 août 2026 : protocole evidence-assist 3.0.0, segmenter
+**État courant au 20 août 2026 : protocole evidence-assist 3.0.0, segmenter
 2.0.0, contexte/canari/raw et capacité de désactivation implémentés et attestés
 hors ligne. Le runner validate-only importe le protocole ; l'identité et les
-manifestes quatre cas puis 10 × 2 sont gelés ensemble. Les plafonds maximaux
-calculés restent `PROPOSED_NOT_APPROVED` et aucun appel n'est autorisé. Le
+manifestes quatre cas puis 10 × 2 sont gelés ensemble. Finance a arbitré
+uniquement le plafond `0,251136 USD` du gate quatre cas ; le GO propriétaire
+reste requis. Le plafond conditionnel `1,258760 USD` du panel 10 × 2 reste non
+arbitré et aucun appel n'est autorisé. Le
 holdout, la publication V4-002 et le live V4-010 restent fermés ; leurs lots
 hors ligne sont actifs.**
 

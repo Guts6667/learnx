@@ -23,7 +23,7 @@ gate le ferme.
   humaine et le manifeste V3 tranche pour l'automatisation. L'écart doit alors
   être corrigé dans le même ticket documentaire.
 
-Dernière consolidation : 16 août 2026.
+Dernière consolidation : 20 août 2026.
 
 ## Plans d'état à ne pas confondre
 
@@ -31,7 +31,7 @@ Dernière consolidation : 16 août 2026.
 | --- | --- | --- | --- |
 | Runtime canonique | `origin/dev` à `b38732f` | Fondations V4-001 à V4-009 intégrées mais inactives. | Le protocole evidence-assist 3.0.0 n'y est pas encore intégré. |
 | Candidat local | `b366ec9`, branche `codex/v4-evidence-assist-protocol` | Segmenter, contexte, raw, schéma candidate-only et capacité `reasoning=DISABLED` testés hors ligne. | Ni CI de livraison complète, ni appel, ni qualité du modèle, ni disponibilité utilisateur. |
-| Expérimentation | `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL` | Route, identité, gate quatre cas et panel 10 × 2 sont gelés hors ligne. | Budget Finance et GO propriétaire absents ; aucun pipeline n'est promu. |
+| Expérimentation | `OFFLINE_CAMPAIGN_FROZEN / FINANCE_GATE4_ARBITRATED / OWNER_NOT_GRANTED / NO_MODEL_CALL` | Route, identité, gate quatre cas et panel 10 × 2 sont gelés hors ligne ; le plafond du gate quatre cas est arbitré. | Le GO propriétaire du gate quatre cas et l'arbitrage du panel conditionnel sont absents ; aucun pipeline n'est promu. |
 | Produit live | `HARD_OFF` | 0 contrat publié, 0 activité éligible, 0 débit réel. | Aucun apprenant ne dispose encore d'une correction V4. |
 | Release externe | `V3_5_EXTERNAL_RELEASE_ASSURANCE_OPEN` | La V3.5 a un GO technique documenté. | Son rapport n'atteste toujours ni clôture officielle, ni iPhone/VoiceOver réel, ni smoke authentifié post-promotion. |
 
@@ -76,8 +76,9 @@ V4-010 non branché et V4-011 fermé.**
 2. **Produit & pédagogie avec Développement** conserve byte-identiques
    l'identité, les quatre cas, le corpus complet 10 × 2, les seuils et les règles
    d'arrêt désormais gelés. Ce travail reste hors ligne.
-3. **Finance & Pricing**, puis le **Propriétaire**, arbitrent l'enveloppe proposée
-   de `0,251136 USD` et l'autorisation des quatre premiers appels.
+3. Le **Propriétaire** décide séparément du GO éphémère sur le plafond Finance
+   arbitré de `0,251136 USD` pour les quatre premiers appels. Finance devra
+   arbitrer séparément le panel conditionnel seulement après un résultat `4/4`.
 
 V4-002 et V4-010 peuvent avancer en parallèle sous leurs hard-off respectifs.
 Aucune de ces actions n'autorise encore un appel modèle ou un utilisateur.
@@ -136,11 +137,13 @@ Ticket principal : `V4-009C`, avec mesures dans `V4-003`.
   `OFFLINE_CAMPAIGN_FROZEN / NO_MODEL_CALL`, pas un GO d'appel.
 - Acquis hors ligne : runner validate-only, gate quatre cas et panel 10 × 2
   gelés ensemble, zéro résultat historique réutilisé.
-- Les plafonds prudents proposés sont `0,251136 USD` puis `1,258760 USD`, non
-  approuvés. Le plafond `0,21 USD` est celui du gate Sonnet borné historique,
-  clos ; il n'est pas le plafond evidence-assist.
-- Blocages courants : budget Finance des quatre cas non arbitré et GO
-  propriétaire non accordé.
+- Le plafond prudent `0,251136 USD` du gate quatre cas est arbitré par Finance
+  uniquement pour cette identité, quatre appels maximum, zéro retry/fallback.
+  Le plafond conditionnel `1,258760 USD` du panel 10 × 2 reste non arbitré. Le
+  plafond `0,21 USD` est celui du gate Sonnet borné historique, clos ; il n'est
+  pas le plafond evidence-assist et n'est pas transférable.
+- Blocage courant : GO propriétaire distinct non accordé pour le gate quatre
+  cas. Aucun artefact HMAC d'exécution n'existe dans le dépôt.
 - Ordre : exécuter les quatre cas après ces autorisations, puis exécuter le 10 × 2
   uniquement si le gate fait `4/4`, sous la même identité. Tout changement
   recommence à quatre cas.
